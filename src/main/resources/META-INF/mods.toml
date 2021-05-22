@@ -1,0 +1,15 @@
+modLoader="javafml" #mandatory
+loaderVersion="[36,)"
+license="No rights reserved. All content stolen from BANDAI NAMCO"
+
+[[mods]]
+modId="darksouls"
+version="0.1.0"
+displayName="Dark Souls"
+displayURL="https://discord.com/channels/776106904790630400/845759873265565717"
+logoFile="examplemod.png"
+credits="My THICC brain"
+authors="Skullman Games"
+description=''' 
+
+'''
