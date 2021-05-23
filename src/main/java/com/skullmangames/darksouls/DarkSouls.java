@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 @Mod(DarkSouls.MOD_ID)
 public class DarkSouls
@@ -23,8 +24,9 @@ public class DarkSouls
     	
     	bus.addListener(this::setup);
     	
-    	ItemInit.ITEMS.register(bus);
     	BlockInit.BLOCKS.register(bus);
+    	TileEntityTypeInit.TILE_ENTITIES.register(bus);
+    	ItemInit.ITEMS.register(bus);
     	
         MinecraftForge.EVENT_BUS.register(this);
     }

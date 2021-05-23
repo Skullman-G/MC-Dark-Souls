@@ -1,4 +1,8 @@
 {
 	"item.darksouls.estus_flask": "Estus Flask",
-	"block.darksouls.titanite_ore": "Titanite Ore"
+	
+	"block.darksouls.titanite_ore": "Titanite Ore",
+	"block.darksouls.bonfire": "Bonfire",
+	
+	"tooltip.estus_flask": "\u00A77An emerald flask, from a Fire Keeper's soul. They live to protect their flame, and die to protect it further. The Undead treasure these dull green flasks. Fill with Estus at bonfires, and drink to restore HP."
 }

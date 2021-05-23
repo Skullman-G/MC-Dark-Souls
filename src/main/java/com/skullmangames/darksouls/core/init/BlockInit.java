@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.blocks.Bonfire;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -21,4 +22,6 @@ public class BlockInit
 			.harvestTool(ToolType.PICKAXE)
 			.harvestLevel(1)
 			.sound(SoundType.STONE)));
+	
+	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new Bonfire());
 }
