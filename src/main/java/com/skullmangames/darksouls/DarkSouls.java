@@ -8,6 +8,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 
 @Mod(DarkSouls.MOD_ID)
@@ -21,7 +22,10 @@ public class DarkSouls
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     	
     	bus.addListener(this::setup);
+    	
     	ItemInit.ITEMS.register(bus);
+    	BlockInit.BLOCKS.register(bus);
+    	
         MinecraftForge.EVENT_BUS.register(this);
     }
 
