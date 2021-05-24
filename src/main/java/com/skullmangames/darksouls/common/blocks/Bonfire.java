@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
@@ -65,11 +66,24 @@ public class Bonfire extends BaseHorizontalBlock
 		if (!this.isLit(state))
 	    {
 	    	this.setLit(worldIn, state, pos, true);
-	    	this.properties.lightLevel((p_235470_0_) -> {return 14;});
+	    	
 	    	return ActionResultType.SUCCESS;
 	    }
 		
 		return ActionResultType.PASS;
+	}
+	
+	@Override
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		if (this.isLit(state))
+		{
+			return 10;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	
 	public boolean isLit(BlockState state) 
@@ -113,7 +127,7 @@ public class Bonfire extends BaseHorizontalBlock
 	           worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
 	        }
 
-			for(int i = 0; i < random.nextInt(1) + 1; ++i) 
+			for(int i = 0; i < 2; ++i)
 	        {
 	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
 	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
