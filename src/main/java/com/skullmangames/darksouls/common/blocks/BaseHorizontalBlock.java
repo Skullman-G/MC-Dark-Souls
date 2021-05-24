@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -25,7 +24,6 @@ public class BaseHorizontalBlock extends Block
 	public BaseHorizontalBlock(Properties properties) 
 	{
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH));
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -45,13 +43,6 @@ public class BaseHorizontalBlock extends Block
 	public BlockState getStateForPlacement(BlockItemUseContext context) 
 	{
 		return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
-	}
-	
-	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) 
-	{
-		super.createBlockStateDefinition(builder);
-		builder.add(HORIZONTAL_FACING);
 	}
 	
 	protected static void calculateShapes(Direction to, VoxelShape shape) {

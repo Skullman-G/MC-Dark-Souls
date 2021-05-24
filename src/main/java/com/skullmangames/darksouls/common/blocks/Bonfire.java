@@ -13,9 +13,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -41,27 +43,46 @@ public class Bonfire extends BaseHorizontalBlock
 			Block.box(6, 15, 8, 7, 16, 9),
 			Block.box(8, 15, 8, 9, 16, 9)
 			).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
-	public static final BooleanProperty LIT = BlockstateProperties.;
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	
 	public Bonfire()
 	{
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)));
 		this.runCalculation(SHAPE);
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+	}
+	
+	@Override
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
+	{
+	    container.add(LIT, HORIZONTAL_FACING);
 	}
 	
 	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		if (!state.getValue(LIT))
+		if (!this.isLit(state))
 	    {
-	    	state.setValue(LIT, true);
-	    	//this.properties.lightLevel((p_235470_0_) -> {return 14;});
+	    	this.setLit(worldIn, state, pos, true);
+	    	this.properties.lightLevel((p_235470_0_) -> {return 14;});
 	    	return ActionResultType.SUCCESS;
 	    }
 		
 		return ActionResultType.PASS;
+	}
+	
+	public boolean isLit(BlockState state) 
+	{
+	    return state.getValue(LIT);
+	}
+
+	public void setLit(World worldIn, BlockState state, BlockPos pos, boolean value) 
+	{
+	    if (state.is(this) && state.getValue(LIT) != value) 
+	    {
+	        worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(value)), 10);
+	    }
 	}
 	
 	@Override
@@ -85,7 +106,7 @@ public class Bonfire extends BaseHorizontalBlock
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random random) 
 	{
-		if (state.getValue(LIT))
+		if (this.isLit(state))
 		{
 			if (random.nextInt(10) == 0) 
 	        {
