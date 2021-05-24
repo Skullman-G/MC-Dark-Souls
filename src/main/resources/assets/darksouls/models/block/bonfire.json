@@ -6,8 +6,8 @@
 	},
 	"elements": [
 		{
-			"from": [2, 1, 2],
-			"to": [14, 2, 14],
+			"from": [2, 0.75, 2],
+			"to": [14, 1.75, 14],
 			"faces": {
 				"north": {"uv": [0, 0, 12, 1], "texture": "#0"},
 				"east": {"uv": [0, 0, 24, 2], "texture": "#0"},
@@ -100,5 +100,12 @@
 		"gui": {
 			"translation": [0.75, 0, 0]
 		}
-	}
+	},
+	"groups": [
+		{
+			"name": "VoxelShapes",
+			"origin": [8, 8, 8],
+			"children": [0, 1, 2, 3, 4, 5, 6]
+		}
+	]
 }

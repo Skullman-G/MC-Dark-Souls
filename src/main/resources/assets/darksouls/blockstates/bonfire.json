@@ -1,6 +1,8 @@
 {
-	"variants":
-	{
-		"": { "model": "darksouls:block/bonfire" }
-	}
+    "variants": {
+        "facing=north": { "model": "darksouls:block/bonfire" },
+        "facing=south": { "model": "darksouls:block/bonfire", "y": 180 },
+        "facing=west":  { "model": "darksouls:block/bonfire", "y": 270 },
+        "facing=east":  { "model": "darksouls:block/bonfire", "y": 90 }
+    }
 }

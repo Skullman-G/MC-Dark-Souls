@@ -60,7 +60,7 @@ public class BaseHorizontalBlock extends Block
 		int times = (to.getStepX() - Direction.NORTH.getStepX() + 4) % 4;
 		for (int i = 0; i < times; i++) {
 			buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1],
-					VoxelShapes.create(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
+					VoxelShapes.box(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
 			buffer[0] = buffer[1];
 			buffer[1] = VoxelShapes.empty();
 		}
