@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.skullmangames.darksouls.core.init.BlockInit;
+import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -24,6 +25,7 @@ public class DarkSouls
     	
     	bus.addListener(this::setup);
     	
+    	EffectInit.EFFECTS.register(bus);
     	BlockInit.BLOCKS.register(bus);
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);
     	ItemInit.ITEMS.register(bus);

@@ -1,11 +1,9 @@
 package com.skullmangames.darksouls.common.blocks;
 
-import java.util.Collection;
-import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.AbstractBlock;
@@ -13,11 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -28,17 +22,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,15 +61,23 @@ public class Bonfire extends BaseHorizontalBlock
 	    container.add(LIT, HORIZONTAL_FACING);
 	}
 	
-	@SuppressWarnings("resource")
 	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		Random random = new Random();
-		
 		if (!this.isLit(state))
 	    {
-			this.setLit(worldIn, state, pos, true);
-	    	return ActionResultType.SUCCESS;
+			if (worldIn.isClientSide) 
+			{
+		        return ActionResultType.SUCCESS;
+		    }
+			else
+			{
+				TileEntity tileentity = worldIn.getBlockEntity(pos);
+				if (tileentity instanceof BonfireTileEntity)
+				{
+					this.setLit(worldIn, state, pos, true);
+					return ActionResultType.CONSUME;
+				}
+			}
 	    }
 		
 		return ActionResultType.PASS;
