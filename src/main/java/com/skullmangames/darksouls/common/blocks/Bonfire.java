@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.common.blocks;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import com.skullmangames.darksouls.client.util.ClientUtils;
+import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -12,10 +14,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -44,7 +46,6 @@ public class Bonfire extends BaseHorizontalBlock
 			Block.box(6, 15, 8, 7, 16, 9),
 			Block.box(8, 15, 8, 9, 16, 9)
 			).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
-	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	
 	public Bonfire()
 	{
@@ -52,41 +53,52 @@ public class Bonfire extends BaseHorizontalBlock
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
 		this.runCalculation(SHAPE);
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH));
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
-	    container.add(LIT, HORIZONTAL_FACING);
+	    container.add(HORIZONTAL_FACING);
 	}
 	
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+	@Override
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		if (!this.isLit(state))
-	    {
-			if (worldIn.isClientSide) 
+		
+		TileEntity tileentity = world.getBlockEntity(pos);
+		if (this.isLit(world, pos))
+		{
+			ItemStack itemstack = player.getMainHandItem();
+			if (itemstack.getItem() instanceof EstusFlask)
 			{
-		        return ActionResultType.SUCCESS;
-		    }
-			else
-			{
-				TileEntity tileentity = worldIn.getBlockEntity(pos);
-				if (tileentity instanceof BonfireTileEntity)
-				{
-					this.setLit(worldIn, state, pos, true);
-					return ActionResultType.CONSUME;
-				}
+				return ActionResultType.PASS;
 			}
-	    }
+			if (world.isClientSide && tileentity instanceof BonfireTileEntity)
+			{
+				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
+				ClientUtils.openBonfireScreen(bonfiretileentity, player);
+			}
+				
+			return ActionResultType.sidedSuccess(world.isClientSide);
+		}
+		else
+		{
+			if (world.isClientSide && tileentity instanceof BonfireTileEntity)
+			{
+				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
+				ClientUtils.openBonfireNameScreen(bonfiretileentity);
+				return ActionResultType.sidedSuccess(world.isClientSide);
+			}
+		}
 		
 		return ActionResultType.PASS;
 	}
 	
-	@Override
+	/*@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		if (this.isLit(state))
+		if (this.isLit((World)world, pos))
 		{
 			return 10;
 		}
@@ -94,23 +106,22 @@ public class Bonfire extends BaseHorizontalBlock
 		{
 			return 0;
 		}
-	}
+	}*/
 	
-	public boolean isLit(BlockState state) 
+	public boolean isLit(World world, BlockPos pos)
 	{
-	    return state.getValue(LIT);
-	}
-
-	public void setLit(World worldIn, BlockState state, BlockPos pos, boolean value) 
-	{
-	    if (state.is(this) && state.getValue(LIT) != value) 
+	    TileEntity tileentity = world.getBlockEntity(pos);
+	    if (tileentity instanceof BonfireTileEntity)
 	    {
-	        worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(value)), 10);
+	    	BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
+	    	return bonfiretileentity.isLit();
 	    }
+	    
+	    return false;
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) 
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
 		return SHAPES.get(state.getValue(HORIZONTAL_FACING));
 	}
@@ -118,7 +129,7 @@ public class Bonfire extends BaseHorizontalBlock
 	@Override
 	public boolean hasTileEntity(BlockState state) 
 	{
-		return super.hasTileEntity(state);
+		return true;
 	}
 	
 	@Override
@@ -127,10 +138,11 @@ public class Bonfire extends BaseHorizontalBlock
 		return TileEntityTypeInit.BONFIRE_TILE_ENTITY.get().create();
 	}
 	
+	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random random) 
+	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random random)
 	{
-		if (this.isLit(state))
+		if (this.isLit(worldIn, pos))
 		{
 			if (random.nextInt(10) == 0) 
 	        {

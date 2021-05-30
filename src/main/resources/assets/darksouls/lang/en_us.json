@@ -1,8 +1,17 @@
 {
 	"item.darksouls.estus_flask": "Estus Flask",
+	"item.darksouls.fire_keeper_soul": "Fire Keeper Soul",
+	"item.darksouls.emerald_flask": "Emerald Flask",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
 	
-	"tooltip.estus_flask": "\u00A77An emerald flask, from a Fire Keeper's soul. They live to protect their flame, and die to protect it further. The Undead treasure these dull green flasks. Fill with Estus at bonfires, and drink to restore HP. \n Uses: "
+	"tooltip.darksouls.estus_flask": "An emerald flask, from a Fire Keeper's soul. They live to protect their flame, and die to protect it further. The Undead treasure these dull green flasks. Fill with Estus at bonfires, and drink to restore HP.",
+	"tooltip.darksouls.fire_keeper_soul": "Soul of a long-lost Fire Keeper. Each Fire Keeper is a corporeal manifestation of her bonfire and a draw for the humanity which is offered to her. Her soul is gnawed by infinite humanity. It is an ingredient for the precious Estus Flask.",
+	
+	"gui.darksouls.name_bonfire": "Name Bonfire",
+	"gui.darksouls.warp_button": "Warp",
+	"gui.darksouls.leave_button": "Leave",
+	
+	"itemGroup.soulstab": "Souls"
 }

@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "darksouls:emerald_flask"
+    },
+    "addition": {
+        "item": "darksouls:fire_keeper_soul"
+    },
+    "result": {
+        "item": "darksouls:estus_flask"
+    }
+}
