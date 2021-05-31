@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class BonfireScreen extends Screen
@@ -15,13 +14,11 @@ public class BonfireScreen extends Screen
 	protected Button warpButton;
 	protected Button leaveButton;
 	private BonfireTileEntity bonfiretileentity;
-	private PlayerEntity player;
 	
-	public BonfireScreen(BonfireTileEntity tileentity, PlayerEntity playerentity)
+	public BonfireScreen(BonfireTileEntity tileentity)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
-		this.player = playerentity;
 	}
 	
 	@Override
@@ -60,6 +57,5 @@ public class BonfireScreen extends Screen
 	protected void onLeave()
 	{
 		this.minecraft.setScreen((Screen)null);
-		this.bonfiretileentity.setRespawnPos(player);
 	}
 }

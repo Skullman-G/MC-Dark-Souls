@@ -47,11 +47,11 @@ public class EstusFlask extends Item
 		return compoundnbt.getInt("TotalUses");
 	}
 	
-	private static void setTotalUses(ItemStack itemstack, int value)
+	/*private static void setTotalUses(ItemStack itemstack, int value)
 	{
 	    CompoundNBT compoundnbt = itemstack.getOrCreateTag();
 	    compoundnbt.putInt("TotalUses", value);
-	}
+	}*/
 	
 	public static int getUses(ItemStack itemstack)
 	{
@@ -142,7 +142,7 @@ public class EstusFlask extends Item
 		World world = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
-		if (blockstate.getBlock() instanceof Bonfire)
+		if (blockstate.getBlock() instanceof Bonfire && blockstate.getValue(Bonfire.LIT))
 		{
 			setUses(itemusecontext.getItemInHand(), getTotalUses(itemusecontext.getItemInHand()));
 			return ActionResultType.SUCCESS;

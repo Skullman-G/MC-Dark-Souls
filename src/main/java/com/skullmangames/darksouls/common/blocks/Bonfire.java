@@ -14,10 +14,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -37,6 +37,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Bonfire extends BaseHorizontalBlock
 {
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	
 	protected static final VoxelShape SHAPE = Stream.of(
 			Block.box(2, 0.75, 2, 14, 1.75, 14),
 			Block.box(1, 0, 1, 15, 1, 15),
@@ -53,52 +55,45 @@ public class Bonfire extends BaseHorizontalBlock
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
 		this.runCalculation(SHAPE);
-		this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(HORIZONTAL_FACING, Direction.NORTH));
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
-	    container.add(HORIZONTAL_FACING);
+	    container.add(LIT, HORIZONTAL_FACING);
 	}
 	
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		
 		TileEntity tileentity = world.getBlockEntity(pos);
-		if (this.isLit(world, pos))
+		if (!this.isLit(state))
 		{
-			ItemStack itemstack = player.getMainHandItem();
-			if (itemstack.getItem() instanceof EstusFlask)
+			if (tileentity instanceof BonfireTileEntity)
 			{
-				return ActionResultType.PASS;
+				ClientUtils.openBonfireNameScreen((BonfireTileEntity)tileentity);
 			}
-			if (world.isClientSide && tileentity instanceof BonfireTileEntity)
-			{
-				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
-				ClientUtils.openBonfireScreen(bonfiretileentity, player);
-			}
-				
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
 		else
 		{
-			if (world.isClientSide && tileentity instanceof BonfireTileEntity)
+			if (player.getItemInHand(hand).getItem() instanceof EstusFlask)
 			{
-				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
-				ClientUtils.openBonfireNameScreen(bonfiretileentity);
-				return ActionResultType.sidedSuccess(world.isClientSide);
+				return ActionResultType.PASS;
 			}
+			else if (tileentity instanceof BonfireTileEntity)
+			{
+				ClientUtils.openBonfireScreen((BonfireTileEntity)tileentity);
+			}
+			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
-		
-		return ActionResultType.PASS;
 	}
 	
-	/*@Override
+	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		if (this.isLit((World)world, pos))
+		if (this.isLit(state))
 		{
 			return 10;
 		}
@@ -106,18 +101,19 @@ public class Bonfire extends BaseHorizontalBlock
 		{
 			return 0;
 		}
-	}*/
+	}
 	
-	public boolean isLit(World world, BlockPos pos)
+	public boolean isLit(BlockState blockstate)
 	{
-	    TileEntity tileentity = world.getBlockEntity(pos);
-	    if (tileentity instanceof BonfireTileEntity)
+	    return blockstate.getValue(LIT);
+	}
+	
+	public void setLit(World world, BlockState blockstate, BlockPos blockpos, boolean value)
+	{
+	    if (blockstate.is(this) && blockstate.getValue(LIT) != value)
 	    {
-	    	BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
-	    	return bonfiretileentity.isLit();
+	       world.setBlock(blockpos, blockstate.setValue(LIT, Boolean.valueOf(value)), 3);
 	    }
-	    
-	    return false;
 	}
 	
 	@Override
@@ -142,7 +138,7 @@ public class Bonfire extends BaseHorizontalBlock
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random random)
 	{
-		if (this.isLit(worldIn, pos))
+		if (this.isLit(state))
 		{
 			if (random.nextInt(10) == 0) 
 	        {

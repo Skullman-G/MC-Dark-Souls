@@ -5,7 +5,6 @@ import com.skullmangames.darksouls.client.screens.BonfireScreen;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,8 +21,8 @@ public final class ClientUtils
 		Minecraft.getInstance().setScreen(new BonfireNameScreen(tileentity));
 	}
 	
-	public static void openBonfireScreen(BonfireTileEntity tileentity, PlayerEntity playerentity)
+	public static void openBonfireScreen(BonfireTileEntity tileentity)
 	{
-		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity, playerentity));
+		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity));
 	}
 }
