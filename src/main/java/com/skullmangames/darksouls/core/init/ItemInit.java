@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.items.EmeraldFlask;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.items.FireKeeperSoul;
 
@@ -21,7 +22,7 @@ public class ItemInit
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoul(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new EmeraldFlask(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
 	//Block Items

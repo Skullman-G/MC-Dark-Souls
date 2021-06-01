@@ -25,10 +25,10 @@ public class BonfireScreen extends Screen
 	protected void init()
 	{
 		super.init();
-		this.warpButton = this.addButton(new Button(this.width / 2 - 75, this.height / 2 + 20, 150, 20, new TranslationTextComponent("gui.darksouls.warp_button"), (p_214187_1_) ->
+		/*this.warpButton = this.addButton(new Button(this.width / 2 - 75, this.height / 2 + 20, 150, 20, new TranslationTextComponent("gui.darksouls.warp_button"), (p_214187_1_) ->
 		{
 	         this.openWarpMenu();
-	    }));
+	    }));*/
 		this.leaveButton = this.addButton(new Button(this.width / 2 - 75, this.height / 2 + 40, 150, 20, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         this.onLeave();

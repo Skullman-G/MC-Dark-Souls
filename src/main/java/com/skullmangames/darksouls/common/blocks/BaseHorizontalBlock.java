@@ -28,7 +28,7 @@ public class BaseHorizontalBlock extends Block
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) 
+	public BlockState mirror(BlockState state, Mirror mirrorIn)
 	{
 		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}

@@ -1,0 +1,21 @@
+{
+	"block.bonfire.lit":
+	{
+		"category": "block",
+		"subtitle": "block.bonfire.lit.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:blocks/bonfire/lit", "stream": true }
+		]
+	},
+	
+	"block.bonfire.ambient":
+	{
+		"category": "block",
+		"subtitle": "block.bonfire.ambient.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:blocks/bonfire/ambient", "stream": true }
+		]
+	}
+}

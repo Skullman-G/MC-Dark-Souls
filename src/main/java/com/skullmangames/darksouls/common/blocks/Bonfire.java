@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.AbstractBlock;
@@ -14,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -23,13 +25,14 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -67,12 +70,22 @@ public class Bonfire extends BaseHorizontalBlock
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
+		if (!world.isClientSide)
+		{
+			world.playSound((PlayerEntity)null, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		}
+		
 		TileEntity tileentity = world.getBlockEntity(pos);
 		if (!this.isLit(state))
 		{
 			if (tileentity instanceof BonfireTileEntity)
 			{
 				ClientUtils.openBonfireNameScreen((BonfireTileEntity)tileentity);
+			}
+			if (!world.isClientSide)
+			{
+				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
+				serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
@@ -85,6 +98,12 @@ public class Bonfire extends BaseHorizontalBlock
 			else if (tileentity instanceof BonfireTileEntity)
 			{
 				ClientUtils.openBonfireScreen((BonfireTileEntity)tileentity);
+			}
+			if (!world.isClientSide)
+			{
+				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
+				serverplayerentity.setRespawnPosition(world.dimension(), pos, 0.0F, true, true);
+				world.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
@@ -140,10 +159,7 @@ public class Bonfire extends BaseHorizontalBlock
 	{
 		if (this.isLit(state))
 		{
-			if (random.nextInt(10) == 0) 
-	        {
-	           worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
-	        }
+			worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.05F, 1.0F, false);
 
 			for(int i = 0; i < 2; ++i)
 	        {

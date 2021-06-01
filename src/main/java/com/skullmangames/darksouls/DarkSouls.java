@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 @Mod(DarkSouls.MOD_ID)
@@ -30,6 +31,7 @@ public class DarkSouls
     	
     	bus.addListener(this::setup);
     	
+    	SoundEventInit.SOUND_EVENTS.register(bus);
     	BlockInit.BLOCKS.register(bus);
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);
     	ItemInit.ITEMS.register(bus);
