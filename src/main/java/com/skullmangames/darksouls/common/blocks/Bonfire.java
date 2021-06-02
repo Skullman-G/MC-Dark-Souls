@@ -1,8 +1,11 @@
 package com.skullmangames.darksouls.common.blocks;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
@@ -14,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
@@ -25,6 +29,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.TransportationHelper;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -32,8 +37,11 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.ICollisionReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -41,6 +49,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Bonfire extends BaseHorizontalBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
+	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
 	protected static final VoxelShape SHAPE = Stream.of(
 			Block.box(2, 0.75, 2, 14, 1.75, 14),
@@ -70,11 +80,6 @@ public class Bonfire extends BaseHorizontalBlock
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		if (!world.isClientSide)
-		{
-			world.playSound((PlayerEntity)null, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-		}
-		
 		TileEntity tileentity = world.getBlockEntity(pos);
 		if (!this.isLit(state))
 		{
@@ -86,6 +91,7 @@ public class Bonfire extends BaseHorizontalBlock
 			{
 				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
 				serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
+				world.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
@@ -102,11 +108,41 @@ public class Bonfire extends BaseHorizontalBlock
 			if (!world.isClientSide)
 			{
 				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
-				serverplayerentity.setRespawnPosition(world.dimension(), pos, 0.0F, true, true);
-				world.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, world, pos);
+				if (optional.isPresent())
+				{
+					serverplayerentity.setRespawnPosition(world.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+				}
+				else
+				{
+					serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
+				}
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
+	}
+	
+	public static Optional<Vector3d> findStandUpPosition(EntityType<?> p_235560_0_, ICollisionReader p_235560_1_, BlockPos p_235560_2_)
+	{
+	    Optional<Vector3d> optional = findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, true);
+	    return optional.isPresent() ? optional : findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, false);
+	}
+
+	private static Optional<Vector3d> findStandUpPosition(EntityType<?> p_242678_0_, ICollisionReader p_242678_1_, BlockPos p_242678_2_, boolean p_242678_3_)
+	{
+	    BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+
+	    for(Vector3i vector3i : RESPAWN_OFFSETS)
+	    {
+	         blockpos$mutable.set(p_242678_2_).move(vector3i);
+	         Vector3d vector3d = TransportationHelper.findSafeDismountLocation(p_242678_0_, p_242678_1_, blockpos$mutable, p_242678_3_);
+	         if (vector3d != null)
+	         {
+	            return Optional.of(vector3d);
+	         }
+	    }
+
+	    return Optional.empty();
 	}
 	
 	@Override

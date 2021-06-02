@@ -36,7 +36,7 @@ public class BonfireScreen extends Screen
 	}
 	
 	@Override
-	public void resize(Minecraft p_231152_1_, int p_231152_2_, int p_231152_3_)
+	public void resize(Minecraft minecraft, int p_231152_2_, int p_231152_3_)
 	{
 		this.init(minecraft, p_231152_2_, p_231152_3_);
 	}
