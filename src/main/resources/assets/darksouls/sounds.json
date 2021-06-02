@@ -17,5 +17,15 @@
 		[
 			{ "name": "darksouls:blocks/bonfire/ambient", "stream": true }
 		]
+	},
+	
+	"item.darksign.use":
+	{
+		"category": "item",
+		"subtitle": "item.darksign.use.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/darksign/use", "stream": true }
+		]
 	}
 }

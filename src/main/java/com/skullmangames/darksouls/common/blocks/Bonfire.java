@@ -80,6 +80,8 @@ public class Bonfire extends BaseHorizontalBlock
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
+		world.playSound(player, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		
 		TileEntity tileentity = world.getBlockEntity(pos);
 		if (!this.isLit(state))
 		{
@@ -91,7 +93,6 @@ public class Bonfire extends BaseHorizontalBlock
 			{
 				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
 				serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
-				world.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
@@ -196,7 +197,6 @@ public class Bonfire extends BaseHorizontalBlock
 		if (this.isLit(state))
 		{
 			worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.05F, 1.0F, false);
-
 			for(int i = 0; i < 2; ++i)
 	        {
 	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);

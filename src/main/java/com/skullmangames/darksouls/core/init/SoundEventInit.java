@@ -12,6 +12,7 @@ public class SoundEventInit
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, DarkSouls.MOD_ID);
 
 	public static final RegistryObject<SoundEvent> BONFIRE_LIT = SOUND_EVENTS.register("block.bonfire.lit", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "block.bonfire.lit")));
-	
 	public static final RegistryObject<SoundEvent> BONFIRE_AMBIENT = SOUND_EVENTS.register("block.bonfire.ambient", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "block.bonfire.ambient")));
+
+	public static final RegistryObject<SoundEvent> DARKSIGN_USE = SOUND_EVENTS.register("item.darksign.use", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.darksign.use")));
 }

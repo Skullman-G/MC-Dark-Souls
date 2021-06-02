@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.common.items.EmeraldFlask;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.items.FireKeeperSoul;
@@ -24,6 +25,9 @@ public class ItemInit
 	
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new EmeraldFlask(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
+	
+	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Darksign(new Item.Properties()
+			.tab(ItemGroup.TAB_TOOLS)));
 	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),
