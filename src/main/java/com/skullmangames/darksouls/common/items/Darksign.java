@@ -31,6 +31,13 @@ public class Darksign extends Item
 	}
 	
 	@Override
+	public boolean onDroppedByPlayer(ItemStack item, PlayerEntity player)
+	{
+		player.addItem(item);
+		return false;
+	}
+	
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
@@ -41,7 +48,6 @@ public class Darksign extends Item
 	@Override
 	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
 	{
-		//world.playSound((PlayerEntity)null, player.getX(), player.getY(),  player.getZ(), SoundEventInit.DARKSIGN_USE.get(), SoundCategory.PLAYERS, 1.0F, 1.0F);
 		return CastingHelper.startCasting(world, player, hand);
 	}
 	
@@ -83,7 +89,6 @@ public class Darksign extends Item
 	@Override
 	public void onUseTick(World world, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
 	{
-		System.out.print("hoe");
 		CastingHelper.triggerItemUseEffects(livingentity, itemstack, 5, durationremaining);
 	}
 	
