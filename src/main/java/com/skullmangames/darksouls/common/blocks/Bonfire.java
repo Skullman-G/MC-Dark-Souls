@@ -196,15 +196,15 @@ public class Bonfire extends BaseHorizontalBlock
 	{
 		if (this.isLit(state))
 		{
-			worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.05F, 1.0F, false);
-			for(int i = 0; i < 2; ++i)
-	        {
-	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-	           worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
-	        }
+			if (random.nextInt(8) == 0)
+			{
+				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.05F, 1.0F, false);
+			}
+			worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
+	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

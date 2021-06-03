@@ -14,9 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -67,5 +66,29 @@ public class Darksign extends Item
 	      }
 
 	      return itemstack;
+	}
+	
+	@Override
+	public UseAction getUseAnimation(ItemStack itemstack)
+	{
+		return UseAction.NONE;
+	}
+	
+	@Override
+	public int getUseDuration(ItemStack itemstack)
+	{
+		return 32;
+	}
+	
+	@Override
+	public void onUseTick(World world, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
+	{
+		System.out.print("hoe");
+		CastingHelper.triggerItemUseEffects(livingentity, itemstack, 5, durationremaining);
+	}
+	
+	public SoundEvent getCastingSound()
+	{
+		return SoundEventInit.DARKSIGN_USE.get();
 	}
 }
