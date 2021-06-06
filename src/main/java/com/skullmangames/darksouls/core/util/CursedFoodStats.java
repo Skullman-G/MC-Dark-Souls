@@ -13,7 +13,12 @@ public class CursedFoodStats extends FoodStats
 	{
 		if (playerentity.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
 		{
-			return;
+			if (this.foodLevel != 20)
+			{
+				this.foodLevel = 20;
+			}
+			this.lastFoodLevel = this.foodLevel;
+			this.tickTimer = 0;
 		}
 		else
 		{
