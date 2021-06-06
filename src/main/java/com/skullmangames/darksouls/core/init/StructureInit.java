@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.init;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
