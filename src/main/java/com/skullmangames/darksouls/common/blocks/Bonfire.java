@@ -119,6 +119,7 @@ public class Bonfire extends BaseHorizontalBlock
 					serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
 				}
 			}
+			player.heal(player.getMaxHealth() - player.getHealth());
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
 	}
