@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.items;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.core.init.ItemInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
@@ -19,6 +20,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -93,18 +95,24 @@ public class EstusFlask extends Item
 	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)playerentity, itemstack);
 	      }
 
-	      if (!worldIn.isClientSide)
-	      {
-	         livingentity.heal(10);
-	      }
-
 	      if (playerentity != null)
 	      {
-	         playerentity.awardStat(Stats.ITEM_USED.get(this));
-	         if (!playerentity.abilities.instabuild)
-	         {
-	            setUses(itemstack, getUses(itemstack) - 1);
-	         }
+	    	  if (!worldIn.isClientSide)
+		      {
+		    	  if (playerentity.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
+		    	  {
+		    		  playerentity.heal(10.0F);
+		    	  }
+		    	  else
+		    	  {
+		    		  playerentity.hurt(DamageSource.IN_FIRE, 10.0F);
+		    	  }
+		      }
+	    	  playerentity.awardStat(Stats.ITEM_USED.get(this));
+	    	  if (!playerentity.abilities.instabuild)
+	    	  {
+	    		  setUses(itemstack, getUses(itemstack) - 1);
+	    	  }
 	      }
 
 	      return itemstack;

@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.event;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.util.CursedFoodStats;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ public class EventHandler
 		if (event.getEntity() instanceof PlayerEntity && !((PlayerEntity)event.getEntity()).inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
 		{
 			((PlayerEntity)event.getEntity()).inventory.add(new ItemStack(ItemInit.DARKSIGN.get()));
+			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
 		}
     }
 }

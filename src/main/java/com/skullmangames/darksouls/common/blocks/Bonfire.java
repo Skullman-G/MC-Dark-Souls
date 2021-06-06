@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -20,12 +21,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -119,7 +122,14 @@ public class Bonfire extends BaseHorizontalBlock
 					serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
 				}
 			}
-			player.heal(player.getMaxHealth() - player.getHealth());
+			if (player.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
+			{
+				player.heal(player.getMaxHealth() - player.getHealth());
+			}
+			else
+			{
+				player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
+			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
 	}
