@@ -3,14 +3,18 @@
 	"item.darksouls.fire_keeper_soul": "Fire Keeper Soul",
 	"item.darksouls.emerald_flask": "Emerald Flask",
 	"item.darksouls.darksign": "Darksign",
+	"item.darksouls.estus_shard": "Estus Shard",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
+	
+	"effect.darksouls.undead_curse": "Undead Curse",
 	
 	"tooltip.darksouls.estus_flask": "An emerald flask forged with a Fire Keeper's soul. They live to protect their flame, and die to protect it further. The Undead treasure these dull green flasks. Fill with Estus at bonfires, and drink to restore HP.",
 	"tooltip.darksouls.fire_keeper_soul": "Soul of a long-lost Fire Keeper. Each Fire Keeper is a corporeal manifestation of her bonfire and a draw for the humanity which is offered to her. Her soul is gnawed by infinite humanity. It is an ingredient for the Estus Flask.",
 	"tooltip.darksouls.emerald_flask": "An emerald flask once used to contain perfume. But the Undead have no use for it anymore. They seek the power of the flame. Forge it with a Fire Keeper's soul to make an Estus Flask.",
 	"tooltip.darksouls.darksign": "The Darksign signifies an accursed Undead. Those branded with it are reborn after death, but will one day lose their mind and go hollow. And so it is they are driven from their homeland. The Darksign returns its bearer to the last bonfire rested at.",
+	"tooltip.darksouls.estus_shard": "A shard soaked in Estus. Over the ages, countless souls rested their bones as they drank from the original flask. And now this shard remains, serving as a vestige of their hopes and dreams. This shard can be used to enlarge an Estus Flask.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.warp_button": "Warp",

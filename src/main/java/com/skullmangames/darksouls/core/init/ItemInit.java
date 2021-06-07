@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.common.items.EmeraldFlask;
 import com.skullmangames.darksouls.common.items.EstusFlask;
+import com.skullmangames.darksouls.common.items.EstusShard;
 import com.skullmangames.darksouls.common.items.FireKeeperSoul;
 
 import net.minecraft.item.BlockItem;
@@ -19,6 +20,9 @@ public class ItemInit
 	
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlask(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
+	
+	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new EstusShard(new Item.Properties()
+			.tab(ItemGroup.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoul(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));

@@ -33,6 +33,7 @@ import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
+import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
@@ -54,6 +55,7 @@ public class DarkSouls
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);
     	ItemInit.ITEMS.register(bus);
     	StructureInit.STRUCTURES.register(bus);
+    	EffectInit.EFFECTS.register(bus);
     	bus.addListener(this::setup);
     	
         MinecraftForge.EVENT_BUS.register(this);
@@ -70,7 +72,7 @@ public class DarkSouls
     	{
     	    ItemModelsProperties.register(ItemInit.ESTUS_FLASK.get(), new ResourceLocation(MOD_ID, "usage"), (stack, world, living) ->
     	    {
-    	        float usage = (float)EstusFlask.getUses(stack) / (float)EstusFlask.getTotalUses(stack);
+    	        float usage = (float)((EstusFlask)ItemInit.ESTUS_FLASK.get()).getUses(stack) / (float)((EstusFlask)ItemInit.ESTUS_FLASK.get()).getTotalUses(stack);
     	    	return usage;
     	    });
     	    

@@ -38,7 +38,7 @@ public class EstusFlask extends Item
 		super(properties.stacksTo(1));
 	}
 	
-	public static int getTotalUses(ItemStack itemstack)
+	public int getTotalUses(ItemStack itemstack)
 	{
 		CompoundNBT compoundnbt = itemstack.getOrCreateTag();
 		if (compoundnbt.getInt("TotalUses") == 0)
@@ -55,7 +55,7 @@ public class EstusFlask extends Item
 	    compoundnbt.putInt("TotalUses", value);
 	}*/
 	
-	public static int getUses(ItemStack itemstack)
+	public int getUses(ItemStack itemstack)
 	{
 	    CompoundNBT compoundnbt = itemstack.getTag();
 	    if (compoundnbt == null)
@@ -68,7 +68,7 @@ public class EstusFlask extends Item
 	    }
 	}
 
-	public static void setUses(ItemStack itemstack, int value)
+	public void setUses(ItemStack itemstack, int value)
 	{
 	    if (value < 0)
 	    {
