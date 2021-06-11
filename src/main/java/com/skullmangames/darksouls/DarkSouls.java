@@ -16,6 +16,7 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,6 +34,7 @@ import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
+import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
@@ -66,7 +68,8 @@ public class DarkSouls
         forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
+    @SuppressWarnings("deprecation")
+	private void setup(final FMLCommonSetupEvent event)
     {
     	event.enqueueWork(() ->
     	{
@@ -78,6 +81,10 @@ public class DarkSouls
     	    
     	    StructureInit.setupStructures();
     	    ConfiguredStructureInit.registerConfiguredStructures();
+    	});
+    	DeferredWorkQueue.runLater(() ->
+    	{
+    		CriteriaTriggerInit.register();
     	});
     }
     

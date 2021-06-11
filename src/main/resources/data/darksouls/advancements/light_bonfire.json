@@ -1,0 +1,29 @@
+{
+	"parent": "darksouls:root",
+	"display": {
+    "icon": {
+      "item": "darksouls:bonfire"
+    },
+    "title": {
+      "translate": "advancements.darksouls.light_bonfire.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.light_bonfire.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "light_bonfire": {
+      "trigger": "minecraft:player_lit_bonfire"
+    }
+  },
+  "requirements": [
+    [
+      "light_bonfire"
+    ]
+  ]
+}

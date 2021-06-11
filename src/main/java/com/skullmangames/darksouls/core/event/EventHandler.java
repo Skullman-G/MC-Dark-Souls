@@ -6,10 +6,15 @@ import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
+import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
+import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
@@ -18,6 +23,7 @@ import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 
 @EventBusSubscriber(modid = DarkSouls.MOD_ID, bus = Bus.FORGE)
 public class EventHandler
@@ -39,6 +45,21 @@ public class EventHandler
 			EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
 			((LivingEntity)event.getEntity()).addEffect(effectinstance);
 			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
+		}
+    }
+	
+	@SubscribeEvent
+	public static void onServerAboutToStart(final FMLServerAboutToStartEvent event)
+    {
+		MinecraftServer server = event.getServer();
+		
+		if (server instanceof DedicatedServer)
+		{
+			server.setPlayerList(new DedicatedPlayerListOverride((DedicatedServer)server, server.registryHolder, server.playerDataStorage));
+		}
+		else if (server instanceof IntegratedServer)
+		{
+			server.setPlayerList(new IntegratedPlayerListOverride((IntegratedServer)server, server.registryHolder, server.playerDataStorage));
 		}
     }
 	

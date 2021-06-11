@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
+import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -83,19 +84,15 @@ public class Bonfire extends BaseHorizontalBlock
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		world.playSound(player, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-		
 		TileEntity tileentity = world.getBlockEntity(pos);
 		if (!this.isLit(state))
 		{
-			if (tileentity instanceof BonfireTileEntity)
+			if (player.getItemInHand(hand).getItem() instanceof Darksign)
 			{
-				ClientUtils.openBonfireNameScreen((BonfireTileEntity)tileentity);
-			}
-			if (!world.isClientSide)
-			{
-				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
-				serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
+				if (tileentity instanceof BonfireTileEntity)
+				{
+					ClientUtils.openBonfireNameScreen(world, player, (BonfireTileEntity)tileentity);
+				}
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
@@ -108,8 +105,9 @@ public class Bonfire extends BaseHorizontalBlock
 			else if (tileentity instanceof BonfireTileEntity)
 			{
 				ClientUtils.openBonfireScreen((BonfireTileEntity)tileentity);
+				world.playSound(null, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
-			if (!world.isClientSide)
+			else if (!world.isClientSide)
 			{
 				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
 				Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, world, pos);

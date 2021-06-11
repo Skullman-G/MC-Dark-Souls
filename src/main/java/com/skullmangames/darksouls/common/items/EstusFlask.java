@@ -33,17 +33,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EstusFlask extends Item
 {
-	public EstusFlask(Item.Properties properties)
+	private final int totalUses;
+	
+	public EstusFlask(Item.Properties properties, int totaluses)
 	{
 		super(properties.stacksTo(1));
+		this.totalUses = totaluses;
 	}
 	
 	public int getTotalUses(ItemStack itemstack)
 	{
-		CompoundNBT compoundnbt = itemstack.getOrCreateTag();
-		if (compoundnbt.getInt("TotalUses") == 0)
+		CompoundNBT compoundnbt = itemstack.getTag();
+		if (compoundnbt == null)
 	    {
-		    compoundnbt.putInt("TotalUses", 5);
+			compoundnbt = itemstack.getOrCreateTag();
+			compoundnbt.putInt("TotalUses", this.totalUses);
+		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
 	    }
 		
 		return compoundnbt.getInt("TotalUses");

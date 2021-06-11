@@ -2,7 +2,7 @@
 	"parent": "item/generated",
 	"textures":
 	{
-		"layer0": "darksouls:items/estus_flask_empty"
+		"layer0": "darksouls:items/estus_flask_full"
 	},
 	"overrides":
 	[

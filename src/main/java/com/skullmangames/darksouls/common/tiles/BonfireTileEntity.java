@@ -1,14 +1,22 @@
 package com.skullmangames.darksouls.common.tiles;
 
 import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 public class BonfireTileEntity extends TileEntity
 {
@@ -60,8 +68,12 @@ public class BonfireTileEntity extends TileEntity
 		this.setChanged();
 	}
 	
-	public void setLit(boolean value)
+	public void setLit(World world, PlayerEntity player, boolean value)
 	{
+		ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
+		CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState());
+		serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
+		world.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 		Bonfire bonfire = (Bonfire)this.getBlockState().getBlock();
 		bonfire.setLit(this.level, this.getBlockState(), this.worldPosition, value);
 	}

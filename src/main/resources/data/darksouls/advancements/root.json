@@ -1,0 +1,42 @@
+{
+	"display": {
+    "icon": {
+      "item": "darksouls:darksign"
+    },
+    "title": {
+      "translate": "advancements.darksouls.root.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+        "undead_cursed": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "darksouls:undead_curse": {
+                        "amplifier": {
+                            "min": 0,
+                            "max": 0
+                        },
+                        "duration": {
+                            "min": 1000000000,
+                            "max": 1000000000
+                        }
+                    }
+                }
+            }
+        }
+    },
+  "requirements": [
+    [
+      "undead_cursed"
+    ]
+  ]
+}
