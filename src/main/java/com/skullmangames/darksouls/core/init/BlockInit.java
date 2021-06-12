@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.common.blocks.SmithingTableBlockOverride;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -24,4 +25,10 @@ public class BlockInit
 			.sound(SoundType.STONE)));
 	
 	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new Bonfire());
+	
+	
+	// Vanilla Overrides
+	public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "minecraft");
+	
+	public static final RegistryObject<Block> SMITHING_TABLE = VANILLA_BLOCKS.register("smithing_table", () -> new SmithingTableBlockOverride(AbstractBlock.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
 }

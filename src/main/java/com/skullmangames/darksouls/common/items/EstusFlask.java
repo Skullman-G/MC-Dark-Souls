@@ -33,34 +33,31 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EstusFlask extends Item
 {
-	private final int totalUses;
-	
-	public EstusFlask(Item.Properties properties, int totaluses)
+	public EstusFlask(Item.Properties properties)
 	{
 		super(properties.stacksTo(1));
-		this.totalUses = totaluses;
 	}
 	
-	public int getTotalUses(ItemStack itemstack)
+	public static int getTotalUses(ItemStack itemstack)
 	{
 		CompoundNBT compoundnbt = itemstack.getTag();
 		if (compoundnbt == null)
 	    {
 			compoundnbt = itemstack.getOrCreateTag();
-			compoundnbt.putInt("TotalUses", this.totalUses);
+			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
 	    }
 		
 		return compoundnbt.getInt("TotalUses");
 	}
 	
-	/*private static void setTotalUses(ItemStack itemstack, int value)
+	public static void setTotalUses(ItemStack itemstack, int value)
 	{
 	    CompoundNBT compoundnbt = itemstack.getOrCreateTag();
 	    compoundnbt.putInt("TotalUses", value);
-	}*/
+	}
 	
-	public int getUses(ItemStack itemstack)
+	public static int getUses(ItemStack itemstack)
 	{
 	    CompoundNBT compoundnbt = itemstack.getTag();
 	    if (compoundnbt == null)
@@ -73,7 +70,7 @@ public class EstusFlask extends Item
 	    }
 	}
 
-	public void setUses(ItemStack itemstack, int value)
+	public static void setUses(ItemStack itemstack, int value)
 	{
 	    if (value < 0)
 	    {

@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "darksouls:estus_flask",
+        "TotalUses": 1
+    },
+    "addition": {
+        "item": "darksouls:estus_shard"
+    },
+    "result": {
+        "item": "darksouls:estus_flask",
+        "TotalUses": 2
+    }
+}

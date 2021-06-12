@@ -19,10 +19,7 @@ public class ItemInit
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlask(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING), 5));
-	
-	public static final RegistryObject<Item> ESTUS_FLASK_PLUS_ONE = ITEMS.register("estus_flask_plus_one", () -> new EstusFlask(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING), 6));
+			.tab(ItemGroup.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new EstusShard(new Item.Properties()
 			.tab(ItemGroup.TAB_MATERIALS)));
@@ -42,4 +39,10 @@ public class ItemInit
 	
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(BlockInit.BONFIRE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
+	
+	//Vanilla Overrides
+	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
+	
+	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(BlockInit.SMITHING_TABLE.get(),
+			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
 }

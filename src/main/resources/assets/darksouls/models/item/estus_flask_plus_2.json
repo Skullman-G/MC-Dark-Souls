@@ -1,0 +1,20 @@
+{
+	"parent": "item/generated",
+	"textures":
+	{
+		"layer0": "darksouls:items/estus_flask_full"
+	},
+	"overrides":
+	[
+		{ "predicate": { "darksouls:usage": 0.0 }, "model": "darksouls:item/estus_flask_empty" },
+		{ "predicate": { "darksouls:usage": 0.05 }, "model": "darksouls:item/estus_flask_near_empty" },
+		{ "predicate": { "darksouls:usage": 0.2 }, "model": "darksouls:item/estus_flask_near_empty" },
+		{ "predicate": { "darksouls:usage": 0.25 }, "model": "darksouls:item/estus_flask_halve_empty" },
+		{ "predicate": { "darksouls:usage": 0.4 }, "model": "darksouls:item/estus_flask_halve_empty" },
+		{ "predicate": { "darksouls:usage": 0.6 }, "model": "darksouls:item/estus_flask_halve_empty" },
+		{ "predicate": { "darksouls:usage": 0.65 }, "model": "darksouls:item/estus_flask_near_full" },
+		{ "predicate": { "darksouls:usage": 0.8 }, "model": "darksouls:item/estus_flask_near_full" },
+		{ "predicate": { "darksouls:usage": 0.85 }, "model": "darksouls:item/estus_flask_full" },
+		{ "predicate": { "darksouls:usage": 1.0 }, "model": "darksouls:item/estus_flask_full" }
+	]
+}
