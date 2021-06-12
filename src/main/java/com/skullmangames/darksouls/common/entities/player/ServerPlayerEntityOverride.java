@@ -4,12 +4,18 @@ import java.util.List;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
+import com.skullmangames.darksouls.common.items.EstusFlask;
+import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.CraftingResultSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SSetSlotPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.stats.Stats;
@@ -73,5 +79,27 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	    this.startSleeping(pos);
 	    this.sleepCounter = 0;
 	    return Either.right(Unit.INSTANCE);
+	}
+	
+	@Override
+	public void slotChanged(Container container, int i, ItemStack stack)
+	{
+		if (!(container.getSlot(i) instanceof CraftingResultSlot))
+		{
+	         if (container == this.inventoryMenu)
+	         {
+	            CriteriaTriggers.INVENTORY_CHANGED.trigger(this, this.inventory, stack);
+	            
+	            if (stack.getItem() instanceof EstusFlask)
+	            {
+	            	CriteriaTriggerInit.OBTAIN_BIGGEST_ESTUS_FLASK.trigger(this, EstusFlask.getTotalUses(stack));
+	            }
+	         }
+
+	         if (!this.ignoreSlotUpdateHack)
+	         {
+	            this.connection.send(new SSetSlotPacket(container.containerId, i, stack));
+	         }
+	    }
 	}
 }

@@ -1,0 +1,29 @@
+{
+	"parent": "darksouls:obtain_estus_flask",
+	"display": {
+    "icon": {
+      "item": "darksouls:estus_shard"
+    },
+    "title": {
+      "translate": "advancements.darksouls.obtain_biggest_estus_flask.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.obtain_biggest_estus_flask.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "obtain_biggest_estus_flask": {
+      "trigger": "minecraft:obtain_biggest_estus_flask"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_biggest_estus_flask"
+    ]
+  ]
+}

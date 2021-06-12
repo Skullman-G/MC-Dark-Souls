@@ -9,9 +9,9 @@ import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-public class BonfireLitTrigger extends AbstractCriterionTrigger<BonfireLitTrigger.Instance>
+public class ObtainBiggestEstusFlaskTrigger extends AbstractCriterionTrigger<ObtainBiggestEstusFlaskTrigger.Instance>
 {
-	private static final ResourceLocation ID = new ResourceLocation("player_lit_bonfire");
+private static final ResourceLocation ID = new ResourceLocation("obtain_biggest_estus_flask");
 	
 	@Override
 	public ResourceLocation getId()
@@ -20,37 +20,36 @@ public class BonfireLitTrigger extends AbstractCriterionTrigger<BonfireLitTrigge
 	}
 	
 	@Override
-	protected BonfireLitTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
+	protected ObtainBiggestEstusFlaskTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
 	{
-		return new BonfireLitTrigger.Instance(ID, arg1, true);
+		return new ObtainBiggestEstusFlaskTrigger.Instance(ID, arg1);
 	}
 	
-	public void trigger(ServerPlayerEntity player, boolean islit)
+	public void trigger(ServerPlayerEntity player, int totaluses)
 	{
 	    this.trigger(player, (p_226524_1_) ->
 	    {
-	       return p_226524_1_.matches(islit);
+	       return p_226524_1_.matches(totaluses);
 	    });
 	}
 	
 	public static class Instance extends CriterionInstance
 	{
-		private final boolean lit;
+		private final int totalUses = 20;
 		
-		public Instance(ResourceLocation resourcelocation, AndPredicate predicate, boolean islit)
+		public Instance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
 			super(resourcelocation, predicate);
-			this.lit = islit;
 		}
 		
-		public static BonfireLitTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate, boolean islit)
+		public static ObtainBiggestEstusFlaskTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
-			return new BonfireLitTrigger.Instance(resourcelocation, predicate, islit);
+			return new ObtainBiggestEstusFlaskTrigger.Instance(resourcelocation, predicate);
 	    }
 		
-		public boolean matches(boolean islit)
+		public boolean matches(int totaluses)
 		{
-			return this.lit == islit;
+			return this.totalUses == totaluses;
 	    }
 		
 		@Override

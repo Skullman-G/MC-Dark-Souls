@@ -71,11 +71,11 @@ public class BonfireTileEntity extends TileEntity
 	public void setLit(World world, PlayerEntity player, boolean value)
 	{
 		ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
-		CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState());
 		serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
 		world.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 		Bonfire bonfire = (Bonfire)this.getBlockState().getBlock();
 		bonfire.setLit(this.level, this.getBlockState(), this.worldPosition, value);
+		CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState().getValue(Bonfire.LIT));
 	}
 	
 	public String getName()
