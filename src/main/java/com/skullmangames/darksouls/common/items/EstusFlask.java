@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.items;
 
 import java.util.List;
 
-import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ItemInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -152,7 +152,7 @@ public class EstusFlask extends Item
 		World world = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
-		if (blockstate.getBlock() instanceof Bonfire && blockstate.getValue(Bonfire.LIT))
+		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
 			setUses(itemusecontext.getItemInHand(), getTotalUses(itemusecontext.getItemInHand()));
 			return ActionResultType.SUCCESS;

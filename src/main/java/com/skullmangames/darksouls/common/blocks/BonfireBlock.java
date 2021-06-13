@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.items.Darksign;
 import com.skullmangames.darksouls.common.items.EstusFlask;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -22,7 +22,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -50,7 +49,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Bonfire extends BaseHorizontalBlock
+public class BonfireBlock extends BaseHorizontalBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
@@ -66,7 +65,7 @@ public class Bonfire extends BaseHorizontalBlock
 			Block.box(8, 15, 8, 9, 16, 9)
 			).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
 	
-	public Bonfire()
+	public BonfireBlock()
 	{
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
@@ -85,30 +84,66 @@ public class Bonfire extends BaseHorizontalBlock
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
 		TileEntity tileentity = world.getBlockEntity(pos);
+		
+		// Bonfire is not lit
 		if (!this.isLit(state))
 		{
+			// Has to hold Darksign to light bonfire
 			if (player.getItemInHand(hand).getItem() instanceof Darksign)
 			{
-				if (tileentity instanceof BonfireTileEntity)
+				// SERVER SIDE
+				if (!world.isClientSide && tileentity instanceof BonfireTileEntity)
 				{
-					ClientUtils.openBonfireNameScreen(world, player, (BonfireTileEntity)tileentity);
+					BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
+					
+					if (bonfiretileentity.hasFireKeeper())
+					{
+						ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
+						serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
+					}
+					else if (!bonfiretileentity.hasName())
+					{
+						ClientUtils.openBonfireNameScreen(player, (BonfireTileEntity)tileentity);
+					}
 				}
 			}
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
+		
+		// Bonfire is lit
 		else
 		{
+			// Cancel when filling Estus Flask
 			if (player.getItemInHand(hand).getItem() instanceof EstusFlask)
 			{
 				return ActionResultType.PASS;
 			}
-			else if (tileentity instanceof BonfireTileEntity)
+			
+			// Heal or hurt
+			if (player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 			{
-				ClientUtils.openBonfireScreen((BonfireTileEntity)tileentity);
-				world.playSound(null, pos, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+				player.heal(player.getMaxHealth() - player.getHealth());
 			}
-			else if (!world.isClientSide)
+			else
 			{
+				player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
+			}
+			
+			// SERVER SIDE
+			if (!world.isClientSide && tileentity instanceof BonfireTileEntity)
+			{
+				// Open Screens
+				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
+				if (!(bonfiretileentity).hasName())
+				{
+					ClientUtils.openBonfireNameScreen(player, bonfiretileentity);
+				}
+				else
+				{
+					ClientUtils.openBonfireScreen(bonfiretileentity);
+				}
+				
+				// Set spawn point
 				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
 				Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, world, pos);
 				if (optional.isPresent())
@@ -120,14 +155,7 @@ public class Bonfire extends BaseHorizontalBlock
 					serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
 				}
 			}
-			if (player.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
-			{
-				player.heal(player.getMaxHealth() - player.getHealth());
-			}
-			else
-			{
-				player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
-			}
+			
 			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
 	}

@@ -6,7 +6,7 @@
 	"item.darksouls.estus_shard": "Estus Shard",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
-	"block.darksouls.bonfire": "Bonfire",
+	"block.darksouls.bonfire": "BonfireBlock",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
 	
@@ -27,16 +27,17 @@
 	"tooltip.darksouls.darksign": "The Darksign signifies an accursed Undead. Those branded with it are reborn after death, but will one day lose their mind and go hollow. And so it is they are driven from their homeland. The Darksign returns its bearer to the last bonfire rested at.",
 	"tooltip.darksouls.estus_shard": "A shard soaked in Estus. Over the ages, countless souls rested their bones as they drank from the original flask. And now this shard remains, serving as a vestige of their hopes and dreams. This shard can be used to enlarge an Estus Flask.",
 	
-	"gui.darksouls.name_bonfire": "Name Bonfire",
+	"gui.darksouls.name_bonfire": "Name BonfireBlock",
 	"gui.darksouls.warp_button": "Warp",
 	"gui.darksouls.leave_button": "Leave",
 	"gui.darksouls.bonfire_lit_message": "BONFIRE LIT!",
 	"gui.darksouls.respawn_position_fail_message": "Cannot set respawn position.",
+	"gui.darksouls.fire_keeper_absent": "Fire Keeper is absent. Cannot light bonfire",
 	
-	"block.bonfire.lit": "Bonfire lit",
-	"block.bonfire.lit.sub": "Bonfire lit",
-	"block.bonfire.ambient": "Bonfire burning",
-	"block.bonfire.ambient.sub": "Bonfire burning",
+	"block.bonfire.lit": "BonfireBlock lit",
+	"block.bonfire.lit.sub": "BonfireBlock lit",
+	"block.bonfire.ambient": "BonfireBlock burning",
+	"block.bonfire.ambient.sub": "BonfireBlock burning",
 	"item.darksign.use": "Darksign flickers",
 	"item.darksign.use.sub": "Darksign flickers",
 	

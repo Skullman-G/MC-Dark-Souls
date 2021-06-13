@@ -11,7 +11,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
 public class BonfireNameScreen extends Screen
 {
@@ -19,14 +18,12 @@ public class BonfireNameScreen extends Screen
 	protected Button doneButton;
 	private final BonfireTileEntity bonfiretileentity;
 	private final PlayerEntity player;
-	private final World world;
 	
-	public BonfireNameScreen(World world, PlayerEntity player, BonfireTileEntity tileentity)
+	public BonfireNameScreen(PlayerEntity player, BonfireTileEntity tileentity)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
 		this.player = player;
-		this.world = world;
 	}
 	
 	@Override
@@ -81,6 +78,6 @@ public class BonfireNameScreen extends Screen
 	{
 	    this.minecraft.setScreen((Screen)null);
 	    this.bonfiretileentity.setName(this.titleEdit.getValue());
-	    this.bonfiretileentity.setLit(this.world, this.player, true);
+	    this.bonfiretileentity.setLit(this.player, true);
 	}
 }

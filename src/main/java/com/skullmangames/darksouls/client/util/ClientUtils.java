@@ -6,7 +6,6 @@ import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,9 +17,9 @@ public final class ClientUtils
 		throw new IllegalAccessError("Attempted to construct utility class.");
 	}
 	
-	public static void openBonfireNameScreen(World world, PlayerEntity player, BonfireTileEntity tileentity)
+	public static void openBonfireNameScreen(PlayerEntity player, BonfireTileEntity tileentity)
 	{
-		Minecraft.getInstance().setScreen(new BonfireNameScreen(world, player, tileentity));
+		Minecraft.getInstance().setScreen(new BonfireNameScreen(player, tileentity));
 	}
 	
 	public static void openBonfireScreen(BonfireTileEntity tileentity)

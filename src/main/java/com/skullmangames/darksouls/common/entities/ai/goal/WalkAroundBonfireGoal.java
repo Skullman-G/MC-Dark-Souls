@@ -2,9 +2,7 @@ package com.skullmangames.darksouls.common.entities.ai.goal;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
-import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
@@ -14,21 +12,20 @@ import net.minecraft.world.World;
 
 public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 {
-	@Nullable
 	private BlockPos targetBonfirePos;
 	private boolean mustLightBonfire;
 	
-	public WalkAroundBonfireGoal(FireKeeperEntity p_i47301_1_, double p_i47301_2_)
+	public WalkAroundBonfireGoal(FireKeeperEntity entity, double speedmodifier)
 	{
-		super(p_i47301_1_, p_i47301_2_);
+		super(entity, speedmodifier);
 		this.mustLightBonfire = false;
 	}
 	
 	@Override
-	public void start()
+	public boolean canUse()
 	{
 		Random random = this.mob.getRandom();
-		if (((FireKeeperEntity)this.mob).getLinkedBonfire() == null)
+		if (!((FireKeeperEntity)this.mob).hasLinkedBonfire())
 		{
 			if (this.searchForBonfire(this.mob.level))
 			{
@@ -36,6 +33,10 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 				this.wantedY = this.targetBonfirePos.getY();
 				this.wantedZ = this.targetBonfirePos.getZ() + 1 - random.nextInt(2);
 				this.mustLightBonfire = true;
+			}
+			else
+			{
+				return super.canUse();
 			}
 		}
 		else
@@ -50,6 +51,12 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 			this.wantedZ = this.targetBonfirePos.getZ() + 5 - random.nextInt(10);
 		}
 		
+		return true;
+	}
+	
+	@Override
+	public void start()
+	{
 		this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 	}
 	
@@ -61,7 +68,7 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 			{
 				for (int y = this.mob.blockPosition().getY() - 16; y < this.mob.blockPosition().getY() + 16; y++)
 				{
-					if (world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof Bonfire && !((BonfireTileEntity)this.mob.level.getBlockEntity(new BlockPos(x, y, z))).hasFireKeeper())
+					if (world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof BonfireBlock && !((BonfireTileEntity)this.mob.level.getBlockEntity(new BlockPos(x, y, z))).hasFireKeeper())
 					{
 						this.targetBonfirePos = new BlockPos(x, y, z);
 						return true;
@@ -90,7 +97,7 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 				{
 					if (this.mob.blockPosition().getY() == this.targetBonfirePos.getZ() || this.mob.blockPosition().getZ() == this.targetBonfirePos.getZ())
 					{
-						tileentity.setLit(this.mob.level, null, true);
+						tileentity.setLit(null, true);
 						tileentity.addFireKeeper();
 						((FireKeeperEntity)this.mob).linkBonfire(this.targetBonfirePos);
 						this.mustLightBonfire = false;

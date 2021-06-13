@@ -1,8 +1,7 @@
 package com.skullmangames.darksouls.common.entities;
 
-import javax.annotation.Nullable;
-
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
+import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
@@ -20,22 +19,28 @@ import net.minecraft.world.World;
 
 public class FireKeeperEntity extends CreatureEntity
 {
-	@Nullable
-	private BlockPos linkedBonfire = null;
+	private BlockPos linkedBonfire = BlockPos.ZERO;
+	private boolean hasLinkedBonfire = false;
 	
 	public FireKeeperEntity(EntityType<? extends CreatureEntity> entity, World world)
 	{
 		super(entity, world);
 	}
 	
-	public BlockPos getLinkedBonfire()
+	public boolean hasLinkedBonfire()
 	{
-		return this.linkedBonfire;
+		return this.hasLinkedBonfire;
 	}
 	
 	public void linkBonfire(BlockPos pos)
 	{
 		this.linkedBonfire = pos;
+		this.hasLinkedBonfire = true;
+	}
+	
+	public BlockPos getLinkedBonfire()
+	{
+		return this.linkedBonfire;
 	}
 	
 	public static AttributeModifierMap.MutableAttribute createAttributes()
@@ -79,11 +84,21 @@ public class FireKeeperEntity extends CreatureEntity
 	@Override
 	public void tick()
 	{
-		if (this.linkedBonfire != null && this.level.isEmptyBlock(this.linkedBonfire))
+		if (this.hasLinkedBonfire && this.level.isEmptyBlock(this.linkedBonfire))
 		{
 			this.die(DamageSource.STARVE);
 		}
 		
 		super.tick();
+	}
+	
+	@Override
+	protected void tickDeath()
+	{
+		if (this.hasLinkedBonfire && !this.level.isEmptyBlock(this.linkedBonfire))
+		{
+			((BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire)).setLit(null, false);
+		}
+		super.tickDeath();
 	}
 }

@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.blocks.Bonfire;
+import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.common.blocks.SmithingTableBlockOverride;
 
 import net.minecraft.block.AbstractBlock;
@@ -24,7 +24,7 @@ public class BlockInit
 			.harvestLevel(1)
 			.sound(SoundType.STONE)));
 	
-	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new Bonfire());
+	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new BonfireBlock());
 	
 	
 	// Vanilla Overrides

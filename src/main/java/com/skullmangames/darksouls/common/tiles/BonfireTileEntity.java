@@ -2,8 +2,7 @@ package com.skullmangames.darksouls.common.tiles;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.blocks.Bonfire;
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
+import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
@@ -19,7 +18,6 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
 public class BonfireTileEntity extends TileEntity
 {
@@ -74,23 +72,36 @@ public class BonfireTileEntity extends TileEntity
 		this.setChanged();
 	}
 	
-	public void setLit(World world, @Nullable PlayerEntity player, boolean value)
+	public void setLit(@Nullable PlayerEntity player, boolean value)
 	{
-		world.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-		Bonfire bonfire = (Bonfire)this.getBlockState().getBlock();
-		bonfire.setLit(this.level, this.getBlockState(), this.worldPosition, value);
+		BonfireBlock bonfire = (BonfireBlock)this.getBlockState().getBlock();
 		
-		if (player != null)
+		if (bonfire.isLit(this.getBlockState()) != value)
 		{
-			ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
-			serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
-			CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState().getValue(Bonfire.LIT));
+			bonfire.setLit(this.level, this.getBlockState(), this.worldPosition, value);
+			
+			if (value)
+			{
+				this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+				
+				if (player != null)
+				{
+					ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
+					serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
+					CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState().getValue(BonfireBlock.LIT));
+				}
+			}
 		}
 	}
 	
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public boolean hasName()
+	{
+		return this.name != "";
 	}
 	
 	public void addFireKeeper()
