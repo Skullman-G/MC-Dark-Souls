@@ -6,6 +6,7 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -41,6 +42,7 @@ import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
@@ -66,6 +68,7 @@ public class DarkSouls
     	StructureInit.STRUCTURES.register(bus);
     	EffectInit.EFFECTS.register(bus);
     	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
+    	EntityTypeInit.ENTITIES.register(bus);
     	bus.addListener(this::setup);
     	bus.addListener(this::doClientStuff);
     	
@@ -109,7 +112,10 @@ public class DarkSouls
     
     public void biomeModification(final BiomeLoadingEvent event)
     {
-        event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
+        if (event.getCategory() == Biome.Category.PLAINS)
+        {
+        	event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
+        }
     }
     
     private static Method GETCODEC_METHOD;
