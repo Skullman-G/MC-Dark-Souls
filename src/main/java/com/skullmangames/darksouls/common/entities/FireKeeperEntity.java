@@ -72,6 +72,8 @@ public class FireKeeperEntity extends CreatureEntity
 		nbt.putInt("linked_bonfire_x", this.linkedBonfire.getX());
 		nbt.putInt("linked_bonfire_y", this.linkedBonfire.getY());
 		nbt.putInt("linked_bonfire_z", this.linkedBonfire.getZ());
+		nbt.putBoolean("has_linked_bonfire", this.hasLinkedBonfire);
+		System.out.print("yey");
 	}
 	
 	@Override
@@ -79,6 +81,7 @@ public class FireKeeperEntity extends CreatureEntity
 	{
 		super.readAdditionalSaveData(nbt);
 		this.linkedBonfire = new BlockPos(nbt.getInt("linked_bonfire_x"), nbt.getInt("linked_bonfire_y"), nbt.getInt("linked_bonfire_z"));
+		this.hasLinkedBonfire = nbt.getBoolean("has_linked_bonfire");
 	}
 	
 	@Override

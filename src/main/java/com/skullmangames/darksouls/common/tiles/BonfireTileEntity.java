@@ -107,6 +107,7 @@ public class BonfireTileEntity extends TileEntity
 	public void addFireKeeper()
 	{
 		this.hasFireKeeper = true;
+		this.setChanged();
 	}
 	
 	public boolean hasFireKeeper()
