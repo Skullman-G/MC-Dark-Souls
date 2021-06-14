@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EstusShard extends Item
+public class EstusShardItem extends Item
 {
-	public EstusShard(Properties properties)
+	public EstusShardItem(Properties properties)
 	{
 		super(properties);
 	}

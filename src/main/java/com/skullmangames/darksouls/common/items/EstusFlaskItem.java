@@ -31,9 +31,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EstusFlask extends Item
+public class EstusFlaskItem extends Item
 {
-	public EstusFlask(Item.Properties properties)
+	public EstusFlaskItem(Item.Properties properties)
 	{
 		super(properties.stacksTo(1));
 	}

@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.client.screens.SmithingTableScreenOverride;
-import com.skullmangames.darksouls.common.items.EstusFlask;
+import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
@@ -87,7 +87,7 @@ public class DarkSouls
     	{
     	    ItemModelsProperties.register(ItemInit.ESTUS_FLASK.get(), new ResourceLocation(MOD_ID, "usage"), (stack, world, living) ->
     	    {
-    	        float usage = (float)EstusFlask.getUses(stack) / (float)EstusFlask.getTotalUses(stack);
+    	        float usage = (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
     	    	return usage;
     	    });
     	    

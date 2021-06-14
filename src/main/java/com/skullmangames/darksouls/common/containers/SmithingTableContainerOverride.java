@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.items.EstusFlask;
-import com.skullmangames.darksouls.common.items.EstusShard;
+import com.skullmangames.darksouls.common.items.EstusFlaskItem;
+import com.skullmangames.darksouls.common.items.EstusShardItem;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
 
@@ -81,14 +81,14 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	       this.selectedRecipe = list.get(0);
 	       ItemStack itemstack = this.selectedRecipe.assemble(this.inputSlots);
 	       this.resultSlots.setRecipeUsed(this.selectedRecipe);
-	       if (itemstack.getItem() instanceof EstusFlask)
+	       if (itemstack.getItem() instanceof EstusFlaskItem)
 	       {
-	    	   if (this.inputSlots.getItem(0).getItem() instanceof EstusFlask && this.inputSlots.getItem(1).getItem() instanceof EstusShard && EstusFlask.getTotalUses(itemstack) < 20)
+	    	   if (this.inputSlots.getItem(0).getItem() instanceof EstusFlaskItem && this.inputSlots.getItem(1).getItem() instanceof EstusShardItem && EstusFlaskItem.getTotalUses(itemstack) < 20)
 	    	   {
-	    		   EstusFlask.setTotalUses(itemstack, EstusFlask.getTotalUses(itemstack) + 1);
-	    		   EstusFlask.setUses(itemstack, EstusFlask.getTotalUses(itemstack));
+	    		   EstusFlaskItem.setTotalUses(itemstack, EstusFlaskItem.getTotalUses(itemstack) + 1);
+	    		   EstusFlaskItem.setUses(itemstack, EstusFlaskItem.getTotalUses(itemstack));
 	    	   }
-	    	   else if (EstusFlask.getTotalUses(itemstack) >= 20)
+	    	   else if (EstusFlaskItem.getTotalUses(itemstack) >= 20)
 	    	   {
 	    		   this.resultSlots.setItem(0, ItemStack.EMPTY);
 	    		   return;

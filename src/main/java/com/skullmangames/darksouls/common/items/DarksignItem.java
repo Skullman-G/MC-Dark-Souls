@@ -23,9 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Darksign extends Item
+public class DarksignItem extends Item
 {
-	public Darksign(Properties properties)
+	public DarksignItem(Properties properties)
 	{
 		super(properties.stacksTo(1));
 	}

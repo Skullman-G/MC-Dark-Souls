@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
-import com.skullmangames.darksouls.common.items.EstusFlask;
+import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -90,9 +90,9 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	         {
 	            CriteriaTriggers.INVENTORY_CHANGED.trigger(this, this.inventory, stack);
 	            
-	            if (stack.getItem() instanceof EstusFlask)
+	            if (stack.getItem() instanceof EstusFlaskItem)
 	            {
-	            	CriteriaTriggerInit.OBTAIN_BIGGEST_ESTUS_FLASK.trigger(this, EstusFlask.getTotalUses(stack));
+	            	CriteriaTriggerInit.OBTAIN_BIGGEST_ESTUS_FLASK.trigger(this, EstusFlaskItem.getTotalUses(stack));
 	            }
 	         }
 

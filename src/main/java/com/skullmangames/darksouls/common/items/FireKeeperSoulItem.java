@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FireKeeperSoul extends Item
+public class FireKeeperSoulItem extends Item
 {
-	public FireKeeperSoul(Properties properties)
+	public FireKeeperSoulItem(Properties properties)
 	{
 		super(properties);
 	}

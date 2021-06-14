@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EmeraldFlask extends Item
+public class EmeraldFlaskItem extends Item
 {
-	public EmeraldFlask(Properties properties)
+	public EmeraldFlaskItem(Properties properties)
 	{
 		super(properties);
 	}

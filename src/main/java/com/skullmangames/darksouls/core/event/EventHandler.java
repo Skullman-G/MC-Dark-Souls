@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
-import com.skullmangames.darksouls.common.items.Darksign;
+import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
@@ -31,7 +31,7 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onItemToss(final ItemTossEvent event)
     {
-		if (event.getEntityItem().getItem().getItem() instanceof Darksign)
+		if (event.getEntityItem().getItem().getItem() instanceof DarksignItem)
 		{
 			event.getPlayer().addItem(event.getEntityItem().getItem());
 		}
