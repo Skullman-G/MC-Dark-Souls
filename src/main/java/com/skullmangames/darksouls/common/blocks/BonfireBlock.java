@@ -58,11 +58,11 @@ public class BonfireBlock extends BaseHorizontalBlock
 	protected static final VoxelShape SHAPE = Stream.of(
 			Block.box(2, 0.75, 2, 14, 1.75, 14),
 			Block.box(1, 0, 1, 15, 1, 15),
-			Block.box(4, 2, 4, 12, 3, 12),
-			Block.box(6, 3, 6, 10, 4, 10),
-			Block.box(7, 4, 8, 8, 20, 9),
-			Block.box(6, 15, 8, 7, 16, 9),
-			Block.box(8, 15, 8, 9, 16, 9)
+			Block.box(4, 1.5, 4, 12, 2.5, 12),
+			Block.box(6, 2.4, 6, 10, 3.4, 10),
+			Block.box(7.5, 3, 7.5, 8.5, 19, 8.5),
+			Block.box(6.5, 14, 7.5, 7.5, 15, 8.5),
+			Block.box(8.5, 14, 7.5, 9.5, 15, 8.5)
 			).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
 	
 	public BonfireBlock()
@@ -70,14 +70,15 @@ public class BonfireBlock extends BaseHorizontalBlock
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.runCalculation(SHAPE);
 		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.runCalculation(SHAPE);
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
-	    container.add(LIT, HORIZONTAL_FACING);
+	    super.createBlockStateDefinition(container);
+		container.add(LIT, HORIZONTAL_FACING);
 	}
 	
 	@Override

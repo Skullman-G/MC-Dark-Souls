@@ -21,16 +21,16 @@ public class BaseHorizontalBlock extends Block
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	protected static final Map<Direction, VoxelShape> SHAPES = new HashMap<Direction, VoxelShape>();
 	
-	public BaseHorizontalBlock(Properties properties) 
+	public BaseHorizontalBlock(Properties properties)
 	{
 		super(properties);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn)
+	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{
-		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
+	    return p_185471_1_.rotate(p_185471_2_.getRotation(p_185471_1_.getValue(HORIZONTAL_FACING)));
 	}
 	
 	@Override
