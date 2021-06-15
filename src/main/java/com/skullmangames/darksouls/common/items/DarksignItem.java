@@ -16,6 +16,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DarksignItem extends Item
+public class DarksignItem extends Item implements IHaveDarkSoulsUseAction
 {
 	public DarksignItem(Properties properties)
 	{
@@ -55,21 +56,27 @@ public class DarksignItem extends Item
 	public ItemStack finishUsingItem(ItemStack itemstack, World world, LivingEntity livingentity)
 	{
 		PlayerEntity playerentity = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
-	      if (playerentity instanceof ServerPlayerEntity)
-	      {
-	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)playerentity, itemstack);
-	      }
 	      
-	      if (!world.isClientSide && livingentity instanceof ServerPlayerEntity)
-			{
-				ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)livingentity;
-				serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
-			}
+	    // SERVER SIDE
+	    if (!world.isClientSide && livingentity instanceof ServerPlayerEntity)
+	    {
+	    	ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)livingentity;
+	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
+	    	
+	    	if (serverplayerentity.getRespawnPosition() != null)
+	    	{
+	    		serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
+	    	}
+	    	else
+	    	{
+	    		serverplayerentity.sendMessage(new TranslationTextComponent("gui.darksouls.darksign_didnt_work"), Util.NIL_UUID);
+	    	}
+		}
 
-	      if (playerentity != null)
-	      {
-	         playerentity.awardStat(Stats.ITEM_USED.get(this));
-	      }
+	    if (playerentity != null)
+	    {
+	        playerentity.awardStat(Stats.ITEM_USED.get(this));
+	    }
 
 	      return itemstack;
 	}
@@ -95,5 +102,11 @@ public class DarksignItem extends Item
 	public SoundEvent getCastingSound()
 	{
 		return SoundEventInit.DARKSIGN_USE.get();
+	}
+
+	@Override
+	public DarkSoulsUseAction getDarkSoulsUseAnimation(ItemStack itemstack)
+	{
+		return DarkSoulsUseAction.SOUL_CONTAINER;
 	}
 }

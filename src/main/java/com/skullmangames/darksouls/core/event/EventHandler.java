@@ -6,7 +6,6 @@ import com.skullmangames.darksouls.common.effects.UndeadCurse;
 import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
@@ -14,7 +13,6 @@ import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -45,10 +43,14 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onEntityJoinWorld(final EntityJoinWorldEvent event)
     {
-		if (event.getEntity() instanceof PlayerEntity && !((PlayerEntity)event.getEntity()).inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
+		if (event.getEntity() instanceof PlayerEntity)
 		{
-			EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
-			((LivingEntity)event.getEntity()).addEffect(effectinstance);
+			if (!((PlayerEntity)event.getEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
+			{
+				EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
+				((LivingEntity)event.getEntity()).addEffect(effectinstance);
+			}
+			
 			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
 		}
     }

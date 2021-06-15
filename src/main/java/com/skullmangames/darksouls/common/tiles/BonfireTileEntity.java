@@ -12,11 +12,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class BonfireTileEntity extends TileEntity
@@ -87,7 +87,7 @@ public class BonfireTileEntity extends TileEntity
 				if (player != null)
 				{
 					ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
-					serverplayer.sendMessage(new TranslationTextComponent("gui.darksouls.bonfire_lit_message"), Util.NIL_UUID);
+					serverplayer.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.bonfire_lit_message")));
 					CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState().getValue(BonfireBlock.LIT));
 				}
 			}
