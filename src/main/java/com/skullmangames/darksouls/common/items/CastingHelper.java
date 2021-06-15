@@ -27,8 +27,8 @@ public class CastingHelper
 	    if (shouldTriggerItemUseEffects(itemstack, durationremaining) && !itemstack.isEmpty() && livingentity.isUsingItem())
 	    {
 	    	DarksignItem castitem = (DarksignItem)itemstack.getItem();
-	       livingentity.playSound(castitem.getCastingSound(), 0.5F, 1.0F);
-	       makeParticles(livingentity);
+	    	livingentity.playSound(castitem.getCastingSound(), 0.5F, 1.0F);
+	    	makeParticles(livingentity);
 	    }
 	}
 	
