@@ -27,5 +27,25 @@
 		[
 			{ "name": "darksouls:items/darksign/use", "stream": true }
 		]
+	},
+	
+	"item.soul_container.use":
+	{
+		"category": "item",
+		"subtitle": "item.soul_container.use.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/soul_container/use", "stream": true }
+		]
+	},
+	
+	"item.soul_container.finish":
+	{
+		"category": "item",
+		"subtitle": "item.soul_container.finish.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/soul_container/finish", "stream": true }
+		]
 	}
 }

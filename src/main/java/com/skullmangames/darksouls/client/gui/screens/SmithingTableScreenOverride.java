@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.screens;
+package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;

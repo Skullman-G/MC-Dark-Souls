@@ -25,7 +25,7 @@ public class FirstPersonRendererOverride
 		boolean flag3 = handside == HandSide.RIGHT;
         if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == hand)
         {
-        	switch (item.getDarkSoulsUseAnimation(itemstack))
+        	switch (item.getDarkSoulsUseAnimation())
         	{
         	case NONE:
         		applyItemArmTransform(matrixstack, handside, equipProgress);
@@ -35,6 +35,10 @@ public class FirstPersonRendererOverride
         		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
             	applyItemArmTransform(matrixstack, handside, equipProgress);
             	break;
+            	
+        	case MIRACLE:
+        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+            	applyItemArmTransform(matrixstack, handside, equipProgress);
         	}
         }
         else

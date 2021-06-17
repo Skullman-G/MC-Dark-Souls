@@ -34,7 +34,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.serialization.Codec;
-import com.skullmangames.darksouls.client.screens.SmithingTableScreenOverride;
+import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverride;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
@@ -44,6 +44,7 @@ import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ParticleTypeInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
@@ -69,6 +70,7 @@ public class DarkSouls
     	EffectInit.EFFECTS.register(bus);
     	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
     	EntityTypeInit.ENTITIES.register(bus);
+    	ParticleTypeInit.PARTICLE_TYPES.register(bus);
     	bus.addListener(this::setup);
     	bus.addListener(this::doClientStuff);
     	

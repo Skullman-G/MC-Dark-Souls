@@ -26,12 +26,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EstusFlaskItem extends Item
+public class EstusFlaskItem extends DescriptionItem
 {
 	public EstusFlaskItem(Item.Properties properties)
 	{
@@ -84,8 +83,8 @@ public class EstusFlaskItem extends Item
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
-		String description = new TranslationTextComponent("tooltip.darksouls.estus_flask").getString();
-		tooltip.add(new StringTextComponent("\u00A77" + description + "\nUses: " + getUses(stack) + "/" + getTotalUses(stack)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new StringTextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
 	}
 	
 	@Override

@@ -15,4 +15,6 @@ public class SoundEventInit
 	public static final RegistryObject<SoundEvent> BONFIRE_AMBIENT = SOUND_EVENTS.register("block.bonfire.ambient", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "block.bonfire.ambient")));
 
 	public static final RegistryObject<SoundEvent> DARKSIGN_USE = SOUND_EVENTS.register("item.darksign.use", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.darksign.use")));
+	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_USE = SOUND_EVENTS.register("item.soul_container.use", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.soul_container.use")));
+	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_FINISH = SOUND_EVENTS.register("item.soul_container.finish", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.soul_container.finish")));
 }

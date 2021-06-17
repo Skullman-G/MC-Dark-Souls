@@ -41,8 +41,14 @@
 	"block.bonfire.lit.sub": "Bonfire lit",
 	"block.bonfire.ambient": "Bonfire burning",
 	"block.bonfire.ambient.sub": "Bonfire burning",
-	"item.darksign.use": "Darksign flickers",
+	
+	"item.darksign.use": "Darksign use",
 	"item.darksign.use.sub": "Darksign flickers",
+	"item.soul_container.use": "Soul Container use",
+	"item.soul_container.use.sub": "Soul Container crumbles",
+	"item.soul_container.finish": "Soul Container finish",
+	"item.soul_container.finish.sub": "Soul Container breaks",
+	
 	
 	"itemGroup.soulstab": "Souls"
 }

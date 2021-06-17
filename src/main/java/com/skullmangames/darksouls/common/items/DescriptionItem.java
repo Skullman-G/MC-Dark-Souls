@@ -12,18 +12,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EmeraldFlaskItem extends Item
+public class DescriptionItem extends Item
 {
-	public EmeraldFlaskItem(Properties properties)
+	public DescriptionItem(Properties properties)
 	{
 		super(properties);
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
-		String description = new TranslationTextComponent("tooltip.darksouls.emerald_flask").getString();
+		String description = new TranslationTextComponent("tooltip.darksouls." + this.getRegistryName().getPath()).getString();
 		tooltip.add(new StringTextComponent("\u00A77" + description));
 	}
 }

@@ -2,9 +2,8 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.items.DarksignItem;
-import com.skullmangames.darksouls.common.items.EmeraldFlaskItem;
+import com.skullmangames.darksouls.common.items.DescriptionItem;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
-import com.skullmangames.darksouls.common.items.EstusShardItem;
 import com.skullmangames.darksouls.common.items.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.items.HumanityItem;
 
@@ -22,13 +21,13 @@ public class ItemInit
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
-	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new EstusShardItem(new Item.Properties()
+	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new DescriptionItem(new Item.Properties()
 			.tab(ItemGroup.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoulItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new EmeraldFlaskItem(new Item.Properties()
+	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new DescriptionItem(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new DarksignItem(new Item.Properties()

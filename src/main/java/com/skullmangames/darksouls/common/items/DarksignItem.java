@@ -1,30 +1,21 @@
 package com.skullmangames.darksouls.common.items;
 
-import java.util.List;
-
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DarksignItem extends Item implements IHaveDarkSoulsUseAction
+public class DarksignItem extends DescriptionItem implements IHaveDarkSoulsUseAction
 {
 	public DarksignItem(Properties properties)
 	{
@@ -39,17 +30,9 @@ public class DarksignItem extends Item implements IHaveDarkSoulsUseAction
 	}
 	
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
-	{
-		String description = new TranslationTextComponent("tooltip.darksouls.darksign").getString();
-		tooltip.add(new StringTextComponent("\u00A77" + description));
-	}
-	
-	@Override
 	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
 	{
-		return CastingHelper.startCasting(world, player, hand);
+		return ItemUser.startUsing(this, world, player, hand);
 	}
 	
 	@Override
@@ -82,12 +65,6 @@ public class DarksignItem extends Item implements IHaveDarkSoulsUseAction
 	}
 	
 	@Override
-	public UseAction getUseAnimation(ItemStack itemstack)
-	{
-		return UseAction.NONE;
-	}
-	
-	@Override
 	public int getUseDuration(ItemStack itemstack)
 	{
 		return 32;
@@ -96,17 +73,18 @@ public class DarksignItem extends Item implements IHaveDarkSoulsUseAction
 	@Override
 	public void onUseTick(World world, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
 	{
-		CastingHelper.triggerItemUseEffects(livingentity, itemstack, 5, durationremaining);
-	}
-	
-	public SoundEvent getCastingSound()
-	{
-		return SoundEventInit.DARKSIGN_USE.get();
+		ItemUser.triggerItemUseEffects(livingentity, itemstack, this, durationremaining);
 	}
 
 	@Override
-	public DarkSoulsUseAction getDarkSoulsUseAnimation(ItemStack itemstack)
+	public DarkSoulsUseAction getDarkSoulsUseAnimation()
 	{
-		return DarkSoulsUseAction.SOUL_CONTAINER;
+		return DarkSoulsUseAction.MIRACLE;
+	}
+
+	@Override
+	public SoundEvent getUseSound()
+	{
+		return SoundEventInit.DARKSIGN_USE.get();
 	}
 }

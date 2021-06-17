@@ -1,8 +1,10 @@
 package com.skullmangames.darksouls.common.items;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvent;
 
 public interface IHaveDarkSoulsUseAction
 {
-	public DarkSoulsUseAction getDarkSoulsUseAnimation(ItemStack itemstack);
+	public DarkSoulsUseAction getDarkSoulsUseAnimation();
+	
+	public SoundEvent getUseSound();
 }

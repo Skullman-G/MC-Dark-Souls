@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.util;
 
-import com.skullmangames.darksouls.client.screens.BonfireNameScreen;
-import com.skullmangames.darksouls.client.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
+import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
 import net.minecraft.client.Minecraft;
