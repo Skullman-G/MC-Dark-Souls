@@ -17,7 +17,10 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
@@ -106,6 +109,20 @@ public class EventHandler
 			Minecraft minecraft = Minecraft.getInstance();
 			IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
 			FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getMatrixStack(), event.getBuffers(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onRenderGameOverlay(final RenderGameOverlayEvent event)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		
+		if (event.getType() == ElementType.AIR && !minecraft.player.isCreative())
+		{
+			int x = 0;
+			int y = 0;
+			
+			ForgeIngameGui.drawString(event.getMatrixStack(), minecraft.font, "10", x, y, 16777215);
 		}
 	}
 }
