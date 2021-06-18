@@ -1,8 +1,11 @@
 package com.skullmangames.darksouls.core.event;
 
+import java.io.File;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
+import com.skullmangames.darksouls.common.entities.HumanityData;
 import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
@@ -13,10 +16,13 @@ import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.Util;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -26,6 +32,8 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile;
+import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -117,12 +125,57 @@ public class EventHandler
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
-		if (event.getType() == ElementType.AIR && !minecraft.player.isCreative())
+		if (event.getType() == ElementType.ALL && !minecraft.player.isCreative())
 		{
+			HumanityData humanity = HumanityData.get(minecraft.player);
 			int x = 0;
 			int y = 0;
 			
-			ForgeIngameGui.drawString(event.getMatrixStack(), minecraft.font, "10", x, y, 16777215);
+			ForgeIngameGui.drawString(event.getMatrixStack(), minecraft.font, humanity.getStringValue(), x, y, 16777215);
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onSavePlayerData(final SaveToFile event)
+	{
+		try
+		{
+			PlayerEntity player = event.getPlayer();
+			CompoundNBT compoundnbt = HumanityData.get(player).save(new CompoundNBT());
+	        File file1 = File.createTempFile(player.getStringUUID() + "_DS-", ".dat", event.getPlayerDirectory());
+	        CompressedStreamTools.writeCompressed(compoundnbt, file1);
+	        File file2 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat");
+	        File file3 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat_old");
+	        Util.safeReplaceFile(file2, file1, file3);
+		}
+		catch (Exception exception)
+		{
+	         DarkSouls.LOGGER.warn("Failed to save player data for {}", (Object)event.getPlayer().getName().getString());
+	    }
+	}
+	
+	@SubscribeEvent
+	public static void onLoadPlayerData(final LoadFromFile event)
+	{
+		CompoundNBT compoundnbt = null;
+		PlayerEntity player = event.getPlayer();
+		
+		try
+		{
+			File file1 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat");
+	        if (file1.exists() && file1.isFile())
+	        {
+	           compoundnbt = CompressedStreamTools.readCompressed(file1);
+	        }
+	    }
+		catch (Exception exception)
+		{
+	        DarkSouls.LOGGER.warn("Failed to load player data for {}", (Object)player.getName().getString());
+	    }
+
+	    if (compoundnbt != null)
+	    {
+	    	HumanityData.get(player).setValue(compoundnbt.getInt("Humanity"));
+	    }
 	}
 }

@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.items;
 
+import com.skullmangames.darksouls.common.entities.HumanityData;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 
 import net.minecraft.entity.LivingEntity;
@@ -27,6 +28,11 @@ public class SoulContainerItem extends DescriptionItem implements IHaveDarkSouls
 	public ItemStack finishUsingItem(ItemStack itemstack, World world, LivingEntity livingentity)
 	{
 		livingentity.playSound(SoundEventInit.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
+		if (!world.isClientSide && this.getHumanity() != 0)
+		{
+			HumanityData.get(livingentity).raiseValue(this.getHumanity());
+			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
+		}
 		if (!(livingentity instanceof PlayerEntity) || !((PlayerEntity)livingentity).abilities.instabuild)
 		{
 			itemstack.shrink(1);
@@ -56,5 +62,10 @@ public class SoulContainerItem extends DescriptionItem implements IHaveDarkSouls
 	public int getUseDuration(ItemStack itemstack)
 	{
 		return 32;
+	}
+	
+	public int getHumanity()
+	{
+		return 0;
 	}
 }

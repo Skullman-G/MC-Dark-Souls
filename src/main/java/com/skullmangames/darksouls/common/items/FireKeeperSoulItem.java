@@ -6,4 +6,10 @@ public class FireKeeperSoulItem extends SoulContainerItem
 	{
 		super(properties);
 	}
+	
+	@Override
+	public int getHumanity()
+	{
+		return 5;
+	}
 }
