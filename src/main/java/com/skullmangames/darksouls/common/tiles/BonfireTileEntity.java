@@ -72,13 +72,16 @@ public class BonfireTileEntity extends TileEntity
 		this.setChanged();
 	}
 	
+	public BonfireBlock getBlock()
+	{
+		return (BonfireBlock)this.getBlockState().getBlock();
+	}
+	
 	public void setLit(@Nullable PlayerEntity player, boolean value)
 	{
-		BonfireBlock bonfire = (BonfireBlock)this.getBlockState().getBlock();
-		
-		if (bonfire.isLit(this.getBlockState()) != value)
+		if (this.getBlock().isLit(this.getBlockState()) != value)
 		{
-			bonfire.setLit(this.level, this.getBlockState(), this.worldPosition, value);
+			this.getBlock().setLit(this.level, this.getBlockState(), this.worldPosition, value);
 			
 			if (value)
 			{
@@ -97,6 +100,11 @@ public class BonfireTileEntity extends TileEntity
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public void kindle()
+	{
+		this.getBlock().kindle(this.level, this.getBlockState(), this.worldPosition);
 	}
 	
 	public boolean hasName()

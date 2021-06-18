@@ -24,6 +24,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -52,6 +53,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireBlock extends BaseHorizontalBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	public static final IntegerProperty FIRE_LEVEL = IntegerProperty.create("fire_level", 1, 4);
 	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
 	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
@@ -70,7 +72,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(FIRE_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
 		this.runCalculation(SHAPE);
 	}
 	
@@ -78,7 +80,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
 	    super.createBlockStateDefinition(container);
-		container.add(LIT, HORIZONTAL_FACING);
+		container.add(LIT, FIRE_LEVEL, HORIZONTAL_FACING);
 	}
 	
 	@Override
@@ -87,7 +89,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		TileEntity tileentity = world.getBlockEntity(pos);
 		
 		// Bonfire is not lit
-		if (!this.isLit(state))
+		if (!this.isLit(state) && player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			// Has to hold Darksign to light bonfire
 			if (player.getItemInHand(hand).getItem() instanceof DarksignItem)
@@ -112,7 +114,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		}
 		
 		// Bonfire is lit
-		else
+		else if (player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			// Cancel when filling Estus Flask
 			if (player.getItemInHand(hand).getItem() instanceof EstusFlaskItem)
@@ -120,15 +122,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 				return ActionResultType.PASS;
 			}
 			
-			// Heal or hurt
-			if (player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
-			{
-				player.heal(player.getMaxHealth() - player.getHealth());
-			}
-			else
-			{
-				player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
-			}
+			player.heal(player.getMaxHealth() - player.getHealth());
 			
 			// SERVER SIDE
 			if (!world.isClientSide && tileentity instanceof BonfireTileEntity)
@@ -141,7 +135,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 				}
 				else
 				{
-					ClientUtils.openBonfireScreen(bonfiretileentity);
+					ClientUtils.openBonfireScreen(bonfiretileentity, player);
 				}
 				
 				// Set spawn point
@@ -158,6 +152,11 @@ public class BonfireBlock extends BaseHorizontalBlock
 			}
 			
 			return ActionResultType.sidedSuccess(world.isClientSide);
+		}
+		else
+		{
+			player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
+			return ActionResultType.SUCCESS;
 		}
 	}
 	
@@ -228,6 +227,19 @@ public class BonfireBlock extends BaseHorizontalBlock
 		return TileEntityTypeInit.BONFIRE_TILE_ENTITY.get().create();
 	}
 	
+	public int getFireLevel(BlockState blockstate)
+	{
+		return blockstate.getValue(FIRE_LEVEL);
+	}
+	
+	public void kindle(World world, BlockState blockstate, BlockPos blockpos)
+	{
+	    if (blockstate.is(this) && blockstate.getValue(FIRE_LEVEL) < 4)
+	    {
+	       world.setBlock(blockpos, blockstate.setValue(FIRE_LEVEL, Integer.valueOf(blockstate.getValue(FIRE_LEVEL) + 1)), 3);
+	    }
+	}
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random random)
@@ -238,11 +250,40 @@ public class BonfireBlock extends BaseHorizontalBlock
 			{
 				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.05F, 1.0F, false);
 			}
-			worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-	        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D, (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
+			
+			for (int i = 0; i < this.getFireLevel(state); i++)
+			{
+				worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
+		        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
+		        
+		        if (i >= 2)
+		        {
+		        	worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
+		        }
+		        if (i >= 3)
+		        {
+		        	worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
+		        }
+		        if (i == 4)
+		        {
+		        	worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
+			        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
+		        }
+			}
 		}
 	}
 }

@@ -71,9 +71,17 @@ public class EstusFlaskItem extends DescriptionItem
 
 	public static void setUses(ItemStack itemstack, int value)
 	{
-	    if (value < 0)
+	    if (value < getUses(itemstack))
+	    {
+	    	value = getUses(itemstack);
+	    }
+	    else if (value < 0)
 	    {
 	    	value = 0;
+	    }
+	    else if (value > getTotalUses(itemstack))
+	    {
+	    	value = getTotalUses(itemstack);
 	    }
 		CompoundNBT compoundnbt = itemstack.getOrCreateTag();
 	    compoundnbt.putInt("Uses", value);
@@ -153,7 +161,7 @@ public class EstusFlaskItem extends DescriptionItem
 		BlockState blockstate = world.getBlockState(blockpos);
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
-			setUses(itemusecontext.getItemInHand(), getTotalUses(itemusecontext.getItemInHand()));
+			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.FIRE_LEVEL) * 5);
 			return ActionResultType.SUCCESS;
 		}
 		

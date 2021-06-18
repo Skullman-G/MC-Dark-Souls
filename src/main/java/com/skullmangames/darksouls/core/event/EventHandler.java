@@ -1,11 +1,12 @@
 package com.skullmangames.darksouls.core.event;
 
+import java.awt.Color;
 import java.io.File;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
-import com.skullmangames.darksouls.common.entities.HumanityData;
+import com.skullmangames.darksouls.common.entities.DarkSoulsEntityData;
 import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
@@ -29,6 +30,7 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
@@ -100,7 +102,7 @@ public class EventHandler
     }
 	
 	@SubscribeEvent
-	public static void onPotionRemove(final PotionExpiryEvent event)
+	public static void onPotionExpire(final PotionExpiryEvent event)
     {
 		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
 		{
@@ -127,11 +129,12 @@ public class EventHandler
 		
 		if (event.getType() == ElementType.ALL && !minecraft.player.isCreative())
 		{
-			HumanityData humanity = HumanityData.get(minecraft.player);
-			int x = 0;
-			int y = 0;
+			DarkSoulsEntityData humanity = DarkSoulsEntityData.get(minecraft.player);
+			int x = event.getWindow().getGuiScaledWidth() / 2;
+			int y = event.getWindow().getGuiScaledHeight() - 45;
+			int color = humanity.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
 			
-			ForgeIngameGui.drawString(event.getMatrixStack(), minecraft.font, humanity.getStringValue(), x, y, 16777215);
+			ForgeIngameGui.drawCenteredString(event.getMatrixStack(), minecraft.font, humanity.getStringHumanity(), x, y, color);
 		}
 	}
 	
@@ -141,7 +144,7 @@ public class EventHandler
 		try
 		{
 			PlayerEntity player = event.getPlayer();
-			CompoundNBT compoundnbt = HumanityData.get(player).save(new CompoundNBT());
+			CompoundNBT compoundnbt = DarkSoulsEntityData.get(player).save(new CompoundNBT());
 	        File file1 = File.createTempFile(player.getStringUUID() + "_DS-", ".dat", event.getPlayerDirectory());
 	        CompressedStreamTools.writeCompressed(compoundnbt, file1);
 	        File file2 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat");
@@ -175,7 +178,19 @@ public class EventHandler
 
 	    if (compoundnbt != null)
 	    {
-	    	HumanityData.get(player).setValue(compoundnbt.getInt("Humanity"));
+	    	DarkSoulsEntityData.get(player).load(compoundnbt);
 	    }
+	}
+	
+	@SubscribeEvent
+	public static void onLivingDeath(final LivingDeathEvent event)
+	{
+		DarkSoulsEntityData data = DarkSoulsEntityData.get(event.getEntityLiving());
+		data.setHumanity(0);
+		
+		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		{
+			data.setHuman(false);
+		}
 	}
 }

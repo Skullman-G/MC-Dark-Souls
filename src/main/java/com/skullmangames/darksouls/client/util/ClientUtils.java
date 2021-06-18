@@ -22,8 +22,8 @@ public final class ClientUtils
 		Minecraft.getInstance().setScreen(new BonfireNameScreen(player, tileentity));
 	}
 	
-	public static void openBonfireScreen(BonfireTileEntity tileentity)
+	public static void openBonfireScreen(BonfireTileEntity tileentity, PlayerEntity player)
 	{
-		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity));
+		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity, player));
 	}
 }

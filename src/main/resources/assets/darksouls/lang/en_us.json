@@ -30,12 +30,17 @@
 	"tooltip.darksouls.humanity": "Rare tiny black sprite found on corpses. This black sprite is called humanity, but little is known about its true nature. If the soul is the source of all life, then what distinguishes the humanity we hold within ourselves? \n\nUse to gain 1 humanity and restore a large amount of HP.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
-	"gui.darksouls.warp_button": "Warp",
+	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",
+	"gui.darksouls.kindle": "Kindle",
 	"gui.darksouls.leave_button": "Leave",
 	"gui.darksouls.bonfire_lit_message": "BONFIRE LIT",
+	"gui.darksouls.humanity_restored_message": "HUMANITY RESTORED",
 	"gui.darksouls.respawn_position_fail_message": "Cannot set respawn position",
 	"gui.darksouls.fire_keeper_absent": "Fire Keeper is absent. Cannot light bonfire",
 	"gui.darksouls.darksign_didnt_work": "The Darksign has not been linked to a bonfire before",
+	"gui.darksouls.restore_humanity_fail": "You need 1 Humanity to restore your human form",
+	"gui.darksouls.kindle_no_humanity": "You need 1 Humanity to kindle",
+	"gui.darksouls.kindle_undead": "You have to be in human form to kindle",
 	
 	"block.bonfire.lit": "Bonfire lit",
 	"block.bonfire.lit.sub": "Bonfire lit",
