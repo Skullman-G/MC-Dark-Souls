@@ -114,7 +114,7 @@ public class DarkSouls
     
     public void biomeModification(final BiomeLoadingEvent event)
     {
-        if (event.getCategory() == Biome.Category.PLAINS)
+        if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.JUNGLE)
         {
         	event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
         }

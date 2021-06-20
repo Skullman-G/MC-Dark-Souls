@@ -69,19 +69,32 @@ public class ItemUser
 	private static void makeDarksignParticles(LivingEntity livingentity)
 	{
 		double z = 1.0D;
-		for (double x = 0.0D; x < 1.0D; x += 0.1D)
+		for (double x = 0.0D; x < 1.0D;)
 		{
 			if (livingentity.level instanceof ServerWorld)
 		    {
-		        ((ServerWorld)livingentity.level).sendParticles(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z + z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-		        ((ServerWorld)livingentity.level).sendParticles(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z - z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+		        ServerWorld serverworld = (ServerWorld)livingentity.level;
+		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z + z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z - z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z - z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z + z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		    }
 		    else
 		    {
 		    	livingentity.level.addParticle(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z + z, 0.0D, 0.0D, 0.0D);
 		    	livingentity.level.addParticle(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z - z, 0.0D, 0.0D, 0.0D);
+		    	livingentity.level.addParticle(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z - z, 0.0D, 0.0D, 0.0D);
+		    	livingentity.level.addParticle(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z + z, 0.0D, 0.0D, 0.0D);
 		    }
-			z -= 0.1D;
+			x += 0.1D;
+			if (x <= 0.5D)
+			{
+				z -= 0.01D;
+			}
+			else
+			{
+				z -= 0.17D;
+			}
 		}
 	}
 }

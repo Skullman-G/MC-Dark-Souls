@@ -1,10 +1,7 @@
 package com.skullmangames.darksouls.world.structures;
 
-import org.apache.logging.log4j.Level;
-
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
@@ -73,11 +70,6 @@ public class CheckpointPlainsStructure extends Structure<NoFeatureConfig>
             JigsawManager.addPieces(dynamicregistries, new VillageConfig(() -> dynamicregistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).get(new ResourceLocation(DarkSouls.MOD_ID, "checkpoint_plains/start_pool")), 10), AbstractVillagePiece::new, generator, templatemanager, blockpos, this.pieces, this.random, false, true);
             
             this.calculateBoundingBox();
-            
-            DarkSouls.LOGGER.log(Level.DEBUG, "Checkpoint Plain at " +
-                    this.pieces.get(0).getBoundingBox().x0 + " " +
-                    this.pieces.get(0).getBoundingBox().y0 + " " +
-                    this.pieces.get(0).getBoundingBox().z0);
 		}
 	}
 }
