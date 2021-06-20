@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.HollowRenderer;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entities.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,6 +32,7 @@ public final class ModClientEvents
 	public static void setup(final FMLClientSetupEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new);
 		LOGGER.debug("Registered Entity Renderers");
 	}
 	
@@ -37,5 +40,6 @@ public final class ModClientEvents
 	public static void onEntityAttributeCreation(final EntityAttributeCreationEvent event)
 	{
 		event.put(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
+		event.put(EntityTypeInit.HOLLOW.get(), HollowEntity.createAttributes().build());
 	}
 }

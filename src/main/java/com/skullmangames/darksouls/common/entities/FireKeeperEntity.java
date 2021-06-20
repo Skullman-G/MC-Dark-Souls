@@ -5,7 +5,6 @@ import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -17,7 +16,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 public class FireKeeperEntity extends CreatureEntity
 {
@@ -97,11 +95,12 @@ public class FireKeeperEntity extends CreatureEntity
 	}
 	
 	@Override
-	public void killed(ServerWorld p_241847_1_, LivingEntity p_241847_2_)
+	public void die(DamageSource p_70645_1_)
 	{
 		if (this.hasLinkedBonfire && !this.level.isEmptyBlock(this.linkedBonfire))
 		{
 			((BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire)).setLit(null, false);
 		}
+		super.die(p_70645_1_);
 	}
 }

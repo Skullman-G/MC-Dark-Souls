@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.DescriptionItem;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
@@ -10,6 +11,7 @@ import com.skullmangames.darksouls.common.items.HumanityItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,6 +44,10 @@ public class ItemInit
 	
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(BlockInit.BONFIRE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
+	
+	//Spawn Eggs
+	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(EntityTypeInit.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
+			.tab(ItemGroup.TAB_MISC)));
 	
 	//Vanilla Overrides
 	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");

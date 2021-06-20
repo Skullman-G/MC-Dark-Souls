@@ -5,11 +5,13 @@
 	"item.darksouls.darksign": "Darksign",
 	"item.darksouls.estus_shard": "Estus Shard",
 	"item.darksouls.humanity": "Humanity",
+	"item.darksouls.hollow_spawn_egg": "Hollow Spawn Egg",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
+	"entity.darksouls.hollow": "Hollow",
 	
 	"effect.darksouls.undead_curse": "Undead Curse",
 	

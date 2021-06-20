@@ -64,12 +64,12 @@ public class DarkSouls
     	BlockInit.BLOCKS.register(bus);
     	BlockInit.VANILLA_BLOCKS.register(bus);
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);
-    	ItemInit.ITEMS.register(bus);
     	ItemInit.VANILLA_ITEMS.register(bus);
     	StructureInit.STRUCTURES.register(bus);
     	EffectInit.EFFECTS.register(bus);
     	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
     	EntityTypeInit.ENTITIES.register(bus);
+    	ItemInit.ITEMS.register(bus);
     	ParticleTypeInit.PARTICLE_TYPES.register(bus);
     	bus.addListener(this::setup);
     	bus.addListener(this::doClientStuff);
