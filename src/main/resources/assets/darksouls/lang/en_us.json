@@ -6,6 +6,7 @@
 	"item.darksouls.estus_shard": "Estus Shard",
 	"item.darksouls.humanity": "Humanity",
 	"item.darksouls.hollow_spawn_egg": "Hollow Spawn Egg",
+	"item.darksouls.broken_straight_sword": "Broken Straight Sword",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -30,6 +31,7 @@
 	"tooltip.darksouls.darksign": "The Darksign signifies an accursed Undead. Those branded with it are reborn after death, but will one day lose their mind and go hollow. And so it is they are driven from their homeland. \n\nThe Darksign returns its bearer to the last bonfire rested at.",
 	"tooltip.darksouls.estus_shard": "A shard soaked in Estus. Over the ages, countless souls rested their bones as they drank from the original flask. And now this shard remains, serving as a vestige of their hopes and dreams. \n\nThis shard can be used to enlarge an Estus Flask.",
 	"tooltip.darksouls.humanity": "Rare tiny black sprite found on corpses. This black sprite is called humanity, but little is known about its true nature. If the soul is the source of all life, then what distinguishes the humanity we hold within ourselves? \n\nUse to gain 1 humanity and restore a large amount of HP.",
+	"tooltip.darksouls.broken_straight_sword": "A straight sword with a broken blade. A weapon with no exceptional qualities. Only a mad Hollow would choose to fight with this.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",

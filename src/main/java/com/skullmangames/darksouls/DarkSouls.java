@@ -1,12 +1,14 @@
 package com.skullmangames.darksouls;
 
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -114,9 +116,14 @@ public class DarkSouls
     
     public void biomeModification(final BiomeLoadingEvent event)
     {
-        if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.JUNGLE)
+    	if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.JUNGLE)
         {
         	event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
+        }
+        
+        if (event.getClimate().temperature >= 0.5F && event.getClimate().temperature < 2.0F)
+        {
+        	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 10, 1, 3));
         }
     }
     

@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -31,11 +32,13 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -127,7 +130,7 @@ public class EventHandler
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
-		if (event.getType() == ElementType.ALL && !minecraft.player.isCreative())
+		if (event.getType() == ElementType.ALL && !minecraft.player.isCreative() && !minecraft.player.isSpectator())
 		{
 			DarkSoulsEntityData humanity = DarkSoulsEntityData.get(minecraft.player);
 			int x = event.getWindow().getGuiScaledWidth() / 2;
@@ -191,6 +194,15 @@ public class EventHandler
 		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			data.setHuman(false);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onCheckSpawn(final CheckSpawn event)
+	{
+		if (event.getEntityLiving() instanceof ZombieEntity)
+		{
+			event.setResult(Result.DENY);
 		}
 	}
 }
