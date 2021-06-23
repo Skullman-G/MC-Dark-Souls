@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.entities;
 
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
-
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;

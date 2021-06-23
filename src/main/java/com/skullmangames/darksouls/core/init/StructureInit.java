@@ -6,10 +6,12 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.world.structures.CheckpointPlainsPiece;
 import com.skullmangames.darksouls.world.structures.CheckpointPlainsStructure;
 
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
@@ -22,6 +24,7 @@ public class StructureInit
     public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, DarkSouls.MOD_ID);
     
     public static final RegistryObject<Structure<NoFeatureConfig>> CHECKPOINT_PLAINS = STRUCTURES.register("checkpoint_plains", () -> (new CheckpointPlainsStructure(NoFeatureConfig.CODEC)));
+    public static final IStructurePieceType CHECKPOINT_PLAINS_PIECE = CheckpointPlainsPiece::new;
 
     
     

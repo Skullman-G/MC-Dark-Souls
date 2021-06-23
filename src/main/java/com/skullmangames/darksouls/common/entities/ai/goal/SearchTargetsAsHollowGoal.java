@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.common.entities.HollowEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
@@ -22,7 +23,7 @@ public class SearchTargetsAsHollowGoal<T extends LivingEntity> extends NearestAt
 		{
 			LivingEntity livingentity = this.mob.level.getNearestLoadedEntity(this.targetType, this.targetConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), this.getTargetSearchArea(this.getFollowDistance()));
 			
-			if (!(livingentity instanceof HollowEntity))
+			if (!(livingentity instanceof HollowEntity) && !(livingentity instanceof MonsterEntity))
 			{
 				this.target = livingentity;
 			}

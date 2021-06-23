@@ -7,10 +7,12 @@ import com.skullmangames.darksouls.common.items.DescriptionItem;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.items.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.items.HumanityItem;
+import com.skullmangames.darksouls.common.items.SwordDescriptionItem;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemTier;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -38,7 +40,7 @@ public class ItemInit
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new DescriptionItem(new Item.Properties()
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordDescriptionItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(ItemGroup.TAB_COMBAT)));
 	
 	//Block Items

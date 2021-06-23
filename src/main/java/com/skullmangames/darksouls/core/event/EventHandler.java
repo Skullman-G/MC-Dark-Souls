@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;

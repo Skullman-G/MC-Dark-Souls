@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.entities;
 
+import java.util.Random;
+
 import com.skullmangames.darksouls.common.entities.ai.goal.SearchTargetsAsHollowGoal;
 import com.skullmangames.darksouls.core.init.ItemInit;
 
@@ -19,8 +21,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class HollowEntity extends MonsterEntity
@@ -33,7 +38,7 @@ public class HollowEntity extends MonsterEntity
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 5.0D)
+				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
@@ -65,5 +70,10 @@ public class HollowEntity extends MonsterEntity
 		this.populateDefaultEquipmentSlots(instance);
 		
 		return data;
+	}
+	
+	public static boolean canSpawnOn(EntityType<?> type, IWorld world, SpawnReason reason, BlockPos blockpos, Random random)
+	{
+		return world.getDifficulty() != Difficulty.PEACEFUL;
 	}
 }

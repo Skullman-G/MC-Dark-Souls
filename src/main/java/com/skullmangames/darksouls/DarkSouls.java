@@ -102,6 +102,8 @@ public class DarkSouls
     	{
     		CriteriaTriggerInit.register();
     	});
+    	
+    	EntityTypeInit.registerEntitySpawnPlacement();
     }
     
 	private void doClientStuff(final FMLClientSetupEvent event)
@@ -120,11 +122,8 @@ public class DarkSouls
         {
         	event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
         }
-        
-        if (event.getClimate().temperature >= 0.5F && event.getClimate().temperature < 2.0F)
-        {
-        	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 10, 1, 3));
-        }
+    	
+    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 100, 4, 4));
     }
     
     private static Method GETCODEC_METHOD;
