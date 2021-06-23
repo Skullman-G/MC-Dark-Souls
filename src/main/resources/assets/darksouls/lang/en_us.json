@@ -58,6 +58,11 @@
 	"item.soul_container.finish": "Soul Container finish",
 	"item.soul_container.finish.sub": "Soul Container breaks",
 	
+	"entity.hollow.ambient": "Hollow ambient",
+	"entity.hollow.ambient.sub": "Hollow groans",
+	"entity.hollow.death": "Hollow death",
+	"entity.hollow.death.sub": "Hollow dies",
+	
 	
 	"itemGroup.soulstab": "Souls"
 }

@@ -47,5 +47,30 @@
 		[
 			{ "name": "darksouls:items/soul_container/finish", "stream": true }
 		]
+	},
+	
+	"entity.hollow.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity.hollow.ambient.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/hollow/ambient_01", "stream": true },
+			{ "name": "darksouls:entities/hollow/ambient_02", "stream": true },
+			{ "name": "darksouls:entities/hollow/ambient_03", "stream": true }
+		]
+	},
+	
+	"entity.hollow.death":
+	{
+		"category": "entity",
+		"subtitle": "entity.hollow.death.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/hollow/death_01", "stream": true },
+			{ "name": "darksouls:entities/hollow/death_02", "stream": true },
+			{ "name": "darksouls:entities/hollow/death_03", "stream": true },
+			{ "name": "darksouls:entities/hollow/death_04", "stream": true }
+		]
 	}
 }

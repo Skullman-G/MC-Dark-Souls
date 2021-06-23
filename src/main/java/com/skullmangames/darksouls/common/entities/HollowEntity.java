@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.skullmangames.darksouls.common.entities.ai.goal.SearchTargetsAsHollowGoal;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.SoundEventInit;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -75,5 +77,17 @@ public class HollowEntity extends MonsterEntity
 	public static boolean canSpawnOn(EntityType<?> type, IWorld world, SpawnReason reason, BlockPos blockpos, Random random)
 	{
 		return world.getDifficulty() != Difficulty.PEACEFUL;
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return SoundEventInit.HOLLOW_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return SoundEventInit.HOLLOW_DEATH.get();
 	}
 }

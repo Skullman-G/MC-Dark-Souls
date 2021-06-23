@@ -17,4 +17,7 @@ public class SoundEventInit
 	public static final RegistryObject<SoundEvent> DARKSIGN_USE = SOUND_EVENTS.register("item.darksign.use", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.darksign.use")));
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_USE = SOUND_EVENTS.register("item.soul_container.use", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.soul_container.use")));
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_FINISH = SOUND_EVENTS.register("item.soul_container.finish", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "item.soul_container.finish")));
+	
+	public static final RegistryObject<SoundEvent> HOLLOW_AMBIENT = SOUND_EVENTS.register("entity.hollow.ambient", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "entity.hollow.ambient")));
+	public static final RegistryObject<SoundEvent> HOLLOW_DEATH = SOUND_EVENTS.register("entity.hollow.death", () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, "entity.hollow.death")));
 }
