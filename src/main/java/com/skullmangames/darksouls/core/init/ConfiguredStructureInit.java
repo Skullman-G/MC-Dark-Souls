@@ -17,7 +17,6 @@ public class ConfiguredStructureInit
 	{
         Registry<StructureFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE;
         Registry.register(registry, new ResourceLocation(DarkSouls.MOD_ID, "configured_checkpoint_plains"), CONFIGURED_CHECKPOINT_PLAINS);
-        Registry.register(Registry.STRUCTURE_PIECE, "checkpoint_plains", StructureInit.CHECKPOINT_PLAINS_PIECE);
         FlatGenerationSettings.STRUCTURE_FEATURES.put(StructureInit.CHECKPOINT_PLAINS.get(), CONFIGURED_CHECKPOINT_PLAINS);
     }
 }

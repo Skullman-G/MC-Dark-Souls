@@ -4,5 +4,6 @@ public enum DarkSoulsUseAction
 {
 	NONE,
 	SOUL_CONTAINER,
-	MIRACLE;
+	MIRACLE,
+	DARKSIGN;
 }

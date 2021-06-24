@@ -1,25 +1,36 @@
 package com.skullmangames.darksouls.common.tiles;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.blocks.BonfireBlock;
+import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.spawner.WorldEntitySpawner;
 
-public class BonfireTileEntity extends TileEntity
+public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
@@ -115,11 +126,46 @@ public class BonfireTileEntity extends TileEntity
 	public void addFireKeeper()
 	{
 		this.hasFireKeeper = true;
+		this.setLit(null, true);
+		this.kindle();
 		this.setChanged();
 	}
 	
 	public boolean hasFireKeeper()
 	{
 		return this.hasFireKeeper;
+	}
+
+	private int ticktimer;
+	
+	@Override
+	public void tick()
+	{
+		if (this.ticktimer >= 1000)
+		{
+			this.ticktimer = 0;
+			if (!this.hasFireKeeper && this.level instanceof ServerWorld)
+			{
+				ServerWorld serverworld = (ServerWorld)this.level;
+				Random random = serverworld.random;
+				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+				BlockPos blockpos = this.worldPosition.offset(i, 0, j);
+				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
+				{
+					FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
+					if (entity != null /*&& net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, SpawnReason.NATURAL) == -1*/)
+					{
+						entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+				        entity.moveTo(blockpos, 0.0F, 0.0F);
+						serverworld.addFreshEntityWithPassengers(entity);
+					}
+				}
+			}
+		}
+		else
+		{
+			this.ticktimer++;
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.effects;
 
-import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.core.init.ItemInit;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +24,7 @@ public class UndeadCurse extends Effect
 	{
 		for (ItemStack itemstack : playerentity.inventory.items)
 		{
-			if (itemstack.getItem() instanceof DarksignItem)
+			if (itemstack.getItem() == ItemInit.DARKSIGN.get())
 			{
 				playerentity.inventory.removeItem(itemstack);
 			}

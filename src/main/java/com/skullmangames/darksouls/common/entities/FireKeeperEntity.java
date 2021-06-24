@@ -31,8 +31,9 @@ public class FireKeeperEntity extends CreatureEntity
 		return this.hasLinkedBonfire;
 	}
 	
-	public void linkBonfire(BlockPos pos)
+	public void linkBonfire(BlockPos pos, BonfireTileEntity tileentity)
 	{
+		tileentity.addFireKeeper();
 		this.linkedBonfire = pos;
 		this.hasLinkedBonfire = true;
 	}

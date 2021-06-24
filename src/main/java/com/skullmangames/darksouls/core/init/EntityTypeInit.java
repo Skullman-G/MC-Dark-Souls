@@ -19,6 +19,7 @@ public class EntityTypeInit
 	
 	public static final RegistryObject<EntityType<FireKeeperEntity>> FIRE_KEEPER = ENTITIES.register("fire_keeper", () -> EntityType.Builder.<FireKeeperEntity>of(FireKeeperEntity::new, EntityClassification.CREATURE)
 			.sized(0.6F, 1.95F)
+			.canSpawnFarFromPlayer()
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "fire_keeper").toString()));
 	
 	public static final RegistryObject<EntityType<HollowEntity>> HOLLOW = ENTITIES.register("hollow", () -> EntityType.Builder.<HollowEntity>of(HollowEntity::new, EntityClassification.MONSTER)

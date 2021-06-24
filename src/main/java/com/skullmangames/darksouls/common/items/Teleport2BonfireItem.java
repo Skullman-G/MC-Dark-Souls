@@ -15,18 +15,32 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class DarksignItem extends DescriptionItem implements IHaveDarkSoulsUseAction
+public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSoulsUseAction
 {
-	public DarksignItem(Properties properties)
+	private final boolean looseAfterUse;
+	private final boolean binding;
+	private final DarkSoulsUseAction useAction;
+	
+	public Teleport2BonfireItem(DarkSoulsUseAction useaction, boolean binding, boolean looseafteruse, Properties properties)
 	{
-		super(properties.stacksTo(1));
+		super(properties);
+		this.looseAfterUse = looseafteruse;
+		this.binding = binding;
+		this.useAction = useaction;
 	}
 	
 	@Override
 	public boolean onDroppedByPlayer(ItemStack item, PlayerEntity player)
 	{
-		player.addItem(item);
-		return false;
+		if (this.binding)
+		{
+			player.addItem(item);
+			return false;
+		}
+		else
+		{
+			return super.onDroppedByPlayer(item, player);
+		}
 	}
 	
 	@Override
@@ -60,8 +74,13 @@ public class DarksignItem extends DescriptionItem implements IHaveDarkSoulsUseAc
 	    {
 	        playerentity.awardStat(Stats.ITEM_USED.get(this));
 	    }
+	    
+	    if (this.looseAfterUse && (playerentity == null || !playerentity.abilities.instabuild))
+	    {
+	    	itemstack.shrink(1);
+	    }
 
-	      return itemstack;
+	    return itemstack;
 	}
 	
 	@Override
@@ -79,7 +98,7 @@ public class DarksignItem extends DescriptionItem implements IHaveDarkSoulsUseAc
 	@Override
 	public DarkSoulsUseAction getDarkSoulsUseAnimation()
 	{
-		return DarkSoulsUseAction.MIRACLE;
+		return this.useAction;
 	}
 
 	@Override

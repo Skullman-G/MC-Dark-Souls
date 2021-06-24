@@ -2,12 +2,13 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
-import com.skullmangames.darksouls.common.items.DarksignItem;
+import com.skullmangames.darksouls.common.items.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.items.DescriptionItem;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.items.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.items.HumanityItem;
 import com.skullmangames.darksouls.common.items.SwordDescriptionItem;
+import com.skullmangames.darksouls.common.items.Teleport2BonfireItem;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -34,7 +35,11 @@ public class ItemInit
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new DescriptionItem(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
-	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new DarksignItem(new Item.Properties()
+	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Teleport2BonfireItem(DarkSoulsUseAction.DARKSIGN, true, false, new Item.Properties()
+			.stacksTo(1)
+			.tab(ItemGroup.TAB_TOOLS)));
+	
+	public static final RegistryObject<Item> HOMEWARD_BONE = ITEMS.register("homeward_bone", () -> new Teleport2BonfireItem(DarkSoulsUseAction.MIRACLE, false, true, new Item.Properties()
 			.tab(ItemGroup.TAB_TOOLS)));
 	
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()

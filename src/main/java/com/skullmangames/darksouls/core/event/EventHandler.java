@@ -7,9 +7,9 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
 import com.skullmangames.darksouls.common.entities.DarkSoulsEntityData;
-import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
@@ -49,7 +49,7 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onItemToss(final ItemTossEvent event)
     {
-		if (event.getEntityItem().getItem().getItem() instanceof DarksignItem)
+		if (event.getEntityItem().getItem().getItem() == ItemInit.DARKSIGN.get())
 		{
 			event.getPlayer().addItem(event.getEntityItem().getItem());
 		}

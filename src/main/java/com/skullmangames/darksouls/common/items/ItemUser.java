@@ -28,16 +28,22 @@ public class ItemUser
 	{
 	    if (shouldTriggerItemUseEffects(itemstack, durationremaining) && !itemstack.isEmpty() && livingentity.isUsingItem())
 	    {
-	    	if (item.getDarkSoulsUseAnimation() == DarkSoulsUseAction.MIRACLE)
+	    	switch (item.getDarkSoulsUseAnimation())
 	    	{
-	    		livingentity.playSound(item.getUseSound(), 0.5F, 1.0F);
-	    		makeDarksignParticles(livingentity);
-	    	}
-	    	
-	    	if (item.getDarkSoulsUseAnimation() == DarkSoulsUseAction.SOUL_CONTAINER)
-	    	{
-	    		livingentity.playSound(item.getUseSound(), 0.5F, 1.0F);
-	    		//makeSoulContainerParticles(livingentity, itemstack, 5);
+		    	case MIRACLE:
+		    		livingentity.playSound(item.getUseSound(), 0.5F, 1.0F);
+		    		break;
+		    		
+		    	case SOUL_CONTAINER:
+		    		livingentity.playSound(item.getUseSound(), 0.5F, 1.0F);
+		    		break;
+				
+		    	case DARKSIGN:
+		    		livingentity.playSound(item.getUseSound(), 0.5F, 1.0F);
+		    		makeDarksignParticles(livingentity);
+		    		
+		    	default:
+					break;
 	    	}
 	    }
 	}

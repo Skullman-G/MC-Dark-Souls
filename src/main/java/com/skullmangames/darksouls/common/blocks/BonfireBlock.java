@@ -7,10 +7,10 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
-import com.skullmangames.darksouls.common.items.DarksignItem;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -92,7 +92,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		if (!this.isLit(state) && player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			// Has to hold Darksign to light bonfire
-			if (player.getItemInHand(hand).getItem() instanceof DarksignItem)
+			if (player.getItemInHand(hand).getItem() == ItemInit.DARKSIGN.get())
 			{
 				// SERVER SIDE
 				if (!world.isClientSide && tileentity instanceof BonfireTileEntity)

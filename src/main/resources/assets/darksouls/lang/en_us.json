@@ -7,6 +7,7 @@
 	"item.darksouls.humanity": "Humanity",
 	"item.darksouls.hollow_spawn_egg": "Hollow Spawn Egg",
 	"item.darksouls.broken_straight_sword": "Broken Straight Sword",
+	"item.darksouls.homeward_bone": "Homeward Bone",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -32,6 +33,7 @@
 	"tooltip.darksouls.estus_shard": "A shard soaked in Estus. Over the ages, countless souls rested their bones as they drank from the original flask. And now this shard remains, serving as a vestige of their hopes and dreams. \n\nThis shard can be used to enlarge an Estus Flask.",
 	"tooltip.darksouls.humanity": "Rare tiny black sprite found on corpses. This black sprite is called humanity, but little is known about its true nature. If the soul is the source of all life, then what distinguishes the humanity we hold within ourselves? \n\nUse to gain 1 humanity and restore a large amount of HP.",
 	"tooltip.darksouls.broken_straight_sword": "A straight sword with a broken blade. A weapon with no exceptional qualities. Only a mad Hollow would choose to fight with this.",
+	"tooltip.darksouls.homeward_bone": "Bone fragment reduced to white ash. Bonfires are sustained by bones of the Undead. In rare cases, their previous owner's strong urge to seek bonfires enchant their bones with a homeward instinct. \n\nReturn to last bonfire used for resting.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",
