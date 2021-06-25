@@ -68,9 +68,7 @@ public class CheckpointPlainsStructure extends Structure<NoFeatureConfig>
             BlockPos blockpos = new BlockPos(x, 0, z);
             
             ResourceLocation resourcelocation = new ResourceLocation(DarkSouls.MOD_ID, "checkpoint_plains/start_pool");
-            
             JigsawManager.addPieces(dynamicregistries, new VillageConfig(() -> dynamicregistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).get(resourcelocation), 10), AbstractVillagePiece::new, generator, templatemanager, blockpos, this.pieces, this.random, false, true);
-            
             this.calculateBoundingBox();
 		}
 	}

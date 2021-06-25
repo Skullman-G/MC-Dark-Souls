@@ -27,18 +27,22 @@ public class FirstPersonRendererOverride
         {
         	switch (item.getDarkSoulsUseAnimation())
         	{
-        	case NONE:
-        		applyItemArmTransform(matrixstack, handside, equipProgress);
-        		break;
-        		
-        	case SOUL_CONTAINER:
-        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-            	applyItemArmTransform(matrixstack, handside, equipProgress);
-            	break;
-            	
-        	case MIRACLE:
-        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-            	applyItemArmTransform(matrixstack, handside, equipProgress);
+	        	case NONE:
+	        		applyItemArmTransform(matrixstack, handside, equipProgress);
+	        		break;
+	        		
+	        	case SOUL_CONTAINER:
+	        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+	            	applyItemArmTransform(matrixstack, handside, equipProgress);
+	            	break;
+	            	
+	        	case MIRACLE:
+	        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+	            	applyItemArmTransform(matrixstack, handside, equipProgress);
+	            	break;
+	            	
+				default:
+					break;
         	}
         }
         else

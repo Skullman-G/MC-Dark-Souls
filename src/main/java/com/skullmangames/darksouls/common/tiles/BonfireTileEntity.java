@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
+import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
@@ -15,8 +16,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.STitlePacket;
@@ -144,22 +147,35 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		if (this.ticktimer >= 1000)
 		{
 			this.ticktimer = 0;
-			if (!this.hasFireKeeper && this.level instanceof ServerWorld)
+			if (this.level instanceof ServerWorld)
 			{
 				ServerWorld serverworld = (ServerWorld)this.level;
 				Random random = serverworld.random;
-				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-				BlockPos blockpos = this.worldPosition.offset(i, 0, j);
-				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
+				
+				if (!this.hasFireKeeper)
 				{
-					FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
-					if (entity != null /*&& net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, SpawnReason.NATURAL) == -1*/)
+					int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+		            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+					BlockPos blockpos = this.worldPosition.offset(i, 0, j);
+					if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
 					{
-						entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-				        entity.moveTo(blockpos, 0.0F, 0.0F);
-						serverworld.addFreshEntityWithPassengers(entity);
+						FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
+						if (entity != null /*&& net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, SpawnReason.NATURAL) == -1*/)
+						{
+							entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+					        entity.moveTo(blockpos, 0.0F, 0.0F);
+							serverworld.addFreshEntityWithPassengers(entity);
+						}
 					}
+				}
+				
+				if (random.nextInt(10) == 1)
+				{
+					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
+		            int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
+					BlockPos blockpos = this.worldPosition.offset(i, this.worldPosition.getZ(), j);
+					ItemEntity homewardbone = new ItemEntity(serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), new ItemStack(ItemInit.HOMEWARD_BONE.get()));
+					serverworld.addFreshEntity(homewardbone);
 				}
 			}
 		}

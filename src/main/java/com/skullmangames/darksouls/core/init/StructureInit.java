@@ -22,7 +22,6 @@ public class StructureInit
     public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, DarkSouls.MOD_ID);
     
     public static final RegistryObject<Structure<NoFeatureConfig>> CHECKPOINT_PLAINS = STRUCTURES.register("checkpoint_plains", () -> (new CheckpointPlainsStructure(NoFeatureConfig.CODEC)));
-
     
     
     public static void setupStructures()
