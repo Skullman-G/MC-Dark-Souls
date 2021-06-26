@@ -1,8 +1,13 @@
 package com.skullmangames.darksouls.common.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
-import net.minecraft.entity.CreatureEntity;
+import com.skullmangames.darksouls.core.init.ItemInit;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -11,17 +16,24 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class FireKeeperEntity extends CreatureEntity
+public class FireKeeperEntity extends QuestEntity
 {
 	private BlockPos linkedBonfire = BlockPos.ZERO;
 	private boolean hasLinkedBonfire = false;
+	public boolean talking = false;
 	
-	public FireKeeperEntity(EntityType<? extends CreatureEntity> entity, World world)
+	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, World world)
 	{
 		super(entity, world);
 	}
@@ -73,6 +85,7 @@ public class FireKeeperEntity extends CreatureEntity
 		nbt.putInt("linked_bonfire_y", this.linkedBonfire.getY());
 		nbt.putInt("linked_bonfire_z", this.linkedBonfire.getZ());
 		nbt.putBoolean("has_linked_bonfire", this.hasLinkedBonfire);
+		nbt.putString("QuestPath", this.getCurrentQuestPath());
 	}
 	
 	@Override
@@ -81,6 +94,7 @@ public class FireKeeperEntity extends CreatureEntity
 		super.readAdditionalSaveData(nbt);
 		this.linkedBonfire = new BlockPos(nbt.getInt("linked_bonfire_x"), nbt.getInt("linked_bonfire_y"), nbt.getInt("linked_bonfire_z"));
 		this.hasLinkedBonfire = nbt.getBoolean("has_linked_bonfire");
+		this.setCurrentQuestPath(nbt.getString("QuestPath"));
 	}
 	
 	@Override
@@ -102,5 +116,49 @@ public class FireKeeperEntity extends CreatureEntity
 			((BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire)).setLit(null, false);
 		}
 		super.die(p_70645_1_);
+	}
+	
+	@Override
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand)
+	{
+		if (player instanceof ServerPlayerEntity)
+		{
+			ServerPlayerEntity serverplayer = (ServerPlayerEntity)player;
+			
+			switch(this.getCurrentQuestPath())
+			{
+			case "1":
+				serverplayer.sendMessage(new TranslationTextComponent("dialogue.darksouls.fire_keeper.introduction"), serverplayer.getUUID());
+				this.setCurrentQuestPath("2");
+				break;
+			
+			case "2":
+				if (serverplayer.inventory.contains(new ItemStack(ItemInit.ESTUS_SHARD.get())))
+				{
+					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.estus_shard"), serverplayer.getUUID());
+				}
+				else
+				{
+					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.general"), serverplayer.getUUID());
+				}
+				SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
+				{
+			         return new ReinforceEstusFlaskContainer(id, inventory, this);
+			    }, new TranslationTextComponent("container.reinforce_estus_flask.title"));
+				serverplayer.openMenu(container);
+				break;
+			}
+		}
+		
+		return ActionResultType.SUCCESS;
+	}
+
+	@Override
+	public List<String> getQuestPaths()
+	{
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+		return list;
 	}
 }

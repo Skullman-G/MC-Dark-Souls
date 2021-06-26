@@ -37,36 +37,48 @@ public class EstusFlaskItem extends DescriptionItem
 		super(properties.stacksTo(1));
 	}
 	
-	public static int getTotalUses(ItemStack itemstack)
+	private static CompoundNBT getOrCreateNBT(ItemStack itemstack)
 	{
 		CompoundNBT compoundnbt = itemstack.getTag();
 		if (compoundnbt == null)
-	    {
+		{
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
-	    }
+		    compoundnbt.putDouble("HealMultiplier", 1);
+		}
 		
+		return compoundnbt;
+	}
+	
+	public static double getHealMultiplier(ItemStack itemstack)
+	{
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
+		return compoundnbt.getDouble("HealMultiplier");
+	}
+	
+	public static void setHealMultiplier(ItemStack itemstack, double value)
+	{
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
+		compoundnbt.putDouble("HealMultiplier", value);
+	}
+	
+	public static int getTotalUses(ItemStack itemstack)
+	{
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		return compoundnbt.getInt("TotalUses");
 	}
 	
 	public static void setTotalUses(ItemStack itemstack, int value)
 	{
-	    CompoundNBT compoundnbt = itemstack.getOrCreateTag();
+	    CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 	    compoundnbt.putInt("TotalUses", value);
 	}
 	
 	public static int getUses(ItemStack itemstack)
 	{
-	    CompoundNBT compoundnbt = itemstack.getTag();
-	    if (compoundnbt == null)
-	    {
-	    	return getTotalUses(itemstack);
-	    }
-	    else
-	    {
-	    	return compoundnbt.getInt("Uses");
-	    }
+	    CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
+	    return compoundnbt.getInt("Uses");
 	}
 
 	public static void setUses(ItemStack itemstack, int value)
@@ -83,7 +95,7 @@ public class EstusFlaskItem extends DescriptionItem
 	    {
 	    	value = getTotalUses(itemstack);
 	    }
-		CompoundNBT compoundnbt = itemstack.getOrCreateTag();
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 	    compoundnbt.putInt("Uses", value);
 	}
 	

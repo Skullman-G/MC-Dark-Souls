@@ -83,12 +83,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "darksouls",
-            "Specification-Vendor": "darksoulssareus",
+            "Specification-Title": "darksoulsmod",
+            "Specification-Vendor": "darksoulsmodsareus",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"darksoulssareus",
+            "Implementation-Vendor" :"darksoulsmodsareus",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

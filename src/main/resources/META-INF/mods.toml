@@ -1,15 +1,15 @@
 modLoader="javafml" #mandatory
 loaderVersion="[36,)"
-license="No rights reserved. All content stolen from BANDAI NAMCO"
+license="Not specified"
 
 [[mods]]
 modId="darksouls"
 version="0.1.0"
-displayName="Dark Souls"
-displayURL="https://discord.com/channels/776106904790630400/845759873265565717"
-logoFile="examplemod.png"
-credits="My THICC brain"
+displayName="Minecraft: Dark Souls"
+displayURL="NONE"
+logoFile="logo.png"
+credits="My THICC brain and Forge"
 authors="Skullman Games"
 description=''' 
-
+Welcome to the bonfire, Undead One. This first version of the Dark Souls Mod contains Bonfires, Fire Keepers, Estus Flasks and a first thread in form of Hollows.
 '''

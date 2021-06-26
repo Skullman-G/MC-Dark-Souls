@@ -48,6 +48,9 @@ public class ItemInit
 	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordDescriptionItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(ItemGroup.TAB_COMBAT)));
 	
+	/*public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new DescriptionItem(new Item.Properties()
+			.tab(ItemGroup.TAB_MATERIALS)));*/
+	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));

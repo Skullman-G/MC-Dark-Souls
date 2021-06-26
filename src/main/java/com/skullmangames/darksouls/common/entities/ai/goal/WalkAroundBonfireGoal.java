@@ -57,7 +57,10 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 	@Override
 	public void start()
 	{
-		this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+		if (!((FireKeeperEntity)this.mob).talking)
+		{
+			this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+		}
 	}
 	
 	private boolean searchForBonfire(World world)
@@ -87,6 +90,12 @@ public class WalkAroundBonfireGoal extends WaterAvoidingRandomWalkingGoal
 	@Override
 	public void tick()
 	{
+		if (((FireKeeperEntity)this.mob).talking)
+		{
+			this.stop();
+			return;
+		}
+		
 		if (this.mustLightBonfire)
 		{
 			BonfireTileEntity tileentity = (BonfireTileEntity)this.mob.level.getBlockEntity(this.targetBonfirePos);

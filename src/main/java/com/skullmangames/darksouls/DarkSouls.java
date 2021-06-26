@@ -36,6 +36,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.serialization.Codec;
+import com.skullmangames.darksouls.client.gui.screens.ReinforceEstusFlaskScreen;
 import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverride;
 import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.items.SoulsGroup;
@@ -70,6 +71,7 @@ public class DarkSouls
     	StructureInit.STRUCTURES.register(bus);
     	EffectInit.EFFECTS.register(bus);
     	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
+    	ContainerTypeInit.CONTAINERS.register(bus);
     	EntityTypeInit.ENTITIES.register(bus);
     	ItemInit.ITEMS.register(bus);
     	ParticleTypeInit.PARTICLE_TYPES.register(bus);
@@ -114,6 +116,7 @@ public class DarkSouls
         }
         
         ScreenManager.register(ContainerTypeInit.SMITHING.get(), SmithingTableScreenOverride::new);
+        ScreenManager.register(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
     }
     
     public void biomeModification(final BiomeLoadingEvent event)

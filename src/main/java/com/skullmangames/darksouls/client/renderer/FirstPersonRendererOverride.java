@@ -27,10 +27,6 @@ public class FirstPersonRendererOverride
         {
         	switch (item.getDarkSoulsUseAnimation())
         	{
-	        	case NONE:
-	        		applyItemArmTransform(matrixstack, handside, equipProgress);
-	        		break;
-	        		
 	        	case SOUL_CONTAINER:
 	        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
 	            	applyItemArmTransform(matrixstack, handside, equipProgress);
@@ -41,7 +37,13 @@ public class FirstPersonRendererOverride
 	            	applyItemArmTransform(matrixstack, handside, equipProgress);
 	            	break;
 	            	
+	        	case DARKSIGN:
+	        		applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+	            	applyItemArmTransform(matrixstack, handside, equipProgress);
+	            	break;
+	            	
 				default:
+					applyItemArmTransform(matrixstack, handside, equipProgress);
 					break;
         	}
         }

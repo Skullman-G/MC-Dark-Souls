@@ -8,6 +8,7 @@
 	"item.darksouls.hollow_spawn_egg": "Hollow Spawn Egg",
 	"item.darksouls.broken_straight_sword": "Broken Straight Sword",
 	"item.darksouls.homeward_bone": "Homeward Bone",
+	"item.darksouls.undead_bone_shard": "Undead Bone Shard",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -34,6 +35,7 @@
 	"tooltip.darksouls.humanity": "Rare tiny black sprite found on corpses. This black sprite is called humanity, but little is known about its true nature. If the soul is the source of all life, then what distinguishes the humanity we hold within ourselves? \n\nUse to gain 1 humanity and restore a large amount of HP.",
 	"tooltip.darksouls.broken_straight_sword": "A straight sword with a broken blade. A weapon with no exceptional qualities. Only a mad Hollow would choose to fight with this.",
 	"tooltip.darksouls.homeward_bone": "Bone fragment reduced to white ash. Bonfires are sustained by bones of the Undead. In rare cases, their previous owner's strong urge to seek bonfires enchant their bones with a homeward instinct. \n\nReturn to last bonfire used for resting.",
+	"tooltip.darksouls.undead_bone_shard": "Undead bones that yet burn. The bonfire's cinders are the bones of Undead, and a bone that still burns is a fresh cinder indeed. Before feeding upon death, one must first pray to it. \n\nCast it into a bonfire to boost the recovery provided by the Estus Flask.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",
@@ -66,5 +68,11 @@
 	"entity.hollow.death.sub": "Hollow dies",
 	
 	
-	"itemGroup.soulstab": "Souls"
+	"itemGroup.soulstab": "Souls",
+	
+	"dialogue.darksouls.fire_keeper.introduction": "Welcome to my bonfire, Accursed Undead. I am a Fire Keeper.",
+	"dialogie.darksouls.fire_keeper.estus_shard": "Is that a shard you've found? Here, let me see it. So that I may help you.",
+	"dialogie.darksouls.fire_keeper.general": "Speak thine heart's desire. So that I may help you.",
+	
+	"container.reinforce_estus_flask.title": "Reinforce Estus Flask"
 }

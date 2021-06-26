@@ -24,7 +24,6 @@ public class SmithingTableBlockOverride extends SmithingTableBlock
 	@Override
 	public INamedContainerProvider getMenuProvider(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_)
 	{
-		System.out.print("providing");
 		return new SimpleNamedContainerProvider((p_235576_2_, p_235576_3_, p_235576_4_) ->
 		{
 	         return new SmithingTableContainerOverride(p_235576_2_, p_235576_3_, IWorldPosCallable.create(p_220052_2_, p_220052_3_));
