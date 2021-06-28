@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.event;
 
-import java.awt.Color;
 import java.io.File;
 
 import com.skullmangames.darksouls.DarkSouls;
@@ -24,10 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Util;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -121,22 +117,6 @@ public class EventHandler
 			Minecraft minecraft = Minecraft.getInstance();
 			IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
 			FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getMatrixStack(), event.getBuffers(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onRenderGameOverlay(final RenderGameOverlayEvent event)
-	{
-		Minecraft minecraft = Minecraft.getInstance();
-		
-		if (event.getType() == ElementType.ALL && !minecraft.player.isCreative() && !minecraft.player.isSpectator())
-		{
-			DarkSoulsEntityData humanity = DarkSoulsEntityData.get(minecraft.player);
-			int x = event.getWindow().getGuiScaledWidth() / 2;
-			int y = event.getWindow().getGuiScaledHeight() - 45;
-			int color = humanity.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
-			
-			ForgeIngameGui.drawCenteredString(event.getMatrixStack(), minecraft.font, humanity.getStringHumanity(), x, y, color);
 		}
 	}
 	

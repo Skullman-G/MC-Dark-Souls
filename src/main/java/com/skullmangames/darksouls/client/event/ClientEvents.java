@@ -1,10 +1,13 @@
 package com.skullmangames.darksouls.client.event;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
 
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -18,4 +21,19 @@ public class ClientEvents
 	{
         DarkSoulsSpawnEggItem.initSpawnEggs();
     }
+	
+	@SubscribeEvent
+	public static void onRenderGameOverlayPost(final RenderGameOverlayEvent.Post event)
+	{
+		GameOverlayManager.render(event.getType(), event.getWindow(), event.getMatrixStack());
+	}
+	
+	@SubscribeEvent
+	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
+	{
+		if (event.getType() == ElementType.HEALTH)
+		{
+			event.setCanceled(true);
+		}
+	}
 }
