@@ -42,6 +42,7 @@ public class EstusFlaskItem extends DescriptionItem
 		CompoundNBT compoundnbt = itemstack.getTag();
 		if (compoundnbt == null)
 		{
+			System.out.print("dumm");
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
@@ -83,15 +84,15 @@ public class EstusFlaskItem extends DescriptionItem
 
 	public static void setUses(ItemStack itemstack, int value)
 	{
-	    if (value < getUses(itemstack))
+	    if (value == getUses(itemstack))
 	    {
-	    	value = getUses(itemstack);
+	    	return;
 	    }
-	    else if (value < 0)
+		if (value < 0)
 	    {
 	    	value = 0;
 	    }
-	    else if (value > getTotalUses(itemstack))
+	    if (value > getTotalUses(itemstack))
 	    {
 	    	value = getTotalUses(itemstack);
 	    }
