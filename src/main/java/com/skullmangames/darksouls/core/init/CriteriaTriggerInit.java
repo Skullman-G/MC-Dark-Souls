@@ -7,12 +7,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 
 public class CriteriaTriggerInit
 {
-	public static BonfireLitTrigger BONFIRE_LIT;
-	public static ObtainBiggestEstusFlaskTrigger OBTAIN_BIGGEST_ESTUS_FLASK;
-	
-	public static void register()
-	{
-		BONFIRE_LIT = CriteriaTriggers.register(new BonfireLitTrigger());
-		OBTAIN_BIGGEST_ESTUS_FLASK = CriteriaTriggers.register(new ObtainBiggestEstusFlaskTrigger());
-	}
+	public static final BonfireLitTrigger BONFIRE_LIT = CriteriaTriggers.register(new BonfireLitTrigger());
+	public static final ObtainBiggestEstusFlaskTrigger OBTAIN_BIGGEST_ESTUS_FLASK = CriteriaTriggers.register(new ObtainBiggestEstusFlaskTrigger());
 }

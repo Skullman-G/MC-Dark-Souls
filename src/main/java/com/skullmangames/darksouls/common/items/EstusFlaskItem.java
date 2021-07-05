@@ -42,7 +42,6 @@ public class EstusFlaskItem extends DescriptionItem
 		CompoundNBT compoundnbt = itemstack.getTag();
 		if (compoundnbt == null)
 		{
-			System.out.print("dumm");
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
