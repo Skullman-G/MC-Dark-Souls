@@ -1,11 +1,11 @@
 package com.skullmangames.darksouls.core.event;
 
-import java.io.File;
-
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
-import com.skullmangames.darksouls.common.entities.DarkSoulsEntityData;
+import com.skullmangames.darksouls.common.entities.HealthDataManager;
+import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -16,23 +16,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.util.Util;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile;
-import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -63,6 +59,11 @@ public class EventHandler
 			}
 			
 			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
+		}
+		
+		if (event.getEntity() instanceof LivingEntity)
+		{
+			HealthDataManager.initMaxHealth((LivingEntity)event.getEntity());
 		}
     }
 	
@@ -121,59 +122,16 @@ public class EventHandler
 	}
 	
 	@SubscribeEvent
-	public static void onSavePlayerData(final SaveToFile event)
-	{
-		try
-		{
-			PlayerEntity player = event.getPlayer();
-			CompoundNBT compoundnbt = DarkSoulsEntityData.get(player).save(new CompoundNBT());
-	        File file1 = File.createTempFile(player.getStringUUID() + "_DS-", ".dat", event.getPlayerDirectory());
-	        CompressedStreamTools.writeCompressed(compoundnbt, file1);
-	        File file2 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat");
-	        File file3 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat_old");
-	        Util.safeReplaceFile(file2, file1, file3);
-		}
-		catch (Exception exception)
-		{
-	         DarkSouls.LOGGER.warn("Failed to save player data for {}", (Object)event.getPlayer().getName().getString());
-	    }
-	}
-	
-	@SubscribeEvent
-	public static void onLoadPlayerData(final LoadFromFile event)
-	{
-		CompoundNBT compoundnbt = null;
-		PlayerEntity player = event.getPlayer();
-		
-		try
-		{
-			File file1 = new File(event.getPlayerDirectory(), player.getStringUUID() + "_DS.dat");
-	        if (file1.exists() && file1.isFile())
-	        {
-	           compoundnbt = CompressedStreamTools.readCompressed(file1);
-	        }
-	    }
-		catch (Exception exception)
-		{
-	        DarkSouls.LOGGER.warn("Failed to load player data for {}", (Object)player.getName().getString());
-	    }
-
-	    if (compoundnbt != null)
-	    {
-	    	DarkSoulsEntityData.get(player).load(compoundnbt);
-	    }
-	}
-	
-	@SubscribeEvent
 	public static void onLivingDeath(final LivingDeathEvent event)
 	{
-		DarkSoulsEntityData data = DarkSoulsEntityData.get(event.getEntityLiving());
-		data.setHumanity(0);
+		ModEntityDataManager.setHumanity(event.getEntityLiving(), 0);
 		
 		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
-			data.setHuman(false);
+			ModEntityDataManager.setHuman(event.getEntityLiving(), false);
 		}
+		
+		System.out.print(event.getEntityLiving().getName());
 	}
 	
 	@SubscribeEvent
@@ -182,6 +140,16 @@ public class EventHandler
 		if (event.getEntityLiving() instanceof ZombieEntity)
 		{
 			event.setResult(Result.DENY);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingHeal(final LivingHealEvent event)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		if (event.getEntityLiving().getUUID() == minecraft.player.getUUID())
+		{
+			GameOverlayManager.isHealing = true;
 		}
 	}
 }

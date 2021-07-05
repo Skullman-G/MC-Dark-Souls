@@ -152,7 +152,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 				ServerWorld serverworld = (ServerWorld)this.level;
 				Random random = serverworld.random;
 				
-				if (!this.hasFireKeeper)
+				if (!this.hasFireKeeper && !this.getBlock().isLit(this.getBlockState()))
 				{
 					int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
 		            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);

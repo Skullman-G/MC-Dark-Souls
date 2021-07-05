@@ -248,7 +248,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		{
 			if (random.nextInt(8) == 0)
 			{
-				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.7F + 0.3F, false);
+				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
 			}
 			
 			for (int i = 0; i < this.getFireLevel(state); i++)

@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.blocks.BonfireBlock;
-import com.skullmangames.darksouls.common.entities.DarkSoulsEntityData;
+import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -35,7 +35,7 @@ public class BonfireScreen extends Screen
 		{
 	         this.reverseHollowing();
 	    }));
-		this.reverseHollowingButton.active = !DarkSoulsEntityData.get(this.playerEntity).isHuman() ? true : false;
+		this.reverseHollowingButton.active = !ModEntityDataManager.isHuman(this.playerEntity) ? true : false;
 		this.kindleButton = this.addButton(new Button(this.width / 2 - 75, this.height / 2 + 40, 150, 20, new TranslationTextComponent("gui.darksouls.kindle"), (p_214187_1_) ->
 		{
 	         this.kindle();
@@ -63,11 +63,10 @@ public class BonfireScreen extends Screen
 	
 	protected void reverseHollowing()
 	{
-		DarkSoulsEntityData data = DarkSoulsEntityData.get(this.playerEntity);
-		if (data.getHumanity() > 0)
+		if (ModEntityDataManager.getHumanity(this.playerEntity) > 0)
 		{
-			data.shrinkHumanity(1);
-			data.setHuman(true);
+			ModEntityDataManager.shrinkHumanity(this.playerEntity, 1);
+			ModEntityDataManager.setHuman(this.playerEntity, true);
 		}
 		else
 		{
@@ -78,13 +77,12 @@ public class BonfireScreen extends Screen
 	
 	protected void kindle()
 	{
-		DarkSoulsEntityData data = DarkSoulsEntityData.get(this.playerEntity);
-		if (data.getHumanity() > 0 && data.isHuman())
+		if (ModEntityDataManager.getHumanity(this.playerEntity) > 0 && ModEntityDataManager.isHuman(this.playerEntity))
 		{
-			data.shrinkHumanity(1);
+			ModEntityDataManager.shrinkHumanity(this.playerEntity, 1);
 			this.bonfiretileentity.kindle();
 		}
-		else if (data.isHuman())
+		else if (ModEntityDataManager.isHuman(this.playerEntity))
 		{
 			this.playerEntity.sendMessage(new TranslationTextComponent("gui.darksouls.kindle_no_humanity"), Util.NIL_UUID);
 		}
