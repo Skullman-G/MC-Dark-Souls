@@ -11,7 +11,10 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class BonfireNameScreen extends Screen
 {
 	protected TextFieldWidget titleEdit;
@@ -24,6 +27,12 @@ public class BonfireNameScreen extends Screen
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
 		this.player = player;
+	}
+	
+	@Override
+	public boolean isPauseScreen()
+	{
+		return false;
 	}
 	
 	@Override
@@ -76,8 +85,8 @@ public class BonfireNameScreen extends Screen
 	
 	protected void onDone()
 	{
-	    this.minecraft.setScreen((Screen)null);
 	    this.bonfiretileentity.setName(this.titleEdit.getValue());
 	    this.bonfiretileentity.setLit(this.player, true);
+	    super.onClose();
 	}
 }
