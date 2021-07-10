@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.common.tiles;
 
 import java.util.Random;
-import java.util.UUID;
-
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.blocks.BonfireBlock;
@@ -38,7 +36,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
-	private UUID fireKeeperUUID = UUID.randomUUID();
+	private String fireKeeperStringUUID = "";
 	
 	public BonfireTileEntity(TileEntityType<?> tileEntityTypeIn) 
 	{
@@ -56,7 +54,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		super.save(nbt);
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
-		nbt.putUUID("fire_keeper_uuid", this.fireKeeperUUID);
+		nbt.putString("fire_keeper_uuid", this.fireKeeperStringUUID);
 	    return nbt;
 	}
 	
@@ -66,7 +64,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		super.load(state, nbt);
 	    this.name = nbt.getString("name");
 	    this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
-	    this.fireKeeperUUID = nbt.getUUID("fire_keeper_uuid");
+	    this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
 	}
 	
 	@Override
@@ -130,9 +128,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		return this.name != "";
 	}
 	
-	public void addFireKeeper(UUID uuid)
+	public void addFireKeeper(String uuid)
 	{
-		this.fireKeeperUUID = uuid;
+		this.fireKeeperStringUUID = uuid;
 		this.hasFireKeeper = true;
 		this.setLit(null, true);
 		this.kindle();
@@ -144,9 +142,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		return this.hasFireKeeper;
 	}
 	
-	public UUID getFireKeeperUUID()
+	public String getFireKeeperStringUUID()
 	{
-		return this.fireKeeperUUID;
+		return this.fireKeeperStringUUID;
 	}
 
 	private int ticktimer;

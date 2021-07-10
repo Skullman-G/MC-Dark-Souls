@@ -46,7 +46,7 @@ public class BonfireNameScreen extends Screen
 		this.doneButton.active = false;
 		this.titleEdit = new TextFieldWidget(this.font, this.width / 2 - 75, this.height / 2 - 20, 150, 20, new TranslationTextComponent("advMode.command"))
 		{};
-		this.titleEdit.setMaxLength(100);
+		this.titleEdit.setMaxLength(37);
 		this.setInitialFocus(this.titleEdit);
 	    this.titleEdit.setFocus(true);
 	}

@@ -45,7 +45,7 @@ public class FireKeeperEntity extends QuestEntity
 	
 	public void linkBonfire(BlockPos pos, BonfireTileEntity tileentity)
 	{
-		tileentity.addFireKeeper(this.uuid);
+		tileentity.addFireKeeper(this.stringUUID);
 		this.linkedBonfire = pos;
 		this.hasLinkedBonfire = true;
 	}
@@ -104,7 +104,7 @@ public class FireKeeperEntity extends QuestEntity
 		if (!this.level.isClientSide() && !this.isDeadOrDying())
 		{
 			BonfireTileEntity tileentity = this.level.getBlockEntity(this.linkedBonfire) != null && this.level.getBlockEntity(this.linkedBonfire) instanceof BonfireTileEntity ? (BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire) : null;
-			if (this.hasLinkedBonfire && (tileentity == null || tileentity.getFireKeeperUUID() != this.uuid))
+			if (this.hasLinkedBonfire && (tileentity == null || tileentity.getFireKeeperStringUUID() != this.stringUUID))
 			{
 				this.hurt(DamageSource.STARVE, this.getHealth());
 			}
@@ -117,7 +117,7 @@ public class FireKeeperEntity extends QuestEntity
 		if (!this.level.isClientSide())
 		{
 			BonfireTileEntity tileentity = this.level.getBlockEntity(this.linkedBonfire) != null && this.level.getBlockEntity(this.linkedBonfire) instanceof BonfireTileEntity ? (BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire) : null;
-			if (this.hasLinkedBonfire && tileentity != null && tileentity.getFireKeeperUUID() == this.uuid)
+			if (this.hasLinkedBonfire && tileentity != null && tileentity.getFireKeeperStringUUID() == this.stringUUID)
 			{
 				((BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire)).setLit(null, false);
 			}

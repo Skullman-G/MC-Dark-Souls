@@ -5,6 +5,8 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.blocks.BonfireBlock;
 import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.core.util.StringHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
@@ -97,7 +99,15 @@ public class BonfireScreen extends Screen
 	{
 		super.renderBackground(matrixstack);
 		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
-	    drawCenteredString(matrixstack, this.font, this.bonfiretileentity.getName(), this.width / 2, this.height / 2 - 30, 16777215);
+		
+		String name = this.bonfiretileentity.getName();
+		String namepart1 = StringHelper.trySubstring(name, 0, 12);
+		String namepart2 = name.length() >= 12 ? StringHelper.trySubstring(name, 12, 24) : "";
+		String namepart3 = name.length() >= 24 ? StringHelper.trySubstring(name, 24, 36) : "";
+	    drawCenteredString(matrixstack, this.font, namepart1, this.width / 2, this.height / 2 - 60, 16777215);
+	    if (namepart2 != "") drawCenteredString(matrixstack, this.font, namepart2, this.width / 2, this.height / 2 - 50, 16777215);
+	    if (namepart3 != "") drawCenteredString(matrixstack, this.font, namepart3, this.width / 2, this.height / 2 - 40, 16777215);
+	    
 	    super.render(matrixstack, mouseX, mouseY, partialticks);
 	}
 	
