@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HollowRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entities.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
@@ -33,6 +34,7 @@ public final class ModClientEvents
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.SOUL.get(), SoulRenderer::new);
 		LOGGER.debug("Registered Entity Renderers");
 	}
 	

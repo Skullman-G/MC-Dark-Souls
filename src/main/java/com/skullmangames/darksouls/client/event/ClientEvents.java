@@ -35,5 +35,13 @@ public class ClientEvents
 		{
 			event.setCanceled(true);
 		}
+		else if (event.getType() == ElementType.EXPERIENCE)
+		{
+			event.setCanceled(true);
+		}
+		else if (event.getType() == ElementType.FOOD)
+		{
+			event.setCanceled(true);
+		}
 	}
 }

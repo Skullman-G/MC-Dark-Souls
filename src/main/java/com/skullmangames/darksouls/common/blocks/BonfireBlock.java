@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
-import com.skullmangames.darksouls.common.items.EstusFlaskItem;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -22,6 +21,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
@@ -54,6 +54,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final IntegerProperty FIRE_LEVEL = IntegerProperty.create("fire_level", 1, 4);
+	public static final IntegerProperty ESTUS_LEVEL = IntegerProperty.create("estus_level", 1, 10);
 	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
 	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
@@ -72,7 +73,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(FIRE_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(FIRE_LEVEL, Integer.valueOf(1)).setValue(ESTUS_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
 		this.runCalculation(SHAPE);
 	}
 	
@@ -80,7 +81,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
 	    super.createBlockStateDefinition(container);
-		container.add(LIT, FIRE_LEVEL, HORIZONTAL_FACING);
+		container.add(LIT, FIRE_LEVEL, ESTUS_LEVEL, HORIZONTAL_FACING);
 	}
 	
 	@Override
@@ -116,8 +117,9 @@ public class BonfireBlock extends BaseHorizontalBlock
 		// Bonfire is lit
 		else if (player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
-			// Cancel when filling Estus Flask
-			if (player.getItemInHand(hand).getItem() instanceof EstusFlaskItem)
+			// Cancel when using Item on
+			Item item = player.getItemInHand(hand).getItem();
+			if (item == ItemInit.ESTUS_FLASK.get() || item == ItemInit.UNDEAD_BONE_SHARD.get())
 			{
 				return ActionResultType.PASS;
 			}
@@ -206,6 +208,14 @@ public class BonfireBlock extends BaseHorizontalBlock
 	    if (blockstate.is(this) && blockstate.getValue(LIT) != value)
 	    {
 	       world.setBlock(blockpos, blockstate.setValue(LIT, Boolean.valueOf(value)), 3);
+	    }
+	}
+	
+	public void raiseEstusLevel(World world, BlockState blockstate, BlockPos blockpos)
+	{
+		if (blockstate.is(this) && blockstate.getValue(LIT))
+	    {
+	       world.setBlock(blockpos, blockstate.setValue(ESTUS_LEVEL, Integer.valueOf(blockstate.getValue(ESTUS_LEVEL) + 1)), 3);
 	    }
 	}
 	

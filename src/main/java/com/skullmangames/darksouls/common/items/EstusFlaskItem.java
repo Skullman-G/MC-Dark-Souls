@@ -45,22 +45,45 @@ public class EstusFlaskItem extends DescriptionItem
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
-		    compoundnbt.putDouble("HealMultiplier", 1);
+		    compoundnbt.putInt("Heal", 250);
 		}
 		
 		return compoundnbt;
 	}
 	
-	public static double getHealMultiplier(ItemStack itemstack)
+	public static int getHeal(ItemStack itemstack)
 	{
 		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
-		return compoundnbt.getDouble("HealMultiplier");
+		return compoundnbt.getInt("Heal");
 	}
 	
-	public static void setHealMultiplier(ItemStack itemstack, double value)
+	public static void setHeal(ItemStack itemstack, int value)
 	{
 		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
-		compoundnbt.putDouble("HealMultiplier", value);
+		
+		switch (value)
+		{
+		case 1:
+			compoundnbt.putInt("Heal", 250);
+		case 2:
+			compoundnbt.putInt("Heal", 335);
+		case 3:
+			compoundnbt.putInt("Heal", 410);
+		case 4:
+			compoundnbt.putInt("Heal", 470);
+		case 5:
+			compoundnbt.putInt("Heal", 515);
+		case 6:
+			compoundnbt.putInt("Heal", 535);
+		case 7:
+			compoundnbt.putInt("Heal", 550);
+		case 8:
+			compoundnbt.putInt("Heal", 565);
+		case 9:
+			compoundnbt.putInt("Heal", 580);
+		case 10:
+			compoundnbt.putInt("Heal", 590);
+		}
 	}
 	
 	public static int getTotalUses(ItemStack itemstack)
@@ -122,11 +145,11 @@ public class EstusFlaskItem extends DescriptionItem
 		      {
 		    	  if (playerentity.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
 		    	  {
-		    		  playerentity.heal(10.0F);
+		    		  playerentity.heal(getHeal(itemstack));
 		    	  }
 		    	  else
 		    	  {
-		    		  playerentity.hurt(DamageSource.IN_FIRE, 10.0F);
+		    		  playerentity.hurt(DamageSource.IN_FIRE, getHeal(itemstack));
 		    	  }
 		      }
 	    	  playerentity.awardStat(Stats.ITEM_USED.get(this));
@@ -174,6 +197,7 @@ public class EstusFlaskItem extends DescriptionItem
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
 			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.FIRE_LEVEL) * 5);
+			setHeal(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_LEVEL));
 			return ActionResultType.SUCCESS;
 		}
 		

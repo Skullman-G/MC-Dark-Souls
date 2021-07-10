@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.common.entities;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import com.skullmangames.darksouls.core.init.EntityTypeInit;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -12,13 +14,14 @@ import net.minecraft.entity.ai.attributes.Attributes;
 public class HealthDataManager
 {
 	private static final Map<EntityType<? extends LivingEntity>, Integer> baseHealths = (ImmutableMap.<EntityType<? extends LivingEntity>, Integer>builder()
-			.put(EntityType.PLAYER, 400).build());
+			.put(EntityType.PLAYER, 400)
+			.put(EntityTypeInit.HOLLOW.get(), 69).build());
 	
 	public static void initMaxHealth(LivingEntity livingentity)
 	{
 		if (livingentity.getPersistentData().getInt("ModdedMaxHealth") == 0)
 		{
-			setMaxHealth(livingentity, baseHealths.get(livingentity.getType()) != null ? baseHealths.get(livingentity.getType()).intValue() : 400);
+			setMaxHealth(livingentity, baseHealths.get(livingentity.getType()) != null ? baseHealths.get(livingentity.getType()).intValue() : 5);
 		}
 		else
 		{

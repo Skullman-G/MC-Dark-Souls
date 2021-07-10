@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.items.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.items.HumanityItem;
 import com.skullmangames.darksouls.common.items.SwordDescriptionItem;
 import com.skullmangames.darksouls.common.items.Teleport2BonfireItem;
+import com.skullmangames.darksouls.common.items.UndeadBoneShardItem;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -48,8 +49,8 @@ public class ItemInit
 	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordDescriptionItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(ItemGroup.TAB_COMBAT)));
 	
-	/*public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new DescriptionItem(new Item.Properties()
-			.tab(ItemGroup.TAB_MATERIALS)));*/
+	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
+			.tab(ItemGroup.TAB_MATERIALS)));
 	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),

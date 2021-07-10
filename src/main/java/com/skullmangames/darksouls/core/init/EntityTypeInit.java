@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entities.HollowEntity;
+import com.skullmangames.darksouls.common.entities.SoulEntity;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -25,6 +26,12 @@ public class EntityTypeInit
 	public static final RegistryObject<EntityType<HollowEntity>> HOLLOW = ENTITIES.register("hollow", () -> EntityType.Builder.<HollowEntity>of(HollowEntity::new, EntityClassification.MONSTER)
 			.sized(0.6F, 1.95F)
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "hollow").toString()));
+	
+	public static final RegistryObject<EntityType<SoulEntity>> SOUL = ENTITIES.register("soul", () -> EntityType.Builder.<SoulEntity>of(SoulEntity::new, EntityClassification.MISC)
+			.sized(0.5F, 0.5F)
+			.clientTrackingRange(6)
+			.updateInterval(20)
+			.build(new ResourceLocation(DarkSouls.MOD_ID, "soul").toString()));
 	
 	public static void registerEntitySpawnPlacement()
 	{

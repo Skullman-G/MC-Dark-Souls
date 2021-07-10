@@ -40,13 +40,13 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 	protected void renderBg(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_)
 	{
 	    this.minecraft.getTextureManager().bind(REINFORCE_ESTUS_FLASK_LOCATION);
-	    int i = (this.width - this.imageWidth) / 2;
-	    int j = (this.height - this.imageHeight) / 2;
-	    this.blit(p_230450_1_, i, j, 0, 0, this.imageWidth, this.imageHeight);
-	    this.blit(p_230450_1_, i + 59, j + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
+	    int x = (this.width - this.imageWidth) / 2;
+	    int y = (this.height - this.imageHeight) / 2;
+	    this.blit(p_230450_1_, x, y, 0, 0, this.imageWidth, this.imageHeight);
+	    this.blit(p_230450_1_, x + 59, y + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
 	    if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(2).hasItem())
 	    {
-	       this.blit(p_230450_1_, i + 99, j + 45, this.imageWidth, 0, 28, 21);
+	       this.blit(p_230450_1_, x + 99, y + 45, this.imageWidth, 0, 28, 21);
 	    }
 	}
 	

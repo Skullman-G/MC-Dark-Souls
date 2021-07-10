@@ -6,6 +6,8 @@ import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
 import com.skullmangames.darksouls.common.entities.HealthDataManager;
 import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entities.SoulEntity;
+import com.skullmangames.darksouls.common.entities.StaminaDataManager;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -24,6 +26,7 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
@@ -64,6 +67,7 @@ public class EventHandler
 		if (event.getEntity() instanceof LivingEntity)
 		{
 			HealthDataManager.initMaxHealth((LivingEntity)event.getEntity());
+			StaminaDataManager.initMaxStamina((LivingEntity)event.getEntity());
 		}
     }
 	
@@ -151,5 +155,13 @@ public class EventHandler
 		{
 			GameOverlayManager.isHealing = true;
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingExperienceDrop(final LivingExperienceDropEvent event)
+	{
+		LivingEntity entity = event.getEntityLiving();
+		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), 1));
+		event.setCanceled(true);
 	}
 }

@@ -58,8 +58,36 @@ public class ModEntityDataManager
 		return Integer.toString(getHumanity(livingentity));
 	}
 	
-	private static ServerPlayerEntity getServerPlayer(ClientPlayerEntity clientplayer)
+	public static ServerPlayerEntity getServerPlayer(ClientPlayerEntity clientplayer)
 	{
 		return Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(clientplayer.getUUID());
+	}
+	
+	public static int getSouls(LivingEntity livingentity)
+	{
+		if (livingentity instanceof ClientPlayerEntity) livingentity = getServerPlayer((ClientPlayerEntity)livingentity);
+		return livingentity.getPersistentData().getInt("Souls");
+	}
+	
+	public static void setSouls(LivingEntity livingentity, int value)
+	{
+		livingentity.getPersistentData().putInt("Souls", value);
+	}
+	
+	public static void raiseSouls(LivingEntity livingentity, int raise)
+	{
+		int currentvalue = getSouls(livingentity);
+		setSouls(livingentity, currentvalue + raise);
+	}
+	
+	public static void shrinkSouls(LivingEntity livingentity, int shrink)
+	{
+		int currentvalue = getSouls(livingentity);
+		setSouls(livingentity, currentvalue - shrink);
+	}
+	
+	public static String getStringSouls(LivingEntity livingentity)
+	{
+		return Integer.toString(getSouls(livingentity));
 	}
 }
