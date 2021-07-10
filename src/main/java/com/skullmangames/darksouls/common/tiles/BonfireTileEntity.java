@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.tiles;
 
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -37,6 +38,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
+	private UUID fireKeeperUUID = UUID.randomUUID();
 	
 	public BonfireTileEntity(TileEntityType<?> tileEntityTypeIn) 
 	{
@@ -54,6 +56,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		super.save(nbt);
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
+		nbt.putUUID("fire_keeper_uuid", this.fireKeeperUUID);
 	    return nbt;
 	}
 	
@@ -63,6 +66,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		super.load(state, nbt);
 	    this.name = nbt.getString("name");
 	    this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
+	    this.fireKeeperUUID = nbt.getUUID("fire_keeper_uuid");
 	}
 	
 	@Override
@@ -126,8 +130,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		return this.name != "";
 	}
 	
-	public void addFireKeeper()
+	public void addFireKeeper(UUID uuid)
 	{
+		this.fireKeeperUUID = uuid;
 		this.hasFireKeeper = true;
 		this.setLit(null, true);
 		this.kindle();
@@ -137,6 +142,11 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	public boolean hasFireKeeper()
 	{
 		return this.hasFireKeeper;
+	}
+	
+	public UUID getFireKeeperUUID()
+	{
+		return this.fireKeeperUUID;
 	}
 
 	private int ticktimer;
@@ -160,7 +170,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 					if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
 					{
 						FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
-						if (entity != null /*&& net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, SpawnReason.NATURAL) == -1*/)
+						if (entity != null)
 						{
 							entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
 					        entity.moveTo(blockpos, 0.0F, 0.0F);
@@ -169,7 +179,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 					}
 				}
 				
-				if (random.nextInt(10) == 1)
+				if (random.nextInt(10) == 1 && this.getBlock().isLit(this.getBlockState()))
 				{
 					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
 		            int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
