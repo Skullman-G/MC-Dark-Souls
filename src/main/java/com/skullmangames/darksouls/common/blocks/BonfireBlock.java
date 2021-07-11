@@ -53,8 +53,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireBlock extends BaseHorizontalBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	public static final IntegerProperty FIRE_LEVEL = IntegerProperty.create("fire_level", 1, 4);
-	public static final IntegerProperty ESTUS_LEVEL = IntegerProperty.create("estus_level", 1, 10);
+	public static final IntegerProperty ESTUS_VOLUME_LEVEL = IntegerProperty.create("estus_volume_level", 1, 4);
+	public static final IntegerProperty ESTUS_HEAL_LEVEL = IntegerProperty.create("estus_heal_level", 1, 10);
 	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
 	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
@@ -73,7 +73,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		super(AbstractBlock.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(FIRE_LEVEL, Integer.valueOf(1)).setValue(ESTUS_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
 		this.runCalculation(SHAPE);
 	}
 	
@@ -81,7 +81,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
 	    super.createBlockStateDefinition(container);
-		container.add(LIT, FIRE_LEVEL, ESTUS_LEVEL, HORIZONTAL_FACING);
+		container.add(LIT, ESTUS_VOLUME_LEVEL, ESTUS_HEAL_LEVEL, HORIZONTAL_FACING);
 	}
 	
 	@Override
@@ -127,7 +127,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 			player.heal(player.getMaxHealth() - player.getHealth());
 			
 			// SERVER SIDE
-			if (!world.isClientSide && tileentity instanceof BonfireTileEntity)
+			if (player instanceof ServerPlayerEntity && tileentity instanceof BonfireTileEntity)
 			{
 				// Open Screens
 				BonfireTileEntity bonfiretileentity = (BonfireTileEntity)tileentity;
@@ -211,11 +211,11 @@ public class BonfireBlock extends BaseHorizontalBlock
 	    }
 	}
 	
-	public void raiseEstusLevel(World world, BlockState blockstate, BlockPos blockpos)
+	public void raiseEstusHealLevel(World world, BlockState blockstate, BlockPos blockpos)
 	{
-		if (blockstate.is(this) && blockstate.getValue(LIT))
+		if (blockstate.is(this) && blockstate.getValue(LIT) && blockstate.getValue(ESTUS_HEAL_LEVEL) < 10)
 	    {
-	       world.setBlock(blockpos, blockstate.setValue(ESTUS_LEVEL, Integer.valueOf(blockstate.getValue(ESTUS_LEVEL) + 1)), 3);
+	       world.setBlock(blockpos, blockstate.setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(blockstate.getValue(ESTUS_HEAL_LEVEL) + 1)), 3);
 	    }
 	}
 	
@@ -237,16 +237,11 @@ public class BonfireBlock extends BaseHorizontalBlock
 		return TileEntityTypeInit.BONFIRE_TILE_ENTITY.get().create();
 	}
 	
-	public int getFireLevel(BlockState blockstate)
-	{
-		return blockstate.getValue(FIRE_LEVEL);
-	}
-	
 	public void kindle(World world, BlockState blockstate, BlockPos blockpos)
 	{
-	    if (blockstate.is(this) && blockstate.getValue(FIRE_LEVEL) < 4)
+	    if (blockstate.is(this) && blockstate.getValue(ESTUS_VOLUME_LEVEL) < 4)
 	    {
-	       world.setBlock(blockpos, blockstate.setValue(FIRE_LEVEL, Integer.valueOf(blockstate.getValue(FIRE_LEVEL) + 1)), 3);
+	       world.setBlock(blockpos, blockstate.setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(blockstate.getValue(ESTUS_VOLUME_LEVEL) + 1)), 3);
 	    }
 	}
 	
@@ -261,7 +256,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
 			}
 			
-			for (int i = 0; i < this.getFireLevel(state); i++)
+			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
 			{
 				worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
 		        worldIn.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);

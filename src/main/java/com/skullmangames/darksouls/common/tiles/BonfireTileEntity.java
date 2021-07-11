@@ -54,7 +54,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		super.save(nbt);
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
-		nbt.putString("fire_keeper_uuid", this.fireKeeperStringUUID);
+		nbt.putString("fire_keeper_string_uuid", this.fireKeeperStringUUID);
 	    return nbt;
 	}
 	

@@ -25,7 +25,7 @@ public class UndeadBoneShardItem extends DescriptionItem
 		ItemStack itemstack = itemusecontext.getItemInHand();
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
-			((BonfireBlock)blockstate.getBlock()).raiseEstusLevel(world, blockstate, blockpos);
+			((BonfireBlock)blockstate.getBlock()).raiseEstusHealLevel(world, blockstate, blockpos);
 			if (!itemusecontext.getPlayer().abilities.instabuild)
 			{
 				itemstack.shrink(1);

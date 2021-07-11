@@ -57,11 +57,11 @@ public class EstusFlaskItem extends DescriptionItem
 		return compoundnbt.getInt("Heal");
 	}
 	
-	public static void setHeal(ItemStack itemstack, int value)
+	public static void setHeal(ItemStack itemstack, int heallevel)
 	{
 		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		
-		switch (value)
+		switch (heallevel)
 		{
 		case 1:
 			compoundnbt.putInt("Heal", 250);
@@ -196,8 +196,8 @@ public class EstusFlaskItem extends DescriptionItem
 		BlockState blockstate = world.getBlockState(blockpos);
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
-			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.FIRE_LEVEL) * 5);
-			setHeal(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_LEVEL));
+			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) * 5);
+			setHeal(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
 			return ActionResultType.SUCCESS;
 		}
 		

@@ -42,6 +42,7 @@ import com.skullmangames.darksouls.common.items.SoulsGroup;
 import com.skullmangames.darksouls.core.init.BlockInit;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
+import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -99,6 +100,7 @@ public class DarkSouls
     	});
     	
     	EntityTypeInit.registerEntitySpawnPlacement();
+    	CriteriaTriggerInit.register();
     }
     
 	private void doClientStuff(final FMLClientSetupEvent event)

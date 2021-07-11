@@ -73,6 +73,7 @@ public class BonfireScreen extends Screen
 			String warning = "";
 			if (!(ModEntityDataManager.getHumanity(this.playerEntity) > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
 			if (!ModEntityDataManager.isHuman(this.playerEntity)) warning = new TranslationTextComponent("gui.darksouls.not_human").getString();
+			if (this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) >= 2) warning = new TranslationTextComponent("gui.darksouls.cannot_kindle_further").getString();
 			StringTextComponent textcomponent = warning == "" ? new StringTextComponent(description) : new StringTextComponent(description + "\n\n" + "\u00A74" + warning);
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
@@ -81,7 +82,7 @@ public class BonfireScreen extends Screen
 		{
 	         this.kindle();
 	    }, tooltip));
-		this.kindleButton.active = ModEntityDataManager.isHuman(this.playerEntity) && ModEntityDataManager.getHumanity(this.playerEntity) > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.FIRE_LEVEL) < 2;
+		this.kindleButton.active = ModEntityDataManager.isHuman(this.playerEntity) && ModEntityDataManager.getHumanity(this.playerEntity) > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
 		this.leaveButton = this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         super.onClose();
@@ -104,9 +105,15 @@ public class BonfireScreen extends Screen
 		String namepart1 = StringHelper.trySubstring(name, 0, 12);
 		String namepart2 = name.length() >= 12 ? StringHelper.trySubstring(name, 12, 24) : "";
 		String namepart3 = name.length() >= 24 ? StringHelper.trySubstring(name, 24, 36) : "";
-	    drawCenteredString(matrixstack, this.font, namepart1, this.width / 2, this.height / 2 - 60, 16777215);
-	    if (namepart2 != "") drawCenteredString(matrixstack, this.font, namepart2, this.width / 2, this.height / 2 - 50, 16777215);
-	    if (namepart3 != "") drawCenteredString(matrixstack, this.font, namepart3, this.width / 2, this.height / 2 - 40, 16777215);
+	    drawCenteredString(matrixstack, this.font, namepart1, this.width / 2, this.height / 2 - 55, 16777215);
+	    if (namepart2 != "") drawCenteredString(matrixstack, this.font, namepart2, this.width / 2, this.height / 2 - 45, 16777215);
+	    if (namepart3 != "") drawCenteredString(matrixstack, this.font, namepart3, this.width / 2, this.height / 2 - 35, 16777215);
+	    
+	    String estusvolumelevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL));
+	    drawCenteredString(matrixstack, this.font, estusvolumelevel, this.width / 2 + 25, this.height / 2 - 70, 16777215);
+	    
+	    String estusheallevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
+	    drawCenteredString(matrixstack, this.font, estusheallevel, this.width / 2 - 5, this.height / 2 - 70, 16777215);
 	    
 	    super.render(matrixstack, mouseX, mouseY, partialticks);
 	}

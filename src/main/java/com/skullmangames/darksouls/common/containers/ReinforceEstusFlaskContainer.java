@@ -181,10 +181,8 @@ public class ReinforceEstusFlaskContainer extends Container
 	
 	public void stopTalking()
 	{
-		System.out.print("helo");
 		if (this.fireKeeper != null)
 		{
-			System.out.print("mekaka");
 			this.fireKeeper.talking = false;
 		}
 	}

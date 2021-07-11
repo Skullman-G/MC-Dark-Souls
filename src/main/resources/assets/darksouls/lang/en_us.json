@@ -51,6 +51,7 @@
 	"gui.darksouls.kindle_tooltip": "Offer 1 Humanity to kindle the bonfire and raise the amount of estus you can gain from it.",
 	"gui.darksouls.already_human": "You are already in human form",
 	"gui.darksouls.not_human": "You have to be in human form to do this",
+	"gui.darksouls.cannot_kindle_further": "You cannot kindle any further",
 	
 	"block.bonfire.lit": "Bonfire lit",
 	"block.bonfire.lit.sub": "Bonfire lit",
