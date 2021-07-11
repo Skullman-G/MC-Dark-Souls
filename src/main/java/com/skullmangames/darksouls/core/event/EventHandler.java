@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -53,6 +54,12 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onEntityJoinWorld(final EntityJoinWorldEvent event)
     {
+		if (event.getEntity() instanceof ItemEntity && ((ItemEntity)event.getEntity()).getItem().getItem() == ItemInit.DARKSIGN.get())
+		{
+			event.setCanceled(true);
+			return;
+		}
+		
 		if (event.getEntity() instanceof PlayerEntity)
 		{
 			if (!((PlayerEntity)event.getEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
