@@ -32,6 +32,8 @@ public class BonfireScreen extends Screen
 	private PlayerEntity playerEntity;
 	private int buttonWidth = 100;
 	private int buttonHeight = 20;
+	private String estusVolumeLevel;
+	private String estusHealLevel;
 	
 	public BonfireScreen(BonfireTileEntity tileentity, PlayerEntity playerentity)
 	{
@@ -50,6 +52,9 @@ public class BonfireScreen extends Screen
 	protected void init()
 	{
 		super.init();
+		
+		estusVolumeLevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL));
+		estusHealLevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
 		
 		Button.ITooltip tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
 		{
@@ -109,11 +114,8 @@ public class BonfireScreen extends Screen
 	    if (namepart2 != "") drawCenteredString(matrixstack, this.font, namepart2, this.width / 2, this.height / 2 - 45, 16777215);
 	    if (namepart3 != "") drawCenteredString(matrixstack, this.font, namepart3, this.width / 2, this.height / 2 - 35, 16777215);
 	    
-	    String estusvolumelevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL));
-	    drawCenteredString(matrixstack, this.font, estusvolumelevel, this.width / 2 + 25, this.height / 2 - 70, 16777215);
-	    
-	    String estusheallevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
-	    drawCenteredString(matrixstack, this.font, estusheallevel, this.width / 2 - 5, this.height / 2 - 70, 16777215);
+	    drawCenteredString(matrixstack, this.font, estusVolumeLevel, this.width / 2 + 25, this.height / 2 - 70, 16777215);
+	    drawCenteredString(matrixstack, this.font, estusHealLevel, this.width / 2 - 5, this.height / 2 - 70, 16777215);
 	    
 	    super.render(matrixstack, mouseX, mouseY, partialticks);
 	}

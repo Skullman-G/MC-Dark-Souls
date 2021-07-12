@@ -28,6 +28,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
@@ -170,5 +171,11 @@ public class EventHandler
 		LivingEntity entity = event.getEntityLiving();
 		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), 1));
 		event.setCanceled(true);
+	}
+	
+	@SubscribeEvent
+	public static void onLivingFall(final LivingFallEvent event)
+	{
+		event.setDamageMultiplier(event.getEntityLiving().getMaxHealth() / 10);
 	}
 }
