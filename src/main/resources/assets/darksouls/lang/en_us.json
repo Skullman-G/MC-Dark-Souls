@@ -45,7 +45,7 @@
 	"gui.darksouls.humanity_restored_message": "HUMANITY RESTORED",
 	"gui.darksouls.respawn_position_fail_message": "Cannot set respawn position",
 	"gui.darksouls.fire_keeper_absent": "Fire Keeper is absent. Cannot light bonfire",
-	"gui.darksouls.darksign_didnt_work": "The Darksign has not been linked to a bonfire before",
+	"gui.darksouls.darksign_didnt_work": "Your have not been linked to a bonfire before",
 	"gui.darksouls.reverse_hollowing_tooltip": "Offer 1 Humanity to regain your human form.",
 	"gui.darksouls.not_enough_humanity": "You have not enough humanity to do this.",
 	"gui.darksouls.kindle_tooltip": "Offer 1 Humanity to kindle the bonfire and raise the amount of estus you can gain from it.",
