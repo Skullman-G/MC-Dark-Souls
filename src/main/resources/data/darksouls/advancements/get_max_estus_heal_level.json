@@ -1,0 +1,29 @@
+{
+	"parent": "darksouls:light_bonfire",
+	"display": {
+    "icon": {
+      "item": "darksouls:undead_bone_shard"
+    },
+    "title": {
+      "translate": "advancements.darksouls.get_max_estus_heal_level.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.get_max_estus_heal_level.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "max_estus_heal_level": {
+      "trigger": "minecraft:get_max_estus_heal_level"
+    }
+  },
+  "requirements": [
+    [
+      "max_estus_heal_level"
+    ]
+  ]
+}

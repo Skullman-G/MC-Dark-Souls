@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.advancements.criterions;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
@@ -9,9 +10,9 @@ import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-public class ObtainBiggestEstusFlaskTrigger extends AbstractCriterionTrigger<ObtainBiggestEstusFlaskTrigger.Instance>
+public class MaxEstusHealLevelTrigger extends AbstractCriterionTrigger<MaxEstusHealLevelTrigger.Instance>
 {
-	private static final ResourceLocation ID = new ResourceLocation("obtain_biggest_estus_flask");
+	private static final ResourceLocation ID = new ResourceLocation("get_max_estus_heal_level");
 	
 	@Override
 	public ResourceLocation getId()
@@ -20,36 +21,34 @@ public class ObtainBiggestEstusFlaskTrigger extends AbstractCriterionTrigger<Obt
 	}
 	
 	@Override
-	protected ObtainBiggestEstusFlaskTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
+	protected MaxEstusHealLevelTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
 	{
-		return new ObtainBiggestEstusFlaskTrigger.Instance(ID, arg1);
+		return new MaxEstusHealLevelTrigger.Instance(ID, arg1);
 	}
 	
-	public void trigger(ServerPlayerEntity player, int totaluses)
+	public void trigger(ServerPlayerEntity player)
 	{
 	    this.trigger(player, (p_226524_1_) ->
 	    {
-	       return p_226524_1_.matches(totaluses);
+	       return p_226524_1_.matches();
 	    });
 	}
 	
 	public static class Instance extends CriterionInstance
 	{
-		private final int totalUses = 20;
-		
 		public Instance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
 			super(resourcelocation, predicate);
 		}
 		
-		public static ObtainBiggestEstusFlaskTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate)
+		public static MaxEstusHealLevelTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
-			return new ObtainBiggestEstusFlaskTrigger.Instance(resourcelocation, predicate);
+			return new MaxEstusHealLevelTrigger.Instance(resourcelocation, predicate);
 	    }
 		
-		public boolean matches(int totaluses)
+		public boolean matches()
 		{
-			return this.totalUses == totaluses;
+			return true;
 	    }
 		
 		@Override
