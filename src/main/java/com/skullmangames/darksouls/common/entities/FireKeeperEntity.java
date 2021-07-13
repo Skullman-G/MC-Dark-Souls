@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContaine
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ItemInit;
-
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -23,6 +22,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -167,5 +168,23 @@ public class FireKeeperEntity extends QuestEntity
 		list.add("1");
 		list.add("2");
 		return list;
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return SoundEvents.VILLAGER_AMBIENT;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return SoundEvents.VILLAGER_DEATH;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source)
+	{
+		return SoundEvents.VILLAGER_HURT;
 	}
 }
