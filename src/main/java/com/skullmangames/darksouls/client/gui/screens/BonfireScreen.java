@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +35,8 @@ public class BonfireScreen extends Screen
 	private int buttonHeight = 20;
 	private String estusVolumeLevel;
 	private String estusHealLevel;
+	private ImageButton estusHealIcon;
+	private ImageButton estusVolumeIcon;
 	
 	public BonfireScreen(BonfireTileEntity tileentity, PlayerEntity playerentity)
 	{
@@ -57,6 +60,26 @@ public class BonfireScreen extends Screen
 		estusHealLevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
 		
 		Button.ITooltip tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
+		{
+			String description = new TranslationTextComponent("gui.darksouls.estus_heal_level_tooltip").getString();
+			StringTextComponent textcomponent = new StringTextComponent(description);
+			
+			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
+	    };
+		this.estusHealIcon = this.addButton(new ImageButton(this.width / 2 - 20 - (16 / 2), this.height / 2 - 69 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/undead_bone_shard.png"), 16, 16, null, tooltip, null));
+		this.estusHealIcon.active = false;
+		
+		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
+		{
+			String description = new TranslationTextComponent("gui.darksouls.estus_volume_level_tooltip").getString();
+			StringTextComponent textcomponent = new StringTextComponent(description);
+			
+			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
+	    };
+		this.estusVolumeIcon = this.addButton(new ImageButton(this.width / 2 + 10 - (16 / 2), this.height / 2 - 68 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/estus_flask_full.png"), 16, 16, null, tooltip, null));
+		this.estusVolumeIcon.active = false;
+		
+		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
 		{
 			String description = new TranslationTextComponent("gui.darksouls.reverse_hollowing_tooltip").getString();
 			String warning = "";
