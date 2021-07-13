@@ -37,8 +37,7 @@ public class ItemInit
 			.tab(ItemGroup.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Teleport2BonfireItem(DarkSoulsUseAction.DARKSIGN, true, false, new Item.Properties()
-			.stacksTo(1)
-			.tab(ItemGroup.TAB_TOOLS)));
+			.stacksTo(1)));
 	
 	public static final RegistryObject<Item> HOMEWARD_BONE = ITEMS.register("homeward_bone", () -> new Teleport2BonfireItem(DarkSoulsUseAction.MIRACLE, false, true, new Item.Properties()
 			.tab(ItemGroup.TAB_TOOLS)));
