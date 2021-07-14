@@ -94,8 +94,11 @@ public class EstusFlaskItem extends DescriptionItem
 	
 	public static void setTotalUses(ItemStack itemstack, int value)
 	{
-	    CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
-	    compoundnbt.putInt("TotalUses", value);
+	    if (value <= 20)
+	    {
+			CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
+		    compoundnbt.putInt("TotalUses", value);
+	    }
 	}
 	
 	public static int getUses(ItemStack itemstack)

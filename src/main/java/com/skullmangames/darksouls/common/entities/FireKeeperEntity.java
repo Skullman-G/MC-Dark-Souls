@@ -23,6 +23,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -162,7 +163,7 @@ public class FireKeeperEntity extends QuestEntity
 	{
 		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
 		{
-	         return new ReinforceEstusFlaskContainer(id, inventory, this);
+	         return new ReinforceEstusFlaskContainer(id, inventory, this, IWorldPosCallable.create(this.level, this.blockPosition()));
 	    }, new TranslationTextComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}

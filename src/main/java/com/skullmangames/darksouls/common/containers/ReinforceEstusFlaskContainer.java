@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
-import com.skullmangames.darksouls.common.items.EstusFlaskItem;
+import com.skullmangames.darksouls.common.items.crafting.ReinforceEstusFlaskRecipe;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.RecipeTypeInit;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,8 +18,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.SmithingRecipe;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.world.World;
 
@@ -29,33 +27,34 @@ public class ReinforceEstusFlaskContainer extends Container
 	private final FireKeeperEntity fireKeeper;
 	
 	@Nullable
-	private SmithingRecipe selectedRecipe;
-	protected final IWorldPosCallable access = IWorldPosCallable.NULL;
+	private ReinforceEstusFlaskRecipe selectedRecipe;
+	private final IWorldPosCallable access;
 	
-	protected final CraftResultInventory resultSlots = new CraftResultInventory();
-	protected final IInventory inputSlots = new Inventory(2)
+	private final CraftResultInventory resultSlots = new CraftResultInventory();
+	private final IInventory inputSlots = new Inventory(2)
 	{
 	      public void setChanged()
 	      {
 	         super.setChanged();
 	         ReinforceEstusFlaskContainer.this.slotsChanged(this);
 	      }
-	 };
+	};
 	
-	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, FireKeeperEntity firekeeper)
+	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, FireKeeperEntity firekeeper, IWorldPosCallable access)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, firekeeper);
+		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, firekeeper, access);
 	}
 	
 	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, null);
+		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, null, IWorldPosCallable.NULL);
 	}
 	
-	public ReinforceEstusFlaskContainer(ContainerType<?> p_i50105_1_, int p_i50105_2_, PlayerInventory inventory, @Nullable FireKeeperEntity firekeeper)
+	public ReinforceEstusFlaskContainer(ContainerType<?> p_i50105_1_, int p_i50105_2_, PlayerInventory inventory, @Nullable FireKeeperEntity firekeeper, IWorldPosCallable access)
 	{
 		super(p_i50105_1_, p_i50105_2_);
 		
+		this.access = access;
 		this.addSlot(new Slot(this.inputSlots, 0, 27, 47));
 	    this.addSlot(new Slot(this.inputSlots, 1, 76, 47));
 	    this.addSlot(new Slot(this.resultSlots, 2, 134, 47)
@@ -70,9 +69,17 @@ public class ReinforceEstusFlaskContainer extends Container
 	            return ReinforceEstusFlaskContainer.this.mayPickup(p_82869_1_, this.hasItem());
 	         }
 
-	         public ItemStack onTake(PlayerEntity p_190901_1_, ItemStack p_190901_2_)
+	         public ItemStack onTake(PlayerEntity player, ItemStack itemstack)
 	         {
-	            return ReinforceEstusFlaskContainer.this.onTake(p_190901_1_, p_190901_2_);
+	        	 itemstack.onCraftedBy(player.level, player, itemstack.getCount());
+		   	     ReinforceEstusFlaskContainer.this.resultSlots.awardUsedRecipes(player);
+		   	     ReinforceEstusFlaskContainer.this.shrinkStackInSlot(0);
+		   	     ReinforceEstusFlaskContainer.this.shrinkStackInSlot(1);
+		   	     ReinforceEstusFlaskContainer.this.access.execute((p_234653_0_, p_234653_1_) ->
+		   	     {
+		   	    	 p_234653_0_.levelEvent(1044, p_234653_1_, 0);
+		   	     });
+		   	     return itemstack;
 	         }
 	    });
 	    
@@ -114,7 +121,7 @@ public class ReinforceEstusFlaskContainer extends Container
 	
 	public void createResult()
 	{
-		List<SmithingRecipe> list = this.level.getRecipeManager().getRecipesFor(IRecipeType.SMITHING, this.inputSlots, this.level);
+		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeTypeInit.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);
 	    if (list.isEmpty())
 	    {
 	        this.resultSlots.setItem(0, ItemStack.EMPTY);
@@ -124,19 +131,6 @@ public class ReinforceEstusFlaskContainer extends Container
 	       this.selectedRecipe = list.get(0);
 	       ItemStack itemstack = this.selectedRecipe.assemble(this.inputSlots);
 	       this.resultSlots.setRecipeUsed(this.selectedRecipe);
-	       if (itemstack.getItem() instanceof EstusFlaskItem)
-	       {
-	    	   if (this.inputSlots.getItem(0).getItem() instanceof EstusFlaskItem && this.inputSlots.getItem(1).getItem() == ItemInit.ESTUS_SHARD.get() && EstusFlaskItem.getTotalUses(itemstack) < 20)
-	    	   {
-	    		   EstusFlaskItem.setTotalUses(itemstack, EstusFlaskItem.getTotalUses(itemstack) + 1);
-	    		   EstusFlaskItem.setUses(itemstack, EstusFlaskItem.getTotalUses(itemstack));
-	    	   }
-	    	   else if (EstusFlaskItem.getTotalUses(itemstack) >= 20)
-	    	   {
-	    		   this.resultSlots.setItem(0, ItemStack.EMPTY);
-	    		   return;
-	    	   }
-	       }
 	       this.resultSlots.setItem(0, itemstack);
 	    }
 	}
@@ -178,11 +172,69 @@ public class ReinforceEstusFlaskContainer extends Container
 		return super.getSlot(p_75139_1_);
 	}
 	
-	public void stopTalking()
+	@Override
+	public ItemStack quickMoveStack(PlayerEntity p_82846_1_, int p_82846_2_)
 	{
-		if (this.fireKeeper != null)
+	      ItemStack itemstack = ItemStack.EMPTY;
+	      Slot slot = this.slots.get(p_82846_2_);
+	      if (slot != null && slot.hasItem()) {
+	         ItemStack itemstack1 = slot.getItem();
+	         itemstack = itemstack1.copy();
+	         if (p_82846_2_ == 2) {
+	            if (!this.moveItemStackTo(itemstack1, 3, 39, true)) {
+	               return ItemStack.EMPTY;
+	            }
+
+	            slot.onQuickCraft(itemstack1, itemstack);
+	         } else if (p_82846_2_ != 0 && p_82846_2_ != 1) {
+	            if (p_82846_2_ >= 3 && p_82846_2_ < 39) {
+	               int i = this.shouldQuickMoveToAdditionalSlot(itemstack) ? 1 : 0;
+	               if (!this.moveItemStackTo(itemstack1, i, 2, false)) {
+	                  return ItemStack.EMPTY;
+	               }
+	            }
+	         } else if (!this.moveItemStackTo(itemstack1, 3, 39, false)) {
+	            return ItemStack.EMPTY;
+	         }
+
+	         if (itemstack1.isEmpty()) {
+	            slot.set(ItemStack.EMPTY);
+	         } else {
+	            slot.setChanged();
+	         }
+
+	         if (itemstack1.getCount() == itemstack.getCount()) {
+	            return ItemStack.EMPTY;
+	         }
+
+	         slot.onTake(p_82846_1_, itemstack1);
+	      }
+
+	      return itemstack;
+	}
+	
+	private boolean shouldQuickMoveToAdditionalSlot(ItemStack p_241210_1_)
+	{
+		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeTypeInit.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);  
+		return list.stream().anyMatch((p_241444_1_) ->
 		{
-			this.fireKeeper.talking = false;
-		}
+	         return p_241444_1_.isAdditionIngredient(p_241210_1_);
+	    });
+	}
+	
+	@Override
+	public void removed(PlayerEntity p_75134_1_)
+	{
+		super.removed(p_75134_1_);
+	    this.access.execute((p_217068_2_, p_217068_3_) ->
+	    {
+	    	this.clearContainer(p_75134_1_, p_217068_2_, this.inputSlots);
+	    });
+	}
+	
+	@Override
+	protected void clearContainer(PlayerEntity p_193327_1_, World p_193327_2_, IInventory p_193327_3_)
+	{
+		super.clearContainer(p_193327_1_, p_193327_2_, p_193327_3_);
 	}
 }

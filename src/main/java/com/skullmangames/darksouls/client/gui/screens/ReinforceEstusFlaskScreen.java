@@ -88,11 +88,4 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 		super.removed();
 		this.menu.removeSlotListener(this);
 	}
-	
-	@Override
-	public void onClose()
-	{
-		this.menu.stopTalking();
-		super.onClose();
-	}
 }

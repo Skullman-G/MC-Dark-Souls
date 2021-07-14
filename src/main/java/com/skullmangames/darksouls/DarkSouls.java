@@ -47,6 +47,7 @@ import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.ParticleTypeInit;
+import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
@@ -74,6 +75,7 @@ public class DarkSouls
     	EntityTypeInit.ENTITIES.register(bus);
     	ItemInit.ITEMS.register(bus);
     	ParticleTypeInit.PARTICLE_TYPES.register(bus);
+    	RecipeSerializerInit.RECIPE_SERIALIZERS.register(bus);
     	bus.addListener(this::setup);
     	bus.addListener(this::doClientStuff);
     	
