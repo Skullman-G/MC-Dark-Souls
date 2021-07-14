@@ -43,6 +43,7 @@
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",
 	"gui.darksouls.kindle": "Kindle",
 	"gui.darksouls.leave_button": "Leave",
+	"gui.darksouls.reinforce_estus_flask_button": "Reinforce Estus Flask",
 	"gui.darksouls.bonfire_lit_message": "BONFIRE LIT",
 	"gui.darksouls.humanity_restored_message": "HUMANITY RESTORED",
 	"gui.darksouls.respawn_position_fail_message": "Cannot set respawn position",

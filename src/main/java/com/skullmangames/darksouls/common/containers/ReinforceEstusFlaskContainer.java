@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 public class ReinforceEstusFlaskContainer extends Container
 {
 	private final World level;
-	
 	private final FireKeeperEntity fireKeeper;
 	
 	@Nullable

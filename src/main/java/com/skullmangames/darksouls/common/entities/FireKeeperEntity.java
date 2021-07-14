@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
@@ -149,16 +150,21 @@ public class FireKeeperEntity extends QuestEntity
 				{
 					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.general"), serverplayer.getUUID());
 				}
-				SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
-				{
-			         return new ReinforceEstusFlaskContainer(id, inventory, this);
-			    }, new TranslationTextComponent("container.reinforce_estus_flask.title"));
-				serverplayer.openMenu(container);
+				ClientUtils.openFireKeeperScreen(this, serverplayer);
 				break;
 			}
 		}
 		
 		return ActionResultType.SUCCESS;
+	}
+	
+	public void openContainer(ServerPlayerEntity serverplayer)
+	{
+		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
+		{
+	         return new ReinforceEstusFlaskContainer(id, inventory, this);
+	    }, new TranslationTextComponent("container.reinforce_estus_flask.title"));
+		serverplayer.openMenu(container);
 	}
 
 	@Override

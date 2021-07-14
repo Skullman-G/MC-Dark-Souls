@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -24,11 +23,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireScreen extends Screen
 {
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/bonfire_main.png");
-	protected int imageWidth = 129;
-	protected int imageHeight = 166;
-	protected Button reverseHollowingButton;
-	protected Button kindleButton;
-	protected Button leaveButton;
+	private int imageWidth = 129;
+	private int imageHeight = 166;
+	private Button reverseHollowingButton;
+	private Button kindleButton;
 	private BonfireTileEntity bonfiretileentity;
 	private PlayerEntity playerEntity;
 	private int buttonWidth = 100;
@@ -111,16 +109,10 @@ public class BonfireScreen extends Screen
 	         this.kindle();
 	    }, tooltip));
 		this.kindleButton.active = ModEntityDataManager.isHuman(this.playerEntity) && ModEntityDataManager.getHumanity(this.playerEntity) > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
-		this.leaveButton = this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
+		this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         super.onClose();
 	    }));
-	}
-	
-	@Override
-	public void resize(Minecraft minecraft, int p_231152_2_, int p_231152_3_)
-	{
-		this.init(minecraft, p_231152_2_, p_231152_3_);
 	}
 	
 	@Override

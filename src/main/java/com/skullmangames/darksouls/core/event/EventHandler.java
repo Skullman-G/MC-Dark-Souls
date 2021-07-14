@@ -162,7 +162,7 @@ public class EventHandler
 	public static void onLivingHeal(final LivingHealEvent event)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		if (event.getEntityLiving().getUUID() == minecraft.player.getUUID() && !event.getEntityLiving().isSpectator())
+		if (event.getEntityLiving() instanceof PlayerEntity && event.getEntityLiving().getUUID() == minecraft.player.getUUID() && !event.getEntityLiving().isSpectator())
 		{
 			GameOverlayManager.isHealing = true;
 		}
