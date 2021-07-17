@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContaine
 import com.skullmangames.darksouls.common.entities.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ItemInit;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -32,13 +33,24 @@ import net.minecraft.world.World;
 
 public class FireKeeperEntity extends QuestEntity
 {
-	private BlockPos linkedBonfire = BlockPos.ZERO;
+	private BlockPos linkedBonfirePos;
 	private boolean hasLinkedBonfire = false;
-	public boolean talking = false;
 	
 	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, World world)
 	{
 		super(entity, world);
+	}
+	
+	public void linkBonfire(BlockPos blockpos)
+	{
+		this.linkedBonfirePos = blockpos;
+		this.getLinkedBonfire().addFireKeeper(this.stringUUID);
+		this.hasLinkedBonfire = true;
+	}
+	
+	public BlockPos getLinkedBonfirePos()
+	{
+		return this.linkedBonfirePos;
 	}
 	
 	public boolean hasLinkedBonfire()
@@ -46,16 +58,9 @@ public class FireKeeperEntity extends QuestEntity
 		return this.hasLinkedBonfire;
 	}
 	
-	public void linkBonfire(BlockPos pos, BonfireTileEntity tileentity)
+	public BonfireTileEntity getLinkedBonfire()
 	{
-		tileentity.addFireKeeper(this.stringUUID);
-		this.linkedBonfire = pos;
-		this.hasLinkedBonfire = true;
-	}
-	
-	public BlockPos getLinkedBonfire()
-	{
-		return this.linkedBonfire;
+		return this.level.getBlockEntity(this.linkedBonfirePos) instanceof BonfireTileEntity ? (BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfirePos) : null;
 	}
 	
 	public static AttributeModifierMap.MutableAttribute createAttributes()
@@ -77,16 +82,16 @@ public class FireKeeperEntity extends QuestEntity
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_)
 	{
-		return this.linkedBonfire == null;
+		return !this.hasLinkedBonfire;
 	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.addAdditionalSaveData(nbt);
-		nbt.putInt("linked_bonfire_x", this.linkedBonfire.getX());
-		nbt.putInt("linked_bonfire_y", this.linkedBonfire.getY());
-		nbt.putInt("linked_bonfire_z", this.linkedBonfire.getZ());
+		nbt.putInt("linked_bonfire_x", this.linkedBonfirePos.getX());
+		nbt.putInt("linked_bonfire_y", this.linkedBonfirePos.getY());
+		nbt.putInt("linked_bonfire_z", this.linkedBonfirePos.getZ());
 		nbt.putBoolean("has_linked_bonfire", this.hasLinkedBonfire);
 		nbt.putString("QuestPath", this.getCurrentQuestPath());
 	}
@@ -95,7 +100,7 @@ public class FireKeeperEntity extends QuestEntity
 	public void readAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.readAdditionalSaveData(nbt);
-		this.linkedBonfire = new BlockPos(nbt.getInt("linked_bonfire_x"), nbt.getInt("linked_bonfire_y"), nbt.getInt("linked_bonfire_z"));
+		this.linkedBonfirePos = new BlockPos(nbt.getInt("linked_bonfire_x"), nbt.getInt("linked_bonfire_y"), nbt.getInt("linked_bonfire_z"));
 		this.hasLinkedBonfire = nbt.getBoolean("has_linked_bonfire");
 		this.setCurrentQuestPath(nbt.getString("QuestPath"));
 	}
@@ -104,10 +109,10 @@ public class FireKeeperEntity extends QuestEntity
 	public void tick()
 	{
 		super.tick();
+		
 		if (!this.level.isClientSide() && !this.isDeadOrDying())
 		{
-			BonfireTileEntity tileentity = this.level.getBlockEntity(this.linkedBonfire) != null && this.level.getBlockEntity(this.linkedBonfire) instanceof BonfireTileEntity ? (BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire) : null;
-			if (this.hasLinkedBonfire && (tileentity == null || tileentity.getFireKeeperStringUUID() != this.stringUUID))
+			if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
 			{
 				this.hurt(DamageSource.STARVE, this.getHealth());
 			}
@@ -115,14 +120,24 @@ public class FireKeeperEntity extends QuestEntity
 	}
 	
 	@Override
+	public void checkDespawn()
+	{
+	   super.checkDespawn();
+	   
+	   if (!this.hasLinkedBonfire)
+	   {
+		   this.remove();
+	   }
+	}
+	
+	@Override
 	public void die(DamageSource source)
 	{
 		if (!this.level.isClientSide())
 		{
-			BonfireTileEntity tileentity = this.level.getBlockEntity(this.linkedBonfire) != null && this.level.getBlockEntity(this.linkedBonfire) instanceof BonfireTileEntity ? (BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire) : null;
-			if (this.hasLinkedBonfire && tileentity != null && tileentity.getFireKeeperStringUUID() == this.stringUUID)
+			if (this.hasLinkedBonfire && this.getLinkedBonfire() != null && this.getLinkedBonfire().getFireKeeperStringUUID() == this.stringUUID)
 			{
-				((BonfireTileEntity)this.level.getBlockEntity(this.linkedBonfire)).setLit(null, false);
+				this.getLinkedBonfire().setLit(null, false);
 			}
 		}
 		super.die(source);
@@ -163,7 +178,7 @@ public class FireKeeperEntity extends QuestEntity
 	{
 		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
 		{
-	         return new ReinforceEstusFlaskContainer(id, inventory, this, IWorldPosCallable.create(this.level, this.blockPosition()));
+	         return new ReinforceEstusFlaskContainer(id, inventory, IWorldPosCallable.create(this.level, this.blockPosition()));
 	    }, new TranslationTextComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}

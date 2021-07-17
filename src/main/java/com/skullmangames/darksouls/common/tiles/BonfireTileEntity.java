@@ -36,6 +36,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
+	private boolean needsFireKeeper;
 	private String fireKeeperStringUUID = "";
 	
 	public BonfireTileEntity(TileEntityType<?> tileEntityTypeIn) 
@@ -46,6 +47,13 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	public BonfireTileEntity() 
 	{
 		this(TileEntityTypeInit.BONFIRE_TILE_ENTITY.get());
+	}
+	
+	@Override
+	public void onLoad()
+	{
+		super.onLoad();
+		this.needsFireKeeper = this.getLevel().getRandom().nextBoolean();
 	}
 	
 	@Override
@@ -131,9 +139,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	public void addFireKeeper(String uuid)
 	{
 		this.fireKeeperStringUUID = uuid;
-		this.hasFireKeeper = true;
 		this.setLit(null, true);
 		this.kindle();
+		this.hasFireKeeper = true;
 		this.setChanged();
 	}
 	
@@ -152,44 +160,47 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	@Override
 	public void tick()
 	{
-		if (this.ticktimer >= 1000)
+		if (this.level instanceof ServerWorld)
 		{
-			this.ticktimer = 0;
-			if (this.level instanceof ServerWorld)
+			ServerWorld serverworld = (ServerWorld)this.level;
+			Random random = serverworld.random;
+			
+			if (this.needsFireKeeper && !this.hasFireKeeper && !this.getBlock().isLit(this.getBlockState()))
 			{
-				ServerWorld serverworld = (ServerWorld)this.level;
-				Random random = serverworld.random;
-				
-				if (!this.hasFireKeeper && !this.getBlock().isLit(this.getBlockState()))
+				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
+				BlockPos blockpos = this.worldPosition.offset(i, 0, j);
+				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
 				{
-					int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-		            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-					BlockPos blockpos = this.worldPosition.offset(i, 0, j);
-					if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
+					FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
+					if (entity != null)
 					{
-						FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
-						if (entity != null)
-						{
-							entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-					        entity.moveTo(blockpos, 0.0F, 0.0F);
-							serverworld.addFreshEntityWithPassengers(entity);
-						}
+						entity.linkBonfire(this.worldPosition);
+						entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+				        entity.moveTo(blockpos, 0.0F, 0.0F);
+						serverworld.addFreshEntityWithPassengers(entity);
+						this.needsFireKeeper = false;
 					}
 				}
+			}
+			
+			if (this.ticktimer >= 1000)
+			{
+				this.ticktimer = 0;
 				
 				if (random.nextInt(10) == 1 && this.getBlock().isLit(this.getBlockState()))
 				{
 					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
-		            int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
+			        int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
 					BlockPos blockpos = this.worldPosition.offset(i, this.worldPosition.getZ(), j);
 					ItemEntity homewardbone = new ItemEntity(serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), new ItemStack(ItemInit.HOMEWARD_BONE.get()));
 					serverworld.addFreshEntity(homewardbone);
 				}
 			}
-		}
-		else
-		{
-			this.ticktimer++;
+			else
+			{
+				this.ticktimer++;
+			}
 		}
 	}
 }

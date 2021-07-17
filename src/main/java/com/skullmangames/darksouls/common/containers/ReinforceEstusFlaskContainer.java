@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.common.items.crafting.ReinforceEstusFlaskRecipe;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
 import com.skullmangames.darksouls.core.init.RecipeTypeInit;
@@ -24,7 +23,6 @@ import net.minecraft.world.World;
 public class ReinforceEstusFlaskContainer extends Container
 {
 	private final World level;
-	private final FireKeeperEntity fireKeeper;
 	
 	@Nullable
 	private ReinforceEstusFlaskRecipe selectedRecipe;
@@ -40,17 +38,17 @@ public class ReinforceEstusFlaskContainer extends Container
 	      }
 	};
 	
-	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, FireKeeperEntity firekeeper, IWorldPosCallable access)
+	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, IWorldPosCallable access)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, firekeeper, access);
+		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, access);
 	}
 	
 	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, null, IWorldPosCallable.NULL);
+		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, IWorldPosCallable.NULL);
 	}
 	
-	public ReinforceEstusFlaskContainer(ContainerType<?> p_i50105_1_, int p_i50105_2_, PlayerInventory inventory, @Nullable FireKeeperEntity firekeeper, IWorldPosCallable access)
+	public ReinforceEstusFlaskContainer(ContainerType<?> p_i50105_1_, int p_i50105_2_, PlayerInventory inventory, IWorldPosCallable access)
 	{
 		super(p_i50105_1_, p_i50105_2_);
 		
@@ -97,16 +95,6 @@ public class ReinforceEstusFlaskContainer extends Container
 	    }
 	    
 	    this.level = inventory.player.level;
-	    
-	    if (firekeeper != null)
-	    {
-		    this.fireKeeper = firekeeper;
-		    this.fireKeeper.talking = true;
-	    }
-	    else
-	    {
-	    	this.fireKeeper = null;
-	    }
 	}
 	
 	@Override
