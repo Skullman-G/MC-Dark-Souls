@@ -26,7 +26,7 @@ public class StructureInit
     
     public static void setupStructures()
     {
-        setupMapSpacingAndLand(CHECKPOINT_PLAINS.get(), new StructureSeparationSettings(10, 5, 293760225), true);
+        setupMapSpacingAndLand(CHECKPOINT_PLAINS.get(), new StructureSeparationSettings(50, 40, 293760225), true);
     }
     
     public static <F extends Structure<?>> void setupMapSpacingAndLand(F structure, StructureSeparationSettings structureSeparationSettings, boolean transformSurroundingLand)
