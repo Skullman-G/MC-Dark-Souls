@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.items;
 
 import com.skullmangames.darksouls.common.blocks.BonfireBlock;
+import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.block.BlockState;
@@ -25,9 +26,9 @@ public class UndeadBoneShardItem extends DescriptionItem
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
 		ItemStack itemstack = itemusecontext.getItemInHand();
-		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
+		if (world.getBlockEntity(blockpos) instanceof BonfireTileEntity && blockstate.getValue(BonfireBlock.LIT))
 		{
-			BonfireBlock bonfire = (BonfireBlock)blockstate.getBlock();
+			BonfireTileEntity bonfire = (BonfireTileEntity)world.getBlockEntity(blockpos);
 			if (blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL) == 9)
 			{
 				if (itemusecontext.getPlayer() instanceof ServerPlayerEntity)
@@ -35,7 +36,7 @@ public class UndeadBoneShardItem extends DescriptionItem
 					CriteriaTriggerInit.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
 				}
 			}
-			bonfire.raiseEstusHealLevel(world, blockstate, blockpos);
+			bonfire.raiseEstusHealLevel();
 			if (!itemusecontext.getPlayer().abilities.instabuild)
 			{
 				itemstack.shrink(1);
