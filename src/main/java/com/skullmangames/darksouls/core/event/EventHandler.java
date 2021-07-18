@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
-import com.skullmangames.darksouls.common.entities.HealthDataManager;
 import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.entities.SoulEntity;
 import com.skullmangames.darksouls.common.entities.StaminaDataManager;
@@ -77,7 +76,6 @@ public class EventHandler
 		
 		if (event.getEntity() instanceof LivingEntity)
 		{
-			HealthDataManager.initMaxHealth((LivingEntity)event.getEntity());
 			StaminaDataManager.initMaxStamina((LivingEntity)event.getEntity());
 		}
     }

@@ -9,6 +9,7 @@
 	"item.darksouls.broken_straight_sword": "Broken Straight Sword",
 	"item.darksouls.homeward_bone": "Homeward Bone",
 	"item.darksouls.undead_bone_shard": "Undead Bone Shard",
+	"item.darksouls.straight_sword_hilt": "Straight Sword Hilt",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -38,6 +39,7 @@
 	"tooltip.darksouls.broken_straight_sword": "A straight sword with a broken blade. A weapon with no exceptional qualities. Only a mad Hollow would choose to fight with this.",
 	"tooltip.darksouls.homeward_bone": "Bone fragment reduced to white ash. Bonfires are sustained by bones of the Undead. In rare cases, their previous owner's strong urge to seek bonfires enchant their bones with a homeward instinct. \n\nReturn to last bonfire used for resting.",
 	"tooltip.darksouls.undead_bone_shard": "Undead bones that yet burn. The bonfire's cinders are the bones of Undead, and a bone that still burns is a fresh cinder indeed. Before feeding upon death, one must first pray to it. \n\nCast it into a bonfire to boost the recovery provided by the Estus Flask.",
+	"tooltip.darksouls.straight_sword_hilt": "The hilt of this lost sword. Only slightly better than one's bare hands, and not recommended for extensive use.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",

@@ -40,8 +40,8 @@ public class HollowEntity extends MonsterEntity
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D)
+				.add(Attributes.MAX_HEALTH, 3.45D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
@@ -62,7 +62,16 @@ public class HollowEntity extends MonsterEntity
 	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_)
 	{
 		super.populateDefaultEquipmentSlots(p_180481_1_);
-		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get()));
+		
+		Random random = this.level.random;
+		if (random.nextBoolean())
+		{
+			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get()));
+		}
+		else
+		{
+			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.STRAIGHT_SWORD_HILT.get()));
+		}
 	}
 	
 	@Override
