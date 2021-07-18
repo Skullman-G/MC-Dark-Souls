@@ -168,7 +168,7 @@ public class EventHandler
 	public static void onLivingExperienceDrop(final LivingExperienceDropEvent event)
 	{
 		LivingEntity entity = event.getEntityLiving();
-		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), 1));
+		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), event.getDroppedExperience()));
 		event.setCanceled(true);
 	}
 	

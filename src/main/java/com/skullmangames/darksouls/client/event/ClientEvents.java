@@ -3,8 +3,11 @@ package com.skullmangames.darksouls.client.event;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
+import com.skullmangames.darksouls.core.init.EffectInit;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -39,7 +42,7 @@ public class ClientEvents
 		{
 			event.setCanceled(true);
 		}
-		else if (event.getType() == ElementType.FOOD)
+		else if (event.getType() == ElementType.FOOD && Minecraft.getInstance().getCameraEntity() instanceof LivingEntity && ((LivingEntity)Minecraft.getInstance().getCameraEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			event.setCanceled(true);
 		}
