@@ -47,11 +47,15 @@ public class FireKeeperScreen extends Screen
 	{
 		super.init();
 		
-		this.addButton(new ResizeTextButton(this.width / 2 - (this.buttonWidth / 2), this.height / 2, this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.reinforce_estus_flask_button"), (p_214187_1_) ->
+		this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2, this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.level_up_button"), (p_214187_1_) ->
+		{
+	         this.openLevelUpScreen();
+	    }));
+		this.addButton(new ResizeTextButton(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (1 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.reinforce_estus_flask_button"), (p_214187_1_) ->
 		{
 	         this.openReinforceEstusFlaskScreen();
 	    }));
-		this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (1 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
+		this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         super.onClose();
 	    }));
@@ -60,6 +64,11 @@ public class FireKeeperScreen extends Screen
 	private void openReinforceEstusFlaskScreen()
 	{
 		this.fireKeeper.openContainer(this.serverPlayer);
+	}
+	
+	private void openLevelUpScreen()
+	{
+		this.minecraft.setScreen(new LevelUpScreen(this.serverPlayer));
 	}
 	
 	@Override

@@ -71,6 +71,7 @@ public class ModEntityDataManager
 	
 	public static void setSouls(LivingEntity livingentity, int value)
 	{
+		value = value <= 0 ? 0 : value;
 		livingentity.getPersistentData().putInt("Souls", value);
 	}
 	

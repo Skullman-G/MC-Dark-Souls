@@ -59,6 +59,8 @@
 	"gui.darksouls.cannot_kindle_further": "You cannot kindle any further",
 	"gui.darksouls.estus_heal_level_tooltip": "Estus Heal Level \n\u00A77Raise by throwing an undead bone shard into the bonfire. This raises the amount of health you can get from drinking estus obtained from this bonfire.",
 	"gui.darksouls.estus_volume_level_tooltip": "Estus Volume Level \n\u00A77Raise by kindling. This raises the amount of estus you can catch from this bonfire",
+	"gui.darksouls.level_up_button": "Level up",
+	"gui.darksouls.accept": "Accept",
 	
 	"block.bonfire.lit": "Bonfire lit",
 	"block.bonfire.lit.sub": "Bonfire lit",

@@ -6,6 +6,8 @@ import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
 import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.entities.SoulEntity;
+import com.skullmangames.darksouls.common.entities.stats.Stat;
+import com.skullmangames.darksouls.common.entities.stats.Stats;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -34,6 +36,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -72,10 +75,25 @@ public class EventHandler
 			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
 		}
 		
-		/*if (event.getEntity() instanceof LivingEntity)
+		if (event.getEntity() instanceof LivingEntity)
 		{
-			StaminaDataManager.initMaxStamina((LivingEntity)event.getEntity());
-		}*/
+			LivingEntity livingentity = (LivingEntity)event.getEntity();
+			for (Stat stat : Stats.getStats())
+			{
+				stat.init(livingentity);
+			}
+			//StaminaDataManager.initMaxStamina(livingentity);
+		}
+    }
+	
+	@SubscribeEvent
+	public static void onPlayerClone(final Clone event)
+    {
+		// Copy Stats
+		for (Stat stat : Stats.getStats())
+		{
+			stat.setValue(event.getPlayer(), stat.getValue(event.getOriginal()));
+		}
     }
 	
 	@SubscribeEvent
