@@ -128,7 +128,10 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	
 	public void kindle()
 	{
-		this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		if (!this.hasFireKeeper)
+		{
+			this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		}
 		this.getBlock().kindle(this.level, this.getBlockState(), this.worldPosition);
 	}
 	
@@ -147,8 +150,8 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	{
 		this.fireKeeperStringUUID = uuid;
 		this.setLit(null, true);
-		this.kindle();
 		this.hasFireKeeper = true;
+		this.kindle();
 		this.setChanged();
 	}
 	
