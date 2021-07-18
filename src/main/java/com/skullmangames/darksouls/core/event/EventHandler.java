@@ -6,7 +6,6 @@ import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.effects.UndeadCurse;
 import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.common.entities.SoulEntity;
-import com.skullmangames.darksouls.common.entities.StaminaDataManager;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -30,7 +29,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
@@ -74,10 +72,10 @@ public class EventHandler
 			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
 		}
 		
-		if (event.getEntity() instanceof LivingEntity)
+		/*if (event.getEntity() instanceof LivingEntity)
 		{
 			StaminaDataManager.initMaxStamina((LivingEntity)event.getEntity());
-		}
+		}*/
     }
 	
 	@SubscribeEvent
@@ -172,12 +170,6 @@ public class EventHandler
 		LivingEntity entity = event.getEntityLiving();
 		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), 1));
 		event.setCanceled(true);
-	}
-	
-	@SubscribeEvent
-	public static void onLivingFall(final LivingFallEvent event)
-	{
-		event.setDamageMultiplier(event.getEntityLiving().getMaxHealth() / 10);
 	}
 	
 	@SubscribeEvent

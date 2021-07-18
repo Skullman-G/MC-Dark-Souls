@@ -15,13 +15,8 @@
                 },
                 {
                     "type": "item",
-                    "weight": 10,
+                    "weight": 40,
                     "name": "minecraft:rotten_flesh"
-                },
-                {
-                    "type": "item",
-                    "weight": 48,
-                    "name": "minecraft:air"
                 }
             ]
         }
