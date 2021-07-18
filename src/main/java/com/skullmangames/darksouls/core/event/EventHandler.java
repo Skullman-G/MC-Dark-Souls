@@ -169,7 +169,6 @@ public class EventHandler
 	{
 		LivingEntity entity = event.getEntityLiving();
 		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), event.getDroppedExperience()));
-		event.setCanceled(true);
 	}
 	
 	@SubscribeEvent

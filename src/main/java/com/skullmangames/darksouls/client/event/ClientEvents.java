@@ -38,10 +38,6 @@ public class ClientEvents
 		{
 			event.setCanceled(true);
 		}
-		else if (event.getType() == ElementType.EXPERIENCE)
-		{
-			event.setCanceled(true);
-		}
 		else if (event.getType() == ElementType.FOOD && Minecraft.getInstance().getCameraEntity() instanceof LivingEntity && ((LivingEntity)Minecraft.getInstance().getCameraEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			event.setCanceled(true);
