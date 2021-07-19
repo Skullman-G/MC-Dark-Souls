@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.items;
 
 import java.util.UUID;
 
+import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -27,13 +28,15 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	private final boolean looseAfterUse;
 	private final boolean binding;
 	private final DarkSoulsUseAction useAction;
+	private final boolean looseSouls;
 	
-	public Teleport2BonfireItem(DarkSoulsUseAction useaction, boolean binding, boolean looseafteruse, Properties properties)
+	public Teleport2BonfireItem(DarkSoulsUseAction useaction, boolean binding, boolean looseafteruse, boolean loosesouls, Properties properties)
 	{
 		super(properties);
 		this.looseAfterUse = looseafteruse;
 		this.binding = binding;
 		this.useAction = useaction;
+		this.looseSouls = loosesouls;
 	}
 	
 	@Override
@@ -69,10 +72,19 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, World world, LivingEntity livingentity)
 	{
+		ModifiableAttributeInstance speed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
+		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) != null) speed.removeModifier(SPEED_MODIFIER_CASTING_UUID);
+		
+		if (this.looseSouls)
+		{
+			ModEntityDataManager.setHumanity(livingentity, 0);
+			ModEntityDataManager.setSouls(livingentity, 0);
+		}
+		
 		PlayerEntity playerentity = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
 	      
 	    // SERVER SIDE
-	    if (!world.isClientSide && livingentity instanceof ServerPlayerEntity)
+	    if (livingentity instanceof ServerPlayerEntity)
 	    {
 	    	ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)livingentity;
 	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
@@ -89,7 +101,7 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 
 	    if (playerentity != null)
 	    {
-	        playerentity.awardStat(Stats.ITEM_USED.get(this));
+	    	playerentity.awardStat(Stats.ITEM_USED.get(this));
 	    }
 	    
 	    if (this.looseAfterUse && (playerentity == null || !playerentity.abilities.instabuild))
