@@ -45,7 +45,7 @@ public class EstusFlaskItem extends DescriptionItem
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
 		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
-		    compoundnbt.putInt("Heal", 250);
+		    compoundnbt.putInt("Heal", 5);
 		}
 		
 		return compoundnbt;
@@ -60,30 +60,7 @@ public class EstusFlaskItem extends DescriptionItem
 	public static void setHeal(ItemStack itemstack, int heallevel)
 	{
 		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
-		
-		switch (heallevel)
-		{
-		case 1:
-			compoundnbt.putInt("Heal", 250);
-		case 2:
-			compoundnbt.putInt("Heal", 335);
-		case 3:
-			compoundnbt.putInt("Heal", 410);
-		case 4:
-			compoundnbt.putInt("Heal", 470);
-		case 5:
-			compoundnbt.putInt("Heal", 515);
-		case 6:
-			compoundnbt.putInt("Heal", 535);
-		case 7:
-			compoundnbt.putInt("Heal", 550);
-		case 8:
-			compoundnbt.putInt("Heal", 565);
-		case 9:
-			compoundnbt.putInt("Heal", 580);
-		case 10:
-			compoundnbt.putInt("Heal", 590);
-		}
+		compoundnbt.putInt("Heal", 5 + heallevel - 1);
 	}
 	
 	public static int getTotalUses(ItemStack itemstack)

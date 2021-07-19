@@ -4,12 +4,12 @@ license="Not specified"
 
 [[mods]]
 modId="darksouls"
-version="0.1.0"
+version="0.1.3"
 displayName="Minecraft: Dark Souls"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/minecraft-dark-souls"
 logoFile="logo.png"
 credits="My THICC brain and Forge"
 authors="Skullman Games"
 description=''' 
-Welcome to the bonfire, Undead One. This first version of the Dark Souls Mod contains Bonfires, Fire Keepers, Estus Flasks and a first thread in form of Hollows.
+Adds concepts and features from From Software's "Dark Souls" trilogy.
 '''
