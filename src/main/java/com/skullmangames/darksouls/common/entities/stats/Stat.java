@@ -25,7 +25,7 @@ public class Stat
 		return this.name;
 	}
 	
-	public void onChange(LivingEntity livingentity, int value)
+	public void onChange(LivingEntity livingentity, boolean isinit, int value)
 	{
 		return;
 	}
@@ -37,7 +37,7 @@ public class Stat
 	
 	public void init(LivingEntity livingentity)
 	{
-		this.onChange(livingentity, this.getValue(livingentity));
+		this.onChange(livingentity, true, this.getValue(livingentity));
 	}
 	
 	public void setValue(LivingEntity livingentity, int value)
@@ -45,7 +45,7 @@ public class Stat
 		if (value > 0 && livingentity.getPersistentData().getInt(this.name) != value)
 		{
 			livingentity.getPersistentData().putInt(this.name, value);
-			this.onChange(livingentity, value);
+			this.onChange(livingentity, false, value);
 		}
 	}
 }

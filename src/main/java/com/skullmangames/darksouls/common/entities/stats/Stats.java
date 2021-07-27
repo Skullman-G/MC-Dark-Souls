@@ -16,7 +16,7 @@ public class Stats
 	public static final Stat VIGOR = register(new Stat("VigorStat", "35031b47-45fa-401b-92dc-12b6d258e553")
 		{
 			@Override		
-			public void onChange(LivingEntity livingentity, int value)
+			public void onChange(LivingEntity livingentity, boolean isinit, int value)
 			{
 				ModifiableAttributeInstance attribute = livingentity.getAttribute(Attributes.MAX_HEALTH);
 				if (attribute.getModifier(this.getModifierUUID()) != null)
@@ -25,7 +25,7 @@ public class Stats
 				}
 				AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), "Change with Vigor", value - 1, Operation.ADDITION);
 				attribute.addPermanentModifier(modifier);
-				livingentity.setHealth(livingentity.getMaxHealth());
+				if (!isinit) livingentity.setHealth(livingentity.getMaxHealth());
 			};
 		});
 	
