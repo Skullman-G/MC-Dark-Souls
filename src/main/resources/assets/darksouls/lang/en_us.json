@@ -86,5 +86,7 @@
 	"dialogie.darksouls.fire_keeper.estus_shard": "Is that a shard you've found? Here, let me see it. So that I may help you.",
 	"dialogie.darksouls.fire_keeper.general": "Speak thine heart's desire. So that I may help you.",
 	
-	"container.reinforce_estus_flask.title": "Reinforce Estus Flask"
+	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
+	
+	"commands.give.fail.darksign": "Don't even try"
 }
