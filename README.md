@@ -1,4 +1,4 @@
-# Minecraft-Dark-Souls
+# MC-Dark-Souls
 A Dark Souls Mod for Minecraft.<br><br>
 
 
