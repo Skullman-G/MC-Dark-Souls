@@ -75,12 +75,6 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 		ModifiableAttributeInstance speed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) != null) speed.removeModifier(SPEED_MODIFIER_CASTING_UUID);
 		
-		if (this.looseSouls)
-		{
-			ModEntityDataManager.setHumanity(livingentity, 0);
-			ModEntityDataManager.setSouls(livingentity, 0);
-		}
-		
 		PlayerEntity playerentity = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
 	      
 	    // SERVER SIDE
@@ -91,6 +85,11 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	    	
 	    	if (serverplayerentity.getRespawnPosition() != null)
 	    	{
+	    		if (this.looseSouls)
+	    		{
+	    			ModEntityDataManager.setHumanity(livingentity, 0);
+	    			ModEntityDataManager.setSouls(livingentity, 0);
+	    		}
 	    		serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
 	    	}
 	    	else
