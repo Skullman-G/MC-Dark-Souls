@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.entities.SoulEntity;
 import com.skullmangames.darksouls.common.entities.stats.Stat;
 import com.skullmangames.darksouls.common.entities.stats.Stats;
 import com.skullmangames.darksouls.common.items.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.core.init.CommandInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
@@ -27,6 +28,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -56,6 +58,12 @@ public class EventHandler
     }
 	
 	@SubscribeEvent
+	public static void onRegisterCommands(final RegisterCommandsEvent event)
+    {
+		CommandInit.register(event.getDispatcher());
+    }
+	
+	@SubscribeEvent
 	public static void onEntityJoinWorld(final EntityJoinWorldEvent event)
     {
 		if (event.getEntity() instanceof ItemEntity && ((ItemEntity)event.getEntity()).getItem().getItem() == ItemInit.DARKSIGN.get())
@@ -66,13 +74,15 @@ public class EventHandler
 		
 		if (event.getEntity() instanceof PlayerEntity)
 		{
-			if (!((PlayerEntity)event.getEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
+			PlayerEntity player = (PlayerEntity)event.getEntity();
+			
+			player.foodData = new CursedFoodStats();
+			
+			if (!player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 			{
 				EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
-				((LivingEntity)event.getEntity()).addEffect(effectinstance);
+				player.addEffect(effectinstance);
 			}
-			
-			((PlayerEntity)event.getEntity()).foodData = new CursedFoodStats();
 		}
 		
 		if (event.getEntity() instanceof LivingEntity)
