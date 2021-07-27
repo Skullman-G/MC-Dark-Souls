@@ -4,7 +4,7 @@ license="Not specified"
 
 [[mods]]
 modId="darksouls"
-version="0.1.3"
+version="0.1.4"
 displayName="Minecraft: Dark Souls"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/minecraft-dark-souls"
 logoFile="logo.png"
