@@ -64,13 +64,23 @@ public class HollowEntity extends MonsterEntity
 		super.populateDefaultEquipmentSlots(p_180481_1_);
 		
 		Random random = this.level.random;
+		ItemStack item;
 		if (random.nextBoolean())
 		{
-			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get()));
+			item = new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get());
 		}
 		else
 		{
-			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.STRAIGHT_SWORD_HILT.get()));
+			item = new ItemStack(ItemInit.STRAIGHT_SWORD_HILT.get());
+		}
+		
+		if (random.nextInt(50) == 1)
+		{
+			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, item);
+		}
+		else
+		{
+			this.setItemSlot(EquipmentSlotType.MAINHAND, item);
 		}
 	}
 	

@@ -123,6 +123,11 @@ public class DarkSouls
         	event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_CHECKPOINT_PLAINS);
         }
     	
+    	if (event.getCategory() == Biome.Category.EXTREME_HILLS)
+    	{
+    		event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_UNDEAD_ASYLUM);
+    	}
+    	
     	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 100, 4, 4));
     }
     
@@ -152,6 +157,7 @@ public class DarkSouls
 
 			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
             tempMap.putIfAbsent(StructureInit.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(StructureInit.CHECKPOINT_PLAINS.get()));
+            tempMap.putIfAbsent(StructureInit.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(StructureInit.UNDEAD_ASYLUM.get()));
             serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
         }
    }

@@ -1,0 +1,17 @@
+{
+	"name": "darksouls:undead_asylum/side_hallway_2",
+	"fallback": "minecraft:empty",
+	"elements":
+	[
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:undead_asylum/side_hallway_2",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		}
+	]
+}
