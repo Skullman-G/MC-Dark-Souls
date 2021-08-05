@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "B"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:crimson_planks"
+        },
+        "B": {
+            "item": "minecraft:crimson_door"
+        }
+    },
+    "result": {
+        "item": "darksouls:big_crimson_door",
+        "count": 1
+    },
+    "group": "big_wooden_door"
+}

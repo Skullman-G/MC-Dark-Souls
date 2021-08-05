@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "A"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:acacia_planks"
+        },
+        "A": {
+            "item": "minecraft:acacia_door"
+        }
+    },
+    "result": {
+        "item": "darksouls:big_acacia_door",
+        "count": 1
+    },
+    "group": "big_wooden_door"
+}

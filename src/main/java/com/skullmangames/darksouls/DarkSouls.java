@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls;
 
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemModelsProperties;
@@ -111,6 +113,10 @@ public class DarkSouls
         {
             return;
         }
+        
+        RenderTypeLookup.setRenderLayer(BlockInit.BIG_ACACIA_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockInit.BIG_OAK_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockInit.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
         
         ScreenManager.register(ContainerTypeInit.SMITHING.get(), SmithingTableScreenOverride::new);
         ScreenManager.register(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);

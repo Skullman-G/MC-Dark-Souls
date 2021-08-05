@@ -1,0 +1,280 @@
+{
+  "variants":
+  {
+    "facing=east,part=middle,hinge=left,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle"
+    },
+    
+    "facing=east,part=lower,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom"
+    },
+    
+    "facing=east,part=lower,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 90
+    },
+    
+    "facing=east,part=middle,hinge=left,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 90
+    },
+    
+    "facing=east,part=lower,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge"
+    },
+    
+    "facing=east,part=middle,hinge=right,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge"
+    },
+    
+    "facing=east,part=lower,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 270
+    },
+    
+    "facing=east,part=middle,hinge=right,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 270
+    },
+    
+    "facing=east,part=upper,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top"
+    },
+    
+    "facing=east,part=upper,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 90
+    },
+    
+    "facing=east,part=upper,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge"
+    },
+    
+    "facing=east,part=upper,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 270
+    },
+    
+    "facing=north,part=lower,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 270
+    },
+    
+    "facing=north,part=middle,hinge=left,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 270
+    },
+    
+    "facing=north,part=lower,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge"
+    },
+    
+    "facing=north,part=middle,hinge=left,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge"
+    },
+    
+    "facing=north,part=lower,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 270
+    },
+    
+    "facing=north,part=middle,hinge=right,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 270
+    },
+    
+    "facing=north,part=lower,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 180
+    },
+    
+    "facing=north,part=middle,hinge=right,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 180
+    },
+    
+    "facing=north,part=upper,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 270
+    },
+    
+    "facing=north,part=upper,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge"
+    },
+    
+    "facing=north,part=upper,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 270
+    },
+    
+    "facing=north,part=upper,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 180
+    },
+    
+    "facing=south,part=lower,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 90
+    },
+    
+    "facing=south,part=middle,hinge=left,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 90
+    },
+    
+    "facing=south,part=lower,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 180
+    },
+    
+    "facing=south,part=middle,hinge=left,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 180
+    },
+    
+    "facing=south,part=lower,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 90
+    },
+    
+    "facing=south,part=middle,hinge=right,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 90
+    },
+    
+    "facing=south,part=lower,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom"
+    },
+    
+    "facing=south,part=middle,hinge=right,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle"
+    },
+    
+    "facing=south,part=upper,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 90
+    },
+    
+    "facing=south,part=upper,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 180
+    },
+    
+    "facing=south,part=upper,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 90
+    },
+    
+    "facing=south,part=upper,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top"
+    },
+    
+    "facing=west,part=lower,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 180
+    },
+    
+    "facing=west,part=middle,hinge=left,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 180
+    },
+    
+    "facing=west,part=lower,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 270
+    },
+    
+    "facing=west,part=middle,hinge=left,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 270
+    },
+    
+    "facing=west,part=lower,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_bottom_hinge",
+      "y": 180
+    },
+    
+    "facing=west,part=middle,hinge=right,open=false":
+    {
+      "model": "darksouls:block/big_crimson_door_middle_hinge",
+      "y": 180
+    },
+    
+    "facing=west,part=lower,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_bottom",
+      "y": 90
+    },
+    
+    "facing=west,part=middle,hinge=right,open=true":
+    {
+      "model": "darksouls:block/big_crimson_door_middle",
+      "y": 90
+    },
+    
+    "facing=west,part=upper,hinge=left,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 180
+    },
+    
+    "facing=west,part=upper,hinge=left,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 270
+    },
+    
+    "facing=west,part=upper,hinge=right,open=false":
+    {
+      "model": "minecraft:block/crimson_door_top_hinge",
+      "y": 180
+    },
+    
+    "facing=west,part=upper,hinge=right,open=true":
+    {
+      "model": "minecraft:block/crimson_door_top",
+      "y": 90
+    }
+  }
+}

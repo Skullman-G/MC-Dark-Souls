@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "B"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:oak_planks"
+        },
+        "B": {
+            "item": "minecraft:oak_door"
+        }
+    },
+    "result": {
+        "item": "darksouls:big_oak_door",
+        "count": 1
+    },
+    "group": "big_wooden_door"
+}

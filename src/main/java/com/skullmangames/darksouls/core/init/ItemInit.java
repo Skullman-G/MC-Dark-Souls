@@ -59,7 +59,31 @@ public class ItemInit
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
 	
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(BlockInit.BONFIRE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
+			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
+	
+	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(BlockInit.BIG_ACACIA_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_BIRCH_DOOR = ITEMS.register("big_birch_door", () -> new BlockItem(BlockInit.BIG_BIRCH_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_OAK_DOOR = ITEMS.register("big_oak_door", () -> new BlockItem(BlockInit.BIG_OAK_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_SPRUCE_DOOR = ITEMS.register("big_spruce_door", () -> new BlockItem(BlockInit.BIG_SPRUCE_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_JUNGLE_DOOR = ITEMS.register("big_jungle_door", () -> new BlockItem(BlockInit.BIG_JUNGLE_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_DARK_OAK_DOOR = ITEMS.register("big_dark_oak_door", () -> new BlockItem(BlockInit.BIG_DARK_OAK_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_CRIMSON_DOOR = ITEMS.register("big_crimson_door", () -> new BlockItem(BlockInit.BIG_CRIMSON_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(BlockInit.BIG_WARPED_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(EntityTypeInit.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()

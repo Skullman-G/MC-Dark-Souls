@@ -1,0 +1,9 @@
+{
+  "parent": "darksouls:block/big_door_middle",
+  "textures":
+  {
+    "top": "minecraft:block/jungle_door_top",
+    "bottom": "minecraft:block/jungle_door_bottom",
+    "middle": "darksouls:blocks/big_jungle_door_middle"
+  }
+}
