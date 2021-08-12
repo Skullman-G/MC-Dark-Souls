@@ -31,6 +31,22 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	}
 	
 	@Override
+	public void onEntityJoinWorld(ClientPlayerEntity entityIn)
+	{
+		super.onEntityJoinWorld(entityIn);
+		
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
+		{
+			ClientEngine.INSTANCE.switchToBattleMode();
+		}
+		else
+		{
+			ClientEngine.INSTANCE.switchToMiningMode();
+		}
+	}
+	
+	@Override
 	public void updateMotion()
 	{
 		super.updateMotion();

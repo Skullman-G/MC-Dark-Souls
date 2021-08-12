@@ -44,11 +44,11 @@ import org.apache.logging.log4j.Logger;
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.event.ClientEvents;
-import com.skullmangames.darksouls.client.event.engine.ControllEngine;
 import com.skullmangames.darksouls.client.event.engine.RenderEngine;
 import com.skullmangames.darksouls.client.gui.IngameConfigurationGui;
 import com.skullmangames.darksouls.client.gui.screens.ReinforceEstusFlaskScreen;
 import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverride;
+import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
@@ -184,7 +184,7 @@ public class DarkSouls
 		ProviderEntity.makeMapClient();
 		ModKeys.registerKeys();
 		
-		MinecraftForge.EVENT_BUS.register(ControllEngine.Events.class);
+		MinecraftForge.EVENT_BUS.register(InputManager.Events.class);
         MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
         //MinecraftForge.EVENT_BUS.register(RegistryClientEvent.class);
         MinecraftForge.EVENT_BUS.register(ClientEvents.class);

@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.client.event.engine.ControllEngine;
 import com.skullmangames.darksouls.config.ConfigurationIngame;
 import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -58,7 +58,7 @@ public class Skill
 		this.registryName = new ResourceLocation(DarkSouls.MOD_ID, skillName);
 	}
 	
-	public PacketBuffer gatherArguments(ClientPlayerData executer, ControllEngine controllEngine)
+	public PacketBuffer gatherArguments(ClientPlayerData executer, InputManager inputManager)
 	{
 		return null;
 	}

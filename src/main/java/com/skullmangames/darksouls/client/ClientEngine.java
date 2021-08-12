@@ -1,11 +1,10 @@
 package com.skullmangames.darksouls.client;
 
-import com.skullmangames.darksouls.client.event.engine.ControllEngine;
 import com.skullmangames.darksouls.client.event.engine.RenderEngine;
+import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -15,7 +14,7 @@ public class ClientEngine
 	public static ClientEngine INSTANCE;
 	public Minecraft minecraft;
 	public RenderEngine renderEngine;
-	public ControllEngine inputController;
+	public InputManager inputController;
 	
 	private ClientPlayerData playerdata;
 	private PlayerActingMode playerActingMode = PlayerActingMode.MINING;
@@ -25,28 +24,16 @@ public class ClientEngine
 		INSTANCE = this;
 		minecraft = Minecraft.getInstance();
 		renderEngine = new RenderEngine();
-		inputController = new ControllEngine();
+		inputController = new InputManager();
 	}
 	
-	public void toggleActingMode()
-	{
-		if(this.playerActingMode == PlayerActingMode.MINING && this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
-		{
-			this.switchToBattleMode();
-		}
-		else
-		{
-			this.switchToMiningMode();
-		}
-	}
-	
-	private void switchToMiningMode()
+	public void switchToMiningMode()
 	{
 		this.playerActingMode = PlayerActingMode.MINING;
 		this.renderEngine.guiSkillBar.slideDown();
 	}
 	
-	private void switchToBattleMode()
+	public void switchToBattleMode()
 	{
 		this.playerActingMode = PlayerActingMode.BATTLE;
 		this.renderEngine.guiSkillBar.slideUp();

@@ -32,9 +32,10 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
 
-public class ProviderItem implements ICapabilityProvider, NonNullSupplier<CapabilityItem> {
-	private static final Map<Item, CapabilityItem> CAPABILITY_BY_INSTANCE = new HashMap<Item, CapabilityItem> ();
-	private static final Map<Class<? extends Item>, Function<Item, CapabilityItem>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, CapabilityItem>> ();
+public class ProviderItem implements ICapabilityProvider, NonNullSupplier<CapabilityItem>
+{
+	public static final Map<Item, CapabilityItem> CAPABILITY_BY_INSTANCE = new HashMap<Item, CapabilityItem>();
+	private static final Map<Class<? extends Item>, Function<Item, CapabilityItem>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, CapabilityItem>>();
 	
 	public static void makeMap()
 	{
@@ -150,36 +151,44 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 	private CapabilityItem capability;
 	private LazyOptional<CapabilityItem> optional = LazyOptional.of(this);
 	
-	public ProviderItem(Item item, boolean autogenerate) {
+	public ProviderItem(Item item, boolean autogenerate)
+	{
 		this.capability = CAPABILITY_BY_INSTANCE.get(item);
-		if (this.capability == null && autogenerate) {
+		if (this.capability == null && autogenerate)
+		{
 			this.capability = this.makeCustomCapability(item);
-			if(this.capability != null) {
+			if(this.capability != null)
+			{
 				CAPABILITY_BY_INSTANCE.put(item, this.capability);
 			}
 		}
 	}
 	
-	public boolean hasCapability() {
+	public boolean hasCapability()
+	{
 		return this.capability != null;
 	}
 	
-	private CapabilityItem makeCustomCapability(Item item) {
+	private CapabilityItem makeCustomCapability(Item item)
+	{
 		Class<?> clazz = item.getClass();
 		CapabilityItem cap = null;
-		for (; clazz != null && cap == null; clazz = clazz.getSuperclass()) {
+		for (; clazz != null && cap == null; clazz = clazz.getSuperclass())
+		{
 			cap = CAPABILITY_BY_CLASS.getOrDefault(clazz, (argIn) -> null).apply(item);
 		}
 		return cap;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
 		return cap == ModCapabilities.CAPABILITY_ITEM ? optional.cast() : LazyOptional.empty();
 	}
 
 	@Override
-	public CapabilityItem get() {
+	public CapabilityItem get()
+	{
 		return capability;
 	}
 }

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.skill;
 
-import com.skullmangames.darksouls.client.event.engine.ControllEngine;
+import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -29,9 +29,9 @@ public class DodgeSkill extends Skill
 	}
 	
 	@Override
-	public PacketBuffer gatherArguments(ClientPlayerData executer, ControllEngine controllEngine)
+	public PacketBuffer gatherArguments(ClientPlayerData executer, InputManager inputManager)
 	{
-		GameSettings gamesetting = controllEngine.options;
+		GameSettings gamesetting = inputManager.options;
 		
 		int forward = gamesetting.keyUp.isDown() ? 1 : 0;
 		int backward = gamesetting.keyDown.isDown() ? -1 : 0;

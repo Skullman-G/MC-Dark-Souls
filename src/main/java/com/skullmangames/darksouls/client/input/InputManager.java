@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.event.engine;
+package com.skullmangames.darksouls.client.input;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,11 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
 import com.skullmangames.darksouls.common.skill.SkillContainer;
 import com.skullmangames.darksouls.common.skill.SkillSlot;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -25,8 +27,10 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
@@ -44,7 +48,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
-public class ControllEngine
+public class InputManager
 {
 	private final Map<KeyBinding, BiConsumer<Integer, Integer>> keyFunctionMap;
 	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
@@ -64,15 +68,15 @@ public class ControllEngine
 	public GameSettings options;
 	
 	@SuppressWarnings("resource")
-	public ControllEngine()
+	public InputManager()
 	{
-		Events.controllEngine = this;
+		Events.inputManager = this;
 		this.options = Minecraft.getInstance().options;
 		this.keyFunctionMap = new HashMap<KeyBinding, BiConsumer<Integer, Integer>>();
 		
 		this.keyFunctionMap.put(options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(options.keySwapOffhand, this::onSwapHandKeyPressed);
-		this.keyFunctionMap.put(options.keyTogglePerspective, this::onSwitchModeKeyPressed);
+		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
 		this.keyFunctionMap.put(options.keySprint, this::onSprintKeyPressed);
 		
 		try
@@ -179,11 +183,28 @@ public class ControllEngine
 		}
 	}
 	
-	private void onSwitchModeKeyPressed(int key, int action)
+	private void onSwapActionModeKeyPressed(int key, int action)
 	{
 		if (action == 1)
 		{
-			ClientEngine.INSTANCE.toggleActingMode();
+			Minecraft minecraft = Minecraft.getInstance();
+			GameSettings options = minecraft.options;
+			Item item = this.player.inventory.getSelected().getItem();
+			
+			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
+			{
+				if (ProviderItem.CAPABILITY_BY_INSTANCE.containsKey(item) && ProviderItem.CAPABILITY_BY_INSTANCE.get(item).getWeaponCategory() != WeaponCategory.NONE_WEAON)
+				{
+					return;
+				}
+				options.setCameraType(PointOfView.FIRST_PERSON);
+				ClientEngine.INSTANCE.switchToMiningMode();
+			}
+			else
+			{
+				options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+				ClientEngine.INSTANCE.switchToBattleMode();
+			}
 		}
 	}
 	
@@ -385,7 +406,7 @@ public class ControllEngine
 	@Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID, value = Dist.CLIENT)
 	public static class Events
 	{
-		static ControllEngine controllEngine;
+		static InputManager inputManager;
 		
 		@SuppressWarnings("resource")
 		@SubscribeEvent
@@ -394,11 +415,11 @@ public class ControllEngine
 			if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null)
 			{
 				Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
-				for (KeyBinding keybinding : controllEngine.keyHash.lookupAll(input))
+				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
-					if(controllEngine.keyFunctionMap.containsKey(keybinding))
+					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
-						controllEngine.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
+						inputManager.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
 					}
 				}
 			}
@@ -417,7 +438,7 @@ public class ControllEngine
 		@SubscribeEvent
 		public static void onMouseScroll(MouseScrollEvent event)
 		{
-			if (Minecraft.getInstance().player != null && controllEngine.playerdata != null && controllEngine.playerdata.isInaction())
+			if (Minecraft.getInstance().player != null && inputManager.playerdata != null && inputManager.playerdata.isInaction())
 			{
 				if(Minecraft.getInstance().screen == null)
 				{
@@ -433,11 +454,11 @@ public class ControllEngine
 			if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null)
 			{
 				Input input = InputMappings.Type.KEYSYM.getOrCreate(event.getKey());
-				for (KeyBinding keybinding : controllEngine.keyHash.lookupAll(input))
+				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
-					if(controllEngine.keyFunctionMap.containsKey(keybinding))
+					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
-						controllEngine.keyFunctionMap.get(keybinding).accept(event.getKey(), event.getAction());
+						inputManager.keyFunctionMap.get(keybinding).accept(event.getKey(), event.getAction());
 					}
 				}
 			}
@@ -446,28 +467,28 @@ public class ControllEngine
 		@SubscribeEvent
 		public static void onMoveInput(InputUpdateEvent event)
 		{
-			if(controllEngine.playerdata == null)
+			if(inputManager.playerdata == null)
 			{
 				return;
 			}
 			
 			Minecraft minecraft = Minecraft.getInstance();
-			EntityState playerState = controllEngine.playerdata.getEntityState();
+			EntityState playerState = inputManager.playerdata.getEntityState();
 			
-			if(!controllEngine.playerCanRotate(playerState) && controllEngine.player.isAlive())
+			if(!inputManager.playerCanRotate(playerState) && inputManager.player.isAlive())
 			{
-				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), controllEngine.callback);
-				minecraft.mouseHandler.xpos = controllEngine.tracingMouseX;
-				minecraft.mouseHandler.ypos = controllEngine.tracingMouseY;
+				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
+				minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
+				minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
 			}
 			else
 			{
-				controllEngine.tracingMouseX = minecraft.mouseHandler.xpos();
-				controllEngine.tracingMouseY = minecraft.mouseHandler.ypos();
+				inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
+				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
 				minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
 			}
 			
-			if (!controllEngine.playerCanMove(playerState))
+			if (!inputManager.playerCanMove(playerState))
 			{
 				event.getMovementInput().forwardImpulse = 0F;
 				event.getMovementInput().leftImpulse = 0F;
@@ -489,7 +510,7 @@ public class ControllEngine
 			{
 				if (Minecraft.getInstance().player != null)
 				{
-					controllEngine.tick();
+					inputManager.tick();
 				}
 			}
 		}

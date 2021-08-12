@@ -50,18 +50,22 @@ public abstract class CapabilityItem
 		commonAutoAttackMotion.add(Animations.FIST_DASH);
 	}
 	
-	public static List<StaticAnimation> getBasicAutoAttackMotion() {
+	public static List<StaticAnimation> getBasicAutoAttackMotion()
+	{
 		return commonAutoAttackMotion;
 	}
 
-	protected void loadClientThings() {
+	protected void loadClientThings()
+	{
 		
 	}
 	
 	protected Map<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>> attributeMap;
 	
-	public CapabilityItem(WeaponCategory category) {
-		if (DarkSouls.isPhysicalClient()) {
+	public CapabilityItem(WeaponCategory category)
+	{
+		if (DarkSouls.isPhysicalClient())
+		{
 			loadClientThings();
 		}
 		this.attributeMap = Maps.<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>>newHashMap();
@@ -69,12 +73,14 @@ public abstract class CapabilityItem
 		registerAttribute();
 	}
 	
-	public CapabilityItem(Item item, WeaponCategory category) {
+	public CapabilityItem(Item item, WeaponCategory category)
+	{
 		this.attributeMap = Maps.<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>>newHashMap();
 		this.weaponCategory = category;
 	}
 
-	protected void registerAttribute() {
+	protected void registerAttribute()
+	{
 		
 	}
 	
@@ -113,11 +119,13 @@ public abstract class CapabilityItem
 		}
 	}
 	
-	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata) {
+	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata)
+	{
 		return getBasicAutoAttackMotion();
 	}
 
-	public List<StaticAnimation> getMountAttackMotion() {
+	public List<StaticAnimation> getMountAttackMotion()
+	{
 		return null;
 	}
 
@@ -126,21 +134,25 @@ public abstract class CapabilityItem
 		return null;
 	}
 
-	public Skill getPassiveSkill() {
+	public Skill getPassiveSkill()
+	{
 		return null;
 	}
 	
-	public WeaponCategory getWeaponCategory() {
+	public WeaponCategory getWeaponCategory()
+	{
 		return this.weaponCategory;
 	}
 	
 	public void onHeld(PlayerData<?> playerdata)
 	{
 		Skill specialSkill = this.getSpecialAttack(playerdata);
-		if (specialSkill != null) {
+		if (specialSkill != null)
+		{
 			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK);
 			
-			if(skillContainer.getContaining() != specialSkill) {
+			if(skillContainer.getContaining() != specialSkill)
+			{
 				skillContainer.setSkill(specialSkill);
 			}
 		}
@@ -148,20 +160,26 @@ public abstract class CapabilityItem
 		Skill skill = this.getPassiveSkill();
 		SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_GIMMICK);
 		
-		if(skill == null) {
+		if(skill == null)
+		{
 			skillContainer.setSkill(null);
-		} else {
-			if(skillContainer.getContaining() != skill) {
+		}
+		else
+		{
+			if(skillContainer.getContaining() != skill)
+			{
 				skillContainer.setSkill(skill);
 			}
 		}
 	}
 	
-	public SoundEvent getSmashingSound() {
+	public SoundEvent getSmashingSound()
+	{
 		return null;
 	}
 
-	public SoundEvent getHitSound() {
+	public SoundEvent getHitSound()
+	{
 		return null;
 	}
 
@@ -175,28 +193,35 @@ public abstract class CapabilityItem
 		return null;
 	}
 	
-	public void addStyleAttibute(WieldStyle style, Pair<Supplier<Attribute>, AttributeModifier> attributePair) {
+	public void addStyleAttibute(WieldStyle style, Pair<Supplier<Attribute>, AttributeModifier> attributePair)
+	{
 		this.attributeMap.computeIfAbsent(style, (key) -> Maps.<Supplier<Attribute>, AttributeModifier>newHashMap());
 		this.attributeMap.get(style).put(attributePair.getFirst(), attributePair.getSecond());
 	}
 	
-	public void addStyleAttributeSimple(WieldStyle style, double armorNegation, double impact, int maxStrikes) {
+	public void addStyleAttributeSimple(WieldStyle style, double armorNegation, double impact, int maxStrikes)
+	{
 		this.addStyleAttibute(style, Pair.of(AttributeInit.ARMOR_NEGATION, AttributeInit.getArmorNegationModifier(armorNegation)));
 		this.addStyleAttibute(style, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(impact)));
 		this.addStyleAttibute(style, Pair.of(AttributeInit.MAX_STRIKES, AttributeInit.getMaxStrikesModifier(maxStrikes)));
 	}
 	
-	public final Map<Supplier<Attribute>, AttributeModifier> getDamageAttributesInCondition(WieldStyle style) {
+	public final Map<Supplier<Attribute>, AttributeModifier> getDamageAttributesInCondition(WieldStyle style)
+	{
 		return this.attributeMap.get(style);
 	}
 	
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, LivingData<?> entitydata) {
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, LivingData<?> entitydata)
+	{
 		Multimap<Attribute, AttributeModifier> map = HashMultimap.<Attribute, AttributeModifier>create();
 		
-		if(entitydata != null) {
+		if(entitydata != null)
+		{
 			Map<Supplier<Attribute>, AttributeModifier> modifierMap = this.getDamageAttributesInCondition(this.getStyle(entitydata));
-			if(modifierMap != null) {
-				for(Entry<Supplier<Attribute>, AttributeModifier> entry : modifierMap.entrySet()) {
+			if(modifierMap != null)
+			{
+				for(Entry<Supplier<Attribute>, AttributeModifier> entry : modifierMap.entrySet())
+				{
 					map.put(entry.getKey().get(), entry.getValue());
 				}
 			}
@@ -210,52 +235,68 @@ public abstract class CapabilityItem
 		return null;
 	}
 	
-	public WieldStyle getStyle(LivingData<?> entitydata) {
-		if (this.isTwoHanded()) {
+	public WieldStyle getStyle(LivingData<?> entitydata)
+	{
+		if (this.isTwoHanded())
+		{
 			return WieldStyle.TWO_HAND;
-		} else {
-			if (this.isMainhandOnly()) {
+		}
+		else
+		{
+			if (this.isMainhandOnly())
+			{
 				return entitydata.getOriginalEntity().getMainHandItem().isEmpty() ? WieldStyle.TWO_HAND : WieldStyle.ONE_HAND;
-			} else {
+			}
+			else
+			{
 				return WieldStyle.ONE_HAND;
 			}
 		}
 	}
 	
-	public final boolean canUsedInOffhand() {
+	public final boolean canUsedInOffhand()
+	{
 		return this.getHandProperty() == HandProperty.GENERAL ? true : false;
 	}
 
-	public final boolean isTwoHanded() {
+	public final boolean isTwoHanded()
+	{
 		return this.getHandProperty() == HandProperty.TWO_HANDED;
 	}
 	
-	public final boolean isMainhandOnly() {
+	public final boolean isMainhandOnly()
+	{
 		return this.getHandProperty() == HandProperty.MAINHAND_ONLY;
 	}
 	
-	public boolean canUseOnMount() {
+	public boolean canUseOnMount()
+	{
 		return !this.isTwoHanded();
 	}
 	
-	public HandProperty getHandProperty() {
+	public HandProperty getHandProperty()
+	{
 		return HandProperty.GENERAL;
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public boolean canBeRenderedBoth(ItemStack item) {
+	public boolean canBeRenderedBoth(ItemStack item)
+	{
 		return !isTwoHanded() && !item.isEmpty();
 	}
 	
-	public enum WeaponCategory {
+	public enum WeaponCategory
+	{
 		NONE_WEAON, AXE, FIST, GREATSWORD, HOE, PICKAXE, SHOVEL, SWORD, KATANA, SPEAR, TACHI
 	}
 	
-	public enum HandProperty {
+	public enum HandProperty
+	{
 		TWO_HANDED, MAINHAND_ONLY, GENERAL
 	}
 	
-	public enum WieldStyle {
+	public enum WieldStyle
+	{
 		ONE_HAND, TWO_HAND, SHEATH, MOUNT
 	}
 }

@@ -49,10 +49,12 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 			SkillContainer container = this.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK);
 			CapabilityItem itemCap = this.getHeldItemCapability(Hand.MAIN_HAND);
 
-			if (itemCap != null && container.hasSkill(itemCap.getSpecialAttack(this))) {
+			if (itemCap != null && container.hasSkill(itemCap.getSpecialAttack(this)))
+			{
 				float value = container.getRemainCooldown() + amount;
 
-				if (value > 0.0F) {
+				if (value > 0.0F)
+				{
 					this.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK).setCooldown(value);
 					ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.COOLDOWN, SkillSlot.WEAPON_SPECIAL_ATTACK.getIndex(), value, false), orgEntity);
 				}
@@ -61,7 +63,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	}
 	
 	@Override
-	public void onEntityJoinWorld(ServerPlayerEntity entityIn) {
+	public void onEntityJoinWorld(ServerPlayerEntity entityIn)
+	{
 		super.onEntityJoinWorld(entityIn);
 		livingMotionMap.put(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		livingMotionMap.put(LivingMotion.WALKING, Animations.BIPED_WALK);
@@ -75,25 +78,32 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		livingMotionMap.put(LivingMotion.FLYING, Animations.BIPED_FLYING);
 		livingMotionMap.put(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		
-		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet()) {
+		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())
+		{
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
 	}
 	
 	@Override
-	public void updateMotion() {
+	public void updateMotion()
+	{
 		;
 	}
 	
-	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, Hand hand) {
+	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, Hand hand)
+	{
 		CapabilityItem mainHandCap = (hand == Hand.MAIN_HAND) ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
-		if(mainHandCap != null) {
+		if(mainHandCap != null)
+		{
 			mainHandCap.onHeld(this);
-		} else {
+		}
+		else
+		{
 			this.getSkill(SkillSlot.WEAPON_GIMMICK).setSkill(null);
 		}
 		
-		if (hand == Hand.MAIN_HAND) {
+		if (hand == Hand.MAIN_HAND)
+		{
 			this.orgEntity.getAttribute(Attributes.ATTACK_SPEED).removeModifier(WEIGHT_PENALTY_MODIFIIER);
 			float weaponSpeed = (float) this.orgEntity.getAttribute(Attributes.ATTACK_SPEED).getBaseValue();
 			
@@ -102,11 +112,14 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 			
 			this.orgEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(WEIGHT_PENALTY_MODIFIIER, "weight penalty modifier",
 					Formulars.getAttackSpeedPenalty(this.getWeight(), weaponSpeed, this), Operation.ADDITION));
-		} else {
+		}
+		else
+		{
 			this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get()).removeModifier(WEIGHT_PENALTY_MODIFIIER);
 			float weaponSpeed = (float) this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get()).getBaseValue();
 			
-			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED)) {
+			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED))
+			{
 				weaponSpeed += attributeModifier.getAmount();
 			}
 			
@@ -115,7 +128,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 			
 			this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_DAMAGE.get()).removeModifier(ATTACK_DAMAGE_MODIFIER);
 			
-			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
+			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE))
+			{
 				this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_DAMAGE.get()).addTransientModifier(attributeModifier);
 			}
 		}
@@ -124,13 +138,15 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	}
 	
 	@Override
-	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType) {
+	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)
+	{
 		ModifiableAttributeInstance mainhandAttackSpeed = this.orgEntity.getAttribute(Attributes.ATTACK_SPEED);
 		ModifiableAttributeInstance offhandAttackSpeed = this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get());
 		
 		mainhandAttackSpeed.removeModifier(WEIGHT_PENALTY_MODIFIIER);
 		float mainWeaponSpeed = (float) mainhandAttackSpeed.getBaseValue();
-		for(AttributeModifier attributeModifier : this.getOriginalEntity().getMainHandItem().getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED)) {
+		for(AttributeModifier attributeModifier : this.getOriginalEntity().getMainHandItem().getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED))
+		{
 			mainWeaponSpeed += (float)attributeModifier.getAmount();
 		}
 		
@@ -139,7 +155,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		
 		offhandAttackSpeed.removeModifier(WEIGHT_PENALTY_MODIFIIER);
 		float offWeaponSpeed = (float) offhandAttackSpeed.getBaseValue();
-		for(AttributeModifier attributeModifier : this.getOriginalEntity().getOffhandItem().getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED)) {
+		for(AttributeModifier attributeModifier : this.getOriginalEntity().getOffhandItem().getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED))
+		{
 			offWeaponSpeed += (float)attributeModifier.getAmount();
 		}
 		
@@ -147,16 +164,20 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 				Formulars.getAttackSpeedPenalty(this.getWeight(), offWeaponSpeed, this), Operation.ADDITION));
 	}
 	
-	public void modifiLivingMotions(CapabilityItem mainhand) {
+	public void modifiLivingMotions(CapabilityItem mainhand)
+	{
 		this.resetModifiedLivingMotions();
 
-		if (mainhand != null) {
+		if (mainhand != null)
+		{
 			Map<LivingMotion, StaticAnimation> motionChanger = mainhand.getLivingMotionChanges(this);
-			if (motionChanger != null) {
+			if (motionChanger != null)
+			{
 				List<LivingMotion> motions = Lists.<LivingMotion>newArrayList();
 				List<StaticAnimation> animations = Lists.<StaticAnimation>newArrayList();
 				
-				for (Map.Entry<LivingMotion, StaticAnimation> entry : motionChanger.entrySet()) {
+				for (Map.Entry<LivingMotion, StaticAnimation> entry : motionChanger.entrySet())
+				{
 					this.addModifiedLivingMotion(entry.getKey(), entry.getValue());
 					motions.add(entry.getKey());
 					animations.add(entry.getValue());
@@ -176,9 +197,12 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, orgEntity);
 	}
 	
-	private void addModifiedLivingMotion(LivingMotion motion, StaticAnimation animation) {
-		if(animation != null) {
-			if (!this.modifiedLivingMotions.contains(motion)) {
+	private void addModifiedLivingMotion(LivingMotion motion, StaticAnimation animation)
+	{
+		if(animation != null)
+		{
+			if (!this.modifiedLivingMotions.contains(motion))
+			{
 				this.modifiedLivingMotions.add(motion);
 			}
 			
@@ -186,55 +210,65 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		}
 	}
 	
-	private void resetModifiedLivingMotions() {
-		for(LivingMotion livingMotion : modifiedLivingMotions) {
+	private void resetModifiedLivingMotions()
+	{
+		for(LivingMotion livingMotion : modifiedLivingMotions)
+		{
 			this.livingMotionMap.put(livingMotion, defaultLivingAnimations.get(livingMotion));
 		}
 		
 		modifiedLivingMotions.clear();
 	}
 
-	public void modifiLivingMotionToAll(STCLivingMotionChange packet) {
+	public void modifiLivingMotionToAll(STCLivingMotionChange packet)
+	{
 		LivingMotion[] motions = packet.getMotions();
 		StaticAnimation[] animations = packet.getAnimations();
 		
-		for(int i = 0; i < motions.length; i++) {
+		for(int i = 0; i < motions.length; i++)
+		{
 			this.addModifiedLivingMotion(motions[i], animations[i]);
 		}
 		
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(packet, this.orgEntity);
 	}
 	
-	public Set<Map.Entry<LivingMotion, StaticAnimation>> getLivingMotionEntrySet() {
+	public Set<Map.Entry<LivingMotion, StaticAnimation>> getLivingMotionEntrySet()
+	{
 		return this.livingMotionMap.entrySet();
 	}
 	
 	@Override
-	public void playAnimationSynchronize(int id, float modifyTime) {
+	public void playAnimationSynchronize(int id, float modifyTime)
+	{
 		super.playAnimationSynchronize(id, modifyTime);
 		ModNetworkManager.sendToPlayer(new STCPlayAnimation(id, this.orgEntity.getId(), modifyTime), this.orgEntity);
 	}
 	
 	@Override
-	public void reserverAnimationSynchronize(StaticAnimation animation) {
+	public void reserverAnimationSynchronize(StaticAnimation animation)
+	{
 		super.reserverAnimationSynchronize(animation);
 		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
 	
 	@Override
-	public void changeYaw(float amount) {
+	public void changeYaw(float amount)
+	{
 		super.changeYaw(amount);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCNotifyPlayerYawChanged(this.orgEntity.getId(), yaw), this.orgEntity);
 		ModNetworkManager.sendToPlayer(new STCNotifyPlayerYawChanged(this.orgEntity.getId(), yaw), this.orgEntity);
 	}
 	
 	@Override
-	public ServerPlayerEntity getOriginalEntity() {
+	public ServerPlayerEntity getOriginalEntity()
+	{
 		return orgEntity;
 	}
 	
 	@Override
-	public void aboutToDeath() {
+	public void aboutToDeath()
+	{
 		;
 	}
 }

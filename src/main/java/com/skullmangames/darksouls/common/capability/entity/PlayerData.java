@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.skill.SkillContainer;
 import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -14,13 +16,19 @@ import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 
 public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
@@ -30,6 +38,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	protected EntityEventListener eventListeners;
 	protected int tickSinceLastAction;
 	public SkillContainer[] skills;
+	private ItemStack lastSelected = ItemStack.EMPTY;
 	
 	public PlayerData()
 	{
@@ -118,6 +127,21 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 				}
 			}
 		}
+		
+		if (this.orgEntity.inventory.getSelected() != this.lastSelected)
+		{
+			Minecraft minecraft = Minecraft.getInstance();
+			GameSettings options = minecraft.options;
+			this.lastSelected = this.orgEntity.inventory.getSelected();
+			Item item = this.lastSelected.getItem();
+			
+			if (options.getCameraType() != PointOfView.THIRD_PERSON_BACK && ProviderItem.CAPABILITY_BY_INSTANCE.containsKey(item) && ProviderItem.CAPABILITY_BY_INSTANCE.get(item).getWeaponCategory() != WeaponCategory.NONE_WEAON)
+			{
+				ClientEngine.INSTANCE.switchToBattleMode();
+				options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+			}
+		}
+		
 		super.update();
 	}
 	
