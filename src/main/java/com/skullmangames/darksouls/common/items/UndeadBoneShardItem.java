@@ -22,13 +22,13 @@ public class UndeadBoneShardItem extends DescriptionItem
 	@Override
 	public ActionResultType useOn(ItemUseContext itemusecontext)
 	{
-		World world = itemusecontext.getLevel();
+		World level = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
-		BlockState blockstate = world.getBlockState(blockpos);
+		BlockState blockstate = level.getBlockState(blockpos);
 		ItemStack itemstack = itemusecontext.getItemInHand();
-		if (world.getBlockEntity(blockpos) instanceof BonfireTileEntity && blockstate.getValue(BonfireBlock.LIT))
+		if (level.getBlockEntity(blockpos) instanceof BonfireTileEntity && blockstate.getValue(BonfireBlock.LIT))
 		{
-			BonfireTileEntity bonfire = (BonfireTileEntity)world.getBlockEntity(blockpos);
+			BonfireTileEntity bonfire = (BonfireTileEntity)level.getBlockEntity(blockpos);
 			if (blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL) == 9)
 			{
 				if (itemusecontext.getPlayer() instanceof ServerPlayerEntity)

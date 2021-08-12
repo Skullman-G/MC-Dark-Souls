@@ -19,16 +19,16 @@ public class SoulContainerItem extends DescriptionItem implements IHaveDarkSouls
 	}
 	
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand)
 	{
-		return ItemUser.startUsing(this, world, player, hand);
+		return ItemUser.startUsing(this, level, player, hand);
 	}
 	
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemstack, World world, LivingEntity livingentity)
+	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
 	{
 		livingentity.playSound(SoundEventInit.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
-		if (!world.isClientSide && this.getHumanity() != 0)
+		if (!level.isClientSide && this.getHumanity() != 0)
 		{
 			ModEntityDataManager.raiseHumanity(livingentity, this.getHumanity());
 			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
@@ -41,7 +41,7 @@ public class SoulContainerItem extends DescriptionItem implements IHaveDarkSouls
 	}
 	
 	@Override
-	public void onUseTick(World world, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
+	public void onUseTick(World level, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
 	{
 		ItemUser.triggerItemUseEffects(livingentity, itemstack, this, durationremaining);
 	}

@@ -104,5 +104,8 @@
 	
 	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
 	
-	"commands.give.fail.darksign": "Don't even try"
+	"commands.give.fail.darksign": "Don't even try",
+	
+	"key.darksouls.show_tooltip": "Show Special Attack Tooltip",
+	"key.darksouls.gui": "Mod Gui"
 }

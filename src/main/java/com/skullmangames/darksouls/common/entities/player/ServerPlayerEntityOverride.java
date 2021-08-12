@@ -34,25 +34,25 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	}
 	
 	@Override
-	public Either<PlayerEntity.SleepResult, Unit> startSleepInBed(BlockPos pos)
+	public Either<PlayerEntity.SleepResult, Unit> startSleepInBed(BlockPos vertex)
 	{
-		java.util.Optional<BlockPos> optAt = java.util.Optional.of(pos);
+		java.util.Optional<BlockPos> optAt = java.util.Optional.of(vertex);
 	      PlayerEntity.SleepResult ret = net.minecraftforge.event.ForgeEventFactory.onPlayerSleepInBed(this, optAt);
 	      if (ret != null) return Either.left(ret);
-	      Direction direction = this.level.getBlockState(pos).getValue(HorizontalBlock.FACING);
+	      Direction direction = this.level.getBlockState(vertex).getValue(HorizontalBlock.FACING);
 	      if (!this.isSleeping() && this.isAlive()) {
 	         if (!this.level.dimensionType().natural()) {
 	            return Either.left(PlayerEntity.SleepResult.NOT_POSSIBLE_HERE);
-	         } else if (!this.bedInRange(pos, direction)) {
+	         } else if (!this.bedInRange(vertex, direction)) {
 	            return Either.left(PlayerEntity.SleepResult.TOO_FAR_AWAY);
-	         } else if (this.bedBlocked(pos, direction)) {
+	         } else if (this.bedBlocked(vertex, direction)) {
 	            return Either.left(PlayerEntity.SleepResult.OBSTRUCTED);
 	         } else {
 	            if (!net.minecraftforge.event.ForgeEventFactory.fireSleepingTimeCheck(this, optAt)) {
 	               return Either.left(PlayerEntity.SleepResult.NOT_POSSIBLE_NOW);
 	            } else {
 	               if (!this.isCreative()) {
-	                  Vector3d vector3d = Vector3d.atBottomCenterOf(pos);
+	                  Vector3d vector3d = Vector3d.atBottomCenterOf(vertex);
 	                  List<MonsterEntity> list = this.level.getEntitiesOfClass(MonsterEntity.class, new AxisAlignedBB(vector3d.x() - 8.0D, vector3d.y() - 5.0D, vector3d.z() - 8.0D, vector3d.x() + 8.0D, vector3d.y() + 5.0D, vector3d.z() + 8.0D), (p_241146_1_) -> {
 	                     return p_241146_1_.isPreventingPlayerRest(this);
 	                  });
@@ -61,7 +61,7 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	                  }
 	               }
 
-	               Either<PlayerEntity.SleepResult, Unit> either = this.sleepInBed(pos).ifRight((p_241144_1_) -> {
+	               Either<PlayerEntity.SleepResult, Unit> either = this.sleepInBed(vertex).ifRight((p_241144_1_) -> {
 	                  this.awardStat(Stats.SLEEP_IN_BED);
 	                  CriteriaTriggers.SLEPT_IN_BED.trigger(this);
 	               });
@@ -74,9 +74,9 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	      }
 	}
 	
-	private Either<PlayerEntity.SleepResult, Unit> sleepInBed(BlockPos pos)
+	private Either<PlayerEntity.SleepResult, Unit> sleepInBed(BlockPos vertex)
 	{
-	    this.startSleeping(pos);
+	    this.startSleeping(vertex);
 	    this.sleepCounter = 0;
 	    return Either.right(Unit.INSTANCE);
 	}

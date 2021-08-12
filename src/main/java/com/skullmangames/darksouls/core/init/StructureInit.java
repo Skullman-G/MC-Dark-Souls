@@ -47,7 +47,8 @@ public class StructureInit
         {
             Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().structureSettings().structureConfig();
 
-            if(structureMap instanceof ImmutableMap){
+            if(structureMap instanceof ImmutableMap)
+            {
                 Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(structureMap);
                 tempMap.put(structure, structureSeparationSettings);
                 settings.getValue().structureSettings().structureConfig = tempMap;

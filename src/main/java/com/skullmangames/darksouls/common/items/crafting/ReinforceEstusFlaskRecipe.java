@@ -25,7 +25,7 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	}
 	
 	@Override
-	public boolean matches(IInventory inventory, World world)
+	public boolean matches(IInventory inventory, World level)
 	{
 		return inventory.getItem(0).getItem() == ItemInit.ESTUS_FLASK.get() && EstusFlaskItem.getTotalUses(inventory.getItem(0)) < 20 && inventory.getItem(1).getItem() == ItemInit.ESTUS_SHARD.get();
 	}

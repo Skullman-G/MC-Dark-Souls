@@ -171,9 +171,9 @@ public class EstusFlaskItem extends DescriptionItem
 	@Override
 	public ActionResultType useOn(ItemUseContext itemusecontext)
 	{
-		World world = itemusecontext.getLevel();
+		World level = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
-		BlockState blockstate = world.getBlockState(blockpos);
+		BlockState blockstate = level.getBlockState(blockpos);
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
 			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) * 5);

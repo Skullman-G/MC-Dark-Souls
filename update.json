@@ -6,7 +6,7 @@
         "0.1.1": "-Fixed weird animation when using the Darksign\n-Fixed more than one Fire Keeper spawning at one bonfire",
         "0.1.2": "-Fixed Estus Flakon usage does not decrease",
         "0.1.3": "-Added Undead Bone Shard\n-Added Straight Sword Hilt\n-Added the option to level up Max Health with the Fire Keeper\n-While using the Darksign or an Homeward Bone you cannot walk\n-Darksign does not appear in the Creative Inventory\n-Darksign cannot be dropped on death\n-Added a Soul System\n-Changed the Hearts to a Health Bar",
-        "0.1.4": "-Fixed Estus Flask healing too much HP\n-Fixed that Clear Command would remove Darksign\n-Fixed that Give Command would give Darksign\n-Fixed loosing souls by using Darksign without teleporting\n-Fixed the player healing to full HP when joining the world\n-Fixed teleporting items like Darksign or Homeward Bone making you stuck on the ground after usage"
+        "0.1.4": "-Fixed Estus Flask healing too much HP\n-Fixed that Clear Command would remove Darksign\n-Fixed that Give Command would give Darksign\n-Fixed loosing souls by using Darksign without teleporting\n-Fixed the player healing to full HP when joining the level\n-Fixed teleporting items like Darksign or Homeward Bone making you stuck on the ground after usage"
     },
     
     "promos":

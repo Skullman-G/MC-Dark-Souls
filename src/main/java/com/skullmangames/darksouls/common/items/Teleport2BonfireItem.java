@@ -54,12 +54,12 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	}
 	
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand)
 	{
 		ModifiableAttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
 		AttributeModifier speedmodifier = new AttributeModifier(SPEED_MODIFIER_CASTING_UUID, "item use speed reduction", -speed.getValue(), Operation.ADDITION);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) == null) speed.addTransientModifier(speedmodifier);
-		return ItemUser.startUsing(this, world, player, hand);
+		return ItemUser.startUsing(this, level, player, hand);
 	}
 	
 	@Override
@@ -70,7 +70,7 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	}
 	
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemstack, World world, LivingEntity livingentity)
+	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
 	{
 		ModifiableAttributeInstance speed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) != null) speed.removeModifier(SPEED_MODIFIER_CASTING_UUID);
@@ -118,7 +118,7 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	}
 	
 	@Override
-	public void onUseTick(World world, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
+	public void onUseTick(World level, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
 	{
 		ItemUser.triggerItemUseEffects(livingentity, itemstack, this, durationremaining);
 	}

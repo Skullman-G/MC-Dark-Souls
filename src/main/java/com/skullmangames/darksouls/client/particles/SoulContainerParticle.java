@@ -17,9 +17,9 @@ public class SoulContainerParticle extends SpriteTexturedParticle
 	private final double yStart;
 	private final double zStart;
 	
-	protected SoulContainerParticle(ClientWorld world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
+	protected SoulContainerParticle(ClientWorld level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
 	{
-		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
+		super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 		
 		this.xd = xSpeed;
 	    this.yd = ySpeed;
@@ -93,9 +93,9 @@ public class SoulContainerParticle extends SpriteTexturedParticle
 	    }
 
 	    @Override
-	    public Particle createParticle(BasicParticleType type, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+	    public Particle createParticle(BasicParticleType type, ClientWorld level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
 	    {
-	    	SoulContainerParticle soulparticle = new SoulContainerParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
+	    	SoulContainerParticle soulparticle = new SoulContainerParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
 	    	soulparticle.pickSprite(this.sprite);
 	         return soulparticle;
 	    }

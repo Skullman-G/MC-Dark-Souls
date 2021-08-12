@@ -36,9 +36,9 @@ public class FireKeeperEntity extends QuestEntity
 	private BlockPos linkedBonfirePos;
 	private boolean hasLinkedBonfire = false;
 	
-	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, World world)
+	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, World level)
 	{
-		super(entity, world);
+		super(entity, level);
 	}
 	
 	public void linkBonfire(BlockPos blockpos)

@@ -94,40 +94,40 @@ public class BigDoorBlock extends Block
 	}
 	
 	@Override
-	public void playerWillDestroy(World world, BlockPos blockpos, BlockState blockstate, PlayerEntity player)
+	public void playerWillDestroy(World level, BlockPos blockpos, BlockState blockstate, PlayerEntity player)
 	{
-		if (!world.isClientSide && player.isCreative())
+		if (!level.isClientSide && player.isCreative())
 		{
 			switch (blockstate.getValue(PART))
 			{
 				case UPPER:
 					BlockPos middleblockpos = blockpos.below();
-				    BlockState middleblockstate = world.getBlockState(middleblockpos);
+				    BlockState middleblockstate = level.getBlockState(middleblockpos);
 				    
 				    if (middleblockstate.getBlock() == blockstate.getBlock() && middleblockstate.getValue(PART) == TrippleBlockPart.MIDDLE)
 				    {
-				       world.setBlock(middleblockpos, Blocks.AIR.defaultBlockState(), 35);
-				       world.levelEvent(player, 2001, middleblockpos, Block.getId(middleblockstate));
+				       level.setBlock(middleblockpos, Blocks.AIR.defaultBlockState(), 35);
+				       level.levelEvent(player, 2001, middleblockpos, Block.getId(middleblockstate));
 				    }
 				    
 				    BlockPos lowerblockpos = blockpos.below(2);
-				    BlockState lowerblockstate = world.getBlockState(lowerblockpos);
+				    BlockState lowerblockstate = level.getBlockState(lowerblockpos);
 				    
 				    if (lowerblockstate.getBlock() == blockstate.getBlock() && lowerblockstate.getValue(PART) == TrippleBlockPart.MIDDLE)
 				    {
-				       world.setBlock(lowerblockpos, Blocks.AIR.defaultBlockState(), 35);
-				       world.levelEvent(player, 2001, lowerblockpos, Block.getId(lowerblockstate));
+				       level.setBlock(lowerblockpos, Blocks.AIR.defaultBlockState(), 35);
+				       level.levelEvent(player, 2001, lowerblockpos, Block.getId(lowerblockstate));
 				    }
 					break;
 					
 				case MIDDLE:
 				    BlockPos lowerblockpos2 = blockpos.below();
-				    BlockState lowerblockstate2 = world.getBlockState(lowerblockpos2);
+				    BlockState lowerblockstate2 = level.getBlockState(lowerblockpos2);
 				    
 				    if (lowerblockstate2.getBlock() == blockstate.getBlock() && lowerblockstate2.getValue(PART) == TrippleBlockPart.MIDDLE)
 				    {
-				       world.setBlock(lowerblockpos2, Blocks.AIR.defaultBlockState(), 35);
-				       world.levelEvent(player, 2001, lowerblockpos2, Block.getId(lowerblockstate2));
+				       level.setBlock(lowerblockpos2, Blocks.AIR.defaultBlockState(), 35);
+				       level.levelEvent(player, 2001, lowerblockpos2, Block.getId(lowerblockstate2));
 				    }
 					break;
 					
@@ -136,7 +136,7 @@ public class BigDoorBlock extends Block
 			}
 	    }
 
-	    super.playerWillDestroy(world, blockpos, blockstate, player);
+	    super.playerWillDestroy(level, blockpos, blockstate, player);
 	}
 	
 	@Override
@@ -175,8 +175,8 @@ public class BigDoorBlock extends Block
 		BlockPos blockpos = p_196258_1_.getClickedPos();
 	    if (blockpos.getY() < 255 && p_196258_1_.getLevel().getBlockState(blockpos.above()).canBeReplaced(p_196258_1_))
 	    {
-	       World world = p_196258_1_.getLevel();
-	       boolean flag = world.hasNeighborSignal(blockpos) || world.hasNeighborSignal(blockpos.above());
+	       World level = p_196258_1_.getLevel();
+	       boolean flag = level.hasNeighborSignal(blockpos) || level.hasNeighborSignal(blockpos.above());
 	       return this.defaultBlockState().setValue(FACING, p_196258_1_.getHorizontalDirection()).setValue(HINGE, this.getHinge(p_196258_1_)).setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)).setValue(PART, TrippleBlockPart.LOWER);
 	    }
 	    else
@@ -186,10 +186,10 @@ public class BigDoorBlock extends Block
 	}
 	
 	@Override
-	public void setPlacedBy(World world, BlockPos blockpos, BlockState blockstate, LivingEntity p_180633_4_, ItemStack p_180633_5_)
+	public void setPlacedBy(World level, BlockPos blockpos, BlockState blockstate, LivingEntity p_180633_4_, ItemStack p_180633_5_)
 	{
-		world.setBlock(blockpos.above(), blockstate.setValue(PART, TrippleBlockPart.MIDDLE), 3);
-		world.setBlock(blockpos.above(2), blockstate.setValue(PART, TrippleBlockPart.UPPER), 3);
+		level.setBlock(blockpos.above(), blockstate.setValue(PART, TrippleBlockPart.MIDDLE), 3);
+		level.setBlock(blockpos.above(2), blockstate.setValue(PART, TrippleBlockPart.UPPER), 3);
 	}
 	
 	private DoorHingeSide getHinge(BlockItemUseContext p_208073_1_)

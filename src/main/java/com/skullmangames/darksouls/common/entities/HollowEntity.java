@@ -93,9 +93,9 @@ public class HollowEntity extends MonsterEntity
 		return data;
 	}
 	
-	public static boolean canSpawnOn(EntityType<?> type, IWorld world, SpawnReason reason, BlockPos blockpos, Random random)
+	public static boolean canSpawnOn(EntityType<?> type, IWorld level, SpawnReason reason, BlockPos blockpos, Random random)
 	{
-		return world.getDifficulty() != Difficulty.PEACEFUL;
+		return level.getDifficulty() != Difficulty.PEACEFUL;
 	}
 	
 	@Override

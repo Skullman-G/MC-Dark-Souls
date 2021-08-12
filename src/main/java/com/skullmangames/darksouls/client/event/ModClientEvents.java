@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entities.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

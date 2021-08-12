@@ -34,7 +34,7 @@ public class BaseHorizontalBlock extends Block
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+	public BlockState rotate(BlockState state, IWorld level, BlockPos vertex, Rotation direction)
 	{
 		return state.setValue(HORIZONTAL_FACING, direction.rotate(state.getValue(HORIZONTAL_FACING)));
 	}

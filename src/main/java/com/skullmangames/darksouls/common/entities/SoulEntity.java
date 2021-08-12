@@ -18,17 +18,17 @@ public class SoulEntity extends Entity
 	private PlayerEntity followingEntity;
 	private int value;
 	
-	public SoulEntity(World world, double posX, double posY, double posZ, int value)
+	public SoulEntity(World level, double posX, double posY, double posZ, int value)
 	{
-	   this(EntityTypeInit.SOUL.get(), world);
+	   this(EntityTypeInit.SOUL.get(), level);
 	   this.setPos(posX, posY, posZ);
 	   this.yRot = (float)(this.random.nextDouble() * 360.0D);
 	   this.value = value;
 	}
 
-	public SoulEntity(EntityType<? extends SoulEntity> type, World world)
+	public SoulEntity(EntityType<? extends SoulEntity> type, World level)
 	{
-	   super(type, world);
+	   super(type, level);
 	}
 	
 	@Override
