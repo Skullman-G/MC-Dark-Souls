@@ -5,7 +5,7 @@ import java.awt.Color;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
 import com.skullmangames.darksouls.core.util.Timer;
 
 import net.minecraft.client.MainWindow;

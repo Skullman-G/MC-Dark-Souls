@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entities.HollowEntity;
+import com.skullmangames.darksouls.common.entity.HollowEntity;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.BipedRenderer;

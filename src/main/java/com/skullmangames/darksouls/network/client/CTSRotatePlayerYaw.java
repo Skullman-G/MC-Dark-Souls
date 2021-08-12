@@ -2,10 +2,10 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.server.STCNotifyPlayerYawChanged;
+import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

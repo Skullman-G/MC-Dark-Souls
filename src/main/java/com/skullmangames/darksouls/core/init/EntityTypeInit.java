@@ -1,9 +1,9 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
-import com.skullmangames.darksouls.common.entities.HollowEntity;
-import com.skullmangames.darksouls.common.entities.SoulEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.entity.SoulEntity;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;

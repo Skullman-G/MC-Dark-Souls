@@ -3,10 +3,10 @@ package com.skullmangames.darksouls.client.renderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.skullmangames.darksouls.client.event.engine.RenderEngine;
-import com.skullmangames.darksouls.common.entities.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.ClientModelInit;
-import com.skullmangames.darksouls.util.math.MathUtils;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

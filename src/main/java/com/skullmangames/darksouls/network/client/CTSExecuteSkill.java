@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;

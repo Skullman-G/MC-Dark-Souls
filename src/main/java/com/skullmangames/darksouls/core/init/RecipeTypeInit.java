@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.items.crafting.ReinforceEstusFlaskRecipe;
+import com.skullmangames.darksouls.common.item.crafting.ReinforceEstusFlaskRecipe;
 
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;

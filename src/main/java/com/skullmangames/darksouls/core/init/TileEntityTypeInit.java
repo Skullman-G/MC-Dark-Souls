@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;

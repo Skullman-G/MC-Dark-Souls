@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.common.entities.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.item.ItemStack;

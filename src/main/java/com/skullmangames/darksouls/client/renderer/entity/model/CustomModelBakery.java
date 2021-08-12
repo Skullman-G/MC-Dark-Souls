@@ -6,9 +6,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.parser.xml.collada.Mesh;
-import com.skullmangames.darksouls.parser.xml.collada.VertexData;
-import com.skullmangames.darksouls.util.math.vector.Vector3fHelper;
+import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
+import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
+import com.skullmangames.darksouls.core.util.parser.xml.collada.VertexData;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;

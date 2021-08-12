@@ -7,11 +7,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.skullmangames.darksouls.common.entities.ClientPlayerData;
-import com.skullmangames.darksouls.common.items.CapabilityItem;
-import com.skullmangames.darksouls.skill.Skill;
-import com.skullmangames.darksouls.skill.SkillContainer;
-import com.skullmangames.darksouls.skill.SkillSlot;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.skill.SkillContainer;
+import com.skullmangames.darksouls.common.skill.SkillSlot;
 
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;

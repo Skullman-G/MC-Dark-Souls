@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.core.event;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-import com.skullmangames.darksouls.common.entities.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 
 public class PlayerEvent implements Comparable<UUID>
 {

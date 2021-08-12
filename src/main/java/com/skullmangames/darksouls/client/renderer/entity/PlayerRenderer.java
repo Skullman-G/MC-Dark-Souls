@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.common.entities.RemoteClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;

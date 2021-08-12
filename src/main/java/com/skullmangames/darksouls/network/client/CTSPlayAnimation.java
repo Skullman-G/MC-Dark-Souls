@@ -2,11 +2,11 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ServerPlayerData;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

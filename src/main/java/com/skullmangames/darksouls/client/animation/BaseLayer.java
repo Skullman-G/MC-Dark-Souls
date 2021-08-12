@@ -1,11 +1,11 @@
 package com.skullmangames.darksouls.client.animation;
 
-import com.skullmangames.darksouls.animation.AnimationPlayer;
-import com.skullmangames.darksouls.animation.Pose;
-import com.skullmangames.darksouls.animation.types.DynamicAnimation;
-import com.skullmangames.darksouls.animation.types.LinkAnimation;
-import com.skullmangames.darksouls.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.entities.LivingData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.Pose;
+import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
+import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.config.ConfigurationIngame;
 
 import net.minecraft.client.Minecraft;

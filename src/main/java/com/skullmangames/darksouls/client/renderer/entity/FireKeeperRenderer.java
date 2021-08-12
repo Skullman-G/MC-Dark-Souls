@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.FireKeeperModel;
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

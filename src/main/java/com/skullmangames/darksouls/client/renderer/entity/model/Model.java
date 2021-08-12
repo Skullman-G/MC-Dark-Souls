@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.renderer.entity.model;
 import java.io.IOException;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.parser.xml.collada.ColladaParser;
+import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
 
 import net.minecraft.util.ResourceLocation;
 

@@ -1,15 +1,15 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
-import com.skullmangames.darksouls.common.items.DarkSoulsUseAction;
-import com.skullmangames.darksouls.common.items.DescriptionItem;
-import com.skullmangames.darksouls.common.items.EstusFlaskItem;
-import com.skullmangames.darksouls.common.items.FireKeeperSoulItem;
-import com.skullmangames.darksouls.common.items.HumanityItem;
-import com.skullmangames.darksouls.common.items.SwordDescriptionItem;
-import com.skullmangames.darksouls.common.items.Teleport2BonfireItem;
-import com.skullmangames.darksouls.common.items.UndeadBoneShardItem;
+import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
+import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.DescriptionItem;
+import com.skullmangames.darksouls.common.item.EstusFlaskItem;
+import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
+import com.skullmangames.darksouls.common.item.HumanityItem;
+import com.skullmangames.darksouls.common.item.SwordDescriptionItem;
+import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
+import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

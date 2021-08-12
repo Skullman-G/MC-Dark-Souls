@@ -4,8 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
-import com.skullmangames.darksouls.common.entities.LivingData;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;

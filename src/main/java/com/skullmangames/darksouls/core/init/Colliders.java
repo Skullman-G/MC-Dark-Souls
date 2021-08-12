@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.physics.Collider;
-import com.skullmangames.darksouls.physics.ColliderOBB;
+import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.physics.ColliderOBB;
 
 public class Colliders
 {

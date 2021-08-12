@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContainer;
+import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;

@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.DialogTexts;

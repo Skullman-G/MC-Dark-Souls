@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.renderer;
 
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

@@ -5,10 +5,10 @@ import java.io.IOException;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.parser.xml.collada.ColladaParser;
-import com.skullmangames.darksouls.parser.xml.collada.Mesh;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.util.math.vector.Vector4fHelper;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.Vector4fHelper;
+import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
+import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
 
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;

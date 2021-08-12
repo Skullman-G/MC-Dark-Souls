@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.client.event.engine.ControllEngine;
 import com.skullmangames.darksouls.client.event.engine.RenderEngine;
-import com.skullmangames.darksouls.common.entities.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.PointOfView;

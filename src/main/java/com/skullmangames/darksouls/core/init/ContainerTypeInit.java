@@ -6,8 +6,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.containers.ReinforceEstusFlaskContainer;
-import com.skullmangames.darksouls.common.containers.SmithingTableContainerOverride;
+import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
+import com.skullmangames.darksouls.common.inventory.container.SmithingTableContainerOverride;
 
 public class ContainerTypeInit
 {

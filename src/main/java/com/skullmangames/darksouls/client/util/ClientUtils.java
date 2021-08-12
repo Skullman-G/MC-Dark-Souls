@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.client.util;
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
-import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

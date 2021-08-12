@@ -25,12 +25,12 @@ import com.skullmangames.darksouls.client.renderer.RenderShield;
 import com.skullmangames.darksouls.client.renderer.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ClientPlayerData;
-import com.skullmangames.darksouls.common.entities.LivingData;
-import com.skullmangames.darksouls.common.items.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Formulars;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

@@ -2,13 +2,12 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientEngine;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.PlayerData;
-import com.skullmangames.darksouls.common.items.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.server.STCGameruleChange;
-import com.skullmangames.darksouls.network.play.server.STCGameruleChange.Gamerules;
-import com.skullmangames.darksouls.world.ModGamerules;
+import com.skullmangames.darksouls.network.server.STCGameruleChange;
+import com.skullmangames.darksouls.network.server.STCGameruleChange.Gamerules;
 
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;

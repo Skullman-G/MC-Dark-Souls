@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-import com.skullmangames.darksouls.common.entities.player.ServerPlayerEntityOverride;
+import com.skullmangames.darksouls.common.entity.player.ServerPlayerEntityOverride;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

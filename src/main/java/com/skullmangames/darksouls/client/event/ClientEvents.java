@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.event;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
-import com.skullmangames.darksouls.common.items.DarkSoulsSpawnEggItem;
+import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.core.init.EffectInit;
 
 import net.minecraft.client.Minecraft;

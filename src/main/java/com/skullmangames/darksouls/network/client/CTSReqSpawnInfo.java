@@ -2,10 +2,10 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.BipedMobData;
+import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.server.STCMobInitialSetting;
+import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;

@@ -2,9 +2,9 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.blocks.BonfireBlock;
-import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
-import com.skullmangames.darksouls.common.tiles.BonfireTileEntity;
+import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
+import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;

@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
-import com.skullmangames.darksouls.animation.LivingMotion;
-import com.skullmangames.darksouls.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ServerPlayerData;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.server.STCLivingMotionChange;
+import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;

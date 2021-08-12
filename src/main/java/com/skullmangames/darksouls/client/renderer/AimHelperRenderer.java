@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.renderer;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.util.math.vector.Vector3fHelper;
+import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;

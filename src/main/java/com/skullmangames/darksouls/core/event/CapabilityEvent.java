@@ -1,11 +1,11 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.EntityData;
-import com.skullmangames.darksouls.common.entities.ProviderEntity;
-import com.skullmangames.darksouls.common.entities.ProviderProjectile;
-import com.skullmangames.darksouls.common.items.ProviderItem;
+import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ProviderEntity;
+import com.skullmangames.darksouls.core.init.ProviderItem;
+import com.skullmangames.darksouls.core.init.ProviderProjectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;

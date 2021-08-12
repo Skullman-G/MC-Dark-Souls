@@ -10,10 +10,10 @@ import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.client.renderer.entity.model.CustomModelBakery;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.LivingData;
-import com.skullmangames.darksouls.common.items.ArmorCapability;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.item.ArmorCapability;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

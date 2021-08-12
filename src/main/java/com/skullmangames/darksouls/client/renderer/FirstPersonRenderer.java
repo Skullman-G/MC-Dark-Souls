@@ -1,17 +1,17 @@
 package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.animation.types.ActionAnimation;
-import com.skullmangames.darksouls.animation.types.AimingAnimation;
-import com.skullmangames.darksouls.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
-import com.skullmangames.darksouls.common.entities.ClientPlayerData;
+import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
+import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
+import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.core.init.ClientModelInit;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

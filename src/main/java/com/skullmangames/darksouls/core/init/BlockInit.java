@@ -1,9 +1,9 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.blocks.BigDoorBlock;
-import com.skullmangames.darksouls.common.blocks.BonfireBlock;
-import com.skullmangames.darksouls.common.blocks.SmithingTableBlockOverride;
+import com.skullmangames.darksouls.common.block.BigDoorBlock;
+import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.common.block.SmithingTableBlockOverride;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

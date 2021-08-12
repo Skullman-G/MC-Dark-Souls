@@ -50,12 +50,9 @@ import com.skullmangames.darksouls.client.gui.IngameConfigurationGui;
 import com.skullmangames.darksouls.client.gui.screens.ReinforceEstusFlaskScreen;
 import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverride;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ProviderEntity;
-import com.skullmangames.darksouls.common.entities.ProviderProjectile;
-import com.skullmangames.darksouls.common.items.EstusFlaskItem;
-import com.skullmangames.darksouls.common.items.ProviderItem;
-import com.skullmangames.darksouls.common.items.SoulsGroup;
+import com.skullmangames.darksouls.common.item.EstusFlaskItem;
+import com.skullmangames.darksouls.common.item.SoulsGroup;
+import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.ConfigurationIngame;
 import com.skullmangames.darksouls.core.event.CapabilityEvent;
@@ -69,16 +66,19 @@ import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModelInit;
 import com.skullmangames.darksouls.core.init.Particles;
 import com.skullmangames.darksouls.core.init.PlayerEvents;
+import com.skullmangames.darksouls.core.init.ProviderEntity;
+import com.skullmangames.darksouls.core.init.ProviderItem;
+import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.world.ModGamerules;
 
 @Mod(DarkSouls.MOD_ID)
 public class DarkSouls

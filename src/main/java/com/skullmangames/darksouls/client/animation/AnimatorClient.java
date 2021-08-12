@@ -5,19 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.skullmangames.darksouls.animation.AnimationPlayer;
-import com.skullmangames.darksouls.animation.Animator;
-import com.skullmangames.darksouls.animation.Joint;
-import com.skullmangames.darksouls.animation.JointTransform;
-import com.skullmangames.darksouls.animation.LivingMotion;
-import com.skullmangames.darksouls.animation.Pose;
-import com.skullmangames.darksouls.animation.types.MirrorAnimation;
-import com.skullmangames.darksouls.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.entities.LivingData;
-import com.skullmangames.darksouls.common.entities.LivingData.EntityState;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.Animator;
+import com.skullmangames.darksouls.common.animation.Joint;
+import com.skullmangames.darksouls.common.animation.JointTransform;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Pose;
+import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModelInit;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class AnimatorClient extends Animator
 {

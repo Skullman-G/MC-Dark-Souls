@@ -6,8 +6,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.world.structures.CheckpointPlainsStructure;
-import com.skullmangames.darksouls.world.structures.UndeadAsylumStructure;
+import com.skullmangames.darksouls.common.world.structures.CheckpointPlainsStructure;
+import com.skullmangames.darksouls.common.world.structures.UndeadAsylumStructure;
 
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.NoFeatureConfig;

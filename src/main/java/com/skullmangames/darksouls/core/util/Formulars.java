@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
-import com.skullmangames.darksouls.common.entities.EntityData;
-import com.skullmangames.darksouls.world.ModGamerules;
+import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.world.ModGamerules;
 
 import net.minecraft.util.math.MathHelper;
 

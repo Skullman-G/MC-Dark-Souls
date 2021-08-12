@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.skullmangames.darksouls.common.commands.ClearCommandOverride;
-import com.skullmangames.darksouls.common.commands.GiveCommandOverride;
+import com.skullmangames.darksouls.common.command.ClearCommandOverride;
+import com.skullmangames.darksouls.common.command.GiveCommandOverride;
 
 import net.minecraft.command.CommandSource;
 

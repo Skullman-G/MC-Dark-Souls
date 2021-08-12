@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.effects.UndeadCurse;
+import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
 
 import net.minecraft.potion.Effect;
 import net.minecraftforge.fml.RegistryObject;

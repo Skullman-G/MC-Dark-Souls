@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.skullmangames.darksouls.common.containers.SmithingTableContainerOverride;
+import com.skullmangames.darksouls.common.inventory.container.SmithingTableContainerOverride;
 
 import net.minecraft.client.gui.screen.inventory.AbstractRepairScreen;
 import net.minecraft.entity.player.PlayerInventory;

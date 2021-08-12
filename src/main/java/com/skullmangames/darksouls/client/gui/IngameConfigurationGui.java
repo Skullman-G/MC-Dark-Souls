@@ -12,16 +12,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class IngameConfigurationGui extends Screen {
+public class IngameConfigurationGui extends Screen
+{
 	protected final Screen parentScreen;
 	
-	public IngameConfigurationGui(Minecraft mc, Screen screen) {
+	public IngameConfigurationGui(Minecraft mc, Screen screen)
+	{
 		super(new StringTextComponent(DarkSouls.MOD_ID + ".gui.configuration"));
 		this.parentScreen = screen;
 	}
 	
+	private String onOrOff(boolean value)
+	{
+		return " " + new TranslationTextComponent(value ? "gui." + DarkSouls.MOD_ID + ".on" : "gui." + DarkSouls.MOD_ID + ".off").getString();
+	}
+	
 	@Override
-	protected void init() {
+	protected void init()
+	{
 		Option<Boolean> showHealthIndicator = DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator;
 		Option<Boolean> showTargetIndicator = DarkSouls.CLIENT_INGAME_CONFIG.showTargetIndicator;
 		Option<Boolean> filterAnimation = DarkSouls.CLIENT_INGAME_CONFIG.filterAnimation;
@@ -29,60 +37,66 @@ public class IngameConfigurationGui extends Screen {
 		
 		Button longPressCounterButton = this.addButton(new RewindableButton(this.width / 2 - 100, this.height / 4 - 24, 200, 20,
 			new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))),
-			(button) -> {
+			(button) ->
+			{
 				longPressCounter.setValue(longPressCounter.getValue() + 1);
-				button.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
+				button.setMessage(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
 			},
-			(button) -> {
+			(button) ->
+			{
 				longPressCounter.setValue(longPressCounter.getValue() - 1);
-				button.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
-			}, (button, matrixStack, mouseX, mouseY) -> {
-		        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("gui.epicfight.long_press_counter.tooltip"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
+				button.setMessage(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
+			}, (button, matrixStack, mouseX, mouseY) ->
+			{
+		        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("tooltip." + DarkSouls.MOD_ID + ".long_press_counter"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
 			}
 		));
 		
 		Button filterAnimationButton = this.addButton(new Button(this.width / 2 - 100, this.height / 4, 200, 20,
-			new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".filter_animation." + (filterAnimation.getValue() ? "on" : "off")), (button) -> {
+			new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".filter_animation").getString() + this.onOrOff(filterAnimation.getValue())), (button) ->
+			{
 				filterAnimation.setValue(!filterAnimation.getValue());
-				button.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".filter_animation." + (filterAnimation.getValue() ? "on" : "off")));
-			}, (button, matrixStack, mouseX, mouseY) -> {
-		        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("gui.epicfight.filter_animation.tooltip"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
+				button.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".filter_animation").getString() + this.onOrOff(filterAnimation.getValue())));
+			}, (button, matrixStack, mouseX, mouseY) ->
+			{
+		        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("tooltip." + DarkSouls.MOD_ID + ".filter_animation"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
 			}
 		));
 		
 		Button showHealthIndicatorButton = this.addButton(new Button(this.width / 2 - 100, this.height / 4 + 24, 200, 20,
-			new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".health_indicator." + (showHealthIndicator.getValue() ? "on" : "off")), (button) -> {
+			new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".health_indicator").getString() + this.onOrOff(showHealthIndicator.getValue())), (button) ->
+			{
 				showHealthIndicator.setValue(!showHealthIndicator.getValue());
-				button.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".health_indicator." + (showHealthIndicator.getValue() ? "on" : "off")));
-			}, (button, matrixStack, mouseX, mouseY) -> {
-		        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("gui.epicfight.health_indicator.tooltip"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
+				button.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".health_indicator").getString() + this.onOrOff(showHealthIndicator.getValue())));
 			}
 		));
 		
 		Button showTargetIndicatorButton = this.addButton(new Button(this.width / 2 - 100, this.height / 4 + 48, 200, 20,
-				new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".target_indicator." + (showTargetIndicator.getValue() ? "on" : "off")), (button) -> {
+				new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".target_indicator").getString() + this.onOrOff(showTargetIndicator.getValue())), (button) ->
+				{
 					showTargetIndicator.setValue(!showTargetIndicator.getValue());
-					button.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".target_indicator." + (showTargetIndicator.getValue() ? "on" : "off")));
-				}, (button, matrixStack, mouseX, mouseY) -> {
-			        this.renderTooltip(matrixStack, this.minecraft.font.split(new TranslationTextComponent("gui.epicfight.target_indicator.tooltip"), Math.max(this.width / 2 - 43, 170)), mouseX, mouseY);
+					button.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".target_indicator").getString() + this.onOrOff(showTargetIndicator.getValue())));
 				}
 			));
 		
-		this.addButton(new Button(this.width / 2 - 100, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui.done"), (button) -> {
+		this.addButton(new Button(this.width / 2 - 100, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".done"), (button) ->
+		{
 			this.onClose();
 		}));
 		
-		this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslationTextComponent("controls.reset"), (button) -> {
+		this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".reset"), (button) ->
+		{
 			DarkSouls.CLIENT_INGAME_CONFIG.resetSettings();
-			filterAnimationButton.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".filter_animation." + (filterAnimation.getValue() ? "on" : "off")));
+			filterAnimationButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".filter_animation").getString() + this.onOrOff(filterAnimation.getValue())));
 			longPressCounterButton.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
-			showHealthIndicatorButton.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".health_indicator." + (showHealthIndicator.getValue() ? "on" : "off")));
-			showTargetIndicatorButton.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".target_indicator." + (showTargetIndicator.getValue() ? "on" : "off")));
+			showHealthIndicatorButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".health_indicator").getString() + this.onOrOff(showHealthIndicator.getValue())));
+			showTargetIndicatorButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".target_indicator").getString() + this.onOrOff(showTargetIndicator.getValue())));
 		}));
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+	{
 		this.renderDirtBackground(0);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}

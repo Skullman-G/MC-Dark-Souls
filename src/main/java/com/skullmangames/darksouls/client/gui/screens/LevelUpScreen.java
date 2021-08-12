@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entities.ModEntityDataManager;
-import com.skullmangames.darksouls.common.entities.stats.Stat;
-import com.skullmangames.darksouls.common.entities.stats.Stats;
+import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entity.stats.Stat;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.chat.NarratorChatListener;

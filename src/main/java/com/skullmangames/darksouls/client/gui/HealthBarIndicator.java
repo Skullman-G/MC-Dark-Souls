@@ -7,10 +7,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.effects.ModEffect;
-import com.skullmangames.darksouls.common.entities.EntityData;
-import com.skullmangames.darksouls.common.entities.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.potion.effect.ModEffect;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

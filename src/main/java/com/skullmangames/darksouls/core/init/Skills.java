@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.animation.property.Property.DamageProperty;
-import com.skullmangames.darksouls.skill.FatalDrawSkill;
-import com.skullmangames.darksouls.skill.KatanaPassive;
-import com.skullmangames.darksouls.skill.LethalSlicingSkill;
-import com.skullmangames.darksouls.skill.SimpleSpecialAttackSkill;
-import com.skullmangames.darksouls.skill.Skill;
-import com.skullmangames.darksouls.skill.DodgeSkill;
-import com.skullmangames.darksouls.skill.SkillSlot;
-import com.skullmangames.darksouls.util.IExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.util.math.ValueCorrector;
+import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
+import com.skullmangames.darksouls.common.skill.DodgeSkill;
+import com.skullmangames.darksouls.common.skill.FatalDrawSkill;
+import com.skullmangames.darksouls.common.skill.KatanaPassive;
+import com.skullmangames.darksouls.common.skill.LethalSlicingSkill;
+import com.skullmangames.darksouls.common.skill.SimpleSpecialAttackSkill;
+import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.math.ValueCorrector;
 
 import net.minecraft.util.ResourceLocation;
 

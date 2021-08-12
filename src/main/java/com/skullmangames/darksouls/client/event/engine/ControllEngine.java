@@ -9,17 +9,17 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.animation.LivingMotion;
-import com.skullmangames.darksouls.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.skill.SkillContainer;
+import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientEngine;
-import com.skullmangames.darksouls.common.ModCapabilities;
-import com.skullmangames.darksouls.common.entities.ClientPlayerData;
-import com.skullmangames.darksouls.common.entities.LivingData.EntityState;
-import com.skullmangames.darksouls.common.items.CapabilityItem;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
-import com.skullmangames.darksouls.skill.SkillContainer;
-import com.skullmangames.darksouls.skill.SkillSlot;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
@@ -56,10 +56,8 @@ public class ControllEngine
 	private int comboHoldCounter;
 	private int comboCounter;
 	private int mouseLeftPressCounter = 0;
-	private int sneakPressCounter = 0;
 	private int reservedSkill;
 	private int skillReserveCounter;
-	private boolean sneakPressToggle = false;
 	private boolean mouseLeftPressToggle = false;
 	private boolean lightPress;
 	
@@ -75,7 +73,6 @@ public class ControllEngine
 		this.keyFunctionMap.put(options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(options.keySwapOffhand, this::onSwapHandKeyPressed);
 		this.keyFunctionMap.put(options.keyTogglePerspective, this::onSwitchModeKeyPressed);
-		this.keyFunctionMap.put(options.keyShift, this::onSneakKeyPressed);
 		this.keyFunctionMap.put(options.keySprint, this::onSprintKeyPressed);
 		
 		try
@@ -93,8 +90,6 @@ public class ControllEngine
 		this.comboCounter = 0;
 		this.mouseLeftPressCounter = 0;
 		this.mouseLeftPressToggle = false;
-		this.sneakPressCounter = 0;
-		this.sneakPressToggle = false;
 		this.lightPress = false;
 		this.player = playerdata.getOriginalEntity();
 		this.playerdata = playerdata;
@@ -129,7 +124,7 @@ public class ControllEngine
 	{
 		if (action == 0)
 		{
-			if (ClientEngine.INSTANCE.isBattleMode() && this.player.sprintTime <= 2)
+			if (ClientEngine.INSTANCE.isBattleMode() && (this.player.sprintTime <= 2 || !this.player.isSprinting()))
 			{
 				SkillContainer skill = this.playerdata.getSkill(SkillSlot.DODGE);
 				if (skill.canExecute(this.playerdata) && skill.getContaining().isExecutableState(this.playerdata))
@@ -167,21 +162,6 @@ public class ControllEngine
 		{
 			while(options.keyAttack.isDown())
 			{
-			}
-		}
-	}
-	
-	private void onSneakKeyPressed(int key, int action)
-	{
-		if (action == 1)
-		{
-			if (key == options.keyShift.getKey().getValue())
-			{
-				if (player.getControllingPassenger() == null && ClientEngine.INSTANCE.isBattleMode())
-				{
-					if (!sneakPressToggle)
-						sneakPressToggle = true;
-				}
 			}
 		}
 	}
@@ -272,38 +252,6 @@ public class ControllEngine
 			
 			this.mouseLeftPressToggle = false;
 			this.mouseLeftPressCounter = 0;
-		}
-
-		if (this.sneakPressToggle)
-		{
-			if (!this.isKeyDown(this.options.keyShift))
-			{
-				SkillContainer skill = this.playerdata.getSkill(SkillSlot.DODGE);
-				
-				if(skill.canExecute(this.playerdata) && skill.getContaining().isExecutableState(this.playerdata))
-				{
-					skill.execute(this.playerdata);
-				}
-				else
-				{
-					this.reserveSkill(SkillSlot.DODGE);
-				}
-				
-				sneakPressToggle = false;
-				sneakPressCounter = 0;
-			}
-			else
-			{
-				if (sneakPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
-				{
-					sneakPressToggle = false;
-					sneakPressCounter = 0;
-				}
-				else
-				{
-					sneakPressCounter++;
-				}
-			}
 		}
 		
 		if (this.reservedSkill >= 0)

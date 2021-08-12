@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.skullmangames.darksouls.common.entities.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 
 public class EntityEventListener
 {

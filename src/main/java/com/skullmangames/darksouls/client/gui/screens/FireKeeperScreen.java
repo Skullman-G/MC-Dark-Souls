@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
-import com.skullmangames.darksouls.common.entities.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;

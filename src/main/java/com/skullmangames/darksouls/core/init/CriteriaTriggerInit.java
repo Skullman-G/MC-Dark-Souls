@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.advancements.criterions.BonfireLitTrigger;
-import com.skullmangames.darksouls.advancements.criterions.MaxEstusHealLevelTrigger;
-import com.skullmangames.darksouls.advancements.criterions.ObtainBiggestEstusFlaskTrigger;
+import com.skullmangames.darksouls.common.advancements.criterions.BonfireLitTrigger;
+import com.skullmangames.darksouls.common.advancements.criterions.MaxEstusHealLevelTrigger;
+import com.skullmangames.darksouls.common.advancements.criterions.ObtainBiggestEstusFlaskTrigger;
 
 import net.minecraft.advancements.CriteriaTriggers;
 

@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.client.renderer.entity.model;
 
 import java.util.Map;
 
-import com.skullmangames.darksouls.animation.Joint;
-import com.skullmangames.darksouls.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.common.animation.Joint;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class Armature
 {
