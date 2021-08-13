@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -24,6 +25,9 @@ import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -170,6 +174,15 @@ public abstract class CapabilityItem
 			{
 				skillContainer.setSkill(skill);
 			}
+		}
+		
+		Minecraft minecraft = Minecraft.getInstance();
+		GameSettings options = minecraft.options;
+		
+		if (options.getCameraType() != PointOfView.THIRD_PERSON_BACK && this.getWeaponCategory() != WeaponCategory.NONE_WEAON)
+		{
+			ClientEngine.INSTANCE.switchToBattleMode();
+			options.setCameraType(PointOfView.THIRD_PERSON_BACK);
 		}
 	}
 	

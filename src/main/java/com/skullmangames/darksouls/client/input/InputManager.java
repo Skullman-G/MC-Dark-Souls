@@ -62,6 +62,7 @@ public class InputManager
 	private int skillReserveCounter;
 	private boolean mouseLeftPressToggle = false;
 	private boolean lightPress;
+	private Minecraft minecraft = Minecraft.getInstance();
 	
 	public GameSettings options;
 	
@@ -150,7 +151,7 @@ public class InputManager
 				{
 				}
 
-				if (player.getUseItemRemainingTicks() == 0)
+				if (player.getTicksUsingItem() == 0)
 				{
 					if (!mouseLeftPressToggle)
 					{
@@ -162,7 +163,7 @@ public class InputManager
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
 		{
-			while(options.keyAttack.isDown())
+			while(options.keyAttack.consumeClick())
 			{
 			}
 		}
@@ -174,7 +175,7 @@ public class InputManager
 
 		if (this.playerdata.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
-			while (options.keySwapOffhand.isDown())
+			while (options.keySwapOffhand.consumeClick())
 			{
 			}
 			this.setKeyBind(options.keySwapOffhand, false);
@@ -185,8 +186,7 @@ public class InputManager
 	{
 		if (action == 1)
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			GameSettings options = minecraft.options;
+			GameSettings options = this.minecraft.options;
 			Item item = this.player.inventory.getSelected().getItem();
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
@@ -206,7 +206,6 @@ public class InputManager
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	public void tick()
 	{
 		if (this.playerdata == null) return;
@@ -317,9 +316,9 @@ public class InputManager
 			}
 		}
 		
-		if (Minecraft.getInstance().isPaused())
+		if (this.minecraft.isPaused())
 		{
-			Minecraft.getInstance().mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
+			this.minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
 		}
 	}
 	
