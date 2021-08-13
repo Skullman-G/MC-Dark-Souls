@@ -33,10 +33,8 @@ import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent.ClickInputEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
@@ -148,7 +146,7 @@ public class InputManager
 			if (ClientEngine.INSTANCE.isBattleMode())
 			{
 				this.setKeyBind(options.keyAttack, false);
-				while(options.keyAttack.isDown())
+				while(options.keyAttack.consumeClick())
 				{
 				}
 
@@ -422,15 +420,6 @@ public class InputManager
 						inputManager.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
 					}
 				}
-			}
-		}
-		
-		@SubscribeEvent
-		public static void onVanillaMouseClick(ClickInputEvent event)
-		{
-			if (event.isAttack() && ClientEngine.INSTANCE.isBattleMode() && Minecraft.getInstance().hitResult.getType() == RayTraceResult.Type.BLOCK)
-			{
-				event.setCanceled(true);
 			}
 		}
 		
