@@ -45,7 +45,7 @@ import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.event.ClientEvents;
 import com.skullmangames.darksouls.client.event.engine.RenderEngine;
-import com.skullmangames.darksouls.client.gui.IngameConfigurationGui;
+import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.gui.screens.ReinforceEstusFlaskScreen;
 import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverride;
 import com.skullmangames.darksouls.client.input.InputManager;
@@ -136,7 +136,7 @@ public class DarkSouls
         ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
         ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
         
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> IngameConfigurationGui::new);
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> IngameConfigurationScreen::new);
         
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);

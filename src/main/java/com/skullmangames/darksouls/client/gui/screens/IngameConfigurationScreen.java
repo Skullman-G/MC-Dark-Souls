@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.gui;
+package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
@@ -12,11 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class IngameConfigurationGui extends Screen
+public class IngameConfigurationScreen extends Screen
 {
 	protected final Screen parentScreen;
 	
-	public IngameConfigurationGui(Minecraft mc, Screen screen)
+	public IngameConfigurationScreen(Minecraft mc, Screen screen)
 	{
 		super(new StringTextComponent(DarkSouls.MOD_ID + ".gui.configuration"));
 		this.parentScreen = screen;
@@ -24,7 +24,7 @@ public class IngameConfigurationGui extends Screen
 	
 	private String onOrOff(boolean value)
 	{
-		return " " + new TranslationTextComponent(value ? "gui." + DarkSouls.MOD_ID + ".on" : "gui." + DarkSouls.MOD_ID + ".off").getString();
+		return ": " + new TranslationTextComponent(value ? "gui." + DarkSouls.MOD_ID + ".on" : "gui." + DarkSouls.MOD_ID + ".off").getString();
 	}
 	
 	@Override
@@ -36,11 +36,11 @@ public class IngameConfigurationGui extends Screen
 		Option<Integer> longPressCounter = DarkSouls.CLIENT_INGAME_CONFIG.longPressCount;
 		
 		Button longPressCounterButton = this.addButton(new RewindableButton(this.width / 2 - 100, this.height / 4 - 24, 200, 20,
-			new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))),
+			new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter").getString() + ": " + longPressCounter.getValue()),
 			(button) ->
 			{
 				longPressCounter.setValue(longPressCounter.getValue() + 1);
-				button.setMessage(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
+				button.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter").getString() + ": " + longPressCounter.getValue()));
 			},
 			(button) ->
 			{
@@ -88,7 +88,7 @@ public class IngameConfigurationGui extends Screen
 		{
 			DarkSouls.CLIENT_INGAME_CONFIG.resetSettings();
 			filterAnimationButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".filter_animation").getString() + this.onOrOff(filterAnimation.getValue())));
-			longPressCounterButton.setMessage(new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".long_press_counter", (ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(longPressCounter.getValue()))));
+			longPressCounterButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".long_press_counter").getString() + ": " + longPressCounter.getValue()));
 			showHealthIndicatorButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".health_indicator").getString() + this.onOrOff(showHealthIndicator.getValue())));
 			showTargetIndicatorButton.setMessage(new StringTextComponent(new TranslationTextComponent("gui." + DarkSouls.MOD_ID + ".target_indicator").getString() + this.onOrOff(showTargetIndicator.getValue())));
 		}));

@@ -7,40 +7,53 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RewindableButton extends Button {
+public class RewindableButton extends Button
+{
 	protected final Button.IPressable onRewindPress;
 	
-	public RewindableButton(int x, int y, int width, int height, ITextComponent title, IPressable pressedAction, IPressable rewindPressedAction, ITooltip onTooltip) {
+	public RewindableButton(int x, int y, int width, int height, ITextComponent title, IPressable pressedAction, IPressable rewindPressedAction, ITooltip onTooltip)
+	{
 		super(x, y, width, height, title, pressedAction, onTooltip);
 		this.onRewindPress = rewindPressedAction;
 	}
 	
 	@Override
-	protected boolean isValidClickButton(int button) {
+	protected boolean isValidClickButton(int button)
+	{
 		return button == 0 || button == 1;
 	}
 	
-	public void onClick(double mouseX, double mouseY, int button) {
-		if (button == 0) {
+	public void onClick(double mouseX, double mouseY, int button)
+	{
+		if (button == 0)
+		{
 			super.onClick(mouseX, mouseY);
-		} else {
+		}
+		else
+		{
 			this.onRewindPress.onPress(this);
 		}
 	}
 	
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (this.active && this.visible) {
-			if (this.isValidClickButton(button)) {
+	public boolean mouseClicked(double mouseX, double mouseY, int button)
+	{
+		if (this.active && this.visible)
+		{
+			if (this.isValidClickButton(button))
+			{
 				boolean flag = this.clicked(mouseX, mouseY);
-				if (flag) {
+				if (flag)
+				{
 					this.playDownSound(Minecraft.getInstance().getSoundManager());
 					this.onClick(mouseX, mouseY, button);
 					return true;
 				}
 			}
 			return false;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
