@@ -151,12 +151,12 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		boolean isMainHandChanged = prevHeldItem.getItem() != this.orgEntity.inventory.getCarried().getItem();
-		boolean isOffHandChanged = prevHeldItemOffHand.getItem() != this.orgEntity.inventory.offhand.get(0).getItem();
+		boolean isMainHandChanged = prevHeldItem.getItem() != this.orgEntity.getItemInHand(Hand.MAIN_HAND).getItem();
+		boolean isOffHandChanged = prevHeldItemOffHand.getItem() != this.orgEntity.getItemInHand(Hand.OFF_HAND).getItem();
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
-			onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
+			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
 			if(isMainHandChanged)
 				prevHeldItem = this.orgEntity.inventory.getCarried();
 			if(isOffHandChanged)

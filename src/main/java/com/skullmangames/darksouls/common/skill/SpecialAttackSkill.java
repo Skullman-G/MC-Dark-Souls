@@ -41,7 +41,8 @@ public abstract class SpecialAttackSkill extends Skill {
 		this(restriction, 0, skillName);
 	}
 	
-	public SpecialAttackSkill(float restriction, int duration, String skillName) {
+	public SpecialAttackSkill(float restriction, int duration, String skillName)
+	{
 		super(SkillSlot.WEAPON_SPECIAL_ATTACK, restriction, duration, true, skillName);
 		this.properties = Lists.<Map<DamageProperty<?>, Object>>newArrayList();
 	}

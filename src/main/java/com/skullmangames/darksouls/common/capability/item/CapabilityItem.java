@@ -179,7 +179,7 @@ public abstract class CapabilityItem
 		Minecraft minecraft = Minecraft.getInstance();
 		GameSettings options = minecraft.options;
 		
-		if (options.getCameraType() != PointOfView.THIRD_PERSON_BACK && this.getWeaponCategory() != WeaponCategory.NONE_WEAON)
+		if (playerdata.getOriginalEntity().level.isClientSide && options.getCameraType() != PointOfView.THIRD_PERSON_BACK && this.getWeaponCategory() != WeaponCategory.NONE_WEAON)
 		{
 			ClientEngine.INSTANCE.switchToBattleMode();
 			options.setCameraType(PointOfView.THIRD_PERSON_BACK);

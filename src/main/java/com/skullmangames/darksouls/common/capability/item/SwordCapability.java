@@ -62,7 +62,9 @@ public class SwordCapability extends MaterialItemCapability
 		if(this.getStyle(playerdata) == WieldStyle.ONE_HAND)
 		{
 			return Skills.SWEEPING_EDGE;
-		} else {
+		}
+		else
+		{
 			return Skills.DANCING_EDGE;
 		}
 	}

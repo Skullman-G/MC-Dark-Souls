@@ -34,7 +34,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	public PlayerData()
 	{
 		SkillSlot[] slots = SkillSlot.values();
-		this.skills = new SkillContainer[SkillSlot.values().length];
+		this.skills = new SkillContainer[slots.length];
 		for(SkillSlot slot : slots)
 		{
 			this.skills[slot.getIndex()] = new SkillContainer(this);

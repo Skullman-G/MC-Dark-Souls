@@ -141,11 +141,13 @@ public class BattleModeGui extends ModIngameGui
 					GlStateManager._color4f(1F, 1F, 1F, 1F);
 				}
 				
-				if (slot != SkillSlot.WEAPON_SPECIAL_ATTACK) {
+				if (slot != SkillSlot.WEAPON_SPECIAL_ATTACK)
+				{
 					Minecraft.getInstance().getTextureManager().bind(this.getSkillTexture(container.getContaining()));
 					drawTexturedModalRectFixCoord(matrix, (width - x) * multiplyScale, (height - y) * multiplyScale, 0, 0, 255, 255);
 					
-					if (!(fullstack || creative)) {
+					if (!(fullstack || creative))
+					{
 						matStack.scale(multiplyScale, multiplyScale, 1.0F);
 						this.font.drawShadow(matStack,
 								String.valueOf((int)(1 + container.getCooldownSec() * Math.max(1 / container.getContaining().getRegenTimePerTick(playerdata), 1.0F))),
@@ -153,7 +155,9 @@ public class BattleModeGui extends ModIngameGui
 						GL11.glEnable(GL11.GL_ALPHA_TEST);
 						GlStateManager._enableBlend();
 					}
-				} else {
+				}
+				else
+				{
 					CapabilityItem item = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
 					boolean isCompatibleWeapon = item != null && item.getSpecialAttack(playerdata) == container.getContaining();
 					int vertexNum = 0;

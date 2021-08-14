@@ -55,7 +55,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	
 	public static void makeMapClient()
 	{
-		capabilityMap.put(EntityType.PLAYER, (entityIn)->
+		capabilityMap.put(EntityType.PLAYER, (entityIn) ->
 		{
 			if(entityIn instanceof ClientPlayerEntity)
 			{
