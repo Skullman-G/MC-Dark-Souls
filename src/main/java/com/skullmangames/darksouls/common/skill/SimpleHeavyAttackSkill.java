@@ -18,23 +18,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 
-public class SimpleSpecialAttackSkill extends SpecialAttackSkill
+public class SimpleHeavyAttackSkill extends HeavyAttackSkill
 {
 	protected final StaticAnimation attackAnimation;
 	
-	public SimpleSpecialAttackSkill(float restriction, String skillName, StaticAnimation animation) {
+	public SimpleHeavyAttackSkill(float restriction, String skillName, StaticAnimation animation)
+	{
 		this(restriction, 0, skillName, animation);
 		
 	}
 	
-	public SimpleSpecialAttackSkill(float restriction, int duration, String skillName, StaticAnimation animation) {
+	public SimpleHeavyAttackSkill(float restriction, int duration, String skillName, StaticAnimation animation)
+	{
 		super(restriction, duration, skillName);
 		this.properties = Lists.<Map<DamageProperty<?>, Object>>newArrayList();
 		this.attackAnimation = animation;
 	}
 	
 	@Override
-	public void executeOnServer(ServerPlayerData executer, PacketBuffer args) {
+	public void executeOnServer(ServerPlayerData executer, PacketBuffer args)
+	{
 		executer.playAnimationSynchronize(this.attackAnimation, 0);
 		ModNetworkManager.sendToPlayer(new STCResetBasicAttackCool(), executer.getOriginalEntity());
 	}
@@ -48,7 +51,7 @@ public class SimpleSpecialAttackSkill extends SpecialAttackSkill
 	}
 	
 	@Override
-	public SpecialAttackSkill registerPropertiesToAnimation() {
+	public HeavyAttackSkill registerPropertiesToAnimation() {
 		AttackAnimation anim = ((AttackAnimation)this.attackAnimation);
 		
 		for(Phase phase : anim.phases) {

@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Skills;
@@ -24,18 +23,10 @@ public class AxeCapability extends MaterialItemCapability
 	static
 	{
 		axeAttackMotions = new ArrayList<StaticAnimation> ();
-		axeAttackMotions.add(Animations.AXE_AUTO1);
-		axeAttackMotions.add(Animations.AXE_AUTO2);
-		axeAttackMotions.add(Animations.AXE_DASH);
 	}
 	
 	public AxeCapability(Item item) {
 		super(item, WeaponCategory.AXE);
-	}
-	
-	@Override
-	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata) {
-		return axeAttackMotions;
 	}
 
 	@Override

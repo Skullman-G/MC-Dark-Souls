@@ -27,6 +27,8 @@ import net.minecraft.util.math.vector.Vector4f;
 
 public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, ClientPlayerData>
 {
+	private Minecraft minecraft = Minecraft.getInstance();
+	
 	public FirstPersonRenderer()
 	{
 		super();
@@ -39,8 +41,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 	@Override
 	public void render(ClientPlayerEntity entityIn, ClientPlayerData entitydata, EntityRenderer<ClientPlayerEntity> renderer, IRenderTypeBuffer buffer, MatrixStack matStackIn, int packedLightIn, float partialTicks)
 	{
-		@SuppressWarnings("resource")
-		ActiveRenderInfo renderInfo = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ActiveRenderInfo renderInfo = minecraft.gameRenderer.getMainCamera();
 		Vector3d projView = renderInfo.getPosition();
 		double x = MathHelper.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
 		double y = MathHelper.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();

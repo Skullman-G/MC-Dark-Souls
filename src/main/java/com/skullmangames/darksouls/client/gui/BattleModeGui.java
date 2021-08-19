@@ -43,7 +43,7 @@ public class BattleModeGui extends ModIngameGui
 		guiSliderToggle = false;
 		screenPositionMap = new HashMap<SkillSlot, Vector3f> ();
 		screenPositionMap.put(SkillSlot.DODGE, new Vector3f(74F, 36F, 0.078F));
-		screenPositionMap.put(SkillSlot.WEAPON_SPECIAL_ATTACK, new Vector3f(42F, 48F, 0.117F));
+		screenPositionMap.put(SkillSlot.WEAPON_HEAVY_ATTACK, new Vector3f(42F, 48F, 0.117F));
 		font = Minecraft.getInstance().font;
 	}
 	
@@ -141,7 +141,7 @@ public class BattleModeGui extends ModIngameGui
 					GlStateManager._color4f(1F, 1F, 1F, 1F);
 				}
 				
-				if (slot != SkillSlot.WEAPON_SPECIAL_ATTACK)
+				if (slot != SkillSlot.WEAPON_HEAVY_ATTACK)
 				{
 					Minecraft.getInstance().getTextureManager().bind(this.getSkillTexture(container.getContaining()));
 					drawTexturedModalRectFixCoord(matrix, (width - x) * multiplyScale, (height - y) * multiplyScale, 0, 0, 255, 255);

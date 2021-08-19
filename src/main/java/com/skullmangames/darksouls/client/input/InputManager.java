@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.client.input;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -10,19 +9,14 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
 import com.skullmangames.darksouls.common.skill.SkillContainer;
 import com.skullmangames.darksouls.common.skill.SkillSlot;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.client.ClientEngine;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
-
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -31,7 +25,6 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -56,21 +49,20 @@ public class InputManager
 	private double tracingMouseX;
 	private double tracingMouseY;
 	private int comboHoldCounter;
-	private int comboCounter;
-	private int mouseLeftPressCounter = 0;
+	private int rightHandPressCounter;
 	private int reservedSkill;
 	private int skillReserveCounter;
-	private boolean mouseLeftPressToggle = false;
-	private boolean lightPress;
-	private Minecraft minecraft = Minecraft.getInstance();
+	private boolean rightHandToggle;
+	private boolean rightHandLightPress;
+	private Minecraft minecraft;
 	
 	public GameSettings options;
 	
-	@SuppressWarnings("resource")
 	public InputManager()
 	{
 		Events.inputManager = this;
-		this.options = Minecraft.getInstance().options;
+		this.minecraft = Minecraft.getInstance();
+		this.options = this.minecraft.options;
 		this.keyFunctionMap = new HashMap<KeyBinding, BiConsumer<Integer, Integer>>();
 		
 		this.keyFunctionMap.put(options.keyAttack, this::onAttackKeyPressed);
@@ -90,10 +82,10 @@ public class InputManager
 	
 	public void setGamePlayer(ClientPlayerData playerdata)
 	{
-		this.comboCounter = 0;
-		this.mouseLeftPressCounter = 0;
-		this.mouseLeftPressToggle = false;
-		this.lightPress = false;
+		this.rightHandPressCounter = 0;
+		this.rightHandToggle = false;
+		this.rightHandLightPress = false;
+		this.rightHandLightPress = false;
 		this.player = playerdata.getOriginalEntity();
 		this.playerdata = playerdata;
 	}
@@ -147,15 +139,13 @@ public class InputManager
 			if (ClientEngine.INSTANCE.isBattleMode())
 			{
 				this.setKeyBind(options.keyAttack, false);
-				while(options.keyAttack.consumeClick())
-				{
-				}
+				while(options.keyAttack.consumeClick()) { }
 
 				if (player.getTicksUsingItem() == 0)
 				{
-					if (!mouseLeftPressToggle)
+					if (!rightHandToggle)
 					{
-						mouseLeftPressToggle = true;
+						rightHandToggle = true;
 					}
 				}
 			}
@@ -163,9 +153,7 @@ public class InputManager
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
 		{
-			while(options.keyAttack.consumeClick())
-			{
-			}
+			while(options.keyAttack.consumeClick()) { }
 		}
 	}
 	
@@ -212,65 +200,7 @@ public class InputManager
 
 		EntityState playerState = this.playerdata.getEntityState();
 
-		if (this.mouseLeftPressToggle)
-		{
-			if (!this.isKeyDown(options.keyAttack))
-			{
-				this.lightPress = true;
-				this.mouseLeftPressToggle = false;
-				this.mouseLeftPressCounter = 0;
-			}
-			else
-			{
-				if (this.mouseLeftPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
-				{
-					if (this.playerCanExecuteSkill(playerState))
-					{
-						CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
-						if(itemCap != null)
-						{
-							this.playerdata.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK).execute(this.playerdata);
-						}
-					}
-					else
-					{
-						if (!this.player.isSpectator())
-						{
-							this.reserveSkill(SkillSlot.WEAPON_SPECIAL_ATTACK);
-						}
-					}
-					
-					this.mouseLeftPressToggle = false;
-					this.mouseLeftPressCounter = 0;
-					this.resetAttackCounter();
-				}
-				else
-				{
-					this.setKeyBind(this.options.keyAttack, false);
-					this.mouseLeftPressCounter++;
-				}
-			}
-		}
-		
-		if (this.lightPress)
-		{
-			if (this.playerCanAct(playerState))
-			{
-				playAttackMotion(this.player.getMainHandItem(), this.player.isSprinting());
-				this.player.resetAttackStrengthTicker();
-				this.lightPress = false;
-			}
-			else
-			{
-				if (this.player.isSpectator() || playerState.getLevel() < 2)
-				{
-					lightPress = false;
-				}
-			}
-			
-			this.mouseLeftPressToggle = false;
-			this.mouseLeftPressCounter = 0;
-		}
+		this.handleRightHandAction(playerState);
 		
 		if (this.reservedSkill >= 0)
 		{
@@ -322,48 +252,64 @@ public class InputManager
 		}
 	}
 	
-	private void playAttackMotion(ItemStack holdItem, boolean dashAttack)
+	private void handleRightHandAction(EntityState playerState)
 	{
-		CapabilityItem cap = holdItem.getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
-		StaticAnimation attackMotion = null;
-		
-		if (player.getControllingPassenger() != null)
+		if (this.rightHandToggle)
 		{
-			if (player.isRidingJumpable() && cap != null && cap.canUseOnMount())
+			if (!this.isKeyDown(options.keyAttack))
 			{
-				attackMotion = cap.getMountAttackMotion().get(comboCounter);
-				comboCounter += 1;
-				comboCounter %= cap.getMountAttackMotion().size();
-			}
-		}
-		else
-		{
-			List<StaticAnimation> combo = null;
-			
-			if(combo == null)
-			{
-				combo = (cap != null) ? combo = cap.getAutoAttckMotion(this.playerdata) : CapabilityItem.getBasicAutoAttackMotion();
-			}
-			int comboSize = combo.size();
-			if(dashAttack)
-			{
-				comboCounter = comboSize - 1;
+				this.rightHandLightPress = true;
+				this.rightHandToggle = false;
+				this.rightHandPressCounter = 0;
 			}
 			else
 			{
-				comboCounter %= comboSize - 1;
+				if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
+				{
+					if (this.playerCanExecuteSkill(playerState))
+					{
+						CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+						if(itemCap != null)
+						{
+							this.playerdata.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK).execute(this.playerdata);
+						}
+					}
+					else
+					{
+						if (!this.player.isSpectator())
+						{
+							this.reserveSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
+						}
+					}
+					
+					this.rightHandToggle = false;
+					this.rightHandPressCounter = 0;
+					this.resetAttackCounter();
+				}
+				else
+				{
+					this.setKeyBind(this.options.keyAttack, false);
+					this.rightHandPressCounter++;
+				}
 			}
-			
-			attackMotion = combo.get(comboCounter);
-			comboCounter = dashAttack ? 0 : comboCounter+1;
 		}
 		
-		comboHoldCounter = 10;
-		
-		if(attackMotion != null)
+		if (this.rightHandLightPress)
 		{
-			this.playerdata.getAnimator().playAnimation(attackMotion, 0);
-			ModNetworkManager.sendToServer(new CTSPlayAnimation(attackMotion, 0, false, false));
+			if (this.playerCanExecuteSkill(playerState))
+			{
+				CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+				if(itemCap != null)
+				{
+					this.playerdata.getSkill(SkillSlot.WEAPON_LIGHT_ATTACK).execute(this.playerdata);
+					this.player.resetAttackStrengthTicker();
+				}
+			}
+			
+			if (this.playerCanAct(playerState) || this.player.isSpectator() || playerState.getLevel() < 2) rightHandLightPress = false;
+			
+			this.rightHandToggle = false;
+			this.rightHandPressCounter = 0;
 		}
 	}
 	
@@ -396,7 +342,6 @@ public class InputManager
 	
 	public void resetAttackCounter()
 	{
-		comboCounter = 0;
 	}
 	
 	@OnlyIn(Dist.CLIENT)

@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -173,22 +175,17 @@ public final class Animations
 	public static StaticAnimation ZOMBIE_ATTACK1;
 	public static StaticAnimation ZOMBIE_ATTACK2;
 	public static StaticAnimation ZOMBIE_ATTACK3;
-	public static StaticAnimation AXE_AUTO1;
-	public static StaticAnimation AXE_AUTO2;
-	public static StaticAnimation AXE_DASH;
-	public static StaticAnimation FIST_AUTO_1;
-	public static StaticAnimation FIST_AUTO_2;
-	public static StaticAnimation FIST_AUTO_3;
-	public static StaticAnimation FIST_DASH;
+	public static List<StaticAnimation> AXE_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
+	public static StaticAnimation AXE_DASH_ATTACK;
+	public static List<StaticAnimation> FIST_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
+	public static StaticAnimation FIST_DASH_ATTACK;
 	public static StaticAnimation SPEAR_ONEHAND_AUTO;
 	public static StaticAnimation SPEAR_TWOHAND_AUTO_1;
 	public static StaticAnimation SPEAR_TWOHAND_AUTO_2;
 	public static StaticAnimation SPEAR_DASH;
 	public static StaticAnimation SPEAR_MOUNT_ATTACK;
-	public static StaticAnimation SWORD_AUTO_1;
-	public static StaticAnimation SWORD_AUTO_2;
-	public static StaticAnimation SWORD_AUTO_3;
-	public static StaticAnimation SWORD_DASH;
+	public static List<StaticAnimation> SWORD_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
+	public static StaticAnimation SWORD_DASH_ATTACK;
 	public static StaticAnimation SWORD_DUAL_AUTO_1;
 	public static StaticAnimation SWORD_DUAL_AUTO_2;
 	public static StaticAnimation SWORD_DUAL_AUTO_3;
@@ -196,9 +193,8 @@ public final class Animations
 	public static StaticAnimation TACHI_AUTO_1;
 	public static StaticAnimation TACHI_AUTO_2;
 	public static StaticAnimation TACHI_DASH;
-	public static StaticAnimation TOOL_AUTO_1;
-	public static StaticAnimation TOOL_AUTO_2;
-	public static StaticAnimation TOOL_DASH;
+	public static List<StaticAnimation> TOOL_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
+	public static StaticAnimation TOOL_DASH_ATTACK;
 	public static StaticAnimation KATANA_AUTO_1;
 	public static StaticAnimation KATANA_AUTO_2;
 	public static StaticAnimation KATANA_AUTO_3;
@@ -344,19 +340,19 @@ public final class Animations
 		BIPED_ROLL_BACKWARD = new DodgingAnimation(1999, 0.09F, false, "biped/combat/roll_backward.dae", 0.6F, 0.5F).bindFull(biped);
 		
 		BASIC_ATTACK_MIN = 2000;
-		FIST_AUTO_1 = new AAAnimation(2001, 0.08F, 0F, 0.1F, 0.15F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto1.dae")
-				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped);
-		FIST_AUTO_2 = new AAAnimation(2002, 0.08F, 0F, 0.1F, 0.15F, 4F, null, "111213", "biped/combat/fist_auto2.dae")
-				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped);
-		FIST_AUTO_3 = new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3.dae")
-				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped);
-		FIST_DASH = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash.dae")
+		FIST_LIGHT_ATTACK.add(new AAAnimation(2001, 0.08F, 0F, 0.1F, 0.15F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto1.dae")
+				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped));
+		FIST_LIGHT_ATTACK.add(new AAAnimation(2002, 0.08F, 0F, 0.1F, 0.15F, 4F, null, "111213", "biped/combat/fist_auto2.dae")
+				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped));
+		FIST_LIGHT_ATTACK.add(new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3.dae")
+				.addProperty(DamageProperty.PARTICLE, null).bindFull(biped));
+		FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash.dae")
 				.addProperty(DamageProperty.PARTICLE, null)
 				.addProperty(AnimationProperty.LOCK_ROTATION, true).bindFull(biped);
-		SWORD_AUTO_1 = new AAAnimation(2005, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto1.dae").bindFull(biped);
-		SWORD_AUTO_2 = new AAAnimation(2006, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto2.dae").bindFull(biped);
-		SWORD_AUTO_3 = new AAAnimation(2007, 0.13F, 0.0F, 0.11F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto3.dae").bindFull(biped);
-		SWORD_DASH = new AADashAnimation(2008, 0.12F, 0.1F, 0.25F, 0.4F, 0.65F, Colliders.swordDash, "111213", "biped/combat/sword_dash.dae")
+		SWORD_LIGHT_ATTACK.add(new AAAnimation(2005, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto1.dae").bindFull(biped));
+		SWORD_LIGHT_ATTACK.add(new AAAnimation(2006, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto2.dae").bindFull(biped));
+		SWORD_LIGHT_ATTACK.add(new AAAnimation(2007, 0.13F, 0.0F, 0.11F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto3.dae").bindFull(biped));
+		SWORD_DASH_ATTACK = new AADashAnimation(2008, 0.12F, 0.1F, 0.25F, 0.4F, 0.65F, Colliders.swordDash, "111213", "biped/combat/sword_dash.dae")
 				.addProperty(AnimationProperty.LOCK_ROTATION, true).bindFull(biped);
 		GREATSWORD_AUTO_1 = new AAAnimation(2009, 0.41F, 0.4F, 0.6F, 0.95F, 1.0F, null, "111213", "biped/combat/greatsword_auto1.dae").bindFull(biped);
 		GREATSWORD_AUTO_2 = new AAAnimation(2010, 0.2F, 0.55F, 0.75F, 1.05F, 1.0F, null, "111213", "biped/combat/greatsword_auto2.dae").bindFull(biped);
@@ -367,12 +363,12 @@ public final class Animations
 		SPEAR_TWOHAND_AUTO_2 = new AAAnimation(2014, 0.25F, 0.05F, 0.15F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto2.dae").bindFull(biped);
 		SPEAR_DASH = new AADashAnimation(2015, 0.16F, 0.05F, 0.2F, 0.3F, 0.7F, null, "111213", "biped/combat/spear_dash.dae")
 				.addProperty(AnimationProperty.LOCK_ROTATION, true).bindFull(biped);
-		TOOL_AUTO_1 = new AAAnimation(2016, 0.13F, 0.05F, 0.15F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto3.dae").bindFull(biped);
-		TOOL_AUTO_2 = new AAAnimation(2017, 0.13F, 0.05F, 0.15F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto4.dae").bindFull(biped);
-		TOOL_DASH = new AADashAnimation(2018, 0.16F, 0.08F, 0.15F, 0.25F, 0.58F, null, "111213", "biped/combat/tool_dash.dae")
+		TOOL_LIGHT_ATTACK.add(new AAAnimation(2016, 0.13F, 0.05F, 0.15F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto3.dae").bindFull(biped));
+		TOOL_LIGHT_ATTACK.add(new AAAnimation(2017, 0.13F, 0.05F, 0.15F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto4.dae").bindFull(biped));
+		TOOL_DASH_ATTACK = new AADashAnimation(2018, 0.16F, 0.08F, 0.15F, 0.25F, 0.58F, null, "111213", "biped/combat/tool_dash.dae")
 				.addProperty(AnimationProperty.LOCK_ROTATION, true)
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1)).bindFull(biped);
-		AXE_DASH = new AADashAnimation(2019, 0.25F, 0.08F, 0.4F, 0.46F, 0.9F, null, "111213", "biped/combat/axe_dash.dae")
+		AXE_DASH_ATTACK = new AADashAnimation(2019, 0.25F, 0.08F, 0.4F, 0.46F, 0.9F, null, "111213", "biped/combat/axe_dash.dae")
 				.addProperty(AnimationProperty.LOCK_ROTATION, true).bindFull(biped);
 		SWORD_DUAL_AUTO_1 = new AAAnimation(2020, 0.16F, 0.0F, 0.11F, 0.2F, 1.6F, null, "111213", "biped/combat/dual_auto1.dae").bindFull(biped);
 		SWORD_DUAL_AUTO_2 = new AAAnimation(2021, 0.13F, 0.0F, 0.1F, 0.1F, 1.6F, Hand.OFF_HAND, null, "111313", "biped/combat/dual_auto2.dae").bindFull(biped);
@@ -392,8 +388,8 @@ public final class Animations
 				.addProperty(DamageProperty.ARMOR_NEGATION, ValueCorrector.getAdder(30.0F))
 				.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(1.5F))
 				.addProperty(DamageProperty.SWING_SOUND, null).bindFull(biped);
-		AXE_AUTO1 = new AAAnimation(2029, 0.16F, 0.25F, 0.35F, 0.7F, 1.0F, null, "111213", "biped/combat/axe_auto1.dae").bindFull(biped);
-		AXE_AUTO2 = new AAAnimation(2030, 0.16F, 0.25F, 0.35F, 0.85F, 1.0F, null, "111213", "biped/combat/axe_auto2.dae").bindFull(biped);
+		AXE_LIGHT_ATTACK.add(new AAAnimation(2029, 0.16F, 0.25F, 0.35F, 0.7F, 1.0F, null, "111213", "biped/combat/axe_auto1.dae").bindFull(biped));
+		AXE_LIGHT_ATTACK.add(new AAAnimation(2030, 0.16F, 0.25F, 0.35F, 0.85F, 1.0F, null, "111213", "biped/combat/axe_auto2.dae").bindFull(biped));
 		TACHI_AUTO_1 = new AAAnimation(2031, 0.25F, 0.1F, 0.2F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/tachi_auto1.dae").bindFull(biped);
 		TACHI_AUTO_2 = new AAAnimation(2032, 0.25F, 0.1F, 0.2F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/tachi_auto2.dae").bindFull(biped);
 		TACHI_DASH = new AADashAnimation(2033, 0.15F, 0.1F, 0.2F, 0.45F, 0.7F, Colliders.spearSwing, "111213", "biped/combat/tachi_dash.dae", false)

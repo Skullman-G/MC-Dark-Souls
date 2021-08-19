@@ -1,8 +1,9 @@
-package com.skullmangames.darksouls.client.renderer;
+package com.skullmangames.darksouls.client.renderer.item;
 
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
 import net.minecraft.client.Minecraft;

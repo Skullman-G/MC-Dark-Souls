@@ -33,6 +33,12 @@ public class RangedWeaponCapability extends CapabilityItem
 	}
 	
 	@Override
+	protected void registerAttribute()
+	{
+		this.addStyleAttributeSimple(WieldStyle.TWO_HAND, 0.0D, 1.1D, 3);
+	}
+	
+	@Override
 	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerData<?> playerdata)
 	{
 		return rangeAnimationSet;

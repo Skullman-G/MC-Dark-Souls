@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client;
 
-import com.skullmangames.darksouls.client.event.engine.RenderEngine;
 import com.skullmangames.darksouls.client.input.InputManager;
+import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 
 import net.minecraft.client.Minecraft;

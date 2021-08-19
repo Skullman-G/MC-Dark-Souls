@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.renderer;
+package com.skullmangames.darksouls.client.renderer.item;
 
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 

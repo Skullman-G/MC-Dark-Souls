@@ -1,8 +1,8 @@
-package com.skullmangames.darksouls.client.renderer;
+package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.skullmangames.darksouls.client.event.engine.RenderEngine;
+import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.ClientModelInit;
 import com.skullmangames.darksouls.core.util.math.MathUtils;

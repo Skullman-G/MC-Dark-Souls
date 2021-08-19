@@ -1,10 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.List;
-
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -22,11 +18,6 @@ public class ShovelCapability extends MaterialItemCapability {
 	protected void registerAttribute() {
 		double impact = this.itemTier.getLevel() * 0.4D + 0.8D;
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(impact)));
-	}
-	
-	@Override
-	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata) {
-		return AxeCapability.axeAttackMotions;
 	}
 
 	@Override

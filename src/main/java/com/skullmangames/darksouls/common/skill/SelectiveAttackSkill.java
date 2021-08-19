@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 
-public class SelectiveAttackSkill extends SpecialAttackSkill {
+public class SelectiveAttackSkill extends HeavyAttackSkill {
 	protected final StaticAnimation[] attackAnimations;
 	protected final Function<ServerPlayerData, Integer> selector;
 	
@@ -41,10 +41,13 @@ public class SelectiveAttackSkill extends SpecialAttackSkill {
 	}
 	
 	@Override
-	public SpecialAttackSkill registerPropertiesToAnimation() {
-		for(StaticAnimation animation : this.attackAnimations) {
+	public HeavyAttackSkill registerPropertiesToAnimation()
+	{
+		for(StaticAnimation animation : this.attackAnimations)
+		{
 			AttackAnimation anim = ((AttackAnimation)animation);
-			for(Phase phase : anim.phases) {
+			for(Phase phase : anim.phases)
+			{
 				phase.addProperties(this.properties.get(0).entrySet());
 			}
 		}
@@ -53,12 +56,14 @@ public class SelectiveAttackSkill extends SpecialAttackSkill {
 	}
 	
 	@Override
-	public void executeOnServer(ServerPlayerData executer, PacketBuffer args) {
+	public void executeOnServer(ServerPlayerData executer, PacketBuffer args)
+	{
 		executer.playAnimationSynchronize(this.attackAnimations[this.getAnimationInCondition(executer)], 0);
 		ModNetworkManager.sendToPlayer(new STCResetBasicAttackCool(), executer.getOriginalEntity());
 	}
 	
-	public int getAnimationInCondition(ServerPlayerData executer) {
+	public int getAnimationInCondition(ServerPlayerData executer)
+	{
 		return selector.apply(executer);
 	}
 }

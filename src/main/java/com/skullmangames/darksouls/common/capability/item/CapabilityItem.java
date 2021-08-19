@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,7 +19,6 @@ import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.common.skill.SkillContainer;
 import com.skullmangames.darksouls.common.skill.SkillSlot;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -42,22 +40,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class CapabilityItem
 {
-	protected static List<StaticAnimation> commonAutoAttackMotion;
 	protected final WeaponCategory weaponCategory;
-	
-	static
-	{
-		commonAutoAttackMotion = new ArrayList<StaticAnimation> ();
-		commonAutoAttackMotion.add(Animations.FIST_AUTO_1);
-		commonAutoAttackMotion.add(Animations.FIST_AUTO_2);
-		commonAutoAttackMotion.add(Animations.FIST_AUTO_3);
-		commonAutoAttackMotion.add(Animations.FIST_DASH);
-	}
-	
-	public static List<StaticAnimation> getBasicAutoAttackMotion()
-	{
-		return commonAutoAttackMotion;
-	}
 
 	protected void loadClientThings()
 	{
@@ -74,7 +57,7 @@ public abstract class CapabilityItem
 		}
 		this.attributeMap = Maps.<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>>newHashMap();
 		this.weaponCategory = category;
-		registerAttribute();
+		this.registerAttribute();
 	}
 	
 	public CapabilityItem(Item item, WeaponCategory category)
@@ -92,11 +75,11 @@ public abstract class CapabilityItem
 	{
 		if(this.isTwoHanded())
 		{
-			itemTooltip.add(1, new TranslationTextComponent("attribute.name."+DarkSouls.MOD_ID+".twohanded").withStyle(TextFormatting.DARK_GRAY));
+			itemTooltip.add(1, new TranslationTextComponent("attribute.name." + DarkSouls.MOD_ID + ".twohanded").withStyle(TextFormatting.DARK_GRAY));
 		}
 		else if(this.isMainhandOnly())
 		{
-			itemTooltip.add(1, new TranslationTextComponent("attribute.name."+DarkSouls.MOD_ID+".mainhand_only").withStyle(TextFormatting.DARK_GRAY));
+			itemTooltip.add(1, new TranslationTextComponent("attribute.name." + DarkSouls.MOD_ID + ".mainhand_only").withStyle(TextFormatting.DARK_GRAY));
 		}
 		
 		Map<Supplier<Attribute>, AttributeModifier> attribute = this.getDamageAttributesInCondition(this.getStyle(entitydata));
@@ -123,9 +106,9 @@ public abstract class CapabilityItem
 		}
 	}
 	
-	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata)
+	public Skill getLightAttack(PlayerData<?> playerdata)
 	{
-		return getBasicAutoAttackMotion();
+		return null;
 	}
 
 	public List<StaticAnimation> getMountAttackMotion()
@@ -150,10 +133,21 @@ public abstract class CapabilityItem
 	
 	public void onHeld(PlayerData<?> playerdata)
 	{
+		Skill lightAttackSkill = this.getLightAttack(playerdata);
+		if (lightAttackSkill != null)
+		{
+			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_LIGHT_ATTACK);
+			
+			if(skillContainer.getContaining() != lightAttackSkill)
+			{
+				skillContainer.setSkill(lightAttackSkill);
+			}
+		}
+		
 		Skill specialSkill = this.getSpecialAttack(playerdata);
 		if (specialSkill != null)
 		{
-			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK);
+			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
 			
 			if(skillContainer.getContaining() != specialSkill)
 			{
@@ -300,7 +294,7 @@ public abstract class CapabilityItem
 	
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, GREATSWORD, HOE, PICKAXE, SHOVEL, SWORD, KATANA, SPEAR, TACHI
+		NONE_WEAON, AXE, FIST, GREATSWORD, HOE, PICKAXE, SHOVEL, SWORD, KATANA, SPEAR, TACHI, SHIELD
 	}
 	
 	public enum HandProperty

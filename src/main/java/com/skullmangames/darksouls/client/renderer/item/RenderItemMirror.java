@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.renderer;
+package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;

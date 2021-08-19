@@ -46,7 +46,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	{
 		if(source.getSkillId() > Animations.BASIC_ATTACK_MIN && source.getSkillId() < Animations.BASIC_ATTACK_MAX)
 		{
-			SkillContainer container = this.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK);
+			SkillContainer container = this.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
 			CapabilityItem itemCap = this.getHeldItemCapability(Hand.MAIN_HAND);
 
 			if (itemCap != null && container.hasSkill(itemCap.getSpecialAttack(this)))
@@ -55,8 +55,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 
 				if (value > 0.0F)
 				{
-					this.getSkill(SkillSlot.WEAPON_SPECIAL_ATTACK).setCooldown(value);
-					ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.COOLDOWN, SkillSlot.WEAPON_SPECIAL_ATTACK.getIndex(), value, false), orgEntity);
+					this.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK).setCooldown(value);
+					ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.COOLDOWN, SkillSlot.WEAPON_HEAVY_ATTACK.getIndex(), value, false), orgEntity);
 				}
 			}
 		}

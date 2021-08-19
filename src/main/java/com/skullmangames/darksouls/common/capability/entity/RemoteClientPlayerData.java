@@ -118,20 +118,31 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			}
 		}
 
-		if (this.orgEntity.isSecondaryUseActive() && orgEntity.getUseItemRemainingTicks() > 0)
+		if (orgEntity.getUseItemRemainingTicks() > 0)
 		{
 			UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
-
-			if (useAction == UseAction.BLOCK)
-				currentMixMotion = LivingMotion.BLOCKING;
-			else if (useAction == UseAction.BOW)
-				currentMixMotion = LivingMotion.AIMING;
-			else if (useAction == UseAction.CROSSBOW)
-				currentMixMotion = LivingMotion.RELOADING;
-			else if (useAction == UseAction.SPEAR)
-				currentMixMotion = LivingMotion.AIMING;
-			else
-				currentMixMotion = LivingMotion.NONE;
+			
+			switch (useAction)
+			{
+				case BLOCK:
+					currentMixMotion = LivingMotion.BLOCKING;
+					break;
+					
+				case BOW:
+					currentMixMotion = LivingMotion.AIMING;
+					break;
+					
+				case CROSSBOW:
+					currentMixMotion = LivingMotion.RELOADING;
+					break;
+					
+				case SPEAR:
+					currentMixMotion = LivingMotion.AIMING;
+					break;
+					
+				default:
+					currentMixMotion = LivingMotion.NONE;
+			}
 		}
 		else
 		{
@@ -158,9 +169,9 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		{
 			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
 			if(isMainHandChanged)
-				prevHeldItem = this.orgEntity.inventory.getCarried();
+				prevHeldItem = this.orgEntity.getItemInHand(Hand.MAIN_HAND);
 			if(isOffHandChanged)
-				prevHeldItemOffHand = this.orgEntity.inventory.offhand.get(0);
+				prevHeldItemOffHand = this.orgEntity.getItemInHand(Hand.OFF_HAND);
 		}
 		
 		super.updateOnClient();

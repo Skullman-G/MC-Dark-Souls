@@ -33,11 +33,7 @@ public class SwordCapability extends MaterialItemCapability
 		super(item, WeaponCategory.SWORD);
 		if (swordAttackMotion == null)
 		{
-			swordAttackMotion = new ArrayList<StaticAnimation> ();
-			swordAttackMotion.add(Animations.SWORD_AUTO_1);
-			swordAttackMotion.add(Animations.SWORD_AUTO_2);
-			swordAttackMotion.add(Animations.SWORD_AUTO_3);
-			swordAttackMotion.add(Animations.SWORD_DASH);
+			swordAttackMotion = new ArrayList<StaticAnimation>();
 			dualSwordAttackMotion = new ArrayList<StaticAnimation> ();
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_1);
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_2);
@@ -70,16 +66,9 @@ public class SwordCapability extends MaterialItemCapability
 	}
 	
 	@Override
-	public List<StaticAnimation> getAutoAttckMotion(PlayerData<?> playerdata)
+	public Skill getLightAttack(PlayerData<?> playerdata)
 	{
-		if(this.getStyle(playerdata) == WieldStyle.ONE_HAND)
-		{
-			return swordAttackMotion;
-		}
-		else
-		{
-			return dualSwordAttackMotion;
-		}
+		return Skills.SWORD_LIGHT_ATTACK;
 	}
 	
 	@Override

@@ -111,10 +111,14 @@ public class EntityEvents
 		IExtendedDamageSource extSource = null;
 		Entity trueSource = event.getSource().getDirectEntity();
 		
-		if(trueSource != null) {
-			if(event.getSource() instanceof IExtendedDamageSource) {
+		if(trueSource != null)
+		{
+			if(event.getSource() instanceof IExtendedDamageSource)
+			{
 				extSource = (IExtendedDamageSource) event.getSource();
-			} else if(event.getSource() instanceof IndirectEntityDamageSource) {/**
+			}
+			else if(event.getSource() instanceof IndirectEntityDamageSource)
+			{/*
 				EntityData<?> attackerdata = trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if(attackerdata != null) {
 					if(attackerdata instanceof IRangedAttackMobCapability) {
@@ -123,7 +127,7 @@ public class EntityEvents
 						extSource = new IndirectDamageSourceExtended("arrow", trueSource, event.getSource().getDirectEntity(), StunType.SHORT);
 						extSource.setImpact(1.0F);
 					}
-				}**/
+				}*/
 				
 				extSource = new IndirectDamageSourceExtended("arrow", trueSource, event.getSource().getDirectEntity(), StunType.SHORT);
 				
@@ -285,24 +289,30 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void equipChangeEvent(LivingEquipmentChangeEvent event) {
-		if(event.getFrom().getItem() == event.getTo().getItem()) {
+	public static void equipChangeEvent(LivingEquipmentChangeEvent event)
+	{
+		if(event.getFrom().getItem() == event.getTo().getItem())
+		{
 			return;
 		}
 		
 		LivingData<?> entitycap = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if (entitycap != null && entitycap.getOriginalEntity() != null) {
-			if (event.getSlot() == EquipmentSlotType.MAINHAND) {
+		if (entitycap != null && entitycap.getOriginalEntity() != null)
+		{
+			if (event.getSlot() == EquipmentSlotType.MAINHAND)
+			{
 				CapabilityItem fromCap = ModCapabilities.stackCapabilityGetter(event.getFrom());
 				CapabilityItem toCap = ModCapabilities.stackCapabilityGetter(event.getTo());
 				entitycap.cancelUsingItem();
 				
-				if(fromCap != null) {
+				if(fromCap != null)
+				{
 					event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitycap));
 				}
 				
-				if(toCap != null) {
+				if(toCap != null)
+				{
 					event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitycap));
 				}
 				

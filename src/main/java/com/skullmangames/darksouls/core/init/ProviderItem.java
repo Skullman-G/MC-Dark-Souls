@@ -39,7 +39,6 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 	
 	public static void makeMap()
 	{
-		addCustomItemCapabilities();
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.WOODEN_AXE, AxeCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.STONE_AXE, AxeCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.IRON_AXE, AxeCapability::new);
@@ -108,44 +107,9 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
 	}
 	
-	public static void addInstance(Item item, CapabilityItem cap) {
-		CAPABILITY_BY_INSTANCE.put(item, cap);
-	}
-	
-	public static void addCustomItemCapabilities()
+	public static void addInstance(Item item, CapabilityItem cap)
 	{
-		/*for (CustomWeaponConfig config : CapabilityConfig.CUSTOM_WEAPON_LISTS) {
-			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(config.getRegistryName()));
-			if (item != null) {
-				DarkSouls.LOGGER.info("Register Custom Capaiblity for " + config.getRegistryName());
-				CapabilityItem cap = config.getWeaponType().get(item);
-				cap.addStyleAttributeSimple(WieldStyle.ONE_HAND, config.getArmorIgnoranceOnehand(), config.getImpactOnehand(), config.getHitAtOnceOnehand());
-				cap.addStyleAttributeSimple(WieldStyle.TWO_HAND, config.getArmorIgnoranceTwohand(), config.getImpactTwohand(), config.getHitAtOnceTwohand());
-				CAPABILITY_BY_INSTANCE.put(item, cap);
-			} else {
-				DarkSouls.LOGGER.warn("Failed to load custom item " + config.getRegistryName() + ". Item not exist!");
-			}
-		}
-		
-		for (CustomArmorConfig config : CapabilityConfig.CUSTOM_ARMOR_LISTS) {
-			try {
-				Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(config.getRegistryName()));
-				if (item != null && (item instanceof ArmorItem)) {
-					ArmorCapability cap = new ArmorCapability(item, config.getWeight(), config.getStunArmor());
-					CAPABILITY_BY_INSTANCE.put(item, cap);
-					DarkSouls.LOGGER.info("Register Custom Capaiblity for " + config.getRegistryName());
-				} else {
-					if (item == null) {
-						DarkSouls.LOGGER.warn("Failed to load custom item " + config.getRegistryName() + ". Item not exist!");
-					} else if (!(item instanceof ArmorItem)) {
-						DarkSouls.LOGGER.warn("Failed to load custom item " + config.getRegistryName() + ". Item is not armor!");
-					}
-				}
-			} catch (Exception e) {
-				DarkSouls.LOGGER.warn("Failed to load custom item " + config.getRegistryName());
-				System.err.println(e);
-			}
-		}*/
+		CAPABILITY_BY_INSTANCE.put(item, cap);
 	}
 	
 	private CapabilityItem capability;

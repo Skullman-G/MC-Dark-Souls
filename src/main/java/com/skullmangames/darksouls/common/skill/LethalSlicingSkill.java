@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 
-public class LethalSlicingSkill extends SpecialAttackSkill {
+public class LethalSlicingSkill extends HeavyAttackSkill {
 	private static final UUID EVENT_UUID = UUID.fromString("bfa79c04-97a5-11eb-a8b3-0242ac130003");
 	private StaticAnimation elbow;
 	private StaticAnimation swing;
@@ -66,7 +66,7 @@ public class LethalSlicingSkill extends SpecialAttackSkill {
 	}
 	
 	@Override
-	public SpecialAttackSkill registerPropertiesToAnimation() {
+	public HeavyAttackSkill registerPropertiesToAnimation() {
 		AttackAnimation _elbow = ((AttackAnimation)this.elbow);
 		AttackAnimation _swing = ((AttackAnimation)this.swing);
 		AttackAnimation _doubleSwing = ((AttackAnimation)this.doubleSwing);

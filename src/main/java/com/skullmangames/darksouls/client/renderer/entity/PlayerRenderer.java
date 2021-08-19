@@ -19,7 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, RemoteClientPlayerData<AbstractClientPlayerEntity>>
 {
-	
 	@Override
 	protected ResourceLocation getEntityTexture(AbstractClientPlayerEntity entityIn)
 	{
