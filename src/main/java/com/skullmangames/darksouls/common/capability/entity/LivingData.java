@@ -181,7 +181,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 			{
 				currentMotion = LivingMotion.FALL;
 			}
-			else if(orgEntity.swingTime > 0.01F)
+			else if(orgEntity.animationSpeed > 0.01F)
 			{
 				currentMotion = LivingMotion.WALKING;
 			}

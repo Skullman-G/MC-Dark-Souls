@@ -13,7 +13,12 @@ public class SimpleTexturedBipedRenderer<E extends LivingEntity, T extends Livin
 	
 	public SimpleTexturedBipedRenderer(String texturePath)
 	{
-		textureLocation = new ResourceLocation(texturePath);
+		this(new ResourceLocation(texturePath));
+	}
+	
+	public SimpleTexturedBipedRenderer(ResourceLocation texturePath)
+	{
+		textureLocation = texturePath;
 	}
 	
 	@Override

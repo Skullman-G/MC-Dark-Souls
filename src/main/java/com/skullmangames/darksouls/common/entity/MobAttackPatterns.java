@@ -25,7 +25,7 @@ public class MobAttackPatterns
 	static List<AttackAnimation> SPIDER_JUMP_PATTERN = new ArrayList<AttackAnimation> ();
 	static List<AttackAnimation> VINDICATOR_PATTERN = new ArrayList<AttackAnimation> ();
 	static List<AttackAnimation> WITHER_SKELETON_PATTERN = new ArrayList<AttackAnimation> ();
-	static List<AttackAnimation> ZOMBIE_NORAML = new ArrayList<AttackAnimation> ();
+	public static List<AttackAnimation> ZOMBIE_NORAML = new ArrayList<AttackAnimation> ();
 	
 	public static void setVariousMobAttackPatterns()
 	{

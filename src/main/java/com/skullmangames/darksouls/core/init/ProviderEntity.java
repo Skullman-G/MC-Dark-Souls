@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -28,6 +28,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	public static void makeMap()
 	{
 		capabilityMap.put(EntityType.PLAYER, (entityIn) -> ServerPlayerData::new);
+		capabilityMap.put(EntityTypeInit.HOLLOW.get(), (entityIn) -> HollowData::new);
 		/*capabilityMap.put(EntityType.ZOMBIE, (entityIn) -> ZombieData<ZombieEntity>::new);
 		capabilityMap.put(EntityType.CREEPER, (entityIn) -> CreeperData::new);
 		capabilityMap.put(EntityType.ENDERMAN, (entityIn) -> EndermanData::new);

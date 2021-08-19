@@ -23,9 +23,13 @@ import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.SimpleTexturedBipedRenderer;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -93,7 +97,7 @@ public class RenderEngine
 	private int zoomCount;
 	private int zoomMaxCount = 20;
 	
-	@SuppressWarnings({ "resource", "rawtypes" })
+	@SuppressWarnings("rawtypes")
 	public RenderEngine()
 	{
 		Events.renderEngine = this;
@@ -106,13 +110,14 @@ public class RenderEngine
 		projectionMatrix = new PublicMatrix4f();
 		firstPersonRenderer = new FirstPersonRenderer();
 		
-		Minecraft.getInstance().renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
+		this.minecraft.renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
 				new BufferBuilder(ModRenderTypes.getEnchantedArmor().bufferSize()));
 	}
 	
 	public void buildRenderer()
 	{
-		entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
+		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
+		this.entityRendererMap.put(EntityTypeInit.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
 		/*entityRendererMap.put(EntityType.CREEPER, new CreeperRenderer());
 		entityRendererMap.put(EntityType.ENDERMAN, new EndermanRenderer());
 		entityRendererMap.put(EntityType.ZOMBIE, new SimpleTexturBipedRenderer<ZombieEntity, ZombieData<ZombieEntity>>("textures/entity/zombie/zombie.png"));
@@ -282,7 +287,6 @@ public class RenderEngine
 	{
 		static RenderEngine renderEngine;
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
 		public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event)
 		{
@@ -309,7 +313,8 @@ public class RenderEngine
 				}
 			}
 			
-			if (!Minecraft.getInstance().options.hideGui)
+			Minecraft minecraft = Minecraft.getInstance();
+			if (!minecraft.options.hideGui)
 			{
 				for (EntityIndicator entityIndicator : EntityIndicator.ENTITY_INDICATOR_RENDERERS)
 				{

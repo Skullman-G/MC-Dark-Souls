@@ -5,11 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.HollowRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRenderer;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,7 +33,7 @@ public final class ModClientEvents
 	public static void setup(final FMLClientSetupEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.SOUL.get(), SoulRenderer::new);
 		LOGGER.debug("Registered Entity Renderers");
 	}

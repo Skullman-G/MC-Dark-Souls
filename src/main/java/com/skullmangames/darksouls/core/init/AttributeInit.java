@@ -32,7 +32,9 @@ public class AttributeInit
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 	public static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
     
-	public static void modifyAttributeMap(EntityAttributeModificationEvent event) {
+	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
+	{
+		general(EntityTypeInit.HOLLOW.get(), event);
 		general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);
 		general(EntityType.EVOKER, event);
@@ -61,7 +63,8 @@ public class AttributeInit
 		player(EntityType.PLAYER, event);
 	}
     
-    private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event) {
+    private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
+    {
 		event.add(entityType, AttributeInit.WEIGHT.get());
 		event.add(entityType, AttributeInit.ARMOR_NEGATION.get());
 		event.add(entityType, AttributeInit.IMPACT.get());
