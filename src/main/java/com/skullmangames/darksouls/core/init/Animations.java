@@ -216,6 +216,7 @@ public final class Animations
 	public static StaticAnimation LETHAL_SLICING_ONCE;
 	public static StaticAnimation LETHAL_SLICING_TWICE;
 	public static StaticAnimation RELENTLESS_COMBO;
+	public static StaticAnimation HOLLOW_LIGHT_ATTACK;
 	
 	public static int BASIC_ATTACK_MIN;
 	public static int BASIC_ATTACK_MAX;
@@ -534,6 +535,8 @@ public final class Animations
 				new Phase(0.25F, 0.25F, 0.3F, 0.366F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.366F, 0.366F, 0.416F, 0.483F, "", Colliders.fist_fast),
 				new Phase(0.483F, 0.483F, 0.533F, 0.6F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
+		
+		HOLLOW_LIGHT_ATTACK = new TargetTraceAnimation(5010, 0.016F, false, "hollow/hollow_attack_1.dae");
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}

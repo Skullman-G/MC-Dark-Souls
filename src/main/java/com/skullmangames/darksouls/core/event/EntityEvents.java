@@ -107,9 +107,10 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void hurtEvent(LivingHurtEvent event) {
+	public static void hurtEvent(LivingHurtEvent event)
+	{
 		IExtendedDamageSource extSource = null;
-		Entity trueSource = event.getSource().getDirectEntity();
+		Entity trueSource = event.getSource().getEntity();
 		
 		if(trueSource != null)
 		{
@@ -137,13 +138,15 @@ public class EntityEvents
 				extSource.setImpact(projectileCap.getImpact());
 			}
 			
-			if(extSource != null) {
+			if(extSource != null)
+			{
 				float totalDamage = event.getAmount();
 				float ignoreDamage = event.getAmount() * extSource.getArmorNegation() * 0.01F;
 				float calculatedDamage = ignoreDamage;
 				LivingEntity hitEntity = event.getEntityLiving();
 				
-			    if(hitEntity.hasEffect(Effects.DAMAGE_RESISTANCE)) {
+			    if(hitEntity.hasEffect(Effects.DAMAGE_RESISTANCE))
+			    {
 			    	int i = (hitEntity.getEffect(Effects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
 			        int j = 25 - i;
 			        float f = calculatedDamage * (float)j;
@@ -152,7 +155,8 @@ public class EntityEvents
 			        float f2 = f1 - calculatedDamage;
 			        if (f2 > 0.0F && f2 < 3.4028235E37F)
 			        {
-			        	if (hitEntity instanceof ServerPlayerEntity) {
+			        	if (hitEntity instanceof ServerPlayerEntity)
+			        	{
 			        		((ServerPlayerEntity)hitEntity).awardStat(Stats.DAMAGE_RESISTED, Math.round(f2 * 10.0F));
 			        	} else if(event.getSource().getDirectEntity() instanceof ServerPlayerEntity) {
 			                ((ServerPlayerEntity)event.getSource().getDirectEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(f2 * 10.0F));
@@ -160,9 +164,11 @@ public class EntityEvents
 			        }
 			    }
 			    
-			    if(calculatedDamage > 0.0F) {
+			    if(calculatedDamage > 0.0F)
+			    {
 			    	int k = EnchantmentHelper.getDamageProtection(hitEntity.getArmorSlots(), event.getSource());
-			        if(k > 0) {
+			        if(k > 0)
+			        {
 			        	calculatedDamage = CombatRules.getDamageAfterMagicAbsorb(calculatedDamage, (float)k);
 			        }
 			    }
@@ -170,43 +176,52 @@ public class EntityEvents
 			    float absorpAmount = hitEntity.getAbsorptionAmount() - calculatedDamage;
 			    hitEntity.setAbsorptionAmount(Math.max(absorpAmount, 0.0F));
 		        float realHealthDamage = Math.max(-absorpAmount, 0.0F);
-		        if (realHealthDamage > 0.0F && realHealthDamage < 3.4028235E37F && event.getSource().getDirectEntity() instanceof ServerPlayerEntity) {
+		        if (realHealthDamage > 0.0F && realHealthDamage < 3.4028235E37F && event.getSource().getDirectEntity() instanceof ServerPlayerEntity)
+		        {
 		        	((ServerPlayerEntity)event.getSource().getDirectEntity()).awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(realHealthDamage * 10.0F));
 		        }
 		        
-		        if(absorpAmount < 0.0F) {
+		        if(absorpAmount < 0.0F)
+		        {
 		        	hitEntity.setHealth(hitEntity.getHealth() + absorpAmount);
 		        	LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-					if(attacker != null) {
+					if(attacker != null)
+					{
 						attacker.gatherDamageDealt(extSource, calculatedDamage);
 					}
 		        }
 		        
 				event.setAmount(totalDamage - ignoreDamage);
 				
-				if(event.getAmount() + ignoreDamage > 0.0F) {
+				if(event.getAmount() + ignoreDamage > 0.0F)
+				{
 					LivingData<?> hitEntityData = (LivingData<?>)hitEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 					
-					if(hitEntityData != null) {
+					if(hitEntityData != null)
+					{
 						StaticAnimation hitAnimation = null;
 						float extendStunTime = 0;
 						float knockBackAmount = 0;
 						float weightReduction = 40.0F / (float)hitEntityData.getWeight();
 						
 						float currentStunResistance = hitEntityData.getStunArmor();
-						if(currentStunResistance > 0) {
+						if(currentStunResistance > 0)
+						{
 							float impact = extSource.getImpact();
 							hitEntityData.setStunArmor(currentStunResistance - impact);
 						}
 						
-						switch(extSource.getStunType()) {
+						switch(extSource.getStunType())
+						{
 						case SHORT:
-							if(!hitEntity.hasEffect(ModEffects.STUN_IMMUNITY) && (hitEntityData.getStunArmor() == 0)) {
+							if(!hitEntity.hasEffect(ModEffects.STUN_IMMUNITY) && (hitEntityData.getStunArmor() == 0))
+							{
 								int i = EnchantmentHelper.getKnockbackBonus((LivingEntity)trueSource);
 								float totalStunTime = (float) ((0.25F + extSource.getImpact() * 0.1F + 0.1F * i) * weightReduction);
 								totalStunTime *= (1.0F - hitEntityData.getStunTimeTimeReduction());
 								
-								if(totalStunTime >= 0.1F) {
+								if(totalStunTime >= 0.1F)
+								{
 									extendStunTime = totalStunTime - 0.1F;
 									boolean flag = totalStunTime >= 0.83F;
 									StunType stunType = flag ? StunType.LONG : StunType.SHORT;
@@ -226,14 +241,17 @@ public class EntityEvents
 							break;
 						}
 						
-						if(hitAnimation != null) {
-							if(!(hitEntity instanceof PlayerEntity)) {
+						if(hitAnimation != null)
+						{
+							if(!(hitEntity instanceof PlayerEntity))
+							{
 								hitEntity.lookAt(Type.FEET, trueSource.getDeltaMovement());
 							}
 							hitEntityData.setStunTimeReduction();
 							hitEntityData.getAnimator().playAnimation(hitAnimation, extendStunTime);
 							ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), hitEntity);
-							if(hitEntity instanceof ServerPlayerEntity) {
+							if(hitEntity instanceof ServerPlayerEntity)
+							{
 								ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), (ServerPlayerEntity)hitEntity);
 							}
 						}
@@ -244,8 +262,10 @@ public class EntityEvents
 			}
 		}
 		
-		if(event.getEntityLiving().isUsingItem() && event.getEntityLiving().getUseItem().getItem() == Items.SHIELD) {
-			if(event.getEntityLiving() instanceof PlayerEntity) {
+		if(event.getEntityLiving().isUsingItem() && event.getEntityLiving().getUseItem().getItem() == Items.SHIELD)
+		{
+			if(event.getEntityLiving() instanceof PlayerEntity)
+			{
 				event.getEntityLiving().level.playSound((PlayerEntity)event.getEntityLiving(), event.getEntityLiving().blockPosition(), SoundEvents.SHIELD_BLOCK,
 						event.getEntityLiving().getSoundSource(), 1.0F, 0.8F + event.getEntityLiving().getRandom().nextFloat() * 0.4F);
 			}
@@ -253,12 +273,16 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void damageEvent(LivingDamageEvent event) {
+	public static void damageEvent(LivingDamageEvent event)
+	{
 		Entity trueSource = event.getSource().getDirectEntity();
-		if (event.getSource() instanceof IExtendedDamageSource) {
-			if (trueSource != null) {
+		if (event.getSource() instanceof IExtendedDamageSource)
+		{
+			if (trueSource != null)
+			{
 				LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if(attacker!=null) {
+				if(attacker!=null)
+				{
 					attacker.gatherDamageDealt((IExtendedDamageSource)event.getSource(), event.getAmount());
 				}
 			}

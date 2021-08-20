@@ -42,10 +42,7 @@ public abstract class CapabilityItem
 {
 	protected final WeaponCategory weaponCategory;
 
-	protected void loadClientThings()
-	{
-		
-	}
+	protected void loadClientThings() {}
 	
 	protected Map<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>> attributeMap;
 	
@@ -66,10 +63,7 @@ public abstract class CapabilityItem
 		this.weaponCategory = category;
 	}
 
-	protected void registerAttribute()
-	{
-		
-	}
+	protected void registerAttribute() {}
 	
 	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata)
 	{

@@ -92,12 +92,13 @@ public class HollowData extends BipedMobData<HollowEntity>
 	@Override
 	public void setAIAsUnarmed()
 	{
+		System.out.print("\nworks");
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false, Animations.ZOMBIE_CHASE, Animations.ZOMBIE_WALK, !orgEntity.isBaby()));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, true, MobAttackPatterns.ZOMBIE_NORAML));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, true, MobAttackPatterns.HOLLOW));
 	}
 	
 	@Override
-	public <M extends Model> M getEntityModel(ModelInit<M> modelDB)
+	public <M extends Model>M getEntityModel(ModelInit<M> modelDB)
 	{
 		return modelDB.ENTITY_BIPED_64_32_TEX;
 	}

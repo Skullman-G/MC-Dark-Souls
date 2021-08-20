@@ -9,8 +9,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	private StunType stunType;
 	private DamageType damageType;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity indirectEntityIn, StunType stunType) {
-		super(damageTypeIn, source, indirectEntityIn);
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType)
+	{
+		super(damageTypeIn, source, owner);
 		
 		//EntitydataLiving entityCap = (EntitydataLiving) source.getCapability(ModCapabilities.CAPABILITY_ENTITY, null);
 		//CapabilityItem capItem = entityCap.getHeldItemCapability(EnumHand.MAIN_HAND);

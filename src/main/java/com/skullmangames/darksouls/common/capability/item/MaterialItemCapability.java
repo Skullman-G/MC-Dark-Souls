@@ -17,6 +17,6 @@ public abstract class MaterialItemCapability extends CapabilityItem
 		{
 			loadClientThings();
 		}
-		registerAttribute();
+		this.registerAttribute();
 	}
 }

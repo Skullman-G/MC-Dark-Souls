@@ -30,6 +30,7 @@ public class RangedWeaponCapability extends CapabilityItem
 		{
 			this.rangeAnimationSet.put(LivingMotion.SHOTING, shot);
 		}
+		this.registerAttribute();
 	}
 	
 	@Override
