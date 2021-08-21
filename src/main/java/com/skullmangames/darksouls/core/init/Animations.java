@@ -536,7 +536,9 @@ public final class Animations
 				new Phase(0.483F, 0.483F, 0.533F, 0.6F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
 		
-		HOLLOW_LIGHT_ATTACK = new TargetTraceAnimation(5010, 0.016F, false, "hollow/hollow_attack_1.dae");
+		HOLLOW_LIGHT_ATTACK = new TargetTraceAnimation(5010, 0.05F, 0.3F, 1.92F, 1.92F, 3.75F, false, Colliders.sword, "111213", "hollow/hollow_attack_1.dae")
+				.addProperty(DamageProperty.STUN_TYPE, StunType.SHORT)
+				.bindFull(biped);
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}

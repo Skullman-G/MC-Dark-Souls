@@ -471,9 +471,12 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void tickClientEvent(TickEvent.ClientTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
-			for (EntityData<?> cap : unInitializedEntitiesClient) {
+	public static void tickClientEvent(TickEvent.ClientTickEvent event)
+	{
+		if (event.phase == TickEvent.Phase.END)
+		{
+			for (EntityData<?> cap : unInitializedEntitiesClient)
+			{
 				cap.postInit();
 			}
 			unInitializedEntitiesClient.clear();
@@ -481,9 +484,12 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void tickServerEvent(TickEvent.ServerTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
-			for (EntityData<?> cap : unInitializedEntitiesServer) {
+	public static void tickServerEvent(TickEvent.ServerTickEvent event)
+	{
+		if (event.phase == TickEvent.Phase.END)
+		{
+			for (EntityData<?> cap : unInitializedEntitiesServer)
+			{
 				cap.postInit();
 			}
 			unInitializedEntitiesServer.clear();

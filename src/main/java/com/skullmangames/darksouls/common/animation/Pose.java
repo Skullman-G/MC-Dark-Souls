@@ -27,7 +27,7 @@ public class Pose
 		JointTransform jt = this.jointTransformData.get(jointName);
 		if (jt == null)
 		{
-			return JointTransform.defaultTransform;
+			return JointTransform.DEFAULT;
 		}
 		
 		return jt;

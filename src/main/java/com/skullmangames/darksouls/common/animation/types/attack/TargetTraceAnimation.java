@@ -13,14 +13,12 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class TargetTraceAnimation extends AttackAnimation
 {
-	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY,
-			@Nullable Collider collider, String index, String path)
+	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path)
 	{
 		this(id, convertTime, antic, preDelay, contact, recovery, affectY, Hand.MAIN_HAND, collider, index, path);
 	}
 	
-	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY,
-			Hand hand, @Nullable Collider collider, String index, String path)
+	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path)
 	{
 		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}

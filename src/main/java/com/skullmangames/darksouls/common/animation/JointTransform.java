@@ -7,7 +7,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class JointTransform
 {
-	public static final JointTransform defaultTransform = new JointTransform(new Vector3f(0.0F,0.0F,0.0F), new Quaternion(0.0F,0.0F,0.0F,1.0F), new Vector3f(1.0F,1.0F,1.0F));
+	public static final JointTransform DEFAULT = new JointTransform(new Vector3f(0.0F,0.0F,0.0F), new Quaternion(0.0F,0.0F,0.0F,1.0F), new Vector3f(1.0F,1.0F,1.0F));
 	
 	private Vector3f position;
 	private Vector3f scale;
@@ -72,7 +72,7 @@ public class JointTransform
 	{
 		if (prev == null || next == null)
 		{
-			return JointTransform.defaultTransform;
+			return JointTransform.DEFAULT;
 		}
 		
 		Vector3f vertex = interpolate(prev.position, next.position, progression);

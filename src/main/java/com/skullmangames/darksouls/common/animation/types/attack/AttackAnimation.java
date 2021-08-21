@@ -57,7 +57,7 @@ public class AttackAnimation extends ActionAnimation
 	public AttackAnimation(int id, float convertTime, boolean affectY, String path, Phase... phases)
 	{
 		super(id, convertTime, true, affectY, path);
-		this.properties = new HashMap<AnimationProperty<?>, Object> ();
+		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
 	}
 	
@@ -172,19 +172,20 @@ public class AttackAnimation extends ActionAnimation
 		Phase phase = this.getPhaseByTime(time);
 		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(false);
 		
-		if(phase.antic >= time)
+		// Maybe remove the whole antic stuff?
+		if (time <= phase.antic)
 		{
 			return LivingData.EntityState.FREE_CAMERA;
 		}
-		else if(phase.antic < time && phase.preDelay > time)
+		else if (phase.antic < time && time < phase.preDelay)
 		{
 			return LivingData.EntityState.FREE_CAMERA;
 		}
-		else if(phase.preDelay <= time && phase.contact >= time)
+		else if (phase.preDelay <= time && time <= phase.contact)
 		{
 			return lockCameraRotation ? LivingData.EntityState.CONTACT : LivingData.EntityState.ROTATABLE_CONTACT;
 		}
-		else if(phase.recovery > time)
+		else if (time < phase.recovery)
 		{
 			return lockCameraRotation ? LivingData.EntityState.POST_DELAY : LivingData.EntityState.ROTATABLE_POST_DELAY;
 		}
@@ -311,7 +312,7 @@ public class AttackAnimation extends ActionAnimation
 	@SuppressWarnings("unchecked")
 	protected <V> Optional<V> getProperty(AnimationProperty<V> propertyType)
 	{
-		return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
+		return (Optional<V>)Optional.ofNullable(this.properties.get(propertyType));
 	}
 	
 	public int getIndexer(float elapsedTime)
