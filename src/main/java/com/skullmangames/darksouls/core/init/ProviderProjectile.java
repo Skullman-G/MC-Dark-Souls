@@ -8,7 +8,9 @@ import com.skullmangames.darksouls.common.capability.projectile.ArrowData;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -23,6 +25,8 @@ public class ProviderProjectile<P extends ProjectileEntity> implements ICapabili
 	public static void makeMap()
 	{
 		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> ArrowData::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.SNOWBALL, (type) -> CapabilityProjectile<SnowballEntity>::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.EGG, (type) -> CapabilityProjectile<EggEntity>::new);
 	}
 	
 	private CapabilityProjectile<?> capability;
@@ -50,6 +54,6 @@ public class ProviderProjectile<P extends ProjectileEntity> implements ICapabili
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		return cap == ModCapabilities.CAPABILITY_PROJECTILE ? this.optional.cast() :  LazyOptional.empty();
+		return cap == ModCapabilities.CAPABILITY_PROJECTILE ? this.optional.cast() : LazyOptional.empty();
 	}
 }

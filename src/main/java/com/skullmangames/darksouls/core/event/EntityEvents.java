@@ -130,9 +130,10 @@ public class EntityEvents
 					}
 				}*/
 				
-				extSource = new IndirectDamageSourceExtended("arrow", trueSource, event.getSource().getDirectEntity(), StunType.SHORT);
+				Entity directSource = event.getSource().getDirectEntity();
+				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT);
 				
-				CapabilityProjectile<?> projectileCap = event.getSource().getDirectEntity().getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
+				CapabilityProjectile<?> projectileCap = directSource.getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
 				
 				extSource.setArmorNegation(projectileCap.getArmorNegation());
 				extSource.setImpact(projectileCap.getImpact());

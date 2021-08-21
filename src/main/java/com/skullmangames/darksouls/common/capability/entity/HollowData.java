@@ -93,7 +93,7 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void setAIAsArmed()
 	{
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, true, MobAttackPatterns.HOLLOW));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, true, MobAttackPatterns.HOLLOW_PATTERN));
 	}
 	
 	@Override

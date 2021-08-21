@@ -217,6 +217,7 @@ public final class Animations
 	public static StaticAnimation LETHAL_SLICING_TWICE;
 	public static StaticAnimation RELENTLESS_COMBO;
 	public static StaticAnimation HOLLOW_LIGHT_ATTACK;
+	public static StaticAnimation HOLLOW_FURY_ATTACK;
 	
 	public static int BASIC_ATTACK_MIN;
 	public static int BASIC_ATTACK_MAX;
@@ -537,6 +538,17 @@ public final class Animations
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
 		
 		HOLLOW_LIGHT_ATTACK = new TargetTraceAnimation(5010, 0.05F, 0.3F, 1.92F, 1.92F, 3.75F, false, Colliders.sword, "111213", "hollow/hollow_attack_1.dae")
+				.addProperty(DamageProperty.STUN_TYPE, StunType.SHORT)
+				.bindFull(biped);
+		
+		HOLLOW_FURY_ATTACK = new TargetTraceAnimation(7000, 0.05F, false, "hollow/hollow_fury_attack.dae", new Phase[]
+				{
+						new Phase(0.0F, 2.04F, 2.2F, 2.2F, "111213", Colliders.sword),
+						new Phase(2.2F, 2.9F, 3.0F, 3.0F, "111213", Colliders.sword),
+						new Phase(3.0F, 3.3F, 3.4F, 3.4F, "111213", Colliders.sword),
+						new Phase(3.4F, 3.7F, 3.8F, 3.8F, "111213", Colliders.sword),
+						new Phase(3.8F, 4.1F, 4.2F, 5.0F, "111213", Colliders.sword)
+				})
 				.addProperty(DamageProperty.STUN_TYPE, StunType.SHORT)
 				.bindFull(biped);
 		
