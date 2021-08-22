@@ -3,7 +3,10 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
@@ -19,18 +22,25 @@ public class AttackPatternGoal extends Goal
 	protected final MobData<?> mobdata;
 	protected final double minDist;
 	protected final double maxDist;
-	protected final List<AttackAnimation> pattern;
+	protected final List<AttackAnimation> lightAttack;
+	protected final List<AttackAnimation> otherAttacks;
 	protected final boolean affectHorizon;
-	protected int patternCounter;
+	protected int combo;
 	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDIst, boolean affectHorizon, List<AttackAnimation> pattern)
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, List<AttackAnimation> lightattack)
+	{
+		this(mobdata, attacker, minDist, maxDist, affectHorizon, lightattack, null);
+	}
+	
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, List<AttackAnimation> lightattack, @Nullable List<AttackAnimation> otherattacks)
 	{
 		this.attacker = attacker;
 		this.mobdata = mobdata;
 		this.minDist = minDist * minDist;
-		this.maxDist = maxDIst * maxDIst;
-		this.pattern = pattern;
-		this.patternCounter = 0;
+		this.maxDist = maxDist * maxDist;
+		this.lightAttack = lightattack;
+		this.otherAttacks = otherattacks;
+		this.combo = 0;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
 	}
@@ -49,7 +59,7 @@ public class AttackPatternGoal extends Goal
     public boolean canContinueToUse()
     {
     	LivingEntity LivingEntity = this.attacker.getTarget();
-    	return pattern.size() <= patternCounter && isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
+    	return isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
     }
 
     /**
@@ -59,15 +69,6 @@ public class AttackPatternGoal extends Goal
     public void start()
     {
         
-    }
-
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
-    @Override
-    public void stop()
-    {
-    	this.patternCounter %= pattern.size();
     }
     
     protected boolean canExecuteAttack()
@@ -81,15 +82,30 @@ public class AttackPatternGoal extends Goal
     @Override
     public void tick()
     {
-        if(this.canExecuteAttack())
+    	if(!this.canExecuteAttack())
+    	{
+    		if (this.combo > 0 && this.mobdata.getEntityState() == LivingData.EntityState.ROTATABLE_POST_DELAY || this.mobdata.getEntityState() == LivingData.EntityState.POST_DELAY);
+    		else return;
+    	}
+    	else if (this.combo > 0) this.combo = 0;
+    	
+    	AttackAnimation animation;
+        
+        if (this.combo > 0 || this.attacker.getRandom().nextBoolean())
+    	{
+    		animation = this.lightAttack.get(this.combo++);
+        	this.combo %= this.lightAttack.size();
+    	}
+        else
         {
-        	AttackAnimation att = pattern.get(patternCounter++);
-        	this.patternCounter %= pattern.size();
-        	mobdata.getServerAnimator().playAnimation(att, 0);
-        	mobdata.updateInactionState();
-        	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(att.getId(), attacker.getId(), 0, 
-        			attacker.getTarget().getId()), attacker);
+        	animation = this.otherAttacks.get(this.attacker.getRandom().nextInt(this.otherAttacks.size()));
         }
+        
+        if (animation == null) return;
+        
+        mobdata.getServerAnimator().playAnimation(animation, 0);
+    	mobdata.updateInactionState();
+    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(animation.getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);
     }
     
     protected boolean isTargetInRange(LivingEntity attackTarget)

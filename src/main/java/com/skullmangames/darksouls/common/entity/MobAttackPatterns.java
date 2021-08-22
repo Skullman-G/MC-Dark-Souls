@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 
@@ -26,7 +27,8 @@ public class MobAttackPatterns
 	static List<AttackAnimation> VINDICATOR_PATTERN = new ArrayList<AttackAnimation> ();
 	static List<AttackAnimation> WITHER_SKELETON_PATTERN = new ArrayList<AttackAnimation> ();
 	public static List<AttackAnimation> ZOMBIE_NORAML = new ArrayList<AttackAnimation> ();
-	public static List<AttackAnimation> HOLLOW_PATTERN = new ArrayList<AttackAnimation>();
+	public static List<AttackAnimation> HOLLOW_LIGHT_PATTERN = new ArrayList<AttackAnimation>();
+	public static List<AttackAnimation> HOLLOW_OTHER_PATTERN = new ArrayList<AttackAnimation>();
 	
 	public static void setVariousMobAttackPatterns()
 	{
@@ -66,7 +68,12 @@ public class MobAttackPatterns
 		
 		HOGLIN_PATTERN.add((AttackAnimation)Animations.HOGLIN_ATTACK);
 		
-		HOLLOW_PATTERN.add((AttackAnimation)Animations.HOLLOW_LIGHT_ATTACK);
-		HOLLOW_PATTERN.add((AttackAnimation)Animations.HOLLOW_FURY_ATTACK);
+		for (StaticAnimation anim : Animations.HOLLOW_LIGHT_ATTACK)
+		{
+			HOLLOW_LIGHT_PATTERN.add((AttackAnimation)anim);
+		}
+		
+		HOLLOW_OTHER_PATTERN.add((AttackAnimation)Animations.HOLLOW_HEAVY_ATTACK);
+		HOLLOW_OTHER_PATTERN.add((AttackAnimation)Animations.HOLLOW_FURY_ATTACK);
 	}
 }
