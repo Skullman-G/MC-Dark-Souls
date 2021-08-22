@@ -2,13 +2,12 @@ package com.skullmangames.darksouls.common.entity;
 
 import java.util.Random;
 
-import com.skullmangames.darksouls.common.entity.ai.goal.SearchTargetsAsHollowGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.NearestNotKindOfMeTargetGoal;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEventInit;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -16,7 +15,9 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -55,7 +56,10 @@ public class HollowEntity extends MonsterEntity
 	    this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 	    this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 	    
-	    this.targetSelector.addGoal(2, new SearchTargetsAsHollowGoal<>(this, LivingEntity.class, true));
+	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	    this.targetSelector.addGoal(3, new NearestNotKindOfMeTargetGoal<>(this, MonsterEntity.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
+	    
 	}
 	
 	@Override

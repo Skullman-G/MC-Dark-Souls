@@ -9,9 +9,9 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
-public class SearchTargetsAsHollowGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T>
+public class NearestNotKindOfMeTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T>
 {
-	public SearchTargetsAsHollowGoal(MobEntity mob, Class<T> target, boolean donttrackBehindWalls)
+	public NearestNotKindOfMeTargetGoal(MobEntity mob, Class<T> target, boolean donttrackBehindWalls)
 	{
 		super(mob, target, donttrackBehindWalls);
 	}

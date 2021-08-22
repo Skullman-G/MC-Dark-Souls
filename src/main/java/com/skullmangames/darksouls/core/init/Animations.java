@@ -557,7 +557,7 @@ public final class Animations
 		HOLLOW_LIGHT_ATTACK.add(new TargetTraceAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.sword, "111213", "hollow/light_attack_2.dae").bindFull(biped));
 		HOLLOW_LIGHT_ATTACK.add(new TargetTraceAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.swordDash, "111213", "hollow/light_attack_3.dae").bindFull(biped));
 		
-		HOLLOW_JUMP_ATTACK = new TargetTraceAnimation(7005, 0.05F, 0.0F, 0.92F, 1.2F, 2.4F, false, Colliders.sword, "111213", "hollow/jump_attack.dae").bindFull(biped);
+		HOLLOW_JUMP_ATTACK = new TargetTraceAnimation(7005, 0.05F, 0.0F, 0.92F, 1.2F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae").bindFull(biped);
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}
