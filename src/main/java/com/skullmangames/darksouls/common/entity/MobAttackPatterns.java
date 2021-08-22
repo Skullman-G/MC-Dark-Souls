@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 
@@ -68,12 +67,10 @@ public class MobAttackPatterns
 		
 		HOGLIN_PATTERN.add((AttackAnimation)Animations.HOGLIN_ATTACK);
 		
-		for (StaticAnimation anim : Animations.HOLLOW_LIGHT_ATTACK)
-		{
-			HOLLOW_LIGHT_PATTERN.add((AttackAnimation)anim);
-		}
 		
-		HOLLOW_OTHER_PATTERN.add((AttackAnimation)Animations.HOLLOW_HEAVY_ATTACK);
-		HOLLOW_OTHER_PATTERN.add((AttackAnimation)Animations.HOLLOW_FURY_ATTACK);
+		HOLLOW_LIGHT_PATTERN = Animations.HOLLOW_LIGHT_ATTACK;
+		
+		HOLLOW_OTHER_PATTERN.add(Animations.HOLLOW_HEAVY_ATTACK);
+		HOLLOW_OTHER_PATTERN.add(Animations.HOLLOW_FURY_ATTACK);
 	}
 }

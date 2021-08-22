@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.property.Property.AnimationProperty;
@@ -59,6 +60,13 @@ public class AttackAnimation extends ActionAnimation
 		super(id, convertTime, true, affectY, path);
 		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
+	}
+	
+	@Override
+	public AttackAnimation bindFull(Armature armature)
+	{
+		super.bindFull(armature);
+		return this;
 	}
 	
 	@Override

@@ -129,7 +129,7 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public StaticAnimation bindFull(Armature armature)
+	public ActionAnimation bindFull(Armature armature)
 	{
 		super.bindFull(armature);
 		

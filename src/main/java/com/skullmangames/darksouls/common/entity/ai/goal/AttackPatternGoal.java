@@ -22,24 +22,30 @@ public class AttackPatternGoal extends Goal
 	protected final MobData<?> mobdata;
 	protected final double minDist;
 	protected final double maxDist;
+	protected final double maxDashDist;
 	protected final List<AttackAnimation> lightAttack;
 	protected final List<AttackAnimation> otherAttacks;
+	protected final AttackAnimation dashAttack;
 	protected final boolean affectHorizon;
 	protected int combo;
 	
+	
+	
 	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, List<AttackAnimation> lightattack)
 	{
-		this(mobdata, attacker, minDist, maxDist, affectHorizon, lightattack, null);
+		this(mobdata, attacker, minDist, maxDist, maxDist, affectHorizon, lightattack, null, null);
 	}
 	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, List<AttackAnimation> lightattack, @Nullable List<AttackAnimation> otherattacks)
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, double maxDashDist, boolean affectHorizon, List<AttackAnimation> lightattack, @Nullable List<AttackAnimation> otherattacks, @Nullable AttackAnimation dashattack)
 	{
 		this.attacker = attacker;
 		this.mobdata = mobdata;
 		this.minDist = minDist * minDist;
 		this.maxDist = maxDist * maxDist;
+		this.maxDashDist = maxDashDist * maxDashDist;
 		this.lightAttack = lightattack;
 		this.otherAttacks = otherattacks;
+		this.dashAttack = dashattack;
 		this.combo = 0;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
@@ -58,8 +64,8 @@ public class AttackPatternGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-    	LivingEntity LivingEntity = this.attacker.getTarget();
-    	return isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
+    	LivingEntity livingEntity = this.attacker.getTarget();
+    	return this.isValidTarget(livingEntity) && (this.isTargetInRange(livingEntity) || this.isTargetInDashRange(livingEntity));
     }
 
     /**
@@ -91,15 +97,23 @@ public class AttackPatternGoal extends Goal
     	
     	AttackAnimation animation;
         
-        if (this.combo > 0 || this.attacker.getRandom().nextBoolean())
+    	if (this.dashAttack != null && !this.isTargetInRange(this.attacker.getTarget()) && this.isTargetInDashRange(this.attacker.getTarget()))
     	{
-    		animation = this.lightAttack.get(this.combo++);
-        	this.combo %= this.lightAttack.size();
+    		if (this.combo > 0) return;
+    		animation = this.dashAttack;
     	}
-        else
-        {
-        	animation = this.otherAttacks.get(this.attacker.getRandom().nextInt(this.otherAttacks.size()));
-        }
+    	else
+    	{
+    		if (this.combo > 0 || this.attacker.getRandom().nextBoolean())
+        	{
+        		animation = this.lightAttack.get(this.combo++);
+            	this.combo %= this.lightAttack.size();
+        	}
+            else
+            {
+            	animation = this.otherAttacks.get(this.attacker.getRandom().nextInt(this.otherAttacks.size()));
+            }
+    	}
         
         if (animation == null) return;
         
@@ -112,6 +126,12 @@ public class AttackPatternGoal extends Goal
     {
     	double targetRange = this.attacker.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
     	return targetRange <= this.maxDist && targetRange >= this.minDist && isInSameHorizontalPosition(attackTarget);
+    }
+    
+    protected boolean isTargetInDashRange(LivingEntity target)
+    {
+    	double targetRange = this.attacker.distanceToSqr(target.getX(), target.getBoundingBox().minY, target.getZ());
+    	return targetRange <= this.maxDashDist && targetRange >= this.minDist && isInSameHorizontalPosition(target);
     }
     
     protected boolean isValidTarget(LivingEntity attackTarget)
