@@ -10,7 +10,7 @@ public class FakeKeyBinding extends KeyBinding
 		super("fake_" + name, InputMappings.Type.KEYSYM, 0, "key.categories.fake");
 		
 		ALL.remove("fake_" + name, this);
-	    MAP.removeKey(this);
+	    resetMapping();
 	    CATEGORIES.remove("key.categories.fake");
 	}
 	

@@ -76,6 +76,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		super.onEntityJoinWorld(entityIn);
 		this.initAttributes();
+		this.orgEntity.pushthrough = 1.0F;
 	}
 	
 	protected abstract void initAnimator(AnimatorClient animatorClient);

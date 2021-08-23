@@ -23,10 +23,7 @@ public abstract class EntityData<T extends Entity>
 		this.orgEntity = entityIn;
 	}
 
-	public void onEntityJoinWorld(T entity)
-	{
-		
-	}
+	public void onEntityJoinWorld(T entity) {}
 
 	public T getOriginalEntity()
 	{
