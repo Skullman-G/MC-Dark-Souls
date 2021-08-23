@@ -90,7 +90,7 @@ public class AttackPatternGoal extends Goal
     {
     	if(!this.canExecuteAttack())
     	{
-    		if (this.combo > 0 && this.mobdata.getEntityState() == LivingData.EntityState.ROTATABLE_POST_DELAY || this.mobdata.getEntityState() == LivingData.EntityState.POST_DELAY);
+    		if (this.combo > 0 && (this.mobdata.getEntityState() == LivingData.EntityState.ROTATABLE_POST_DELAY || this.mobdata.getEntityState() == LivingData.EntityState.POST_DELAY));
     		else return;
     	}
     	else if (this.combo > 0) this.combo = 0;

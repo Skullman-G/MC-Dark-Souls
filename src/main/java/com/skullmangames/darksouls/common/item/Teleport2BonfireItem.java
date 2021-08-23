@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.item;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
-import com.skullmangames.darksouls.core.init.SoundEventInit;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.LivingEntity;
@@ -132,6 +132,6 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return SoundEventInit.DARKSIGN_USE.get();
+		return SoundEvents.DARKSIGN_USE;
 	}
 }

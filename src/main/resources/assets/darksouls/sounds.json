@@ -72,5 +72,15 @@
 			{ "name": "darksouls:entities/hollow/death_03", "stream": true },
 			{ "name": "darksouls:entities/hollow/death_04", "stream": true }
 		]
+	},
+	
+	"entity.hollow.prepare":
+	{
+		"category": "entity",
+		"subtitle": "entity.hollow.prepare.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/hollow/prepare", "stream": true }
+		]
 	}
 }

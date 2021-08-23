@@ -123,7 +123,7 @@ public class InputManager
 			if (ClientEngine.INSTANCE.isBattleMode() && (this.player.sprintTime <= 2 || !this.player.isSprinting()))
 			{
 				Skill skill = Skills.ROLL;
-				if (SkillExecutionHelper.canExecute(this.playerdata, skill) && SkillExecutionHelper.getActiveSkill().isExecutableState(this.playerdata))
+				if (SkillExecutionHelper.canExecute(this.playerdata, skill) && Skills.ROLL.isExecutableState(this.playerdata))
 				{
 					SkillExecutionHelper.execute(this.playerdata, skill);
 				}

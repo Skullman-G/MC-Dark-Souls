@@ -44,7 +44,8 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entity) {
+	public void onActivate(LivingData<?> entity)
+	{
 		super.onActivate(entity);
 		Entity orgEntity = entity.getOriginalEntity();
 		
@@ -80,7 +81,8 @@ public class ActionAnimation extends ImmovableAnimation
 			}
 		}
 		
-		if (entity.isInaction()) {
+		if (entity.isInaction())
+		{
 			Vector3f vec3 = this.getCoordVector(entity);
 			BlockPos blockpos = new BlockPos(livingentity.getX(), livingentity.getBoundingBox().minY - 1.0D, livingentity.getZ());
 			BlockState blockState = livingentity.level.getBlockState(blockpos);

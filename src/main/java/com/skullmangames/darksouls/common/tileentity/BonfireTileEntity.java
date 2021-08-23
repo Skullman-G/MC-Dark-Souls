@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEventInit;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.BlockState;
@@ -109,7 +109,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 			
 			if (value)
 			{
-				this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+				this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				
 				if (player != null)
 				{
@@ -130,14 +130,14 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	{
 		if (!this.hasFireKeeper)
 		{
-			this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+			this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 		this.getBlock().kindle(this.level, this.getBlockState(), this.worldPosition);
 	}
 	
 	public void raiseEstusHealLevel()
 	{
-		this.level.playSound(null, this.worldPosition, SoundEventInit.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.getBlock().raiseEstusHealLevel(this.level, this.getBlockState(), this.worldPosition);
 	}
 	

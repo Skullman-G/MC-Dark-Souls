@@ -70,6 +70,15 @@ public class AttackAnimation extends ActionAnimation
 	}
 	
 	@Override
+	public void onActivate(LivingData<?> entity)
+	{
+		super.onActivate(entity);
+		
+		SoundEvent prepare = this.getPrepareSound(entity, this.getPhaseByTime(0.0F));
+		if (prepare != null) entity.playSound(prepare, 0.0F, 0.0F);
+	}
+	
+	@Override
 	public void onUpdate(LivingData<?> entitydata)
 	{
 		super.onUpdate(entitydata);
@@ -178,16 +187,11 @@ public class AttackAnimation extends ActionAnimation
 	public LivingData.EntityState getState(float time)
 	{
 		Phase phase = this.getPhaseByTime(time);
-		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(false);
+		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(true);
 		
-		// Maybe remove the whole antic stuff?
-		if (time <= phase.antic)
+		if (time <= phase.antic || (phase.antic < time && time < phase.preDelay))
 		{
-			return LivingData.EntityState.FREE_CAMERA;
-		}
-		else if (phase.antic < time && time < phase.preDelay)
-		{
-			return LivingData.EntityState.FREE_CAMERA;
+			return lockCameraRotation ? LivingData.EntityState.NO_FREEDOM : LivingData.EntityState.FREE_CAMERA;
 		}
 		else if (phase.preDelay <= time && time <= phase.contact)
 		{
@@ -242,6 +246,12 @@ public class AttackAnimation extends ActionAnimation
 	protected SoundEvent getHitSound(LivingData<?> entitydata, Phase phase)
 	{
 		return phase.getProperty(DamageProperty.HIT_SOUND).orElse(entitydata.getWeaponHitSound(phase.hand));
+	}
+	
+	@Nullable
+	protected SoundEvent getPrepareSound(LivingData<?> entitydata, Phase phase)
+	{
+		return phase.getProperty(DamageProperty.PREPARE_SOUND).orElse(null);
 	}
 	
 	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase)

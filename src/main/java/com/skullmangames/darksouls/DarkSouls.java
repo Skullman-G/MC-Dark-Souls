@@ -75,7 +75,6 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
 import com.skullmangames.darksouls.core.init.Skills;
-import com.skullmangames.darksouls.core.init.SoundEventInit;
 import com.skullmangames.darksouls.core.init.StructureInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -114,7 +113,6 @@ public class DarkSouls
     	bus.addListener(AttributeInit::modifyAttributeMap);
     	
     	AttributeInit.ATTRIBUTES.register(bus);
-    	SoundEventInit.SOUND_EVENTS.register(bus);
     	BlockInit.BLOCKS.register(bus);
     	BlockInit.VANILLA_BLOCKS.register(bus);
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);

@@ -88,6 +88,9 @@
 	"gui.darksouls.done": "Done",
 	"gui.darksouls.reset": "Reset",
 	
+	
+	"_comment": "Sound Events",
+	
 	"block.bonfire.lit": "Bonfire lit",
 	"block.bonfire.lit.sub": "Bonfire lit",
 	"block.bonfire.ambient": "Bonfire burning",
@@ -104,6 +107,8 @@
 	"entity.hollow.ambient.sub": "Hollow groans",
 	"entity.hollow.death": "Hollow death",
 	"entity.hollow.death.sub": "Hollow dies",
+	"entity.hollow.prepare": "Hollow prepare",
+	"entity.hollow.prepare.sub": "Hollow prepares attack",
 	
 	
 	"itemGroup.soulstab": "Souls",

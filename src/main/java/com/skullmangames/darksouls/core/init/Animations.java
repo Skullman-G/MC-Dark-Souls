@@ -540,24 +540,21 @@ public final class Animations
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
 		
 		
-		HOLLOW_HEAVY_ATTACK = new TargetTraceAnimation(7000, 0.05F, 0.0F, 1.92F, 1.92F, 3.75F, false, Colliders.sword, "111213", "hollow/heavy_attack.dae")
-				.addProperty(DamageProperty.STUN_TYPE, StunType.SHORT)
-				.bindFull(biped);
+		HOLLOW_HEAVY_ATTACK = new AttackAnimation(7000, 0.05F, 0.0F, 1.92F, 1.92F, 3.75F, false, Colliders.sword, "111213", "hollow/heavy_attack.dae").bindFull(biped);
 		
-		HOLLOW_FURY_ATTACK = new TargetTraceAnimation(7001, 0.05F, false, "hollow/fury_attack.dae",
+		HOLLOW_FURY_ATTACK = new AttackAnimation(7001, 0.05F, false, "hollow/fury_attack.dae",
 				new Phase(0.0F, 2.04F, 2.2F, 2.2F, "111213", Colliders.sword),
 				new Phase(2.2F, 2.9F, 3.0F, 3.0F, "111213", Colliders.sword),
 				new Phase(3.0F, 3.3F, 3.4F, 3.4F, "111213", Colliders.sword),
 				new Phase(3.4F, 3.7F, 3.8F, 3.8F, "111213", Colliders.sword),
 				new Phase(3.8F, 4.1F, 4.2F, 5.0F, "111213", Colliders.sword))
-				.addProperty(DamageProperty.STUN_TYPE, StunType.SHORT)
-				.bindFull(biped);
+				.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE).bindFull(biped);
 		
-		HOLLOW_LIGHT_ATTACK.add(new TargetTraceAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.sword, "111213", "hollow/light_attack_1.dae").bindFull(biped));
-		HOLLOW_LIGHT_ATTACK.add(new TargetTraceAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.sword, "111213", "hollow/light_attack_2.dae").bindFull(biped));
-		HOLLOW_LIGHT_ATTACK.add(new TargetTraceAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.swordDash, "111213", "hollow/light_attack_3.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.sword, "111213", "hollow/light_attack_1.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.sword, "111213", "hollow/light_attack_2.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.swordDash, "111213", "hollow/light_attack_3.dae").bindFull(biped));
 		
-		HOLLOW_JUMP_ATTACK = new TargetTraceAnimation(7005, 0.05F, 0.0F, 0.92F, 1.2F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae").bindFull(biped);
+		HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.92F, 1.2F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae").bindFull(biped);
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}

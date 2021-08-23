@@ -41,6 +41,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -67,15 +68,21 @@ public class EntityEvents
 	private static List<EntityData<?>> unInitializedEntitiesClient = Lists.<EntityData<?>>newArrayList();
 	private static List<EntityData<?>> unInitializedEntitiesServer = Lists.<EntityData<?>>newArrayList();
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void spawnEvent(EntityJoinWorldEvent event) {
+	public static void spawnEvent(EntityJoinWorldEvent event)
+	{
+		@SuppressWarnings("rawtypes")
 		EntityData entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entitydata != null && event.getEntity().tickCount == 0) {
+		if(entitydata != null && event.getEntity().tickCount == 0)
+		{
 			entitydata.onEntityJoinWorld(event.getEntity());
-			if(entitydata.isRemote()) {
+			if(entitydata.isRemote())
+			{
 				unInitializedEntitiesClient.add(entitydata);
-			} else {
+			}
+			else
+			{
 				unInitializedEntitiesServer.add(entitydata);
 			}	
 		}
@@ -91,17 +98,21 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void updateEvent(LivingUpdateEvent event) {
+	public static void updateEvent(LivingUpdateEvent event)
+	{
 		LivingData<?> entitydata = (LivingData<?>) event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entitydata != null && entitydata.getOriginalEntity() != null) {
+		if(entitydata != null && entitydata.getOriginalEntity() != null)
+		{
 			entitydata.update();
 		}
 	}
 	
 	@SubscribeEvent
-	public static void knockBackEvent(LivingKnockBackEvent event) {
+	public static void knockBackEvent(LivingKnockBackEvent event)
+	{
 		EntityData<?> cap = event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (cap != null) {
+		if (cap != null)
+		{
 			event.setCanceled(true);
 		}
 	}
@@ -291,22 +302,29 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void attackEvent(LivingAttackEvent event) {
+	public static void attackEvent(LivingAttackEvent event)
+	{
 		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (entitydata != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F) {
-			if (!entitydata.attackEntityFrom(event.getSource(), event.getAmount())) {
+		if (entitydata != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
+		{
+			if (!entitydata.attackEntityFrom(event.getSource(), event.getAmount()))
+			{
 				event.setCanceled(true);
 			}
 		}
 	}
 	
 	@SubscribeEvent
-	public static void arrowHitEvent(ProjectileImpactEvent.Arrow event) {
-		if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
+	public static void arrowHitEvent(ProjectileImpactEvent.Arrow event)
+	{
+		if (event.getRayTraceResult() instanceof EntityRayTraceResult)
+		{
 			EntityRayTraceResult rayresult = ((EntityRayTraceResult) event.getRayTraceResult());
-			if (rayresult.getEntity() != null && event.getArrow().getOwner() != null) {
-				if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger())) {
+			if (rayresult.getEntity() != null && event.getArrow().getOwner() != null)
+			{
+				if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger()))
+				{
 					event.setCanceled(true);
 				}
 			}
@@ -341,27 +359,35 @@ public class EntityEvents
 					event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitycap));
 				}
 				
-				if (entitycap instanceof ServerPlayerData) {
+				if (entitycap instanceof ServerPlayerData)
+				{
 					ServerPlayerData playercap = (ServerPlayerData)entitycap;
 					playercap.onHeldItemChange(toCap, event.getTo(), Hand.MAIN_HAND);
 				}
-			} else if (event.getSlot() == EquipmentSlotType.OFFHAND) {
+			}
+			else if (event.getSlot() == EquipmentSlotType.OFFHAND)
+			{
 				entitycap.cancelUsingItem();
 				
-				if (entitycap instanceof ServerPlayerData) {
+				if (entitycap instanceof ServerPlayerData)
+				{
 					ServerPlayerData playercap = (ServerPlayerData)entitycap;
 					CapabilityItem toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(Hand.MAIN_HAND);
 					playercap.onHeldItemChange(toCap, event.getTo(), Hand.OFF_HAND);
 				}
-			} else if (event.getSlot().getType() == EquipmentSlotType.Group.ARMOR) {
+			}
+			else if (event.getSlot().getType() == EquipmentSlotType.Group.ARMOR)
+			{
 				CapabilityItem fromCap = ModCapabilities.stackCapabilityGetter(event.getFrom());
 				CapabilityItem toCap = ModCapabilities.stackCapabilityGetter(event.getTo());
 				
-				if(fromCap != null) {
+				if(fromCap != null)
+				{
 					event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitycap));
 				}
 				
-				if(toCap != null) {
+				if(toCap != null)
+				{
 					event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitycap));
 				}
 				
@@ -372,33 +398,40 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void effectAddEvent(PotionAddedEvent event) {
+	public static void effectAddEvent(PotionAddedEvent event)
+	{
 		if(!event.getEntity().level.isClientSide) {
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Active, event.getEntity().getId()));
 		}
 	}
 	
 	@SubscribeEvent
-	public static void effectRemoveEvent(PotionRemoveEvent event) {
+	public static void effectRemoveEvent(PotionRemoveEvent event)
+	{
 		if(!event.getEntity().level.isClientSide && event.getPotionEffect() != null) {
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
 		}
 	}
 	
 	@SubscribeEvent
-	public static void effectExpiryEvent(PotionExpiryEvent event) {
-		if(!event.getEntity().level.isClientSide) {
+	public static void effectExpiryEvent(PotionExpiryEvent event)
+	{
+		if(!event.getEntity().level.isClientSide)
+		{
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	@SubscribeEvent
-	public static void mountEvent(EntityMountEvent event) {
+	public static void mountEvent(EntityMountEvent event)
+	{
 		EntityData<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (!event.getWorldObj().isClientSide && mountEntity instanceof BipedMobData && mountEntity.getOriginalEntity() != null) {
-			if (event.getEntityBeingMounted() instanceof MobEntity) {
+		World world = event.getWorldObj();
+		if (!world.isClientSide && mountEntity instanceof BipedMobData && mountEntity.getOriginalEntity() != null)
+		{
+			if (event.getEntityBeingMounted() instanceof MobEntity)
+			{
 				((BipedMobData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
 			}
 		}
@@ -428,11 +461,14 @@ public class EntityEvents
 	}*/
 	
 	@SubscribeEvent
-	public static void jumpEvent(LivingJumpEvent event) {
+	public static void jumpEvent(LivingJumpEvent event)
+	{
 		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if (entitydata != null && entitydata.isRemote()) {
-			if (!entitydata.isInaction() && !event.getEntity().isInWater()) {
+		if (entitydata != null && entitydata.isRemote())
+		{
+			if (!entitydata.isInaction() && !event.getEntity().isInWater())
+			{
 				StaticAnimation jumpAnimation = entitydata.getClientAnimator().getJumpAnimation();
 				entitydata.getAnimator().playAnimation(jumpAnimation, 0);
 				ModNetworkManager.sendToServer(new CTSPlayAnimation(jumpAnimation.getId(), 0, true, false));
@@ -441,23 +477,29 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void deathEvent(LivingDeathEvent event) {
+	public static void deathEvent(LivingDeathEvent event)
+	{
 		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if(entitydata != null) {
+		if(entitydata != null)
+		{
 			entitydata.getAnimator().playDeathAnimation();
 		}
 	}
 	
 	@SubscribeEvent
-	public static void fallEvent(LivingFallEvent event) {
-		if (event.getEntity().level.getGameRules().getBoolean(ModGamerules.HAS_FALL_ANIMATION)) {
+	public static void fallEvent(LivingFallEvent event)
+	{
+		if (event.getEntity().level.getGameRules().getBoolean(ModGamerules.HAS_FALL_ANIMATION))
+		{
 			LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			
-			if (entitydata != null && !entitydata.isInaction()) {
+			if (entitydata != null && !entitydata.isInaction())
+			{
 				float distance = event.getDistance();
 
-				if (distance > 5.0F) {
+				if (distance > 5.0F)
+				{
 					entitydata.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
 				}
 			}
@@ -465,7 +507,8 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
+	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event)
+	{
 		PlayerEntity player = event.getPlayer();
 		ServerPlayerData playerData = (ServerPlayerData) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		playerData.modifiLivingMotions(playerData.getHeldItemCapability(Hand.MAIN_HAND));

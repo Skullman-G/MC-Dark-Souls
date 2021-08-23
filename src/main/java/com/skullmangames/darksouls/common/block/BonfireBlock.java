@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEventInit;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 
 import net.minecraft.block.AbstractBlock;
@@ -253,7 +253,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		{
 			if (random.nextInt(8) == 0)
 			{
-				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, SoundEventInit.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
+				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, SoundEvents.BONFIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
 			}
 			
 			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)

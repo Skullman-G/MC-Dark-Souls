@@ -664,6 +664,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		FREE(false, false, false, false, true, 0),
 		FREE_CAMERA(false, true, false, false, false, 1),
 		FREE_INPUT(false, false, false, false, true, 3),
+		NO_FREEDOM(true, true, false, false, false, 1),
 		PRE_DELAY(true, true, false, false, false, 1),
 		CONTACT(true, true, true, false, false, 2),
 		ROTATABLE_CONTACT(false, true, true, false, false, 2),

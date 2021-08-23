@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.skullmangames.darksouls.common.entity.ai.goal.NearestNotKindOfMeTargetGoal;
 import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEventInit;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -105,12 +105,12 @@ public class HollowEntity extends MonsterEntity
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return SoundEventInit.HOLLOW_AMBIENT.get();
+		return SoundEvents.HOLLOW_AMBIENT;
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return SoundEventInit.HOLLOW_DEATH.get();
+		return SoundEvents.HOLLOW_DEATH;
 	}
 }
