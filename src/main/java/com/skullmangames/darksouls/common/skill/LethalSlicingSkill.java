@@ -18,27 +18,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 
-public class LethalSlicingSkill extends HeavyAttackSkill {
+public class LethalSlicingSkill extends HeavyAttackSkill
+{
 	private static final UUID EVENT_UUID = UUID.fromString("bfa79c04-97a5-11eb-a8b3-0242ac130003");
 	private StaticAnimation elbow;
 	private StaticAnimation swing;
 	private StaticAnimation doubleSwing;
 	
-	public LethalSlicingSkill(float restriction, String skillName) {
-		super(restriction, skillName);
+	public LethalSlicingSkill(String skillName)
+	{
+		super(skillName);
 		this.elbow = Animations.LETHAL_SLICING;
 		this.swing = Animations.LETHAL_SLICING_ONCE;
 		this.doubleSwing = Animations.LETHAL_SLICING_TWICE;
 	}
 	
 	@Override
-	public void onInitiate(SkillContainer container) {
-		container.executer.getEventListener().addEventListener(EventType.ON_ATTACK_END_EVENT, PlayerEvent.makeEvent(EVENT_UUID, (player, args)->{
-			if (((int)args[1]) == Animations.LETHAL_SLICING.getId()) {
+	public void onInitiate()
+	{
+		SkillExecutionHelper.getExecuter().getEventListener().addEventListener(EventType.ON_ATTACK_END_EVENT, PlayerEvent.makeEvent(EVENT_UUID, (player, args)->
+		{
+			if (((int)args[1]) == Animations.LETHAL_SLICING.getId())
+			{
 				int hitEnemies = (int)args[0];
-				if (hitEnemies == 1) {
+				if (hitEnemies == 1)
+				{
 					player.reserverAnimationSynchronize(this.swing);
-				} else if (hitEnemies > 1) {
+				}
+				else if (hitEnemies > 1)
+				{
 					player.reserverAnimationSynchronize(this.doubleSwing);
 				}
 			}
@@ -47,18 +55,21 @@ public class LethalSlicingSkill extends HeavyAttackSkill {
 	}
 	
 	@Override
-	public void onDeleted(SkillContainer container) {
-		container.executer.getEventListener().removeListener(EventType.ON_ATTACK_END_EVENT, EVENT_UUID);
+	public void onDeleted()
+	{
+		SkillExecutionHelper.getExecuter().getEventListener().removeListener(EventType.ON_ATTACK_END_EVENT, EVENT_UUID);
 	}
 	
 	@Override
-	public void executeOnServer(ServerPlayerData executer, PacketBuffer args) {
+	public void executeOnServer(ServerPlayerData executer, PacketBuffer args)
+	{
 		executer.playAnimationSynchronize(this.elbow, 0);
 		ModNetworkManager.sendToPlayer(new STCResetBasicAttackCool(), executer.getOriginalEntity());
 	}
 	
 	@Override
-	public List<ITextComponent> getTooltipOnItem(ItemStack itemStack, CapabilityItem cap, PlayerData<?> playerCap) {
+	public List<ITextComponent> getTooltipOnItem(ItemStack itemStack, CapabilityItem cap, PlayerData<?> playerCap)
+	{
 		List<ITextComponent> list = super.getTooltipOnItem(itemStack, cap, playerCap);
 		this.generateTooltipforPhase(list, itemStack, cap, playerCap, this.properties.get(0), "Elbow:");
 		this.generateTooltipforPhase(list, itemStack, cap, playerCap, this.properties.get(1), "Each Strike:");
@@ -66,7 +77,8 @@ public class LethalSlicingSkill extends HeavyAttackSkill {
 	}
 	
 	@Override
-	public HeavyAttackSkill registerPropertiesToAnimation() {
+	public HeavyAttackSkill registerPropertiesToAnimation()
+	{
 		AttackAnimation _elbow = ((AttackAnimation)this.elbow);
 		AttackAnimation _swing = ((AttackAnimation)this.swing);
 		AttackAnimation _doubleSwing = ((AttackAnimation)this.doubleSwing);

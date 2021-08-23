@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.common.skill.LethalSlicingSkill;
 import com.skullmangames.darksouls.common.skill.LightAttackSkill;
 import com.skullmangames.darksouls.common.skill.SimpleHeavyAttackSkill;
 import com.skullmangames.darksouls.common.skill.Skill;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ValueCorrector;
 
@@ -53,10 +52,10 @@ public class Skills
 				new LightAttackSkill(0, skillName, Animations.SWORD_LIGHT_ATTACK, Animations.SWORD_DASH_ATTACK), false);
 		
 		ROLL = makeSkill("roll", (skillName) ->
-				new DodgeSkill(SkillSlot.DODGE, 2.0F, skillName, Animations.BIPED_ROLL_FORWARD, Animations.BIPED_ROLL_BACKWARD), true);
+				new DodgeSkill(skillName, Animations.BIPED_ROLL_FORWARD, Animations.BIPED_ROLL_BACKWARD), true);
 		
 		SWEEPING_EDGE = makeSkill("sweeping_edge", (skillName) ->
-			new SimpleHeavyAttackSkill(30.0F, skillName, Animations.SWEEPING_EDGE)
+			new SimpleHeavyAttackSkill(skillName, Animations.SWEEPING_EDGE)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1))
 				.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(1.0F))
@@ -64,13 +63,13 @@ public class Skills
 				.addProperty(DamageProperty.STUN_TYPE, StunType.LONG).registerPropertiesToAnimation(), false);
 		
 		DANCING_EDGE = makeSkill("dancing_edge", (skillName) ->
-			new SimpleHeavyAttackSkill(30.0F, skillName, Animations.DANCING_EDGE)
+			new SimpleHeavyAttackSkill(skillName, Animations.DANCING_EDGE)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1))
 				.addProperty(DamageProperty.IMPACT, ValueCorrector.getAdder(0.5F)).registerPropertiesToAnimation(), false);
 		
 		GUILLOTINE_AXE = makeSkill("guillotine_axe", (skillName) ->
-			new SimpleHeavyAttackSkill(20.0F, skillName, Animations.GUILLOTINE_AXE)
+			new SimpleHeavyAttackSkill(skillName, Animations.GUILLOTINE_AXE)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getSetter(1))
 				.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(1.5F))
@@ -78,20 +77,20 @@ public class Skills
 				.addProperty(DamageProperty.STUN_TYPE, StunType.LONG).registerPropertiesToAnimation(), false);
 		
 		SLAUGHTER_STANCE = makeSkill("slaughter_stance", (skillName) ->
-			new SimpleHeavyAttackSkill(40.0F, skillName, Animations.SPEAR_SLASH)
+			new SimpleHeavyAttackSkill(skillName, Animations.SPEAR_SLASH)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(5))
 				.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(0.25F))
 				.registerPropertiesToAnimation(), false);
 		
 		HEARTPIERCER = makeSkill("heartpiercer", (skillName) ->
-			new SimpleHeavyAttackSkill(40.0F, skillName, Animations.SPEAR_THRUST)
+			new SimpleHeavyAttackSkill(skillName, Animations.SPEAR_THRUST)
 				.newPropertyLine()
 				.addProperty(DamageProperty.ARMOR_NEGATION, ValueCorrector.getAdder(10.0F))
 				.addProperty(DamageProperty.STUN_TYPE, StunType.HOLD).registerPropertiesToAnimation(), false);
 		
 		GIANT_WHIRLWIND = makeSkill("giant_whirlwind", (skillName) ->
-			new SimpleHeavyAttackSkill(60.0F, skillName, Animations.GIANT_WHIRLWIND)
+			new SimpleHeavyAttackSkill(skillName, Animations.GIANT_WHIRLWIND)
 				.newPropertyLine(), false);
 		
 		FATAL_DRAW = makeSkill("fatal_draw", (skillName) ->
@@ -105,7 +104,7 @@ public class Skills
 		KATANA_GIMMICK = new KatanaPassive();
 		
 		LETHAL_SLICING = makeSkill("lethal_slicing", (skillName) ->
-			new LethalSlicingSkill(50.0F, skillName)
+			new LethalSlicingSkill(skillName)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getSetter(2))
 				.addProperty(DamageProperty.IMPACT, ValueCorrector.getSetter(0.5F))
@@ -121,7 +120,7 @@ public class Skills
 				.registerPropertiesToAnimation(), false);
 		
 		RELENTLESS_COMBO = makeSkill("relentless_combo", (skillName) ->
-			new SimpleHeavyAttackSkill(20.0F, skillName, Animations.RELENTLESS_COMBO)
+			new SimpleHeavyAttackSkill(skillName, Animations.RELENTLESS_COMBO)
 				.newPropertyLine()
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getSetter(1))
 				.addProperty(DamageProperty.STUN_TYPE, StunType.HOLD)

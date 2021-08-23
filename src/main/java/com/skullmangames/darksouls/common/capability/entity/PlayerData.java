@@ -5,8 +5,7 @@ import java.util.UUID;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.DataKeys;
-import com.skullmangames.darksouls.common.skill.SkillContainer;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -14,7 +13,6 @@ import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModelInit;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
@@ -29,24 +27,12 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	protected float yaw;
 	protected EntityEventListener eventListeners;
 	protected int tickSinceLastAction;
-	public SkillContainer[] skills;
-	
-	public PlayerData()
-	{
-		SkillSlot[] slots = SkillSlot.values();
-		this.skills = new SkillContainer[slots.length];
-		for(SkillSlot slot : slots)
-		{
-			this.skills[slot.getIndex()] = new SkillContainer(this);
-		}
-	}
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
 		this.eventListeners = new EntityEventListener(this);
-		this.skills[SkillSlot.DODGE.getIndex()].setSkill(Skills.ROLL);
 		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(0.0F));
 		this.tickSinceLastAction = 40;
 		this.eventListeners.addEventListener(EventType.ON_ACTION_EVENT, PlayerEvent.makeEvent(ACTION_EVENT_UUID, (player, args) ->
@@ -110,26 +96,10 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	{
 		if(this.orgEntity.getControllingPassenger() == null)
 		{
-			for(SkillContainer container : this.skills)
-			{
-				if(container != null)
-				{
-					container.update();
-				}
-			}
+			SkillExecutionHelper.update();
 		}
 		
 		super.update();
-	}
-	
-	public SkillContainer getSkill(SkillSlot slot)
-	{
-		return this.skills[slot.getIndex()];
-	}
-	
-	public SkillContainer getSkill(int slotIndex)
-	{
-		return this.skills[slotIndex];
 	}
 	
 	public float getAttackSpeed()

@@ -13,9 +13,10 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
-import com.skullmangames.darksouls.common.skill.SkillContainer;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.ProviderItem;
+import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
@@ -121,10 +122,10 @@ public class InputManager
 		{
 			if (ClientEngine.INSTANCE.isBattleMode() && (this.player.sprintTime <= 2 || !this.player.isSprinting()))
 			{
-				SkillContainer skill = this.playerdata.getSkill(SkillSlot.DODGE);
-				if (skill.canExecute(this.playerdata) && skill.getContaining().isExecutableState(this.playerdata))
+				Skill skill = Skills.ROLL;
+				if (SkillExecutionHelper.canExecute(this.playerdata, skill) && SkillExecutionHelper.getActiveSkill().isExecutableState(this.playerdata))
 				{
-					skill.execute(this.playerdata);
+					SkillExecutionHelper.execute(this.playerdata, skill);
 				}
 			}
 			
@@ -206,11 +207,10 @@ public class InputManager
 		{
 			if (skillReserveCounter > 0)
 			{
-				SkillContainer skill = playerdata.getSkill(reservedSkill);
 				skillReserveCounter--;
-				if(skill.getContaining() != null && skill.canExecute(playerdata) && skill.getContaining().isExecutableState(this.playerdata))
+				if(SkillExecutionHelper.getActiveSkill() != null && SkillExecutionHelper.canExecute(playerdata) && SkillExecutionHelper.getActiveSkill().isExecutableState(this.playerdata))
 				{
-					skill.execute(playerdata);
+					SkillExecutionHelper.execute(playerdata, SkillExecutionHelper.getActiveSkill());
 					this.reservedSkill = -1;
 					this.skillReserveCounter = -1;
 				}
@@ -271,14 +271,7 @@ public class InputManager
 						CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
 						if(itemCap != null)
 						{
-							this.playerdata.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK).execute(this.playerdata);
-						}
-					}
-					else
-					{
-						if (!this.player.isSpectator())
-						{
-							this.reserveSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
+							SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack());
 						}
 					}
 					
@@ -301,7 +294,7 @@ public class InputManager
 				CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
 				if(itemCap != null)
 				{
-					this.playerdata.getSkill(SkillSlot.WEAPON_LIGHT_ATTACK).execute(this.playerdata);
+					SkillExecutionHelper.execute(this.playerdata, itemCap.getLightAttack());
 					this.player.resetAttackStrengthTicker();
 				}
 			}
@@ -311,12 +304,6 @@ public class InputManager
 			this.rightHandToggle = false;
 			this.rightHandPressCounter = 0;
 		}
-	}
-	
-	private void reserveSkill(SkillSlot slot)
-	{
-		this.reservedSkill = slot.getIndex();
-		this.skillReserveCounter = 8;
 	}
 	
 	public boolean isKeyDown(KeyBinding key)

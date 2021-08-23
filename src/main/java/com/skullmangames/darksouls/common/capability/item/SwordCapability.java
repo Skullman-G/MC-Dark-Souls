@@ -6,7 +6,6 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -25,15 +24,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SwordCapability extends MaterialItemCapability
 {
-	private static List<StaticAnimation> swordAttackMotion;
 	private static List<StaticAnimation> dualSwordAttackMotion;
 	
 	public SwordCapability(Item item)
 	{
 		super(item, WeaponCategory.SWORD);
-		if (swordAttackMotion == null)
+		if (dualSwordAttackMotion == null)
 		{
-			swordAttackMotion = new ArrayList<StaticAnimation>();
 			dualSwordAttackMotion = new ArrayList<StaticAnimation> ();
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_1);
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_2);
@@ -53,20 +50,13 @@ public class SwordCapability extends MaterialItemCapability
 	}
 	
 	@Override
-	public Skill getSpecialAttack(PlayerData<?> playerdata)
+	public Skill getHeavyAttack()
 	{
-		if(this.getStyle(playerdata) == WieldStyle.ONE_HAND)
-		{
-			return Skills.SWEEPING_EDGE;
-		}
-		else
-		{
-			return Skills.DANCING_EDGE;
-		}
+		return Skills.SWEEPING_EDGE;
 	}
 	
 	@Override
-	public Skill getLightAttack(PlayerData<?> playerdata)
+	public Skill getLightAttack()
 	{
 		return Skills.SWORD_LIGHT_ATTACK;
 	}

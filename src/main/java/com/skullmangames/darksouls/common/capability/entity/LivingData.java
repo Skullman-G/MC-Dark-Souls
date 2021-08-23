@@ -285,6 +285,8 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public void knockBackEntity(Entity entityIn, float power)
 	{
+		power *= 0.1D;
+		
 		double d1 = entityIn.getX() - this.orgEntity.getX();
         double d0;
         

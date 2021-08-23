@@ -16,15 +16,15 @@ public class DodgeSkill extends Skill
 {
 	protected final StaticAnimation[] animations;
 	
-	public DodgeSkill(SkillSlot index, float cooldown, String skillName, StaticAnimation... animation)
+	public DodgeSkill(String skillName, StaticAnimation... animation)
 	{
-		super(index, cooldown, skillName);
+		super(skillName);
 		this.animations = animation;
 	}
 	
-	public DodgeSkill(SkillSlot index, float cooldown, int maxStack, String skillName, StaticAnimation... animation)
+	public DodgeSkill(int maxStack, String skillName, StaticAnimation... animation)
 	{
-		super(index, cooldown, 0, maxStack, true, skillName);
+		super(0, maxStack, true, skillName);
 		this.animations = animation;
 	}
 	
@@ -59,7 +59,7 @@ public class DodgeSkill extends Skill
 		int horizon = left + right;
 		int degree = -(90 * horizon * (1 - Math.abs(vertic)) + 45 * vertic * horizon);
 		
-		CTSExecuteSkill packet = new CTSExecuteSkill(this.slot.getIndex());
+		CTSExecuteSkill packet = new CTSExecuteSkill();
 		packet.getBuffer().writeInt(vertic >= 0 ? 0 : 1);
 		packet.getBuffer().writeFloat(degree);
 		

@@ -10,19 +10,14 @@ import com.google.common.collect.Maps;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.skill.SkillContainer;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.util.Formulars;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
-import com.skullmangames.darksouls.network.server.STCSetSkillValue;
-import com.skullmangames.darksouls.network.server.STCSetSkillValue.Target;
-
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -40,27 +35,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	
 	public static final UUID WEIGHT_PENALTY_MODIFIIER = UUID.fromString("414fed9e-e5e3-11ea-adc1-0242ac120002");
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-	
-	@Override
-	public void gatherDamageDealt(IExtendedDamageSource source, float amount)
-	{
-		if(source.getSkillId() > Animations.BASIC_ATTACK_MIN && source.getSkillId() < Animations.BASIC_ATTACK_MAX)
-		{
-			SkillContainer container = this.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
-			CapabilityItem itemCap = this.getHeldItemCapability(Hand.MAIN_HAND);
-
-			if (itemCap != null && container.hasSkill(itemCap.getSpecialAttack(this)))
-			{
-				float value = container.getRemainCooldown() + amount;
-
-				if (value > 0.0F)
-				{
-					this.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK).setCooldown(value);
-					ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.COOLDOWN, SkillSlot.WEAPON_HEAVY_ATTACK.getIndex(), value, false), orgEntity);
-				}
-			}
-		}
-	}
 	
 	@Override
 	public void onEntityJoinWorld(ServerPlayerEntity entityIn)
@@ -92,14 +66,14 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	
 	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, Hand hand)
 	{
-		CapabilityItem mainHandCap = (hand == Hand.MAIN_HAND) ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
+		CapabilityItem mainHandCap = hand == Hand.MAIN_HAND ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
 		if(mainHandCap != null)
 		{
 			mainHandCap.onHeld(this);
 		}
 		else
 		{
-			this.getSkill(SkillSlot.WEAPON_GIMMICK).setSkill(null);
+			SkillExecutionHelper.setActiveSkill(null);
 		}
 		
 		if (hand == Hand.MAIN_HAND)

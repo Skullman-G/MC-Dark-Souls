@@ -20,14 +20,16 @@ public class SelectiveAttackSkill extends HeavyAttackSkill {
 	protected final StaticAnimation[] attackAnimations;
 	protected final Function<ServerPlayerData, Integer> selector;
 	
-	public SelectiveAttackSkill(float restriction, String skillName, Function<ServerPlayerData, Integer> func, StaticAnimation... animations) {
-		super(restriction, skillName);
+	public SelectiveAttackSkill(String skillName, Function<ServerPlayerData, Integer> func, StaticAnimation... animations)
+	{
+		super(skillName);
 		this.attackAnimations = animations;
 		this.selector = func;
 	}
 	
-	public SelectiveAttackSkill(float restriction, int duration, String skillName, Function<ServerPlayerData, Integer> func, StaticAnimation... animations) {
-		super(restriction, duration, skillName);
+	public SelectiveAttackSkill(int duration, String skillName, Function<ServerPlayerData, Integer> func, StaticAnimation... animations)
+	{
+		super(duration, skillName);
 		this.attackAnimations = animations;
 		this.selector = func;
 	}

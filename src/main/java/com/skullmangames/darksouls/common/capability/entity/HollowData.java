@@ -28,7 +28,7 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void onEntityJoinWorld(HollowEntity entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(0.0F));
+		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(10.0F));
 	}
 	
 	@Override

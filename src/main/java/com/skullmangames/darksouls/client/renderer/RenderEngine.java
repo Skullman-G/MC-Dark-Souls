@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientEngine;
-import com.skullmangames.darksouls.client.gui.BattleModeGui;
 import com.skullmangames.darksouls.client.gui.EntityIndicator;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
@@ -70,7 +69,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -84,7 +82,6 @@ public class RenderEngine
 	private static final Vector3f AIMING_CORRECTION = new Vector3f(-1.5F, 0.0F, 1.25F);
 	public static final ResourceLocation NULL_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/gui/null.png");
 	public AimHelperRenderer aimHelper;
-	public BattleModeGui guiSkillBar = new BattleModeGui();
 	private Minecraft minecraft;
 	private PublicMatrix4f projectionMatrix;
 	@SuppressWarnings("rawtypes")
@@ -337,10 +334,10 @@ public class RenderEngine
 				{
 					if (ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SPECIAL_ATTACK_TOOLTIP))
 					{
-						if (cap.getSpecialAttack(ClientEngine.INSTANCE.getPlayerData()) != null)
+						if (cap.getHeavyAttack() != null)
 						{
 							event.getToolTip().clear();
-							List<ITextComponent> skilltooltip = cap.getSpecialAttack(ClientEngine.INSTANCE.getPlayerData()).getTooltipOnItem(event.getItemStack(), cap, playerCap);
+							List<ITextComponent> skilltooltip = cap.getHeavyAttack().getTooltipOnItem(event.getItemStack(), cap, playerCap);
 							
 							for (ITextComponent s : skilltooltip)
 							{
@@ -410,23 +407,6 @@ public class RenderEngine
 		}
 		
 		@SubscribeEvent
-		public static void renderGameOverlay(RenderGameOverlayEvent.Pre event)
-		{
-			if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
-			{
-				ClientPlayerData playerdata = ClientEngine.INSTANCE.getPlayerData();
-				if (playerdata != null)
-				{
-					if (Minecraft.renderNames())
-					{
-						renderEngine.guiSkillBar.renderGui(playerdata, event.getPartialTicks());
-					}
-				}
-			}
-		}
-		
-		@SuppressWarnings("resource")
-		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
 			boolean isBattleMode = ClientEngine.INSTANCE.isBattleMode();
@@ -435,7 +415,8 @@ public class RenderEngine
 			{
 				if (event.getHand() == Hand.MAIN_HAND)
 				{
-					renderEngine.firstPersonRenderer.render(Minecraft.getInstance().player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
+					Minecraft minecraft = Minecraft.getInstance();
+					renderEngine.firstPersonRenderer.render(minecraft.player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
 							event.getMatrixStack(), event.getLight(), event.getPartialTicks());
 				}
 				event.setCanceled(true);

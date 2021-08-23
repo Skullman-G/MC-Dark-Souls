@@ -22,15 +22,15 @@ public class SimpleHeavyAttackSkill extends HeavyAttackSkill
 {
 	protected final StaticAnimation attackAnimation;
 	
-	public SimpleHeavyAttackSkill(float restriction, String skillName, StaticAnimation animation)
+	public SimpleHeavyAttackSkill(String skillName, StaticAnimation animation)
 	{
-		this(restriction, 0, skillName, animation);
+		this(0, skillName, animation);
 		
 	}
 	
-	public SimpleHeavyAttackSkill(float restriction, int duration, String skillName, StaticAnimation animation)
+	public SimpleHeavyAttackSkill(int duration, String skillName, StaticAnimation animation)
 	{
-		super(restriction, duration, skillName);
+		super(duration, skillName);
 		this.properties = Lists.<Map<DamageProperty<?>, Object>>newArrayList();
 		this.attackAnimation = animation;
 	}

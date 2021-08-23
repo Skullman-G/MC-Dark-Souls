@@ -30,13 +30,11 @@ public class ClientEngine
 	public void switchToMiningMode()
 	{
 		this.playerActingMode = PlayerActingMode.MINING;
-		this.renderEngine.guiSkillBar.slideDown();
 	}
 	
 	public void switchToBattleMode()
 	{
 		this.playerActingMode = PlayerActingMode.BATTLE;
-		this.renderEngine.guiSkillBar.slideUp();
 	}
 	
 	public PlayerActingMode getPlayerActingMode()

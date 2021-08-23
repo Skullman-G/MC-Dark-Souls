@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.AttributeInit;
@@ -25,12 +24,14 @@ public class AxeCapability extends MaterialItemCapability
 		axeAttackMotions = new ArrayList<StaticAnimation> ();
 	}
 	
-	public AxeCapability(Item item) {
+	public AxeCapability(Item item)
+	{
 		super(item, WeaponCategory.AXE);
 	}
 
 	@Override
-	public Skill getSpecialAttack(PlayerData<?> playerdata) {
+	public Skill getHeavyAttack()
+	{
 		return Skills.GUILLOTINE_AXE;
 	}
 	

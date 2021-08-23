@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
@@ -68,11 +69,11 @@ public class STCExecuteSkill
 			
 			if(msg.active)
 			{
-				playerdata.getSkill(msg.skillSlot).getContaining().executeOnClient(playerdata, msg.getBuffer());
+				SkillExecutionHelper.getActiveSkill().executeOnClient(playerdata, msg.getBuffer());
 			}
 			else
 			{
-				playerdata.getSkill(msg.skillSlot).getContaining().cancelOnClient(playerdata, msg.getBuffer());
+				SkillExecutionHelper.getActiveSkill().cancelOnClient(playerdata, msg.getBuffer());
 			}
 		});
 		ctx.get().setPacketHandled(true);

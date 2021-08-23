@@ -20,7 +20,7 @@ public class LightAttackSkill extends AttackSkill
 	
 	public LightAttackSkill(int duration, String skillName, List<StaticAnimation> attackanimations, StaticAnimation dashanimation)
 	{
-		super(SkillSlot.WEAPON_LIGHT_ATTACK, 0, duration, true, skillName);
+		super(duration, true, skillName);
 		this.attackAnimations = attackanimations;
 		this.dashAnimation = dashanimation;
 		this.combo = 0;
@@ -49,7 +49,7 @@ public class LightAttackSkill extends AttackSkill
 	{
 		CapabilityItem item = executer.getHeldItemCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
-		if (this != item.getLightAttack(executer)) return false;
+		if (this != item.getLightAttack()) return false;
 		
 		return super.canExecute(executer);
 	}

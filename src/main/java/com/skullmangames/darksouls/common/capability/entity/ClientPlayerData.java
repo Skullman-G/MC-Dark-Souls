@@ -21,6 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 {
 	private LivingEntity rayTarget;
+	private Minecraft minecraft = Minecraft.getInstance();
 	
 	@Override
 	public void onEntityConstructed(ClientPlayerEntity entity)
@@ -117,10 +118,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	}
 	
 	@Override
-	public void aboutToDeath()
-	{
-		;
-	}
+	public void aboutToDeath() {}
 	
 	public void initFromOldOne(ClientPlayerData old)
 	{
@@ -133,10 +131,9 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		return this.rayTarget;
 	}
 	
-	@SuppressWarnings("resource")
 	@Override
 	public boolean isFirstPerson()
 	{
-		return Minecraft.getInstance().options.getCameraType() == PointOfView.FIRST_PERSON;
+		return this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON;
 	}
 }

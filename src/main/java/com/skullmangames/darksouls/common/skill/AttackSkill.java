@@ -20,16 +20,16 @@ public abstract class AttackSkill extends Skill
 {
 	protected List<Map<DamageProperty<?>, Object>> properties;
 	
-	public AttackSkill(SkillSlot index, float cooldown, int duration, boolean isActiveSkill, String skillName)
+	public AttackSkill(int duration, boolean isActiveSkill, String skillName)
 	{
-		super(index, cooldown, duration, isActiveSkill, skillName);
+		super(duration, isActiveSkill, skillName);
 		this.properties = Lists.<Map<DamageProperty<?>, Object>>newArrayList();
 	}
 	
 	@Override
 	public void executeOnClient(ClientPlayerData executer, PacketBuffer args)
 	{
-		ModNetworkManager.sendToServer(new CTSExecuteSkill(this.slot.getIndex(), true, args));
+		ModNetworkManager.sendToServer(new CTSExecuteSkill(true, args));
 	}
 	
 	@Override

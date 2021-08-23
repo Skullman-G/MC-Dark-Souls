@@ -28,14 +28,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class HeavyAttackSkill extends AttackSkill
 {
-	public HeavyAttackSkill(float restriction, String skillName)
+	public HeavyAttackSkill(String skillName)
 	{
-		this(restriction, 0, skillName);
+		this(0, skillName);
 	}
 	
-	public HeavyAttackSkill(float restriction, int duration, String skillName)
+	public HeavyAttackSkill(int duration, String skillName)
 	{
-		super(SkillSlot.WEAPON_HEAVY_ATTACK, restriction, duration, true, skillName);
+		super(duration, true, skillName);
 	}
 	
 	@Override
@@ -50,8 +50,7 @@ public abstract class HeavyAttackSkill extends AttackSkill
 	{
 		List<ITextComponent> list = Lists.<ITextComponent>newArrayList();
 		
-		list.add(new TranslationTextComponent("skill." + DarkSouls.MOD_ID + "." + this.registryName.getPath()).withStyle(TextFormatting.WHITE)
-				.append(new StringTextComponent(String.format("[%.0f]", this.cooldown)).withStyle(TextFormatting.AQUA)));
+		list.add(new TranslationTextComponent("skill." + DarkSouls.MOD_ID + "." + this.registryName.getPath()).withStyle(TextFormatting.WHITE));
 		list.add(new TranslationTextComponent("skill." + DarkSouls.MOD_ID + "." + this.registryName.getPath() + "_tooltip").withStyle(TextFormatting.DARK_GRAY));
 		
 		return list;
@@ -130,7 +129,7 @@ public abstract class HeavyAttackSkill extends AttackSkill
 	{
 		CapabilityItem item = executer.getHeldItemCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
-		if (this != item.getSpecialAttack(executer)) return false;
+		if (this != item.getHeavyAttack()) return false;
 		
 		return super.canExecute(executer);
 	}

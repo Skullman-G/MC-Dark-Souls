@@ -7,18 +7,24 @@ import com.skullmangames.darksouls.network.server.STCResetBasicAttackCool;
 
 import net.minecraft.network.PacketBuffer;
 
-public class FatalDrawSkill extends SelectiveAttackSkill {
-	public FatalDrawSkill(String skillName) {
-		super(30.0F, skillName, (executer)->executer.getOriginalEntity().isSprinting() ? 1 : 0, Animations.FATAL_DRAW, Animations.FATAL_DRAW_DASH);
+public class FatalDrawSkill extends SelectiveAttackSkill
+{
+	public FatalDrawSkill(String skillName)
+	{
+		super(skillName, (executer) -> executer.getOriginalEntity().isSprinting() ? 1 : 0, Animations.FATAL_DRAW, Animations.FATAL_DRAW_DASH);
 	}
 	
 	@Override
-	public void executeOnServer(ServerPlayerData executer, PacketBuffer args) {
-		boolean isSheathed = executer.getSkill(SkillSlot.WEAPON_GIMMICK).getVariableNBT().getBoolean("sheath");
+	public void executeOnServer(ServerPlayerData executer, PacketBuffer args)
+	{
+		boolean isSheathed = SkillExecutionHelper.getVariableNBT().getBoolean("sheath");
 		
-		if(isSheathed) {
+		if(isSheathed)
+		{
 			executer.playAnimationSynchronize(this.attackAnimations[this.getAnimationInCondition(executer)], -0.666F);
-		} else {
+		}
+		else
+		{
 			executer.playAnimationSynchronize(this.attackAnimations[this.getAnimationInCondition(executer)], 0);
 		}
 		

@@ -2,9 +2,11 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.FistCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -71,8 +73,10 @@ public class ModCapabilities
 		}, () -> null);
 	}
 	
+	public static final FistCapability FIST = new FistCapability(Items.AIR);
+	
 	public static CapabilityItem stackCapabilityGetter(ItemStack stack)
 	{
-		return stack.isEmpty() ? null : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+		return stack.isEmpty() ? FIST : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 }

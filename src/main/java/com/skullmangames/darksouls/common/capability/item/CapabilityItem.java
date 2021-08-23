@@ -17,8 +17,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
-import com.skullmangames.darksouls.common.skill.SkillContainer;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -100,7 +99,7 @@ public abstract class CapabilityItem
 		}
 	}
 	
-	public Skill getLightAttack(PlayerData<?> playerdata)
+	public Skill getLightAttack()
 	{
 		return null;
 	}
@@ -110,7 +109,7 @@ public abstract class CapabilityItem
 		return null;
 	}
 
-	public Skill getSpecialAttack(PlayerData<?> playerdata)
+	public Skill getHeavyAttack()
 	{
 		return null;
 	}
@@ -127,40 +126,37 @@ public abstract class CapabilityItem
 	
 	public void onHeld(PlayerData<?> playerdata)
 	{
-		Skill lightAttackSkill = this.getLightAttack(playerdata);
+		Skill lightAttackSkill = this.getLightAttack();
 		if (lightAttackSkill != null)
 		{
-			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_LIGHT_ATTACK);
 			
-			if(skillContainer.getContaining() != lightAttackSkill)
+			if(SkillExecutionHelper.getActiveSkill() != lightAttackSkill)
 			{
-				skillContainer.setSkill(lightAttackSkill);
+				SkillExecutionHelper.setActiveSkill(lightAttackSkill);
 			}
 		}
 		
-		Skill specialSkill = this.getSpecialAttack(playerdata);
+		Skill specialSkill = this.getHeavyAttack();
 		if (specialSkill != null)
 		{
-			SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_HEAVY_ATTACK);
 			
-			if(skillContainer.getContaining() != specialSkill)
+			if(SkillExecutionHelper.getActiveSkill() != specialSkill)
 			{
-				skillContainer.setSkill(specialSkill);
+				SkillExecutionHelper.setActiveSkill(specialSkill);
 			}
 		}
 		
 		Skill skill = this.getPassiveSkill();
-		SkillContainer skillContainer = playerdata.getSkill(SkillSlot.WEAPON_GIMMICK);
 		
 		if(skill == null)
 		{
-			skillContainer.setSkill(null);
+			SkillExecutionHelper.setActiveSkill(null);
 		}
 		else
 		{
-			if(skillContainer.getContaining() != skill)
+			if(SkillExecutionHelper.getActiveSkill() != skill)
 			{
-				skillContainer.setSkill(skill);
+				SkillExecutionHelper.setActiveSkill(skill);
 			}
 		}
 		

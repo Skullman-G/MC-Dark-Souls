@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.skill.SkillSlot;
+import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -15,7 +15,6 @@ public class STCModifySkillVariable
 {
 	private String nbtName;
 	private Object value;
-	private int index;
 	private int type;
 	
 	public STCModifySkillVariable()
@@ -24,15 +23,14 @@ public class STCModifySkillVariable
 		this.value = null;
 	}
 	
-	public STCModifySkillVariable(VariableType type, SkillSlot slot, String nbtName, Object value)
+	public STCModifySkillVariable(VariableType type, String nbtName, Object value)
 	{
-		this(type.id, slot.getIndex(), nbtName, value);
+		this(type.id, nbtName, value);
 	}
 	
-	public STCModifySkillVariable(int type, int slot, String nbtName, Object value)
+	public STCModifySkillVariable(int type, String nbtName, Object value)
 	{
 		this.type = type;
-		this.index = slot;
 		this.nbtName = nbtName;
 		this.value = value;
 	}
@@ -60,7 +58,7 @@ public class STCModifySkillVariable
 				break;
 		}
 		
-		return new STCModifySkillVariable(type, buf.readInt(), buf.readUtf(), value);
+		return new STCModifySkillVariable(type, buf.readUtf(), value);
 	}
 	
 	public static void toBytes(STCModifySkillVariable msg, PacketBuffer buf)
@@ -85,7 +83,6 @@ public class STCModifySkillVariable
 				break;
 		}
 		
-		buf.writeInt(msg.index);
 		buf.writeUtf(msg.nbtName);
 	}
 	
@@ -93,12 +90,12 @@ public class STCModifySkillVariable
 	{
 		ctx.get().enqueueWork(() ->
 		{
-			@SuppressWarnings("resource")
-			ClientPlayerData playerdata = (ClientPlayerData) Minecraft.getInstance().player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			Minecraft minecraft = Minecraft.getInstance();
+			ClientPlayerData playerdata = (ClientPlayerData) minecraft.player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			
 			if(playerdata != null)
 			{
-				CompoundNBT nbt = playerdata.getSkill(msg.index).getVariableNBT();
+				CompoundNBT nbt = SkillExecutionHelper.getVariableNBT();
 				
 				switch(msg.type)
 				{
