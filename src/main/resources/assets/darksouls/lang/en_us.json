@@ -115,6 +115,7 @@
 	"entity.generic.hurt": "Generic hurt",
 	"entity.player.hurt": "Player hurt",
 	"entity.hostile.hurt": "Hostile mob hurt",
+	"entity.generic.kill": "Generic kill",
 	
 	
 	"itemGroup.soulstab": "Souls",

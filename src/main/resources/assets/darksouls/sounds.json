@@ -118,5 +118,15 @@
 			{ "name": "darksouls:entities/generic/damage_2", "stream": true },
 			{ "name": "darksouls:entities/generic/damage_3", "stream": true }
 		]
+	},
+	
+	"entity.generic.kill":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/generic/kill_1", "stream": true },
+			{ "name": "darksouls:entities/generic/kill_2", "stream": true }
+		]
 	}
 }

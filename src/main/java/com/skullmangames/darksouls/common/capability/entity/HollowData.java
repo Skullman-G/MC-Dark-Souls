@@ -36,7 +36,7 @@ public class HollowData extends BipedMobData<HollowEntity>
 	{
 		super.postInit();
 		
-		if (!this.isRemote())
+		if (!this.isClientSide())
 		{
 			if (!this.orgEntity.canPickUpLoot())
 			{

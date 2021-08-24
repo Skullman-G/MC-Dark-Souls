@@ -13,7 +13,7 @@ public class ReboundAnimation extends AimingAnimation
 	@Override
 	public void onActivate(LivingData<?> entity)
 	{
-		if (entity.isRemote())
+		if (entity.isClientSide())
 		{
 			AnimatorClient animator = entity.getClientAnimator();
 			if(animator.mixLayerActivated)

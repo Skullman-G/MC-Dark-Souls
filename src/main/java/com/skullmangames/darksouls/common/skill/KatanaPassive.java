@@ -46,7 +46,7 @@ public class KatanaPassive extends Skill
 	{
 		PlayerData<?> executer = SkillExecutionHelper.getExecuter();
 
-		if (!executer.isRemote())
+		if (!executer.isClientSide())
 		{
 			ServerPlayerEntity executePlayer = (ServerPlayerEntity) executer.getOriginalEntity();
 			SkillExecutionHelper.getVariableNBT().putBoolean(NBT_KEY, false);

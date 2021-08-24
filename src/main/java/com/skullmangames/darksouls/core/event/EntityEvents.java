@@ -77,7 +77,7 @@ public class EntityEvents
 		if(entitydata != null && event.getEntity().tickCount == 0)
 		{
 			entitydata.onEntityJoinWorld(event.getEntity());
-			if(entitydata.isRemote())
+			if(entitydata.isClientSide())
 			{
 				unInitializedEntitiesClient.add(entitydata);
 			}
@@ -465,7 +465,7 @@ public class EntityEvents
 	{
 		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if (entitydata != null && entitydata.isRemote())
+		if (entitydata != null && entitydata.isClientSide())
 		{
 			if (!entitydata.isInaction() && !event.getEntity().isInWater())
 			{
@@ -483,6 +483,7 @@ public class EntityEvents
 		
 		if(entitydata != null)
 		{
+			if (entitydata.isClientSide()) entitydata.playSound(com.skullmangames.darksouls.core.init.SoundEvents.GENERIC_KILL, 0.0F, 0.0F);
 			entitydata.getAnimator().playDeathAnimation();
 		}
 	}

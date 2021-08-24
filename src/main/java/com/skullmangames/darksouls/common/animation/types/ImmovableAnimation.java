@@ -23,7 +23,7 @@ public class ImmovableAnimation extends StaticAnimation
 	{
 		super.onActivate(entitydata);
 		
-		if(entitydata.isRemote())
+		if(entitydata.isClientSide())
 		{
 			entitydata.getClientAnimator().resetMotion();
 			entitydata.getClientAnimator().resetMixMotion();
@@ -40,7 +40,7 @@ public class ImmovableAnimation extends StaticAnimation
 	{
 		super.onFinish(entitydata, isEnd);
 		
-		if(entitydata.isRemote() && entitydata instanceof ClientPlayerData)
+		if(entitydata.isClientSide() && entitydata instanceof ClientPlayerData)
 	    {
 			((ClientPlayerData)entitydata).changeYaw(0);
 			ModNetworkManager.sendToServer(new CTSRotatePlayerYaw(0));

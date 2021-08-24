@@ -97,7 +97,7 @@ public class StaticAnimation extends DynamicAnimation
 				if(key.time < prevElapsed || key.time >= elapsed) continue;
 				else
 				{
-					if(entitydata.isRemote() == key.isRemote)
+					if(entitydata.isClientSide() == key.isRemote)
 					{
 						entitydata.playSound(key.sound, 0.0F, 0.0F);
 					}

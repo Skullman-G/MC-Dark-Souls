@@ -30,7 +30,7 @@ public abstract class EntityData<T extends Entity>
 		return orgEntity;
 	}
 
-	public boolean isRemote()
+	public boolean isClientSide()
 	{
 		return orgEntity.level.isClientSide;
 	}

@@ -135,6 +135,8 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
+		if (this.minecraft.isPaused()) return;
+		
 		if (action == 1)
 		{
 			if (ClientEngine.INSTANCE.isBattleMode())

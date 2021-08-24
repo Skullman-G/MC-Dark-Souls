@@ -31,7 +31,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 	@Override
 	public void postInit()
 	{
-		if (!this.isRemote() && !this.orgEntity.isNoAi())
+		if (!this.isClientSide() && !this.orgEntity.isNoAi())
 		{
 			super.resetCombatAI();
 			Item heldItem = this.orgEntity.getMainHandItem().getItem();

@@ -48,7 +48,7 @@ public class EntityEventListener
 		boolean cancel = false;
 		for(PlayerEvent function : map.get(event))
 		{
-			if(event.isRemote == this.player.isRemote())
+			if(event.isRemote == this.player.isClientSide())
 			{
 				cancel |= function.doIt(this.player, args);
 			}

@@ -71,7 +71,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 		LivingEntity livingentity = entity.getOriginalEntity();
 
-		if (entity.isRemote()) {
+		if (entity.isClientSide()) {
 			if (!(livingentity instanceof ClientPlayerEntity)) {
 				return;
 			}

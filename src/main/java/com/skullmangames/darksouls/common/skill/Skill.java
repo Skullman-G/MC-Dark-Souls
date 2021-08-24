@@ -112,7 +112,7 @@ public class Skill
 
 			if (SkillExecutionHelper.duration <= 0)
 			{
-				if(SkillExecutionHelper.getExecuter().isRemote())
+				if(SkillExecutionHelper.getExecuter().isClientSide())
 				{
 					SkillExecutionHelper.getActiveSkill().cancelOnClient((ClientPlayerData)executer, null);
 				}

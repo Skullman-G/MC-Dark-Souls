@@ -83,7 +83,7 @@ public class AttackAnimation extends ActionAnimation
 	{
 		super.onUpdate(entitydata);
 		
-		if (!entitydata.isRemote())
+		if (!entitydata.isClientSide())
 		{
 			float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
 			float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
@@ -175,7 +175,7 @@ public class AttackAnimation extends ActionAnimation
 		
 		entitydata.currentlyAttackedEntity.clear();
 		
-		if(entitydata instanceof BipedMobData && entitydata.isRemote())
+		if(entitydata instanceof BipedMobData && entitydata.isClientSide())
 		{
 			MobEntity entity = (MobEntity) entitydata.getOriginalEntity();
 			if(entity.getTarget() !=null && !entity.getTarget().isAlive())

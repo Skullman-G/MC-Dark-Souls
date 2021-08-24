@@ -128,7 +128,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		updateInactionState();
 
-		if (isRemote())
+		if (isClientSide())
 		{
 			updateOnClient();
 		}
@@ -399,7 +399,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		float randPitch = this.orgEntity.getRandom().nextFloat() * 2.0F - 1.0F;
 		randPitch = Math.min(Math.max(randPitch, minPitch), maxPitch);
-		if(!this.isRemote())
+		if(!this.isClientSide())
 		{
 			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound, orgEntity.getSoundSource(), 1.0F, 1.0F + randPitch);
 		}
