@@ -109,6 +109,12 @@
 	"entity.hollow.death.sub": "Hollow dies",
 	"entity.hollow.prepare": "Hollow prepare",
 	"entity.hollow.prepare.sub": "Hollow prepares attack",
+	"entity.generic.hurt.sub": "Someone got hurt",
+	"entity.player.hurt.sub": "Player got hurt",
+	"entity.hostile.hurt.sub": "Hostile mob got hurt",
+	"entity.generic.hurt": "Generic hurt",
+	"entity.player.hurt": "Player hurt",
+	"entity.hostile.hurt": "Hostile mob hurt",
 	
 	
 	"itemGroup.soulstab": "Souls",
