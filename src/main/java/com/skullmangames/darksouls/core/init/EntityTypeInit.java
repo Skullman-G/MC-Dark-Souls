@@ -33,6 +33,7 @@ public class EntityTypeInit
 			.updateInterval(20)
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "soul").toString()));
 	
+	
 	public static void registerEntitySpawnPlacement()
 	{
 		EntitySpawnPlacementRegistry.register(HOLLOW.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HollowEntity::canSpawnOn);

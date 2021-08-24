@@ -126,21 +126,21 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	@Override
 	public void update()
 	{
-		updateInactionState();
+		this.updateInactionState();
 
-		if (isClientSide())
+		if (this.isClientSide())
 		{
-			updateOnClient();
+			this.updateOnClient();
 		}
 		else
 		{
-			updateOnServer();
+			this.updateOnServer();
 		}
 
-		animator.update();
-		if (orgEntity.deathTime == 19)
+		this.animator.update();
+		if (this.orgEntity.deathTime == 19)
 		{
-			aboutToDeath();
+			this.aboutToDeath();
 		}
 	}
 
@@ -269,10 +269,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return succed;
 	}
 	
-	public void gatherDamageDealt(IExtendedDamageSource source, float amount)
-	{
-		
-	}
+	public void gatherDamageDealt(IExtendedDamageSource source, float amount) {}
 	
 	public void setStunTimeReduction()
 	{

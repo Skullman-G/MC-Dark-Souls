@@ -113,4 +113,10 @@ public class HollowEntity extends MonsterEntity
 	{
 		return SoundEvents.HOLLOW_DEATH;
 	}
+	
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return true;
+	}
 }
