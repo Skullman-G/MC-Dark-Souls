@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
@@ -176,14 +177,14 @@ public class InputManager
 		if (action == 1)
 		{
 			GameSettings options = this.minecraft.options;
-			WeaponCategory mainitem = this.playerdata.getHeldItemCapability(Hand.MAIN_HAND).getWeaponCategory();
-			WeaponCategory offitem = this.playerdata.getHeldItemCapability(Hand.OFF_HAND).getWeaponCategory();
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
-				if (mainitem != WeaponCategory.NONE_WEAON && offitem != WeaponCategory.NONE_WEAON)
+				for (Hand hand : Hand.values())
 				{
-					return;
+					CapabilityItem item = this.playerdata.getHeldItemCapability(hand);
+					if (item == null || (hand == Hand.OFF_HAND && item.equals(ModCapabilities.FIST))) continue;
+					if (item.getWeaponCategory() != WeaponCategory.NONE_WEAON) return;
 				}
 				ClientEngine.INSTANCE.switchToMiningMode();
 			}
