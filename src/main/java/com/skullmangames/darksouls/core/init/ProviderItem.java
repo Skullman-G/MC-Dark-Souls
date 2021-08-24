@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCapability;
 import com.skullmangames.darksouls.common.capability.item.HoeCapability;
 import com.skullmangames.darksouls.common.capability.item.PickaxeCapability;
+import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
 import com.skullmangames.darksouls.common.capability.item.ShovelCapability;
 import com.skullmangames.darksouls.common.capability.item.SwordCapability;
 import com.skullmangames.darksouls.common.capability.item.TridentCapability;
@@ -24,6 +25,7 @@ import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.Direction;
@@ -96,6 +98,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.BOW, BowCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.CROSSBOW, CrossbowCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.TRIDENT, TridentCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.SHIELD, ShieldCapability::new);
 		
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
 		CAPABILITY_BY_CLASS.put(SwordItem.class, SwordCapability::new);
@@ -105,6 +108,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_CLASS.put(HoeItem.class, HoeCapability::new);
 		CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
+		CAPABILITY_BY_CLASS.put(ShieldItem.class, ShieldCapability::new);
 	}
 	
 	public static void addInstance(Item item, CapabilityItem cap)

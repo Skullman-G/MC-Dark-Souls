@@ -586,7 +586,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 		if (cap != null)
 		{
-			return cap.getSmashingSound();
+			return cap.getSwingSound();
 		}
 
 		return null;

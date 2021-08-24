@@ -15,6 +15,7 @@ public class SoundEvents
 	public static final SoundEvent DARKSIGN_USE = registerSound("item.darksign.use");
 	public static final SoundEvent SOUL_CONTAINER_USE = registerSound("item.soul_container.use");
 	public static final SoundEvent SOUL_CONTAINER_FINISH = registerSound("item.soul_container.finish");
+	public static final SoundEvent SWORD_SWING = registerSound("item.sword.swing");
 	
 	public static final SoundEvent HOLLOW_AMBIENT = registerSound("entity.hollow.ambient");
 	public static final SoundEvent HOLLOW_DEATH = registerSound("entity.hollow.death");

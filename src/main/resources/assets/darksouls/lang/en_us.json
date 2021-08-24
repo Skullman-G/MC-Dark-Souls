@@ -102,6 +102,8 @@
 	"item.soul_container.use.sub": "Soul Container crumbles",
 	"item.soul_container.finish": "Soul Container finish",
 	"item.soul_container.finish.sub": "Soul Container breaks",
+	"item.sword.swing": "Sword swing",
+	"item.sword.swing.sub": "Sword swinging",
 	
 	"entity.hollow.ambient": "Hollow ambient",
 	"entity.hollow.ambient.sub": "Hollow groans",

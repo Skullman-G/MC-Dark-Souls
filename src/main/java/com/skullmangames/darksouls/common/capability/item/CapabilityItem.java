@@ -163,14 +163,13 @@ public abstract class CapabilityItem
 		Minecraft minecraft = Minecraft.getInstance();
 		GameSettings options = minecraft.options;
 		
-		if (playerdata.getOriginalEntity().level.isClientSide && options.getCameraType() != PointOfView.THIRD_PERSON_BACK && this.getWeaponCategory() != WeaponCategory.NONE_WEAON)
+		if (playerdata.isClientSide() && options.getCameraType() != PointOfView.THIRD_PERSON_BACK && this.getWeaponCategory() != WeaponCategory.NONE_WEAON)
 		{
 			ClientEngine.INSTANCE.switchToBattleMode();
-			options.setCameraType(PointOfView.THIRD_PERSON_BACK);
 		}
 	}
 	
-	public SoundEvent getSmashingSound()
+	public SoundEvent getSwingSound()
 	{
 		return null;
 	}

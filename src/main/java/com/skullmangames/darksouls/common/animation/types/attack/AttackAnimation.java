@@ -75,7 +75,7 @@ public class AttackAnimation extends ActionAnimation
 		super.onActivate(entity);
 		
 		SoundEvent prepare = this.getPrepareSound(entity, this.getPhaseByTime(0.0F));
-		if (prepare != null) entity.playSound(prepare, 0.0F, 0.0F);
+		if (prepare != null && entity.isClientSide()) entity.playSound(prepare, 0.0F, 0.0F);
 	}
 	
 	@Override
@@ -187,7 +187,7 @@ public class AttackAnimation extends ActionAnimation
 	public LivingData.EntityState getState(float time)
 	{
 		Phase phase = this.getPhaseByTime(time);
-		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(true);
+		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(false);
 		
 		if (time <= phase.antic || (phase.antic < time && time < phase.preDelay))
 		{

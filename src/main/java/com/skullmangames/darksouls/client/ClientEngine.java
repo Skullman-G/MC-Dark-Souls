@@ -4,7 +4,9 @@ import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -15,6 +17,7 @@ public class ClientEngine
 	public Minecraft minecraft;
 	public RenderEngine renderEngine;
 	public InputManager inputController;
+	private GameSettings options;
 	
 	private ClientPlayerData playerdata;
 	private PlayerActingMode playerActingMode = PlayerActingMode.MINING;
@@ -22,19 +25,22 @@ public class ClientEngine
 	public ClientEngine()
 	{
 		INSTANCE = this;
-		minecraft = Minecraft.getInstance();
-		renderEngine = new RenderEngine();
-		inputController = new InputManager();
+		this.minecraft = Minecraft.getInstance();
+		this.renderEngine = new RenderEngine();
+		this.inputController = new InputManager();
+		this.options = this.minecraft.options;
 	}
 	
 	public void switchToMiningMode()
 	{
 		this.playerActingMode = PlayerActingMode.MINING;
+		this.options.setCameraType(PointOfView.FIRST_PERSON);
 	}
 	
 	public void switchToBattleMode()
 	{
 		this.playerActingMode = PlayerActingMode.BATTLE;
+		this.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
 	}
 	
 	public PlayerActingMode getPlayerActingMode()

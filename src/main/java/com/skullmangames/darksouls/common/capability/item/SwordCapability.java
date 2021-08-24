@@ -6,13 +6,13 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Skills;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.item.Item;
@@ -37,6 +37,12 @@ public class SwordCapability extends MaterialItemCapability
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_3);
 			dualSwordAttackMotion.add(Animations.SWORD_DUAL_DASH);
 		}
+	}
+	
+	@Override
+	public SoundEvent getSwingSound()
+	{
+		return SoundEvents.SWORD_SWING;
 	}
 	
 	@Override
@@ -73,18 +79,6 @@ public class SwordCapability extends MaterialItemCapability
 		{
 			return WieldStyle.ONE_HAND;
 		}
-	}
-	
-	@Override
-	public SoundEvent getHitSound()
-	{
-		return null;
-	}
-	
-	@Override
-	public HitParticleType getHitParticle()
-	{
-		return null;
 	}
 	
 	@Override

@@ -540,23 +540,23 @@ public final class Animations
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
 		
 		
-		HOLLOW_HEAVY_ATTACK = new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.92F, 1.8F, false, Colliders.sword, "111213", "hollow/heavy_attack.dae").bindFull(biped);
+		HOLLOW_HEAVY_ATTACK = new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.92F, 1.8F, false, Colliders.brokenSword, "111213", "hollow/heavy_attack.dae").bindFull(biped);
 		
 		HOLLOW_FURY_ATTACK = new AttackAnimation(7001, 0.05F, false, "hollow/fury_attack.dae",
-				new Phase(0.0F, 1.76F, 2.28F, 2.8F, "111213", Colliders.sword),
-				new Phase(2.8F, 2.44F, 2.6F, 2.6F, "111213", Colliders.sword),
-				new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.sword),
-				new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.sword),
-				new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.sword))
+				new Phase(0.0F, 1.76F, 2.08F, 2.08F, "111213", Colliders.brokenSword),
+				new Phase(2.08F, 2.12F, 2.28F, 2.28F, "111213", Colliders.brokenSword),
+				new Phase(2.28F, 2.44F, 2.6F, 2.6F, "111213", Colliders.brokenSword),
+				new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.brokenSword),
+				new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
+				new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
+				.addProperty(AnimationProperty.LOCK_ROTATION, Boolean.valueOf(true))
 				.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE).bindFull(biped);
 		
-		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.sword, "111213", "hollow/light_attack_1.dae").bindFull(biped));
-		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.sword, "111213", "hollow/light_attack_2.dae").bindFull(biped));
-		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.swordDash, "111213", "hollow/light_attack_3.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/light_attack_1.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/light_attack_2.dae").bindFull(biped));
+		HOLLOW_LIGHT_ATTACK.add(new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/light_attack_3.dae").bindFull(biped));
 		
-		HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae")
-				.addProperty(AnimationProperty.LOCK_ROTATION, false)
-				.bindFull(biped);
+		HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae").bindFull(biped);
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}

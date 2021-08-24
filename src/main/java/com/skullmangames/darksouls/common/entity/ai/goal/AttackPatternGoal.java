@@ -26,7 +26,7 @@ public class AttackPatternGoal extends Goal
 	protected final List<AttackAnimation> lightAttack;
 	protected final List<AttackAnimation> otherAttacks;
 	protected final AttackAnimation dashAttack;
-	private boolean dashAllowed;
+	private int dashCooldown;
 	protected final boolean affectHorizon;
 	protected int combo;
 	
@@ -50,7 +50,7 @@ public class AttackPatternGoal extends Goal
 		this.combo = 0;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
-		this.dashAllowed = true;
+		this.dashCooldown = 0;
 	}
 	
 	@Override
@@ -99,11 +99,11 @@ public class AttackPatternGoal extends Goal
     	
     	AttackAnimation animation;
         
-    	if (this.dashAttack != null && this.dashAllowed && !this.isTargetInRange(this.attacker.getTarget()) && this.isTargetInDashRange(this.attacker.getTarget()))
+    	if (this.dashAttack != null && this.dashCooldown == 0 && !this.isTargetInRange(this.attacker.getTarget()) && this.isTargetInDashRange(this.attacker.getTarget()))
     	{
     		if (this.combo > 0) return;
     		animation = this.dashAttack;
-    		this.dashAllowed = false;
+    		this.dashCooldown = 5;
     	}
     	else
     	{
@@ -120,11 +120,10 @@ public class AttackPatternGoal extends Goal
         
         if (animation == null) return;
         
-        if (this.combo <= 0) this.mobdata.rotateTo(this.attacker, 60.0F, false);
         mobdata.getServerAnimator().playAnimation(animation, 0);
     	mobdata.updateInactionState();
     	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(animation.getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);
-    	if (animation != this.dashAttack) this.dashAllowed = true;
+    	if (this.dashCooldown > 0) this.dashCooldown--;
     }
     
     protected boolean isTargetInRange(LivingEntity attackTarget)

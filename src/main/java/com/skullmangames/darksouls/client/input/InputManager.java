@@ -15,7 +15,6 @@ import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
-import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
@@ -25,7 +24,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
-import net.minecraft.item.Item;
 import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -178,20 +176,19 @@ public class InputManager
 		if (action == 1)
 		{
 			GameSettings options = this.minecraft.options;
-			Item item = this.player.inventory.getSelected().getItem();
+			WeaponCategory mainitem = this.playerdata.getHeldItemCapability(Hand.MAIN_HAND).getWeaponCategory();
+			WeaponCategory offitem = this.playerdata.getHeldItemCapability(Hand.OFF_HAND).getWeaponCategory();
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
-				if (ProviderItem.CAPABILITY_BY_INSTANCE.containsKey(item) && ProviderItem.CAPABILITY_BY_INSTANCE.get(item).getWeaponCategory() != WeaponCategory.NONE_WEAON)
+				if (mainitem != WeaponCategory.NONE_WEAON && offitem != WeaponCategory.NONE_WEAON)
 				{
 					return;
 				}
-				options.setCameraType(PointOfView.FIRST_PERSON);
 				ClientEngine.INSTANCE.switchToMiningMode();
 			}
 			else
 			{
-				options.setCameraType(PointOfView.THIRD_PERSON_BACK);
 				ClientEngine.INSTANCE.switchToBattleMode();
 			}
 		}
