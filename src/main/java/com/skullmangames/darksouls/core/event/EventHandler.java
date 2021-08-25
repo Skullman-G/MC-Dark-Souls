@@ -169,8 +169,6 @@ public class EventHandler
 		{
 			ModEntityDataManager.setHuman(event.getEntityLiving(), false);
 		}
-		
-		System.out.print(event.getEntityLiving().getName());
 	}
 	
 	@SubscribeEvent

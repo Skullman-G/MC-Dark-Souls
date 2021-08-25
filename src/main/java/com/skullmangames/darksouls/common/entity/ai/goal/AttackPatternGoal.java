@@ -104,7 +104,6 @@ public class AttackPatternGoal extends Goal
     		if (this.combo > 0) return;
     		animation = this.dashAttack;
     		this.dashCooldown = 5;
-    		System.out.print("\ndash");
     	}
     	else
     	{

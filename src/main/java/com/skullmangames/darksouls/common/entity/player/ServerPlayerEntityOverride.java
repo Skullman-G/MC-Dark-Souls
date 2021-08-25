@@ -34,6 +34,12 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	}
 	
 	@Override
+	public boolean canBeCollidedWith()
+	{
+		return true;
+	}
+	
+	@Override
 	public Either<PlayerEntity.SleepResult, Unit> startSleepInBed(BlockPos vertex)
 	{
 		java.util.Optional<BlockPos> optAt = java.util.Optional.of(vertex);
