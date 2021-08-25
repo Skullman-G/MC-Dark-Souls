@@ -216,7 +216,7 @@ public class DarkSouls
     		event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_UNDEAD_ASYLUM);
     	}
     	
-    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 100, 4, 4));
+    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 50, 1, 1));
     }
     
     private static Method GETCODEC_METHOD;

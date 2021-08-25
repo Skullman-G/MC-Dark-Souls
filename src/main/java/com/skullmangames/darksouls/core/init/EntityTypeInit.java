@@ -36,6 +36,6 @@ public class EntityTypeInit
 	
 	public static void registerEntitySpawnPlacement()
 	{
-		EntitySpawnPlacementRegistry.register(HOLLOW.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HollowEntity::canSpawnOn);
+		EntitySpawnPlacementRegistry.register(HOLLOW.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HollowEntity::checkSpawnRules);
 	}
 }
