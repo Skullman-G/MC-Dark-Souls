@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 
@@ -73,7 +73,7 @@ public class LevelUpScreen extends Screen
 		upButton.active = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
 		
 		drawCenteredString(matrixstack, this.font, "Level Up", this.width / 2 - this.imageWidth / 4, this.height / 2 - this.imageHeight / 2 + 10, 16777215);
-		drawCenteredString(matrixstack, this.font, "Souls: " + ModEntityDataManager.getSouls(this.player), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
+		drawCenteredString(matrixstack, this.font, "Souls: " + MobNBTManager.getSouls(this.player), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
 		drawCenteredString(matrixstack, this.font, "Cost: " + this.getCost(), this.width / 2 - this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
 		drawCenteredString(matrixstack, this.font, "Vigor", this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 40, 16777215);
 		
@@ -98,7 +98,7 @@ public class LevelUpScreen extends Screen
 	
 	private boolean canEffort()
 	{
-		return ModEntityDataManager.getSouls(this.player) >= this.getCost();
+		return MobNBTManager.getSouls(this.player) >= this.getCost();
 	}
 	
 	private int getCost()
@@ -127,7 +127,7 @@ public class LevelUpScreen extends Screen
 		if (this.displayedLevel != Stats.getLevel(this.player))
 		{
 			this.displayedLevel -= 1;
-			ModEntityDataManager.shrinkSouls(this.player, this.getCost());
+			MobNBTManager.shrinkSouls(this.player, this.getCost());
 		}
 		for (Stat stat : Stats.getStats())
 		{

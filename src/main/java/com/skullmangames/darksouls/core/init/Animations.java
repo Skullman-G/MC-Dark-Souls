@@ -22,7 +22,6 @@ import com.skullmangames.darksouls.common.animation.types.attack.AAAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AADashAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
-import com.skullmangames.darksouls.common.entity.MobAttackPatterns;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ValueCorrector;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;

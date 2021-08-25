@@ -1,10 +1,9 @@
-package com.skullmangames.darksouls.common.entity;
+package com.skullmangames.darksouls.core.init;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.core.init.Animations;
 
 public class MobAttackPatterns
 {

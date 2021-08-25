@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.entity;
+package com.skullmangames.darksouls.common.entity.nbt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -7,7 +7,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ModEntityDataManager
+public class MobNBTManager
 {
 	public static void setHumanity(LivingEntity livingentity, int value)
 	{

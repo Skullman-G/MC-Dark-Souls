@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.entity;
 
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.network.server.SSpawnSoulPacket;
 
@@ -71,7 +72,7 @@ public class SoulEntity extends Entity
 		{
 	        if (this.value > 0)
 	        {
-	           ModEntityDataManager.raiseSouls(player, this.value);
+	           MobNBTManager.raiseSouls(player, this.value);
 	        }
 
 	        this.remove();

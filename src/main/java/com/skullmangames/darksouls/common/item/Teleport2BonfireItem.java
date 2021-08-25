@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.UUID;
 
-import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.SoundEvents;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -87,8 +87,8 @@ public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSo
 	    	{
 	    		if (this.looseSouls)
 	    		{
-	    			ModEntityDataManager.setHumanity(livingentity, 0);
-	    			ModEntityDataManager.setSouls(livingentity, 0);
+	    			MobNBTManager.setHumanity(livingentity, 0);
+	    			MobNBTManager.setSouls(livingentity, 0);
 	    		}
 	    		serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
 	    	}

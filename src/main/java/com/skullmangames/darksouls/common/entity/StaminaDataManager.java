@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -34,13 +35,13 @@ public class StaminaDataManager
 	
 	public static int getMaxStamina(LivingEntity livingentity)
 	{
-		if (livingentity instanceof ClientPlayerEntity) livingentity = ModEntityDataManager.getServerPlayer((ClientPlayerEntity)livingentity);
+		if (livingentity instanceof ClientPlayerEntity) livingentity = MobNBTManager.getServerPlayer((ClientPlayerEntity)livingentity);
 		return livingentity.getPersistentData().getInt("MaxStamina");
 	}
 	
 	public static int getStamina(LivingEntity livingentity)
 	{
-		if (livingentity instanceof ClientPlayerEntity) livingentity = ModEntityDataManager.getServerPlayer((ClientPlayerEntity)livingentity);
+		if (livingentity instanceof ClientPlayerEntity) livingentity = MobNBTManager.getServerPlayer((ClientPlayerEntity)livingentity);
 		return livingentity.getPersistentData().getInt("Stamina");
 	}
 	
@@ -65,7 +66,7 @@ public class StaminaDataManager
 	
 	public static int getExhaustion(LivingEntity livingentity)
 	{
-		if (livingentity instanceof ClientPlayerEntity) livingentity = ModEntityDataManager.getServerPlayer((ClientPlayerEntity)livingentity);
+		if (livingentity instanceof ClientPlayerEntity) livingentity = MobNBTManager.getServerPlayer((ClientPlayerEntity)livingentity);
 		return livingentity.getPersistentData().getInt("Exhaustion");
 	}
 	

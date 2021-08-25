@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.core.event;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
-import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
@@ -163,11 +163,11 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onLivingDeath(final LivingDeathEvent event)
 	{
-		ModEntityDataManager.setHumanity(event.getEntityLiving(), 0);
+		MobNBTManager.setHumanity(event.getEntityLiving(), 0);
 		
 		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
-			ModEntityDataManager.setHuman(event.getEntityLiving(), false);
+			MobNBTManager.setHuman(event.getEntityLiving(), false);
 		}
 	}
 	

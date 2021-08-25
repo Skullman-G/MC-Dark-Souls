@@ -5,7 +5,7 @@ import java.awt.Color;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.ModEntityDataManager;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.util.Timer;
 
 import net.minecraft.client.MainWindow;
@@ -42,9 +42,9 @@ public class GameOverlayManager
 	{
 		int x = window.getGuiScaledWidth() / 2;
 		int y = window.getGuiScaledHeight() - 45;
-		int color = ModEntityDataManager.isHuman(minecraft.player) ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		int color = MobNBTManager.isHuman(minecraft.player) ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
 		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, ModEntityDataManager.getStringHumanity(minecraft.player), x, y, color);
+		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, MobNBTManager.getStringHumanity(minecraft.player), x, y, color);
 	}
 	
 	private static void renderHealth(MainWindow window, MatrixStack matrixstack)
@@ -105,7 +105,7 @@ public class GameOverlayManager
 		y = window.getGuiScaledHeight() - 17;
 		int color = Color.WHITE.getRGB();
 		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, ModEntityDataManager.getStringSouls(getCameraPlayer()), x, y, color);
+		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), x, y, color);
 	}
 	
 	/*private static void renderStamina(MainWindow window, MatrixStack matrixstack)

@@ -2,12 +2,12 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.Faction;
-import com.skullmangames.darksouls.common.entity.MobAttackPatterns;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.MobAttackPatterns;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
 import net.minecraft.entity.Entity;
