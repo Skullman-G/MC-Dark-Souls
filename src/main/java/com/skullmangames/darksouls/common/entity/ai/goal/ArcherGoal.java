@@ -140,8 +140,8 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
                 else
                 	this.entity.getMoveControl().strafe(0, 0);
                 
-                /*this.entity.getLookControl().setLookAt(LivingEntity, entity.getHorizontalFaceSpeed(), entity.getVerticalFaceSpeed());
-                this.entity.faceEntity(LivingEntity, 30.0F, 30.0F);*/
+                this.entity.getLookControl().setLookAt(LivingEntity, entity.getMaxHeadXRot(), entity.getMaxHeadYRot());
+                this.entity.lookAt(LivingEntity, 30.0F, 30.0F);
             }
             else
                 this.entity.getLookControl().setLookAt(LivingEntity, 30.0F, 30.0F);
@@ -156,7 +156,7 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
                     if (i >= 20)
                     {
                         this.entity.stopUsingItem();
-                        //((IRangedAttackMob)this.entity).attackEntityWithRangedAttack(LivingEntity, BowItem.getArrowVelocity(i));
+                        ((IRangedAttackMob)this.entity).performRangedAttack(LivingEntity, BowItem.getPowerForTime(i));
                         ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND.getId(), entity.getId(), 0.0F, true), entity);
                         this.attackTime = this.attackCooldown;
                     }

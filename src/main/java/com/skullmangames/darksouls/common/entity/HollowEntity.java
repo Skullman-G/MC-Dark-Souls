@@ -8,30 +8,35 @@ import com.skullmangames.darksouls.core.init.SoundEvents;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class HollowEntity extends CreatureEntity
+public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 {
 	public HollowEntity(EntityType<? extends CreatureEntity> p_i48576_1_, World p_i48576_2_)
 	{
@@ -59,7 +64,6 @@ public class HollowEntity extends CreatureEntity
 	    this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 	    this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	    this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-	    this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 	    
 	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
@@ -74,13 +78,19 @@ public class HollowEntity extends CreatureEntity
 		
 		Random random = this.level.random;
 		ItemStack item;
-		if (random.nextBoolean())
+		int weaponid = random.nextInt(4);
+		
+		if (weaponid <= 1)
 		{
 			item = new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get());
 		}
-		else
+		else if (weaponid <= 2)
 		{
 			item = new ItemStack(ItemInit.STRAIGHT_SWORD_HILT.get());
+		}
+		else
+		{
+			item = new ItemStack(Items.BOW);
 		}
 		
 		if (random.nextInt(50) == 1)
@@ -118,5 +128,26 @@ public class HollowEntity extends CreatureEntity
 	public boolean canBeCollidedWith()
 	{
 		return true;
+	}
+
+	@Override
+	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
+	{
+		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileHelper.getWeaponHoldingHand(this, Items.BOW)));
+	    AbstractArrowEntity abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
+	    if (this.getMainHandItem().getItem() instanceof net.minecraft.item.BowItem)
+	       abstractarrowentity = ((net.minecraft.item.BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
+	    double d0 = p_82196_1_.getX() - this.getX();
+	    double d1 = p_82196_1_.getY(0.3333333333333333D) - abstractarrowentity.getY();
+	    double d2 = p_82196_1_.getZ() - this.getZ();
+	    double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+	    abstractarrowentity.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
+	    this.playSound(net.minecraft.util.SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+	    this.level.addFreshEntity(abstractarrowentity);
+	}
+	
+	protected AbstractArrowEntity getArrow(ItemStack p_213624_1_, float p_213624_2_)
+	{
+		return ProjectileHelper.getMobArrow(this, p_213624_1_, p_213624_2_);
 	}
 }

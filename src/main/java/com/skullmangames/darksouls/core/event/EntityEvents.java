@@ -280,7 +280,7 @@ public class EntityEvents
 						event.getEntityLiving().getSoundSource(), 1.0F, 0.8F + event.getEntityLiving().getRandom().nextFloat() * 0.4F);
 			}
 			
-			if (extSource != null)
+			if (extSource != null && !(extSource instanceof IndirectEntityDamageSource))
 			{
 				LivingEntity target = event.getEntityLiving();
 				ShieldCapability cap = (ShieldCapability)ModCapabilities.stackCapabilityGetter(target.getUseItem());
