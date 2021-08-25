@@ -12,8 +12,8 @@ public abstract class Property<T>
 {
 	public static class AnimationProperty<T> extends Property<T>
 	{
-		public static final AnimationProperty<Boolean> LOCK_ROTATION = new AnimationProperty<Boolean> ();
-		public static final AnimationProperty<Boolean> DIRECTIONAL = new AnimationProperty<Boolean> ();
+		public static final AnimationProperty<Boolean> LOCK_ROTATION = new AnimationProperty<Boolean>();
+		public static final AnimationProperty<Boolean> DIRECTIONAL = new AnimationProperty<Boolean>();
 		
 	}
 	
@@ -29,5 +29,6 @@ public abstract class Property<T>
 		public static final DamageProperty<SoundEvent> HIT_SOUND = new DamageProperty<SoundEvent>();
 		public static final DamageProperty<SoundEvent> PREPARE_SOUND = new DamageProperty<SoundEvent>();
 		public static final DamageProperty<RegistryObject<HitParticleType>> PARTICLE = new DamageProperty<RegistryObject<HitParticleType>>();
+		public static final DamageProperty<Integer> DEFLECTABLE_LEVEL = new DamageProperty<Integer>();
 	}
 }

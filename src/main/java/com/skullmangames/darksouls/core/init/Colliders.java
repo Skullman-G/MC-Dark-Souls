@@ -16,7 +16,7 @@ public class Colliders
 	public static Collider katana = new ColliderOBB(0.55F, 0.95F, 0.95F, 0F, -0.2F, -0.5F);
 	public static Collider sword = new ColliderOBB(0.75F, 0.55F, 0.85F, 0F, 0F, -0.25F);
 	public static Collider swordDash = new ColliderOBB(0.4F, 0.4F, 0.75F, 0F, 0F, -0.6F);
-	public static Collider brokenSword = new ColliderOBB(0.1F, 0.2F, 0.1F, 0.0F, 0.0F, -0.25F);
+	public static Collider brokenSword = new ColliderOBB(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
 	public static Collider swordSwingFast = new ColliderOBB(0.4F, 1.0F, 0.75F, 0F, 0F, -0.3F);
 	public static Collider spearNarrow = new ColliderOBB(0.4F, 0.4F, 0.9F, 0F, 0F, -1.35F);
 	public static Collider spearSwing = new ColliderOBB(0.5F, 1.0F, 0.9F, 0F, 0F, -1.0F);

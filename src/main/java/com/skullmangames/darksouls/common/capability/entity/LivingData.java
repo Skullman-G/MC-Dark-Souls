@@ -222,9 +222,9 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return true;
 	}
 	
-	public IExtendedDamageSource getDamageSource(StunType stunType, DamageType damageType, int animationId)
+	public IExtendedDamageSource getDamageSource(StunType stunType, DamageType damageType, int animationId, float amount, int requireddeflectionlevel)
 	{
-		return IExtendedDamageSource.causeMobDamage(orgEntity, stunType, damageType, animationId);
+		return IExtendedDamageSource.causeMobDamage(orgEntity, stunType, damageType, animationId, amount, requireddeflectionlevel);
 	}
 	
 	public float getDamageToEntity(Entity targetEntity, Hand hand)
@@ -267,6 +267,11 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		}
 
 		return succed;
+	}
+	
+	public StaticAnimation getDeflectAnimation()
+	{
+		return null;
 	}
 	
 	public void gatherDamageDealt(IExtendedDamageSource source, float amount) {}

@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -33,7 +34,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Items;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.CombatRules;
@@ -123,13 +123,11 @@ public class EntityEvents
 		IExtendedDamageSource extSource = null;
 		Entity trueSource = event.getSource().getEntity();
 		
+		if(event.getSource() instanceof IExtendedDamageSource) extSource = (IExtendedDamageSource)event.getSource();
+		
 		if(trueSource != null)
 		{
-			if(event.getSource() instanceof IExtendedDamageSource)
-			{
-				extSource = (IExtendedDamageSource) event.getSource();
-			}
-			else if(event.getSource() instanceof IndirectEntityDamageSource)
+			if(event.getSource() instanceof IndirectEntityDamageSource)
 			{/*
 				EntityData<?> attackerdata = trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if(attackerdata != null) {
@@ -274,32 +272,47 @@ public class EntityEvents
 			}
 		}
 		
-		if(event.getEntityLiving().isUsingItem() && event.getEntityLiving().getUseItem().getItem() == Items.SHIELD)
+		if(event.getEntityLiving().isBlocking())
 		{
 			if(event.getEntityLiving() instanceof PlayerEntity)
 			{
 				event.getEntityLiving().level.playSound((PlayerEntity)event.getEntityLiving(), event.getEntityLiving().blockPosition(), SoundEvents.SHIELD_BLOCK,
 						event.getEntityLiving().getSoundSource(), 1.0F, 0.8F + event.getEntityLiving().getRandom().nextFloat() * 0.4F);
 			}
-		}
-	}
-	
-	@SubscribeEvent
-	public static void damageEvent(LivingDamageEvent event)
-	{
-		Entity trueSource = event.getSource().getDirectEntity();
-		if (event.getSource() instanceof IExtendedDamageSource)
-		{
-			if (trueSource != null)
+			
+			if (extSource != null)
 			{
-				LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if(attacker!=null)
+				LivingEntity target = event.getEntityLiving();
+				ShieldCapability cap = (ShieldCapability)ModCapabilities.stackCapabilityGetter(target.getUseItem());
+				float health = target.getHealth() - (extSource.getAmount() * (1 - cap.getPhysicalDefense()));
+				if (health < 0) health = 0;
+				target.setHealth(health);
+				
+				if (extSource.getRequiredDeflectionLevel() <= cap.getDeflectionLevel())
 				{
-					attacker.gatherDamageDealt((IExtendedDamageSource)event.getSource(), event.getAmount());
+					LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+					if (attacker != null)
+					{
+						StaticAnimation deflectAnimation = attacker.getDeflectAnimation();
+						if (deflectAnimation != null)
+						{
+							float stuntime = 0.0F;
+							attacker.setStunTimeReduction();
+							attacker.getAnimator().playAnimation(deflectAnimation, stuntime);
+							ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), trueSource);
+							if(trueSource instanceof ServerPlayerEntity)
+							{
+								ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), (ServerPlayerEntity)trueSource);
+							}
+						}
+					}
 				}
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	public static void damageEvent(LivingDamageEvent event) {}
 	
 	@SubscribeEvent
 	public static void attackEvent(LivingAttackEvent event)

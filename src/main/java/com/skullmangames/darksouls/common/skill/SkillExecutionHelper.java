@@ -119,6 +119,7 @@ public class SkillExecutionHelper
 
 	public static boolean canExecute(PlayerData<?> executer, Skill skill)
 	{
+		if (skill == null) return false;
 		return skill.canExecute(executer);
 	}
 	

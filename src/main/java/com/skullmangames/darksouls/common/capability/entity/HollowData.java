@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
@@ -29,6 +30,12 @@ public class HollowData extends BipedMobData<HollowEntity>
 	{
 		super.onEntityJoinWorld(entityIn);
 		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(10.0F));
+	}
+	
+	@Override
+	public StaticAnimation getDeflectAnimation()
+	{
+		return Animations.HOLLOW_DEFLECTED;
 	}
 	
 	@Override

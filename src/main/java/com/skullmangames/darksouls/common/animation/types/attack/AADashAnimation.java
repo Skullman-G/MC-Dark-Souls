@@ -25,9 +25,9 @@ public class AADashAnimation extends AttackAnimation
 	}
 	
 	@Override
-	public IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase)
+	public IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
 	{
-		IExtendedDamageSource extSource = super.getDamageSourceExt(entitydata, target, phase);
+		IExtendedDamageSource extSource = super.getDamageSourceExt(entitydata, target, phase, amount);
 		extSource.setImpact(extSource.getImpact() * 1.4F);
 		
 		return extSource;

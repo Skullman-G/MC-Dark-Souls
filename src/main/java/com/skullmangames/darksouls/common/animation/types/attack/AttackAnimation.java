@@ -75,7 +75,7 @@ public class AttackAnimation extends ActionAnimation
 		super.onActivate(entity);
 		
 		SoundEvent prepare = this.getPrepareSound(entity, this.getPhaseByTime(0.0F));
-		if (prepare != null && entity.isClientSide()) entity.playSound(prepare, 0.0F, 0.0F);
+		if (prepare != null && !entity.isClientSide()) entity.playSound(prepare, 0.0F, 0.0F);
 	}
 	
 	@Override
@@ -136,8 +136,9 @@ public class AttackAnimation extends ActionAnimation
 										RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)).getType() == RayTraceResult.Type.MISS)
 								{
 									
-									IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase);
-									if(entitydata.hurtEntity(e, phase.hand, source, this.getDamageAmount(entitydata, e, phase)))
+									float amount = this.getDamageAmount(entitydata, e, phase);
+									IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
+									if(entitydata.hurtEntity(e, phase.hand, source, amount))
 									{
 										e.invulnerableTime = 0;
 										e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(), 1.0F, 1.0F);
@@ -238,6 +239,11 @@ public class AttackAnimation extends ActionAnimation
 		return f;
 	}
 	
+	protected int getRequiredDeflectionLevel(Phase phase)
+	{
+		return phase.getProperty(DamageProperty.DEFLECTABLE_LEVEL).orElse(4);
+	}
+	
 	protected SoundEvent getSwingSound(LivingData<?> entitydata, Phase phase)
 	{
 		return phase.getProperty(DamageProperty.SWING_SOUND).orElse(entitydata.getSwingSound(phase.hand));
@@ -254,11 +260,11 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(DamageProperty.PREPARE_SOUND).orElse(null);
 	}
 	
-	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase)
+	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
 	{
 		DamageType dmgType = phase.getProperty(DamageProperty.DAMAGE_TYPE).orElse(DamageType.PHYSICAL);
 		StunType stunType = phase.getProperty(DamageProperty.STUN_TYPE).orElse(StunType.SHORT);
-		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, dmgType, this.getId());
+		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, dmgType, this.getId(), amount, this.getRequiredDeflectionLevel(phase));
 		
 		phase.getProperty(DamageProperty.ARMOR_NEGATION).ifPresent((opt) ->
 		{

@@ -12,8 +12,11 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	private StunType stunType;
 	private DamageType damageType;
 	private final int id;
+	private float amount;
+	private int requiredDeflectionLevel;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, DamageType damageType, int id) {
+	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, DamageType damageType, int id, float amount, int requireddeflectionlevel)
+	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
 		LivingData<?> entityCap = (LivingData<?>) damageSourceEntityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
@@ -23,55 +26,78 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 		this.impact = entityCap.getImpact();
 		this.armorNegation = entityCap.getArmorNegation();
 		this.id = id;
+		this.amount = amount;
 	}
 	
 	@Override
-	public void setImpact(float amount) {
+	public int getRequiredDeflectionLevel()
+	{
+		return this.requiredDeflectionLevel;
+	}
+	
+	@Override
+	public float getAmount()
+	{
+		return this.amount;
+	}
+	
+	@Override
+	public void setImpact(float amount)
+	{
 		this.impact = amount;
 	}
 
 	@Override
-	public void setArmorNegation(float amount) {
+	public void setArmorNegation(float amount)
+	{
 		this.armorNegation = amount;
 	}
 
 	@Override
-	public void setStunType(StunType stunType) {
+	public void setStunType(StunType stunType)
+	{
 		this.stunType = stunType;
 	}
 
 	@Override
-	public float getImpact() {
+	public float getImpact()
+	{
 		return impact;
 	}
 
 	@Override
-	public float getArmorNegation() {
+	public float getArmorNegation()
+	{
 		return armorNegation;
 	}
 
 	@Override
-	public StunType getStunType() {
+	public StunType getStunType()
+	{
 		return stunType;
 	}
 
 	@Override
-	public DamageType getExtDamageType() {
+	public DamageType getExtDamageType()
+	{
 		return damageType;
 	}
 
 	@Override
-	public Entity getOwner() {
+	public Entity getOwner()
+	{
 		return super.getDirectEntity();
 	}
 
 	@Override
-	public String getType() {
+	public String getType()
+	{
 		return super.getMsgId();
 	}
 
 	@Override
-	public int getSkillId() {
+	public int getSkillId()
+	{
 		return this.id;
 	}
 }
