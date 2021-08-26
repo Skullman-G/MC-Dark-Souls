@@ -109,7 +109,12 @@ public class AnimationDataExtractor
 			String[] matrixArray = jointAnimation.getChildWithAttributeValue("source", "id", output).getChild("float_array").getData().split(" ");
 			
 			String fir = jointName.substring(9);
-			String sec = fir.substring(0, fir.length()-12);
+			if (fir.length() - 12 <= 0)
+			{
+				System.err.println("Joint " + jointName + " not correctly titled.");
+				continue;
+			}
+			String sec = fir.substring(0, fir.length() - 12);
 			
 			Joint joint = armature.findJointByName(sec);
 			

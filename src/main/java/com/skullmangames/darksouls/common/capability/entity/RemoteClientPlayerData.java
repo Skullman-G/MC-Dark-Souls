@@ -140,6 +140,10 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 					currentMixMotion = LivingMotion.AIMING;
 					break;
 					
+				case EAT:
+					currentMixMotion = LivingMotion.EATING;
+					break;
+					
 				default:
 					currentMixMotion = LivingMotion.NONE;
 			}

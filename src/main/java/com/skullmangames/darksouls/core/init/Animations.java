@@ -90,6 +90,7 @@ public final class Animations
 	public static StaticAnimation BIPED_RUN_TACHI;
 	public static StaticAnimation BIPED_SNEAK_TACHI;
 	public static StaticAnimation BIPED_JUMP_TACHI;
+	public static StaticAnimation BIPED_EAT;
 	public static StaticAnimation CREEPER_IDLE;
 	public static StaticAnimation CREEPER_WALK;
 	public static StaticAnimation CREEPER_HIT_LONG;
@@ -264,7 +265,7 @@ public final class Animations
 		BIPED_CROSSBOW_RELOAD = new StaticAnimation(20, 0.16F, false, "biped/combat/crossbow_reload.dae").bindOnlyClient(biped, dist);
 		BIPED_JUMP = new StaticAnimation(21, 0.083F, false, "biped/living/jump.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_HELDING_WEAPON = new MovementAnimation(22, true, "biped/living/run_helding_weapon.dae").bindOnlyClient(biped, dist);
-		BIPED_BLOCK = new MirrorAnimation(23, 0.25F, true, "biped/combat/block.dae", "biped/combat/block_mirror.dae").bindOnlyClient(biped, dist);
+		BIPED_BLOCK = new MirrorAnimation(23, 0.2F, true, "biped/combat/block.dae", "biped/combat/block_mirror.dae").bindOnlyClient(biped, dist);
 		BIPED_IDLE_MASSIVE_HELD = new StaticAnimation(24, 0.2F, true, "biped/living/idle_massiveheld.dae").bindOnlyClient(biped, dist);
 		BIPED_WALK_MASSIVE_HELD = new MovementAnimation(25, 0.2F, true, "biped/living/walk_massiveheld.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_MASSIVE_HELD = new MovementAnimation(26, true, "biped/living/run_massiveheld.dae").bindOnlyClient(biped, dist);
@@ -275,6 +276,7 @@ public final class Animations
 		BIPED_WALK_UNSHEATHING = new MovementAnimation(31, 0.2F, true, "biped/living/walk_unsheath.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_UNSHEATHING = new MovementAnimation(32, true, "biped/living/run_unsheath.dae").bindOnlyClient(biped, dist);
 		BIPED_KATANA_SCRAP = new StaticAnimation(33, false, "biped/living/katana_scrap.dae").bindOnlyClient(biped, dist);
+		BIPED_EAT = new MirrorAnimation(7008, 0.2F, true, "biped/living/eat_r.dae", "biped/living/eat_l.dae").bindOnlyClient(biped, dist);
 		
 		BIPED_JUMP_SHEATHING = new StaticAnimation(34, 0.083F, false, "biped/living/jump_sheath.dae").bindOnlyClient(biped, dist);
 		BIPED_JUMP_MASSIVE_HELD = new StaticAnimation(35, 0.083F, false, "biped/living/jump_massiveheld.dae").bindOnlyClient(biped, dist);
