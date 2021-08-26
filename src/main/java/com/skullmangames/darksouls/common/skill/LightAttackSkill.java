@@ -2,7 +2,9 @@ package com.skullmangames.darksouls.common.skill;
 
 import java.util.List;
 
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import javax.annotation.Nullable;
+
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
@@ -14,11 +16,16 @@ import net.minecraft.util.Hand;
 
 public class LightAttackSkill extends AttackSkill
 {
-	protected final List<StaticAnimation> attackAnimations;
-	protected final StaticAnimation dashAnimation;
+	protected final List<AttackAnimation> attackAnimations;
+	protected final AttackAnimation dashAnimation;
 	protected int combo;
 	
-	public LightAttackSkill(int duration, String skillName, List<StaticAnimation> attackanimations, StaticAnimation dashanimation)
+	public LightAttackSkill(int duration, String skillName, List<AttackAnimation> attackanimations)
+	{
+		this(duration, skillName, attackanimations, null);
+	}
+	
+	public LightAttackSkill(int duration, String skillName, List<AttackAnimation> attackanimations, @Nullable AttackAnimation dashanimation)
 	{
 		super(duration, true, skillName);
 		this.attackAnimations = attackanimations;
@@ -31,7 +38,9 @@ public class LightAttackSkill extends AttackSkill
 	{
 		if (combo >= attackAnimations.size() - 1) this.combo = 0;
 		
-		StaticAnimation animation = executer.getOriginalEntity().isSprinting() ? this.dashAnimation : this.attackAnimations.get(combo);
+		AttackAnimation animation;
+		if (this.dashAnimation == null) animation = this.attackAnimations.get(combo);
+		else animation = executer.getOriginalEntity().isSprinting() ? this.dashAnimation : this.attackAnimations.get(combo);
 		executer.playAnimationSynchronize(animation, 0);
 		ModNetworkManager.sendToPlayer(new STCResetBasicAttackCool(), executer.getOriginalEntity());
 		

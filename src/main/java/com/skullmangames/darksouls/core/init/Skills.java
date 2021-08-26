@@ -36,14 +36,18 @@ public class Skills
 	public static Skill KATANA_GIMMICK;
 	public static Skill LETHAL_SLICING;
 	public static Skill RELENTLESS_COMBO;
+	public static Skill SHIELD_ATTACK;
 	
 	public static void init()
 	{
+		SHIELD_ATTACK = makeSkill("shield_attack", (skillName) ->
+		new LightAttackSkill(0, skillName, Animations.SHIELD_LIGHT_ATTACK), false);
+		
 		TOOL_LIGHT_ATTACK = makeSkill("tool_light_attack", (skillName) -> 
 		new LightAttackSkill(0, skillName, Animations.TOOL_LIGHT_ATTACK, Animations.TOOL_DASH_ATTACK), false);
 		
 		FIST_LIGHT_ATTACK = makeSkill("fist_light_attack", (skillName) -> 
-		new LightAttackSkill(0, skillName, Animations.FIST_LIGHT_ATTACK, Animations.AXE_DASH_ATTACK), false);
+		new LightAttackSkill(0, skillName, Animations.FIST_LIGHT_ATTACK), false);
 		
 		AXE_LIGHT_ATTACK = makeSkill("axe_light_attack", (skillName) -> 
 		new LightAttackSkill(0, skillName, Animations.AXE_LIGHT_ATTACK, Animations.AXE_DASH_ATTACK), false);

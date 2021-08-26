@@ -120,6 +120,7 @@ public class AttackPatternGoal extends Goal
         
         if (animation == null) return;
         
+        this.mobdata.rotateTo(this.attacker.getTarget(), 180.0F, false);
         mobdata.getServerAnimator().playAnimation(animation, 0);
     	mobdata.updateInactionState();
     	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(animation.getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);

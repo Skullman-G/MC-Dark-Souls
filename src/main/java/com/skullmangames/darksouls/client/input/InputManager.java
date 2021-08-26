@@ -66,6 +66,7 @@ public class InputManager
 		this.keyFunctionMap = new HashMap<KeyBinding, BiConsumer<Integer, Integer>>();
 		
 		this.keyFunctionMap.put(options.keyAttack, this::onAttackKeyPressed);
+		this.keyFunctionMap.put(options.keyUse, this::onUseKeyPressed);
 		this.keyFunctionMap.put(options.keySwapOffhand, this::onSwapHandKeyPressed);
 		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
 		this.keyFunctionMap.put(options.keySprint, this::onSprintKeyPressed);
@@ -132,23 +133,31 @@ public class InputManager
 		}
 	}
 	
+	private void onUseKeyPressed(int key, int action)
+	{
+		if (!ClientEngine.INSTANCE.isBattleMode()) return;
+		
+		if (action == 1)
+		{
+			/*this.setKeyBind(options.keyUse, false);
+			while(options.keyUse.consumeClick()) {}*/
+		}
+	}
+	
 	private void onAttackKeyPressed(int key, int action)
 	{
 		if (this.minecraft.isPaused()) return;
 		
-		if (action == 1)
+		if (action == 1 && ClientEngine.INSTANCE.isBattleMode())
 		{
-			if (ClientEngine.INSTANCE.isBattleMode())
-			{
-				this.setKeyBind(options.keyAttack, false);
-				while(options.keyAttack.consumeClick()) { }
+			this.setKeyBind(options.keyAttack, false);
+			while(options.keyAttack.consumeClick()) {}
 
-				if (player.getTicksUsingItem() == 0)
+			if (player.getTicksUsingItem() == 0)
+			{
+				if (!rightHandToggle)
 				{
-					if (!rightHandToggle)
-					{
-						rightHandToggle = true;
-					}
+					rightHandToggle = true;
 				}
 			}
 		}

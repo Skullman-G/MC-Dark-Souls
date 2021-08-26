@@ -40,7 +40,7 @@ public class ImmovableAnimation extends StaticAnimation
 	{
 		super.onFinish(entitydata, isEnd);
 		
-		if(entitydata.isClientSide() && entitydata instanceof ClientPlayerData)
+		if (entitydata.isClientSide() && entitydata instanceof ClientPlayerData)
 	    {
 			((ClientPlayerData)entitydata).changeYaw(0);
 			ModNetworkManager.sendToServer(new CTSRotatePlayerYaw(0));

@@ -174,17 +174,17 @@ public final class Animations
 	public static StaticAnimation ZOMBIE_ATTACK1;
 	public static StaticAnimation ZOMBIE_ATTACK2;
 	public static StaticAnimation ZOMBIE_ATTACK3;
-	public static List<StaticAnimation> AXE_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
-	public static StaticAnimation AXE_DASH_ATTACK;
-	public static List<StaticAnimation> FIST_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
+	public static List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
+	public static AttackAnimation AXE_DASH_ATTACK;
+	public static List<AttackAnimation> FIST_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
 	public static StaticAnimation FIST_DASH_ATTACK;
 	public static StaticAnimation SPEAR_ONEHAND_AUTO;
 	public static StaticAnimation SPEAR_TWOHAND_AUTO_1;
 	public static StaticAnimation SPEAR_TWOHAND_AUTO_2;
 	public static StaticAnimation SPEAR_DASH;
 	public static StaticAnimation SPEAR_MOUNT_ATTACK;
-	public static List<StaticAnimation> SWORD_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
-	public static StaticAnimation SWORD_DASH_ATTACK;
+	public static List<AttackAnimation> SWORD_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
+	public static AttackAnimation SWORD_DASH_ATTACK;
 	public static StaticAnimation SWORD_DUAL_AUTO_1;
 	public static StaticAnimation SWORD_DUAL_AUTO_2;
 	public static StaticAnimation SWORD_DUAL_AUTO_3;
@@ -192,8 +192,8 @@ public final class Animations
 	public static StaticAnimation TACHI_AUTO_1;
 	public static StaticAnimation TACHI_AUTO_2;
 	public static StaticAnimation TACHI_DASH;
-	public static List<StaticAnimation> TOOL_LIGHT_ATTACK = new ArrayList<StaticAnimation>();
-	public static StaticAnimation TOOL_DASH_ATTACK;
+	public static List<AttackAnimation> TOOL_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
+	public static AttackAnimation TOOL_DASH_ATTACK;
 	public static StaticAnimation KATANA_AUTO_1;
 	public static StaticAnimation KATANA_AUTO_2;
 	public static StaticAnimation KATANA_AUTO_3;
@@ -220,6 +220,7 @@ public final class Animations
 	public static List<AttackAnimation> HOLLOW_SWING = new ArrayList<AttackAnimation>();
 	public static AttackAnimation HOLLOW_JUMP_ATTACK;
 	public static StaticAnimation HOLLOW_DEFLECTED;
+	public static List<AttackAnimation> SHIELD_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
 	
 	public static int BASIC_ATTACK_MIN;
 	public static int BASIC_ATTACK_MAX;
@@ -243,11 +244,11 @@ public final class Animations
 		Armature ravager = modeldata.ENTITY_RAVAGER.getArmature();
 		Armature vex = modeldata.ENTITY_VEX.getArmature();
 		
-		BIPED_IDLE = new StaticAnimation(0, true, "biped/living/idle.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK = new MovementAnimation(1, true, "biped/living/walk.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE = new StaticAnimation(0, 0.2F, true, "biped/living/idle.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK = new MovementAnimation(1, 0.2F, true, "biped/living/walk.dae").bindOnlyClient(biped, dist);
 		BIPED_FLYING = new StaticAnimation(2, true, "biped/living/fly.dae").bindOnlyClient(biped, dist);
-		BIPED_IDLE_CROSSBOW = new StaticAnimation(3, true, "biped/living/idle_crossbow.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK_CROSSBOW = new MovementAnimation(4, true, "biped/living/walk_crossbow.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE_CROSSBOW = new StaticAnimation(3, 0.2F, true, "biped/living/idle_crossbow.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK_CROSSBOW = new MovementAnimation(4, 0.2F, true, "biped/living/walk_crossbow.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN = new MovementAnimation(5, true, "biped/living/run.dae").bindOnlyClient(biped, dist);
 		BIPED_SNEAK = new MovementAnimation(7, true, "biped/living/sneak.dae").bindOnlyClient(biped, dist);
 		BIPED_SWIM = new MovementAnimation(8, true, "biped/living/swim.dae").bindOnlyClient(biped, dist);
@@ -264,14 +265,14 @@ public final class Animations
 		BIPED_JUMP = new StaticAnimation(21, 0.083F, false, "biped/living/jump.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_HELDING_WEAPON = new MovementAnimation(22, true, "biped/living/run_helding_weapon.dae").bindOnlyClient(biped, dist);
 		BIPED_BLOCK = new MirrorAnimation(23, 0.25F, true, "biped/combat/block.dae", "biped/combat/block_mirror.dae").bindOnlyClient(biped, dist);
-		BIPED_IDLE_MASSIVE_HELD = new StaticAnimation(24, true, "biped/living/idle_massiveheld.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK_MASSIVE_HELD = new MovementAnimation(25, true, "biped/living/walk_massiveheld.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE_MASSIVE_HELD = new StaticAnimation(24, 0.2F, true, "biped/living/idle_massiveheld.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK_MASSIVE_HELD = new MovementAnimation(25, 0.2F, true, "biped/living/walk_massiveheld.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_MASSIVE_HELD = new MovementAnimation(26, true, "biped/living/run_massiveheld.dae").bindOnlyClient(biped, dist);
-		BIPED_IDLE_SHEATHING = new StaticAnimation(27, true, "biped/living/idle_sheath.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK_SHEATHING = new MovementAnimation(28, true, "biped/living/walk_sheath.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE_SHEATHING = new StaticAnimation(27, 0.2F, true, "biped/living/idle_sheath.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK_SHEATHING = new MovementAnimation(28, 0.2F, true, "biped/living/walk_sheath.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_SHEATHING = new MovementAnimation(29, true, "biped/living/run_sheath.dae").bindOnlyClient(biped, dist);
-		BIPED_IDLE_UNSHEATHING = new StaticAnimation(30, true, "biped/living/idle_unsheath.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK_UNSHEATHING = new MovementAnimation(31, true, "biped/living/walk_unsheath.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE_UNSHEATHING = new StaticAnimation(30, 0.2F, true, "biped/living/idle_unsheath.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK_UNSHEATHING = new MovementAnimation(31, 0.2F, true, "biped/living/walk_unsheath.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_UNSHEATHING = new MovementAnimation(32, true, "biped/living/run_unsheath.dae").bindOnlyClient(biped, dist);
 		BIPED_KATANA_SCRAP = new StaticAnimation(33, false, "biped/living/katana_scrap.dae").bindOnlyClient(biped, dist);
 		
@@ -282,8 +283,8 @@ public final class Animations
 		BIPED_SNEAK_SHEATHING = new MovementAnimation(38, true, "biped/living/sneak_sheath.dae").bindOnlyClient(biped, dist);
 		BIPED_SNEAK_MASSIVE_HELD = new MovementAnimation(39, true, "biped/living/sneak_massiveheld.dae").bindOnlyClient(biped, dist);
 		
-		BIPED_IDLE_TACHI = new StaticAnimation(40, true, "biped/living/idle_tachi.dae").bindOnlyClient(biped, dist);
-		BIPED_WALK_TACHI = new MovementAnimation(41, true, "biped/living/walk_tachi.dae").bindOnlyClient(biped, dist);
+		BIPED_IDLE_TACHI = new StaticAnimation(40, 0.2F, true, "biped/living/idle_tachi.dae").bindOnlyClient(biped, dist);
+		BIPED_WALK_TACHI = new MovementAnimation(41, 0.2F, true, "biped/living/walk_tachi.dae").bindOnlyClient(biped, dist);
 		BIPED_RUN_TACHI = new MovementAnimation(42, true, "biped/living/run_tachi.dae").bindOnlyClient(biped, dist);
 		BIPED_SNEAK_TACHI = new MovementAnimation(43, true, "biped/living/sneak_tachi.dae").bindOnlyClient(biped, dist);
 		BIPED_JUMP_TACHI = new StaticAnimation(44, 0.083F, false, "biped/living/jump_tachi.dae").bindOnlyClient(biped, dist);
@@ -291,48 +292,48 @@ public final class Animations
 		BIPED_JAVELIN_AIM = new AimingAnimation(98, 0.16F, false, "biped/combat/javelin_aim_mid.dae", "biped/combat/javelin_aim_up.dae", "biped/combat/javelin_aim_down.dae").bindOnlyClient(biped, dist);
 		BIPED_JAVELIN_REBOUND = new ReboundAnimation(99, 0.08F, false, "biped/combat/javelin_throw_mid.dae", "biped/combat/javelin_throw_up.dae", "biped/combat/javelin_throw_down.dae").bindOnlyClient(biped, dist);
 	
-		ZOMBIE_IDLE = new StaticAnimation(100, true, "zombie/idle.dae").bindOnlyClient(biped, dist);
-		ZOMBIE_WALK = new MovementAnimation(102, true, "zombie/walk.dae").bindOnlyClient(biped, dist);
+		ZOMBIE_IDLE = new StaticAnimation(100, 0.2F, true, "zombie/idle.dae").bindOnlyClient(biped, dist);
+		ZOMBIE_WALK = new MovementAnimation(102, 0.2F, true, "zombie/walk.dae").bindOnlyClient(biped, dist);
 		ZOMBIE_CHASE = new MovementAnimation(103, true, "zombie/chase.dae").bindOnlyClient(biped, dist);
 		
-		CREEPER_IDLE = new StaticAnimation(300, 0.16F, true, "creeper/idle.dae").bindOnlyClient(crepper, dist);
-		CREEPER_WALK = new MovementAnimation(301, 0.16F, true, "creeper/walk.dae").bindOnlyClient(crepper, dist);
+		CREEPER_IDLE = new StaticAnimation(300, 0.2F, true, "creeper/idle.dae").bindOnlyClient(crepper, dist);
+		CREEPER_WALK = new MovementAnimation(301, 0.2F, true, "creeper/walk.dae").bindOnlyClient(crepper, dist);
 		
-		ENDERMAN_IDLE = new StaticAnimation(400, true, "enderman/idle.dae").bindOnlyClient(enderman, dist);
-		ENDERMAN_WALK = new MovementAnimation(401, true, "enderman/walk.dae").bindOnlyClient(enderman, dist);
+		ENDERMAN_IDLE = new StaticAnimation(400, 0.2F, true, "enderman/idle.dae").bindOnlyClient(enderman, dist);
+		ENDERMAN_WALK = new MovementAnimation(401, 0.2F, true, "enderman/walk.dae").bindOnlyClient(enderman, dist);
 		ENDERMAN_RUSH = new StaticAnimation(403, false, "enderman/rush.dae").bindOnlyClient(enderman, dist);
 		ENDERMAN_RAGE_IDLE = new StaticAnimation(404, true, "enderman/rage_idle.dae").bindOnlyClient(enderman, dist);
 		ENDERMAN_RAGE_WALK = new MovementAnimation(405, true, "enderman/rage_walk.dae").bindOnlyClient(enderman, dist);
 		
-		WITHER_SKELETON_IDLE = new StaticAnimation(500, true, "skeleton/wither_skeleton_idle.dae").bindOnlyClient(biped, dist);
-		WITHER_SKELETON_WALK = new MovementAnimation(501, true, "skeleton/wither_skeleton_walk.dae").bindOnlyClient(biped, dist);
+		WITHER_SKELETON_IDLE = new StaticAnimation(500, 0.2F, true, "skeleton/wither_skeleton_idle.dae").bindOnlyClient(biped, dist);
+		WITHER_SKELETON_WALK = new MovementAnimation(501, 0.2F, true, "skeleton/wither_skeleton_walk.dae").bindOnlyClient(biped, dist);
 		WITHER_SKELETON_CHASE = new MovementAnimation(502, 0.36F, true, "skeleton/wither_skeleton_chase.dae").bindOnlyClient(biped, dist);
 		
-		SPIDER_IDLE = new StaticAnimation(600, true, "spider/idle.dae").bindOnlyClient(spider, dist);
-		SPIDER_CRAWL = new MovementAnimation(601, true, "spider/crawl.dae").bindOnlyClient(spider, dist);
+		SPIDER_IDLE = new StaticAnimation(600, 0.2F, true, "spider/idle.dae").bindOnlyClient(spider, dist);
+		SPIDER_CRAWL = new MovementAnimation(601, 0.2F, true, "spider/crawl.dae").bindOnlyClient(spider, dist);
 		
-		GOLEM_IDLE = new StaticAnimation(700, true, "iron_golem/idle.dae").bindOnlyClient(iron_golem, dist);
-		GOLEM_WALK = new MovementAnimation(701, true, "iron_golem/walk.dae").bindOnlyClient(iron_golem, dist);
+		GOLEM_IDLE = new StaticAnimation(700, 0.2F, true, "iron_golem/idle.dae").bindOnlyClient(iron_golem, dist);
+		GOLEM_WALK = new MovementAnimation(701, 0.2F, true, "iron_golem/walk.dae").bindOnlyClient(iron_golem, dist);
 		
-		HOGLIN_IDLE = new StaticAnimation(750, 0.16F, true, "hoglin/idle.dae").bindOnlyClient(hoglin, dist);
-		HOGLIN_WALK = new MovementAnimation(751, 0.16F, true, "hoglin/walk.dae").bindOnlyClient(hoglin, dist);
+		HOGLIN_IDLE = new StaticAnimation(750, 0.2F, true, "hoglin/idle.dae").bindOnlyClient(hoglin, dist);
+		HOGLIN_WALK = new MovementAnimation(751, 0.2F, true, "hoglin/walk.dae").bindOnlyClient(hoglin, dist);
 		
-		ILLAGER_IDLE = new StaticAnimation(800, 0.16F, true, "illager/idle.dae").bindOnlyClient(biped, dist);
-		ILLAGER_WALK = new MovementAnimation(801, 0.16F, true, "illager/walk.dae").bindOnlyClient(biped, dist);
+		ILLAGER_IDLE = new StaticAnimation(800, 0.2F, true, "illager/idle.dae").bindOnlyClient(biped, dist);
+		ILLAGER_WALK = new MovementAnimation(801, 0.2F, true, "illager/walk.dae").bindOnlyClient(biped, dist);
 		VINDICATOR_IDLE_AGGRESSIVE = new StaticAnimation(802, true, "illager/idle_aggressive.dae").bindOnlyClient(biped, dist);
 		VINDICATOR_CHASE = new MovementAnimation(803, true, "illager/chase.dae").bindOnlyClient(biped, dist);
 		EVOKER_CAST_SPELL = new StaticAnimation(804, 0.16F, true, "illager/spellcast.dae").bindOnlyClient(biped, dist);
 		
-		RAVAGER_IDLE = new StaticAnimation(900, 0.16F, true, "ravager/idle.dae").bindOnlyClient(ravager, dist);
-		RAVAGER_WALK = new StaticAnimation(901, 0.16F, true, "ravager/walk.dae").bindOnlyClient(ravager, dist);
+		RAVAGER_IDLE = new StaticAnimation(900, 0.2F, true, "ravager/idle.dae").bindOnlyClient(ravager, dist);
+		RAVAGER_WALK = new StaticAnimation(901, 0.2F, true, "ravager/walk.dae").bindOnlyClient(ravager, dist);
 		
-		VEX_IDLE = new StaticAnimation(902, 0.16F, true, "vex/idle.dae").bindOnlyClient(vex, dist);
-		VEX_FLIPPING = new StaticAnimation(903, 0.05F, true, "vex/flip.dae").bindOnlyClient(vex, dist);
+		VEX_IDLE = new StaticAnimation(902, 0.2F, true, "vex/idle.dae").bindOnlyClient(vex, dist);
+		VEX_FLIPPING = new StaticAnimation(903, 0.2F, true, "vex/flip.dae").bindOnlyClient(vex, dist);
 		
-		PIGLIN_IDLE = new StaticAnimation(1000, 0.16F, true, "piglin/idle.dae").bindOnlyClient(piglin, dist);
-		PIGLIN_WALK = new StaticAnimation(1001, 0.16F, true, "piglin/walk.dae").bindOnlyClient(piglin, dist);
-		PIGLIN_IDLE_ZOMBIE = new StaticAnimation(1002, 0.16F, true, "piglin/idle_zombie.dae").bindOnlyClient(piglin, dist);
-		PIGLIN_WALK_ZOMBIE = new StaticAnimation(1003, 0.16F, true, "piglin/walk_zombie.dae").bindOnlyClient(piglin, dist);
+		PIGLIN_IDLE = new StaticAnimation(1000, 0.2F, true, "piglin/idle.dae").bindOnlyClient(piglin, dist);
+		PIGLIN_WALK = new StaticAnimation(1001, 0.2F, true, "piglin/walk.dae").bindOnlyClient(piglin, dist);
+		PIGLIN_IDLE_ZOMBIE = new StaticAnimation(1002, 0.2F, true, "piglin/idle_zombie.dae").bindOnlyClient(piglin, dist);
+		PIGLIN_WALK_ZOMBIE = new StaticAnimation(1003, 0.2F, true, "piglin/walk_zombie.dae").bindOnlyClient(piglin, dist);
 		PIGLIN_CHASE_ZOMBIE = new StaticAnimation(1004, 0.16F, true, "piglin/chase_zombie.dae").bindOnlyClient(piglin, dist);
 		PIGLIN_CELEBRATE1 = new StaticAnimation(1005, 0.16F, true, "piglin/celebrate1.dae").bindOnlyClient(piglin, dist);
 		PIGLIN_CELEBRATE2 = new StaticAnimation(1006, 0.16F, true, "piglin/celebrate2.dae").bindOnlyClient(piglin, dist);
@@ -540,7 +541,7 @@ public final class Animations
 				new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast)).bindFull(biped);
 		
 		
-		HOLLOW_OVERHEAD_SWING = new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.92F, 1.8F, false, Colliders.brokenSword, "111213", "hollow/heavy_attack.dae")
+		HOLLOW_OVERHEAD_SWING = new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2).bindFull(biped);
 		
 		HOLLOW_FURY_SWING = new AttackAnimation(7001, 0.05F, false, "hollow/fury_attack.dae",
@@ -553,17 +554,19 @@ public final class Animations
 				.addProperty(AnimationProperty.LOCK_ROTATION, Boolean.valueOf(true))
 				.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE).bindFull(biped);
 		
-		HOLLOW_SWING.add(new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/light_attack_1.dae")
+		HOLLOW_SWING.add(new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_1.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1).bindFull(biped));
-		HOLLOW_SWING.add(new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/light_attack_2.dae")
+		HOLLOW_SWING.add(new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/swing_2.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1).bindFull(biped));
-		HOLLOW_SWING.add(new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/light_attack_3.dae")
+		HOLLOW_SWING.add(new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_3.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1).bindFull(biped));
 		
 		HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2).bindFull(biped);
 		
-		HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected.dae").bindFull(biped);
+		HOLLOW_DEFLECTED = new HitAnimation(7006, 0.02F, "hollow/deflected.dae").bindFull(biped);
+		
+		SHIELD_LIGHT_ATTACK.add(new AttackAnimation(7007, 0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, Colliders.sword, "111213", "biped/combat/shield_strike.dae").bindFull(biped));
 		
 		MobAttackPatterns.setVariousMobAttackPatterns();
 	}

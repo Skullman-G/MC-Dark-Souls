@@ -43,7 +43,8 @@ public class AnimatorClient extends Animator
 	}
 
 	@Override
-	public void playAnimation(int id, float modifyTime) {
+	public void playAnimation(int id, float modifyTime)
+	{
 		this.playAnimation(Animations.findAnimationDataById(id), modifyTime);
 	}
 
@@ -64,10 +65,7 @@ public class AnimatorClient extends Animator
 	}
 	
 	@Override
-	public void reserveAnimation(StaticAnimation nextAnimation)
-	{
-		
-	}
+	public void reserveAnimation(StaticAnimation nextAnimation) {}
 	
 	@Override
 	public void vacateCurrentPlay()

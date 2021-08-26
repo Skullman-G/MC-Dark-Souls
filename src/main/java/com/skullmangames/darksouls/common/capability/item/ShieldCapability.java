@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.core.init.Skills;
+
 import net.minecraft.item.Item;
 
 public class ShieldCapability extends CapabilityItem
@@ -12,6 +15,12 @@ public class ShieldCapability extends CapabilityItem
 		super(item, WeaponCategory.SHIELD);
 		this.physicalDefense = 0.93F;
 		this.shieldType = ShieldType.NORMAL;
+	}
+	
+	@Override
+	public Skill getLightAttack()
+	{
+		return Skills.SHIELD_ATTACK;
 	}
 	
 	public float getPhysicalDefense()
