@@ -53,7 +53,8 @@ public class InputManager
 	private int reservedSkill;
 	private int skillReserveCounter;
 	private boolean rightHandToggle;
-	private boolean rightHandLightPress;
+	private boolean sprintToggle;
+	private int sprintPressCounter;
 	private Minecraft minecraft;
 	
 	public GameSettings options;
@@ -85,8 +86,8 @@ public class InputManager
 	{
 		this.rightHandPressCounter = 0;
 		this.rightHandToggle = false;
-		this.rightHandLightPress = false;
-		this.rightHandLightPress = false;
+		this.sprintToggle = false;
+		this.sprintPressCounter = 0;
 		this.player = playerdata.getOriginalEntity();
 		this.playerdata = playerdata;
 	}
@@ -118,17 +119,15 @@ public class InputManager
 	
 	private void onSprintKeyPressed(int key, int action)
 	{
-		if (action == 0)
+		if (action == 1)
 		{
-			if (ClientEngine.INSTANCE.isBattleMode() && (this.player.sprintTime <= 2 || !this.player.isSprinting()))
+			if (!this.sprintToggle)
 			{
-				Skill skill = Skills.ROLL;
-				if (SkillExecutionHelper.canExecute(this.playerdata, skill) && Skills.ROLL.isExecutableState(this.playerdata))
-				{
-					SkillExecutionHelper.execute(this.playerdata, skill);
-				}
+				this.sprintToggle = true;
 			}
-			
+		}
+		else if (action == 0)
+		{
 			this.player.setSprinting(false);
 		}
 	}
@@ -211,6 +210,7 @@ public class InputManager
 		EntityState playerState = this.playerdata.getEntityState();
 
 		this.handleRightHandAction(playerState);
+		this.handleSprintAction(playerState);
 		
 		if (this.reservedSkill >= 0)
 		{
@@ -261,58 +261,80 @@ public class InputManager
 		}
 	}
 	
-	private void handleRightHandAction(EntityState playerState)
+	private void handleSprintAction(EntityState playerState)
 	{
-		if (this.rightHandToggle)
+		if (!this.sprintToggle) return;
+		if (this.isKeyDown(options.keySprint))
 		{
-			if (!this.isKeyDown(options.keyAttack))
+			this.sprintPressCounter++;
+			return;
+		}
+		
+		this.sprintToggle = false;
+		
+		if (ClientEngine.INSTANCE.isBattleMode() && this.sprintPressCounter < 5)
+		{
+			Skill skill = Skills.ROLL;
+			if (SkillExecutionHelper.canExecute(this.playerdata, skill) && Skills.ROLL.isExecutableState(this.playerdata))
 			{
-				this.rightHandLightPress = true;
-				this.rightHandToggle = false;
-				this.rightHandPressCounter = 0;
-			}
-			else
-			{
-				if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
-				{
-					if (this.playerCanExecuteSkill(playerState))
-					{
-						CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
-						if(itemCap != null)
-						{
-							SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack());
-						}
-					}
-					
-					this.rightHandToggle = false;
-					this.rightHandPressCounter = 0;
-					this.resetAttackCounter();
-				}
-				else
-				{
-					this.setKeyBind(this.options.keyAttack, false);
-					this.rightHandPressCounter++;
-				}
+				SkillExecutionHelper.execute(this.playerdata, skill);
 			}
 		}
 		
-		if (this.rightHandLightPress)
+		this.sprintPressCounter = 0;
+	}
+	
+	private void handleRightHandAction(EntityState playerState)
+	{
+		if (!this.rightHandToggle) return;
+		
+		if (!this.isKeyDown(options.keyAttack))
 		{
-			if (this.playerCanExecuteSkill(playerState))
-			{
-				CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
-				if(itemCap != null)
-				{
-					SkillExecutionHelper.execute(this.playerdata, itemCap.getLightAttack());
-					this.player.resetAttackStrengthTicker();
-				}
-			}
-			
-			if (this.playerCanAct(playerState) || this.player.isSpectator() || playerState.getLevel() < 2) rightHandLightPress = false;
-			
 			this.rightHandToggle = false;
 			this.rightHandPressCounter = 0;
+			this.rightHandLightPress(playerState);
 		}
+		else
+		{
+			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
+			{
+				if (this.playerCanExecuteSkill(playerState))
+				{
+					CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+					if(itemCap != null)
+					{
+						SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack());
+					}
+				}
+				
+				this.rightHandToggle = false;
+				this.rightHandPressCounter = 0;
+				this.resetAttackCounter();
+			}
+			else
+			{
+				this.setKeyBind(this.options.keyAttack, false);
+				this.rightHandPressCounter++;
+			}
+		}
+	}
+	
+	private void rightHandLightPress(EntityState playerState)
+	{
+		if (this.playerCanAct(playerState) || this.player.isSpectator() || playerState.getLevel() < 2) return;
+		
+		if (this.playerCanExecuteSkill(playerState))
+		{
+			CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+			if(itemCap != null)
+			{
+				SkillExecutionHelper.execute(this.playerdata, itemCap.getLightAttack());
+				this.player.resetAttackStrengthTicker();
+			}
+		}
+		
+		this.rightHandToggle = false;
+		this.rightHandPressCounter = 0;
 	}
 	
 	public boolean isKeyDown(KeyBinding key)
