@@ -1,11 +1,10 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.skullmangames.darksouls.DarkSouls;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.TieredItem;
 
-public abstract class MaterialItemCapability extends CapabilityItem
+public abstract class MaterialItemCapability extends WeaponCapability implements IShield
 {
 	protected IItemTier itemTier;
 	
@@ -13,10 +12,18 @@ public abstract class MaterialItemCapability extends CapabilityItem
 	{
 		super(item, category);
 		this.itemTier = ((TieredItem)item).getTier();
-		if (DarkSouls.isPhysicalClient())
-		{
-			loadClientThings();
-		}
 		this.registerAttribute();
+	}
+	
+	@Override
+	public float getPhysicalDefense()
+	{
+		return 0.2F;
+	}
+	
+	@Override
+	public ShieldType getShieldType()
+	{
+		return ShieldType.NONE;
 	}
 }

@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCResetBasicAttackCool;
 
@@ -56,7 +56,7 @@ public class LightAttackSkill extends AttackSkill
 	@Override
 	public boolean canExecute(PlayerData<?> executer)
 	{
-		CapabilityItem item = executer.getHeldItemCapability(Hand.MAIN_HAND);
+		WeaponCapability item = executer.getHeldWeaponCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
 		if (this != item.getLightAttack()) return false;
 		

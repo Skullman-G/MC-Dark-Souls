@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 
 import net.minecraft.item.Item;
 
-public class RangedWeaponCapability extends CapabilityItem
+public class RangedWeaponCapability extends WeaponCapability
 {
 	protected Map<LivingMotion, StaticAnimation> rangeAnimationSet;
 

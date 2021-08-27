@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.animation.AnimatorServer;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -202,6 +203,11 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public CapabilityItem getHeldItemCapability(Hand hand)
 	{
 		return ModCapabilities.stackCapabilityGetter(this.orgEntity.getItemInHand(hand));
+	}
+	
+	public WeaponCapability getHeldWeaponCapability(Hand hand)
+	{
+		return ModCapabilities.stackWeaponCapabilityGetter(this.orgEntity.getItemInHand(hand));
 	}
 
 	public boolean isInaction()
@@ -574,54 +580,44 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public SoundEvent getWeaponHitSound(Hand hand)
 	{
-		CapabilityItem cap = getHeldItemCapability(hand);
-
-		if (cap != null)
-			return cap.getHitSound();
-
-		return null;
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		if (cap == null) return null;
+		return cap.getHitSound();
 	}
 
 	public SoundEvent getSwingSound(Hand hand)
 	{
-		CapabilityItem cap = getHeldItemCapability(hand);
-
-		if (cap != null)
-		{
-			return cap.getSwingSound();
-		}
-
-		return null;
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		if (cap == null) return null;
+		return cap.getSwingSound();
 	}
 	
 	public HitParticleType getWeaponHitParticle(Hand hand)
 	{
-		CapabilityItem cap = getHeldItemCapability(hand);
-
-		if (cap != null) return cap.getHitParticle();
-
-		return null;
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		if (cap == null) return null;
+		return cap.getHitParticle();
 	}
 
 	public Collider getColliderMatching(Hand hand)
 	{
-		CapabilityItem itemCap = this.getHeldItemCapability(hand);
-		return itemCap != null ? itemCap.getWeaponCollider() : Colliders.fist;
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
 	}
 
 	public int getHitEnemies()
 	{
-		return (int) this.orgEntity.getAttributeValue(AttributeInit.MAX_STRIKES.get());
+		return (int)this.orgEntity.getAttributeValue(AttributeInit.MAX_STRIKES.get());
 	}
 
 	public float getArmorNegation()
 	{
-		return (float) this.orgEntity.getAttributeValue(AttributeInit.ARMOR_NEGATION.get());
+		return (float)this.orgEntity.getAttributeValue(AttributeInit.ARMOR_NEGATION.get());
 	}
 
 	public float getImpact()
 	{
-		return (float) this.orgEntity.getAttributeValue(AttributeInit.IMPACT.get());
+		return (float)this.orgEntity.getAttributeValue(AttributeInit.IMPACT.get());
 	}
 
 	public boolean isTeam(Entity entityIn)

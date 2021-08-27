@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
+import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -283,26 +283,31 @@ public class EntityEvents
 			if (extSource != null && !(extSource instanceof IndirectEntityDamageSource))
 			{
 				LivingEntity target = event.getEntityLiving();
-				ShieldCapability cap = (ShieldCapability)ModCapabilities.stackCapabilityGetter(target.getUseItem());
-				float health = target.getHealth() - (extSource.getAmount() * (1 - cap.getPhysicalDefense()));
-				if (health < 0) health = 0;
-				target.setHealth(health);
+				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(target.getUseItem());
 				
-				if (extSource.getRequiredDeflectionLevel() <= cap.getDeflectionLevel())
+				if (cap instanceof IShield)
 				{
-					LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-					if (attacker != null)
+					IShield shield = (IShield)cap;
+					float health = target.getHealth() - (extSource.getAmount() * (1 - shield.getPhysicalDefense()));
+					if (health < 0) health = 0;
+					target.setHealth(health);
+					
+					if (extSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel())
 					{
-						StaticAnimation deflectAnimation = attacker.getDeflectAnimation();
-						if (deflectAnimation != null)
+						LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+						if (attacker != null)
 						{
-							float stuntime = 0.0F;
-							attacker.setStunTimeReduction();
-							attacker.getAnimator().playAnimation(deflectAnimation, stuntime);
-							ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), trueSource);
-							if(trueSource instanceof ServerPlayerEntity)
+							StaticAnimation deflectAnimation = attacker.getDeflectAnimation();
+							if (deflectAnimation != null)
 							{
-								ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), (ServerPlayerEntity)trueSource);
+								float stuntime = 0.0F;
+								attacker.setStunTimeReduction();
+								attacker.getAnimator().playAnimation(deflectAnimation, stuntime);
+								ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), trueSource);
+								if(trueSource instanceof ServerPlayerEntity)
+								{
+									ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), (ServerPlayerEntity)trueSource);
+								}
 							}
 						}
 					}

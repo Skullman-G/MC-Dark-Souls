@@ -70,7 +70,7 @@ public class SwordCapability extends MaterialItemCapability
 	@Override
 	public WieldStyle getStyle(LivingData<?> entitydata)
 	{
-		CapabilityItem item = entitydata.getHeldItemCapability(Hand.OFF_HAND);
+		WeaponCapability item = entitydata.getHeldWeaponCapability(Hand.OFF_HAND);
 		if(item != null && item.weaponCategory == WeaponCategory.SWORD)
 		{
 			return WieldStyle.TWO_HAND;
@@ -91,7 +91,7 @@ public class SwordCapability extends MaterialItemCapability
 	@Override
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
-		CapabilityItem cap = item.getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null);
+		WeaponCapability cap = ModCapabilities.stackWeaponCapabilityGetter(item);
 		return super.canBeRenderedBoth(item) || (cap != null && cap.weaponCategory == WeaponCategory.SWORD);
 	}
 }

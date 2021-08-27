@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.RangedWeaponCapability;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WieldStyle;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability.WieldStyle;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -34,7 +34,7 @@ public class CapabilityProjectile<T extends ProjectileEntity>
 			
 			if (itemCap instanceof RangedWeaponCapability)
 			{
-				Map<Supplier<Attribute>, AttributeModifier> modifierMap = itemCap.getDamageAttributesInCondition(WieldStyle.TWO_HAND);
+				Map<Supplier<Attribute>, AttributeModifier> modifierMap = ((RangedWeaponCapability)itemCap).getDamageAttributesInCondition(WieldStyle.TWO_HAND);
 				
 				this.armorNegation = (float)modifierMap.get(AttributeInit.ARMOR_NEGATION).getAmount();
 				this.impact = (float)modifierMap.get(AttributeInit.IMPACT).getAmount();

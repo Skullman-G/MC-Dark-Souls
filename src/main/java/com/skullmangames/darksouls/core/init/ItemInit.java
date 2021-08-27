@@ -3,13 +3,12 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
-import com.skullmangames.darksouls.common.item.DescriptionItem;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
-import com.skullmangames.darksouls.common.item.SwordDescriptionItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
+import com.skullmangames.darksouls.common.item.UsableSwordItem;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -27,13 +26,13 @@ public class ItemInit
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
-	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new DescriptionItem(new Item.Properties()
+	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
 			.tab(ItemGroup.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoulItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new DescriptionItem(new Item.Properties()
+	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
 			.tab(ItemGroup.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Teleport2BonfireItem(DarkSoulsUseAction.DARKSIGN, true, false, true, new Item.Properties()
@@ -45,10 +44,10 @@ public class ItemInit
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordDescriptionItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new UsableSwordItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(ItemGroup.TAB_COMBAT)));
 	
-	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new SwordDescriptionItem(ItemTier.WOOD, 0, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new UsableSwordItem(ItemTier.WOOD, 0, -2.4F, new Item.Properties()
 			.tab(ItemGroup.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
@@ -85,13 +84,22 @@ public class ItemInit
 	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(BlockInit.BIG_WARPED_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
+	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(EntityTypeInit.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
 			.tab(ItemGroup.TAB_MISC)));
+	
 	
 	//Vanilla Overrides
 	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 	
 	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(BlockInit.SMITHING_TABLE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
+	
+	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new UsableSwordItem(ItemTier.WOOD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> DIAMOND_SWORD = VANILLA_ITEMS.register("diamond_sword", () -> new UsableSwordItem(ItemTier.DIAMOND, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> GOLDEN_SWORD = VANILLA_ITEMS.register("golden_sword", () -> new UsableSwordItem(ItemTier.GOLD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new UsableSwordItem(ItemTier.IRON, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new UsableSwordItem(ItemTier.NETHERITE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new UsableSwordItem(ItemTier.STONE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 }

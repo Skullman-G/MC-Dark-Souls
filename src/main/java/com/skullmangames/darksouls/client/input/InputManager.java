@@ -12,7 +12,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem.WeaponCategory;
+import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -34,6 +35,7 @@ import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -66,11 +68,10 @@ public class InputManager
 		this.options = this.minecraft.options;
 		this.keyFunctionMap = new HashMap<KeyBinding, BiConsumer<Integer, Integer>>();
 		
-		this.keyFunctionMap.put(options.keyAttack, this::onAttackKeyPressed);
-		this.keyFunctionMap.put(options.keyUse, this::onUseKeyPressed);
-		this.keyFunctionMap.put(options.keySwapOffhand, this::onSwapHandKeyPressed);
+		this.keyFunctionMap.put(this.options.keyAttack, this::onAttackKeyPressed);
+		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
 		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
-		this.keyFunctionMap.put(options.keySprint, this::onSprintKeyPressed);
+		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
 		
 		try
 		{
@@ -132,17 +133,6 @@ public class InputManager
 		}
 	}
 	
-	private void onUseKeyPressed(int key, int action)
-	{
-		if (!ClientEngine.INSTANCE.isBattleMode()) return;
-		
-		if (action == 1)
-		{
-			/*this.setKeyBind(options.keyUse, false);
-			while(options.keyUse.consumeClick()) {}*/
-		}
-	}
-	
 	private void onAttackKeyPressed(int key, int action)
 	{
 		if (this.minecraft.isPaused()) return;
@@ -190,9 +180,8 @@ public class InputManager
 			{
 				for (Hand hand : Hand.values())
 				{
-					CapabilityItem item = this.playerdata.getHeldItemCapability(hand);
+					WeaponCapability item = this.playerdata.getHeldWeaponCapability(hand);
 					if (item == null || (hand == Hand.OFF_HAND && item.equals(ModCapabilities.FIST))) continue;
-					if (item.getWeaponCategory() != WeaponCategory.NONE_WEAON) return;
 				}
 				ClientEngine.INSTANCE.switchToMiningMode();
 			}
@@ -300,7 +289,7 @@ public class InputManager
 			{
 				if (this.playerCanExecuteSkill(playerState))
 				{
-					CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+					WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
 					if(itemCap != null)
 					{
 						SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack());
@@ -321,11 +310,9 @@ public class InputManager
 	
 	private void rightHandLightPress(EntityState playerState)
 	{
-		if (this.playerCanAct(playerState) || this.player.isSpectator() || playerState.getLevel() < 2) return;
-		
 		if (this.playerCanExecuteSkill(playerState))
 		{
-			CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+			WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
 			if(itemCap != null)
 			{
 				SkillExecutionHelper.execute(this.playerdata, itemCap.getLightAttack());
@@ -367,6 +354,16 @@ public class InputManager
 	public static class Events
 	{
 		static InputManager inputManager;
+		
+		@SubscribeEvent
+		public static void onItemRightClick(RightClickItem event)
+		{
+			if (event.getHand() == Hand.OFF_HAND) return;
+			CapabilityItem cap = inputManager.playerdata.getHeldItemCapability(event.getHand());
+            if (!(cap instanceof IShield)) return;
+            
+            event.setCanceled(true);
+		}
 		
 		@SuppressWarnings("resource")
 		@SubscribeEvent

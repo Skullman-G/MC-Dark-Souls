@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.item.Item;
 
-public class FistCapability extends CapabilityItem
+public class FistCapability extends WeaponCapability
 {
 	public FistCapability(Item item)
 	{

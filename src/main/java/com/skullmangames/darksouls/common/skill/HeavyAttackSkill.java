@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ValueCorrector;
@@ -127,7 +128,7 @@ public abstract class HeavyAttackSkill extends AttackSkill
 	@Override
 	public boolean canExecute(PlayerData<?> executer)
 	{
-		CapabilityItem item = executer.getHeldItemCapability(Hand.MAIN_HAND);
+		WeaponCapability item = executer.getHeldWeaponCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
 		if (this != item.getHeavyAttack()) return false;
 		

@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
@@ -22,7 +23,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class Teleport2BonfireItem extends DescriptionItem implements IHaveDarkSoulsUseAction
+public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseAction
 {
 	private static final UUID SPEED_MODIFIER_CASTING_UUID = UUID.fromString("7b6eb570-5411-4c74-9b82-ce52e68c5ac5");
 	private final boolean looseAfterUse;

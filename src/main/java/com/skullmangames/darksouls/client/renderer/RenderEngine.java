@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -326,18 +327,20 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void itemTooltip(ItemTooltipEvent event)
 		{
-			if (event.getPlayer() != null) {
+			if (event.getPlayer() != null)
+			{
 				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(event.getItemStack());
 				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if (cap != null && ClientEngine.INSTANCE.getPlayerData() != null)
 				{
-					if (ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SPECIAL_ATTACK_TOOLTIP))
+					if (cap instanceof WeaponCapability && ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SPECIAL_ATTACK_TOOLTIP))
 					{
-						if (cap.getHeavyAttack() != null)
+						WeaponCapability wcap = (WeaponCapability)cap;
+						if (wcap.getHeavyAttack() != null)
 						{
 							event.getToolTip().clear();
-							List<ITextComponent> skilltooltip = cap.getHeavyAttack().getTooltipOnItem(event.getItemStack(), cap, playerCap);
+							List<ITextComponent> skilltooltip = wcap.getHeavyAttack().getTooltipOnItem(event.getItemStack(), cap, playerCap);
 							
 							for (ITextComponent s : skilltooltip)
 							{

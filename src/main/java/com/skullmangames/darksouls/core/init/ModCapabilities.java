@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.FistCapability;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.item.ItemStack;
@@ -78,5 +79,11 @@ public class ModCapabilities
 	public static CapabilityItem stackCapabilityGetter(ItemStack stack)
 	{
 		return stack.isEmpty() ? FIST : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+	}
+	
+	public static WeaponCapability stackWeaponCapabilityGetter(ItemStack stack)
+	{
+		CapabilityItem cap = stackCapabilityGetter(stack);
+		return cap instanceof WeaponCapability ? (WeaponCapability)cap : null;
 	}
 }

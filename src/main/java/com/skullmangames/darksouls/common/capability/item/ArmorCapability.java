@@ -34,7 +34,7 @@ public class ArmorCapability extends CapabilityItem
 	
 	public ArmorCapability(Item item)
 	{
-		super(item, WeaponCategory.NONE_WEAON);
+		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
 		IArmorMaterial armorMaterial = armorItem.getMaterial();
 		this.equipmentSlot = armorItem.getSlot();
@@ -44,7 +44,7 @@ public class ArmorCapability extends CapabilityItem
 	
 	public ArmorCapability(Item item, double customWeight, double customStunArmor)
 	{
-		super(item, WeaponCategory.NONE_WEAON);
+		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
 		this.equipmentSlot = armorItem.getSlot();
 		this.weight = customWeight;

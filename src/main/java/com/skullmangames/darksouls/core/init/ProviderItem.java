@@ -100,6 +100,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.TRIDENT, TridentCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.SHIELD, ShieldCapability::new);
 		
+		CAPABILITY_BY_CLASS.put(Item.class, CapabilityItem::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
 		CAPABILITY_BY_CLASS.put(SwordItem.class, SwordCapability::new);
 		CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
