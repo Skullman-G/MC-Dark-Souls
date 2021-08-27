@@ -50,7 +50,6 @@ public class InputManager
 	private KeyBindingMap keyHash;
 	private double tracingMouseX;
 	private double tracingMouseY;
-	private int comboHoldCounter;
 	private int rightHandPressCounter;
 	private int reservedSkill;
 	private int skillReserveCounter;
@@ -58,7 +57,6 @@ public class InputManager
 	private boolean sprintToggle;
 	private int sprintPressCounter;
 	private Minecraft minecraft;
-	
 	public GameSettings options;
 	
 	public InputManager()
@@ -220,30 +218,6 @@ public class InputManager
 			}
 		}
 		
-		if (this.comboHoldCounter > 0)
-		{
-			float f = player.getAttackStrengthScale(0);
-			
-			if (!playerState.isMovementLocked() && !playerState.isCameraRotationLocked() && f >= 1.0F)
-			{
-				--this.comboHoldCounter;
-				
-				if (comboHoldCounter == 0)
-				{
-					this.resetAttackCounter();
-				}
-			}
-		}
-		
-		for (int i = 0; i < 9; ++i)
-		{
-			if (isKeyDown(options.keyHotbarSlots[i]))
-			{
-				if (playerdata.isInaction())
-					options.keyHotbarSlots[i].isDown();
-			}
-		}
-		
 		if (this.minecraft.isPaused())
 		{
 			this.minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
@@ -298,7 +272,6 @@ public class InputManager
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
-				this.resetAttackCounter();
 			}
 			else
 			{
@@ -343,10 +316,6 @@ public class InputManager
 	public void setKeyBind(KeyBinding key, boolean setter)
 	{
 		KeyBinding.set(key.getKey(), setter);
-	}
-	
-	public void resetAttackCounter()
-	{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
