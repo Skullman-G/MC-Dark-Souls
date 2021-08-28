@@ -195,6 +195,9 @@ public class InputManager
 		if (this.playerdata == null) return;
 
 		EntityState playerState = this.playerdata.getEntityState();
+		
+		this.player.xRot = 0.0F;
+		this.player.xRotO = 0.0F;
 
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
@@ -407,8 +410,8 @@ public class InputManager
 			
 			if (!inputManager.playerCanMove(playerState))
 			{
-				event.getMovementInput().forwardImpulse = 0F;
-				event.getMovementInput().leftImpulse = 0F;
+				event.getMovementInput().forwardImpulse = 0.0F;
+				event.getMovementInput().leftImpulse = 0.0F;
 				event.getMovementInput().up = false;
 				event.getMovementInput().down = false;
 				event.getMovementInput().left = false;
@@ -416,6 +419,49 @@ public class InputManager
 				event.getMovementInput().jumping = false;
 				event.getMovementInput().shiftKeyDown = false;
 				((ClientPlayerEntity)event.getPlayer()).sprintTime = -1;
+			}
+			else
+			{
+				if (inputManager.minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
+				{
+					float forward = 0.0F;
+					float left = 0.0F;
+					float rot = inputManager.player.yRot;
+					boolean back = false;
+					
+					if (event.getMovementInput().forwardImpulse > 0.0F)
+					{
+						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F);
+						forward = event.getMovementInput().forwardImpulse;
+					}
+					else if (event.getMovementInput().forwardImpulse < 0.0F)
+					{
+						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) - 180.0F;
+						forward = -event.getMovementInput().forwardImpulse;
+						back = true;
+					}
+					if (event.getMovementInput().leftImpulse > 0.0F)
+					{
+						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) - 90.0F;
+						
+						if (forward == 0.0F) forward = event.getMovementInput().leftImpulse;
+						else if (!back) left = -event.getMovementInput().leftImpulse;
+						else left = event.getMovementInput().leftImpulse;
+					}
+					else if (event.getMovementInput().leftImpulse < 0.0F)
+					{
+						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) + 90.0F;
+						
+						if (forward == 0.0F) forward = -event.getMovementInput().leftImpulse;
+						else if (!back) left = -event.getMovementInput().leftImpulse;
+						else left = event.getMovementInput().leftImpulse;
+					}
+					
+					inputManager.player.yRot = rot;
+					inputManager.player.yRotO = rot;
+					event.getMovementInput().forwardImpulse = forward;
+					event.getMovementInput().leftImpulse = left;
+				}
 			}
 		}
 		

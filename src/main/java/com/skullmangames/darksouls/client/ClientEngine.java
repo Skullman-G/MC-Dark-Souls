@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.client.input.InputManager;
+import com.skullmangames.darksouls.client.input.MouseInputManager;
+import com.skullmangames.darksouls.client.renderer.Camera;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 
@@ -18,6 +20,7 @@ public class ClientEngine
 	public RenderEngine renderEngine;
 	public InputManager inputController;
 	private GameSettings options;
+	public final Camera mainCamera;
 	
 	private ClientPlayerData playerdata;
 	private PlayerActingMode playerActingMode = PlayerActingMode.MINING;
@@ -29,6 +32,10 @@ public class ClientEngine
 		this.renderEngine = new RenderEngine();
 		this.inputController = new InputManager();
 		this.options = this.minecraft.options;
+		
+		this.minecraft.gameRenderer.mainCamera = new Camera();
+		this.mainCamera = (Camera)this.minecraft.gameRenderer.mainCamera;
+		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
 	}
 	
 	public void switchToMiningMode()
