@@ -196,8 +196,11 @@ public class InputManager
 
 		EntityState playerState = this.playerdata.getEntityState();
 		
-		this.player.xRot = 0.0F;
-		this.player.xRotO = 0.0F;
+		if (this.options.getCameraType() != PointOfView.FIRST_PERSON)
+		{
+			this.player.xRot = 0.0F;
+			this.player.xRotO = 0.0F;
+		}
 
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);

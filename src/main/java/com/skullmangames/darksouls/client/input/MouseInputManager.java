@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.client.renderer.Camera;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.NativeUtil;
 
 public class MouseInputManager extends MouseHelper
@@ -57,7 +58,14 @@ public class MouseInputManager extends MouseHelper
 	        this.minecraft.getTutorial().onMouse(d2, d3);
 	        if (this.minecraft.player != null)
 	        {
-	        	this.camera.setPivotRot((float)d2, (float)d3 * i);
+	        	if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
+	        	{
+	        		this.minecraft.player.turn(d2, d3 * (double)i);
+	        	}
+	        	else
+	        	{
+	        		this.camera.setPivotRot((float)d2, (float)d3 * i);
+	        	}
 	        }
 
 	     }

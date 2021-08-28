@@ -36,6 +36,7 @@ public class ClientEngine
 		this.minecraft.gameRenderer.mainCamera = new Camera();
 		this.mainCamera = (Camera)this.minecraft.gameRenderer.mainCamera;
 		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
+		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
 	
 	public void switchToMiningMode()
