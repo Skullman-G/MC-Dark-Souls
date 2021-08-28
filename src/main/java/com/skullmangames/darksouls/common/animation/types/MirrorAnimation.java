@@ -14,7 +14,7 @@ public class MirrorAnimation extends StaticAnimation
 	public MirrorAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2)
 	{
 		super(id, convertTime, repeatPlay, path1);
-		mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2);
+		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2);
 	}
 	
 	public StaticAnimation checkHandAndReturnAnimation(Hand hand)

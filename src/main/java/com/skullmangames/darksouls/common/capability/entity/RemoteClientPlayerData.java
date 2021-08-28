@@ -56,6 +56,24 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		{
 			currentMotion = LivingMotion.DEATH;
 		}
+		else if (this.orgEntity.isUsingItem())
+		{
+			UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+			
+			switch (useAction)
+			{
+				case DRINK:
+					this.currentMotion = LivingMotion.DRINKING;
+					break;
+					
+				case EAT:
+					this.currentMotion = LivingMotion.EATING;
+					break;
+					
+				default:
+					break;
+			}
+		}
 		else if (orgEntity.isFallFlying())
 		{
 			currentMotion = LivingMotion.FLYING;
@@ -125,37 +143,31 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			switch (useAction)
 			{
 				case BLOCK:
-					currentMixMotion = LivingMotion.BLOCKING;
+					this.currentMixMotion = LivingMotion.BLOCKING;
 					break;
 					
 				case BOW:
-					currentMixMotion = LivingMotion.AIMING;
+					this.currentMixMotion = LivingMotion.AIMING;
 					break;
 					
 				case CROSSBOW:
-					currentMixMotion = LivingMotion.RELOADING;
+					this.currentMixMotion = LivingMotion.RELOADING;
 					break;
 					
 				case SPEAR:
-					currentMixMotion = LivingMotion.AIMING;
-					break;
-					
-				case EAT:
-					currentMixMotion = LivingMotion.EATING;
+					this.currentMixMotion = LivingMotion.AIMING;
 					break;
 					
 				default:
-					currentMixMotion = LivingMotion.NONE;
+					this.currentMixMotion = LivingMotion.NONE;
+					break;
 			}
 		}
 		else
 		{
-			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
-				currentMixMotion = LivingMotion.AIMING;
-			else if (this.getClientAnimator().prevAiming())
-				this.playReboundAnimation();
-			else
-				currentMixMotion = LivingMotion.NONE;
+			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) currentMixMotion = LivingMotion.AIMING;
+			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
+			else currentMixMotion = LivingMotion.NONE;
 		}
 	}
 	

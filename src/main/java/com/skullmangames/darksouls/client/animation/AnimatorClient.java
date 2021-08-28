@@ -140,7 +140,15 @@ public class AnimatorClient extends Animator
 		this.currentMotion = this.entitydata.currentMotion;
 		if(this.livingAnimations.containsKey(this.entitydata.currentMotion))
 		{
-			this.playAnimationLiving(this.livingAnimations.get(this.entitydata.currentMotion), 0.0F);
+			StaticAnimation animation = this.livingAnimations.get(this.entitydata.currentMotion);
+			if(animation instanceof MirrorAnimation)
+			{
+				this.playAnimationLiving(((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand()), 0.0F);
+			}
+			else
+			{
+				this.playAnimationLiving(animation, 0.0F);
+			}
 		}
 	}
 	
@@ -153,7 +161,6 @@ public class AnimatorClient extends Animator
 		else
 		{
 			StaticAnimation animation = this.livingAnimations.get(this.entitydata.currentMixMotion);
-			
 			if(animation instanceof MirrorAnimation)
 			{
 				this.playMixLayerAnimation(((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand()));

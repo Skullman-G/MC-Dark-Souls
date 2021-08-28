@@ -30,8 +30,8 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.event.InputEvent.MouseInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
+import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
@@ -133,8 +133,6 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (this.minecraft.isPaused()) return;
-		
 		if (action == 1 && ClientEngine.INSTANCE.isBattleMode())
 		{
 			this.setKeyBind(options.keyAttack, false);
@@ -195,12 +193,6 @@ public class InputManager
 		if (this.playerdata == null) return;
 
 		EntityState playerState = this.playerdata.getEntityState();
-		
-		if (this.options.getCameraType() != PointOfView.FIRST_PERSON)
-		{
-			this.player.xRot = 0.0F;
-			this.player.xRotO = 0.0F;
-		}
 
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
@@ -340,11 +332,11 @@ public class InputManager
             event.setCanceled(true);
 		}
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
-		public static void onMouseInput(MouseInputEvent event)
+		public static void onMouseInput(RawMouseEvent event)
 		{
-			if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null)
+			Minecraft minecraft = Minecraft.getInstance();
+			if (minecraft.player != null && minecraft.overlay == null && minecraft.screen == null)
 			{
 				Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
 				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
@@ -352,6 +344,7 @@ public class InputManager
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
 						inputManager.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
+						event.setCanceled(true);
 					}
 				}
 			}

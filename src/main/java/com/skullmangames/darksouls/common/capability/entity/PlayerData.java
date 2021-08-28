@@ -58,7 +58,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		animatorClient.addLivingAnimation(LivingMotion.FLYING, Animations.BIPED_FLYING);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.JUMPING, Animations.BIPED_JUMP);
-		animatorClient.addLivingMixAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
+		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
 		animatorClient.addLivingMixAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
 		animatorClient.addLivingMixAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
 		animatorClient.addLivingMixAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
