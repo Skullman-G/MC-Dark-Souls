@@ -159,9 +159,7 @@ public class InputManager
 
 		if (this.playerdata.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
-			while (options.keySwapOffhand.consumeClick())
-			{
-			}
+			while (options.keySwapOffhand.consumeClick()) {}
 			this.setKeyBind(options.keySwapOffhand, false);
 		}
 	}
@@ -453,8 +451,10 @@ public class InputManager
 						else left = event.getMovementInput().leftImpulse;
 					}
 					
-					inputManager.player.yRot = rot;
-					inputManager.player.yRotO = rot;
+					double x = inputManager.player.xo;
+					double y = inputManager.player.yo;
+					double z = inputManager.player.zo;
+					inputManager.player.lerpTo(x, y, z, rot, 0.0F, 2, false);
 					event.getMovementInput().forwardImpulse = forward;
 					event.getMovementInput().leftImpulse = left;
 				}

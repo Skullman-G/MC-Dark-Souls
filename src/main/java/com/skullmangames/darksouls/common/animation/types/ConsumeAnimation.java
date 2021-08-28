@@ -10,6 +10,29 @@ public class ConsumeAnimation extends MirrorAnimation
 	public ConsumeAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2)
 	{
 		super(id, convertTime, repeatPlay, path1, path2);
+		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2)
+		{
+			private LivingData<?> entitydata;
+			
+			@Override
+			public void onActivate(LivingData<?> entitydata)
+			{
+				this.entitydata = entitydata;
+				entitydata.getOriginalEntity().xRot = 0.0F;
+				entitydata.getOriginalEntity().xRotO = 0.0F;
+				float x = entitydata.getOriginalEntity().yRot;
+				entitydata.rotateTo(x, 180.0F, true);
+				
+				super.onActivate(entitydata);
+			}
+			
+			@Override
+			public EntityState getState(float time)
+			{
+				if (this.entitydata.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
+				else return super.getState(time);
+			}
+		};
 	}
 	
 	@Override
@@ -27,7 +50,7 @@ public class ConsumeAnimation extends MirrorAnimation
 	@Override
 	public EntityState getState(float time)
 	{
-		if (this.entitydata.getOriginalEntity().isUsingItem()) return EntityState.FREE_CAMERA;
+		if (this.entitydata.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
 		else return super.getState(time);
 	}
 }

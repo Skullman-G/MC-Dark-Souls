@@ -29,7 +29,8 @@ public class ConfigManager
 		COMMON_CONFIG = server.build();
 	}
 	
-	public static void loadConfig(ForgeConfigSpec config, String path) {
+	public static void loadConfig(ForgeConfigSpec config, String path)
+	{
 		CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().autosave().writingMode(WritingMode.REPLACE).build();
 		file.load();
 		config.setConfig(file);

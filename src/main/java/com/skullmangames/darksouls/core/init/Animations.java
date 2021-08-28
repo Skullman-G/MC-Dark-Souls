@@ -93,6 +93,7 @@ public final class Animations
 	public static StaticAnimation BIPED_JUMP_TACHI;
 	public static StaticAnimation BIPED_EAT;
 	public static StaticAnimation BIPED_DRINK;
+	public static StaticAnimation BIPED_CONSUME_SOUL;
 	public static StaticAnimation CREEPER_IDLE;
 	public static StaticAnimation CREEPER_WALK;
 	public static StaticAnimation CREEPER_HIT_LONG;
@@ -280,6 +281,7 @@ public final class Animations
 		BIPED_KATANA_SCRAP = new StaticAnimation(33, false, "biped/living/katana_scrap.dae").bindOnlyClient(biped, dist);
 		BIPED_EAT = new ConsumeAnimation(7008, 0.2F, true, "biped/living/eat_r.dae", "biped/living/eat_l.dae").bindOnlyClient(biped, dist);
 		BIPED_DRINK = new ConsumeAnimation(7009, 0.2F, true, "biped/living/drink_r.dae", "biped/living/drink_l.dae").bindOnlyClient(biped, dist);
+		BIPED_CONSUME_SOUL = new ConsumeAnimation(7010, 0.2F, true, "biped/living/consume_soul_r.dae", "biped/living/consume_soul_l.dae").bindOnlyClient(biped, dist);
 		
 		BIPED_JUMP_SHEATHING = new StaticAnimation(34, 0.083F, false, "biped/living/jump_sheath.dae").bindOnlyClient(biped, dist);
 		BIPED_JUMP_MASSIVE_HELD = new StaticAnimation(35, 0.083F, false, "biped/living/jump_massiveheld.dae").bindOnlyClient(biped, dist);

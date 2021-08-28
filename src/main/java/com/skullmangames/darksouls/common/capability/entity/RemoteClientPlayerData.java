@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -58,20 +60,46 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		}
 		else if (this.orgEntity.isUsingItem())
 		{
-			UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
-			
-			switch (useAction)
+			ItemStack useitem = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand());
+			if (useitem.getItem() instanceof IHaveDarkSoulsUseAction)
 			{
-				case DRINK:
-					this.currentMotion = LivingMotion.DRINKING;
-					break;
-					
-				case EAT:
-					this.currentMotion = LivingMotion.EATING;
-					break;
-					
-				default:
-					break;
+				DarkSoulsUseAction useaction = ((IHaveDarkSoulsUseAction)useitem.getItem()).getDarkSoulsUseAnimation();
+				
+				switch (useaction)
+				{
+					case DARKSIGN:
+						this.currentMotion = LivingMotion.CONSUME_SOUL;
+						break;
+						
+					case MIRACLE:
+						this.currentMotion = LivingMotion.CONSUME_SOUL;
+						break;
+						
+					case SOUL_CONTAINER:
+						this.currentMotion = LivingMotion.CONSUME_SOUL;
+						break;
+						
+					default:
+						break;
+				}
+			}
+			else
+			{
+				UseAction useaction = useitem.getUseAnimation();
+				
+				switch (useaction)
+				{
+					case DRINK:
+						this.currentMotion = LivingMotion.DRINKING;
+						break;
+						
+					case EAT:
+						this.currentMotion = LivingMotion.EATING;
+						break;
+						
+					default:
+						break;
+				}
 			}
 		}
 		else if (orgEntity.isFallFlying())
