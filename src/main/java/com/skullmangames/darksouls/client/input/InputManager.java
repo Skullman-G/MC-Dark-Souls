@@ -59,6 +59,7 @@ public class InputManager
 	private Minecraft minecraft;
 	public GameSettings options;
 	
+	
 	public InputManager()
 	{
 		Events.inputManager = this;
@@ -451,10 +452,7 @@ public class InputManager
 						else left = event.getMovementInput().leftImpulse;
 					}
 					
-					double x = inputManager.player.xo;
-					double y = inputManager.player.yo;
-					double z = inputManager.player.zo;
-					inputManager.player.lerpTo(x, y, z, rot, 0.0F, 2, false);
+					inputManager.player.yRot = rot;
 					event.getMovementInput().forwardImpulse = forward;
 					event.getMovementInput().leftImpulse = left;
 				}

@@ -13,6 +13,7 @@ public class IngameConfig
 	public static final float GENERAL_ANIMATION_CONVERT_TIME = 0.16F;
 	
 	public final Option<Integer> longPressCount;
+	
 	public final Option<Boolean> filterAnimation;
 	public final Option<Boolean> showHealthIndicator;
 	public final Option<Boolean> showTargetIndicator;
@@ -20,10 +21,12 @@ public class IngameConfig
 	public IngameConfig(ForgeConfigSpec.Builder config)
 	{
 		this.config = config;
-		this.longPressCount = this.registerInt("ingame.long_press_count", 2, 1, 10);
-		this.showHealthIndicator = this.registerBoolean("ingame.show_health_indicator", true);
-		this.showTargetIndicator = this.registerBoolean("ingame.show_target_indicator", true);
-		this.filterAnimation = this.registerBoolean("ingame.filter_animation", false);
+		
+		this.longPressCount = this.registerInt("long_press_count", 2, 1, 10);
+		
+		this.showHealthIndicator = this.registerBoolean("show_health_indicator", true);
+		this.showTargetIndicator = this.registerBoolean("show_target_indicator", true);
+		this.filterAnimation = this.registerBoolean("filter_animation", false);
 	}
 	
 	public void populateDefaultValues()
@@ -43,14 +46,16 @@ public class IngameConfig
 	
 	private Option<Boolean> registerBoolean(String name, boolean defaultValue)
 	{
-		Option<Boolean> option = new Option<Boolean>(this.config.define(name, () -> defaultValue));
+		name = "ingame."+name;
+		Option<Boolean> option = new Option<Boolean>(this.config.define(name, () -> defaultValue), name, defaultValue);
 		OPTIONS.add(option);
 		return option;
 	}
 	
 	private Option<Integer> registerInt(String name, int defaultValue, int min, int max)
 	{
-		Option<Integer> option = new Option<Integer>(this.config.defineInRange(name, defaultValue, min, max));
+		name = "ingame."+name;
+		Option<Integer> option = new Option.IntegerOption(this.config.defineInRange(name, defaultValue, min, max), name, defaultValue, min, max);
 		OPTIONS.add(option);
 		return option;
 	}

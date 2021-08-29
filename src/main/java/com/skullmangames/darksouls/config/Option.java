@@ -6,11 +6,19 @@ public class Option<T>
 {
 	protected T defaultOption;
 	protected T option;
+	protected final String name;
 	protected ConfigValue<T> configValue;
 	
-	public Option(ConfigValue<T> configValue)
+	public Option(ConfigValue<T> configValue, String name, T defaultValue)
 	{
+		this.name = name;
+		this.defaultOption = defaultValue;
 		this.configValue = configValue;
+	}
+	
+	public String getName()
+	{
+		return this.name;
 	}
 	
 	public void init()
@@ -44,9 +52,9 @@ public class Option<T>
 		private final int minValue;
 		private final int maxValue;
 		
-		public IntegerOption(ConfigValue<Integer> configValue, int minValue, int maxValue)
+		public IntegerOption(ConfigValue<Integer> configValue, String name, int defaultValue, int minValue, int maxValue)
 		{
-			super(configValue);
+			super(configValue, name, defaultValue);
 			this.minValue = minValue;
 			this.maxValue = maxValue;
 		}
