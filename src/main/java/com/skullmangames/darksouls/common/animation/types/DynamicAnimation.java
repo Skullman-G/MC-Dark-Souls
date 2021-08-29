@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 
 public class DynamicAnimation
 {
@@ -23,7 +23,7 @@ public class DynamicAnimation
 		jointTransforms = new HashMap<String, TransformSheet>();
 		this.totalTime = 0;
 		this.isRepeat = false;
-		this.convertTime = ConfigurationIngame.GENERAL_ANIMATION_CONVERT_TIME;
+		this.convertTime = IngameConfig.GENERAL_ANIMATION_CONVERT_TIME;
 	}
 
 	public DynamicAnimation(float convertTime, boolean isRepeat)

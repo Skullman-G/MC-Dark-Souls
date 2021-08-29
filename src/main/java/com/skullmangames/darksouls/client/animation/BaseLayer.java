@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -57,7 +57,7 @@ public class BaseLayer
 			return;
 		}
 		
-		float frameTime = ConfigurationIngame.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(entitydata);
+		float frameTime = IngameConfig.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(entitydata);
 		
 		this.animationPlayer.update(frameTime);
 		this.animationPlayer.getPlay().onUpdate(entitydata);

@@ -1,14 +1,27 @@
 package com.skullmangames.darksouls.config;
 
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+
 public class Option<T>
 {
-	protected final T defaultOption;
+	protected T defaultOption;
 	protected T option;
+	protected ConfigValue<T> configValue;
 	
-	public Option(T defaultOption)
+	public Option(ConfigValue<T> configValue)
 	{
-		this.defaultOption = defaultOption;
-		this.option = defaultOption;
+		this.configValue = configValue;
+	}
+	
+	public void init()
+	{
+		this.defaultOption = this.configValue.get();
+		this.option = this.configValue.get();
+	}
+	
+	public void save()
+	{
+		this.configValue.set(this.getValue());
 	}
 	
 	public T getValue()
@@ -31,9 +44,9 @@ public class Option<T>
 		private final int minValue;
 		private final int maxValue;
 		
-		public IntegerOption(Integer defaultOption, int minValue, int maxValue)
+		public IntegerOption(ConfigValue<Integer> configValue, int minValue, int maxValue)
 		{
-			super(defaultOption);
+			super(configValue);
 			this.minValue = minValue;
 			this.maxValue = maxValue;
 		}

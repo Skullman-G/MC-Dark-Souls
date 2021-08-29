@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
@@ -58,7 +58,7 @@ public class StaticAnimation extends DynamicAnimation
 	
 	public StaticAnimation(int id, boolean repeatPlay, String path)
 	{
-		this(id, ConfigurationIngame.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path);
 	}
 	
 	public StaticAnimation bindFull(Armature armature)

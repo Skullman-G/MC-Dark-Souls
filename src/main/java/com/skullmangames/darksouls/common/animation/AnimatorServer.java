@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModelInit;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -61,7 +61,7 @@ public class AnimatorServer extends Animator
 			return;
 		}
 		
-		this.animationPlayer.update(ConfigurationIngame.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(this.entitydata));
+		this.animationPlayer.update(IngameConfig.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(this.entitydata));
 		this.animationPlayer.getPlay().onUpdate(this.entitydata);
 
 		if (this.animationPlayer.isEnd())

@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 
 public class MovementAnimation extends StaticAnimation
 {
@@ -23,7 +23,7 @@ public class MovementAnimation extends StaticAnimation
 
 	public MovementAnimation(int id, boolean repeatPlay, String path)
 	{
-		this(id, ConfigurationIngame.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path);
 	}
 	
 	@Override

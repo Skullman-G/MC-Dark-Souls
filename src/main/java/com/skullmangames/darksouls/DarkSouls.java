@@ -54,7 +54,7 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
-import com.skullmangames.darksouls.config.ConfigurationIngame;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvent;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -86,7 +86,7 @@ public class DarkSouls
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "darksouls"; 
     public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
-    public static ConfigurationIngame CLIENT_INGAME_CONFIG;
+    public static IngameConfig CLIENT_INGAME_CONFIG;
     public static final ItemGroup TAB_SOULS = new SoulsGroup("soulstab");
 
     public DarkSouls() 
@@ -134,6 +134,7 @@ public class DarkSouls
         MinecraftForge.EVENT_BUS.register(PlayerEvents.class);
         
         ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
+        ConfigManager.INGAME_CONFIG.populateDefaultValues();
         ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
         
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> IngameConfigurationScreen::new);
@@ -196,7 +197,7 @@ public class DarkSouls
         ScreenManager.register(ContainerTypeInit.SMITHING.get(), SmithingTableScreenOverride::new);
         ScreenManager.register(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
         
-        CLIENT_INGAME_CONFIG = new ConfigurationIngame();
+        CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
     }
 	
 	public static boolean isPhysicalClient()
