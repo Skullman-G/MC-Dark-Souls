@@ -5,6 +5,8 @@ import java.util.UUID;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.DataKeys;
+import com.skullmangames.darksouls.common.entity.stats.Stat;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -12,13 +14,16 @@ import com.skullmangames.darksouls.core.event.EntityEventListener;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 
 public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
@@ -32,6 +37,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
+		this.orgEntity.foodData = new CursedFoodStats();
 		this.eventListeners = new EntityEventListener(this);
 		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(0.0F));
 		this.tickSinceLastAction = 40;
@@ -40,6 +46,14 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 			player.tickSinceLastAction = 0;
 			return false;
 		}));
+		
+		if (!this.orgEntity.hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		{
+			EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
+			this.orgEntity.addEffect(effectinstance);
+		}
+		
+		for (Stat stat : Stats.getStats()) stat.init(this.orgEntity);
 	}
 	
 	@Override

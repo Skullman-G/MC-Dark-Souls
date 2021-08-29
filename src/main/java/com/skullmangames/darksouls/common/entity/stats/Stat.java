@@ -25,10 +25,7 @@ public class Stat
 		return this.name;
 	}
 	
-	public void onChange(LivingEntity livingentity, boolean isinit, int value)
-	{
-		return;
-	}
+	public void onChange(LivingEntity livingentity, boolean isinit, int value) {}
 	
 	public int getValue(LivingEntity livingentity)
 	{

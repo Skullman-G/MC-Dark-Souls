@@ -12,8 +12,12 @@ import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
+import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
+import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
@@ -30,6 +34,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -72,6 +77,12 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void spawnEvent(EntityJoinWorldEvent event)
 	{
+		if (event.getEntity() instanceof ItemEntity && ((ItemEntity)event.getEntity()).getItem().getItem() == ItemInit.DARKSIGN.get())
+		{
+			event.setCanceled(true);
+			return;
+		}
+		
 		@SuppressWarnings("rawtypes")
 		EntityData entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entitydata != null && event.getEntity().tickCount == 0)
@@ -87,11 +98,12 @@ public class EntityEvents
 			}	
 		}
 		
-		if (event.getEntity() instanceof ProjectileEntity) {
+		if (event.getEntity() instanceof ProjectileEntity)
+		{
 			ProjectileEntity projectileentity = (ProjectileEntity)event.getEntity();
-			@SuppressWarnings({ })
 			CapabilityProjectile<ProjectileEntity> projectileData = event.getEntity().getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
-			if(projectileData != null && event.getEntity().tickCount == 0) {
+			if(projectileData != null && event.getEntity().tickCount == 0)
+			{
 				projectileData.onJoinWorld(projectileentity);
 			}
 		}
@@ -418,7 +430,13 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectAddEvent(PotionAddedEvent event)
 	{
-		if(!event.getEntity().level.isClientSide) {
+		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && /*event.getPotionEffect().getEffect() != event.getOldPotionEffect().getEffect() &&*/ event.getEntityLiving() instanceof PlayerEntity)
+		{
+			EffectInit.UNDEAD_CURSE.get().onPotionAdd(((PlayerEntity)event.getEntityLiving()));
+		}
+		
+		if(!event.getEntity().level.isClientSide)
+		{
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Active, event.getEntity().getId()));
 		}
 	}
@@ -426,7 +444,15 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectRemoveEvent(PotionRemoveEvent event)
 	{
-		if(!event.getEntity().level.isClientSide && event.getPotionEffect() != null) {
+		if (event.getPotion() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
+		{
+			event.setCanceled(true);
+			return;
+			//EffectInit.UNDEAD_CURSE.get().onPotionRemove(((PlayerEntity)event.getEntityLiving()));
+		}
+		
+		if(!event.getEntity().level.isClientSide && event.getPotionEffect() != null)
+		{
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
 		}
 	}
@@ -434,6 +460,13 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectExpiryEvent(PotionExpiryEvent event)
 	{
+		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
+		{
+			event.setCanceled(true);
+			return;
+			//EffectInit.UNDEAD_CURSE.get().onPotionRemove(((PlayerEntity)event.getEntityLiving()));
+		}
+		
 		if(!event.getEntity().level.isClientSide)
 		{
 			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
@@ -497,6 +530,13 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void deathEvent(LivingDeathEvent event)
 	{
+		MobNBTManager.setHumanity(event.getEntityLiving(), 0);
+		
+		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		{
+			MobNBTManager.setHuman(event.getEntityLiving(), false);
+		}
+		
 		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
 		if(entitydata != null)
