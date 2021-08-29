@@ -133,6 +133,8 @@
 	
 	"key.darksouls.show_tooltip": "Show Special Attack Tooltip",
 	"key.darksouls.gui": "Mod Gui",
+	"key.darksouls.swap_action_mode": "Swap Action Mode",
+	"key.darksouls.combat": "Combat",
 	
 	"ingame.long_press_count": "Button Long Press Count",
 	"ingame.show_health_indicator": "Show Health Bar Indicator",

@@ -156,8 +156,11 @@ public class EntityEvents
 				
 				CapabilityProjectile<?> projectileCap = directSource.getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
 				
-				extSource.setArmorNegation(projectileCap.getArmorNegation());
-				extSource.setImpact(projectileCap.getImpact());
+				if (projectileCap != null)
+				{
+					extSource.setArmorNegation(projectileCap.getArmorNegation());
+					extSource.setImpact(projectileCap.getImpact());
+				}
 			}
 			
 			if(extSource != null)

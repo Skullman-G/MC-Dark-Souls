@@ -30,7 +30,7 @@ public class BaseHorizontalBlock extends Block
 	@Override
 	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{
-	    return p_185471_1_.rotate(p_185471_2_.getRotation(p_185471_1_.getValue(HORIZONTAL_FACING)));
+		return p_185471_1_.rotate(p_185471_2_.getRotation(p_185471_1_.getValue(HORIZONTAL_FACING)));
 	}
 	
 	@Override
@@ -45,11 +45,34 @@ public class BaseHorizontalBlock extends Block
 		return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
 	}
 	
-	protected static void calculateShapes(Direction to, VoxelShape shape) {
+	protected static void calculateShapes(Direction to, VoxelShape shape)
+	{
 		VoxelShape[] buffer = new VoxelShape[] { shape, VoxelShapes.empty() };
 
-		int times = (to.getStepX() - Direction.NORTH.getStepX() + 4) % 4;
-		for (int i = 0; i < times; i++) {
+		int times;
+		
+		switch (to)
+		{
+			default:
+			case NORTH:
+				times = 0;
+				break;
+				
+			case EAST:
+				times = 1;
+				break;
+				
+			case SOUTH:
+				times = 2;
+				break;
+				
+			case WEST:
+				times = 3;
+				break;
+		}
+		
+		for (int i = 0; i < times; i++)
+		{
 			buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1],
 					VoxelShapes.box(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
 			buffer[0] = buffer[1];
@@ -59,9 +82,11 @@ public class BaseHorizontalBlock extends Block
 		SHAPES.put(to, buffer[0]);
 	}
 
-	protected void runCalculation(VoxelShape shape) {
-		for (Direction direction : Direction.values()) {
-			calculateShapes(direction, shape);
+	protected void runCalculation(VoxelShape shape)
+	{
+		for (Direction direction : Direction.values())
+		{
+			if (direction != Direction.UP && direction != Direction.DOWN) calculateShapes(direction, shape);
 		}
 	}
 }

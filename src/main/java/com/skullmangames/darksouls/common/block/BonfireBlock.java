@@ -59,14 +59,20 @@ public class BonfireBlock extends BaseHorizontalBlock
 	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
 	protected static final VoxelShape SHAPE = Stream.of(
-			Block.box(2, 0.75, 2, 14, 1.75, 14),
-			Block.box(1, 0, 1, 15, 1, 15),
-			Block.box(4, 1.5, 4, 12, 2.5, 12),
+			Block.box(2, 0, 2, 14, 1, 14),
+			Block.box(4, 0.5, 4, 12, 2.5, 12),
 			Block.box(6, 2.4, 6, 10, 3.4, 10),
-			Block.box(7.5, 3, 7.5, 8.5, 19, 8.5),
+			Block.box(7.5, 3, 7.5, 9.5, 15, 8.5),
 			Block.box(6.5, 14, 7.5, 7.5, 15, 8.5),
-			Block.box(8.5, 14, 7.5, 9.5, 15, 8.5)
-			).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+			Block.box(9.5, 14, 7.5, 10.5, 15, 8.5),
+			Block.box(3, 1, 9, 7, 4, 13),
+			Block.box(8, 15, 7.5, 9, 19, 8.5),
+			Block.box(7, 1, 3, 8, 3, 6),
+			Block.box(8.5, 2, 4.5, 9.5, 4, 7.5),
+			Block.box(9.5, 0.10000000000000009, 11.5, 10.5, 1.3000000000000003, 14.5),
+			Block.box(12, 1, 7, 14, 1.5, 8),
+			Block.box(3, 1, 8, 6, 3, 9)
+			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 	
 	public BonfireBlock()
 	{

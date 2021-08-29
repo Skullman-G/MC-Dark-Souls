@@ -74,7 +74,7 @@ public class InputManager
 		
 		try
 		{
-			this.keyHash = (KeyBindingMap) ObfuscationReflectionHelper.findField(KeyBinding.class, "field_74514_b").get(null);
+			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyBinding.class, "field_74514_b").get(null);
 		}
 		catch (IllegalArgumentException | IllegalAccessException e)
 		{
@@ -150,7 +150,7 @@ public class InputManager
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
 		{
-			while(options.keyAttack.consumeClick()) { }
+			while(options.keyAttack.consumeClick()) {}
 		}
 	}
 	
@@ -343,7 +343,7 @@ public class InputManager
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
 						inputManager.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
-						event.setCanceled(true);
+						if (ClientEngine.INSTANCE.isBattleMode()) event.setCanceled(true);
 					}
 				}
 			}

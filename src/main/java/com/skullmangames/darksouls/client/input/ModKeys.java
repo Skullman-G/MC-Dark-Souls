@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.client.input;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.skullmangames.darksouls.DarkSouls;
 
 import net.minecraft.client.Minecraft;
@@ -18,9 +21,21 @@ public class ModKeys
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
+		removeKeyBinding(minecraft.options.keyTogglePerspective);
 		minecraft.options.keyTogglePerspective = new FakeKeyBinding("key.togglePerspective");
 		
 		ClientRegistry.registerKeyBinding(SPECIAL_ATTACK_TOOLTIP);
 		ClientRegistry.registerKeyBinding(SWAP_ACTION_MODE);
+	}
+	
+	private static void removeKeyBinding(KeyBinding binding)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		List<KeyBinding> keyBindings = new ArrayList<KeyBinding>();
+		for (KeyBinding k : minecraft.options.keyMappings) keyBindings.add(k);
+		keyBindings.remove(binding);
+		
+		minecraft.options.keyMappings = new KeyBinding[keyBindings.size()];
+		for (int i = 0; i < keyBindings.size(); i++) minecraft.options.keyMappings[i] = keyBindings.get(i);
 	}
 }
