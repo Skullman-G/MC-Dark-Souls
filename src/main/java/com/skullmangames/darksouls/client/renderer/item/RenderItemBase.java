@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -45,7 +45,7 @@ public class RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
 		String heldingHand = hand == Hand.MAIN_HAND ? "Tool_R" : "Tool_L";
-		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModelInit.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform();
+		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform();
 		PublicMatrix4f.mul(jointTransform, modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
@@ -59,7 +59,7 @@ public class RenderItemBase
 	public void renderItemBack(ItemStack stack, LivingData<?> itemHolder, IRenderTypeBuffer buffer, MatrixStack viewMatrixStack, int packedLight)
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModelInit.CLIENT).getArmature().findJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
@@ -72,7 +72,7 @@ public class RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		PublicMatrix4f.translate(new Vector3f(0F, 0.2F, 0F), modelMatrix, modelMatrix);
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModelInit.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f.scale(new Vector3f(0.6F, 0.6F, 0.6F), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);

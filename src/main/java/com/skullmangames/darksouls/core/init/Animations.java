@@ -236,7 +236,7 @@ public final class Animations
 	
 	public static void registerAnimations(Dist dist)
 	{
-		ModelInit<?> modeldata = dist == Dist.CLIENT ? ClientModelInit.CLIENT : ModelInit.SERVER;
+		Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 		
 		Armature biped = modeldata.ENTITY_BIPED.getArmature();
 		Armature crepper = modeldata.ENTITY_CREEPER.getArmature();
@@ -571,7 +571,7 @@ public final class Animations
 		HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack.dae")
 				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2).bindFull(biped);
 		
-		HOLLOW_DEFLECTED = new HitAnimation(7006, 0.02F, "hollow/deflected.dae").bindFull(biped);
+		HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected.dae").bindFull(biped);
 		
 		SHIELD_LIGHT_ATTACK.add(new AttackAnimation(7007, 0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, Colliders.sword, "111213", "biped/combat/shield_strike.dae").bindFull(biped));
 		

@@ -75,7 +75,7 @@ public class ColladaParser
 	
 	private static BufferedInputStream getInputStream(ResourceLocation resourceLocation) throws FileNotFoundException
 	{
-		BufferedInputStream inputStream = new BufferedInputStream(DarkSouls.class.getResourceAsStream("/assets/" + resourceLocation.getNamespace() + "/models/entity/" + resourceLocation.getPath()));
+		BufferedInputStream inputStream = new BufferedInputStream(DarkSouls.class.getResourceAsStream("/assets/"+resourceLocation.getNamespace()+"/models/entity/"+resourceLocation.getPath()+".dae"));
 		return inputStream;
 	}
 }

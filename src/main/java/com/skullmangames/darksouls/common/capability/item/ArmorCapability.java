@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.AttributeInit;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -86,7 +86,7 @@ public class ArmorCapability extends CapabilityItem
 	@OnlyIn(Dist.CLIENT)
 	public static ClientModel getBipedArmorModel(EquipmentSlotType slot)
 	{
-		ClientModelInit modelDB = ClientModelInit.CLIENT;
+		ClientModels modelDB = ClientModels.CLIENT;
 		
 		switch (slot)
 		{

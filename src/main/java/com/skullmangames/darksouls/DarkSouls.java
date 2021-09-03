@@ -60,7 +60,7 @@ import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.BlockInit;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
 import com.skullmangames.darksouls.core.init.ContainerTypeInit;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
@@ -68,7 +68,7 @@ import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.Particles;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
@@ -96,12 +96,12 @@ public class DarkSouls
     	
     	if(isPhysicalClient())
     	{
-    		ClientModelInit.CLIENT.buildArmatureData();
-    		ModelInit.SERVER.buildArmatureData();
+    		ClientModels.CLIENT.buildArmatureData();
+    		Models.SERVER.buildArmatureData();
     	}
     	else
     	{
-    		ModelInit.SERVER.buildArmatureData();
+    		Models.SERVER.buildArmatureData();
     	}
     	
     	Animations.registerAnimations(FMLEnvironment.dist);
@@ -179,7 +179,7 @@ public class DarkSouls
         
         new ClientEngine();
         
-        ClientModelInit.CLIENT.buildMeshData();
+        ClientModels.CLIENT.buildMeshData();
 		ClientEngine.INSTANCE.renderEngine.buildRenderer();
 		
 		ProviderEntity.makeMapClient();

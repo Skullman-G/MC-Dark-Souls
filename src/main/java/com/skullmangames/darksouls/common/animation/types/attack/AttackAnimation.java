@@ -19,7 +19,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
@@ -112,7 +112,7 @@ public class AttackAnimation extends ActionAnimation
 				
 				Collider collider = this.getCollider(entitydata, elapsedTime);
 				LivingEntity entity = entitydata.getOriginalEntity();
-				entitydata.getEntityModel(ModelInit.SERVER).getArmature().initializeTransform();
+				entitydata.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 				PublicMatrix4f jointTransform = entitydata.getServerAnimator().getColliderTransformMatrix(phase.jointIndexer);
 				collider.transform(PublicMatrix4f.mul(entitydata.getModelMatrix(1.0F), jointTransform, null));
 				List<Entity> list = entity.level.getEntities(entity, collider.getHitboxAABB());

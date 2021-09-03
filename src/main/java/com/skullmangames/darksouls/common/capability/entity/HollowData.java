@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.MobAttackPatterns;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
@@ -104,7 +104,7 @@ public class HollowData extends BipedMobData<HollowEntity>
 	}
 	
 	@Override
-	public <M extends Model>M getEntityModel(ModelInit<M> modelDB)
+	public <M extends Model>M getEntityModel(Models<M> modelDB)
 	{
 		return modelDB.ENTITY_BIPED_64_32_TEX;
 	}

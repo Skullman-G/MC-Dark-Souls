@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -38,7 +38,7 @@ public class RenderHat extends RenderItemBase
 			{
 				PublicMatrix4f.translate(new Vector3f(0.0F, -0.65F, 0.0F), modelMatrix, modelMatrix);
 			}
-			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModelInit.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
+			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 			model.xRot = 0.0F;
 			model.yRot = 0.0F;
 			model.zRot = 0.0F;

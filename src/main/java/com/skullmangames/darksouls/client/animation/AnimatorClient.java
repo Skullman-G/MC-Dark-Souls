@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class AnimatorClient extends Animator
@@ -217,7 +217,7 @@ public class AnimatorClient extends Animator
 	
 	public void setPoseToModel(float partialTicks)
 	{
-		Joint rootJoint = this.entitydata.getEntityModel(ClientModelInit.CLIENT).getArmature().getJointHierarcy();
+		Joint rootJoint = this.entitydata.getEntityModel(ClientModels.CLIENT).getArmature().getJointHierarcy();
 		if(this.mixLayerActivated)
 		{
 			applyPoseToJoint(getCurrentPose(this.baseLayer, partialTicks), getCurrentPose(this.mixLayer, partialTicks), rootJoint, new PublicMatrix4f());

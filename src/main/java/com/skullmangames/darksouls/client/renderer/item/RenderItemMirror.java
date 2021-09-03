@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -25,7 +25,7 @@ public abstract class RenderItemMirror extends RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(hand == Hand.OFF_HAND ? leftHandCorrectionMatrix : correctionMatrix);
 		String heldingHand = hand == Hand.MAIN_HAND ? "Tool_R" : "Tool_L";
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModelInit.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
 		matrixStackIn.pushPose();

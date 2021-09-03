@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.EffectInit;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
@@ -181,7 +181,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	}
 	
 	@Override
-	public <M extends Model> M getEntityModel(ModelInit<M> modelDB)
+	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
 		return modelDB.ENTITY_BIPED;
 	}

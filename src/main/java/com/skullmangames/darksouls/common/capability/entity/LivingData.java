@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
@@ -82,7 +82,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	protected abstract void initAnimator(AnimatorClient animatorClient);
 	public abstract void updateMotion();
-	public abstract <M extends Model> M getEntityModel(ModelInit<M> modelDB);
+	public abstract <M extends Model> M getEntityModel(Models<M> modelDB);
 	
 	protected void initAttributes()
 	{

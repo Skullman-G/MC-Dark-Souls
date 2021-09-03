@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
@@ -46,7 +46,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 		double x = MathHelper.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
 		double y = MathHelper.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
 		double z = MathHelper.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z();
-		ClientModel model = entitydata.getEntityModel(ClientModelInit.CLIENT);
+		ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
 		entitydata.getClientAnimator().setPoseToModel(partialTicks);
@@ -77,7 +77,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 		float interpolation = pitch > 0.0F ? pitch / 90.0F : 0.0F;
 		matStackIn.translate(x, y - 0.1D - (0.2D * (flag2 ? 0.8D : interpolation)), z + 0.1D + (0.7D * (flag2 ? 0.0D : interpolation)) - posZ);
 		
-		ClientModelInit.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entitydata.getOriginalEntity().getSkinTextureLocation())),
+		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entitydata.getOriginalEntity().getSkinTextureLocation())),
 				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses);
 		
 		if(!entityIn.isSpectator())

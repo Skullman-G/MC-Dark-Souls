@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class AnimatorServer extends Animator
@@ -88,7 +88,7 @@ public class AnimatorServer extends Animator
 			return new PublicMatrix4f();
 		}
 		
-		return applyPoseToCollider(this.getCurrentPose(), this.entitydata.getEntityModel(ModelInit.SERVER).getArmature().getJointHierarcy(), new PublicMatrix4f(), indexer);
+		return applyPoseToCollider(this.getCurrentPose(), this.entitydata.getEntityModel(Models.SERVER).getArmature().getJointHierarcy(), new PublicMatrix4f(), indexer);
 	}
 	
 	private PublicMatrix4f applyPoseToCollider(Pose pose, Joint joint, PublicMatrix4f parentTransform, int indexer)

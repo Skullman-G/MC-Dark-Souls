@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ClientModelInit;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -65,7 +65,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 		if(renderType != null)
 		{
 			IVertexBuilder builder = buffer.getBuffer(renderType);
-			ClientModel model = entitydata.getEntityModel(ClientModelInit.CLIENT);
+			ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
 			Armature armature = model.getArmature();
 			armature.initializeTransform();
 			matStack.pushPose();

@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModelInit;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -259,7 +259,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 	}
 
 	@Override
-	public <M extends Model> M getEntityModel(ModelInit<M> modelDB)
+	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
 		return this.orgEntity.getModelName().equals("slim") ? modelDB.ENTITY_BIPED_SLIM_ARM : modelDB.ENTITY_BIPED;
 	}
