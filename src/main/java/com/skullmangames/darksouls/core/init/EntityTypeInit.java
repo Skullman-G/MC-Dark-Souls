@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
@@ -32,6 +33,10 @@ public class EntityTypeInit
 			.clientTrackingRange(6)
 			.updateInterval(20)
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "soul").toString()));
+	
+	public static final RegistryObject<EntityType<AsylumDemonEntity>> ASYLUM_DEMON = ENTITIES.register("asylum_demon", () -> EntityType.Builder.<AsylumDemonEntity>of(AsylumDemonEntity::new, EntityClassification.MONSTER)
+			.sized(1.5F, 4.0F)
+			.build(new ResourceLocation(DarkSouls.MOD_ID, "asylum_demon").toString()));
 	
 	
 	public static void registerEntitySpawnPlacement()

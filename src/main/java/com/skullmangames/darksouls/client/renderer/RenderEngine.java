@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.client.renderer.item.RenderItemBase;
 import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleTexturedBipedRenderer;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
@@ -116,6 +117,7 @@ public class RenderEngine
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
 		this.entityRendererMap.put(EntityTypeInit.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
+		this.entityRendererMap.put(EntityTypeInit.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
 		/*entityRendererMap.put(EntityType.CREEPER, new CreeperRenderer());
 		entityRendererMap.put(EntityType.ENDERMAN, new EndermanRenderer());
 		entityRendererMap.put(EntityType.ZOMBIE, new SimpleTexturBipedRenderer<ZombieEntity, ZombieData<ZombieEntity>>("textures/entity/zombie/zombie.png"));

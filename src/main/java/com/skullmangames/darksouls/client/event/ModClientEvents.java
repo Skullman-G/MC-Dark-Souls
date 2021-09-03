@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRenderer;
+import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
@@ -34,6 +36,7 @@ public final class ModClientEvents
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.SOUL.get(), SoulRenderer::new);
 		LOGGER.debug("Registered Entity Renderers");
 	}
@@ -43,5 +46,6 @@ public final class ModClientEvents
 	{
 		event.put(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
 		event.put(EntityTypeInit.HOLLOW.get(), HollowEntity.createAttributes().build());
+		event.put(EntityTypeInit.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
 	}
 }

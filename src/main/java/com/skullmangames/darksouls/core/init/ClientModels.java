@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import net.minecraft.util.ResourceLocation;
 
@@ -24,29 +23,30 @@ public class ClientModels extends Models<ClientModel>
 	public ClientModels()
 	{
 		this.ENTITY_BIPED = this.register("biped");
-		this.ENTITY_BIPED_64_32_TEX = this.register("biped_old_texture", ENTITY_BIPED.getArmature());
-		this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", ENTITY_BIPED.getArmature());
-		this.ENTITY_VILLAGER_ZOMBIE = this.register("zombie_villager", ENTITY_BIPED.getArmature());
-		this.ENTITY_VILLAGER_ZOMBIE_BODY = this.register("zombie_villager_body", null);
+		this.ENTITY_BIPED_64_32_TEX = this.register("biped_old_texture", "biped");
+		this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
+		this.ENTITY_VILLAGER_ZOMBIE = this.register("zombie_villager", "biped");
+		this.ENTITY_VILLAGER_ZOMBIE_BODY = this.registerMeshOnly("zombie_villager_body");
 		this.ENTITY_CREEPER = this.register("creeper");
 		this.ENTITY_ENDERMAN = this.register("enderman");
 		this.ENTITY_SKELETON = this.register("skeleton");
 		this.ENTITY_SPIDER = this.register("spider");
 		this.ENTITY_GOLEM = this.register("iron_golem");
-		this.ENTITY_ILLAGER = this.register("illager", ENTITY_BIPED.getArmature());
-		this.ENTITY_WITCH = this.register("witch", ENTITY_BIPED.getArmature());
+		this.ENTITY_ILLAGER = this.register("illager", "biped");
+		this.ENTITY_WITCH = this.register("witch", "biped");
 		this.ENTITY_RAVAGER = this.register("ravager");
 		this.ENTITY_VEX = this.register("vex");
 		this.ENTITY_PIGLIN = this.register("piglin");
 		this.ENTITY_HOGLIN = this.register("hoglin");
-		this.ENTITY_BIPED_FIRST_PERSON = this.register("biped_firstperson", null);
-		this.ENTITY_BIPED_OUTER_LAYER = this.register("biped_outer_layer", null);
+		this.ENTITY_BIPED_FIRST_PERSON = this.registerMeshOnly("biped_firstperson");
+		this.ENTITY_BIPED_OUTER_LAYER = this.registerMeshOnly("biped_outer_layer");
+		this.ENTITY_ASYLUM_DEMON = this.register("asylum_demon");
 		
-		this.ITEM_HELMET = this.register("armor_helmet", null);
-		this.ITEM_CHESTPLATE = this.register("armor_chestplate", null);
-		this.ITEM_LEGGINS = this.register("armor_leggins", null);
-		this.ITEM_LEGGINS_CLOTH = this.register("armor_leggins_cloth", null);
-		this.ITEM_BOOTS = this.register("armor_boots", null);
+		this.ITEM_HELMET = this.registerMeshOnly("armor_helmet");
+		this.ITEM_CHESTPLATE = this.registerMeshOnly("armor_chestplate");
+		this.ITEM_LEGGINS = this.registerMeshOnly("armor_leggins");
+		this.ITEM_LEGGINS_CLOTH = this.registerMeshOnly("armor_leggins_cloth");
+		this.ITEM_BOOTS = this.registerMeshOnly("armor_boots");
 	}
 	
 	@Override
@@ -59,10 +59,19 @@ public class ClientModels extends Models<ClientModel>
 	}
 	
 	@Override
-	protected ClientModel register(String name, Armature armature)
+	protected ClientModel register(String name, String armaturePath)
 	{
 		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		model.loadArmatureData(armature);
+		model.setArmatureLocation(new ResourceLocation(DarkSouls.MOD_ID, armaturePath));
+		this.ARMATURES.add(model);
+		this.MESHES.add(model);
+		return model;
+	}
+	
+	@Override
+	protected ClientModel registerMeshOnly(String name)
+	{
+		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
 		this.MESHES.add(model);
 		return model;
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
@@ -29,6 +30,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	{
 		capabilityMap.put(EntityType.PLAYER, (entityIn) -> ServerPlayerData::new);
 		capabilityMap.put(EntityTypeInit.HOLLOW.get(), (entityIn) -> HollowData::new);
+		capabilityMap.put(EntityTypeInit.ASYLUM_DEMON.get(), (entityIn) -> AsylumDemonData::new);
 		/*capabilityMap.put(EntityType.ZOMBIE, (entityIn) -> ZombieData<ZombieEntity>::new);
 		capabilityMap.put(EntityType.CREEPER, (entityIn) -> CreeperData::new);
 		capabilityMap.put(EntityType.ENDERMAN, (entityIn) -> EndermanData::new);

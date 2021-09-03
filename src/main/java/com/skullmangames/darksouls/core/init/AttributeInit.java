@@ -35,6 +35,7 @@ public class AttributeInit
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
 	{
 		general(EntityTypeInit.HOLLOW.get(), event);
+		general(EntityTypeInit.ASYLUM_DEMON.get(), event);
 		general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);
 		general(EntityType.EVOKER, event);

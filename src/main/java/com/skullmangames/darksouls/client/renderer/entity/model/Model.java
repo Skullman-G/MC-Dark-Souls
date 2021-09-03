@@ -11,6 +11,7 @@ public class Model
 {
 	protected Armature armature;
 	protected ResourceLocation location;
+	protected ResourceLocation armatureLocation;
 
 	public Model(ResourceLocation location)
 	{
@@ -21,7 +22,8 @@ public class Model
 	{
 		try
 		{
-			this.armature = ColladaParser.getArmature(location);
+			ResourceLocation loc = this.armatureLocation != null ? this.armatureLocation : this.location;
+			this.armature = ColladaParser.getArmature(loc);
 		}
 		catch (IOException e)
 		{
@@ -29,9 +31,9 @@ public class Model
 		}
 	}
 
-	public void loadArmatureData(Armature armature)
+	public void setArmatureLocation(ResourceLocation location)
 	{
-		this.armature = armature;
+		this.armatureLocation = location;
 	}
 
 	public Armature getArmature()
