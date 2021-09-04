@@ -49,6 +49,11 @@ public class ClientEngine
 	{
 		this.playerActingMode = PlayerActingMode.BATTLE;
 		this.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+
+		this.playerdata.getOriginalEntity().xRot = 0.0F;
+		this.playerdata.getOriginalEntity().xRotO = 0.0F;
+		float x = this.playerdata.getOriginalEntity().yRot;
+		this.playerdata.rotateTo(x, 180.0F, true);
 	}
 	
 	public PlayerActingMode getPlayerActingMode()
