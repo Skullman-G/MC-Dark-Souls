@@ -24,7 +24,7 @@ public class OptionButton extends Button
 	
 	protected ITextComponent getRefreshedMessage()
 	{
-		if (!(this.option.getValue() instanceof Boolean)) return new TranslationTextComponent("gui."+DarkSouls.MOD_ID+"."+option.getName());
+		if (!(this.option.getValue() instanceof Boolean)) return new TranslationTextComponent(option.getName());
 		return new StringTextComponent(new TranslationTextComponent(this.option.getName()).getString()+this.onOrOff((boolean)this.option.getValue()));
 	}
 	

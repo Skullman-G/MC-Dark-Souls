@@ -16,7 +16,6 @@ public class IngameConfig
 	
 	public final Option<Boolean> filterAnimation;
 	public final Option<Boolean> showHealthIndicator;
-	public final Option<Boolean> showTargetIndicator;
 	
 	public IngameConfig(ForgeConfigSpec.Builder config)
 	{
@@ -25,7 +24,6 @@ public class IngameConfig
 		this.longPressCount = this.registerInt("long_press_count", 2, 1, 10);
 		
 		this.showHealthIndicator = this.registerBoolean("show_health_indicator", true);
-		this.showTargetIndicator = this.registerBoolean("show_target_indicator", true);
 		this.filterAnimation = this.registerBoolean("filter_animation", false);
 	}
 	

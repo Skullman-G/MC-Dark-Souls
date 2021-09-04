@@ -81,10 +81,6 @@
 	"gui.darksouls.estus_volume_level_tooltip": "Estus Volume Level \n\u00A77Raise by kindling. This raises the amount of estus you can catch from this bonfire",
 	"gui.darksouls.level_up_button": "Level up",
 	"gui.darksouls.accept": "Accept",
-	"gui.darksouls.long_press_counter": "Long Press Counter",
-	"gui.darksouls.filter_animation": "Filter Animation",
-	"gui.darksouls.health_indicator": "Show Health Indicator",
-	"gui.darksouls.target_indicator": "Show Target Indicator",
 	"gui.darksouls.on": "ON",
 	"gui.darksouls.off": "OFF",
 	"gui.darksouls.done": "Done",
@@ -139,6 +135,5 @@
 	
 	"ingame.long_press_count": "Button Long Press Count",
 	"ingame.show_health_indicator": "Show Health Bar Indicator",
-	"ingame.show_target_indicator": "Show Target Indicator",
 	"ingame.filter_animation": "Filter Animation"
 }

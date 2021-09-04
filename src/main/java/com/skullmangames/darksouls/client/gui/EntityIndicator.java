@@ -26,7 +26,6 @@ public abstract class EntityIndicator extends ModIngameGui
 	
 	public static void init()
 	{
-		new TargetIndicator();
 		new HealthBarIndicator();
 	}
 	
