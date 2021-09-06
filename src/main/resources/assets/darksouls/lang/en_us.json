@@ -18,6 +18,7 @@
 	"item.darksouls.big_dark_oak_door": "Big Dark Oak Door",
 	"item.darksouls.big_crimson_door": "Big Crimson Door",
 	"item.darksouls.big_warped_door": "Big Warped Door",
+	"item.darksouls.demon_great_hammer": "Demon's Great Hammer",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -60,6 +61,7 @@
 	"tooltip.darksouls.straight_sword_hilt": "The hilt of this lost sword. Only slightly better than one's bare hands, and not recommended for extensive use.",
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be registered as holding the key.",
 	"tooltip.darksouls.filter_animation": "Turns the animation invisible in non-combat mode.",
+	"tooltip.darksouls.demon_great_hammer": "A Demon weapon built from the stone archtrees. Used by lesser demons at the Undead Asylum. This hammer is imbued with no special power, but will merrily beat foes to a pulp, provided you have the strength to wield it.",
 	
 	"gui.darksouls.name_bonfire": "Name Bonfire",
 	"gui.darksouls.reverse_hollowing_button": "Reverse Hollowing",
