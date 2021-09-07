@@ -225,6 +225,7 @@ public final class Animations
 	public static AttackAnimation HOLLOW_JUMP_ATTACK;
 	public static StaticAnimation HOLLOW_DEFLECTED;
 	public static List<AttackAnimation> SHIELD_LIGHT_ATTACK = new ArrayList<AttackAnimation>();
+	public static StaticAnimation BIPED_HOLDING_GREAT_HAMMER;
 	
 	public static int BASIC_ATTACK_MIN;
 	public static int BASIC_ATTACK_MAX;
@@ -299,6 +300,8 @@ public final class Animations
 		BIPED_JAVELIN_AIM = new AimingAnimation(98, 0.16F, false, "biped/combat/javelin_aim_mid.dae", "biped/combat/javelin_aim_up.dae", "biped/combat/javelin_aim_down.dae").bindOnlyClient(biped, dist);
 		BIPED_JAVELIN_REBOUND = new ReboundAnimation(99, 0.08F, false, "biped/combat/javelin_throw_mid.dae", "biped/combat/javelin_throw_up.dae", "biped/combat/javelin_throw_down.dae").bindOnlyClient(biped, dist);
 	
+		BIPED_HOLDING_GREAT_HAMMER = new StaticAnimation(7011, 0.2F, true, "biped/living/holding_great_hammer.dae").bindOnlyClient(biped, dist);
+		
 		ZOMBIE_IDLE = new StaticAnimation(100, 0.2F, true, "zombie/idle.dae").bindOnlyClient(biped, dist);
 		ZOMBIE_WALK = new MovementAnimation(102, 0.2F, true, "zombie/walk.dae").bindOnlyClient(biped, dist);
 		ZOMBIE_CHASE = new MovementAnimation(103, true, "zombie/chase.dae").bindOnlyClient(biped, dist);

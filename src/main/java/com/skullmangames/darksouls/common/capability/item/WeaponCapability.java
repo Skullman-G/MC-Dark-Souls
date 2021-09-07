@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -30,14 +32,28 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class WeaponCapability extends CapabilityItem
+public class WeaponCapability extends CapabilityItem implements IShield
 {
 	protected final WeaponCategory weaponCategory;
+	protected Map<LivingMotion, StaticAnimation> animationSet;
 	
 	public WeaponCapability(Item item, WeaponCategory category)
 	{
 		super(item);
+		this.animationSet = new HashMap<LivingMotion, StaticAnimation>();
 		this.weaponCategory = category;
+	}
+	
+	@Override
+	public float getPhysicalDefense()
+	{
+		return 0.2F;
+	}
+	
+	@Override
+	public ShieldType getShieldType()
+	{
+		return ShieldType.NONE;
 	}
 	
 	@Override
@@ -232,6 +248,12 @@ public class WeaponCapability extends CapabilityItem
 		return this.attributeMap.get(style);
 	}
 	
+	@Override
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerData<?> playerdata)
+	{
+		return animationSet;
+	}
+	
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public boolean canBeRenderedBoth(ItemStack item)
@@ -241,7 +263,7 @@ public class WeaponCapability extends CapabilityItem
 	
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, GREATSWORD, HOE, PICKAXE, SHOVEL, SWORD, KATANA, SPEAR, TACHI, SHIELD
+		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, SWORD, SHIELD, GREAT_HAMMER
 	}
 	
 	public enum HandProperty

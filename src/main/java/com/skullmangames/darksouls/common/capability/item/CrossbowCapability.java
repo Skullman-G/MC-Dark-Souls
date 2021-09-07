@@ -10,9 +10,9 @@ public class CrossbowCapability extends RangedWeaponCapability
 	public CrossbowCapability(Item item)
 	{
 		super(item, Animations.BIPED_CROSSBOW_RELOAD, Animations.BIPED_CROSSBOW_AIM, Animations.BIPED_CROSSBOW_SHOT);
-		this.rangeAnimationSet.put(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW);
-		this.rangeAnimationSet.put(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW);
-		this.rangeAnimationSet.put(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW);
+		this.animationSet.put(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW);
+		this.animationSet.put(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW);
+		this.animationSet.put(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW);
 	}
 	
 	@Override

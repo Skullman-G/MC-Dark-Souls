@@ -4,7 +4,7 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.TieredItem;
 
-public abstract class MaterialItemCapability extends WeaponCapability implements IShield
+public abstract class MaterialItemCapability extends WeaponCapability
 {
 	protected IItemTier itemTier;
 	
@@ -13,17 +13,5 @@ public abstract class MaterialItemCapability extends WeaponCapability implements
 		super(item, category);
 		this.itemTier = ((TieredItem)item).getTier();
 		this.registerAttribute();
-	}
-	
-	@Override
-	public float getPhysicalDefense()
-	{
-		return 0.2F;
-	}
-	
-	@Override
-	public ShieldType getShieldType()
-	{
-		return ShieldType.NONE;
 	}
 }

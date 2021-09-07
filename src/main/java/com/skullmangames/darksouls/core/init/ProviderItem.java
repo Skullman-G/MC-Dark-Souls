@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.capability.item.AxeCapability;
 import com.skullmangames.darksouls.common.capability.item.BowCapability;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCapability;
+import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
 import com.skullmangames.darksouls.common.capability.item.HoeCapability;
 import com.skullmangames.darksouls.common.capability.item.PickaxeCapability;
 import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
@@ -16,6 +17,7 @@ import com.skullmangames.darksouls.common.capability.item.ShovelCapability;
 import com.skullmangames.darksouls.common.capability.item.SwordCapability;
 import com.skullmangames.darksouls.common.capability.item.TridentCapability;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCapability;
+import com.skullmangames.darksouls.common.item.GreatHammerItem;
 
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.AxeItem;
@@ -110,6 +112,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
 		CAPABILITY_BY_CLASS.put(ShieldItem.class, ShieldCapability::new);
+		CAPABILITY_BY_CLASS.put(GreatHammerItem.class, GreatHammerCapability::new);
 	}
 	
 	public static void addInstance(Item item, CapabilityItem cap)
