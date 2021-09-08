@@ -17,6 +17,11 @@ public class Model
 	{
 		this.location = location;
 	}
+	
+	public String getName()
+	{
+		return location.getPath();
+	}
 
 	public void loadArmatureData()
 	{

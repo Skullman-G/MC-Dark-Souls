@@ -9,14 +9,14 @@ public class DodgingAnimation extends ActionAnimation
 {
 	private final EntitySize size;
 	
-	public DodgingAnimation(int id, float convertTime, boolean affectVelocity, String path, float width, float height)
+	public DodgingAnimation(int id, float convertTime, boolean affectVelocity, String path, float width, float height, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, 0.0F, affectVelocity, path, width, height);
+		this(id, convertTime, 0.0F, affectVelocity, path, width, height, armature, clientOnly);
 	}
 	
-	public DodgingAnimation(int id, float convertTime, float delayTime, boolean affectVelocity, String path, float width, float height)
+	public DodgingAnimation(int id, float convertTime, float delayTime, boolean affectVelocity, String path, float width, float height, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, delayTime, affectVelocity, false, path);
+		super(id, convertTime, delayTime, affectVelocity, false, path, armature, clientOnly);
 		
 		if(width > 0.0F || height > 0.0F)
 		{

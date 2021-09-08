@@ -9,6 +9,8 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.util.ResourceLocation;
@@ -20,14 +22,18 @@ public class StaticAnimation extends DynamicAnimation
 	protected String animationDataPath;
 	protected final int animationId;
 	public List<SoundKey> soundStream;
+	protected final boolean clientOnly;
+	protected final String armature;
 	
 	public StaticAnimation()
 	{
 		super();
 		this.animationId = -1;
+		this.clientOnly = true;
+		this.armature = "";
 	}
 	
-	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path)
+	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
 	{
 		super(convertTime, isRepeat);
 		
@@ -36,7 +42,9 @@ public class StaticAnimation extends DynamicAnimation
 			DarkSouls.LOGGER.error("Duplicated Animation Key " + id);
 		}
 		
-		this.animationDataPath = "models/animations/" + path;
+		this.clientOnly = clientOnly;
+		this.armature = armature;
+		this.animationDataPath = this.makeDataPath(path);
 		this.totalTime = 0;
 		this.animationId = id;
 		
@@ -46,41 +54,42 @@ public class StaticAnimation extends DynamicAnimation
 	public StaticAnimation(String path)
 	{
 		this();
-		this.animationDataPath = "models/animations/" + path;
+		this.animationDataPath = this.makeDataPath(path);
 	}
 	
-	public StaticAnimation(float convertTime, boolean repeatPlay, String path)
+	public StaticAnimation(float convertTime, boolean repeatPlay, String path, String armature, boolean clientOnly)
 	{
 		super(convertTime, repeatPlay);
 		this.animationId = -1;
-		this.animationDataPath = "models/animations/" + path;
+		this.clientOnly = clientOnly;
+		this.armature = armature;
+		this.animationDataPath = this.makeDataPath(path);
 	}
 	
-	public StaticAnimation(int id, boolean repeatPlay, String path)
+	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly)
 	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly);
 	}
 	
-	public StaticAnimation bindFull(Armature armature)
+	private String makeDataPath(String path)
 	{
+		return "models/animations/"+path+".dae";
+	}
+	
+	public void bind(Dist dist)
+	{
+		if (this.clientOnly && dist != Dist.CLIENT) return;
+		
 		if(animationDataPath != null)
 		{
+			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
+			Armature armature = modeldata.findArmature(this.armature);
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, animationDataPath), this, armature);
 			animationDataPath = null;
 		}
 		
-		if(this.soundStream != null)
-			this.soundStream.sort(null);
-		
-		return this;
-	}
-	
-	public StaticAnimation bindOnlyClient(Armature armature, Dist dist)
-	{
-		if(dist == Dist.CLIENT)
-			bindFull(armature);
-		
-		return this;
+		if(this.soundStream != null) this.soundStream.sort(null);
+		return;
 	}
 	
 	@Override

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.property.Property.AnimationProperty;
@@ -45,28 +44,21 @@ public class AttackAnimation extends ActionAnimation
 	protected final Map<AnimationProperty<?>, Object> properties;
 	public final Phase[] phases;
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path)
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path)
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, boolean affectY, String path, Phase... phases)
+	public AttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, boolean clientOnly, Phase... phases)
 	{
-		super(id, convertTime, true, affectY, path);
+		super(id, convertTime, true, affectY, path, armature, clientOnly);
 		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
-	}
-	
-	@Override
-	public AttackAnimation bindFull(Armature armature)
-	{
-		super.bindFull(armature);
-		return this;
 	}
 	
 	@Override

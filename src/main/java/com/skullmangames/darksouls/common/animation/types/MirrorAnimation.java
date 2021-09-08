@@ -2,19 +2,22 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
+import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 
 public class MirrorAnimation extends StaticAnimation
 {
 	public StaticAnimation mirrorAnimation;
 	
-	public MirrorAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2)
+	public MirrorAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, path1);
-		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2);
+		super(id, convertTime, repeatPlay, path1, armature, clientOnly);
+		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2, armature, clientOnly);
 	}
 	
 	public StaticAnimation checkHandAndReturnAnimation(Hand hand)
@@ -31,14 +34,20 @@ public class MirrorAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public StaticAnimation bindFull(Armature armature)
+	public void bind(Dist dist)
 	{
+		if (this.clientOnly && dist != Dist.CLIENT) return;
+		
 		if(mirrorAnimation.animationDataPath != null)
 		{
+			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
+			Armature armature = modeldata.findArmature(this.armature);
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, mirrorAnimation.animationDataPath), mirrorAnimation, armature);
 			mirrorAnimation.animationDataPath = null;
 		}
 		
-		return super.bindFull(armature);
+		super.bind(dist);
+		
+		return;
 	}
 }

@@ -15,20 +15,20 @@ import net.minecraft.util.Hand;
 public class SpecialAttackAnimation extends AttackAnimation
 {
 	public SpecialAttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider,
-			String index, String path)
+			String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 	
 	public SpecialAttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider,
-			String index, String path)
+			String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
-	public SpecialAttackAnimation(int id, float convertTime, boolean affectY, String path, Phase... phases)
+	public SpecialAttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, boolean clientOnly, Phase... phases)
 	{
-		super(id, convertTime, affectY, path, phases);
+		super(id, convertTime, affectY, path, armature, clientOnly, phases);
 	}
 	
 	@Override

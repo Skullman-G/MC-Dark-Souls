@@ -15,21 +15,21 @@ public class AAAnimation extends TargetTraceAnimation
 {
 	protected final float basisSpeed;
 	
-	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path)
+	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, antic, antic, contact, recovery, basisSpeed, collider, index, path);
+		this(id, convertTime, antic, antic, contact, recovery, basisSpeed, collider, index, path, armature, clientOnly);
 	}
 	
-	public AAAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path)
+	public AAAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path);
+		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature, clientOnly);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 		this.basisSpeed = basisSpeed;
 	}
 	
-	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, Hand hand, @Nullable Collider collider,  String index, String path)
+	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, Hand hand, @Nullable Collider collider,  String index, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, antic, antic, contact, recovery, false, hand, collider, index, path);
+		super(id, convertTime, antic, antic, contact, recovery, false, hand, collider, index, path, armature, clientOnly);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 		this.basisSpeed = basisSpeed;
 	}

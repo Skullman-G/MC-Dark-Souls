@@ -3,7 +3,10 @@ package com.skullmangames.darksouls.core.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +37,13 @@ public abstract class Models<T extends Model>
 	protected abstract T register(String name);
 	protected abstract T register(String name, String armaturePath);
 	protected abstract T registerMeshOnly(String name);
+	
+	@Nullable
+	public Armature findArmature(String name)
+	{
+		for (T model : this.ARMATURES) if (model.getName() == name) return model.getArmature();
+		return null;
+	}
 	
 	public void buildArmatureData()
 	{

@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
 import com.skullmangames.darksouls.common.skill.DodgeSkill;
 import com.skullmangames.darksouls.common.skill.FatalDrawSkill;
-import com.skullmangames.darksouls.common.skill.KatanaPassive;
 import com.skullmangames.darksouls.common.skill.LethalSlicingSkill;
 import com.skullmangames.darksouls.common.skill.LightAttackSkill;
 import com.skullmangames.darksouls.common.skill.SimpleHeavyAttackSkill;
@@ -104,8 +103,6 @@ public class Skills
 				.addProperty(DamageProperty.ARMOR_NEGATION, ValueCorrector.getAdder(50.0F))
 				.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(6))
 				.addProperty(DamageProperty.STUN_TYPE, StunType.HOLD).registerPropertiesToAnimation(), false);
-		
-		KATANA_GIMMICK = new KatanaPassive();
 		
 		LETHAL_SLICING = makeSkill("lethal_slicing", (skillName) ->
 			new LethalSlicingSkill(skillName)

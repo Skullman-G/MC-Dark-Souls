@@ -10,9 +10,9 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
 public class VariableHitAnimation extends HitAnimation
 {
-	public VariableHitAnimation(int id, float convertTime, String path)
+	public VariableHitAnimation(int id, float convertTime, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, path);
+		super(id, convertTime, path, armature, clientOnly);
 	}
 	
 	@Override

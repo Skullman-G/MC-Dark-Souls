@@ -13,19 +13,19 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class TargetTraceAnimation extends AttackAnimation
 {
-	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path)
+	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, antic, preDelay, contact, recovery, affectY, Hand.MAIN_HAND, collider, index, path);
+		this(id, convertTime, antic, preDelay, contact, recovery, affectY, Hand.MAIN_HAND, collider, index, path, armature, clientOnly);
 	}
 	
-	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path)
+	public TargetTraceAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, affectY, path, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
-	public TargetTraceAnimation(int id, float convertTime, boolean affectY, String path, Phase... phases)
+	public TargetTraceAnimation(int id, float convertTime, boolean affectY, String path, String armature, boolean clientOnly, Phase... phases)
 	{
-		super(id, convertTime, affectY, path, phases);
+		super(id, convertTime, affectY, path, armature, clientOnly, phases);
 	}
 	
 	@Override

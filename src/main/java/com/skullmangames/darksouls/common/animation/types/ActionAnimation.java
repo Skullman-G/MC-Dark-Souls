@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
+import net.minecraftforge.api.distmarker.Dist;
 
 public class ActionAnimation extends ImmovableAnimation
 {
@@ -30,14 +30,14 @@ public class ActionAnimation extends ImmovableAnimation
 	protected final boolean affectYCoord;
 	protected float delayTime;
 	
-	public ActionAnimation(int id, float convertTime, boolean breakMove, boolean affectY, String path)
+	public ActionAnimation(int id, float convertTime, boolean breakMove, boolean affectY, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, -1.0F, breakMove, affectY, path);
+		this(id, convertTime, -1.0F, breakMove, affectY, path, armature, clientOnly);
 	}
 
-	public ActionAnimation(int id, float convertTime, float postDelay, boolean breakMove, boolean affectY, String path)
+	public ActionAnimation(int id, float convertTime, float postDelay, boolean breakMove, boolean affectY, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, path);
+		super(id, convertTime, path, armature, clientOnly);
 		this.breakMovement = breakMove;
 		this.affectYCoord = affectY;
 		this.delayTime = postDelay;
@@ -131,16 +131,12 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public ActionAnimation bindFull(Armature armature)
+	public void bind(Dist dist)
 	{
-		super.bindFull(armature);
-		
-		if(this.delayTime < 0.0F)
-		{
-			this.delayTime = this.totalTime;
-		}
-		
-		return this;
+		super.bind(dist);
+		if (this.clientOnly && dist != Dist.CLIENT) return;
+		if(this.delayTime >= 0.0F) return;
+		this.delayTime = this.totalTime;
 	}
 	
 	protected Vector3f getCoordVector(LivingData<?> entitydata)

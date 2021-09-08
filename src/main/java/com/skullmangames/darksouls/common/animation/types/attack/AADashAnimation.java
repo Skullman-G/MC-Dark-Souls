@@ -12,16 +12,16 @@ import net.minecraft.entity.Entity;
 public class AADashAnimation extends AttackAnimation
 {
 	public AADashAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
-			String path)
+			String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path);
+		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature, clientOnly);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 	}
 	
 	public AADashAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
-			String path, boolean noDirectionAttack)
+			String path, boolean noDirectionAttack, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path);
+		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature, clientOnly);
 	}
 	
 	@Override

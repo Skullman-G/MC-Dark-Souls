@@ -7,21 +7,24 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
 
 public class AimingAnimation extends StaticAnimation
 {
 	public StaticAnimation lookUp;
 	public StaticAnimation lookDown;
 
-	public AimingAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String path3)
+	public AimingAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, path1);
+		super(id, convertTime, repeatPlay, path1, armature, clientOnly);
 		lookUp = new StaticAnimation(path2);
 		lookDown = new StaticAnimation(path3);
 	}
@@ -82,10 +85,14 @@ public class AimingAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public StaticAnimation bindFull(Armature armature)
+	public void bind(Dist dist)
 	{
+		if (this.clientOnly && dist != Dist.CLIENT) return;
+		
 		if (animationDataPath != null)
 		{
+			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
+			Armature armature = modeldata.findArmature(this.armature);
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, animationDataPath), this, armature);
 			animationDataPath = null;
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookUp.animationDataPath), lookUp, armature);
@@ -93,6 +100,6 @@ public class AimingAnimation extends StaticAnimation
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookDown.animationDataPath), lookDown, armature);
 			lookDown.animationDataPath = null;
 		}
-		return this;
+		return;
 	}
 }

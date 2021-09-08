@@ -5,9 +5,9 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
 public class ReboundAnimation extends AimingAnimation
 {
-	public ReboundAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String path3)
+	public ReboundAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, path1, path2, path3);
+		super(id, convertTime, repeatPlay, path1, path2, path3, armature, clientOnly);
 	}
 	
 	@Override
@@ -24,10 +24,7 @@ public class ReboundAnimation extends AimingAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entity)
-	{
-		;
-	}
+	public void onUpdate(LivingData<?> entity) {}
 
 	@Override
 	public LivingData.EntityState getState(float time)

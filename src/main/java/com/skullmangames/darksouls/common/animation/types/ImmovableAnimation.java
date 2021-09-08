@@ -8,14 +8,14 @@ import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
 
 public class ImmovableAnimation extends StaticAnimation
 {
-	public ImmovableAnimation(int id, float convertTime, String path)
+	public ImmovableAnimation(int id, float convertTime, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, false, path);
+		super(id, convertTime, false, path, armature, clientOnly);
 	}
 	
-	public ImmovableAnimation(int id, float convertTime, boolean isRepeat, String path)
+	public ImmovableAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, isRepeat, path);
+		super(id, convertTime, isRepeat, path, armature, clientOnly);
 	}
 	
 	@Override

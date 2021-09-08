@@ -7,10 +7,10 @@ public class ConsumeAnimation extends MirrorAnimation
 {
 	private LivingData<?> entitydata;
 	
-	public ConsumeAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2)
+	public ConsumeAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, path1, path2);
-		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2)
+		super(id, convertTime, repeatPlay, path1, path2, armature, clientOnly);
+		this.mirrorAnimation = new StaticAnimation(convertTime, repeatPlay, path2, armature, clientOnly)
 		{
 			private LivingData<?> entitydata;
 			
