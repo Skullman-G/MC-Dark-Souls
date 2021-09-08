@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -42,6 +43,12 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		super(item);
 		this.animationSet = new HashMap<LivingMotion, StaticAnimation>();
 		this.weaponCategory = category;
+	}
+	
+	@Nullable
+	public HoldingWeaponAnimation getHoldingAnimation()
+	{
+		return null;
 	}
 	
 	@Override

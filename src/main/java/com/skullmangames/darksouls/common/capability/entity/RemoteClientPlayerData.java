@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
@@ -193,9 +194,34 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		}
 		else
 		{
+			WeaponCapability weaponmh = this.getHeldWeaponCapability(Hand.MAIN_HAND);
+			WeaponCapability weaponoh = this.getHeldWeaponCapability(Hand.OFF_HAND);
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) currentMixMotion = LivingMotion.AIMING;
 			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
+			else if ((weaponmh != null && weaponmh.getHoldingAnimation() != null) || (weaponoh != null && weaponoh.getHoldingAnimation() != null)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
 			else currentMixMotion = LivingMotion.NONE;
+		}
+	}
+	
+	private void updateClientAnimator()
+	{
+		AnimatorClient animator = getClientAnimator();
+		
+		if(this.inaction)
+		{
+			this.currentMotion = LivingMotion.IDLE;
+		}
+		else
+		{
+			this.updateMotion();
+			if(!animator.compareMotion(currentMotion))
+			{
+				animator.playLoopMotion();
+			}
+			if(!animator.compareMixMotion(currentMixMotion) || this.currentMixMotion == LivingMotion.HOLDING_WEAPON)
+			{
+				animator.playMixLoopMotion();
+			}
 		}
 	}
 	
@@ -216,9 +242,9 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 				prevHeldItem = this.orgEntity.getItemInHand(Hand.MAIN_HAND);
 			if(isOffHandChanged)
 				prevHeldItemOffHand = this.orgEntity.getItemInHand(Hand.OFF_HAND);
+			this.updateClientAnimator();
 		}
-		
-		super.updateOnClient();
+		else super.updateOnClient();
 		
 		if(this.orgEntity.deathTime == 1)
 		{

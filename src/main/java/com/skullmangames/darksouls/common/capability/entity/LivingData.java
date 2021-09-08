@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.common.capability.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -27,6 +29,7 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -80,6 +83,24 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		this.orgEntity.pushthrough = 1.0F;
 	}
 	
+	@Nullable
+	public StaticAnimation getHoldingWeaponAnimation()
+	{
+		StaticAnimation animation = null;
+		if (this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND))
+		{
+			animation = this.getHeldWeaponCapability(Hand.OFF_HAND).getHoldingAnimation();
+			if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND)) animation = ((HoldingWeaponAnimation)animation).getAnimation(2);
+			else animation = ((HoldingWeaponAnimation)animation).getAnimation(1);
+		}
+		else if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND))
+		{
+			animation = this.getHeldWeaponCapability(Hand.MAIN_HAND).getHoldingAnimation().getAnimation(0);
+		}
+		
+		return animation;
+	}
+	
 	protected abstract void initAnimator(AnimatorClient animatorClient);
 	public abstract void updateMotion();
 	public abstract <M extends Model> M getEntityModel(Models<M> modelDB);
@@ -113,6 +134,12 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 				animator.playMixLoopMotion();
 			}
 		}
+	}
+	
+	public boolean isHoldingWeaponWithHoldingAnimation(Hand hand)
+	{
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		return cap != null && cap.getHoldingAnimation() != null;
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
+import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.ReboundAnimation;
@@ -80,7 +81,7 @@ public final class Animations
 																	.addProperty(AnimationProperty.DIRECTIONAL, true);
 	public static StaticAnimation BIPED_MOB_THROW = new AttackAnimation(2902, 0.11F, 1.0F, 0, 0, 0, false, null, "", "biped/combat/javelin_throw_mid", "biped", false);
 	
-	public static StaticAnimation BIPED_HOLDING_GREAT_HAMMER = new StaticAnimation(7011, 0.2F, true, "biped/living/holding_great_hammer", "biped", true);
+	public static HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(7011, 0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
 	public static List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{

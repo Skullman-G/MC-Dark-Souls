@@ -19,6 +19,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
+import net.minecraft.util.Hand;
+
 public class AnimatorClient extends Animator
 {
 	private final Map<LivingMotion, StaticAnimation> livingAnimations = new HashMap<LivingMotion, StaticAnimation>();
@@ -160,12 +162,16 @@ public class AnimatorClient extends Animator
 		}
 		else
 		{
-			StaticAnimation animation = this.livingAnimations.get(this.entitydata.currentMixMotion);
-			if(animation instanceof MirrorAnimation)
+			StaticAnimation animation = this.entitydata.currentMixMotion == LivingMotion.HOLDING_WEAPON ? this.entitydata.getHeldWeaponCapability(Hand.MAIN_HAND).getHoldingAnimation() : this.livingAnimations.get(this.entitydata.currentMixMotion);	
+			if (this.entitydata.currentMixMotion == LivingMotion.HOLDING_WEAPON)
 			{
-				this.playMixLayerAnimation(((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand()));
+				animation = this.entitydata.getHoldingWeaponAnimation();
 			}
-			else
+			else if(animation instanceof MirrorAnimation)
+			{
+				if (this.entitydata.getOriginalEntity().isUsingItem()) animation = ((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand());
+			}
+			if (animation != null)
 			{
 				this.playMixLayerAnimation(animation);
 			}
