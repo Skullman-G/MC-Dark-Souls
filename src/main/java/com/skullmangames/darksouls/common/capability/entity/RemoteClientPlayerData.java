@@ -3,10 +3,10 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
@@ -194,11 +194,9 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		}
 		else
 		{
-			WeaponCapability weaponmh = this.getHeldWeaponCapability(Hand.MAIN_HAND);
-			WeaponCapability weaponoh = this.getHeldWeaponCapability(Hand.OFF_HAND);
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) currentMixMotion = LivingMotion.AIMING;
 			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
-			else if ((weaponmh != null && weaponmh.getHoldingAnimation() != null) || (weaponoh != null && weaponoh.getHoldingAnimation() != null)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
+			else if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
 			else currentMixMotion = LivingMotion.NONE;
 		}
 	}
@@ -232,16 +230,25 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		boolean isMainHandChanged = prevHeldItem.getItem() != this.orgEntity.getItemInHand(Hand.MAIN_HAND).getItem();
-		boolean isOffHandChanged = prevHeldItemOffHand.getItem() != this.orgEntity.getItemInHand(Hand.OFF_HAND).getItem();
+		boolean isMainHandChanged = prevHeldItem != this.orgEntity.getItemInHand(Hand.MAIN_HAND);
+		boolean isOffHandChanged = prevHeldItemOffHand != this.orgEntity.getItemInHand(Hand.OFF_HAND);
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
-			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
+			this.getClientAnimator().resetMixMotion();
 			if(isMainHandChanged)
+			{
 				prevHeldItem = this.orgEntity.getItemInHand(Hand.MAIN_HAND);
+				MixLayer right = this.getClientAnimator().mixLayerRight;
+				if (right.isActive() && !this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND)) this.getClientAnimator().offMixLayer(right, false);
+			}
 			if(isOffHandChanged)
+			{
 				prevHeldItemOffHand = this.orgEntity.getItemInHand(Hand.OFF_HAND);
+				MixLayer left = this.getClientAnimator().mixLayerLeft;
+				if (left.isActive() && !this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND)) this.getClientAnimator().offMixLayer(left, false);
+			}
+			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
 			this.updateClientAnimator();
 		}
 		else super.updateOnClient();
@@ -259,7 +266,8 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			}
 			else
 			{
-				this.getClientAnimator().offMixLayer(false);
+				this.getClientAnimator().offMixLayer(this.getClientAnimator().mixLayerLeft, false);
+				this.getClientAnimator().offMixLayer(this.getClientAnimator().mixLayerRight, false);
 			}
 			
 			this.swingArm = orgEntity.swinging;
@@ -268,8 +276,6 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 
 	public void onHeldItemChange(CapabilityItem mainHandCap, CapabilityItem offHandCap)
 	{
-		this.getClientAnimator().resetMixMotion();
-		this.getClientAnimator().offMixLayer(false);
 		this.cancelUsingItem();
 	}
 

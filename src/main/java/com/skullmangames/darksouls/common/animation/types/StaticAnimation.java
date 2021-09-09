@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -24,6 +25,7 @@ public class StaticAnimation extends DynamicAnimation
 	public List<SoundKey> soundStream;
 	protected final boolean clientOnly;
 	protected final String armature;
+	private final MixPart mixPart;
 	
 	public StaticAnimation()
 	{
@@ -31,9 +33,15 @@ public class StaticAnimation extends DynamicAnimation
 		this.animationId = -1;
 		this.clientOnly = true;
 		this.armature = "";
+		this.mixPart = MixPart.FULL;
 	}
 	
 	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
+	{
+		this(id, convertTime, isRepeat, path, armature, clientOnly, MixPart.FULL);
+	}
+	
+	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly, MixPart mixPart)
 	{
 		super(convertTime, isRepeat);
 		
@@ -47,6 +55,7 @@ public class StaticAnimation extends DynamicAnimation
 		this.animationDataPath = this.makeDataPath(path);
 		this.totalTime = 0;
 		this.animationId = id;
+		this.mixPart = mixPart;
 		
 		if(id >= 0) Animations.animationTable.put(id, this);
 	}
@@ -59,16 +68,27 @@ public class StaticAnimation extends DynamicAnimation
 	
 	public StaticAnimation(float convertTime, boolean repeatPlay, String path, String armature, boolean clientOnly)
 	{
+		this(convertTime, repeatPlay, path, armature, clientOnly, MixPart.FULL);
+	}
+	
+	public StaticAnimation(float convertTime, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
+	{
 		super(convertTime, repeatPlay);
 		this.animationId = -1;
 		this.clientOnly = clientOnly;
 		this.armature = armature;
 		this.animationDataPath = this.makeDataPath(path);
+		this.mixPart = mixPart;
 	}
 	
-	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly)
+	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
 	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
+	}
+	
+	public MixPart getMixPart()
+	{
+		return this.mixPart;
 	}
 	
 	private String makeDataPath(String path)

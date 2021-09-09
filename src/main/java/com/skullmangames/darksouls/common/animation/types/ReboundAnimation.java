@@ -16,9 +16,10 @@ public class ReboundAnimation extends AimingAnimation
 		if (entity.isClientSide())
 		{
 			AnimatorClient animator = entity.getClientAnimator();
-			if(animator.mixLayerActivated)
+			if(animator.mixLayerActivated())
 			{
-				animator.mixLayer.pause = false;
+				animator.mixLayerLeft.pause = false;
+				animator.mixLayerRight.pause = false;
 			}
 		}
 	}

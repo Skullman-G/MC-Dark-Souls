@@ -99,8 +99,12 @@ public class STCLivingMotionChange
 			{
 				LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				AnimatorClient animator = entitydata.getClientAnimator();
-				animator.resetMixMotion();
-				animator.offMixLayer(false);
+				if (entitydata.currentMixMotion != LivingMotion.HOLDING_WEAPON)
+				{
+					animator.resetMixMotion();
+					animator.offMixLayer(animator.mixLayerLeft, false);
+					animator.offMixLayer(animator.mixLayerRight, false);
+				}
 				animator.resetModifiedLivingMotions();
 				
 				for(int i = 0; i < msg.count; i++)

@@ -27,7 +27,8 @@ public class ImmovableAnimation extends StaticAnimation
 		{
 			entitydata.getClientAnimator().resetMotion();
 			entitydata.getClientAnimator().resetMixMotion();
-			entitydata.getClientAnimator().offMixLayer(true);
+			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerLeft, true);
+			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerRight, true);
 			entitydata.currentMotion = LivingMotion.IDLE;
 			entitydata.currentMixMotion = LivingMotion.NONE;
 		}

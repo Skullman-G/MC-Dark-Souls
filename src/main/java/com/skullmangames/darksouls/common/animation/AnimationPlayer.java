@@ -84,8 +84,8 @@ public class AnimationPlayer
 
 	public void setEmpty()
 	{
-		resetPlayer();
-		play = null;
+		this.resetPlayer();
+		this.play = null;
 	}
 
 	public Pose getCurrentPose(LivingData<?> entitydata, float partialTicks)
@@ -133,6 +133,6 @@ public class AnimationPlayer
 
 	public boolean isEmpty()
 	{
-		return play == null ? true : false;
+		return this.play == null ? true : false;
 	}
 }

@@ -59,7 +59,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	@Override
 	public void initAnimator(AnimatorClient animatorClient)
 	{
-		animatorClient.mixLayer.setJointMask("Root", "Torso");
+		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
+		animatorClient.mixLayerRight.setJointMask("Shoulder_R", "Arm_R", "Hand_R");
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);

@@ -177,6 +177,7 @@ public class InputManager
 				{
 					WeaponCapability item = this.playerdata.getHeldWeaponCapability(hand);
 					if (item == null || (hand == Hand.OFF_HAND && item.equals(ModCapabilities.FIST))) continue;
+					return;
 				}
 				ClientEngine.INSTANCE.switchToMiningMode();
 			}

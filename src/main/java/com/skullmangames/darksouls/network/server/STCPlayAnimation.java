@@ -52,7 +52,8 @@ public class STCPlayAnimation
 		
 		if (this.animationId < 0)
 		{
-			entitydata.getClientAnimator().offMixLayer(false);
+			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerLeft, false);
+			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerRight, false);
 		}
 		else
 		{

@@ -58,7 +58,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 	@Override
 	protected void initAnimator(AnimatorClient animatorClient)
 	{
-		animatorClient.mixLayer.setJointMask("Root", "Torso");
+		animatorClient.mixLayerLeft.setJointMask("Root", "Torso");
 	}
 
 	public void setAIAsUnarmed()

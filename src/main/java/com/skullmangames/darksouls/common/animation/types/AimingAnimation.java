@@ -35,12 +35,13 @@ public class AimingAnimation extends StaticAnimation
 		super.onUpdate(entitydata);
 		
 		AnimatorClient animator = entitydata.getClientAnimator();
-		if (animator.mixLayerActivated)
+		if (animator.mixLayerActivated())
 		{
-			AnimationPlayer player = animator.getMixLayerPlayer();
+			AnimationPlayer player = animator.getLeftMixLayerPlayer();
 			if (player.getElapsedTime() >= this.totalTime - 0.06F)
 			{
-				animator.mixLayer.pause = true;
+				animator.mixLayerLeft.pause = true;
+				animator.mixLayerRight.pause = true;
 			}
 		}
 	}

@@ -66,8 +66,9 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	public void updateOnClient()
 	{
 		super.updateOnClient();
-		@SuppressWarnings("resource")
-		RayTraceResult rayResult = Minecraft.getInstance().hitResult;
+		
+		Minecraft minecraft = Minecraft.getInstance();
+		RayTraceResult rayResult = minecraft.hitResult;
 
 		if (rayResult.getType() == RayTraceResult.Type.ENTITY)
 		{

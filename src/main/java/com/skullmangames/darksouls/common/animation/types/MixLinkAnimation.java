@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
+import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
@@ -8,6 +9,13 @@ import net.minecraft.client.Minecraft;
 public class MixLinkAnimation extends DynamicAnimation
 {
 	private Pose lastPose;
+	private final MixLayer mixLayer;
+	
+	public MixLinkAnimation(MixLayer mixLayer)
+	{
+		super();
+		this.mixLayer = mixLayer;
+	}
 	
 	public void setLastPose(Pose pose)
 	{
@@ -18,8 +26,10 @@ public class MixLinkAnimation extends DynamicAnimation
 	public void onFinish(LivingData<?> entitydata, boolean isEnd)
 	{
 		if(isEnd)
-			entitydata.getClientAnimator().mixLayerActivated = false;
-		entitydata.getClientAnimator().mixLayer.animationPlayer.resetPlayer();
+		{
+			this.mixLayer.animationPlayer.setEmpty();
+		}
+		this.mixLayer.animationPlayer.resetPlayer();
 	}
 	
 	@Override

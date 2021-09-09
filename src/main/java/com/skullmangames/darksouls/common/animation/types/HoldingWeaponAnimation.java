@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
@@ -16,9 +17,9 @@ public class HoldingWeaponAnimation extends StaticAnimation
 	
 	public HoldingWeaponAnimation(int id, float convertTime, boolean repeatPlay, String mainhandAnim, String offhandAnim, String bothhandAnim, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, mainhandAnim, armature, clientOnly);
-		this.offHandAnimation = new StaticAnimation(convertTime, repeatPlay, offhandAnim, armature, clientOnly);
-		this.bothHandAnimation = new StaticAnimation(convertTime, repeatPlay, bothhandAnim, armature, clientOnly);
+		super(id, convertTime, repeatPlay, mainhandAnim, armature, clientOnly, MixPart.RIGHT);
+		this.offHandAnimation = new StaticAnimation(convertTime, repeatPlay, offhandAnim, armature, clientOnly, MixPart.LEFT);
+		this.bothHandAnimation = new StaticAnimation(convertTime, repeatPlay, bothhandAnim, armature, clientOnly, MixPart.FULL);
 	}
 	
 	// 0 = main, 1 = off, 2 = both

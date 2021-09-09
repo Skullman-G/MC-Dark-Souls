@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.Joint;
@@ -19,25 +21,24 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.util.Hand;
-
 public class AnimatorClient extends Animator
 {
 	private final Map<LivingMotion, StaticAnimation> livingAnimations = new HashMap<LivingMotion, StaticAnimation>();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations;
 	private List<LivingMotion> modifiedLivingMotions;
 	public final BaseLayer baseLayer;
-	public final MixLayer mixLayer;
+	public final MixLayer mixLayerLeft;
+	public final MixLayer mixLayerRight;
 	private LivingMotion currentMotion;
 	private LivingMotion currentMixMotion;
 	private boolean reversePlay = false;
-	public boolean mixLayerActivated = false;
 	
 	public AnimatorClient(LivingData<?> entitydata)
 	{
 		this.entitydata = entitydata;
 		this.baseLayer = new BaseLayer(Animations.DUMMY_ANIMATION);
-		this.mixLayer = new MixLayer(Animations.DUMMY_ANIMATION);
+		this.mixLayerLeft = new MixLayer(Animations.DUMMY_ANIMATION);
+		this.mixLayerRight = new MixLayer(Animations.DUMMY_ANIMATION);
 		this.currentMotion = LivingMotion.IDLE;
 		this.currentMixMotion = LivingMotion.NONE;
 		this.defaultLivingAnimations = new HashMap<LivingMotion, StaticAnimation>();
@@ -54,7 +55,8 @@ public class AnimatorClient extends Animator
 	public void playAnimation(StaticAnimation nextAnimation, float modifyTime)
 	{
 		this.baseLayer.pause = false;
-		this.mixLayer.pause = false;
+		this.mixLayerLeft.pause = false;
+		this.mixLayerRight.pause = false;
 		this.reversePlay = false;
 		this.baseLayer.playAnimation(nextAnimation, this.entitydata, modifyTime);
 	}
@@ -62,7 +64,8 @@ public class AnimatorClient extends Animator
 	private void playAnimationLiving(StaticAnimation nextAnimation, float modifyTime)
 	{
 		this.baseLayer.pause = false;
-		this.mixLayer.pause = false;
+		this.mixLayerLeft.pause = false;
+		this.mixLayerRight.pause = false;
 		this.baseLayer.playAnimation(nextAnimation, this.entitydata, modifyTime);
 	}
 	
@@ -158,11 +161,12 @@ public class AnimatorClient extends Animator
 	{
 		if(this.entitydata.currentMixMotion == LivingMotion.NONE)
 		{
-			this.offMixLayer(false);
+			this.offMixLayer(this.mixLayerLeft, false);
+			this.offMixLayer(this.mixLayerRight, false);
 		}
 		else
 		{
-			StaticAnimation animation = this.entitydata.currentMixMotion == LivingMotion.HOLDING_WEAPON ? this.entitydata.getHeldWeaponCapability(Hand.MAIN_HAND).getHoldingAnimation() : this.livingAnimations.get(this.entitydata.currentMixMotion);	
+			StaticAnimation animation = this.livingAnimations.get(this.entitydata.currentMixMotion);
 			if (this.entitydata.currentMixMotion == LivingMotion.HOLDING_WEAPON)
 			{
 				animation = this.entitydata.getHoldingWeaponAnimation();
@@ -176,7 +180,8 @@ public class AnimatorClient extends Animator
 				this.playMixLayerAnimation(animation);
 			}
 		}
-		this.mixLayer.pause = false;
+		this.mixLayerLeft.pause = false;
+		this.mixLayerRight.pause = false;
 		this.currentMixMotion = this.entitydata.currentMixMotion;
 	}
 
@@ -187,73 +192,116 @@ public class AnimatorClient extends Animator
 	
 	public void playMixLayerAnimation(StaticAnimation nextAnimation)
 	{
-		if (!this.mixLayerActivated)
+		if (!this.mixLayerLeft.isActive()) this.mixLayerLeft.animationPlayer.synchronize(this.baseLayer.animationPlayer);
+		if (!this.mixLayerRight.isActive()) this.mixLayerRight.animationPlayer.synchronize(this.baseLayer.animationPlayer);
+		
+		switch (nextAnimation.getMixPart())
 		{
-			this.mixLayerActivated = true;
-			this.mixLayer.animationPlayer.synchronize(this.baseLayer.animationPlayer);
+			case LEFT:
+				this.mixLayerLeft.linkEndPhase = false;
+				this.mixLayerLeft.playAnimation(nextAnimation, this.entitydata, 0);
+				break;
+				
+			case RIGHT:
+				this.mixLayerRight.linkEndPhase = false;
+				this.mixLayerRight.playAnimation(nextAnimation, this.entitydata, 0);
+				break;
+				
+			case FULL:
+				this.mixLayerLeft.linkEndPhase = false;
+				this.mixLayerRight.linkEndPhase = false;
+				this.mixLayerLeft.playAnimation(nextAnimation, this.entitydata, 0);
+				this.mixLayerRight.playAnimation(nextAnimation, this.entitydata, 0);
+				break;
 		}
-		this.mixLayer.linkEndPhase = false;
-		this.mixLayer.playAnimation(nextAnimation, this.entitydata, 0);
 	}
 	
-	public void offMixLayer(boolean byForce)
+	public void offMixLayer(MixLayer mixLayer, boolean byForce)
 	{
-		if (this.mixLayerActivated && (byForce || this.mixLayer.animationPlayer.getPlay().getState(this.mixLayer.animationPlayer.getElapsedTime()) != EntityState.POST_DELAY))
+		if (mixLayer.isActive() && (byForce || (mixLayer.animationPlayer.getPlay().getState(mixLayer.animationPlayer.getElapsedTime()) != EntityState.POST_DELAY)))
 		{
-			this.mixLayer.linkEndPhase = true;
-			this.mixLayer.setMixLinkAnimation(entitydata, 0);
-			this.mixLayer.playAnimation(this.mixLayer.mixLinkAnimation, this.entitydata);
-			this.mixLayer.nextPlaying = null;
-			this.mixLayer.pause = false;
+			mixLayer.linkEndPhase = true;
+			mixLayer.setMixLinkAnimation(entitydata, 0);
+			mixLayer.playAnimation(mixLayer.mixLinkAnimation, this.entitydata);
+			mixLayer.nextPlaying = null;
+			mixLayer.pause = false;
 		}
 	}
 	
-	public void disableMixLayer()
+	public void disableMixLayer(MixLayer mixLayer)
 	{
-		this.mixLayerActivated = false;
-
-		if (this.mixLayer.animationPlayer.getPlay() != null)
+		if (mixLayer.animationPlayer.getPlay() != null)
 		{
-			this.mixLayer.animationPlayer.getPlay().onFinish(this.entitydata, true);
-			this.mixLayer.animationPlayer.setEmpty();
+			mixLayer.animationPlayer.getPlay().onFinish(this.entitydata, true);
+			mixLayer.animationPlayer.setEmpty();
 		}
 
-		this.mixLayer.animationPlayer.resetPlayer();
+		mixLayer.animationPlayer.resetPlayer();
+	}
+	
+	public boolean mixLayerActivated()
+	{
+		return this.mixLayerLeft.isActive()|| this.mixLayerRight.isActive();
 	}
 	
 	public void setPoseToModel(float partialTicks)
 	{
 		Joint rootJoint = this.entitydata.getEntityModel(ClientModels.CLIENT).getArmature().getJointHierarcy();
-		if(this.mixLayerActivated)
+		if(this.mixLayerActivated())
 		{
-			applyPoseToJoint(getCurrentPose(this.baseLayer, partialTicks), getCurrentPose(this.mixLayer, partialTicks), rootJoint, new PublicMatrix4f());
+			this.applyPoseToJoint(this.getCurrentPose(this.baseLayer, partialTicks), this.getCurrentPose(this.mixLayerLeft, partialTicks), this.getCurrentPose(this.mixLayerRight, partialTicks), rootJoint, new PublicMatrix4f());
 		}
 		else
 		{
-			applyPoseToJoint(getCurrentPose(this.baseLayer, partialTicks), rootJoint, new PublicMatrix4f());
+			this.applyPoseToJoint(this.getCurrentPose(this.baseLayer, partialTicks), rootJoint, new PublicMatrix4f());
 		}
 	}
 	
-	private void applyPoseToJoint(Pose base, Pose mix, Joint joint, PublicMatrix4f parentTransform)
+	private void applyPoseToJoint(Pose base, Pose mixLeft, Pose mixRight, Joint joint, PublicMatrix4f parentTransform)
 	{
-		if (this.mixLayer.jointMasked(joint.getName()))
+		if (this.mixLayerLeft.isActive() && this.mixLayerLeft.jointMasked(joint.getName()))
 		{
 			PublicMatrix4f currentLocalTransformBase = base.getTransformByName(joint.getName()).toTransformMatrix();
 			PublicMatrix4f.mul(joint.getLocalTrasnform(), currentLocalTransformBase, currentLocalTransformBase);
 			PublicMatrix4f bindTransformBase = PublicMatrix4f.mul(parentTransform, currentLocalTransformBase, null);
 			
-			PublicMatrix4f currentLocalTransformMix = mix.getTransformByName(joint.getName()).toTransformMatrix();
-			PublicMatrix4f.mul(joint.getLocalTrasnform(), currentLocalTransformMix, currentLocalTransformMix);
-			PublicMatrix4f bindTransformMix = PublicMatrix4f.mul(parentTransform, currentLocalTransformMix, null);
+			PublicMatrix4f currentLocalTransformMixLeft = mixLeft.getTransformByName(joint.getName()).toTransformMatrix();
+			PublicMatrix4f.mul(joint.getLocalTrasnform(), currentLocalTransformMixLeft, currentLocalTransformMixLeft);
+			PublicMatrix4f bindTransformMixLeft = PublicMatrix4f.mul(parentTransform, currentLocalTransformMixLeft, null);
 			
-			bindTransformMix.m31 = bindTransformBase.m31;
-			joint.setAnimatedTransform(bindTransformMix);
+			bindTransformMixLeft.m31 = bindTransformBase.m31;
+			joint.setAnimatedTransform(bindTransformMixLeft);
 			
 			for (Joint joints : joint.getSubJoints())
 			{
-				if(this.mixLayer.jointMasked(joints.getName()) || this.currentMotion == LivingMotion.IDLE)
+				if(this.mixLayerLeft.jointMasked(joints.getName()))
 				{
-					applyPoseToJoint(mix, joints, bindTransformMix);
+					applyPoseToJoint(mixLeft, joints, bindTransformMixLeft);
+				}
+				else
+				{
+					applyPoseToJoint(base, joints, bindTransformBase);
+				}
+			}
+		}
+		else if (this.mixLayerRight.isActive() && this.mixLayerRight.jointMasked(joint.getName()))
+		{
+			PublicMatrix4f currentLocalTransformBase = base.getTransformByName(joint.getName()).toTransformMatrix();
+			PublicMatrix4f.mul(joint.getLocalTrasnform(), currentLocalTransformBase, currentLocalTransformBase);
+			PublicMatrix4f bindTransformBase = PublicMatrix4f.mul(parentTransform, currentLocalTransformBase, null);
+			
+			PublicMatrix4f currentLocalTransformMixRight = mixRight.getTransformByName(joint.getName()).toTransformMatrix();
+			PublicMatrix4f.mul(joint.getLocalTrasnform(), currentLocalTransformMixRight, currentLocalTransformMixRight);
+			PublicMatrix4f bindTransformMixRight = PublicMatrix4f.mul(parentTransform, currentLocalTransformMixRight, null);
+			
+			bindTransformMixRight.m31 = bindTransformBase.m31;
+			joint.setAnimatedTransform(bindTransformMixRight);
+			
+			for (Joint joints : joint.getSubJoints())
+			{
+				if(this.mixLayerRight.jointMasked(joints.getName()))
+				{
+					applyPoseToJoint(mixRight, joints, bindTransformMixRight);
 				}
 				else
 				{
@@ -270,7 +318,7 @@ public class AnimatorClient extends Animator
 			
 			for(Joint joints : joint.getSubJoints())
 			{
-				applyPoseToJoint(base, mix, joints, bindTransform);
+				applyPoseToJoint(base, mixLeft, mixRight, joints, bindTransform);
 			}
 		}
 	}
@@ -318,26 +366,31 @@ public class AnimatorClient extends Animator
 			}
 		}
 		
-		if (this.mixLayerActivated)
+		if (this.mixLayerActivated())
 		{
-			this.mixLayer.update(this.entitydata);
-			if (this.mixLayer.animationPlayer.isEnd())
+			MixLayer[] mixLayers = new MixLayer[] { this.mixLayerLeft, this.mixLayerRight };
+			for (MixLayer mixLayer : mixLayers)
 			{
-				if (this.mixLayer.linkEndPhase) {
-					if (this.mixLayer.nextPlaying == null)
-					{
-						disableMixLayer();
-						this.mixLayer.linkEndPhase = false;
-					}
-				}
-				else
+				mixLayer.update(this.entitydata);
+				if (mixLayer.animationPlayer.isEnd())
 				{
-					this.mixLayer.animationPlayer.getPlay().onFinish(this.entitydata, this.mixLayer.animationPlayer.isEnd());
-					if (!this.mixLayer.pause)
+					if (mixLayer.linkEndPhase)
 					{
-						this.mixLayer.setMixLinkAnimation(this.entitydata, 0);
-						this.mixLayer.playAnimation(this.mixLayer.mixLinkAnimation, this.entitydata);
-						this.mixLayer.linkEndPhase = true;
+						if (mixLayer.nextPlaying == null)
+						{
+							disableMixLayer(mixLayer);
+							mixLayer.linkEndPhase = false;
+						}
+					}
+					else
+					{
+						mixLayer.animationPlayer.getPlay().onFinish(this.entitydata, mixLayer.animationPlayer.isEnd());
+						if (!mixLayer.pause)
+						{
+							mixLayer.setMixLinkAnimation(this.entitydata, 0);
+							mixLayer.playAnimation(mixLayer.mixLinkAnimation, this.entitydata);
+							mixLayer.linkEndPhase = true;
+						}
 					}
 				}
 			}
@@ -360,11 +413,14 @@ public class AnimatorClient extends Animator
 	public void onEntityDeath()
 	{
 		this.baseLayer.clear(this.entitydata);
-		this.mixLayer.clear(this.entitydata);
+		this.mixLayerLeft.clear(this.entitydata);
+		this.mixLayerRight.clear(this.entitydata);
 	}
 
+	@Nullable
 	public Pose getCurrentPose(BaseLayer layer, float partialTicks)
 	{
+		if (layer instanceof MixLayer && !((MixLayer)layer).isActive()) return null;
 		return layer.animationPlayer.getCurrentPose(this.entitydata, this.baseLayer.pause ? 1 : partialTicks);
 	}
 
@@ -432,7 +488,16 @@ public class AnimatorClient extends Animator
 		}
 		else
 		{
-			player = this.mixLayer.animationPlayer;
+			player = this.mixLayerLeft.animationPlayer;
+		}
+		
+		if(player.getPlay().equals(animation))
+		{
+			return player;
+		}
+		else
+		{
+			player = this.mixLayerRight.animationPlayer;
 		}
 		
 		if(player.getPlay().equals(animation))
@@ -445,8 +510,13 @@ public class AnimatorClient extends Animator
 		}
 	}
 	
-	public AnimationPlayer getMixLayerPlayer()
+	public AnimationPlayer getLeftMixLayerPlayer()
 	{
-		return this.mixLayer.animationPlayer;
+		return this.mixLayerLeft.animationPlayer;
+	}
+	
+	public AnimationPlayer getRightMixLayerPlayer()
+	{
+		return this.mixLayerRight.animationPlayer;
 	}
 }

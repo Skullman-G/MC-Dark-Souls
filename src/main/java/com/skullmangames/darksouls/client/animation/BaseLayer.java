@@ -28,7 +28,7 @@ public class BaseLayer
 
 	public void playAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata, float modifyTime)
 	{
-		this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
+		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
 		setLinkAnimation(nextAnimation, entitydata, modifyTime);
 		this.linkAnimation.putOnPlayer(this.animationPlayer);
@@ -37,7 +37,7 @@ public class BaseLayer
 	
 	public void playAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata)
 	{
-		this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
+		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
 		nextAnimation.putOnPlayer(this.animationPlayer);
 		this.nextPlaying = null;
@@ -45,13 +45,14 @@ public class BaseLayer
 	
 	public void setLinkAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata, float timeModifier)
 	{
+		if (this.animationPlayer.isEmpty()) return;
 		Pose currentPose = this.animationPlayer.getCurrentPose(entitydata, Minecraft.getInstance().getFrameTime());
 		nextAnimation.getLinkAnimation(currentPose, timeModifier, entitydata, this.linkAnimation);
 	}
 	
 	public void update(LivingData<?> entitydata)
 	{
-		if (pause)
+		if (pause || this.animationPlayer.isEmpty())
 		{
 			this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime());
 			return;

@@ -58,19 +58,23 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 		float pitch = renderInfo.getXRot();
 		
 		DynamicAnimation base = entitydata.getClientAnimator().getPlayer().getPlay();
-		DynamicAnimation mix = entitydata.getClientAnimator().mixLayer.animationPlayer.getPlay();
+		DynamicAnimation mixLeft = entitydata.getClientAnimator().mixLayerLeft.animationPlayer.getPlay();
+		DynamicAnimation mixRight = entitydata.getClientAnimator().mixLayerRight.animationPlayer.getPlay();
 		
 		boolean flag1 = base instanceof ActionAnimation;
-		boolean flag2 = mix instanceof AimingAnimation;
+		boolean flag2 = mixLeft instanceof AimingAnimation;
+		boolean flag3 = mixRight instanceof AimingAnimation;
 		
 		float zCoord = flag1 ? 0 : poses[0].m32;
 		float posZ = Math.min(headPos.z() - zCoord, 0);
 		
-		if (headPos.z() > poses[0].m32) {
+		if (headPos.z() > poses[0].m32)
+		{
 			posZ += (poses[0].m32 - headPos.z());
 		}
 		
-		if (!flag2) {
+		if (!flag2 || !flag3)
+		{
 			matStackIn.mulPose(Vector3f.XP.rotationDegrees(pitch));
 		}
 		

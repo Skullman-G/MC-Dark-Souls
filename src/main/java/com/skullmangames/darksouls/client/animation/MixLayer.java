@@ -21,7 +21,12 @@ public class MixLayer extends BaseLayer
 		super(animation);
 		this.linkEndPhase = false;
 		this.maskedJointNames = new String[0];
-		this.mixLinkAnimation = new MixLinkAnimation();
+		this.mixLinkAnimation = new MixLinkAnimation(this);
+	}
+	
+	public boolean isActive()
+	{
+		return !this.animationPlayer.isEmpty();
 	}
 	
 	public void setMixLinkAnimation(LivingData<?> entitydata, float timeModifier)

@@ -10,12 +10,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 public class AsylumDemonData extends MobData<AsylumDemonEntity>
 {
 	@Override
-	protected void initAnimator(AnimatorClient animatorClient)
-	{
-		animatorClient.mixLayer.setJointMask("Root", "Torso");
-	}
-
-	@Override
 	public void updateMotion() {}
 
 	@Override
@@ -29,4 +23,7 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	{
 		return null;
 	}
+
+	@Override
+	protected void initAnimator(AnimatorClient animatorClient) {}
 }
