@@ -49,7 +49,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		livingMotionMap.put(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		livingMotionMap.put(LivingMotion.FALL, Animations.BIPED_FALL);
 		livingMotionMap.put(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
-		livingMotionMap.put(LivingMotion.FLYING, Animations.BIPED_FLYING);
 		livingMotionMap.put(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		
 		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())

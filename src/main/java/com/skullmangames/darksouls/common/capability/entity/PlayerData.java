@@ -70,7 +70,6 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		animatorClient.addLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
-		animatorClient.addLivingAnimation(LivingMotion.FLYING, Animations.BIPED_FLYING);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.JUMPING, Animations.BIPED_JUMP);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);

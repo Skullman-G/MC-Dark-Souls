@@ -74,7 +74,6 @@ import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.init.StructureInit;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
@@ -105,7 +104,6 @@ public class DarkSouls
     	}
     	
     	Animations.registerAnimations(FMLEnvironment.dist);
-    	Skills.init();
     	
     	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     	
