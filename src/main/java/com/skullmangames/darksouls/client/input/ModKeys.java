@@ -14,8 +14,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 @OnlyIn(Dist.CLIENT)
 public class ModKeys
 {
-	public static final KeyBinding SPECIAL_ATTACK_TOOLTIP = new KeyBinding("key." + DarkSouls.MOD_ID + ".show_tooltip", 80, "key." + DarkSouls.MOD_ID + ".gui");
-	public static final KeyBinding SWAP_ACTION_MODE = new KeyBinding("key." + DarkSouls.MOD_ID + ".swap_action_mode", 294, "key." + DarkSouls.MOD_ID + ".combat");
+	private static final List<KeyBinding> keyBindings = new ArrayList<KeyBinding>();
+	
+	
+	public static final KeyBinding SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
+	public static final KeyBinding SWAP_ACTION_MODE = makeKeyBinding("swap_action_mode", 294, "combat");
+	
 	
 	public static void registerKeys()
 	{
@@ -24,8 +28,17 @@ public class ModKeys
 		removeKeyBinding(minecraft.options.keyTogglePerspective);
 		minecraft.options.keyTogglePerspective = new FakeKeyBinding("key.togglePerspective");
 		
-		ClientRegistry.registerKeyBinding(SPECIAL_ATTACK_TOOLTIP);
-		ClientRegistry.registerKeyBinding(SWAP_ACTION_MODE);
+		for (KeyBinding key : keyBindings) ClientRegistry.registerKeyBinding(key);
+	}
+	
+	public static KeyBinding makeKeyBinding(String name, int defaultKey, String category)
+	{
+		name = "key."+DarkSouls.MOD_ID+"."+name;
+		category = "key."+DarkSouls.MOD_ID+"."+category;
+		
+		KeyBinding key = new KeyBinding(name, defaultKey, category);
+		keyBindings.add(key);
+		return key;
 	}
 	
 	private static void removeKeyBinding(KeyBinding binding)

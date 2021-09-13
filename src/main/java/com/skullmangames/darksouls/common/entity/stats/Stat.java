@@ -2,6 +2,8 @@ package com.skullmangames.darksouls.common.entity.stats;
 
 import java.util.UUID;
 
+import com.skullmangames.darksouls.DarkSouls;
+
 import net.minecraft.entity.LivingEntity;
 
 public class Stat
@@ -11,7 +13,7 @@ public class Stat
 	
 	public Stat(String name, String uuid)
 	{
-		this.name = name;
+		this.name = "stat."+DarkSouls.MOD_ID+"."+name;
 		this.MODIFIER_UUID = UUID.fromString(uuid);
 	}
 	

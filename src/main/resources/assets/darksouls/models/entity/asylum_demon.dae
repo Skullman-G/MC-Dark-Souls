@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.93.3 commit date:2021-08-17, commit time:18:30, hash:8b80d19f3641</authoring_tool>
     </contributor>
-    <created>2021-09-07T00:02:43</created>
-    <modified>2021-09-07T00:02:43</modified>
+    <created>2021-09-12T13:32:17</created>
+    <modified>2021-09-12T13:32:17</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -84,17 +84,17 @@
       <skin source="#Cube_005-mesh">
         <bind_shape_matrix>0.7882147 0 0 0 0 0.9458576 0 -0.189 0 0 0.9458576 0.01562011 0 0 0 1</bind_shape_matrix>
         <source id="Armature_Cube-skin-joints">
-          <Name_array id="Armature_Cube-skin-joints-array" count="15">Root Chest Head Shoulder_L Arm_L Hand_L Shoulder_R Arm_R Hand_R Thigh_L Leg_L Foot_L Thigh_R Leg_R Foot_R</Name_array>
+          <Name_array id="Armature_Cube-skin-joints-array" count="17">Root Chest Head Shoulder_L Arm_L Hand_L Shoulder_R Arm_R Hand_R Thigh_L Leg_L Foot_L Thigh_R Leg_R Foot_R Tool_R Tool_L</Name_array>
           <technique_common>
-            <accessor source="#Armature_Cube-skin-joints-array" count="15" stride="1">
+            <accessor source="#Armature_Cube-skin-joints-array" count="17" stride="1">
               <param name="JOINT" type="name"/>
             </accessor>
           </technique_common>
         </source>
         <source id="Armature_Cube-skin-bind_poses">
-          <float_array id="Armature_Cube-skin-bind_poses-array" count="240">-1 6.27833e-7 0 0 0 0 1 -1.74838 6.27833e-7 1 0 0 0 0 0 1 -1 -3.25841e-7 0 0 0 0 1 -2.363264 -3.25841e-7 1 0 0 0 0 0 1 -1 6.27833e-7 0 0 0 0 1 -3.91213 6.27833e-7 1 0 0 0 0 0 1 0.2855893 8.89651e-7 -0.9583522 3.749197 -0.9583522 2.53544e-7 -0.2855892 1.117262 0 1 9.25008e-7 -3.61875e-6 0 0 0 1 0 0 -1 3.643047 -0.03704428 0.9993137 0 -0.0334497 0.9993137 0.03704428 0 0.9023381 0 0 0 1 0 0 -1 3.643047 0.02253651 0.9997462 0 -0.8933465 0.9997462 -0.02253651 0 0.9572415 0 0 0 1 0.2882608 -1.08165e-6 0.9575518 -3.746066 0.9575518 2.55916e-7 -0.2882609 1.127714 0 1 1.10951e-6 -4.34054e-6 0 0 0 1 0 0 1 -3.643047 0.05216383 0.9986388 0 -0.04662644 -0.9986386 0.0521636 2.083e-7 0.8926251 0 0 0 1 0 0 1 -3.643047 -0.01810127 0.9998365 0 -0.8937043 -0.9998363 -0.01810151 2.26339e-7 0.9577566 0 0 0 1 1 0 0 1.011794 -1.19567e-7 0.07479429 -0.9971989 1.743482 0 0.9971879 0.07479262 -0.130766 0 0 0 1 1 -1.25295e-7 1.32558e-7 1.011794 1.25305e-7 -0.05627197 -0.9984151 1.035901 1.3251e-7 0.9984044 -0.05627506 0.004762291 0 0 0 1 1 0 -7.96651e-7 1.011794 0 0.9974141 -0.07171648 0.006068885 7.98699e-7 0.07171308 0.9974248 -0.0844047 0 0 0 1 1 -1.68957e-7 2.01412e-7 -1.011794 2.13483e-7 0.07479429 -0.9971989 1.743482 1.53468e-7 0.9971879 0.07479262 -0.130766 0 0 0 1 1 1.25294e-7 -1.32558e-7 -1.011794 -1.25305e-7 -0.05627197 -0.9984151 1.035901 -1.3251e-7 0.9984044 -0.05627506 0.004762291 0 0 0 1 1 0 7.96651e-7 -1.011794 0 0.9974141 -0.07171648 0.006068885 -7.987e-7 0.07171308 0.9974248 -0.0844047 0 0 0 1</float_array>
+          <float_array id="Armature_Cube-skin-bind_poses-array" count="272">-1 6.27833e-7 0 0 0 0 1 -1.74838 6.27833e-7 1 0 0 0 0 0 1 -1 -3.25841e-7 0 0 0 0 1 -2.363264 -3.25841e-7 1 0 0 0 0 0 1 -1 6.27833e-7 0 0 0 0 1 -3.91213 6.27833e-7 1 0 0 0 0 0 1 0.2855893 8.89651e-7 -0.9583522 3.749197 -0.9583522 2.53544e-7 -0.2855892 1.117262 0 1 9.25008e-7 -3.61875e-6 0 0 0 1 0 0 -1 3.643047 -0.03704428 0.9993137 0 -0.0334497 0.9993137 0.03704428 0 0.9023381 0 0 0 1 0 0 -1 3.643047 0.02253651 0.9997462 0 -0.8933465 0.9997462 -0.02253651 0 0.9572415 0 0 0 1 0.2882608 -1.08165e-6 0.9575518 -3.746066 0.9575518 2.55916e-7 -0.2882609 1.127714 0 1 1.10951e-6 -4.34054e-6 0 0 0 1 0 0 1 -3.643047 0.05216383 0.9986388 0 -0.04662644 -0.9986386 0.0521636 2.083e-7 0.8926251 0 0 0 1 0 0 1 -3.643047 -0.01810127 0.9998365 0 -0.8937043 -0.9998363 -0.01810151 2.26339e-7 0.9577566 0 0 0 1 1 0 0 1.011794 -1.19567e-7 0.07479429 -0.9971989 1.743482 0 0.9971879 0.07479262 -0.130766 0 0 0 1 1 -1.25295e-7 1.32558e-7 1.011794 1.25305e-7 -0.05627197 -0.9984151 1.035901 1.3251e-7 0.9984044 -0.05627506 0.004762291 0 0 0 1 1 0 -7.96651e-7 1.011794 0 0.9974141 -0.07171648 0.006068885 7.98699e-7 0.07171308 0.9974248 -0.0844047 0 0 0 1 1 -1.68957e-7 2.01412e-7 -1.011794 2.13483e-7 0.07479429 -0.9971989 1.743482 1.53468e-7 0.9971879 0.07479262 -0.130766 0 0 0 1 1 1.25294e-7 -1.32558e-7 -1.011794 -1.25305e-7 -0.05627197 -0.9984151 1.035901 -1.3251e-7 0.9984044 -0.05627506 0.004762291 0 0 0 1 1 0 7.96651e-7 -1.011794 0 0.9974141 -0.07171648 0.006068885 -7.987e-7 0.07171308 0.9974248 -0.0844047 0 0 0 1 0 0 1 -3.643047 1.13418e-5 -1 0 2.119291 0.9993597 0 0 -0.9189563 0 0 0 1 0 0 -1 3.643047 -8.41883e-7 -1 0 2.087397 -0.9999618 0 0 -0.9103956 0 0 0 1</float_array>
           <technique_common>
-            <accessor source="#Armature_Cube-skin-bind_poses-array" count="15" stride="16">
+            <accessor source="#Armature_Cube-skin-bind_poses-array" count="17" stride="16">
               <param name="TRANSFORM" type="float4x4"/>
             </accessor>
           </technique_common>
@@ -147,6 +147,18 @@
                 <matrix sid="transform">0.9583522 -0.01057857 0.2853932 5.96046e-8 0.2855892 0.03550175 -0.9576944 0.9421987 -9.22009e-7 0.9993136 0.03704432 -2.84217e-14 0 0 0 1</matrix>
                 <node id="Armature_Hand_L" name="Hand.L" sid="Hand_L" type="JOINT">
                   <matrix sid="transform">1 5.16092e-9 1.82321e-8 1.53307e-7 -4.06593e-9 0.998225 -0.05955598 0.9153204 -1.85071e-8 0.05955598 0.998225 5.96046e-8 0 0 0 1</matrix>
+                  <node id="Armature_Tool_L" name="Tool.L" sid="Tool_L" type="JOINT">
+                    <matrix sid="transform">1 1.70146e-9 -1.50982e-7 1.66149e-7 -1.70153e-9 -0.9997461 -0.02253655 1.173003 -1.50982e-7 0.02253655 -0.9997845 5.96046e-8 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">1.570796</roll>
+                        <tip_x sid="tip_x" type="float">0</tip_x>
+                        <tip_y sid="tip_y" type="float">-1.4</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>
@@ -180,6 +192,18 @@
                 <matrix sid="transform">0.9575519 0.01503564 -0.2878683 0 -0.2882607 0.04994961 -0.9562482 0.9334664 1.11014e-6 0.9986384 0.05216378 2.84217e-14 0 0 0 1</matrix>
                 <node id="Armature_Hand_R" name="Hand.R" sid="Hand_R" type="JOINT">
                   <matrix sid="transform">1 -3.78918e-9 1.77453e-8 -6.72827e-8 5.0261e-9 0.9975307 -0.07023194 0.9121361 -1.74353e-8 0.07023194 0.9975307 0 0 0 0 1</matrix>
+                  <node id="Armature_Tool_R" name="Tool.R" sid="Tool_R" type="JOINT">
+                    <matrix sid="transform">1 -1.36663e-9 1.5108e-7 -2.85319e-7 1.3675e-9 -0.9998363 -0.01810153 1.208605 1.5108e-7 0.01810153 -1.000477 0 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">-1.570796</roll>
+                        <tip_x sid="tip_x" type="float">0</tip_x>
+                        <tip_y sid="tip_y" type="float">-1.4</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>

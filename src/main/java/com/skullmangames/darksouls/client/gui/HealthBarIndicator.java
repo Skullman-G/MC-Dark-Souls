@@ -24,37 +24,33 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HealthBarIndicator extends EntityIndicator {
-	@SuppressWarnings("resource")
+public class HealthBarIndicator extends EntityIndicator
+{
 	@Override
-	public boolean shouldDraw(LivingEntity entityIn) {
-		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()) {
-			return false;
-		} else if (entityIn.isInvisible() || entityIn == Minecraft.getInstance().player.getControllingPassenger()) {
-			return false;
-		} else if (entityIn.distanceToSqr(Minecraft.getInstance().getCameraEntity()) >= 400) {
-			return false;
-		} else if (entityIn instanceof PlayerEntity) {
+	public boolean shouldDraw(LivingEntity entityIn)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()) return false;
+		else if (entityIn.isInvisible() || entityIn == minecraft.player.getControllingPassenger()) return false;
+		else if (entityIn.distanceToSqr(Minecraft.getInstance().getCameraEntity()) >= 400) return false;
+		else if (entityIn instanceof PlayerEntity)
+		{
 			PlayerEntity playerIn = (PlayerEntity) entityIn;
-			if (playerIn == Minecraft.getInstance().player) {
-				return false;
-			} else if (playerIn.isCreative() || playerIn.isSpectator()) {
-				return false;
-			}
+			if (playerIn == minecraft.player) return false;
+			else if (playerIn.isCreative() || playerIn.isSpectator()) return false;
 		}
 		
-		if(entityIn.getActiveEffects().isEmpty() && entityIn.getHealth() >= entityIn.getMaxHealth() || entityIn.deathTime >= 19) {
-			return false;
-		}
-		
+		if(entityIn.getActiveEffects().isEmpty() && entityIn.getHealth() >= entityIn.getMaxHealth() || entityIn.deathTime >= 19) return false;
 		return true;
 	}
 	
 	@Override
-	public void drawIndicator(LivingEntity entityIn, MatrixStack matStackIn, IRenderTypeBuffer bufferIn, float partialTicks) {
+	public void drawIndicator(LivingEntity entityIn, MatrixStack matStackIn, IRenderTypeBuffer bufferIn, float partialTicks)
+	{
 		Matrix4f mvMatrix = super.getMVMatrix(matStackIn, entityIn, 0.0F, entityIn.getBbHeight() + 0.25F, 0.0F, true, false, partialTicks);
 		
-		if (!entityIn.getActiveEffects().isEmpty()) {
+		if (!entityIn.getActiveEffects().isEmpty())
+		{
 			Collection<EffectInstance> activeEffects = entityIn.getActiveEffects();
 			Iterator<EffectInstance> iter = activeEffects.iterator();
 			int acives = activeEffects.size();
@@ -63,28 +59,24 @@ public class HealthBarIndicator extends EntityIndicator {
 			float startX = -0.8F + -0.3F * row;
 			float startY = -0.15F + 0.15F * column;
 			
-			for (int i = 0; i <= column; i++) {
-				for (int j = 0; j <= row; j++) {
+			for (int i = 0; i <= column; i++)
+			{
+				for (int j = 0; j <= row; j++)
+				{
 					Effect effect = iter.next().getEffect();
 					ResourceLocation rl;
 					
-					if(effect instanceof ModEffect) {
-						rl = ((ModEffect)effect).getIcon();
-					} else {
-						rl = new ResourceLocation("textures/mob_effect/" + effect.getRegistryName().getPath() + ".png");
-					}
+					if(effect instanceof ModEffect) rl = ((ModEffect)effect).getIcon();
+					else rl = new ResourceLocation("textures/mob_effect/" + effect.getRegistryName().getPath() + ".png");
 					
 					Minecraft.getInstance().getTextureManager().bind(rl);
 					float x = startX + 0.3F * j;
 					float y = startY + -0.3F * i;
 					
-					IVertexBuilder vertexBuilder1 = bufferIn.getBuffer(
-							ModRenderTypes.getEntityIndicator(rl));
+					IVertexBuilder vertexBuilder1 = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(rl));
 					
 					this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder1, x, y, x + 0.3F, y + 0.3F, 0, 0, 256, 256);
-					if(!iter.hasNext()) {
-						break;
-					}
+					if(!iter.hasNext()) break;
 				}
 			}
 		}
@@ -97,7 +89,8 @@ public class HealthBarIndicator extends EntityIndicator {
 		this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, healthRatio, -0.05F, 0.5F, 0.05F, textureRatio, 10, 62, 15);
 		float absorption = entityIn.getAbsorptionAmount();
 		
-		if(absorption > 0.0D) {
+		if(absorption > 0.0D)
+		{
 			float absorptionRatio = absorption / entityIn.getMaxHealth();
 			int absTexRatio = (int) (62 * absorptionRatio);
 			this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, absorptionRatio - 0.5F, 0.05F, 1, 20, absTexRatio, 25);
@@ -105,15 +98,12 @@ public class HealthBarIndicator extends EntityIndicator {
 		
 		EntityData<?> entitycap = entityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if(entitycap != null && entitycap instanceof LivingData) {
-			renderStunArmor((LivingData<?>)entitycap, mvMatrix, vertexBuilder);
-		}
+		if(entitycap != null && entitycap instanceof LivingData) renderStunArmor((LivingData<?>)entitycap, mvMatrix, vertexBuilder);
 	}
 	
-	public void renderStunArmor(LivingData<?> entitydataFighter, Matrix4f mvMatrix, IVertexBuilder vertexBuilder) {
-		if(entitydataFighter.getStunArmor() == 0) {
-			return;
-		}
+	public void renderStunArmor(LivingData<?> entitydataFighter, Matrix4f mvMatrix, IVertexBuilder vertexBuilder)
+	{
+		if(entitydataFighter.getStunArmor() == 0) return;
 		
 		float ratio = entitydataFighter.getStunArmor() / entitydataFighter.getMaxStunArmor();
 		float barRatio = -0.5F + ratio;

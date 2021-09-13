@@ -9,22 +9,21 @@ import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 
 import net.minecraft.util.math.vector.Vector3f;
 
-public class SkinDataExtractor {
+public class SkinDataExtractor
+{
 	private static final int MAX_JOINT_LIMIT = 3;
 	private XmlNode skin;
 
-	public SkinDataExtractor(XmlNode skin) {
+	public SkinDataExtractor(XmlNode skin)
+	{
 		this.skin = skin;
 	}
 
-	public Map<String, Integer> getRawJoints() {
+	public Map<String, Integer> getRawJoints()
+	{
 		Map<String, Integer> map = Maps.<String, Integer>newHashMap();
 		String[] weightData = getJointLists(skin);
-
-		for (int i = 0; i < weightData.length; i++) {
-			map.put(weightData[i], i);
-		}
-
+		for (int i = 0; i < weightData.length; i++) map.put(weightData[i], i);
 		return map;
 	}
 	
@@ -99,9 +98,9 @@ public class SkinDataExtractor {
 		return vertexNumberData.getData().split(" ");
 	}
 
-	private static String[] getJointLists(XmlNode node) {
+	private static String[] getJointLists(XmlNode node)
+	{
 		XmlNode jointData = node.getChildWithAttributeValue("source", "id", "Armature_Cube-skin-joints").getChild("Name_array");
-
 		return jointData.getData().split(" ");
 	}
 }

@@ -32,9 +32,6 @@ public class LevelUpScreen extends Screen
 	private int buttonWidth = 70;
 	private int buttonHeight = 20;
 	
-	private Button upButton;
-	private Button downButton;
-	
 	public LevelUpScreen(PlayerEntity player)
 	{
 		super(NarratorChatListener.NO_TITLE);
@@ -48,14 +45,28 @@ public class LevelUpScreen extends Screen
 		super.init();
 		int buttonwidth2 = 12;
 		int buttonheight2 = 20;
-		downButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 - 15 - buttonwidth2 / 2, this.height / 2 - this.imageHeight / 2 + 40 - buttonheight2 / 4, buttonwidth2, buttonheight2, new StringTextComponent("<"), (p_214187_1_) ->
+		
+		int upDownButtonHeight = this.height / 2 - this.imageHeight / 2 + 40 - buttonheight2 / 4;
+		for (Stat stat : Stats.getStats())
 		{
-			this.levelDown(Stats.VIGOR);
-	    }));
-		upButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, this.height / 2 - this.imageHeight / 2 + 40 - buttonheight2 / 4, buttonwidth2, buttonheight2, new StringTextComponent(">"), (p_214187_1_) ->
-		{
-			this.levelUp(Stats.VIGOR);
-	    }));
+			int statValue = stat.getValue(this.player);
+			Button downButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 - 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent("<"), (button) ->
+			{
+				this.levelDown(stat);
+				button.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() > statValue;
+		    }));
+			downButton.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() > statValue;
+			
+			Button upButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
+			{
+				this.levelUp(stat);
+				button.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
+		    }));
+			upButton.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
+			
+			upDownButtonHeight += 25;
+		}
+		
 		this.addButton(new Button(this.width / 2 - this.imageWidth / 4 - this.buttonWidth / 2, this.height / 2 + (3 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.accept"), (p_214187_1_) ->
 		{
 	         this.accept();
@@ -68,20 +79,24 @@ public class LevelUpScreen extends Screen
 		super.renderBackground(matrixstack);
 		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
 		
-		int statvalue = Stats.VIGOR.getValue(this.player);
-		downButton.active = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(1)).intValue() > statvalue;
-		upButton.active = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
-		
 		drawCenteredString(matrixstack, this.font, "Level Up", this.width / 2 - this.imageWidth / 4, this.height / 2 - this.imageHeight / 2 + 10, 16777215);
 		drawCenteredString(matrixstack, this.font, "Souls: " + MobNBTManager.getSouls(this.player), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
 		drawCenteredString(matrixstack, this.font, "Cost: " + this.getCost(), this.width / 2 - this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
-		drawCenteredString(matrixstack, this.font, "Vigor", this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 40, 16777215);
 		
-		int displaystatvalue = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(statvalue)).intValue();
-		int color = statvalue != displaystatvalue ? 0x8cc9ff : 16777215;
-		drawCenteredString(matrixstack, this.font, String.valueOf(displaystatvalue), this.width / 2 - this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 40, color);
+		int textheight = this.height / 2 - this.imageHeight / 2 + 40;
+		for (Stat stat : Stats.getStats())
+		{
+			drawCenteredString(matrixstack, this.font, new TranslationTextComponent(stat.getName()), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, textheight, 16777215);
+			
+			int statvalue = stat.getValue(this.player);
+			int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
+			int color = statvalue != displaystatvalue ? 0x8cc9ff : 16777215;
+			drawCenteredString(matrixstack, this.font, String.valueOf(displaystatvalue), this.width / 2 - this.imageWidth / 6, textheight, color);
 		
-		int maxhealth = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) + displaystatvalue - statvalue;
+			textheight += 25;
+		}
+		
+		int maxhealth = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) + this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(Stats.VIGOR.getValue(this.player))).intValue() - Stats.VIGOR.getValue(this.player);
 		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ?  0x8cc9ff : 16777215;
 		drawCenteredString(matrixstack, this.font, "Max Health: " + maxhealth, this.width / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 40, maxhealthcolor);
 		
@@ -108,16 +123,16 @@ public class LevelUpScreen extends Screen
 	
 	private void levelUp(Stat stat)
 	{
-		int statvalue = Stats.VIGOR.getValue(this.player);
-		int displaystatvalue = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(statvalue)).intValue();
+		int statvalue = stat.getValue(this.player);
+		int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
 		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)).intValue() + 1);
 		this.displayedLevel += 1;
 	}
 	
 	private void levelDown(Stat stat)
 	{
-		int statvalue = Stats.VIGOR.getValue(this.player);
-		int displaystatvalue = this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(statvalue)).intValue();
+		int statvalue = stat.getValue(this.player);
+		int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
 		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)).intValue() - 1);
 		this.displayedLevel -= 1;
 	}

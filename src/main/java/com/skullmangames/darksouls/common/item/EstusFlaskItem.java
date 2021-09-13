@@ -2,6 +2,8 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.List;
 
+import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ItemInit;
 
@@ -107,7 +109,8 @@ public class EstusFlaskItem extends Item
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new StringTextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
+		if (ClientEngine.INSTANCE == null) return;
+		if (!ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SHOW_ITEM_INFO)) tooltip.add(new StringTextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
 	}
 	
 	@Override

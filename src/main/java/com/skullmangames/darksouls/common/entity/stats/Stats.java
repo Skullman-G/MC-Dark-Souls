@@ -13,7 +13,7 @@ public class Stats
 {
 	private static List<Stat> stats = new ArrayList<Stat>();
 	
-	public static final Stat VIGOR = register(new Stat("VigorStat", "35031b47-45fa-401b-92dc-12b6d258e553")
+	public static final Stat VIGOR = register(new Stat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553")
 		{
 			@Override		
 			public void onChange(LivingEntity livingentity, boolean isinit, int value)
@@ -23,11 +23,13 @@ public class Stats
 				{
 					attribute.removeModifier(this.getModifierUUID());
 				}
-				AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), "Change with Vigor", value - 1, Operation.ADDITION);
+				AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), "change_with_vigor", value - 1, Operation.ADDITION);
 				attribute.addPermanentModifier(modifier);
 				if (!isinit) livingentity.setHealth(livingentity.getMaxHealth());
-			};
+			}
 		});
+	
+	public static final Stat STRENGTH = register(new Stat("strength", "e3d34cb6-3708-462b-8598-c9a124604de6"));
 	
 	private static Stat register(Stat stat)
 	{

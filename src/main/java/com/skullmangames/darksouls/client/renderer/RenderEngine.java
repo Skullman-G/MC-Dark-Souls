@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.client.renderer;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
@@ -11,7 +10,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.gui.EntityIndicator;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
 import com.skullmangames.darksouls.client.renderer.item.RenderBow;
 import com.skullmangames.darksouls.client.renderer.item.RenderCrossbow;
@@ -28,11 +26,9 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
@@ -47,9 +43,6 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.CrossbowItem;
@@ -65,9 +58,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -334,61 +324,7 @@ public class RenderEngine
 				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(event.getItemStack());
 				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if (cap != null && ClientEngine.INSTANCE.getPlayerData() != null)
-				{
-					if (cap instanceof WeaponCapability && ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SPECIAL_ATTACK_TOOLTIP))
-					{
-						WeaponCapability wcap = (WeaponCapability)cap;
-						if (wcap.getHeavyAttack() != null)
-						{
-							event.getToolTip().clear();
-							List<ITextComponent> skilltooltip = wcap.getHeavyAttack().getTooltipOnItem(event.getItemStack(), cap, playerCap);
-							
-							for (ITextComponent s : skilltooltip)
-							{
-								event.getToolTip().add(s);
-							}
-						}
-					}
-					else
-					{
-						List<ITextComponent> tooltip = event.getToolTip();
-						cap.modifyItemTooltip(event.getToolTip(), playerCap);
-						
-						for (int i = 0; i < tooltip.size(); i++)
-						{
-							ITextComponent textComp = tooltip.get(i);
-							
-							if (textComp.getSiblings().size() > 0)
-							{
-								ITextComponent sibling = textComp.getSiblings().get(0);
-								if (sibling instanceof TranslationTextComponent)
-								{
-									TranslationTextComponent translationComponent = (TranslationTextComponent)sibling;
-									if (translationComponent.getArgs().length > 1 &&
-											translationComponent.getArgs()[1] instanceof TranslationTextComponent)
-									{
-										if(((TranslationTextComponent)translationComponent.getArgs()[1]).getKey().equals(Attributes.ATTACK_SPEED.getDescriptionId()))
-										{
-											double weaponSpeed = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_SPEED).getBaseValue();
-											
-											for (AttributeModifier modifier : event.getItemStack().getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED))
-											{
-												weaponSpeed += modifier.getAmount();
-											}
-											
-											double attackSpeedPanelty = Formulars.getAttackSpeedPenalty(playerCap.getWeight(), weaponSpeed, playerCap);
-											weaponSpeed += attackSpeedPanelty;
-											tooltip.remove(i);
-											tooltip.add(i, new StringTextComponent(String.format(" %.2f ", weaponSpeed))
-													.append(new TranslationTextComponent(Attributes.ATTACK_SPEED.getDescriptionId())));
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				if (cap != null && ClientEngine.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
 			}
 		}
 		

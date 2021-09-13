@@ -52,7 +52,7 @@ public class ArmorCapability extends CapabilityItem
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
 	{
 		itemTooltip.add(1, new StringTextComponent(TextFormatting.BLUE + " +" + (int)this.weight + " ")
 				.append(new TranslationTextComponent(AttributeInit.WEIGHT.get().getDescriptionId()).withStyle(TextFormatting.BLUE)));

@@ -8,6 +8,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
+import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -85,15 +88,22 @@ public class CapabilityItem
 
 	protected void registerAttribute() {}
 	
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
-		@SuppressWarnings("rawtypes")
-		String languagePath = "tooltip.darksouls." + ((IForgeRegistryEntry)this.orgItem).getRegistryName().getPath();
+		String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath();
 		String description = new TranslationTextComponent(languagePath).getString();
 		
-		if (!description.startsWith(languagePath)) itemTooltip.add(new StringTextComponent("\u00A77" + description + "\n"));
+		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
+		if (!description.contains(languagePath)) itemTooltip.add(1, new StringTextComponent("\u00A77" + description));
+		
+		if (!ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
+		
+		languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
+		description = new TranslationTextComponent(languagePath).getString();
+		
+		if (!description.contains(languagePath)) itemTooltip.add(2, new StringTextComponent("\u00A77\n" + description));
 	}
 	
 	public void onHeld(PlayerData<?> playerdata) {}

@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
@@ -55,7 +56,8 @@ public class ItemInit
 			.tab(ItemGroup.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new GreatHammerItem(ItemTier.WOOD, 7, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT)));
+			.tab(ItemGroup.TAB_COMBAT))
+			.addStat(Stats.STRENGTH, 46));
 	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),

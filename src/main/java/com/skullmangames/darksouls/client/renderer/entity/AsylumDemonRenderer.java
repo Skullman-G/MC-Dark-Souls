@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
+import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 
@@ -14,6 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, AsylumDemonData>
 {
 	private final ResourceLocation textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
+	
+	public AsylumDemonRenderer()
+	{
+		this.layers.add(new HeldItemLayer<>());
+	}
 	
 	@Override
 	protected ResourceLocation getEntityTexture(AsylumDemonEntity entityIn)

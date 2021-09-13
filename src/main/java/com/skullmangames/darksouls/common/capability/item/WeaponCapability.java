@@ -9,19 +9,24 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.entity.stats.Stat;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
-import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -29,9 +34,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class WeaponCapability extends CapabilityItem implements IShield
 {
@@ -84,32 +91,41 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
 	{
-		super.modifyItemTooltip(itemTooltip, entitydata);
+		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
-		Map<Supplier<Attribute>, AttributeModifier> attribute = this.getDamageAttributesInCondition(this.getStyle(entitydata));
-				
-		if(attribute != null)
+		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
+		
+		if (ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
-			for(Map.Entry<Supplier<Attribute>, AttributeModifier> attr : attribute.entrySet())
-			{
-				if (entitydata.getOriginalEntity().getAttributes().hasAttribute(attr.getKey().get()))
-				{
-					double value = attr.getValue().getAmount() + entitydata.getOriginalEntity().getAttribute(attr.getKey().get()).getBaseValue();
-					if (value != 0.0D)
-					{
-						itemTooltip.add(new TranslationTextComponent(attr.getKey().get().getDescriptionId(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value)));
-					}
-				}
-			}
-					
-			if(!attribute.keySet().contains(AttributeInit.MAX_STRIKES))
-			{
-				itemTooltip.add(new TranslationTextComponent(AttributeInit.MAX_STRIKES.get().getDescriptionId(), 
-						ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(AttributeInit.MAX_STRIKES.get().getDefaultValue())));
-			}
+			String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
+			String description = new TranslationTextComponent(languagePath).getString();
+			
+			if (!description.contains(languagePath)) itemTooltip.add(new StringTextComponent("\u00A77\n" + description));
 		}
+		else
+		{
+			if (!(this.orgItem instanceof WeaponItem)) return;
+			WeaponItem weapon = (WeaponItem)this.orgItem;
+			LivingEntity entity = entitydata.getOriginalEntity();
+			itemTooltip.add(new StringTextComponent("\u00A72Physical Damage: "+weapon.getDamage()));
+			itemTooltip.add(new StringTextComponent("\u00A72Durability: "+weapon.getDurabilityForDisplay(stack)));
+			
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new StringTextComponent("Requirements:"));
+			itemTooltip.add(new StringTextComponent("  Strength: "+this.getStatValue(Stats.STRENGTH, weapon, entity)));
+		}
+	}
+	
+	private String getStatValue(Stat stat, WeaponItem weapon, LivingEntity entity)
+	{
+		return this.getStatColor(Stats.STRENGTH, weapon, entity)+weapon.getRequiredStat(Stats.STRENGTH);
+	}
+	
+	private String getStatColor(Stat stat, WeaponItem weapon, LivingEntity entity)
+	{
+		return weapon.meetRequirement(stat, entity) ? "\u00A7f" : "\u00A74";
 	}
 	
 	@Nullable

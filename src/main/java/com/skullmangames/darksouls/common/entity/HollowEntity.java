@@ -94,21 +94,15 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 			item = new ItemStack(Items.BOW);
 		}
 		
-		if (random.nextInt(50) == 1)
-		{
-			this.setItemSlotAndDropWhenKilled(EquipmentSlotType.MAINHAND, item);
-		}
-		else
-		{
-			this.setItemSlot(EquipmentSlotType.MAINHAND, item);
-		}
+		this.setItemSlot(EquipmentSlotType.MAINHAND, item);
+		this.setDropChance(EquipmentSlotType.MAINHAND, 0.04F);
 	}
 	
 	@Override
-	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance instance, SpawnReason p_213386_3_, ILivingEntityData data, CompoundNBT nbt)
+	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, ILivingEntityData data, CompoundNBT nbt)
 	{
-		data = super.finalizeSpawn(p_213386_1_, instance, p_213386_3_, data, nbt);
-		this.populateDefaultEquipmentSlots(instance);
+		data = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, data, nbt);
+		this.populateDefaultEquipmentSlots(difficulty);
 		
 		return data;
 	}
