@@ -4,8 +4,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
-import com.skullmangames.darksouls.common.entity.stats.Stat;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.CommandInit;
 import com.skullmangames.darksouls.core.init.ItemInit;
@@ -27,7 +25,6 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
-import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -50,16 +47,6 @@ public class OtherEvents
 	public static void onRegisterCommands(final RegisterCommandsEvent event)
     {
 		CommandInit.register(event.getDispatcher());
-    }
-	
-	@SubscribeEvent
-	public static void onPlayerClone(final Clone event)
-    {
-		// Copy Stats
-		for (Stat stat : Stats.getStats())
-		{
-			stat.setValue(event.getPlayer(), stat.getValue(event.getOriginal()));
-		}
     }
 	
 	@SubscribeEvent

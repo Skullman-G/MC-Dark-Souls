@@ -139,5 +139,15 @@
 			{ "name": "darksouls:items/sword/swing_1", "stream": true },
 			{ "name": "darksouls:items/sword/swing_2", "stream": true }
 		]
+	},
+	
+	"item.great_hammer.smash":
+	{
+		"category": "item",
+		"subtitle": "item.great_hammer.smash.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/great_hammer/smash", "stream": true }
+		]
 	}
 }

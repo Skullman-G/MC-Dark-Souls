@@ -74,83 +74,83 @@ public class AttackAnimation extends ActionAnimation
 	public void onUpdate(LivingData<?> entitydata)
 	{
 		super.onUpdate(entitydata);
+		if (entitydata.isClientSide()) return;
 		
-		if (!entitydata.isClientSide())
+		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
+		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
+		LivingData.EntityState state = this.getState(elapsedTime);
+		LivingData.EntityState prevState = this.getState(prevElapsedTime);
+		Phase phase = this.getPhaseByTime(elapsedTime);
+		LivingEntity entity = entitydata.getOriginalEntity();
+		if ((state == LivingData.EntityState.POST_DELAY || state == LivingData.EntityState.ROTATABLE_POST_DELAY) && !phase.smashed)
 		{
-			float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
-			float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
-			LivingData.EntityState state = this.getState(elapsedTime);
-			LivingData.EntityState prevState = this.getState(prevElapsedTime);
-			Phase phase = this.getPhaseByTime(elapsedTime);
-			if(state == LivingData.EntityState.FREE_CAMERA)
+			phase.smashed = true;
+			entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase), entity.getSoundSource(), 1.0F, 1.0F);
+		}
+		if(state == LivingData.EntityState.FREE_CAMERA)
+		{
+			if(entitydata instanceof MobData)
 			{
-				if(entitydata instanceof MobData)
+				((MobEntity) entitydata.getOriginalEntity()).getNavigation().stop();
+				LivingEntity target = entitydata.getTarget();
+				if(target != null)
 				{
-					((MobEntity) entitydata.getOriginalEntity()).getNavigation().stop();
-					LivingEntity target = entitydata.getTarget();
-					if(target != null)
-					{
-						entitydata.rotateTo(target, 60.0F, false);
-					}
+					entitydata.rotateTo(target, 60.0F, false);
 				}
 			}
-			else if (state.shouldDetectCollision() || (prevState.getLevel() < 2 && state.getLevel() > 2))
+		}
+		else if (state.shouldDetectCollision() || (prevState.getLevel() < 2 && state.getLevel() > 2))
+		{
+			if(!prevState.shouldDetectCollision())
 			{
-				if(!prevState.shouldDetectCollision())
+				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F);
+				entitydata.currentlyAttackedEntity.clear();
+			}
+			
+			Collider collider = this.getCollider(entitydata, elapsedTime);
+			entitydata.getEntityModel(Models.SERVER).getArmature().initializeTransform();
+			PublicMatrix4f jointTransform = entitydata.getServerAnimator().getColliderTransformMatrix(phase.jointIndexer);
+			collider.transform(PublicMatrix4f.mul(entitydata.getModelMatrix(1.0F), jointTransform, null));
+			List<Entity> list = entity.level.getEntities(entity, collider.getHitboxAABB());
+			collider.extractHitEntities(list);
+			
+			if (list.size() > 0)
+			{
+				AttackResult attackResult = new AttackResult(entity, list);
+				boolean flag1 = true;
+				int maxStrikes = this.getMaxStrikes(entitydata, phase);
+				while (entitydata.currentlyAttackedEntity.size() < maxStrikes)
 				{
-					entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F);
-					entitydata.currentlyAttackedEntity.clear();
-				}
-				
-				Collider collider = this.getCollider(entitydata, elapsedTime);
-				LivingEntity entity = entitydata.getOriginalEntity();
-				entitydata.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-				PublicMatrix4f jointTransform = entitydata.getServerAnimator().getColliderTransformMatrix(phase.jointIndexer);
-				collider.transform(PublicMatrix4f.mul(entitydata.getModelMatrix(1.0F), jointTransform, null));
-				List<Entity> list = entity.level.getEntities(entity, collider.getHitboxAABB());
-				collider.extractHitEntities(list);
-				
-				if (list.size() > 0)
-				{
-					AttackResult attackResult = new AttackResult(entity, list);
-					boolean flag1 = true;
-					int maxStrikes = this.getMaxStrikes(entitydata, phase);
-					while (entitydata.currentlyAttackedEntity.size() < maxStrikes)
+					Entity e = attackResult.getEntity();
+					Entity trueEntity = this.getTrueEntity(e);
+					if (!entitydata.currentlyAttackedEntity.contains(trueEntity) && !entitydata.isTeam(e))
 					{
-						Entity e = attackResult.getEntity();
-						Entity trueEntity = this.getTrueEntity(e);
-						if (!entitydata.currentlyAttackedEntity.contains(trueEntity) && !entitydata.isTeam(e))
+						if (e instanceof LivingEntity || e instanceof PartEntity)
 						{
-							if (e instanceof LivingEntity || e instanceof PartEntity)
+							if(entity.level.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double)e.getEyeHeight(), e.getZ()),
+									new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()), 
+									RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)).getType() == RayTraceResult.Type.MISS)
 							{
-								if(entity.level.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double)e.getEyeHeight(), e.getZ()),
-										new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()), 
-										RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)).getType() == RayTraceResult.Type.MISS)
+								
+								float amount = this.getDamageAmount(entitydata, e, phase);
+								IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
+								if(entitydata.hurtEntity(e, phase.hand, source, amount))
 								{
-									
-									float amount = this.getDamageAmount(entitydata, e, phase);
-									IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
-									if(entitydata.hurtEntity(e, phase.hand, source, amount))
+									e.invulnerableTime = 0;
+									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(), 1.0F, 1.0F);
+									this.spawnHitParticle(((ServerWorld)e.level), entitydata, e, phase);
+									if(flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
 									{
-										e.invulnerableTime = 0;
-										e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(), 1.0F, 1.0F);
-										this.spawnHitParticle(((ServerWorld)e.level), entitydata, e, phase);
-										if(flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
-										{
-											entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity)trueEntity, ((PlayerData<?>)entitydata).getOriginalEntity());
-											flag1 = false;
-										}
+										entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity)trueEntity, ((PlayerData<?>)entitydata).getOriginalEntity());
+										flag1 = false;
 									}
-									entitydata.currentlyAttackedEntity.add(trueEntity);
 								}
+								entitydata.currentlyAttackedEntity.add(trueEntity);
 							}
 						}
-						
-						if(!attackResult.next())
-						{
-							break;
-						}
 					}
+					
+					if(!attackResult.next()) break;
 				}
 			}
 		}
@@ -174,6 +174,8 @@ public class AttackAnimation extends ActionAnimation
 			if(entity.getTarget() !=null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity)null);
 		}
+		
+		for (Phase phase : this.phases) phase.smashed = false;
 	}
 	
 	@Override
@@ -244,6 +246,11 @@ public class AttackAnimation extends ActionAnimation
 	protected SoundEvent getHitSound(LivingData<?> entitydata, Phase phase)
 	{
 		return phase.getProperty(DamageProperty.HIT_SOUND).orElse(entitydata.getWeaponHitSound(phase.hand));
+	}
+	
+	protected SoundEvent getSmashSound(LivingData<?> entitydata, Phase phase)
+	{
+		return phase.getProperty(DamageProperty.SMASH_SOUND).orElse(entitydata.getWeaponSmashSound(phase.hand));
 	}
 	
 	@Nullable
@@ -366,6 +373,7 @@ public class AttackAnimation extends ActionAnimation
 		protected final int jointIndexer;
 		protected final Hand hand;
 		protected Collider collider;
+		protected boolean smashed = false;
 		
 		public Phase(float antic, float preDelay, float contact, float recovery, String indexer, Collider collider)
 		{

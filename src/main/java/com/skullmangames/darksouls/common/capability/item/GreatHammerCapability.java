@@ -5,9 +5,11 @@ import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Skills;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.SoundEvent;
 
 public class GreatHammerCapability extends WeaponCapability
 {
@@ -34,5 +36,11 @@ public class GreatHammerCapability extends WeaponCapability
 		if (!(this.orgItem instanceof WeaponItem)) return null;
 		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
 		return Skills.GREAT_HAMMER_HEAVY_ATTACK;
+	}
+	
+	@Override
+	public SoundEvent getSmashSound()
+	{
+		return SoundEvents.GREAT_HAMMER_SMASH;
 	}
 }

@@ -114,6 +114,8 @@
 	"item.soul_container.finish.sub": "Soul Container breaks",
 	"item.sword.swing": "Sword swing",
 	"item.sword.swing.sub": "Sword swinging",
+	"item.great_hammer.smash": "Great Hammer Smash",
+	"item.great_hammer.smash.sub": "Great Hammer hits the ground too hard",
 	
 	"entity.hollow.ambient": "Hollow ambient",
 	"entity.hollow.ambient.sub": "Hollow groans",

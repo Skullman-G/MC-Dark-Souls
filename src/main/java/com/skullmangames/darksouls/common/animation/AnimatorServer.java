@@ -56,10 +56,7 @@ public class AnimatorServer extends Animator
 	@Override
 	public void update()
 	{
-		if (this.pause)
-		{
-			return;
-		}
+		if (this.pause) return;
 		
 		this.animationPlayer.update(IngameConfig.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(this.entitydata));
 		this.animationPlayer.getPlay().onUpdate(this.entitydata);

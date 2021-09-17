@@ -16,6 +16,7 @@ public class SoundEvents
 	public static final SoundEvent SOUL_CONTAINER_USE = registerSound("item.soul_container.use");
 	public static final SoundEvent SOUL_CONTAINER_FINISH = registerSound("item.soul_container.finish");
 	public static final SoundEvent SWORD_SWING = registerSound("item.sword.swing");
+	public static final SoundEvent GREAT_HAMMER_SMASH = registerSound("item.great_hammer.smash");
 	
 	public static final SoundEvent HOLLOW_AMBIENT = registerSound("entity.hollow.ambient");
 	public static final SoundEvent HOLLOW_DEATH = registerSound("entity.hollow.death");
@@ -35,12 +36,12 @@ public class SoundEvents
 	// Override Vanilla Sound Events
 	public static final DeferredRegister<SoundEvent> VANILLA_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "minecraft");
 	
-	public static final RegistryObject<SoundEvent> GENERIC_HURT = registerVanillaSound("entity.generic.hurt");
-	public static final RegistryObject<SoundEvent> PLAYER_HURT = registerVanillaSound("entity.player.hurt");
-	public static final RegistryObject<SoundEvent> HOSTILE_HURT = registerVanillaSound("entity.hostile.hurt");
+	public static final RegistryObject<SoundEvent> GENERIC_HURT = overrideVanillaSound("entity.generic.hurt");
+	public static final RegistryObject<SoundEvent> PLAYER_HURT = overrideVanillaSound("entity.player.hurt");
+	public static final RegistryObject<SoundEvent> HOSTILE_HURT = overrideVanillaSound("entity.hostile.hurt");
 	
 
-	private static RegistryObject<SoundEvent> registerVanillaSound(String name)
+	private static RegistryObject<SoundEvent> overrideVanillaSound(String name)
 	{
 		return VANILLA_SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, name)));
 	}

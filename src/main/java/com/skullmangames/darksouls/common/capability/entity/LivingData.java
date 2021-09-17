@@ -611,6 +611,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		if (cap == null) return null;
 		return cap.getHitSound();
 	}
+	
+	public SoundEvent getWeaponSmashSound(Hand hand)
+	{
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		if (cap == null) return null;
+		return cap.getSmashSound();
+	}
 
 	public SoundEvent getSwingSound(Hand hand)
 	{

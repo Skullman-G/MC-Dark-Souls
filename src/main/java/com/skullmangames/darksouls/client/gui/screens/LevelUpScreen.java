@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
@@ -28,6 +29,7 @@ public class LevelUpScreen extends Screen
 	private final PlayerEntity player;
 	
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");
+	private final Map<LevelButton, LevelButton> levelButtons = new HashMap<LevelButton, LevelButton>();
 	private int imageWidth = 350;
 	private int imageHeight = 200;
 	private int buttonWidth = 70;
@@ -51,19 +53,20 @@ public class LevelUpScreen extends Screen
 		for (Stat stat : Stats.getStats())
 		{
 			int statValue = stat.getValue(this.player);
-			Button downButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 - 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent("<"), (button) ->
+			LevelButton downButton = this.addButton(new LevelButton(this.width / 2 - this.imageWidth / 6 - 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent("<"), (button) ->
 			{
 				this.levelDown(stat);
-				button.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() > statValue;
-		    }));
-			downButton.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() > statValue;
+				this.refreshLevelButtons();
+		    }, stat));
+			downButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
 			
-			Button upButton = this.addButton(new Button(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
+			LevelButton upButton = this.addButton(new LevelButton(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
 			{
 				this.levelUp(stat);
-				button.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
-		    }));
-			upButton.active = this.displayedStats.getOrDefault(stat, Integer.valueOf(1)).intValue() < 99 && this.canEffort();
+				this.refreshLevelButtons();
+		    }, stat));
+			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.canEffort();
+			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 25;
 		}
@@ -72,6 +75,16 @@ public class LevelUpScreen extends Screen
 		{
 	         this.accept();
 	    }));
+	}
+	
+	private void refreshLevelButtons()
+	{
+		this.levelButtons.forEach((down, up) ->
+		{
+			int statvalue = down.getStat().getValue(this.player);
+			down.active = this.player.isCreative() ? this.displayedStats.getOrDefault(down.getStat(), 1).intValue() > 1 : this.displayedStats.getOrDefault(down.getStat(), 1).intValue() > statvalue;
+			up.active = this.displayedStats.getOrDefault(up.getStat(), 1).intValue() < 99 && this.canEffort();
+		});
 	}
 	
 	@Override
@@ -133,8 +146,8 @@ public class LevelUpScreen extends Screen
 	private void levelDown(Stat stat)
 	{
 		int statvalue = stat.getValue(this.player);
-		int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
-		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)).intValue() - 1);
+		int displaystatvalue = this.displayedStats.getOrDefault(stat, statvalue).intValue();
+		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, displaystatvalue).intValue() - 1);
 		this.displayedLevel -= 1;
 	}
 	
@@ -148,10 +161,10 @@ public class LevelUpScreen extends Screen
 		for (Stat stat : Stats.getStats())
 		{
 			int statvalue = stat.getValue(this.player);
-			int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
-			stat.setValue(this.player, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)));
+			int displaystatvalue = this.displayedStats.getOrDefault(stat, statvalue).intValue();
+			stat.setValue(this.player, this.displayedStats.getOrDefault(stat, displaystatvalue));
 			Minecraft minecraft = Minecraft.getInstance();
-			stat.setValue(minecraft.player, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)));
+			stat.setValue(minecraft.player, this.displayedStats.getOrDefault(stat, displaystatvalue));
 		}
 		super.onClose();
 	}

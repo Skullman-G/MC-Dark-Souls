@@ -22,7 +22,6 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.common.skill.Skill;
-import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -169,44 +168,8 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	
 	public void onHeld(PlayerData<?> playerdata)
 	{
-		Skill lightAttackSkill = this.getLightAttack(playerdata.getOriginalEntity());
-		if (lightAttackSkill != null)
-		{
-			
-			if(SkillExecutionHelper.getActiveSkill() != lightAttackSkill)
-			{
-				SkillExecutionHelper.setActiveSkill(lightAttackSkill);
-			}
-		}
-		
-		Skill specialSkill = this.getHeavyAttack(playerdata.getOriginalEntity());
-		if (specialSkill != null)
-		{
-			
-			if(SkillExecutionHelper.getActiveSkill() != specialSkill)
-			{
-				SkillExecutionHelper.setActiveSkill(specialSkill);
-			}
-		}
-		
-		Skill skill = this.getPassiveSkill();
-		
-		if(skill == null)
-		{
-			SkillExecutionHelper.setActiveSkill(null);
-		}
-		else
-		{
-			if(SkillExecutionHelper.getActiveSkill() != skill)
-			{
-				SkillExecutionHelper.setActiveSkill(skill);
-			}
-		}
-		
-		if (playerdata.isClientSide() && !ClientEngine.INSTANCE.isBattleMode())
-		{
-			ClientEngine.INSTANCE.switchToBattleMode();
-		}
+		if (!playerdata.isClientSide() || ClientEngine.INSTANCE.isBattleMode()) return;
+		ClientEngine.INSTANCE.switchToBattleMode();
 	}
 	
 	public SoundEvent getSwingSound()
@@ -215,6 +178,11 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 
 	public SoundEvent getHitSound()
+	{
+		return null;
+	}
+	
+	public SoundEvent getSmashSound()
 	{
 		return null;
 	}

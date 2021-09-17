@@ -46,7 +46,7 @@ public class Stat
 	
 	public void setValue(LivingEntity livingentity, int value)
 	{
-		if (!(value > 0) || livingentity.getPersistentData().getInt(this.name) == value) return;
+		if (value <= 0 || value > 99 || livingentity.getPersistentData().getInt(this.name) == value) return;
 		livingentity.getPersistentData().putInt(this.name, value);
 		this.onChange(livingentity, false, value);
 	}
