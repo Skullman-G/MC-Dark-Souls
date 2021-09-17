@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
+import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Skills;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class GreatHammerCapability extends WeaponCapability
@@ -21,8 +23,16 @@ public class GreatHammerCapability extends WeaponCapability
 	}
 	
 	@Override
-	public Skill getLightAttack()
+	public Skill getWeakAttack()
 	{
 		return Skills.GREAT_HAMMER_WEAK_ATTACK;
+	}
+	
+	@Override
+	public Skill getHeavyAttack(LivingEntity entity)
+	{
+		if (!(this.orgItem instanceof WeaponItem)) return null;
+		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
+		return Skills.GREAT_HAMMER_HEAVY_ATTACK;
 	}
 }

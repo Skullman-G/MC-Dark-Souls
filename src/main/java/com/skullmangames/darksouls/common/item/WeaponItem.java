@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.skullmangames.darksouls.common.entity.stats.Stat;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,7 +34,13 @@ public class WeaponItem extends SwordItem
 	
 	public boolean meetRequirement(Stat stat, LivingEntity livingentity)
 	{
-		return this.getRequiredStat(stat) <= Stats.STRENGTH.getValue(livingentity);
+		return this.getRequiredStat(stat) <= stat.getValue(livingentity);
+	}
+	
+	public boolean meetRequirements(LivingEntity livingentity)
+	{
+		for (Stat stat : this.requiredStats.keySet()) if (!this.meetRequirement(stat, livingentity)) return false;
+		return true;
 	}
 	
 	public int getRequiredStat(Stat stat)

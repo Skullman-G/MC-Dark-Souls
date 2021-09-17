@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Skills;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class ShieldCapability extends WeaponCapability implements IShield
@@ -13,7 +14,7 @@ public class ShieldCapability extends WeaponCapability implements IShield
 	}
 	
 	@Override
-	public Skill getLightAttack()
+	public Skill getLightAttack(LivingEntity entity)
 	{
 		return Skills.SHIELD_ATTACK;
 	}

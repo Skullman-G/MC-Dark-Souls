@@ -129,7 +129,15 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Nullable
-	public Skill getLightAttack()
+	public Skill getLightAttack(LivingEntity entity)
+	{
+		if (!(this.orgItem instanceof WeaponItem)) return null;
+		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
+		return null;
+	}
+	
+	@Nullable
+	public Skill getWeakAttack()
 	{
 		return null;
 	}
@@ -141,8 +149,10 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Nullable
-	public Skill getHeavyAttack()
+	public Skill getHeavyAttack(LivingEntity entity)
 	{
+		if (!(this.orgItem instanceof WeaponItem)) return null;
+		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
 		return null;
 	}
 	
@@ -159,7 +169,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	
 	public void onHeld(PlayerData<?> playerdata)
 	{
-		Skill lightAttackSkill = this.getLightAttack();
+		Skill lightAttackSkill = this.getLightAttack(playerdata.getOriginalEntity());
 		if (lightAttackSkill != null)
 		{
 			
@@ -169,7 +179,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 			}
 		}
 		
-		Skill specialSkill = this.getHeavyAttack();
+		Skill specialSkill = this.getHeavyAttack(playerdata.getOriginalEntity());
 		if (specialSkill != null)
 		{
 			

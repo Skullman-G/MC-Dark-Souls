@@ -41,6 +41,11 @@ public class CapabilityItem
 		this.attributeMap = Maps.<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>>newHashMap();
 	}
 	
+	public Item getOriginalItem()
+	{
+		return this.orgItem;
+	}
+	
 	public boolean isTwoHanded()
 	{
 		return false;

@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class FistCapability extends WeaponCapability
@@ -17,7 +18,7 @@ public class FistCapability extends WeaponCapability
 	}
 	
 	@Override
-	public Skill getLightAttack()
+	public Skill getLightAttack(LivingEntity entity)
 	{
 		return Skills.FIST_LIGHT_ATTACK;
 	}

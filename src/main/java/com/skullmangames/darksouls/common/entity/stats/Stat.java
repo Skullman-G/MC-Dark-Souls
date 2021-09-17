@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
-
 import net.minecraft.entity.LivingEntity;
 
 public class Stat
@@ -27,6 +26,12 @@ public class Stat
 		return this.name;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
+	
 	public void onChange(LivingEntity livingentity, boolean isinit, int value) {}
 	
 	public int getValue(LivingEntity livingentity)
@@ -41,10 +46,8 @@ public class Stat
 	
 	public void setValue(LivingEntity livingentity, int value)
 	{
-		if (value > 0 && livingentity.getPersistentData().getInt(this.name) != value)
-		{
-			livingentity.getPersistentData().putInt(this.name, value);
-			this.onChange(livingentity, false, value);
-		}
+		if (!(value > 0) || livingentity.getPersistentData().getInt(this.name) == value) return;
+		livingentity.getPersistentData().putInt(this.name, value);
+		this.onChange(livingentity, false, value);
 	}
 }

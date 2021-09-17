@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
@@ -80,7 +81,7 @@ public class LevelUpScreen extends Screen
 		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
 		
 		drawCenteredString(matrixstack, this.font, "Level Up", this.width / 2 - this.imageWidth / 4, this.height / 2 - this.imageHeight / 2 + 10, 16777215);
-		drawCenteredString(matrixstack, this.font, "Souls: " + MobNBTManager.getSouls(this.player), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
+		drawCenteredString(matrixstack, this.font, "Souls: " + (this.player.isCreative() ? "INFINITE" : MobNBTManager.getSouls(this.player)), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 8, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
 		drawCenteredString(matrixstack, this.font, "Cost: " + this.getCost(), this.width / 2 - this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 25, 16777215);
 		
 		int textheight = this.height / 2 - this.imageHeight / 2 + 40;
@@ -113,7 +114,7 @@ public class LevelUpScreen extends Screen
 	
 	private boolean canEffort()
 	{
-		return MobNBTManager.getSouls(this.player) >= this.getCost();
+		return this.player.isCreative() ? true : MobNBTManager.getSouls(this.player) >= this.getCost();
 	}
 	
 	private int getCost()
@@ -149,6 +150,8 @@ public class LevelUpScreen extends Screen
 			int statvalue = stat.getValue(this.player);
 			int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
 			stat.setValue(this.player, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)));
+			Minecraft minecraft = Minecraft.getInstance();
+			stat.setValue(minecraft.player, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)));
 		}
 		super.onClose();
 	}

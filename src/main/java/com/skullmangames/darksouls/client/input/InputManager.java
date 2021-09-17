@@ -264,7 +264,7 @@ public class InputManager
 					WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
 					if(itemCap != null)
 					{
-						SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack());
+						SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack(this.player));
 					}
 				}
 				
@@ -286,7 +286,7 @@ public class InputManager
 			WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
 			if(itemCap != null)
 			{
-				SkillExecutionHelper.execute(this.playerdata, itemCap.getLightAttack());
+				SkillExecutionHelper.execute(this.playerdata,itemCap.getLightAttack(this.player));
 				this.player.resetAttackStrengthTicker();
 			}
 		}

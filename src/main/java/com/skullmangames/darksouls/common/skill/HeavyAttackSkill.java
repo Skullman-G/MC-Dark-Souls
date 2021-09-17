@@ -130,7 +130,7 @@ public abstract class HeavyAttackSkill extends AttackSkill
 	{
 		WeaponCapability item = executer.getHeldWeaponCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
-		if (this != item.getHeavyAttack()) return false;
+		if (this != item.getHeavyAttack(executer.getOriginalEntity())) return false;
 		
 		return super.canExecute(executer);
 	}

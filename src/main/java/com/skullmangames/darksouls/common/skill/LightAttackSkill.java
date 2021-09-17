@@ -58,7 +58,7 @@ public class LightAttackSkill extends AttackSkill
 	{
 		WeaponCapability item = executer.getHeldWeaponCapability(Hand.MAIN_HAND);
 		if (item == null) return false;
-		if (this != item.getLightAttack()) return false;
+		if (this != item.getLightAttack(executer.getOriginalEntity())) return false;
 		
 		return super.canExecute(executer);
 	}

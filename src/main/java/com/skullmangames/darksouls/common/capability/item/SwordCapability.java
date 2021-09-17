@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -56,13 +57,13 @@ public class SwordCapability extends MaterialItemCapability
 	}
 	
 	@Override
-	public Skill getHeavyAttack()
+	public Skill getHeavyAttack(LivingEntity entity)
 	{
 		return Skills.SWEEPING_EDGE;
 	}
 	
 	@Override
-	public Skill getLightAttack()
+	public Skill getLightAttack(LivingEntity entity)
 	{
 		return Skills.SWORD_LIGHT_ATTACK;
 	}

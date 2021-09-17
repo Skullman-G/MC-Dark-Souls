@@ -22,6 +22,8 @@ public class Skills
 	
 	public static final Skill ROLL = new DodgeSkill("roll", Animations.BIPED_ROLL_FORWARD, Animations.BIPED_ROLL_BACKWARD);
 	
+	public static final Skill GREAT_HAMMER_HEAVY_ATTACK = new SimpleHeavyAttackSkill(0, "great_hammer_heavy_attack", Animations.GREAT_HAMMER_HEAVY_ATTACK);
+	
 	public static final Skill SWEEPING_EDGE = new SimpleHeavyAttackSkill("sweeping_edge", Animations.SWEEPING_EDGE)
 			.newPropertyLine()
 			.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1))

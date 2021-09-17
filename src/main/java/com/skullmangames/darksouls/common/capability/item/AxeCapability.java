@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class AxeCapability extends MaterialItemCapability
@@ -28,7 +29,7 @@ public class AxeCapability extends MaterialItemCapability
 	}
 
 	@Override
-	public Skill getHeavyAttack()
+	public Skill getHeavyAttack(LivingEntity entity)
 	{
 		return Skills.GUILLOTINE_AXE;
 	}
