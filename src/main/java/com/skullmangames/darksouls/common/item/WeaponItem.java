@@ -26,6 +26,11 @@ public class WeaponItem extends SwordItem
 		super(itemtier, damage, speed, properties);
 	}
 	
+	public float getDamage(LivingEntity entity)
+	{
+		return this.meetRequirements(entity) ? super.getDamage() : 0.0F;
+	}
+	
 	public WeaponItem addStat(Stat stat, int value)
 	{
 		this.requiredStats.put(stat, value);

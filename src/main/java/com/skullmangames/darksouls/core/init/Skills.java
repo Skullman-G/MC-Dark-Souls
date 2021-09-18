@@ -24,6 +24,8 @@ public class Skills
 	
 	public static final Skill GREAT_HAMMER_HEAVY_ATTACK = new SimpleHeavyAttackSkill(0, "great_hammer_heavy_attack", Animations.GREAT_HAMMER_HEAVY_ATTACK);
 	
+	public static final Skill GREAT_HAMMER_WEAK_ATTACK = new LightAttackSkill(0, "great_hammer_weak_attack", Animations.GREAT_HAMMER_WEAK_ATTACK);
+	
 	public static final Skill SWEEPING_EDGE = new SimpleHeavyAttackSkill("sweeping_edge", Animations.SWEEPING_EDGE)
 			.newPropertyLine()
 			.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1))
@@ -67,23 +69,17 @@ public class Skills
 			.addProperty(DamageProperty.IMPACT, ValueCorrector.getSetter(0.5F))
 			.addProperty(DamageProperty.DAMAGE, ValueCorrector.getSetter(1.0F))
 			.addProperty(DamageProperty.STUN_TYPE, StunType.LONG)
-			.addProperty(DamageProperty.HIT_SOUND, null)
-			.addProperty(DamageProperty.PARTICLE, null)
 			.newPropertyLine()
 			.addProperty(DamageProperty.ARMOR_NEGATION, ValueCorrector.getAdder(50.0F))
 			.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(2))
 			.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(0.7F))
-			.addProperty(DamageProperty.SWING_SOUND, null)
 			.registerPropertiesToAnimation();
 	
 	public static final Skill RELENTLESS_COMBO = new SimpleHeavyAttackSkill("relentless_combo", Animations.RELENTLESS_COMBO)
 			.newPropertyLine()
 			.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getSetter(1))
 			.addProperty(DamageProperty.STUN_TYPE, StunType.HOLD)
-			.addProperty(DamageProperty.PARTICLE, null)
 			.registerPropertiesToAnimation();
 	
 	public static final Skill SHIELD_ATTACK = new LightAttackSkill(0, "shield_attack", Animations.SHIELD_LIGHT_ATTACK);
-	
-	public static final Skill GREAT_HAMMER_WEAK_ATTACK = new LightAttackSkill(0, "great_hammer_weak_attack", Animations.GREAT_HAMMER_WEAK_ATTACK);
 }

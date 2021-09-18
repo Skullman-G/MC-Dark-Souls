@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.DataKeys;
+import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
@@ -41,6 +42,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
@@ -262,15 +264,10 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public float getDamageToEntity(Entity targetEntity, Hand hand)
 	{
-		float damage = 0;
-		if (hand == Hand.MAIN_HAND)
-		{
-			damage = (float) orgEntity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		}
-		else
-		{
-			damage = (float) orgEntity.getAttributeValue(AttributeInit.OFFHAND_ATTACK_DAMAGE.get());
-		}
+		float damage = 1.0F;
+		
+		Item weapon = this.orgEntity.getItemInHand(hand).getItem();
+		if (weapon instanceof WeaponItem) damage += ((WeaponItem)weapon).getDamage(this.orgEntity);
 		
 		float bonus;
 		if (targetEntity instanceof LivingEntity)
