@@ -87,7 +87,8 @@ public final class Animations
 					new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped", false)
 			}));
 	
-	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false);
+	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false)
+			.addProperty(DamageProperty.SMASHING, true);
 	
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{

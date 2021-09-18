@@ -31,5 +31,6 @@ public abstract class Property<T>
 		public static final DamageProperty<RegistryObject<HitParticleType>> PARTICLE = new DamageProperty<RegistryObject<HitParticleType>>();
 		public static final DamageProperty<Integer> DEFLECTABLE_LEVEL = new DamageProperty<Integer>();
 		public static final DamageProperty<SoundEvent> SMASH_SOUND = new DamageProperty<SoundEvent>();
+		public static final DamageProperty<Boolean> SMASHING = new DamageProperty<Boolean>();
 	}
 }

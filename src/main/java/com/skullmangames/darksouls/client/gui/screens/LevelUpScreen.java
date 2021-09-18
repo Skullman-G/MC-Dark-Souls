@@ -23,7 +23,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class LevelUpScreen extends Screen
 {
-	private Map<Stat, Integer> displayedStats = new HashMap<>();
+	private Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
 	private int displayedLevel;
 	private final PlayerEntity player;
 	
@@ -39,6 +39,7 @@ public class LevelUpScreen extends Screen
 		super(NarratorChatListener.NO_TITLE);
 		this.player = player;
 		this.displayedLevel = Stats.getLevel(this.player);
+		for (Stat stat : Stats.getStats()) this.displayedStats.put(stat, stat.getValue(this.player));
 	}
 	
 	@Override
@@ -57,7 +58,8 @@ public class LevelUpScreen extends Screen
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			downButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
+			System.out.print("\n"+this.displayedStats.getOrDefault(stat, 1));
+			downButton.active = this.player.isCreative() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
 			
 			LevelButton upButton = this.addButton(new LevelButton(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
 			{

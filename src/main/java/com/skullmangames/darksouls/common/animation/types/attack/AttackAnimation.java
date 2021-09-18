@@ -27,11 +27,16 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -79,6 +84,7 @@ public class AttackAnimation extends ActionAnimation
 	public void onUpdate(LivingData<?> entitydata)
 	{
 		super.onUpdate(entitydata);
+		
 		if (entitydata.isClientSide()) return;
 		
 		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
@@ -87,11 +93,26 @@ public class AttackAnimation extends ActionAnimation
 		LivingData.EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		LivingEntity entity = entitydata.getOriginalEntity();
-		if (!phase.smashed && (elapsedTime >= phase.contact - 0.1F && elapsedTime < phase.contact + 0.4F))
+		if (this.shouldSmash(phase) && elapsedTime >= phase.contact - 0.1F && elapsedTime < phase.recovery && elapsedTime < phase.contact + 0.2F)
 		{
-			phase.smashed = true;
-			entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase), entity.getSoundSource(), 1.0F, 1.0F);
+			if (phase.collider != null)
+			{
+				Vector3d hitpos = phase.collider.getCenter();
+				BlockPos blockpos = new BlockPos(hitpos);
+				Minecraft minecraft = Minecraft.getInstance();
+				BlockState blockstate = entity.level.getBlockState(blockpos);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2, hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2, hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2, hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2, hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+			}
+			if (!phase.smashed)
+			{
+				phase.smashed = true;
+				entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase), entity.getSoundSource(), 1.0F, 1.0F);
+			}
 		}
+		
 		if(state == LivingData.EntityState.FREE_CAMERA)
 		{
 			if(entitydata instanceof MobData)
@@ -229,6 +250,11 @@ public class AttackAnimation extends ActionAnimation
 		phase.getProperty(DamageProperty.MAX_STRIKES).ifPresent((opt)->opt.get(i));
 		
 		return i;
+	}
+	
+	protected boolean shouldSmash(Phase phase)
+	{
+		return phase.getProperty(DamageProperty.SMASHING).orElse(false);
 	}
 	
 	protected float getDamageAmount(LivingData<?> entitydata, Entity target, Phase phase)
