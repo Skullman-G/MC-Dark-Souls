@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
@@ -163,8 +162,6 @@ public class LevelUpScreen extends Screen
 			int statvalue = stat.getValue(this.player);
 			int displaystatvalue = this.displayedStats.getOrDefault(stat, statvalue).intValue();
 			stat.setValue(this.player, this.displayedStats.getOrDefault(stat, displaystatvalue));
-			Minecraft minecraft = Minecraft.getInstance();
-			stat.setValue(minecraft.player, this.displayedStats.getOrDefault(stat, displaystatvalue));
 		}
 		super.onClose();
 	}

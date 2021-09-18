@@ -54,9 +54,6 @@ public class Skills
 			.addProperty(DamageProperty.ARMOR_NEGATION, ValueCorrector.getAdder(10.0F))
 			.addProperty(DamageProperty.STUN_TYPE, StunType.HOLD).registerPropertiesToAnimation();
 	
-	public static final Skill GIANT_WHIRLWIND = new SimpleHeavyAttackSkill("giant_whirlwind", Animations.GIANT_WHIRLWIND)
-			.newPropertyLine();
-	
 	public static final Skill FATAL_DRAW = new FatalDrawSkill("fatal_draw")
 			.newPropertyLine()
 			.addProperty(DamageProperty.DAMAGE, ValueCorrector.getMultiplier(1.0F))

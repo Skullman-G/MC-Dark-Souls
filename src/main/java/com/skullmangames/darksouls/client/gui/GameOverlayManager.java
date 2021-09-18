@@ -26,16 +26,13 @@ public class GameOverlayManager
 	
 	public static void render(ElementType type, MainWindow window, MatrixStack matrixstack)
 	{
-		if (!minecraft.player.isCreative() && !minecraft.player.isSpectator())
-		{
-			if (type == ElementType.ALL)
-			{
-				renderHumanity(window, matrixstack);
-				renderHealth(window, matrixstack);
-				renderSouls(window, matrixstack);
-				//renderStamina(window, matrixstack);
-			}
-		}
+		if (minecraft.player.isCreative() || minecraft.player.isSpectator()) return;
+		if (type != ElementType.ALL) return;
+		
+		renderHumanity(window, matrixstack);
+		renderHealth(window, matrixstack);
+		renderSouls(window, matrixstack);
+		//renderStamina(window, matrixstack);
 	}
 	
 	private static void renderHumanity(MainWindow window, MatrixStack matrixstack)

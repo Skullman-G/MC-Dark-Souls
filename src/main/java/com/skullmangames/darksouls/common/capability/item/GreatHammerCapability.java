@@ -4,8 +4,10 @@ import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -42,5 +44,11 @@ public class GreatHammerCapability extends WeaponCapability
 	public SoundEvent getSmashSound()
 	{
 		return SoundEvents.GREAT_HAMMER_SMASH;
+	}
+	
+	@Override
+	public Collider getWeaponCollider()
+	{
+		return Colliders.great_hammer;
 	}
 }

@@ -44,6 +44,11 @@ public class AttackAnimation extends ActionAnimation
 	protected final Map<AnimationProperty<?>, Object> properties;
 	public final Phase[] phases;
 	
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature, boolean clientOnly)
+	{
+		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, null));
+	}
+	
 	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
 	{
 		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, collider));
@@ -82,7 +87,7 @@ public class AttackAnimation extends ActionAnimation
 		LivingData.EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		LivingEntity entity = entitydata.getOriginalEntity();
-		if ((state == LivingData.EntityState.POST_DELAY || state == LivingData.EntityState.ROTATABLE_POST_DELAY) && !phase.smashed)
+		if (!phase.smashed && (elapsedTime >= phase.contact - 0.1F && elapsedTime < phase.contact + 0.4F))
 		{
 			phase.smashed = true;
 			entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase), entity.getSoundSource(), 1.0F, 1.0F);

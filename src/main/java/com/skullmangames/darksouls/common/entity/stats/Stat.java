@@ -3,6 +3,9 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 
 public class Stat
@@ -36,6 +39,7 @@ public class Stat
 	
 	public int getValue(LivingEntity livingentity)
 	{
+		if (livingentity instanceof ClientPlayerEntity) livingentity = Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(livingentity.getUUID());
 		return livingentity.getPersistentData().getInt(this.name) <= 0 ? 1 : livingentity.getPersistentData().getInt(this.name);
 	}
 	

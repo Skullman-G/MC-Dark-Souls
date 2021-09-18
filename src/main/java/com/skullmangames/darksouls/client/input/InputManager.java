@@ -71,6 +71,7 @@ public class InputManager
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
 		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
 		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
+		this.keyFunctionMap.put(this.options.keyCommand, this::toggleRenderCollision);
 		
 		try
 		{
@@ -115,6 +116,12 @@ public class InputManager
 	public boolean playerCanExecuteSkill(EntityState playerState)
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct());
+	}
+	
+	private void toggleRenderCollision(int key, int action)
+	{
+		if (action != 1) return;
+		Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(!Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes());
 	}
 	
 	private void onSprintKeyPressed(int key, int action)

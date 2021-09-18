@@ -84,10 +84,10 @@ public final class Animations
 	
 	public static final List<AttackAnimation> GREAT_HAMMER_WEAK_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{
-					new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, Colliders.sword, "111213", "biped/combat/great_hammer_weak_attack", "biped", false)
+					new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped", false)
 			}));
 	
-	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.32F, 1.52F, 3.0F, false, Colliders.sword, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false);
+	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false);
 	
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{
@@ -156,10 +156,6 @@ public final class Animations
 	public static final StaticAnimation SPEAR_SLASH = new SpecialAttackAnimation(5002, 0.1F, false, "biped/skill/spear_slash", "biped", false,
 														new Phase(0.24F, 0.24F, 0.36F, 0.5F, "111213", Colliders.spearSwing), new Phase(0.5F, 0.75F, 0.9F, 1.25F, "111213", Colliders.spearSwing))
 														.addProperty(AnimationProperty.LOCK_ROTATION, true).addProperty(AnimationProperty.DIRECTIONAL, true);
-	public static final StaticAnimation GIANT_WHIRLWIND = new SpecialAttackAnimation(5003, 0.41F, false, "biped/skill/giant_whirlwind", "biped", false,
-														new Phase(0.3F, 0.35F, 0.5F, 0.85F, "111213", Colliders.greatSword), new Phase(0.95F, 1.05F, 1.2F, 1.2F, "111213", Colliders.greatSword),
-														new Phase(1.65F, 1.75F, 1.9F, 2.5F, "111213", Colliders.greatSword))
-														.addProperty(AnimationProperty.DIRECTIONAL, true);
 	public static final StaticAnimation FATAL_DRAW = new SpecialAttackAnimation(5004, 0.15F, 0.0F, 0.7F, 0.8F, 1.0F, false, Colliders.fatal_draw, "", "biped/skill/fatal_draw", "biped", false)
 														.addProperty(DamageProperty.SWING_SOUND, null)
 														.addProperty(AnimationProperty.LOCK_ROTATION, true)
