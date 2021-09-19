@@ -27,6 +27,14 @@ public class GreatHammerCapability extends WeaponCapability
 	}
 	
 	@Override
+	public Skill getLightAttack(LivingEntity entity)
+	{
+		if (!(this.orgItem instanceof WeaponItem)) return null;
+		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
+		return Skills.GREAT_HAMMER_LIGHT_ATTACK;
+	}
+	
+	@Override
 	public Skill getWeakAttack()
 	{
 		return Skills.GREAT_HAMMER_WEAK_ATTACK;

@@ -18,29 +18,43 @@ public class LightAttackSkill extends AttackSkill
 {
 	protected final List<AttackAnimation> attackAnimations;
 	protected final AttackAnimation dashAnimation;
-	protected int combo;
+	protected int combo = 0;
+	protected boolean repeatCombo;
 	
 	public LightAttackSkill(int duration, String skillName, List<AttackAnimation> attackanimations)
 	{
-		this(duration, skillName, attackanimations, null);
+		this(duration, skillName, true, attackanimations, null);
+	}
+	
+	public LightAttackSkill(int duration, String skillName, boolean repeatCombo, List<AttackAnimation> attackanimations)
+	{
+		this(duration, skillName, repeatCombo, attackanimations, null);
 	}
 	
 	public LightAttackSkill(int duration, String skillName, List<AttackAnimation> attackanimations, @Nullable AttackAnimation dashanimation)
 	{
+		this(duration, skillName, true, attackanimations, dashanimation);
+	}
+	
+	public LightAttackSkill(int duration, String skillName, boolean repeatCombo, List<AttackAnimation> attackanimations, @Nullable AttackAnimation dashanimation)
+	{
 		super(duration, true, skillName);
 		this.attackAnimations = attackanimations;
 		this.dashAnimation = dashanimation;
-		this.combo = 0;
+		this.repeatCombo = repeatCombo;
 	}
 	
 	@Override
 	public void executeOnServer(ServerPlayerData executer, PacketBuffer args)
 	{
-		if (combo >= attackAnimations.size() - 1) this.combo = 0;
+		if (this.combo > attackAnimations.size() - 1)
+		{
+			if (this.repeatCombo) this.combo = 0;
+			else this.combo = attackAnimations.size() - 1;
+		}
 		
 		AttackAnimation animation;
-		if (this.dashAnimation == null) animation = this.attackAnimations.get(combo);
-		else animation = executer.getOriginalEntity().isSprinting() ? this.dashAnimation : this.attackAnimations.get(combo);
+		animation = this.dashAnimation != null && executer.getOriginalEntity().isSprinting() ? this.dashAnimation : this.attackAnimations.get(combo);
 		executer.playAnimationSynchronize(animation, 0);
 		ModNetworkManager.sendToPlayer(new STCResetBasicAttackCool(), executer.getOriginalEntity());
 		

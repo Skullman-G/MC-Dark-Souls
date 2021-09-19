@@ -26,6 +26,8 @@ public class Skills
 	
 	public static final Skill GREAT_HAMMER_WEAK_ATTACK = new LightAttackSkill(0, "great_hammer_weak_attack", Animations.GREAT_HAMMER_WEAK_ATTACK);
 	
+	public static final Skill GREAT_HAMMER_LIGHT_ATTACK = new LightAttackSkill(0, "great_hammer_light_attack", false, Animations.GREAT_HAMMER_LIGHT_ATTACK);
+	
 	public static final Skill SWEEPING_EDGE = new SimpleHeavyAttackSkill("sweeping_edge", Animations.SWEEPING_EDGE)
 			.newPropertyLine()
 			.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1))
