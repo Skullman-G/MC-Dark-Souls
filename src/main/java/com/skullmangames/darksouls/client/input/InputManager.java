@@ -71,7 +71,7 @@ public class InputManager
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
 		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
 		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
-		this.keyFunctionMap.put(this.options.keyCommand, this::toggleRenderCollision);
+		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		
 		try
 		{

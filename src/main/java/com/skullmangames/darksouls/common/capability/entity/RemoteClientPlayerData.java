@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -38,7 +37,6 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 	protected float prevBodyYaw;
 	private ItemStack prevHeldItem;
 	private ItemStack prevHeldItemOffHand;
-	private boolean swingArm;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -256,21 +254,6 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		if(this.orgEntity.deathTime == 1)
 		{
 			this.getClientAnimator().playDeathAnimation();
-		}
-		
-		if (this.swingArm != orgEntity.swinging)
-		{
-			if(!this.swingArm)
-			{
-				this.getClientAnimator().playMixLayerAnimation(Animations.BIPED_DIG);
-			}
-			else
-			{
-				this.getClientAnimator().offMixLayer(this.getClientAnimator().mixLayerLeft, false);
-				this.getClientAnimator().offMixLayer(this.getClientAnimator().mixLayerRight, false);
-			}
-			
-			this.swingArm = orgEntity.swinging;
 		}
 	}
 

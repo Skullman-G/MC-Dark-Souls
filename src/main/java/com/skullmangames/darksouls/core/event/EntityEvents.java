@@ -367,10 +367,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void equipChangeEvent(LivingEquipmentChangeEvent event)
 	{
-		if(event.getFrom().getItem() == event.getTo().getItem())
-		{
-			return;
-		}
+		if(event.getFrom().getItem() == event.getTo().getItem()) return;
 		
 		LivingData<?> entitycap = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		

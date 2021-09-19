@@ -20,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +38,11 @@ public class ServerPlayerEntityOverride extends ServerPlayerEntity
 	public boolean canBeCollidedWith()
 	{
 		return true;
+	}
+	
+	@Override
+	public void swing(Hand p_226292_1_, boolean p_226292_2_)
+	{
 	}
 	
 	@Override

@@ -58,22 +58,13 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	}
 	
 	@Override
-	public void updateMotion()
-	{
-		;
-	}
+	public void updateMotion() {}
 	
 	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, Hand hand)
 	{
 		CapabilityItem mainHandCap = hand == Hand.MAIN_HAND ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
-		if(mainHandCap != null)
-		{
-			mainHandCap.onHeld(this);
-		}
-		else
-		{
-			SkillExecutionHelper.setActiveSkill(null);
-		}
+		if(mainHandCap != null) mainHandCap.onHeld(this);
+		else SkillExecutionHelper.setActiveSkill(null);
 		
 		if (hand == Hand.MAIN_HAND)
 		{

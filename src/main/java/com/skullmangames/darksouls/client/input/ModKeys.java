@@ -19,6 +19,7 @@ public class ModKeys
 	
 	public static final KeyBinding SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
 	public static final KeyBinding SWAP_ACTION_MODE = makeKeyBinding("swap_action_mode", 294, "combat");
+	public static final KeyBinding VISIBLE_HITBOXES = new KeyBinding("visible_hitboxes", 79, "debug");
 	
 	
 	public static void registerKeys()
