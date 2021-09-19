@@ -567,10 +567,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	    }*/
     }
 	
-	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)
-	{
-		
-	}
+	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType) {}
 	
 	@SuppressWarnings("unchecked")
 	public <A extends Animator>A getAnimator()

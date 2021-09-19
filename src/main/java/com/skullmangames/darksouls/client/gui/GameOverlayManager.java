@@ -96,13 +96,16 @@ public class GameOverlayManager
 		int x = window.getGuiScaledWidth() - 76;
 		int y = window.getGuiScaledHeight() - 21;
 		
-		minecraft.gui.blit(matrixstack, x, y, 0, 44, 71, 17);
+		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
 		
 		x = window.getGuiScaledWidth() - (76 / 2);
-		y = window.getGuiScaledHeight() - 17;
+		y = window.getGuiScaledHeight() - 15;
 		int color = Color.WHITE.getRGB();
 		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), x, y, color);
+		MatrixStack ms = new MatrixStack();
+		float scale = 0.8F;
+		ms.scale(scale, scale, scale);
+		ForgeIngameGui.drawCenteredString(ms, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), Math.round(x / scale), Math.round(y / scale), color);
 	}
 	
 	/*private static void renderStamina(MainWindow window, MatrixStack matrixstack)
