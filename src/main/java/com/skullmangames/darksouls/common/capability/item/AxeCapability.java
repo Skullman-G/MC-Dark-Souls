@@ -5,13 +5,12 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class AxeCapability extends MaterialItemCapability
@@ -29,9 +28,9 @@ public class AxeCapability extends MaterialItemCapability
 	}
 
 	@Override
-	public Skill getHeavyAttack(LivingEntity entity)
+	protected AttackAnimation getHeavyAttack()
 	{
-		return Skills.GUILLOTINE_AXE;
+		return Animations.GUILLOTINE_AXE;
 	}
 	
 	@Override

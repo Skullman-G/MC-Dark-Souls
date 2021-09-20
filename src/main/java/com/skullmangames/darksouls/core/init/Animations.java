@@ -82,21 +82,18 @@ public final class Animations
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(7011, 0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
-	public static final List<AttackAnimation> GREAT_HAMMER_WEAK_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
-			{
-					new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped", false)
-			}));
+	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped", false);
 	
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false)
 			.addProperty(DamageProperty.SMASHING, true);
 	
-	public static final List<AttackAnimation> GREAT_HAMMER_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
 				new AttackAnimation(7014, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_1", "biped", false)
 				.addProperty(DamageProperty.SMASHING, true),
 				new AttackAnimation(7015, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_2", "biped", false)
 				.addProperty(DamageProperty.SMASHING, true)
-			}));
+			};
 	
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{
@@ -105,10 +102,10 @@ public final class Animations
 			}));
 	public static final AttackAnimation AXE_DASH_ATTACK = new AADashAnimation(2019, 0.25F, 0.08F, 0.4F, 0.46F, 0.9F, null, "111213", "biped/combat/axe_dash", "biped", false)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
-	public static final StaticAnimation GUILLOTINE_AXE = new SpecialAttackAnimation(5000, 0.08F, 0.2F, 0.5F, 0.65F, 1.0F, true, null, "111213", "biped/skill/axe_special", "biped", false)
+	public static final AttackAnimation GUILLOTINE_AXE = new SpecialAttackAnimation(5000, 0.08F, 0.2F, 0.5F, 0.65F, 1.0F, true, null, "111213", "biped/skill/axe_special", "biped", false)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	
-	public static final List<AttackAnimation> FIST_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AAAnimation(2001, 0.08F, 0F, 0.1F, 0.15F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto1", "biped", false)
 							.addProperty(DamageProperty.PARTICLE, null),
@@ -116,7 +113,7 @@ public final class Animations
 							.addProperty(DamageProperty.PARTICLE, null),
 					new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3", "biped", false)
 							.addProperty(DamageProperty.PARTICLE, null)	
-			}));
+			};
 	public static final StaticAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped", false)
 															.addProperty(DamageProperty.PARTICLE, null)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
@@ -129,12 +126,12 @@ public final class Animations
 	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(2245, 0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped", false)
 															.addProperty(AnimationProperty.DIRECTIONAL, true);
 	
-	public static final List<AttackAnimation> SWORD_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	public static final AttackAnimation[] SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AAAnimation(2005, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto1", "biped", false),
 					new AAAnimation(2006, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto2", "biped", false),
 					new AAAnimation(2007, 0.13F, 0.0F, 0.11F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto3", "biped", false)
-			}));
+			};
 	public static final AttackAnimation SWORD_DASH_ATTACK = new AADashAnimation(2008, 0.12F, 0.1F, 0.25F, 0.4F, 0.65F, Colliders.swordDash, "111213", "biped/combat/sword_dash", "biped", false)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	public static final StaticAnimation SWORD_DUAL_AUTO_1 = new AAAnimation(2020, 0.16F, 0.0F, 0.11F, 0.2F, 1.6F, null, "111213", "biped/combat/dual_auto1", "biped", false);
@@ -153,7 +150,7 @@ public final class Animations
 															.addProperty(AnimationProperty.LOCK_ROTATION, true)
 															.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1));
 	
-	public static final StaticAnimation SWEEPING_EDGE = new SpecialAttackAnimation(4111, 0.11F, 0.1F, 0.5F, 0.6F, 0.85F, false, Colliders.swordSwingFast, "111213", "biped/skill/sweeping_edge", "biped", false)
+	public static final AttackAnimation SWEEPING_EDGE = new SpecialAttackAnimation(4111, 0.11F, 0.1F, 0.5F, 0.6F, 0.85F, false, Colliders.swordSwingFast, "111213", "biped/skill/sweeping_edge", "biped", false)
 														.addProperty(AnimationProperty.LOCK_ROTATION, true).addProperty(AnimationProperty.DIRECTIONAL, true);
 	public static final StaticAnimation DANCING_EDGE = new SpecialAttackAnimation(4112, 0.25F, true, "biped/skill/dancing_edge", "biped", false,
 														new Phase(0.2F, 0.2F, 0.26F, 0.3F, "111213", Colliders.sword), new Phase(0.5F, 0.5F, 0.56F, 0.6F, Hand.OFF_HAND, "111313", Colliders.sword),
@@ -210,10 +207,10 @@ public final class Animations
 																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected", "biped", false);
 	
-	public static final List<AttackAnimation> SHIELD_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(7007, 0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, Colliders.sword, "111213", "biped/combat/shield_strike", "biped", false)
-			}));
+			};
 	
 	public static final int BASIC_ATTACK_MIN = 2000;
 	public static final int BASIC_ATTACK_MAX = 2034;

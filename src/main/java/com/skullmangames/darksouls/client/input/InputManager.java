@@ -14,10 +14,8 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData.EntitySta
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
-import com.skullmangames.darksouls.common.skill.Skill;
-import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
@@ -51,8 +49,6 @@ public class InputManager
 	private double tracingMouseX;
 	private double tracingMouseY;
 	private int rightHandPressCounter;
-	private int reservedSkill;
-	private int skillReserveCounter;
 	private boolean rightHandToggle;
 	private boolean sprintToggle;
 	private int sprintPressCounter;
@@ -106,11 +102,6 @@ public class InputManager
 	public boolean playerCanAct(EntityState playerState)
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
-	}
-
-	public boolean playerCanDodging(EntityState playerState)
-	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct());
 	}
 
 	public boolean playerCanExecuteSkill(EntityState playerState)
@@ -204,29 +195,7 @@ public class InputManager
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
 		
-		if (this.reservedSkill >= 0)
-		{
-			if (skillReserveCounter > 0)
-			{
-				skillReserveCounter--;
-				if(SkillExecutionHelper.getActiveSkill() != null && SkillExecutionHelper.canExecute(playerdata) && SkillExecutionHelper.getActiveSkill().isExecutableState(this.playerdata))
-				{
-					SkillExecutionHelper.execute(playerdata, SkillExecutionHelper.getActiveSkill());
-					this.reservedSkill = -1;
-					this.skillReserveCounter = -1;
-				}
-			}
-			else
-			{
-				this.reservedSkill = -1;
-				this.skillReserveCounter = -1;
-			}
-		}
-		
-		if (this.minecraft.isPaused())
-		{
-			this.minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
-		}
+		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
 	}
 	
 	private void handleSprintAction(EntityState playerState)
@@ -239,16 +208,7 @@ public class InputManager
 		}
 		
 		this.sprintToggle = false;
-		
-		if (ClientEngine.INSTANCE.isBattleMode() && this.sprintPressCounter < 5)
-		{
-			Skill skill = Skills.ROLL;
-			if (SkillExecutionHelper.canExecute(this.playerdata, skill) && Skills.ROLL.isExecutableState(this.playerdata))
-			{
-				SkillExecutionHelper.execute(this.playerdata, skill);
-			}
-		}
-		
+		if (ClientEngine.INSTANCE.isBattleMode() && this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
 		this.sprintPressCounter = 0;
 	}
 	
@@ -266,14 +226,7 @@ public class InputManager
 		{
 			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
 			{
-				if (this.playerCanExecuteSkill(playerState))
-				{
-					WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
-					if(itemCap != null)
-					{
-						SkillExecutionHelper.execute(this.playerdata, itemCap.getHeavyAttack(this.player));
-					}
-				}
+				if (this.playerCanExecuteSkill(playerState)) this.playerdata.performAttack(AttackType.HEAVY);
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -290,11 +243,11 @@ public class InputManager
 	{
 		if (this.playerCanExecuteSkill(playerState))
 		{
-			WeaponCapability itemCap = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
-			if(itemCap != null)
+			WeaponCapability weapon = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
+			if(weapon != null)
 			{
-				SkillExecutionHelper.execute(this.playerdata,itemCap.getLightAttack(this.player));
-				this.player.resetAttackStrengthTicker();
+				if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
+				else this.playerdata.performAttack(AttackType.LIGHT);
 			}
 		}
 		

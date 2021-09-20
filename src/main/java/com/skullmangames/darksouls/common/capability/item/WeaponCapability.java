@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +17,14 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
-import com.skullmangames.darksouls.common.skill.Skill;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -127,36 +130,58 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		return weapon.meetRequirement(stat, entity) ? "\u00A7f" : "\u00A74";
 	}
 	
-	@Nullable
-	public Skill getLightAttack(LivingEntity entity)
+	protected AttackAnimation[] getLightAttack()
+	{
+		return null;
+	}
+	
+	protected boolean repeatLightAttack()
+	{
+		return true;
+	}
+	
+	protected AttackAnimation getDashAttack()
+	{
+		return null;
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
 	{
 		if (!(this.orgItem instanceof WeaponItem)) return null;
-		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
-		return null;
+		if (!((WeaponItem)this.orgItem).meetRequirements(playerdata.getOriginalEntity())) return this.getWeakAttack();
+		
+		switch (type)
+		{
+			case LIGHT:
+				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(this.getLightAttack()));
+				int combo = animations.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
+				if (combo + 1 < animations.size()) combo += 1;
+				else if (this.repeatLightAttack()) combo = 0;
+				return animations.get(combo);
+				
+			case HEAVY:
+				return this.getHeavyAttack();
+				
+			case DASH:
+				return this.getDashAttack();
+				
+			default:
+				throw new IndexOutOfBoundsException("Incorrect attack type.");
+		}
 	}
 	
-	@Nullable
-	public Skill getWeakAttack()
+	protected AttackAnimation getWeakAttack()
 	{
 		return null;
 	}
 	
-	@Nullable
 	public List<StaticAnimation> getMountAttackMotion()
 	{
 		return null;
 	}
 	
-	@Nullable
-	public Skill getHeavyAttack(LivingEntity entity)
-	{
-		if (!(this.orgItem instanceof WeaponItem)) return null;
-		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
-		return null;
-	}
-	
-	@Nullable
-	public Skill getPassiveSkill()
+	protected AttackAnimation getHeavyAttack()
 	{
 		return null;
 	}
@@ -260,6 +285,11 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
 		return !isTwoHanded() && !item.isEmpty();
+	}
+	
+	public enum AttackType
+	{
+		LIGHT, HEAVY, DASH
 	}
 	
 	public enum WeaponCategory

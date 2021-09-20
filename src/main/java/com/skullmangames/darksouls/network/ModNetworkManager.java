@@ -1,24 +1,19 @@
 package com.skullmangames.darksouls.network;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.network.client.CTSExecuteSkill;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
-import com.skullmangames.darksouls.network.server.STCExecuteSkill;
 import com.skullmangames.darksouls.network.server.STCGameruleChange;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
-import com.skullmangames.darksouls.network.server.STCModifySkillVariable;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTP;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCResetBasicAttackCool;
-import com.skullmangames.darksouls.network.server.STCSetSkillValue;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -61,23 +56,19 @@ public class ModNetworkManager
 	public static void registerPackets()
 	{
 		int id = 0;
-		INSTANCE.registerMessage(id++, CTSExecuteSkill.class, CTSExecuteSkill::toBytes, CTSExecuteSkill::fromBytes, CTSExecuteSkill::handle);
 		INSTANCE.registerMessage(id++, CTSPlayAnimation.class, CTSPlayAnimation::toBytes, CTSPlayAnimation::fromBytes, CTSPlayAnimation::handle);
 		INSTANCE.registerMessage(id++, CTSReqSpawnInfo.class, CTSReqSpawnInfo::toBytes, CTSReqSpawnInfo::fromBytes, CTSReqSpawnInfo::handle);
 		INSTANCE.registerMessage(id++, CTSRotatePlayerYaw.class, CTSRotatePlayerYaw::toBytes, CTSRotatePlayerYaw::fromBytes, CTSRotatePlayerYaw::handle);
 		INSTANCE.registerMessage(id++, CTSReqPlayerInfo.class, CTSReqPlayerInfo::toBytes, CTSReqPlayerInfo::fromBytes, CTSReqPlayerInfo::handle);
 		
-		INSTANCE.registerMessage(id++, STCExecuteSkill.class, STCExecuteSkill::toBytes, STCExecuteSkill::fromBytes, STCExecuteSkill::handle);
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
-		INSTANCE.registerMessage(id++, STCSetSkillValue.class, STCSetSkillValue::toBytes, STCSetSkillValue::fromBytes, STCSetSkillValue::handle);
 		INSTANCE.registerMessage(id++, STCNotifyPlayerYawChanged.class, STCNotifyPlayerYawChanged::toBytes, STCNotifyPlayerYawChanged::fromBytes, STCNotifyPlayerYawChanged::handle);
 		INSTANCE.registerMessage(id++, STCPlayAnimation.class, STCPlayAnimation::toBytes, STCPlayAnimation::fromBytes, STCPlayAnimation::handle);
 		INSTANCE.registerMessage(id++, STCPlayAnimationTarget.class, STCPlayAnimationTarget::toBytes, STCPlayAnimationTarget::fromBytes, STCPlayAnimationTarget::handle);
 		INSTANCE.registerMessage(id++, STCPlayAnimationTP.class, STCPlayAnimationTP::toBytes, STCPlayAnimationTP::fromBytes, STCPlayAnimationTP::handle);
 		INSTANCE.registerMessage(id++, STCPotion.class, STCPotion::toBytes, STCPotion::fromBytes, STCPotion::handle);
 		INSTANCE.registerMessage(id++, STCResetBasicAttackCool.class, STCResetBasicAttackCool::toBytes, STCResetBasicAttackCool::fromBytes, STCResetBasicAttackCool::handle);
-		INSTANCE.registerMessage(id++, STCModifySkillVariable.class, STCModifySkillVariable::toBytes, STCModifySkillVariable::fromBytes, STCModifySkillVariable::handle);
 		INSTANCE.registerMessage(id++, STCGameruleChange.class, STCGameruleChange::toBytes, STCGameruleChange::fromBytes, STCGameruleChange::handle);
 	}
 }

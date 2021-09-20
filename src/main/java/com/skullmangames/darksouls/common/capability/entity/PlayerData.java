@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
-import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -106,17 +105,6 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		{
 			this.setStunArmor(maxStunArmor);
 		}
-	}
-	
-	@Override
-	public void update()
-	{
-		if(this.orgEntity.getControllingPassenger() == null)
-		{
-			SkillExecutionHelper.update();
-		}
-		
-		super.update();
 	}
 	
 	public float getAttackSpeed()

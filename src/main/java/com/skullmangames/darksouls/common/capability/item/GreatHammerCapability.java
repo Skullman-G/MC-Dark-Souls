@@ -1,15 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
-import com.skullmangames.darksouls.common.item.WeaponItem;
-import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
 
@@ -27,25 +24,27 @@ public class GreatHammerCapability extends WeaponCapability
 	}
 	
 	@Override
-	public Skill getLightAttack(LivingEntity entity)
+	protected boolean repeatLightAttack()
 	{
-		if (!(this.orgItem instanceof WeaponItem)) return null;
-		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
-		return Skills.GREAT_HAMMER_LIGHT_ATTACK;
+		return false;
 	}
 	
 	@Override
-	public Skill getWeakAttack()
+	protected AttackAnimation[] getLightAttack()
 	{
-		return Skills.GREAT_HAMMER_WEAK_ATTACK;
+		return Animations.GREAT_HAMMER_LIGHT_ATTACK;
 	}
 	
 	@Override
-	public Skill getHeavyAttack(LivingEntity entity)
+	protected AttackAnimation getWeakAttack()
 	{
-		if (!(this.orgItem instanceof WeaponItem)) return null;
-		if (!((WeaponItem)this.orgItem).meetRequirements(entity)) return this.getWeakAttack();
-		return Skills.GREAT_HAMMER_HEAVY_ATTACK;
+		return Animations.GREAT_HAMMER_WEAK_ATTACK;
+	}
+	
+	@Override
+	protected AttackAnimation getHeavyAttack()
+	{
+		return Animations.GREAT_HAMMER_HEAVY_ATTACK;
 	}
 	
 	@Override

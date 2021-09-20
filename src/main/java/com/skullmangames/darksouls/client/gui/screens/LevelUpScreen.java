@@ -58,7 +58,6 @@ public class LevelUpScreen extends Screen
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			System.out.print("\n"+this.displayedStats.getOrDefault(stat, 1));
 			downButton.active = this.player.isCreative() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
 			
 			LevelButton upButton = this.addButton(new LevelButton(this.width / 2 - this.imageWidth / 6 + 15 - buttonwidth2 / 2, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->

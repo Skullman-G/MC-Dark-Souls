@@ -1,8 +1,13 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -12,6 +17,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -92,6 +98,22 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 				this.rayTarget = null;
 			}
 		}
+	}
+	
+	public void performDodge()
+	{
+		this.animator.playAnimation(Animations.BIPED_ROLL_FORWARD, 0);
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_ROLL_FORWARD, 0, false, false));
+	}
+	
+	public void performAttack(AttackType type)
+	{
+		WeaponCapability weapon = this.getHeldWeaponCapability(Hand.MAIN_HAND);
+		if (weapon == null) return;
+		AttackAnimation animation = weapon.getAttack(type, this);
+		if (animation == null) return;
+		this.animator.playAnimation(animation, 0);
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0, false, false));
 	}
 	
 	@Override

@@ -1,13 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.skill.Skill;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
-import com.skullmangames.darksouls.core.init.Skills;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 
 public class FistCapability extends WeaponCapability
@@ -18,9 +17,9 @@ public class FistCapability extends WeaponCapability
 	}
 	
 	@Override
-	public Skill getLightAttack(LivingEntity entity)
+	protected AttackAnimation[] getLightAttack()
 	{
-		return Skills.FIST_LIGHT_ATTACK;
+		return Animations.FIST_LIGHT_ATTACK;
 	}
 	
 	@Override

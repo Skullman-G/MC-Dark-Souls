@@ -10,7 +10,6 @@ import com.google.common.collect.Maps;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.skill.SkillExecutionHelper;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.util.Formulars;
@@ -64,7 +63,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	{
 		CapabilityItem mainHandCap = hand == Hand.MAIN_HAND ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
 		if(mainHandCap != null) mainHandCap.onHeld(this);
-		else SkillExecutionHelper.setActiveSkill(null);
 		
 		if (hand == Hand.MAIN_HAND)
 		{
