@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.common.block.LockableDoorBlock;
 import com.skullmangames.darksouls.common.block.SmithingTableBlockOverride;
 
 import net.minecraft.block.AbstractBlock;
@@ -80,5 +81,57 @@ public class BlockInit
 	// Vanilla Overrides
 	public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "minecraft");
 	
-	public static final RegistryObject<Block> SMITHING_TABLE = VANILLA_BLOCKS.register("smithing_table", () -> new SmithingTableBlockOverride(AbstractBlock.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	
+	public static final RegistryObject<Block> SMITHING_TABLE = VANILLA_BLOCKS.register("smithing_table", () -> new SmithingTableBlockOverride(AbstractBlock.Properties
+			.of(Material.WOOD)
+			.strength(2.5F)
+			.sound(SoundType.WOOD)));
+	
+	public static final RegistryObject<Block> ACACIA_DOOR = VANILLA_BLOCKS.register("acacia_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.ACACIA_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> BIRCH_DOOR = VANILLA_BLOCKS.register("birch_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.BIRCH_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> OAK_DOOR = VANILLA_BLOCKS.register("oak_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.OAK_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> SPRUCE_DOOR = VANILLA_BLOCKS.register("spruce_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.SPRUCE_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> JUNGLE_DOOR = VANILLA_BLOCKS.register("jungle_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.JUNGLE_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> DARK_OAK_DOOR = VANILLA_BLOCKS.register("dark_oak_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.DARK_OAK_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> CRIMSON_DOOR = VANILLA_BLOCKS.register("crimson_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.CRIMSON_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
+	
+	public static final RegistryObject<Block> WARPED_DOOR = VANILLA_BLOCKS.register("warped_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.WOOD, Blocks.WARPED_PLANKS.defaultMaterialColor())
+			.strength(3.0F)
+			.sound(SoundType.WOOD)
+			.noCollission()));
 }

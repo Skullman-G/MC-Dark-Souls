@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -15,6 +16,9 @@ public class FistCapability extends WeaponCapability
 	{
 		super(item, WeaponCategory.FIST);
 	}
+	
+	@Override
+	public void onHeld(PlayerData<?> playerdata) {}
 	
 	@Override
 	protected AttackAnimation[] getLightAttack()

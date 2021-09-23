@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.item.GreatHammerItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
+import com.skullmangames.darksouls.common.item.KeyItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 import com.skullmangames.darksouls.common.item.WeaponItem;
@@ -59,6 +60,9 @@ public class ItemInit
 			.tab(ItemGroup.TAB_COMBAT))
 			.addStat(Stats.STRENGTH, 46));
 	
+	public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new KeyItem(new Item.Properties()
+			.tab(ItemGroup.TAB_REDSTONE)));
+	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
@@ -99,6 +103,7 @@ public class ItemInit
 	//Vanilla Overrides
 	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 	
+	
 	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(BlockInit.SMITHING_TABLE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
 	
@@ -108,4 +113,28 @@ public class ItemInit
 	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new WeaponItem(ItemTier.IRON, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new WeaponItem(ItemTier.NETHERITE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new WeaponItem(ItemTier.STONE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+
+	public static final RegistryObject<Item> ACACIA_DOOR = VANILLA_ITEMS.register("acacia_door", () -> new BlockItem(BlockInit.ACACIA_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> BIRCH_DOOR = VANILLA_ITEMS.register("birch_door", () -> new BlockItem(BlockInit.BIRCH_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> CRIMSON_DOOR = VANILLA_ITEMS.register("crimson_door", () -> new BlockItem(BlockInit.CRIMSON_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> DARK_OAK_DOOR = VANILLA_ITEMS.register("dark_oak_door", () -> new BlockItem(BlockInit.DARK_OAK_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> JUNGLE_DOOR = VANILLA_ITEMS.register("jungle_door", () -> new BlockItem(BlockInit.JUNGLE_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> OAK_DOOR = VANILLA_ITEMS.register("oak_door", () -> new BlockItem(BlockInit.OAK_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> SPRUCE_DOOR = VANILLA_ITEMS.register("spruce_door", () -> new BlockItem(BlockInit.SPRUCE_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
+	public static final RegistryObject<Item> WARPED_DOOR = VANILLA_ITEMS.register("warped_door", () -> new BlockItem(BlockInit.WARPED_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 }

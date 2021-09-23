@@ -25,7 +25,6 @@ import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -39,14 +38,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	private boolean needsFireKeeper;
 	private String fireKeeperStringUUID = "";
 	
-	public BonfireTileEntity(TileEntityType<?> tileEntityTypeIn) 
-	{
-		super(tileEntityTypeIn);
-	}
-	
 	public BonfireTileEntity() 
 	{
-		this(TileEntityTypeInit.BONFIRE_TILE_ENTITY.get());
+		super(TileEntityTypeInit.BONFIRE.get());
 	}
 	
 	@Override

@@ -133,11 +133,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	public void onHeldItemChange(CapabilityItem mainHandCap, CapabilityItem offHandCap)
 	{
 		super.onHeldItemChange(mainHandCap, offHandCap);
-
-		if (mainHandCap != null)
-		{
-			mainHandCap.onHeld(this);
-		}
+		if (mainHandCap != null) mainHandCap.onHeld(this);
 	}
 	
 	@Override

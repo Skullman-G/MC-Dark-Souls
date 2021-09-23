@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -47,7 +48,7 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 3.45D)
+				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
@@ -67,6 +68,7 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	    this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 	    
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, AsylumDemonEntity.class, 10.0F, 1.6D, 1.4D));
+	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
@@ -144,5 +146,11 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	protected AbstractArrowEntity getArrow(ItemStack p_213624_1_, float p_213624_2_)
 	{
 		return ProjectileHelper.getMobArrow(this, p_213624_1_, p_213624_2_);
+	}
+	
+	@Override
+	protected int getExperienceReward(PlayerEntity p_70693_1_)
+	{
+		return 10;
 	}
 }

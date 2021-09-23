@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.block;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.state.properties.TrippleBlockPart;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,8 +12,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -40,7 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BigDoorBlock extends Block
+public class BigDoorBlock extends LockableBlock
 {
 	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -78,18 +80,46 @@ public class BigDoorBlock extends Block
 	    }
 	}
 	
+	public BlockPos[] getPartPositions(World world, BlockPos blockpos)
+	{
+		BlockPos[] positions = new BlockPos[3];
+		positions[0] = blockpos;
+		switch (world.getBlockState(blockpos).getValue(PART))
+		{
+			case LOWER:
+				positions[1] = blockpos.above();
+				positions[2] = blockpos.above(2);
+				break;
+				
+			case UPPER:
+				positions[1] = blockpos.below();
+				positions[2] = blockpos.below(2);
+				break;
+			
+			case MIDDLE:
+				positions[1] = blockpos.below();
+				positions[2] = blockpos.above();
+				break;
+				
+			default:
+				throw new IndexOutOfBoundsException("Invalid big door part.");
+		}
+		
+		return positions;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updateShape(BlockState blockstate, Direction direction, BlockState p_196271_3_, IWorld p_196271_4_, BlockPos p_196271_5_, BlockPos p_196271_6_)
+	public BlockState updateShape(BlockState blockstate, Direction direction, BlockState blockstate2, IWorld world, BlockPos p_196271_5_, BlockPos p_196271_6_)
 	{
 		TrippleBlockPart trippleblockpart = blockstate.getValue(PART);
-	    if (direction.getAxis() == Direction.Axis.Y && trippleblockpart == TrippleBlockPart.LOWER == (direction == Direction.UP))
+	    if (direction.getAxis() == Direction.Axis.Y)
 	    {
-	       return p_196271_3_.is(this) && p_196271_3_.getValue(PART) != trippleblockpart ? blockstate.setValue(FACING, p_196271_3_.getValue(FACING)).setValue(OPEN, p_196271_3_.getValue(OPEN)).setValue(HINGE, p_196271_3_.getValue(HINGE)).setValue(POWERED, p_196271_3_.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
+	    	return blockstate2.is(this) && blockstate2.getValue(PART) != trippleblockpart ? blockstate.setValue(FACING, blockstate2.getValue(FACING)).setValue(OPEN, blockstate2.getValue(OPEN)).setValue(HINGE, blockstate2.getValue(HINGE)).setValue(POWERED, blockstate2.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
 	    }
 	    else
 	    {
-	       return trippleblockpart == TrippleBlockPart.LOWER && direction == Direction.DOWN && !blockstate.canSurvive(p_196271_4_, p_196271_5_) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockstate, direction, p_196271_3_, p_196271_4_, p_196271_5_, p_196271_6_);
+	    	return trippleblockpart == TrippleBlockPart.LOWER && direction == Direction.DOWN && !blockstate.canSurvive(world, p_196271_5_) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockstate, direction, blockstate2, world, p_196271_5_, p_196271_6_);
 	    }
 	}
 	
@@ -179,10 +209,7 @@ public class BigDoorBlock extends Block
 	       boolean flag = level.hasNeighborSignal(blockpos) || level.hasNeighborSignal(blockpos.above());
 	       return this.defaultBlockState().setValue(FACING, p_196258_1_.getHorizontalDirection()).setValue(HINGE, this.getHinge(p_196258_1_)).setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)).setValue(PART, TrippleBlockPart.LOWER);
 	    }
-	    else
-	    {
-	       return null;
-	    }
+	    else return null;
 	}
 	
 	@Override
@@ -234,47 +261,45 @@ public class BigDoorBlock extends Block
 	}
 	
 	@Override
-	public ActionResultType use(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_)
+	public ActionResultType use(BlockState blockstate, World world, BlockPos blockpos, PlayerEntity player, Hand hand, BlockRayTraceResult raytraceresult)
 	{
-	    if (this.material == Material.METAL)
-	    {
-	       return ActionResultType.PASS;
-	    }
+		if (this.material == Material.METAL) return ActionResultType.PASS;
+		   else if (this.isLocked(world, blockpos))
+		   {
+			   if (player != null && player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).connection.send(new STitlePacket(STitlePacket.Type.ACTIONBAR, new StringTextComponent("Door locked by "+this.getKeyName(world, blockpos))));
+			   return ActionResultType.SUCCESS;
+		   }
 	    else
 	    {
-	       p_225533_1_ = p_225533_1_.cycle(OPEN);
-	       p_225533_2_.setBlock(p_225533_3_, p_225533_1_, 10);
-	       p_225533_2_.levelEvent(p_225533_4_, p_225533_1_.getValue(OPEN) ? this.getOpenSound() : this.getCloseSound(), p_225533_3_, 0);
-	       return ActionResultType.sidedSuccess(p_225533_2_.isClientSide);
+	       blockstate = blockstate.cycle(OPEN);
+	       world.setBlock(blockpos, blockstate, 10);
+	       world.levelEvent(player, blockstate.getValue(OPEN) ? this.getOpenSound() : this.getCloseSound(), blockpos, 0);
+	       return ActionResultType.sidedSuccess(world.isClientSide);
 	    }
 	}
 	
-	public boolean isOpen(BlockState p_242664_1_)
+	public boolean isOpen(BlockState blockstate)
 	{
-	    return p_242664_1_.getValue(OPEN);
+	    return blockstate.getValue(OPEN);
 	}
 	
-	public void setOpen(World p_242663_1_, BlockState p_242663_2_, BlockPos p_242663_3_, boolean p_242663_4_)
+	public void setOpen(World world, BlockState blockstate, BlockPos blockpos, boolean value)
 	{
-	    if (p_242663_2_.is(this) && p_242663_2_.getValue(OPEN) != p_242663_4_)
+	    if (blockstate.is(this) && blockstate.getValue(OPEN) != value)
 	    {
-	       p_242663_1_.setBlock(p_242663_3_, p_242663_2_.setValue(OPEN, Boolean.valueOf(p_242663_4_)), 10);
-	       this.playSound(p_242663_1_, p_242663_3_, p_242663_4_);
+	       world.setBlock(blockpos, blockstate.setValue(OPEN, Boolean.valueOf(value)), 10);
+	       this.playSound(world, blockpos, value);
 	    }
 	}
 	
 	@Override
-	public void neighborChanged(BlockState p_220069_1_, World p_220069_2_, BlockPos p_220069_3_, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_)
+	public void neighborChanged(BlockState blockstate, World level, BlockPos blockpos, Block neighborblock, BlockPos otherpos, boolean p_220069_6_)
 	{
-	    boolean flag = p_220069_2_.hasNeighborSignal(p_220069_3_) || p_220069_2_.hasNeighborSignal(p_220069_3_.relative(p_220069_1_.getValue(PART) == TrippleBlockPart.LOWER ? Direction.UP : Direction.DOWN));
-	    if (p_220069_4_ != this && flag != p_220069_1_.getValue(POWERED))
+		boolean flag = level.hasNeighborSignal(blockpos) || level.hasNeighborSignal(blockpos.relative(Direction.UP)) || level.hasNeighborSignal(blockpos.relative(Direction.DOWN));
+	    if (neighborblock != this && flag != blockstate.getValue(POWERED))
 	    {
-	       if (flag != p_220069_1_.getValue(OPEN))
-	       {
-	          this.playSound(p_220069_2_, p_220069_3_, flag);
-	       }
-
-	       p_220069_2_.setBlock(p_220069_3_, p_220069_1_.setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)), 2);
+	       if (flag != blockstate.getValue(OPEN)) this.playSound(level, blockpos, flag);
+	       level.setBlock(blockpos, blockstate.setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)), 2);
 	    }
 	}
 	

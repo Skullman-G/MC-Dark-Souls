@@ -240,7 +240,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) 
 	{
-		return TileEntityTypeInit.BONFIRE_TILE_ENTITY.get().create();
+		return TileEntityTypeInit.BONFIRE.get().create();
 	}
 	
 	public void kindle(World level, BlockState blockstate, BlockPos blockpos)
