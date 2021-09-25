@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_rh",
+  "textures": {
+    "top": "darksouls:blocks/iron_bar_door_top",
+    "bottom": "darksouls:blocks/iron_bar_door_bottom"
+  }
+}

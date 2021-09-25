@@ -20,6 +20,7 @@
 	"item.darksouls.big_warped_door": "Big Warped Door",
 	"item.darksouls.demon_great_hammer": "Demon's Great Hammer",
 	"item.darksouls.key": "Key",
+	"item.darksouls.iron_bar_door": "Iron Bar Door",
 	
 	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
@@ -31,6 +32,7 @@
 	"block.darksouls.big_dark_oak_door": "Big Dark Oak Door",
 	"block.darksouls.big_crimson_door": "Big Crimson Door",
 	"block.darksouls.big_warped_door": "Big Warped Door",
+	"block.darksouls.iron_bar_door": "Iron Bar Door",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
 	"entity.darksouls.hollow": "Hollow",

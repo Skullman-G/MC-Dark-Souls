@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -75,6 +76,13 @@ public class BlockInit
 			.of(Material.WOOD, Blocks.WARPED_PLANKS.defaultMaterialColor())
 			.strength(3.0F)
 			.sound(SoundType.WOOD)
+			.noOcclusion()));
+	
+	public static final RegistryObject<Block> IRON_BAR_DOOR = BLOCKS.register("iron_bar_door", () -> new LockableDoorBlock(AbstractBlock.Properties
+			.of(Material.METAL, MaterialColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(5.0F)
+			.sound(SoundType.METAL)
 			.noOcclusion()));
 	
 	

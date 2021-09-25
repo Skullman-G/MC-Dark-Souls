@@ -214,8 +214,7 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
 
    public ActionResultType use(BlockState blockstate, World level, BlockPos blockpos, PlayerEntity player, Hand hand, BlockRayTraceResult p_225533_6_)
    {
-	   if (this.material == Material.METAL) return ActionResultType.PASS;
-	   else if (this.isLocked(level, blockpos))
+	   if (this.isLocked(level, blockpos))
 	   {
 		   if (player != null && player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).connection.send(new STitlePacket(STitlePacket.Type.ACTIONBAR, new StringTextComponent("Door locked by "+this.getKeyName(level, blockpos))));
 		   return ActionResultType.SUCCESS;

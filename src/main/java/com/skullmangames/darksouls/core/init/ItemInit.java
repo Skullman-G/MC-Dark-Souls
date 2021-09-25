@@ -94,6 +94,9 @@ public class ItemInit
 	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(BlockInit.BIG_WARPED_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
+	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(BlockInit.IRON_BAR_DOOR.get(),
+			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+	
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(EntityTypeInit.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()

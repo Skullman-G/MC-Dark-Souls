@@ -191,6 +191,7 @@ public class DarkSouls
         RenderTypeLookup.setRenderLayer(BlockInit.BIG_ACACIA_DOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockInit.BIG_OAK_DOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockInit.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockInit.IRON_BAR_DOOR.get(), RenderType.cutout());
         
         ScreenManager.register(ContainerTypeInit.SMITHING.get(), SmithingTableScreenOverride::new);
         ScreenManager.register(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
