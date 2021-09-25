@@ -113,7 +113,7 @@ public class BigDoorBlock extends LockableBlock
 	public BlockState updateShape(BlockState blockstate, Direction direction, BlockState blockstate2, IWorld world, BlockPos p_196271_5_, BlockPos p_196271_6_)
 	{
 		TrippleBlockPart trippleblockpart = blockstate.getValue(PART);
-	    if (direction.getAxis() == Direction.Axis.Y)
+	    if (direction.getAxis() == Direction.Axis.Y && trippleblockpart == TrippleBlockPart.LOWER == (direction == Direction.UP))
 	    {
 	    	return blockstate2.is(this) && blockstate2.getValue(PART) != trippleblockpart ? blockstate.setValue(FACING, blockstate2.getValue(FACING)).setValue(OPEN, blockstate2.getValue(OPEN)).setValue(HINGE, blockstate2.getValue(HINGE)).setValue(POWERED, blockstate2.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
 	    }
