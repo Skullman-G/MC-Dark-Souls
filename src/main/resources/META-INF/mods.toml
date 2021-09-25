@@ -1,6 +1,7 @@
 modLoader="javafml" #mandatory
 loaderVersion="[36,)"
-license="Not specified"
+license="MIT"
+issueTrackerURL="https://github.com/Skullman-G/MC-Dark-Souls/issues"
 
 [[mods]]
 modId="darksouls"
