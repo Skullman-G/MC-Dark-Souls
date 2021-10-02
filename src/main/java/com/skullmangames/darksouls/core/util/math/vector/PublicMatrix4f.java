@@ -188,20 +188,30 @@ public class PublicMatrix4f
 	
 	public static PublicMatrix4f scale(Vector3f vec, PublicMatrix4f src, PublicMatrix4f dest)
 	{
+		return scale(vec.x(), vec.y(), vec.z(), src, dest);
+	}
+	
+	public PublicMatrix4f scale(float x, float y, float z)
+	{
+		return scale(x, y, z, this, this);
+	}
+	
+	public static PublicMatrix4f scale(float x, float y, float z, PublicMatrix4f src, PublicMatrix4f dest)
+	{
 		if (dest == null) dest = new PublicMatrix4f();
 		
-		dest.m00 = src.m00 * vec.x();
-		dest.m01 = src.m01 * vec.x();
-		dest.m02 = src.m02 * vec.x();
-		dest.m03 = src.m03 * vec.x();
-		dest.m10 = src.m10 * vec.y();
-		dest.m11 = src.m11 * vec.y();
-		dest.m12 = src.m12 * vec.y();
-		dest.m13 = src.m13 * vec.y();
-		dest.m20 = src.m20 * vec.z();
-		dest.m21 = src.m21 * vec.z();
-		dest.m22 = src.m22 * vec.z();
-		dest.m23 = src.m23 * vec.z();
+		dest.m00 = src.m00 * x;
+		dest.m01 = src.m01 * x;
+		dest.m02 = src.m02 * x;
+		dest.m03 = src.m03 * x;
+		dest.m10 = src.m10 * y;
+		dest.m11 = src.m11 * y;
+		dest.m12 = src.m12 * y;
+		dest.m13 = src.m13 * y;
+		dest.m20 = src.m20 * y;
+		dest.m21 = src.m21 * y;
+		dest.m22 = src.m22 * y;
+		dest.m23 = src.m23 * y;
 		return dest;
 	}
 	
@@ -377,12 +387,12 @@ public class PublicMatrix4f
 	
 	private static float determinant3x3(float t00, float t01, float t02, float t10, float t11, float t12, float t20, float t21, float t22)
 	{
-		return   t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
+		return t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
 	}
 	
 	public PublicMatrix4f translate(Vector3f vec)
 	{
-		return translate(vec, this);
+		return this.translate(vec, this);
 	}
 	
 	public PublicMatrix4f translate(Vector3f vec, PublicMatrix4f dest)
@@ -412,7 +422,7 @@ public class PublicMatrix4f
 		float yawDegree = interpolateRotation(prevYaw, yaw, partialTick);
 		PublicMatrix4f.rotate((float) -Math.toRadians(yawDegree), new Vector3f(0, 1, 0), modelMatrix, modelMatrix);
 		PublicMatrix4f.rotate((float) -Math.toRadians(pitchDegree), new Vector3f(1, 0, 0), modelMatrix, modelMatrix);
-		PublicMatrix4f.scale(new Vector3f(scaleX, scaleY, scaleZ), modelMatrix, modelMatrix);
+		PublicMatrix4f.scale(scaleX, scaleY, scaleZ, modelMatrix, modelMatrix);
 		
 		return modelMatrix;
 	}

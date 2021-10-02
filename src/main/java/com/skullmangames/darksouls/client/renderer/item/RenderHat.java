@@ -33,7 +33,7 @@ public class RenderHat extends RenderItemBase
 			HeadLayer<LivingEntity, ?> layer = new HeadLayer(((LivingRenderer<?, ?>)render));
 			LivingEntity entity = itemHolder.getOriginalEntity();
 			PublicMatrix4f modelMatrix = new PublicMatrix4f();
-			PublicMatrix4f.scale(new Vector3f(-0.94F, -0.94F, 0.94F), modelMatrix, modelMatrix);
+			PublicMatrix4f.scale(-0.94F, -0.94F, 0.94F, modelMatrix, modelMatrix);
 			if(itemHolder.getOriginalEntity().isBaby())
 			{
 				PublicMatrix4f.translate(new Vector3f(0.0F, -0.65F, 0.0F), modelMatrix, modelMatrix);

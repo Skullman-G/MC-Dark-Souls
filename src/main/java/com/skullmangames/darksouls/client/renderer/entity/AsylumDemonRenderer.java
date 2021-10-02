@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,7 +19,7 @@ public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, Asy
 	
 	public AsylumDemonRenderer()
 	{
-		this.layers.add(new HeldItemLayer<>());
+		this.layers.add(new HeldItemLayer<>(1.5F, new Vector3d(0.0D, 0.0D, 0.1D)));
 	}
 	
 	@Override
@@ -31,7 +32,6 @@ public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, Asy
 	protected void applyRotations(MatrixStack matStack, Armature armature, AsylumDemonEntity entityIn, AsylumDemonData entitydata, float partialTicks)
 	{
 		super.applyRotations(matStack, armature, entityIn, entitydata, partialTicks);
-		matStack.translate(0.0D, 2.0D, 0.0D);
 		this.transformJoint(2, armature, entitydata.getHeadMatrix(partialTicks));
 	}
 }

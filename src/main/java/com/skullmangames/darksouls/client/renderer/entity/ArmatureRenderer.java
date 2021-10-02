@@ -40,6 +40,7 @@ import net.minecraftforge.common.MinecraftForge;
 @OnlyIn(Dist.CLIENT)
 public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingData<E>>
 {
+	protected Minecraft minecraft = Minecraft.getInstance();
 	protected List<Layer<E, T>> layers;
 	
 	public ArmatureRenderer()
@@ -47,20 +48,19 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 		this.layers = Lists.newArrayList();
 	}
 	
-	public void render(E entityIn, T entitydata, EntityRenderer<E> renderer, IRenderTypeBuffer buffer, MatrixStack matStack, int packedLightIn, float partialTicks)
+	public void render(E livingEntity, T entitydata, EntityRenderer<E> renderer, IRenderTypeBuffer buffer, MatrixStack matStack, int packedLightIn, float partialTicks)
 	{
-		if(this.shouldRenderNameTag(entitydata, entityIn))
+		if(this.shouldRenderNameTag(entitydata, livingEntity))
 		{
-			RenderNameplateEvent renderNameplateEvent = new RenderNameplateEvent(entityIn, entityIn.getDisplayName(), renderer, matStack, buffer, packedLightIn, partialTicks);
+			RenderNameplateEvent renderNameplateEvent = new RenderNameplateEvent(livingEntity, livingEntity.getDisplayName(), renderer, matStack, buffer, packedLightIn, partialTicks);
 		    MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-			this.renderNameTag(entitydata, entityIn, renderNameplateEvent.getContent(), matStack, buffer, packedLightIn);
+			this.renderNameTag(entitydata, livingEntity, renderNameplateEvent.getContent(), matStack, buffer, packedLightIn);
 		}
 		
-		Minecraft minecraft = Minecraft.getInstance();
-		boolean flag = this.isVisible(entityIn);
-		boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
-		boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
-		RenderType renderType = this.getRenderType(entityIn, entitydata, flag, flag1, flag2);
+		boolean visible = this.isVisible(livingEntity);
+		boolean visibleToPlayer = !visible && !livingEntity.isInvisibleTo(this.minecraft.player);
+		boolean glowing = this.minecraft.shouldEntityAppearGlowing(livingEntity);
+		RenderType renderType = this.getRenderType(livingEntity, entitydata, visible, visibleToPlayer, glowing);
 		
 		if(renderType != null)
 		{
@@ -69,17 +69,14 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 			Armature armature = model.getArmature();
 			armature.initializeTransform();
 			matStack.pushPose();
-			this.applyRotations(matStack, armature, entityIn, entitydata, partialTicks);
+			this.applyRotations(matStack, armature, livingEntity, entitydata, partialTicks);
 			entitydata.getClientAnimator().setPoseToModel(partialTicks);
 			PublicMatrix4f[] poses = armature.getJointTransforms();
-			model.draw(matStack, builder, packedLightIn, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F, poses);
+			model.draw(matStack, builder, packedLightIn, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : 1.0F, poses);
 			
-			if(!entityIn.isSpectator())
-			{
-				renderLayer(entitydata, entityIn, poses, buffer, matStack, packedLightIn, partialTicks);
-			}
+			if(!livingEntity.isSpectator()) renderLayer(entitydata, livingEntity, poses, buffer, matStack, packedLightIn, partialTicks);
 			
-			if(Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes())
+			if(this.minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes())
 			{
 				AnimatorClient animator = entitydata.getClientAnimator();
 				AnimationPlayer player = animator.getPlayer();
@@ -103,10 +100,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 						mat = joint.getAnimatedTransform();
 					}
 					
-					if (mat == null)
-					{
-						mat = new PublicMatrix4f();
-					}
+					if (mat == null) mat = new PublicMatrix4f();
 					collider.draw(matStack, buffer, mat, partialTicks, flag3);
 				}
 			}
@@ -118,28 +112,16 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 	public RenderType getRenderType(E entityIn, T entitydata, boolean isVisible, boolean isVisibleToPlayer, boolean isGlowing)
 	{
 		ResourceLocation resourcelocation = this.getEntityTexture(entityIn);
-		if (isVisibleToPlayer)
-		{
-			return ModRenderTypes.getItemEntityTranslucentCull(resourcelocation);
-		}
-		else if (isVisible)
-		{
-			return this.getCommonRenderType(resourcelocation);
-		}
-		else
-		{
-			return isGlowing ? RenderType.outline(resourcelocation) : null;
-		}
+		if (isVisibleToPlayer) return ModRenderTypes.getItemEntityTranslucentCull(resourcelocation);
+		else if (isVisible) return this.getCommonRenderType(resourcelocation);
+		else return isGlowing ? RenderType.outline(resourcelocation) : null;
 	}
 	
 	protected abstract ResourceLocation getEntityTexture(E entityIn);
 	
 	protected void renderLayer(T entitydata, E entityIn, PublicMatrix4f[] poses, IRenderTypeBuffer buffer, MatrixStack matrixStackIn, int packedLightIn, float partialTicks)
 	{
-		for(Layer<E, T> layer : this.layers)
-		{
-			layer.renderLayer(entitydata, entityIn, matrixStackIn, buffer, packedLightIn, poses, partialTicks);
-		}
+		for(Layer<E, T> layer : this.layers) layer.renderLayer(entitydata, entityIn, matrixStackIn, buffer, packedLightIn, poses, partialTicks);
 	}
 	
 	protected boolean isVisible(E entityIn)
@@ -169,17 +151,12 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 	protected boolean shouldRenderNameTag(T entitydata, E entity)
 	{
 		boolean flag1;
-		@SuppressWarnings("resource")
-		double d0 = Minecraft.getInstance().cameraEntity.distanceToSqr(entity);
+		double d0 = this.minecraft.cameraEntity.distanceToSqr(entity);
 		float f = entity.isDiscrete() ? 32.0F : 64.0F;
-		if (d0 >= (double) (f * f))
-		{
-			flag1 = false;
-		}
+		if (d0 >= (double) (f * f)) flag1 = false;
 		else
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			ClientPlayerEntity clientplayerentity = minecraft.player;
+			ClientPlayerEntity clientplayerentity = this.minecraft.player;
 			boolean flag = !entity.isInvisibleTo(clientplayerentity);
 			if (entity != clientplayerentity)
 			{
@@ -203,18 +180,18 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 					}
 				}
 			}
-			flag1 = Minecraft.renderNames() && entity != minecraft.cameraEntity && flag
+			flag1 = Minecraft.renderNames() && entity != this.minecraft.cameraEntity && flag
 					&& !entity.isVehicle();
 		}
 
 		return flag1 && (entity.shouldShowName()
-				|| entity.hasCustomName() && (entity == Minecraft.getInstance().getEntityRenderDispatcher().crosshairPickEntity
+				|| entity.hasCustomName() && (entity == this.minecraft.getEntityRenderDispatcher().crosshairPickEntity
 						|| entity instanceof PlayerEntity));
 	}
 	
 	protected void renderNameTag(T entitydata, E entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		EntityRendererManager renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
+		EntityRendererManager renderManager = this.minecraft.getEntityRenderDispatcher();
 		
 		double d0 = renderManager.distanceToSqr(entityIn);
 		if (net.minecraftforge.client.ForgeHooksClient.isNameplateInRenderDistance(entityIn, d0))
@@ -227,8 +204,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 			matrixStackIn.mulPose(renderManager.cameraOrientation());
 			matrixStackIn.scale(-0.025F, -0.025F, 0.025F);
 			Matrix4f matrix4f = matrixStackIn.last().pose();
-			@SuppressWarnings("resource")
-			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
+			float f1 = this.minecraft.options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
 			FontRenderer fontrenderer = renderManager.getFont();
 			float f2 = (float) (-fontrenderer.width(displayNameIn) / 2);

@@ -35,7 +35,8 @@ public class EntityTypeInit
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "soul").toString()));
 	
 	public static final RegistryObject<EntityType<AsylumDemonEntity>> ASYLUM_DEMON = ENTITIES.register("asylum_demon", () -> EntityType.Builder.<AsylumDemonEntity>of(AsylumDemonEntity::new, EntityClassification.MONSTER)
-			.sized(1.5F, 4.0F)
+			.sized(2.5F, 5.5F)
+			.canSpawnFarFromPlayer()
 			.build(new ResourceLocation(DarkSouls.MOD_ID, "asylum_demon").toString()));
 	
 	

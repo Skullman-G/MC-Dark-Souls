@@ -49,19 +49,19 @@ public class AttackAnimation extends ActionAnimation
 	protected final Map<AnimationProperty<?>, Object> properties;
 	public final Phase[] phases;
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature, boolean clientOnly)
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature, boolean clientOnly)
+	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, clientOnly, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
 	public AttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, boolean clientOnly, Phase... phases)

@@ -87,10 +87,7 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 		return null;
 	}
 
-	public void clientInitialSettings(ByteBuf buf)
-	{
-
-	}
+	public void clientInitialSettings(ByteBuf buf) {}
 	
 	@Override
 	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)

@@ -111,14 +111,8 @@ public class AnimatorServer extends Animator
 			bindTransform.m32 = z;
 		}
 		
-		if(indexer == 0)
-		{
-			return bindTransform;
-		}
-		else
-		{
-			return applyPoseToCollider(pose, joint.getSubJoints().get((indexer & 31) - 1), bindTransform, indexer);
-		}
+		if(indexer == 0) return bindTransform;
+		else return applyPoseToCollider(pose, joint.getSubJoints().get((indexer & 31) - 1), bindTransform, indexer);
 	}
 	
 	protected Pose getCurrentPose()

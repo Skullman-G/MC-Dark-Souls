@@ -585,7 +585,10 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return this.<AnimatorServer>getAnimator();
 	}
 
-	public abstract StaticAnimation getHitAnimation(StunType stunType);
+	public StaticAnimation getHitAnimation(StunType stunType)
+	{
+		return null;
+	}
 
 	@Override
 	public void aboutToDeath()

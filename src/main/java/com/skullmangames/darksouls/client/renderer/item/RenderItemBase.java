@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -41,7 +42,7 @@ public class RenderItemBase
 		PublicMatrix4f.translate(new Vector3f(0,0.1F,0), correctionMatrix, correctionMatrix);
 	}
 	
-	public void renderItemInHand(ItemStack stack, LivingData<?> itemHolder, Hand hand, IRenderTypeBuffer buffer, MatrixStack matrixStackIn, int packedLight)
+	public void renderItemInHand(ItemStack stack, LivingData<?> itemHolder, Hand hand, IRenderTypeBuffer buffer, MatrixStack matrixStackIn, int packedLight, float scale, Vector3d translation)
 	{
 		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
 		String heldingHand = hand == Hand.MAIN_HAND ? "Tool_R" : "Tool_L";
@@ -51,6 +52,9 @@ public class RenderItemBase
 		
 		MathUtils.translateStack(matrixStackIn, modelMatrix);
 		PublicMatrix4f.rotateStack(matrixStackIn, transpose);
+		
+		matrixStackIn.scale(scale, scale, scale);
+		matrixStackIn.translate(translation.x, translation.y, translation.z);
 		
 		Minecraft.getInstance().getItemInHandRenderer().renderItem(itemHolder.getOriginalEntity(), stack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, buffer, packedLight);
 		GlStateManager._enableDepthTest();
@@ -73,7 +77,7 @@ public class RenderItemBase
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		PublicMatrix4f.translate(new Vector3f(0F, 0.2F, 0F), modelMatrix, modelMatrix);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
-		PublicMatrix4f.scale(new Vector3f(0.6F, 0.6F, 0.6F), modelMatrix, modelMatrix);
+		PublicMatrix4f.scale(0.6F, 0.6F, 0.6F, modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
 		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);

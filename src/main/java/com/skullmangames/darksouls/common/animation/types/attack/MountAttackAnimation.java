@@ -7,9 +7,9 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class MountAttackAnimation extends AttackAnimation
 {
-	public MountAttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, Collider collider, String index, String path, String armature, boolean clientOnly)
+	public MountAttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, Collider collider, String index, String path, String armature)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature, clientOnly);
+		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 	}
 	
 	protected Vector3f getCoordVector(LivingData<?> entitydata)

@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
@@ -23,31 +21,32 @@ public class AttackPatternGoal extends Goal
 	protected final double minDist;
 	protected final double maxDist;
 	protected final double maxDashDist;
-	protected final List<AttackAnimation> lightAttack;
-	protected final List<AttackAnimation> otherAttacks;
+	protected final AttackAnimation[][] attacks;
 	protected final AttackAnimation dashAttack;
 	private int dashCooldown;
 	protected final boolean affectHorizon;
-	protected int combo;
+	protected int combo = 0;
+	protected int currentAttack = -1;
 	
-	
-	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, List<AttackAnimation> lightattack)
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, AttackAnimation attackAnimation)
 	{
-		this(mobdata, attacker, minDist, maxDist, maxDist, affectHorizon, lightattack, null, null);
+		this(mobdata, attacker, minDist, maxDist, affectHorizon, new AttackAnimation[][] { new AttackAnimation[] { attackAnimation } });
 	}
 	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, double maxDashDist, boolean affectHorizon, List<AttackAnimation> lightattack, @Nullable List<AttackAnimation> otherattacks, @Nullable AttackAnimation dashattack)
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, AttackAnimation[][] attackAnimations)
+	{
+		this(mobdata, attacker, minDist, maxDist, maxDist, affectHorizon, attackAnimations, null);
+	}
+	
+	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, double maxDashDist, boolean affectHorizon, AttackAnimation[][] attackAnimations, @Nullable AttackAnimation dashattack)
 	{
 		this.attacker = attacker;
 		this.mobdata = mobdata;
 		this.minDist = minDist * minDist;
 		this.maxDist = maxDist * maxDist;
 		this.maxDashDist = maxDashDist * maxDashDist;
-		this.lightAttack = lightattack;
-		this.otherAttacks = otherattacks;
+		this.attacks = attackAnimations;
 		this.dashAttack = dashattack;
-		this.combo = 0;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
 		this.dashCooldown = 0;
@@ -56,6 +55,7 @@ public class AttackPatternGoal extends Goal
 	@Override
     public boolean canUse()
     {
+		if (this.attacks.length <= 0) return false;
 		LivingEntity LivingEntity = this.attacker.getTarget();
 		return isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
     }
@@ -107,15 +107,9 @@ public class AttackPatternGoal extends Goal
     	}
     	else
     	{
-    		if (this.combo > 0 || this.attacker.getRandom().nextBoolean())
-        	{
-        		animation = this.lightAttack.get(this.combo++);
-            	this.combo %= this.lightAttack.size();
-        	}
-            else
-            {
-            	animation = this.otherAttacks.get(this.attacker.getRandom().nextInt(this.otherAttacks.size()));
-            }
+    		if (this.combo <= 0) this.currentAttack = this.attacker.getRandom().nextInt(this.attacks.length);
+    		animation = this.attacks[this.currentAttack][this.combo];
+    		if (this.attacks[this.currentAttack].length > 1) this.combo = ++this.combo % this.attacks[this.currentAttack].length;
     	}
         
         if (animation == null) return;

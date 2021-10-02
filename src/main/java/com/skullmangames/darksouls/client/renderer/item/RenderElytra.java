@@ -35,7 +35,7 @@ public class RenderElytra extends RenderItemBase {
 	public void renderItemOnHead(ItemStack stack, LivingData<?> itemHolder, IRenderTypeBuffer buffer, MatrixStack viewMatrixStack, int packedLight, float partialTicks) {
 		LivingEntity entity = itemHolder.getOriginalEntity();
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
-		PublicMatrix4f.scale(new Vector3f(-0.9F, -0.9F, 0.9F), modelMatrix, modelMatrix);
+		PublicMatrix4f.scale(-0.9F, -0.9F, 0.9F, modelMatrix, modelMatrix);
 		PublicMatrix4f.translate(new Vector3f(0F, -0.5F, 0.125F), modelMatrix, modelMatrix);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(8).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);

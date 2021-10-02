@@ -60,7 +60,13 @@ public class AsylumDemonEntity extends CreatureEntity
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+				.add(Attributes.MOVEMENT_SPEED, 0.3D);
+	}
+	
+	@Override
+	public boolean removeWhenFarAway(double p_213397_1_)
+	{
+		return false;
 	}
 	
 	@Override

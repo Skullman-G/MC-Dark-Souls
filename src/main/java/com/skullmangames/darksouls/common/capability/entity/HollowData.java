@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.MobAttackPatterns;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
@@ -100,7 +99,7 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void setAIAsArmed()
 	{
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, 4.0D, true, MobAttackPatterns.HOLLOW_LIGHT_PATTERN, MobAttackPatterns.HOLLOW_OTHER_PATTERN, Animations.HOLLOW_JUMP_ATTACK));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, 4.0D, true, Animations.HOLLOW_ATTACKS, Animations.HOLLOW_JUMP_ATTACK));
 	}
 	
 	@Override

@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.MobAttackPatterns;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
 import net.minecraft.entity.Entity;
@@ -68,7 +67,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 
 	public void setAIAsArmed()
 	{
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, MobAttackPatterns.BIPED_ARMED_ONEHAND));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, Animations.ARMED_MOB_ONEHAND_ATTACKS));
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
 	}
 	
@@ -76,7 +75,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 	{
 		if (isArmed())
 		{
-			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, MobAttackPatterns.BIPED_MOUNT_SWORD));
+			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, Animations.SWORD_MOUNT_ATTACK));
 
 			if (ridingEntity instanceof AbstractHorseEntity)
 			{

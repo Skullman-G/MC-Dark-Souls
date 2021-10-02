@@ -74,24 +74,33 @@ public final class Animations
 	public static final StaticAnimation BIPED_ROLL_FORWARD = new DodgingAnimation(1998, 0.09F, false, "biped/combat/roll_forward", 0.6F, 0.5F, "biped", false);
 	public static final StaticAnimation BIPED_ROLL_BACKWARD = new DodgingAnimation(1999, 0.09F, false, "biped/combat/roll_backward", 0.6F, 0.5F, "biped", false);
 	
-	public static final StaticAnimation BIPED_ARMED_MOB_ATTACK1 = new TargetTraceAnimation(2900, 0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack1", "biped", false)
-																	.addProperty(AnimationProperty.DIRECTIONAL, true);
-	public static final StaticAnimation BIPED_ARMED_MOB_ATTACK2 = new TargetTraceAnimation(2901, 0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack2", "biped", false)
-																	.addProperty(AnimationProperty.DIRECTIONAL, true);
-	public static final StaticAnimation BIPED_MOB_THROW = new AttackAnimation(2902, 0.11F, 1.0F, 0, 0, 0, false, null, "", "biped/combat/javelin_throw_mid", "biped", false);
+	public static final AttackAnimation[][] ARMED_MOB_ONEHAND_ATTACKS = new AttackAnimation[][]
+			{
+				// Light Attacks
+				new AttackAnimation[]
+						{
+								new TargetTraceAnimation(2900, 0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack1", "biped", false)
+								.addProperty(AnimationProperty.DIRECTIONAL, true),
+								
+								new TargetTraceAnimation(2901, 0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack2", "biped", false)
+								.addProperty(AnimationProperty.DIRECTIONAL, true)
+						}
+			};
+			
+	public static final StaticAnimation BIPED_MOB_THROW = new AttackAnimation(2902, 0.11F, 1.0F, 0, 0, 0, false, null, "", "biped/combat/javelin_throw_mid", "biped");
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(7011, 0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
-	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped", false);
+	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(7012, 0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
 	
-	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped", false)
+	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(7013, 0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
 			.addProperty(DamageProperty.SMASHING, true);
 	
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
-				new AttackAnimation(7014, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_1", "biped", false)
+				new AttackAnimation(7014, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
 				.addProperty(DamageProperty.SMASHING, true),
-				new AttackAnimation(7015, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_2", "biped", false)
+				new AttackAnimation(7015, 0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
 				.addProperty(DamageProperty.SMASHING, true)
 			};
 	
@@ -100,7 +109,7 @@ public final class Animations
 					new AAAnimation(2029, 0.16F, 0.25F, 0.35F, 0.7F, 1.0F, null, "111213", "biped/combat/axe_auto1", "biped", false),
 					new AAAnimation(2030, 0.16F, 0.25F, 0.35F, 0.85F, 1.0F, null, "111213", "biped/combat/axe_auto2", "biped", false)
 			}));
-	public static final AttackAnimation AXE_DASH_ATTACK = new AADashAnimation(2019, 0.25F, 0.08F, 0.4F, 0.46F, 0.9F, null, "111213", "biped/combat/axe_dash", "biped", false)
+	public static final AttackAnimation AXE_DASH_ATTACK = new AADashAnimation(2019, 0.25F, 0.08F, 0.4F, 0.46F, 0.9F, null, "111213", "biped/combat/axe_dash", "biped")
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	public static final AttackAnimation GUILLOTINE_AXE = new SpecialAttackAnimation(5000, 0.08F, 0.2F, 0.5F, 0.65F, 1.0F, true, null, "111213", "biped/skill/axe_special", "biped", false)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
@@ -114,16 +123,16 @@ public final class Animations
 					new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3", "biped", false)
 							.addProperty(DamageProperty.PARTICLE, null)	
 			};
-	public static final StaticAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped", false)
+	public static final StaticAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped")
 															.addProperty(DamageProperty.PARTICLE, null)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	
-	public static final StaticAnimation SPEAR_ONEHAND_AUTO = new AAAnimation(2012, 0.16F, 0.1F, 0.2F, 0.45F, 1.2F, null, "111213", "biped/combat/spear_onehand_auto", "biped", false);
+	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AAAnimation(2012, 0.16F, 0.1F, 0.2F, 0.45F, 1.2F, null, "111213", "biped/combat/spear_onehand_auto", "biped", false);
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_1 = new AAAnimation(2013, 0.25F, 0.05F, 0.15F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto1", "biped", false);
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_2 = new AAAnimation(2014, 0.25F, 0.05F, 0.15F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto2", "biped", false);
-	public static final StaticAnimation SPEAR_DASH = new AADashAnimation(2015, 0.16F, 0.05F, 0.2F, 0.3F, 0.7F, null, "111213", "biped/combat/spear_dash", "biped", false)
+	public static final StaticAnimation SPEAR_DASH = new AADashAnimation(2015, 0.16F, 0.05F, 0.2F, 0.3F, 0.7F, null, "111213", "biped/combat/spear_dash", "biped")
 													.addProperty(AnimationProperty.LOCK_ROTATION, true);
-	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(2245, 0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped", false)
+	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(2245, 0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped")
 															.addProperty(AnimationProperty.DIRECTIONAL, true);
 	
 	public static final AttackAnimation[] SWORD_LIGHT_ATTACK = new AttackAnimation[]
@@ -132,21 +141,21 @@ public final class Animations
 					new AAAnimation(2006, 0.13F, 0.0F, 0.11F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto2", "biped", false),
 					new AAAnimation(2007, 0.13F, 0.0F, 0.11F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto3", "biped", false)
 			};
-	public static final AttackAnimation SWORD_DASH_ATTACK = new AADashAnimation(2008, 0.12F, 0.1F, 0.25F, 0.4F, 0.65F, Colliders.swordDash, "111213", "biped/combat/sword_dash", "biped", false)
+	public static final AttackAnimation SWORD_DASH_ATTACK = new AADashAnimation(2008, 0.12F, 0.1F, 0.25F, 0.4F, 0.65F, Colliders.swordDash, "111213", "biped/combat/sword_dash", "biped")
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	public static final StaticAnimation SWORD_DUAL_AUTO_1 = new AAAnimation(2020, 0.16F, 0.0F, 0.11F, 0.2F, 1.6F, null, "111213", "biped/combat/dual_auto1", "biped", false);
 	public static final StaticAnimation SWORD_DUAL_AUTO_2 = new AAAnimation(2021, 0.13F, 0.0F, 0.1F, 0.1F, 1.6F, Hand.OFF_HAND, null, "111313", "biped/combat/dual_auto2", "biped", false);
 	public static final StaticAnimation SWORD_DUAL_AUTO_3 = new AAAnimation(2022, 0.18F, 0.0F, 0.25F, 0.35F, 0.65F, 1.6F, Colliders.dualSwordDash, "", "biped/combat/dual_auto3", "biped", false);
-	public static final StaticAnimation SWORD_DUAL_DASH = new AADashAnimation(2023, 0.16F, 0.1F, 0.1F, 0.3F, 0.65F, Colliders.dualSwordDash, "", "biped/combat/dual_dash", "biped", false)
+	public static final StaticAnimation SWORD_DUAL_DASH = new AADashAnimation(2023, 0.16F, 0.1F, 0.1F, 0.3F, 0.65F, Colliders.dualSwordDash, "", "biped/combat/dual_dash", "biped")
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
-	public static final StaticAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(2099, 0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped", false);
+	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(2099, 0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
 	
 	public static final List<AttackAnimation> TOOL_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{
 					new AAAnimation(2016, 0.13F, 0.05F, 0.15F, 0.3F, 1.6F, null, "111213", "biped/combat/sword_auto3", "biped", false),
 					new AAAnimation(2017, 0.13F, 0.05F, 0.15F, 0.6F, 1.6F, null, "111213", "biped/combat/sword_auto4", "biped", false)
 			}));
-	public static final AttackAnimation TOOL_DASH_ATTACK = new AADashAnimation(2018, 0.16F, 0.08F, 0.15F, 0.25F, 0.58F, null, "111213", "biped/combat/tool_dash", "biped", false)
+	public static final AttackAnimation TOOL_DASH_ATTACK = new AADashAnimation(2018, 0.16F, 0.08F, 0.15F, 0.25F, 0.58F, null, "111213", "biped/combat/tool_dash", "biped")
 															.addProperty(AnimationProperty.LOCK_ROTATION, true)
 															.addProperty(DamageProperty.MAX_STRIKES, ValueCorrector.getAdder(1));
 	
@@ -183,33 +192,65 @@ public final class Animations
 			new Phase(0.483F, 0.483F, 0.533F, 0.6F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
 			new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast));
 	
-	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped", false)
-																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
-	public static final AttackAnimation HOLLOW_FURY_SWING = new AttackAnimation(7001, 0.05F, false, "hollow/fury_attack", "biped", false,
-																new Phase(0.0F, 1.76F, 2.08F, 2.08F, "111213", Colliders.brokenSword),
-																new Phase(2.08F, 2.12F, 2.28F, 2.28F, "111213", Colliders.brokenSword),
-																new Phase(2.28F, 2.44F, 2.6F, 2.6F, "111213", Colliders.brokenSword),
-																new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.brokenSword),
-																new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
-																new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
-																.addProperty(AnimationProperty.LOCK_ROTATION, Boolean.valueOf(true))
-																.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE);
-	public static final List<AttackAnimation> HOLLOW_SWING = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	
+	public static final AttackAnimation[][] HOLLOW_ATTACKS = new AttackAnimation[][]
 			{
-					new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_1", "biped", false)
-							.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
-					new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/swing_2", "biped", false)
-							.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
-					new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_3", "biped", false)
-							.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1)
-			}));
-	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped", false)
+					// Overhead swing (Heavy Attack)			
+					new AttackAnimation[]
+							{
+									new AttackAnimation(7000, 0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped")
+																				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2)
+							},
+							
+					// Fury Swing
+					new AttackAnimation[]
+							{
+									new AttackAnimation(7001, 0.05F, false, "hollow/fury_attack", "biped", false,
+																				new Phase(0.0F, 1.76F, 2.08F, 2.08F, "111213", Colliders.brokenSword),
+																				new Phase(2.08F, 2.12F, 2.28F, 2.28F, "111213", Colliders.brokenSword),
+																				new Phase(2.28F, 2.44F, 2.6F, 2.6F, "111213", Colliders.brokenSword),
+																				new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.brokenSword),
+																				new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
+																				new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
+																				.addProperty(AnimationProperty.LOCK_ROTATION, Boolean.valueOf(true))
+																				.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE)
+							},
+					
+					// Light Attacks
+					new AttackAnimation[]
+							{
+									new AttackAnimation(7002, 0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_1", "biped")
+									.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
+								
+									new AttackAnimation(7003, 0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/swing_2", "biped")
+										.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
+								
+									new AttackAnimation(7004, 0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_3", "biped")
+										.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1)
+							}
+			};
+			
+	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped")
 																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected", "biped", false);
 	
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(7007, 0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, Colliders.sword, "111213", "biped/combat/shield_strike", "biped", false)
+					new AttackAnimation(7007, 0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, Colliders.sword, "111213", "biped/combat/shield_strike", "biped")
+			};
+	
+	// Asylum Demon
+	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(7016, 0.9F, true, "asylum_demon/idle", "asylum_demon", true);
+	
+	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(7017, 0.5F, true, "asylum_demon/move", "asylum_demon", true);
+	
+	public static final AttackAnimation[][] ASYLUM_DEMON_ATTACKS = new AttackAnimation[][]
+			{
+					// Heavy Attack		
+					new AttackAnimation[]
+						{
+								new AttackAnimation(7018, 0.5F, 0.0F, 0.8F, 1.8F, 1.8F, false, Colliders.great_hammer, "", "asylum_demon/heavy_attack", "asylum_demon")
+						}
 			};
 	
 	public static final int BASIC_ATTACK_MIN = 2000;
@@ -223,6 +264,5 @@ public final class Animations
 	public static void registerAnimations(Dist dist)
 	{
 		animationTable.forEach((i, animation) -> animation.bind(dist));
-		MobAttackPatterns.setVariousMobAttackPatterns();
 	}
 }

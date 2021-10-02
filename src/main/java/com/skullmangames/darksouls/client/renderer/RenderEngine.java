@@ -108,29 +108,6 @@ public class RenderEngine
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
 		this.entityRendererMap.put(EntityTypeInit.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
 		this.entityRendererMap.put(EntityTypeInit.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
-		/*entityRendererMap.put(EntityType.CREEPER, new CreeperRenderer());
-		entityRendererMap.put(EntityType.ENDERMAN, new EndermanRenderer());
-		entityRendererMap.put(EntityType.ZOMBIE, new SimpleTexturBipedRenderer<ZombieEntity, ZombieData<ZombieEntity>>("textures/entity/zombie/zombie.png"));
-		entityRendererMap.put(EntityType.ZOMBIE_VILLAGER, new ZombieVillagerRenderer());
-		entityRendererMap.put(EntityType.ZOMBIFIED_PIGLIN, new SimpleTexturBipedRenderer<ZombifiedPiglinEntity, ZombieData<ZombifiedPiglinEntity>>(DarkSouls.MOD_ID + ":textures/entity/zombified_piglin.png"));
-		entityRendererMap.put(EntityType.HUSK, new SimpleTexturBipedRenderer<HuskEntity, ZombieData<HuskEntity>>("textures/entity/zombie/husk.png"));
-		entityRendererMap.put(EntityType.SKELETON, new SimpleTexturBipedRenderer<SkeletonEntity, SkeletonData<SkeletonEntity>>("textures/entity/skeleton/skeleton.png"));
-		entityRendererMap.put(EntityType.WITHER_SKELETON, new SimpleTexturBipedRenderer<WitherSkeletonEntity, WitherSkeletonData>("textures/entity/skeleton/wither_skeleton.png"));
-		entityRendererMap.put(EntityType.STRAY, new SimpleTexturBipedRenderer<StrayEntity, SkeletonData<StrayEntity>>("textures/entity/skeleton/stray.png"));
-		entityRendererMap.put(EntityType.SPIDER, new SpiderRenderer());
-		entityRendererMap.put(EntityType.CAVE_SPIDER, new CaveSpiderRenderer());
-		entityRendererMap.put(EntityType.IRON_GOLEM, new IronGolemRenderer());
-		entityRendererMap.put(EntityType.VINDICATOR, new SimpleTexturBipedRenderer<VindicatorEntity, VindicatorData>("textures/entity/illager/vindicator.png"));
-		entityRendererMap.put(EntityType.EVOKER, new SimpleTexturBipedRenderer<EvokerEntity, EvokerData>("textures/entity/illager/evoker.png"));
-		entityRendererMap.put(EntityType.WITCH, new SimpleTexturBipedRenderer<WitchEntity, WitchData>(DarkSouls.MOD_ID + ":textures/entity/witch.png"));
-		entityRendererMap.put(EntityType.DROWNED, new DrownedRenderer());
-		entityRendererMap.put(EntityType.PILLAGER, new SimpleTexturBipedRenderer<PillagerEntity, PillagerData>("textures/entity/illager/pillager.png"));
-		entityRendererMap.put(EntityType.RAVAGER, new RavagerRenderer());
-		entityRendererMap.put(EntityType.VEX, new VexRenderer());
-		entityRendererMap.put(EntityType.PIGLIN, new SimpleTexturBipedRenderer<PiglinEntity, PiglinData>("textures/entity/piglin/piglin.png"));
-		entityRendererMap.put(EntityType.field_242287_aj, new SimpleTexturBipedRenderer<PiglinBruteEntity, PiglinBruteData>(DarkSouls.MOD_ID + ":textures/entity/piglin_brute.png"));
-		entityRendererMap.put(EntityType.HOGLIN, new HoglinRenderer<HoglinEntity, HoglinData>("textures/entity/hoglin/hoglin.png"));
-		entityRendererMap.put(EntityType.ZOGLIN, new HoglinRenderer<ZoglinEntity, ZoglinData>("textures/entity/hoglin/zoglin.png"));*/
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();
@@ -275,7 +252,8 @@ public class RenderEngine
 	@Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID, value = Dist.CLIENT)
 	public static class Events
 	{
-		static RenderEngine renderEngine;
+		private static RenderEngine renderEngine;
+		private static final Minecraft minecraft = Minecraft.getInstance();
 		
 		@SubscribeEvent
 		public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event)
@@ -285,14 +263,8 @@ public class RenderEngine
 			{
 				if (livingentity instanceof ClientPlayerEntity)
 				{
-					if (event.getPartialRenderTick() == 1.0F)
-					{
-						return;
-					}
-					else if (!ClientEngine.INSTANCE.isBattleMode() && DarkSouls.CLIENT_INGAME_CONFIG.filterAnimation.getValue())
-					{
-						return;
-					}
+					if (event.getPartialRenderTick() == 1.0F) return;
+					else if (!ClientEngine.INSTANCE.isBattleMode() && DarkSouls.CLIENT_INGAME_CONFIG.filterAnimation.getValue()) return;
 				}
 				
 				LivingData<?> entitydata = (LivingData<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
@@ -303,7 +275,6 @@ public class RenderEngine
 				}
 			}
 			
-			Minecraft minecraft = Minecraft.getInstance();
 			if (!minecraft.options.hideGui)
 			{
 				for (EntityIndicator entityIndicator : EntityIndicator.ENTITY_INDICATOR_RENDERERS)
@@ -328,11 +299,10 @@ public class RenderEngine
 			}
 		}
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
 		public static void cameraSetupEvent(CameraSetup event)
 		{
-			renderEngine.updateCameraInfo(event, Minecraft.getInstance().options.getCameraType(), event.getRenderPartialTicks());
+			renderEngine.updateCameraInfo(event, minecraft.options.getCameraType(), event.getRenderPartialTicks());
 			if (renderEngine.zoomCount > 0)
 			{
 				if (renderEngine.zoomOutTimer > 0)
@@ -356,7 +326,6 @@ public class RenderEngine
 			{
 				if (event.getHand() == Hand.MAIN_HAND)
 				{
-					Minecraft minecraft = Minecraft.getInstance();
 					renderEngine.firstPersonRenderer.render(minecraft.player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
 							event.getMatrixStack(), event.getLight(), event.getPartialTicks());
 				}
@@ -367,7 +336,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderWorldLast(RenderWorldLastEvent event)
 		{
-			if (renderEngine.zoomCount > 0 && renderEngine.minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
+			if (renderEngine.zoomCount > 0 && minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
 				renderEngine.aimHelper.doRender(event.getMatrixStack(), event.getPartialTicks());
 			}
