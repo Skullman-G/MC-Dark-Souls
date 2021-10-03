@@ -249,7 +249,7 @@ public final class Animations
 					// Heavy Attack		
 					new AttackAnimation[]
 						{
-								new AttackAnimation(7018, 0.5F, 0.0F, 0.8F, 1.8F, 1.8F, false, Colliders.great_hammer, "", "asylum_demon/heavy_attack", "asylum_demon")
+								new AttackAnimation(7018, 0.5F, 0.0F, 0.8F, 1.8F, 1.8F, false, null, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 						}
 			};
 	

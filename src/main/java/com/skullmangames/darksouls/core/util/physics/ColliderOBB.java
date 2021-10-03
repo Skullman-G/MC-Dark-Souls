@@ -120,6 +120,13 @@ public class ColliderOBB extends Collider
 		this.rotatedNormal[2] = new Vector3f(0,0,1);
 	}
 	
+	public ColliderOBB getScaledCollider(float scale)
+	{
+		Vector3f pos = this.modelVertex[1];
+		Vector3f center = this.modelCenter;
+		return new ColliderOBB(pos.x() * scale, pos.y() * scale, pos.z() * scale, center.x() * scale, center.y() * scale, center.z() * scale);
+	}
+	
 	/**
 	 * Transform every elements of this Bounding Box
 	 **/

@@ -8,6 +8,10 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.physics.ColliderOBB;
+
+import net.minecraft.util.Hand;
 
 public class AsylumDemonData extends MobData<AsylumDemonEntity>
 {
@@ -25,6 +29,19 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.ASYLUM_DEMON_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.ASYLUM_DEMON_MOVE);
 		animatorClient.setCurrentLivingMotionsToDefault();
+	}
+	
+	@Override
+	public Collider getColliderMatching(Hand hand)
+	{
+		Collider collider = super.getColliderMatching(hand);
+		if (!(collider instanceof ColliderOBB)) return collider;
+		return ((ColliderOBB)collider).getScaledCollider(getWeaponScale());
+	}
+	
+	public static float getWeaponScale()
+	{
+		return 1.5F;
 	}
 	
 	@Override

@@ -7,14 +7,15 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class Joint
 {
-	private final List<Joint> subJoints = new ArrayList<Joint> ();
+	private final List<Joint> subJoints = new ArrayList<Joint>();
 	private final int jointId;
 	private final String jointName;
 	private final PublicMatrix4f localTransform;
 	private PublicMatrix4f inversedTransform = new PublicMatrix4f();
 	private PublicMatrix4f animatedTransform = new PublicMatrix4f();
 	
-	public Joint(String name, int jointID, PublicMatrix4f localTransform) {
+	public Joint(String name, int jointID, PublicMatrix4f localTransform)
+	{
 		this.jointId = jointID;
 		this.jointName = name;
 		this.localTransform = localTransform;
@@ -22,10 +23,7 @@ public class Joint
 
 	public void addSubJoint(Joint... joints)
 	{
-		for (Joint joint : joints)
-		{
-			this.subJoints.add(joint);
-		}
+		for (Joint joint : joints) this.subJoints.add(joint);
 	}
 	
 	public void setAnimatedTransform(PublicMatrix4f animatedTransform)

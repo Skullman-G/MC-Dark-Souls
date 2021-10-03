@@ -19,7 +19,7 @@ public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, Asy
 	
 	public AsylumDemonRenderer()
 	{
-		this.layers.add(new HeldItemLayer<>(1.5F, new Vector3d(0.0D, 0.0D, 0.1D)));
+		this.layers.add(new HeldItemLayer<>(AsylumDemonData.getWeaponScale(), new Vector3d(0.0D, 0.0D, 0.1D)));
 	}
 	
 	@Override
