@@ -149,5 +149,16 @@
 		[
 			{ "name": "darksouls:items/great_hammer/smash", "stream": true }
 		]
+	},
+	
+	"entity.asylum_demon.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.ambient.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/ambient_1", "stream": true },
+			{ "name": "darksouls:entities/asylum_demon/ambient_2", "stream": true }
+		]
 	}
 }

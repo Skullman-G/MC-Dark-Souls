@@ -133,6 +133,8 @@
 	"entity.player.hurt": "Player hurt",
 	"entity.hostile.hurt": "Hostile mob hurt",
 	"entity.generic.kill": "Generic kill",
+	"entity.asylum_demon.ambient": "Asylum Demon ambient",
+	"entity.asylum_demon.ambient.sub": "Asylum Demon roars",
 	
 	
 	"itemGroup.soulstab": "Souls",

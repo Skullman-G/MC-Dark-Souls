@@ -22,6 +22,8 @@ public class SoundEvents
 	public static final SoundEvent HOLLOW_DEATH = registerSound("entity.hollow.death");
 	public static final SoundEvent HOLLOW_PREPARE = registerSound("entity.hollow.prepare");
 	
+	public static final SoundEvent ASYLUM_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
+	
 	public static final SoundEvent GENERIC_KILL = registerSound("entity.generic.kill");
 
 	
