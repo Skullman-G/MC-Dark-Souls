@@ -125,7 +125,7 @@ public class AttackAnimation extends ActionAnimation
 				}
 			}
 		}
-		else if (state.shouldDetectCollision() || (prevState.getLevel() < 2 && state.getLevel() > 2))
+		else if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
 			if(!prevState.shouldDetectCollision())
 			{

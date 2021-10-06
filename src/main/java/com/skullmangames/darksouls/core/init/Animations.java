@@ -249,9 +249,22 @@ public final class Animations
 					// Heavy Attack		
 					new AttackAnimation[]
 						{
-								new AttackAnimation(7018, 0.5F, 0.0F, 1.36F, 1.84F, 3.2F, false, null, "11131", "asylum_demon/heavy_attack", "asylum_demon")
+								new AttackAnimation(7018, 1.0F, 0.0F, 1.36F, 1.84F, 3.2F, false, null, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 								.addProperty(DamageProperty.SMASHING, true)
-						}
+						},
+						
+					// Light Attacks
+					new AttackAnimation[]
+							{
+									new AttackAnimation(7019, 1.0F, 0.0F, 0.88F, 1.36F, 1.4F, false, null, "11131", "asylum_demon/light_attack_1", "asylum_demon")
+									.addProperty(DamageProperty.SMASHING, true),
+									
+									new AttackAnimation(7020, 1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_2", "asylum_demon")
+									.addProperty(DamageProperty.SMASHING, true),
+									
+									new AttackAnimation(7021, 1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_3", "asylum_demon")
+									.addProperty(DamageProperty.SMASHING, true)
+							}
 			};
 	
 	public static final int BASIC_ATTACK_MIN = 2000;

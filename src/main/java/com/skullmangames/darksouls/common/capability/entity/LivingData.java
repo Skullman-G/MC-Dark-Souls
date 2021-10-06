@@ -457,33 +457,24 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public PublicMatrix4f getHeadMatrix(float partialTicks)
 	{
-		float f;
-        float f1;
-        float f2;
+		float bodyRot;
+        float headRot;
+        float headRotDest;
 		
-		if (inaction)
-		{
-			f2 = 0;
-		}
+		if (inaction) headRotDest = 0;
 		else
 		{
-			f = MathUtils.interpolateRotation(orgEntity.yBodyRotO, orgEntity.yBodyRot, partialTicks);
-			f1 = MathUtils.interpolateRotation(orgEntity.yHeadRotO, orgEntity.yHeadRot, partialTicks);
-			f2 = f1 - f;
+			bodyRot = MathUtils.interpolateRotation(orgEntity.yBodyRotO, orgEntity.yBodyRot, partialTicks);
+			headRot = MathUtils.interpolateRotation(orgEntity.yHeadRotO, orgEntity.yHeadRot, partialTicks);
+			headRotDest = headRot - bodyRot;
 
 			if (orgEntity.getControllingPassenger() != null)
 			{
-				if (f2 > 45.0F)
-				{
-					f2 = 45.0F;
-				} else if (f2 < -45.0F)
-				{
-					f2 = -45.0F;
-				}
+				headRotDest = MathUtils.clamp(headRotDest, 45.0F);
 			}
 		}
 		
-		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, orgEntity.xRotO, orgEntity.xRot, f2, f2, partialTicks, 1, 1, 1);
+		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, orgEntity.xRotO, orgEntity.xRot, headRotDest, headRotDest, partialTicks, 1, 1, 1);
 	}
 	
 	@Override
@@ -709,7 +700,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		boolean invincible;
 		boolean canAct;
 		// none : 0, beforeContact : 1, contact : 2, afterContact : 3
-		int level;
+		int contactLevel;
 		
 		EntityState(boolean cameraLock, boolean movementLock, boolean collideDetection, boolean invincible, boolean canAct, int level)
 		{
@@ -718,7 +709,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 			this.collideDetection = collideDetection;
 			this.invincible = invincible;
 			this.canAct = canAct;
-			this.level = level;
+			this.contactLevel = level;
 		}
 		
 		public boolean isCameraRotationLocked()
@@ -746,9 +737,9 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 			return this.canAct;
 		}
 		
-		public int getLevel()
+		public int getContactLevel()
 		{
-			return this.level;
+			return this.contactLevel;
 		}
 	}
 }

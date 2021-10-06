@@ -33,7 +33,7 @@ public class TargetTraceAnimation extends AttackAnimation
 	{
 		EntityState state = this.getState(entitydata.getAnimator().getPlayer().getElapsedTime());
 		Vector3f vec3 = super.getCoordVector(entitydata);
-		if(state.getLevel() < 3)
+		if(state.getContactLevel() < 3)
 		{
 			LivingEntity orgEntity = entitydata.getOriginalEntity();
 			LivingEntity target = entitydata.getTarget();

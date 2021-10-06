@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
@@ -60,42 +59,32 @@ public class AttackPatternGoal extends Goal
 		return isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse()
     {
     	LivingEntity livingEntity = this.attacker.getTarget();
     	return this.isValidTarget(livingEntity) && (this.isTargetInRange(livingEntity) || this.isTargetInDashRange(livingEntity));
     }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+    
     @Override
-    public void start()
-    {
-        
-    }
+    public void start() {}
     
     protected boolean canExecuteAttack()
     {
     	return !mobdata.isInaction();
     }
     
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
+    protected boolean canExecuteComboAttack()
+    {
+    	return this.combo > 0 && this.mobdata.getEntityState().getContactLevel() == 3;
+    }
+    
     @Override
     public void tick()
     {
-    	if(!this.canExecuteAttack())
-    	{
-    		if (this.combo > 0 && this.mobdata.getEntityState() != LivingData.EntityState.HIT && (this.mobdata.getEntityState() == LivingData.EntityState.ROTATABLE_POST_DELAY || this.mobdata.getEntityState() == LivingData.EntityState.POST_DELAY));
-    		else return;
-    	}
-    	else if (this.combo > 0) this.combo = 0;
+    	boolean canExecuteAttack = this.canExecuteAttack();
+    	if(!canExecuteAttack && !this.canExecuteComboAttack()) return;
+    	else if (canExecuteAttack && this.combo > 0) this.combo = 0;
     	
     	AttackAnimation animation;
         
@@ -109,7 +98,7 @@ public class AttackPatternGoal extends Goal
     	{
     		if (this.combo <= 0) this.currentAttack = this.attacker.getRandom().nextInt(this.attacks.length);
     		animation = this.attacks[this.currentAttack][this.combo];
-    		if (this.attacks[this.currentAttack].length > 1) this.combo = ++this.combo % this.attacks[this.currentAttack].length;
+    		if (this.attacks[this.currentAttack].length > 1) this.combo = this.combo >= this.attacks[this.currentAttack].length - 1 ? 0 : this.combo + 1;
     	}
         
         if (animation == null) return;

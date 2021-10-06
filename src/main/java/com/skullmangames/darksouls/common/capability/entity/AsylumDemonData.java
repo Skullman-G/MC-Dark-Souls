@@ -6,8 +6,10 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.physics.ColliderOBB;
 
@@ -15,6 +17,13 @@ import net.minecraft.util.Hand;
 
 public class AsylumDemonData extends MobData<AsylumDemonEntity>
 {
+	@Override
+	public void onEntityJoinWorld(AsylumDemonEntity entityIn)
+	{
+		super.onEntityJoinWorld(entityIn);
+		Stats.STRENGTH.setValue(entityIn, 46);
+	}
+	
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
@@ -72,7 +81,7 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	{
 		super.initAI();
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 3.5D, true, Animations.ASYLUM_DEMON_ATTACKS));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 4.0D, true, Animations.ASYLUM_DEMON_ATTACKS));
 	}
 	
 	@Override
@@ -80,5 +89,11 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	{
 		if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
 		else this.currentMotion = LivingMotion.IDLE;
+	}
+	
+	@Override
+	public PublicMatrix4f getHeadMatrix(float partialTicks)
+	{
+		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, partialTicks, 1, 1, 1);
 	}
 }
