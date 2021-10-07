@@ -4,9 +4,9 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
 public class HitAnimation extends ActionAnimation
 {
-	public HitAnimation(int id, float convertTime, String path, String armature, boolean clientOnly)
+	public HitAnimation(int id, float convertTime, String path, String armature)
 	{
-		super(id, convertTime, false, false, path, armature, clientOnly);
+		super(id, convertTime, false, false, path, armature, false);
 	}
 
 	@Override

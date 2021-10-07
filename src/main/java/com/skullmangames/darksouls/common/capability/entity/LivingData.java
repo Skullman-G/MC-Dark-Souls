@@ -147,10 +147,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	@Override
 	protected void updateOnServer()
 	{
-		if(stunTimeReduction > 0.0F)
-		{
-			stunTimeReduction = Math.max(0.0F, stunTimeReduction - 0.05F);
-		}
+		if(stunTimeReduction > 0.0F) stunTimeReduction = Math.max(0.0F, stunTimeReduction - 0.05F);
 	}
 	
 	@Override
@@ -168,10 +165,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		}
 
 		this.animator.update();
-		if (this.orgEntity.deathTime == 19)
-		{
-			this.aboutToDeath();
-		}
+		if (this.orgEntity.deathTime == 19) this.aboutToDeath();
 	}
 
 	public void updateInactionState()

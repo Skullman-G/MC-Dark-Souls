@@ -60,15 +60,16 @@ public class BaseLayer
 		
 		float frameTime = IngameConfig.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(entitydata);
 		
+		DynamicAnimation animation = this.animationPlayer.getPlay();
 		this.animationPlayer.update(frameTime);
-		this.animationPlayer.getPlay().onUpdate(entitydata);
+		animation.onUpdate(entitydata);
 		
 		if (this.animationPlayer.isEnd())
 		{
 			if (nextPlaying != null)
 			{
 				float exceedTime = this.animationPlayer.getExceedTime();
-				this.animationPlayer.getPlay().onFinish(entitydata, true);
+				animation.onFinish(entitydata, true);
 				this.nextPlaying.putOnPlayer(this.animationPlayer);
 				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime);
 				this.nextPlaying = null;
@@ -78,9 +79,10 @@ public class BaseLayer
 	
 	public void clear(LivingData<?> entitydata)
 	{
-		if (animationPlayer.getPlay() != null)
+		DynamicAnimation play = this.animationPlayer.getPlay();
+		if (play != null)
 		{
-			animationPlayer.getPlay().onFinish(entitydata, animationPlayer.isEnd());
+			play.onFinish(entitydata, animationPlayer.isEnd());
 		}
 
 		if (nextPlaying != null)

@@ -66,20 +66,14 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entity) {
+	public void onUpdate(LivingData<?> entity)
+	{
 		super.onUpdate(entity);
 
 		LivingEntity livingentity = entity.getOriginalEntity();
 
-		if (entity.isClientSide()) {
-			if (!(livingentity instanceof ClientPlayerEntity)) {
-				return;
-			}
-		} else {
-			if ((livingentity instanceof ServerPlayerEntity)) {
-				return;
-			}
-		}
+		if (entity.isClientSide()) if (!(livingentity instanceof ClientPlayerEntity)) return;
+		else if ((livingentity instanceof ServerPlayerEntity)) return;
 		
 		if (entity.isInaction())
 		{
@@ -97,14 +91,8 @@ public class ActionAnimation extends ImmovableAnimation
 	@Override
 	public LivingData.EntityState getState(float time)
 	{
-		if(time < this.delayTime)
-		{
-			return LivingData.EntityState.PRE_DELAY;
-		}
-		else
-		{
-			return LivingData.EntityState.FREE;
-		}
+		if(time < this.delayTime) return LivingData.EntityState.PRE_DELAY;
+		else return LivingData.EntityState.FREE;
 	}
 	
 	@Override

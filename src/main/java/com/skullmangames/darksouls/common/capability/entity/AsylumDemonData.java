@@ -37,6 +37,7 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 		animatorClient.mixLayerRight.setJointMask("Shoulder_R", "Arm_R", "Hand_R");
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.ASYLUM_DEMON_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.ASYLUM_DEMON_MOVE);
+		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.ASYLUM_DEMON_DEATH);
 		animatorClient.setCurrentLivingMotionsToDefault();
 	}
 	
@@ -87,7 +88,8 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	@Override
 	public void updateMotion()
 	{
-		if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
+		if(this.orgEntity.getHealth() <= 0.0F) this.currentMotion = LivingMotion.DEATH;
+		else if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
 		else this.currentMotion = LivingMotion.IDLE;
 	}
 	

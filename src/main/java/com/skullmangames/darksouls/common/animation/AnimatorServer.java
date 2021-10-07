@@ -123,15 +123,8 @@ public class AnimatorServer extends Animator
 	@Override
 	public void onEntityDeath()
 	{
-		if (animationPlayer.getPlay() != null)
-		{
-			animationPlayer.getPlay().onFinish(entitydata, animationPlayer.isEnd());
-		}
-
-		if (nextPlaying != null)
-		{
-			nextPlaying.onFinish(entitydata, false);
-		}
+		if (animationPlayer.getPlay() != null) animationPlayer.getPlay().onFinish(entitydata, animationPlayer.isEnd());
+		if (nextPlaying != null) nextPlaying.onFinish(entitydata, false);
 	}
 	
 	@Override

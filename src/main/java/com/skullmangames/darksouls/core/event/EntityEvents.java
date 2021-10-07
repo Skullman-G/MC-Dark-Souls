@@ -532,10 +532,7 @@ public class EntityEvents
 	{
 		MobNBTManager.setHumanity(event.getEntityLiving(), 0);
 		
-		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get()))
-		{
-			MobNBTManager.setHuman(event.getEntityLiving(), false);
-		}
+		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get())) MobNBTManager.setHuman(event.getEntityLiving(), false);
 		
 		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		

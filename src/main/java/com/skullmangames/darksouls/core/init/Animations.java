@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.animation.property.Property.AnimationP
 import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
@@ -47,7 +48,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(11, false, "biped/living/fall", "biped", true);
 	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(12, true, "biped/living/mount", "biped", true);
 	public static final StaticAnimation BIPED_JUMP = new StaticAnimation(21, 0.083F, false, "biped/living/jump", "biped", true);
-	public static final StaticAnimation BIPED_DEATH = new HitAnimation(3003, 0.16F, "biped/living/death", "biped", false);
+	public static final StaticAnimation BIPED_DEATH = new DeathAnimation(3003, 0.16F, "biped/living/death", "biped");
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(15, 0.11F, true, "biped/living/dig", "biped", true);
 	
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(7008, 0.2F, true, "biped/living/eat_r", "biped/living/eat_l", "biped", true);
@@ -67,10 +68,10 @@ public final class Animations
 	public static final StaticAnimation BIPED_JAVELIN_AIM = new AimingAnimation(98, 0.16F, false, "biped/combat/javelin_aim_mid", "biped/combat/javelin_aim_up", "biped/combat/javelin_aim_down", "biped", true);
 	public static final StaticAnimation BIPED_JAVELIN_REBOUND = new ReboundAnimation(99, 0.08F, false, "biped/combat/javelin_throw_mid", "biped/combat/javelin_throw_up", "biped/combat/javelin_throw_down", "biped", true);
 	
-	public static final StaticAnimation BIPED_HIT_SHORT = new VariableHitAnimation(3000, 0.05F, "biped/combat/hit_short", "biped", false);
-	public static final StaticAnimation BIPED_HIT_LONG = new HitAnimation(3001, 0.08F, "biped/combat/hit_long", "biped", false);
-	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(3002, 0.08F, "biped/combat/hit_on_mount", "biped", false);
-	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(1997, 0.08F, "biped/living/land_damage", "biped", false);
+	public static final StaticAnimation BIPED_HIT_SHORT = new VariableHitAnimation(3000, 0.05F, "biped/combat/hit_short", "biped");
+	public static final StaticAnimation BIPED_HIT_LONG = new HitAnimation(3001, 0.08F, "biped/combat/hit_long", "biped");
+	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(3002, 0.08F, "biped/combat/hit_on_mount", "biped");
+	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(1997, 0.08F, "biped/living/land_damage", "biped");
 	public static final StaticAnimation BIPED_ROLL_FORWARD = new DodgingAnimation(1998, 0.09F, false, "biped/combat/roll_forward", 0.6F, 0.5F, "biped", false);
 	public static final StaticAnimation BIPED_ROLL_BACKWARD = new DodgingAnimation(1999, 0.09F, false, "biped/combat/roll_backward", 0.6F, 0.5F, "biped", false);
 	
@@ -232,7 +233,7 @@ public final class Animations
 			
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped")
 																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
-	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected", "biped", false);
+	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected", "biped");
 	
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -243,6 +244,8 @@ public final class Animations
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(7016, 0.9F, true, "asylum_demon/idle", "asylum_demon", true);
 	
 	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(7017, 0.5F, true, "asylum_demon/move", "asylum_demon", true);
+	
+	public static final StaticAnimation ASYLUM_DEMON_DEATH = new DeathAnimation(7022, 0.5F, "asylum_demon/death", "asylum_demon");
 	
 	public static final AttackAnimation[][] ASYLUM_DEMON_ATTACKS = new AttackAnimation[][]
 			{
