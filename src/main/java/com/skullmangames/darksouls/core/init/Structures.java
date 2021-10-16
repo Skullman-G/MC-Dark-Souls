@@ -18,7 +18,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class StructureInit
+public class Structures
 {
     public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, DarkSouls.MOD_ID);
     
@@ -29,7 +29,7 @@ public class StructureInit
     public static void setupStructures()
     {
         setupMapSpacingAndLand(CHECKPOINT_PLAINS.get(), new StructureSeparationSettings(20, 10, 293760225), true);
-        setupMapSpacingAndLand(UNDEAD_ASYLUM.get(), new StructureSeparationSettings(20, 10, 772382762), true);
+        setupMapSpacingAndLand(UNDEAD_ASYLUM.get(), new StructureSeparationSettings(20, 10, 772382762), false);
     }
     
     public static <F extends Structure<?>> void setupMapSpacingAndLand(F structure, StructureSeparationSettings structureSeparationSettings, boolean transformSurroundingLand)
@@ -53,9 +53,7 @@ public class StructureInit
                 tempMap.put(structure, structureSeparationSettings);
                 settings.getValue().structureSettings().structureConfig = tempMap;
             }
-            else{
-                structureMap.put(structure, structureSeparationSettings);
-            }
+            else structureMap.put(structure, structureSeparationSettings);
         });
     }
 }

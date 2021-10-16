@@ -16,6 +16,7 @@ public class LockableBlock extends Block
 	{
 		super(p_i48413_1_);
 	}
+	
 	public BlockPos[] getPartPositions(World world, BlockPos blockpos)
 	{
 		return new BlockPos[] { blockpos };

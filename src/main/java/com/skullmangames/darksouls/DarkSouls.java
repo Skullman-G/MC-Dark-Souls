@@ -75,7 +75,7 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
 import com.skullmangames.darksouls.core.init.SoundEvents;
-import com.skullmangames.darksouls.core.init.StructureInit;
+import com.skullmangames.darksouls.core.init.Structures;
 import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
@@ -117,7 +117,7 @@ public class DarkSouls
     	BlockInit.VANILLA_BLOCKS.register(bus);
     	TileEntityTypeInit.TILE_ENTITIES.register(bus);
     	ItemInit.VANILLA_ITEMS.register(bus);
-    	StructureInit.STRUCTURES.register(bus);
+    	Structures.STRUCTURES.register(bus);
     	EffectInit.EFFECTS.register(bus);
     	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
     	ContainerTypeInit.CONTAINERS.register(bus);
@@ -160,7 +160,7 @@ public class DarkSouls
     	    	return usage;
     	    });
     	    
-    	    StructureInit.setupStructures();
+    	    Structures.setupStructures();
     	    ConfiguredStructureInit.registerConfiguredStructures();
     	});
     	
@@ -244,8 +244,8 @@ public class DarkSouls
             }
 
 			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
-            tempMap.putIfAbsent(StructureInit.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(StructureInit.CHECKPOINT_PLAINS.get()));
-            tempMap.putIfAbsent(StructureInit.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(StructureInit.UNDEAD_ASYLUM.get()));
+            tempMap.putIfAbsent(Structures.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.CHECKPOINT_PLAINS.get()));
+            tempMap.putIfAbsent(Structures.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.UNDEAD_ASYLUM.get()));
             serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
         }
    }
