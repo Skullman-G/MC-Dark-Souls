@@ -60,8 +60,8 @@ public class ItemInit
 			.tab(ItemGroup.TAB_COMBAT))
 			.addStat(Stats.STRENGTH, 46));
 	
-	public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new KeyItem(new Item.Properties()
-			.tab(ItemGroup.TAB_REDSTONE)));
+	/*public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new KeyItem(new Item.Properties()
+			.tab(ItemGroup.TAB_REDSTONE)));*/
 	
 	//Block Items
 	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),
