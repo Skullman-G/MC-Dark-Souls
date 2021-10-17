@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.item.GreatHammerItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
-import com.skullmangames.darksouls.common.item.KeyItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 import com.skullmangames.darksouls.common.item.WeaponItem;

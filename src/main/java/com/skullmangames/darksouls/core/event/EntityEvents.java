@@ -437,7 +437,7 @@ public class EntityEvents
 		
 		if(!event.getEntity().level.isClientSide)
 		{
-			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Active, event.getEntity().getId()));
+			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.ACTIVE, event.getEntity().getId()));
 		}
 	}
 	
@@ -453,7 +453,7 @@ public class EntityEvents
 		
 		if(!event.getEntity().level.isClientSide && event.getPotionEffect() != null)
 		{
-			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
+			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.REMOVE, event.getEntity().getId()));
 		}
 	}
 	
@@ -469,7 +469,7 @@ public class EntityEvents
 		
 		if(!event.getEntity().level.isClientSide)
 		{
-			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.Remove, event.getEntity().getId()));
+			ModNetworkManager.sendToAll(new STCPotion(event.getPotionEffect().getEffect(), Action.REMOVE, event.getEntity().getId()));
 		}
 	}
 	

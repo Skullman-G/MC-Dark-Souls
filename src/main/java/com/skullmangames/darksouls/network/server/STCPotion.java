@@ -20,7 +20,7 @@ public class STCPotion
 	{
 		this.effect = null;
 		this.entityId = 0;
-		this.action = Action.Remove;
+		this.action = Action.REMOVE;
 	}
 	
 	public STCPotion(Effect effect, Action action, int entityId)
@@ -59,10 +59,10 @@ public class STCPotion
 				
 				switch(msg.action)
 				{
-					case Active:
+					case ACTIVE:
 						livEntity.addEffect(new EffectInstance(msg.effect, 0));
 						break;
-					case Remove:
+					case REMOVE:
 						livEntity.removeEffect(msg.effect);
 						break;
 				}
@@ -73,7 +73,7 @@ public class STCPotion
 	
 	public static enum Action
 	{
-		Active(0), Remove(1);
+		ACTIVE(0), REMOVE(1);
 		
 		int action;
 		
@@ -89,8 +89,8 @@ public class STCPotion
 		
 		private static Action getAction(int symb)
 		{
-			if(symb == 0) return Active;
-			else if(symb == 1) return Remove;
+			if(symb == 0) return ACTIVE;
+			else if(symb == 1) return REMOVE;
 			else return null;
 		}
 	}

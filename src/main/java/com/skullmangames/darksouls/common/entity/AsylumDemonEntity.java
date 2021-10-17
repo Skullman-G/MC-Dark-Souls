@@ -37,6 +37,12 @@ public class AsylumDemonEntity extends CreatureEntity
 	}
 	
 	@Override
+	protected int getExperienceReward(PlayerEntity p_70693_1_)
+	{
+		return 100;
+	}
+	
+	@Override
 	protected SoundEvent getAmbientSound()
 	{
 		return SoundEvents.ASYLUM_DEMON_AMBIENT;
