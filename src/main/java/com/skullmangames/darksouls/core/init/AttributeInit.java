@@ -26,6 +26,7 @@ public class AttributeInit
 	public static final RegistryObject<Attribute> IMPACT = ATTRIBUTES.register("impact", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".impact", 0.0D, 0.0D, 1024.0).setSyncable(true));
 	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = ATTRIBUTES.register("offhand_attack_damage", () -> new RangedAttribute("offhand attack damage", 1.0D, 0.0D, 2048.0D));
 	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = ATTRIBUTES.register("offhand_attack_speed", () -> new RangedAttribute("offhand attack speed", 4.0D, 0.0D, 1024.0D).setSyncable(true));
+	public static final RegistryObject<Attribute> MAX_STAMINA = ATTRIBUTES.register("max_stamina", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".max_stamina", 20.0D, 1.0D, 1024.0D).setSyncable(true));
 	public static final UUID IGNORE_DEFENCE_ID = UUID.fromString("b0a7436e-5734-11eb-ae93-0242ac130002");
 	public static final UUID HIT_AT_ONCE_ID = UUID.fromString("b0a745b2-5734-11eb-ae93-0242ac130002");
 	public static final UUID IMPACT_ID = UUID.fromString("b0a746ac-5734-11eb-ae93-0242ac130002");
@@ -72,34 +73,42 @@ public class AttributeInit
 		event.add(entityType, AttributeInit.MAX_STRIKES.get());
 	}
     
-    private static void withStunArmor(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event) {
+    private static void withStunArmor(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
+    {
 		general(entityType, event);
 		event.add(entityType, AttributeInit.MAX_STUN_ARMOR.get());
 	}
     
-    private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event) {
+    private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
+    {
 		withStunArmor(entityType, event);
 		event.add(entityType, AttributeInit.OFFHAND_ATTACK_DAMAGE.get());
 		event.add(entityType, AttributeInit.OFFHAND_ATTACK_SPEED.get());
+		event.add(entityType, AttributeInit.MAX_STAMINA.get());
 	}
 	
-	public static AttributeModifier getArmorNegationModifier(double value) {
+	public static AttributeModifier getArmorNegationModifier(double value)
+	{
 		return new AttributeModifier(AttributeInit.IGNORE_DEFENCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 
-	public static AttributeModifier getMaxStrikesModifier(int value) {
+	public static AttributeModifier getMaxStrikesModifier(int value)
+	{
 		return new AttributeModifier(AttributeInit.HIT_AT_ONCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", (double) value, AttributeModifier.Operation.ADDITION);
 	}
 
-	public static AttributeModifier getImpactModifier(double value) {
+	public static AttributeModifier getImpactModifier(double value)
+	{
 		return new AttributeModifier(AttributeInit.IMPACT_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 
-	public static AttributeModifier getAttackDamageModifier(double value) {
+	public static AttributeModifier getAttackDamageModifier(double value)
+	{
 		return new AttributeModifier(ATTACK_DAMAGE_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 
-	public static AttributeModifier getAttackSpeedModifier(double value) {
+	public static AttributeModifier getAttackSpeedModifier(double value)
+	{
 		return new AttributeModifier(ATTACK_SPEED_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 }

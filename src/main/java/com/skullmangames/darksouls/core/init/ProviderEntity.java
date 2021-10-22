@@ -31,29 +31,6 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		capabilityMap.put(EntityType.PLAYER, (entityIn) -> ServerPlayerData::new);
 		capabilityMap.put(EntityTypeInit.HOLLOW.get(), (entityIn) -> HollowData::new);
 		capabilityMap.put(EntityTypeInit.ASYLUM_DEMON.get(), (entityIn) -> AsylumDemonData::new);
-		/*capabilityMap.put(EntityType.ZOMBIE, (entityIn) -> ZombieData<ZombieEntity>::new);
-		capabilityMap.put(EntityType.CREEPER, (entityIn) -> CreeperData::new);
-		capabilityMap.put(EntityType.ENDERMAN, (entityIn) -> EndermanData::new);
-		capabilityMap.put(EntityType.SKELETON, (entityIn) -> SkeletonData<SkeletonEntity>::new);
-		capabilityMap.put(EntityType.WITHER_SKELETON, (entityIn) -> WitherSkeletonData::new);
-		capabilityMap.put(EntityType.STRAY, (entityIn) -> StrayData::new);
-		capabilityMap.put(EntityType.ZOMBIFIED_PIGLIN, (entityIn) -> ZombifiedPiglinData::new);
-		capabilityMap.put(EntityType.ZOMBIE_VILLAGER, (entityIn) -> ZombieVillagerData::new);
-		capabilityMap.put(EntityType.HUSK, (entityIn) -> ZombieData<HuskEntity>::new);
-		capabilityMap.put(EntityType.SPIDER, (entityIn) -> SpiderData::new);
-		capabilityMap.put(EntityType.CAVE_SPIDER, (entityIn) -> CaveSpiderData::new);
-		capabilityMap.put(EntityType.IRON_GOLEM, (entityIn) -> IronGolemData::new);
-		capabilityMap.put(EntityType.VINDICATOR, (entityIn) -> VindicatorData::new);
-		capabilityMap.put(EntityType.EVOKER, (entityIn) -> EvokerData::new);
-		capabilityMap.put(EntityType.WITCH, (entityIn) -> WitchData::new);
-		capabilityMap.put(EntityType.DROWNED, (entityIn) -> DrownedData::new);
-		capabilityMap.put(EntityType.PILLAGER, (entityIn) -> PillagerData::new);
-		capabilityMap.put(EntityType.RAVAGER, (entityIn) -> RavagerData::new);
-		capabilityMap.put(EntityType.VEX, (entityIn) -> VexData::new);
-		capabilityMap.put(EntityType.PIGLIN, (entityIn) -> PiglinData::new);
-		capabilityMap.put(EntityType.PIGLIN_BRUTE, (entityIn) -> PiglinBruteData::new);
-		capabilityMap.put(EntityType.HOGLIN, (entityIn) -> HoglinData::new);
-		capabilityMap.put(EntityType.ZOGLIN, (entityIn) -> ZoglinData::new);*/
 	}
 	
 	public static void makeMapClient()

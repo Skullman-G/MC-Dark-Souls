@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.DarkSouls;
@@ -361,7 +360,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public float getStunArmor()
 	{
-		return getMaxStunArmor() == 0 ? 0 : this.orgEntity.getEntityData().get(DataKeys.STUN_ARMOR).floatValue();
+		return this.getMaxStunArmor() == 0 ? 0 : this.orgEntity.getEntityData().get(DataKeys.STUN_ARMOR).floatValue();
 	}
 	
 	public void setStunArmor(float value)

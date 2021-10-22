@@ -5,7 +5,10 @@ import java.awt.Color;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Timer;
 
 import net.minecraft.client.MainWindow;
@@ -18,11 +21,17 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 public class GameOverlayManager
 {
 	private static Minecraft minecraft = Minecraft.getInstance();
-	private static Timer damageTimer = new Timer(0);
-	private static Timer healTimer = new Timer(0);
+	
+	private static final Timer damageCooldown = new Timer(0);
+	private static final Timer damageTimer = new Timer(0);
+	private static final Timer healTimer = new Timer(0);
 	private static int lastHealth;
 	private static int saveLastHealth;
 	public static boolean isHealing = false;
+	
+	private static final Timer staminaTimer = new Timer(0);
+	private static int lastStamina;
+	private static int saveLastStamina;
 	
 	public static void render(ElementType type, MainWindow window, MatrixStack matrixstack)
 	{
@@ -32,7 +41,7 @@ public class GameOverlayManager
 		renderHumanity(window, matrixstack);
 		renderHealth(window, matrixstack);
 		renderSouls(window, matrixstack);
-		//renderStamina(window, matrixstack);
+		renderStamina(window, matrixstack);
 	}
 	
 	private static void renderHumanity(MainWindow window, MatrixStack matrixstack)
@@ -55,17 +64,36 @@ public class GameOverlayManager
 		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 90);
 		
 		// Damage Animation
-		if (lastHealth > healthpercentage || damageTimer.isTicking())
+		if (lastHealth > healthpercentage)
 		{
-			healTimer.stop();
-			if (!damageTimer.isTicking())
+			if (!damageCooldown.isTicking())
 			{
 				saveLastHealth = lastHealth;
-				damageTimer.setTimer(saveLastHealth);
 			}
-			int damagepercentage = saveLastHealth - damageTimer.getPastTime();
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagepercentage, 9);
-			damageTimer.drain(1F);
+			
+			damageCooldown.start(50);
+		}
+		
+		int damagedHealth = saveLastHealth - damageTimer.getPastTime();
+		
+		if (damageCooldown.isTicking())
+		{
+			healTimer.stop();
+			boolean flag = false;
+			if (damagedHealth <= healthpercentage)
+			{
+				damagedHealth = saveLastHealth;
+				flag = true;
+			}
+			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
+			damageCooldown.drain(1.0F);
+			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth);
+		}
+		else if (damageTimer.isTicking())
+		{
+			healTimer.stop();
+			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
+			damageTimer.drain(0.5F);
 		}
 		
 		// Heal Animation
@@ -75,11 +103,11 @@ public class GameOverlayManager
 			if (!healTimer.isTicking())
 			{
 				saveLastHealth = lastHealth;
-				healTimer.setTimer(healthpercentage - saveLastHealth);
+				healTimer.start(healthpercentage - saveLastHealth);
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
 			minecraft.gui.blit(matrixstack, x, y, 0, 9, healcentage, 9);
-			healTimer.drain(1F);
+			healTimer.drain(1.0F);
 		}
 		
 		// Default
@@ -108,36 +136,50 @@ public class GameOverlayManager
 		ForgeIngameGui.drawCenteredString(ms, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), Math.round(x / scale), Math.round(y / scale), color);
 	}
 	
-	/*private static void renderStamina(MainWindow window, MatrixStack matrixstack)
+	private static void renderStamina(MainWindow window, MatrixStack matrixstack)
 	{
+		PlayerData<?> player = getCameraPlayerData();
+		if (player == null) return;
+		
 		RenderSystem.enableBlend();
 		int y = window.getGuiScaledHeight() - 39;
 		int x = window.getGuiScaledWidth() / 2 + 3;
 		
 		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
-		double endurancepercentagedouble = (double)StaminaDataManager.getStamina(getCameraPlayer()) / (double)StaminaDataManager.getMaxStamina(getCameraPlayer()) * 90.0D;
+		double endurancepercentagedouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
 		int endurancepercentage = (int)endurancepercentagedouble;
 		
-		// Loose a lot Animation
-		if (lastHealth > healthpercentage || damageTimer.isTicking())
+		if (lastStamina != endurancepercentage || staminaTimer.isTicking())
 		{
-			healTimer.stop();
-			if (!damageTimer.isTicking())
+			if (!staminaTimer.isTicking())
 			{
-				saveLastHealth = lastHealth;
-				damageTimer.setTimer(saveLastHealth);
+				saveLastStamina = lastStamina;
+				staminaTimer.start(endurancepercentage - saveLastStamina);
 			}
-			int damagepercentage = saveLastHealth - damageTimer.getPastTime();
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagepercentage, 9);
-			damageTimer.drain(1F);
+			int percentage = saveLastStamina + staminaTimer.getPastTime();
+			minecraft.gui.blit(matrixstack, x, y, 0, 35, percentage, 9);
+			staminaTimer.drain(1.0F);
+		}
+		else
+		{
+			minecraft.gui.blit(matrixstack, x, y, 0, 35, endurancepercentage, 9);
 		}
 		
-		minecraft.gui.blit(matrixstack, x, y, 0, 35, endurancepercentage, 9);
-	}*/
+		lastStamina = endurancepercentage;
+	}
 	
 	private static PlayerEntity getCameraPlayer()
 	{
 	    return !(Minecraft.getInstance().getCameraEntity() instanceof PlayerEntity) ? null : (PlayerEntity)Minecraft.getInstance().getCameraEntity();
+	}
+	
+	private static PlayerData<?> getCameraPlayerData()
+	{
+		PlayerEntity player = getCameraPlayer();
+		if (player == null) return null;
+		EntityData<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (!(entitydata instanceof PlayerData<?>)) return null;
+		return (PlayerData<?>)entitydata;
 	}
 }

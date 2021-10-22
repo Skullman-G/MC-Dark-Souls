@@ -1,7 +1,5 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import java.util.UUID;
-
 import com.skullmangames.darksouls.DarkSouls;
 
 import net.minecraft.client.Minecraft;
@@ -11,22 +9,10 @@ import net.minecraft.entity.LivingEntity;
 public class Stat
 {
 	private final String name;
-	private final UUID MODIFIER_UUID;
 	
-	public Stat(String name, String uuid)
+	public Stat(String name)
 	{
 		this.name = "stat."+DarkSouls.MOD_ID+"."+name;
-		this.MODIFIER_UUID = UUID.fromString(uuid);
-	}
-	
-	public UUID getModifierUUID()
-	{
-		return this.MODIFIER_UUID;
-	}
-	
-	public String getName()
-	{
-		return this.name;
 	}
 	
 	@Override

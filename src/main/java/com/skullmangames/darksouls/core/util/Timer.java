@@ -3,19 +3,19 @@ package com.skullmangames.darksouls.core.util;
 public class Timer
 {
 	private float timer;
-	private int pastTime;
+	private float pastTime;
 	private boolean ticking;
 	
 	public Timer(int timer)
 	{
-		this.setTimer(timer);
+		this.start(timer);
 	}
 	
-	public void setTimer(int value)
+	public void start(int value)
 	{
 		this.timer = value;
 		this.pastTime = 0;
-		this.ticking = false;
+		this.ticking = true;
 	}
 	
 	public void drain(float value)
@@ -47,7 +47,7 @@ public class Timer
 	
 	public int getPastTime()
 	{
-		return this.pastTime;
+		return Math.round(this.pastTime);
 	}
 	
 	public boolean isTicking()

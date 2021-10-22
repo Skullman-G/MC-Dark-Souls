@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.core.init.AttributeInit;
 
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -100,7 +101,7 @@ public class LevelUpScreen extends Screen
 		int textheight = this.height / 2 - this.imageHeight / 2 + 40;
 		for (Stat stat : Stats.getStats())
 		{
-			drawCenteredString(matrixstack, this.font, new TranslationTextComponent(stat.getName()), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, textheight, 16777215);
+			drawCenteredString(matrixstack, this.font, new TranslationTextComponent(stat.toString()), this.width / 2 - this.imageWidth / 2 + this.imageWidth / 6, textheight, 16777215);
 			
 			int statvalue = stat.getValue(this.player);
 			int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
@@ -113,6 +114,10 @@ public class LevelUpScreen extends Screen
 		int maxhealth = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) + this.displayedStats.getOrDefault(Stats.VIGOR, Integer.valueOf(Stats.VIGOR.getValue(this.player))).intValue() - Stats.VIGOR.getValue(this.player);
 		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ?  0x8cc9ff : 16777215;
 		drawCenteredString(matrixstack, this.font, "Max Health: " + maxhealth, this.width / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 40, maxhealthcolor);
+		
+		int maxstamina = (int)this.player.getAttributeValue(AttributeInit.MAX_STAMINA.get()) + this.displayedStats.getOrDefault(Stats.ENDURANCE, Integer.valueOf(Stats.ENDURANCE.getValue(this.player))).intValue() - Stats.ENDURANCE.getValue(this.player);
+		int maxstaminacolor = (int)this.player.getAttributeValue(AttributeInit.MAX_STAMINA.get()) != maxstamina ?  0x8cc9ff : 16777215;
+		drawCenteredString(matrixstack, this.font, "Max Stamina: " + maxstamina, this.width / 2 + this.imageWidth / 6, this.height / 2 - this.imageHeight / 2 + 55, maxstaminacolor);
 		
 		super.render(matrixstack, mouseX, mouseY, partialticks);
 	}

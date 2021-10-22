@@ -224,6 +224,8 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 	@Override
 	protected void updateOnClient()
 	{
+		this.increaseStamina(this.orgEntity.isSprinting() ? -0.01F * this.tickSinceLastAction : 0.01F * this.tickSinceLastAction);
+		
 		this.prevYaw = this.yaw;
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;

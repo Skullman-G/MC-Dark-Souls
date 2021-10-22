@@ -117,17 +117,17 @@ public class InputManager
 	
 	private void onSprintKeyPressed(int key, int action)
 	{
-		if (action == 1)
-		{
-			if (!this.sprintToggle)
-			{
-				this.sprintToggle = true;
-			}
-		}
-		else if (action == 0)
+		this.setKeyBind(options.keySprint, false);
+		while(options.keySprint.consumeClick()) {}
+		
+		if (this.playerdata.getStamina() <= 0.0F)
 		{
 			this.player.setSprinting(false);
+			return;
 		}
+		
+		if (action == 1 && !this.sprintToggle) this.sprintToggle = true;
+		this.player.setSprinting(action == 0 ? false : true);
 	}
 	
 	private void onAttackKeyPressed(int key, int action)
