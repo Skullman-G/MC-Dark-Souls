@@ -120,14 +120,9 @@ public class InputManager
 		this.setKeyBind(options.keySprint, false);
 		while(options.keySprint.consumeClick()) {}
 		
-		if (this.playerdata.getStamina() <= 0.0F)
-		{
-			this.player.setSprinting(false);
-			return;
-		}
+		if (action == 0) this.player.setSprinting(false);
 		
 		if (action == 1 && !this.sprintToggle) this.sprintToggle = true;
-		this.player.setSprinting(action == 0 ? false : true);
 	}
 	
 	private void onAttackKeyPressed(int key, int action)
@@ -191,6 +186,16 @@ public class InputManager
 		if (this.playerdata == null) return;
 
 		EntityState playerState = this.playerdata.getEntityState();
+		
+		if (this.sprintToggle && this.playerdata.getStamina() <= 0.0F)
+		{
+			this.player.setSprinting(false);
+			this.sprintToggle = false;
+		}
+		else if (!this.sprintToggle && this.isKeyDown(this.options.keySprint) && (this.playerdata.getStamina() / this.playerdata.getMaxStamina()) >= 0.7F)
+		{
+			this.sprintToggle = true;
+		}
 
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
@@ -201,9 +206,11 @@ public class InputManager
 	private void handleSprintAction(EntityState playerState)
 	{
 		if (!this.sprintToggle) return;
-		if (this.isKeyDown(options.keySprint))
+		if (this.isKeyDown(this.options.keySprint))
 		{
 			this.sprintPressCounter++;
+			
+			if (this.sprintPressCounter >= 5) this.player.setSprinting(true);
 			return;
 		}
 		

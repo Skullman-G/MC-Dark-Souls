@@ -6,14 +6,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Timer;
 
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -138,7 +138,7 @@ public class GameOverlayManager
 	
 	private static void renderStamina(MainWindow window, MatrixStack matrixstack)
 	{
-		PlayerData<?> player = getCameraPlayerData();
+		RemoteClientPlayerData<?> player = getCameraPlayerData();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -169,17 +169,17 @@ public class GameOverlayManager
 		lastStamina = endurancepercentage;
 	}
 	
-	private static PlayerEntity getCameraPlayer()
+	private static AbstractClientPlayerEntity getCameraPlayer()
 	{
-	    return !(Minecraft.getInstance().getCameraEntity() instanceof PlayerEntity) ? null : (PlayerEntity)Minecraft.getInstance().getCameraEntity();
+	    return !(Minecraft.getInstance().getCameraEntity() instanceof AbstractClientPlayerEntity) ? null : (AbstractClientPlayerEntity)Minecraft.getInstance().getCameraEntity();
 	}
 	
-	private static PlayerData<?> getCameraPlayerData()
+	private static RemoteClientPlayerData<?> getCameraPlayerData()
 	{
-		PlayerEntity player = getCameraPlayer();
+		AbstractClientPlayerEntity player = getCameraPlayer();
 		if (player == null) return null;
 		EntityData<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (!(entitydata instanceof PlayerData<?>)) return null;
-		return (PlayerData<?>)entitydata;
+		if (!(entitydata instanceof RemoteClientPlayerData<?>)) return null;
+		return (RemoteClientPlayerData<?>)entitydata;
 	}
 }

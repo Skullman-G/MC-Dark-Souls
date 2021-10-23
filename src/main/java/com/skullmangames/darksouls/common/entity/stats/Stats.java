@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -43,9 +43,9 @@ public class Stats
 					if (!isinit)
 					{
 						EntityData<?> cap = livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-						if (cap instanceof PlayerData<?>)
+						if (cap instanceof RemoteClientPlayerData<?>)
 						{
-							PlayerData<?> playerCap = (PlayerData<?>)cap;
+							RemoteClientPlayerData<?> playerCap = (RemoteClientPlayerData<?>)cap;
 							playerCap.setStamina(playerCap.getMaxStamina());
 						}
 					}
