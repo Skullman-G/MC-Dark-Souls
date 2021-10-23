@@ -67,6 +67,12 @@ public class SwordCapability extends MaterialItemCapability
 	}
 	
 	@Override
+	protected AttackAnimation getDashAttack()
+	{
+		return Animations.SWORD_DASH_ATTACK;
+	}
+	
+	@Override
 	public WieldStyle getStyle(LivingData<?> entitydata)
 	{
 		WeaponCapability item = entitydata.getHeldWeaponCapability(Hand.OFF_HAND);

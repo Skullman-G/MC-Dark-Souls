@@ -34,6 +34,12 @@ public class AxeCapability extends MaterialItemCapability
 	}
 	
 	@Override
+	protected AttackAnimation getDashAttack()
+	{
+		return Animations.AXE_DASH_ATTACK;
+	}
+	
+	@Override
 	protected void registerAttribute()
 	{
 		int i = this.itemTier.getLevel();

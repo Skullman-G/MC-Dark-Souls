@@ -187,12 +187,15 @@ public class InputManager
 
 		EntityState playerState = this.playerdata.getEntityState();
 		
-		if (this.sprintToggle && this.playerdata.getStamina() <= 0.0F)
+		if (this.sprintToggle)
 		{
-			this.player.setSprinting(false);
-			this.sprintToggle = false;
+			if (this.playerdata.getStamina() <= 0.0F)
+			{
+				this.player.setSprinting(false);
+				this.sprintToggle = false;
+			}
 		}
-		else if (!this.sprintToggle && this.isKeyDown(this.options.keySprint) && (this.playerdata.getStamina() / this.playerdata.getMaxStamina()) >= 0.7F)
+		else if (this.isKeyDown(this.options.keySprint) && (this.playerdata.getStamina() / this.playerdata.getMaxStamina()) >= 0.7F)
 		{
 			this.sprintToggle = true;
 		}
