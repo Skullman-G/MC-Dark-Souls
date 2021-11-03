@@ -26,16 +26,16 @@ public class CTSPlayAnimation
 		this.resendToSender = false;
 	}
 	
-	public CTSPlayAnimation(StaticAnimation animation, float modifyTime, boolean clinetOnly, boolean resendToSender)
+	public CTSPlayAnimation(StaticAnimation animation, float modifyTime, boolean clientOnly, boolean resendToSender)
 	{
-		this(animation.getId(), modifyTime, clinetOnly, resendToSender);
+		this(animation.getId(), modifyTime, clientOnly, resendToSender);
 	}
 	
-	public CTSPlayAnimation(int animation, float modifyTime, boolean clinetOnly, boolean resendToSender)
+	public CTSPlayAnimation(int animation, float modifyTime, boolean clientOnly, boolean resendToSender)
 	{
 		this.animationId = animation;
 		this.modifyTime = modifyTime;
-		this.isClientSideAnimation = clinetOnly;
+		this.isClientSideAnimation = clientOnly;
 		this.resendToSender = resendToSender;
 	}
 	

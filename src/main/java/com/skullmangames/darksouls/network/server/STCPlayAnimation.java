@@ -41,14 +41,13 @@ public class STCPlayAnimation
 	
 	public <T extends STCPlayAnimation> void onArrive()
 	{
-		@SuppressWarnings("resource")
-		Entity entity = Minecraft.getInstance().player.level.getEntity(this.entityId);
-		if(entity == null)
-		{
-			return;
-		}
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity entity = minecraft.player.level.getEntity(this.entityId);
+		if(entity == null) return;
 		
 		LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		
+		if (entitydata == null) return;
 		
 		if (this.animationId < 0)
 		{

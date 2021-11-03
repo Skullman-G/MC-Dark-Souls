@@ -92,9 +92,10 @@ public class STCLivingMotionChange
 	
 	public static void handle(STCLivingMotionChange msg, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(()->{
-			@SuppressWarnings("resource")
-			Entity entity = Minecraft.getInstance().player.level.getEntity(msg.entityId);
+		ctx.get().enqueueWork(()->
+		{
+			Minecraft minecraft = Minecraft.getInstance();
+			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if(entity != null)
 			{
 				LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);

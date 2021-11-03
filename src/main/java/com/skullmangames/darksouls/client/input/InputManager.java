@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -42,12 +41,9 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 public class InputManager
 {
 	private final Map<KeyBinding, BiConsumer<Integer, Integer>> keyFunctionMap;
-	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
 	private ClientPlayerEntity player;
 	private ClientPlayerData playerdata;
 	private KeyBindingMap keyHash;
-	private double tracingMouseX;
-	private double tracingMouseY;
 	private int rightHandPressCounter;
 	private boolean rightHandToggle;
 	private boolean sprintToggle;
@@ -94,11 +90,6 @@ public class InputManager
 		return !playerState.isMovementLocked() || this.player.isRidingJumpable();
 	}
 
-	public boolean playerCanRotate(EntityState playerState)
-	{
-		return !playerState.isCameraRotationLocked() || this.player.isRidingJumpable();
-	}
-
 	public boolean playerCanAct(EntityState playerState)
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
@@ -106,13 +97,15 @@ public class InputManager
 
 	public boolean playerCanExecuteSkill(EntityState playerState)
 	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct());
+		return !this.player.isSpectator() 
+				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct()) 
+				&& this.playerdata.getStamina() >= 3.0F;
 	}
 	
 	private void toggleRenderCollision(int key, int action)
 	{
 		if (action != 1) return;
-		Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(!Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes());
+		this.minecraft.getEntityRenderDispatcher().setRenderHitBoxes(!this.minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes());
 	}
 	
 	private void onSprintKeyPressed(int key, int action)
@@ -121,8 +114,7 @@ public class InputManager
 		while(options.keySprint.consumeClick()) {}
 		
 		if (action == 0) this.player.setSprinting(false);
-		
-		if (action == 1 && !this.sprintToggle) this.sprintToggle = true;
+		else if (action == 1 && !this.sprintToggle) this.sprintToggle = true;
 	}
 	
 	private void onAttackKeyPressed(int key, int action)
@@ -203,7 +195,7 @@ public class InputManager
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
 		
-		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
+		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
 	
 	private void handleSprintAction(EntityState playerState)
@@ -213,7 +205,7 @@ public class InputManager
 		{
 			this.sprintPressCounter++;
 			
-			if (this.sprintPressCounter >= 5) this.player.setSprinting(true);
+			if (this.player.getDeltaMovement().x != 0.0D && this.player.getDeltaMovement().y != 0.0D && this.sprintPressCounter >= 5) this.player.setSprinting(true);
 			return;
 		}
 		
@@ -290,7 +282,8 @@ public class InputManager
 	@Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID, value = Dist.CLIENT)
 	public static class Events
 	{
-		static InputManager inputManager;
+		private static InputManager inputManager;
+		private static Minecraft minecraft = Minecraft.getInstance();
 		
 		@SubscribeEvent
 		public static void onItemRightClick(RightClickItem event)
@@ -305,7 +298,6 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMouseInput(RawMouseEvent event)
 		{
-			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.player != null && minecraft.overlay == null && minecraft.screen == null)
 			{
 				Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
@@ -320,24 +312,22 @@ public class InputManager
 			}
 		}
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
 		public static void onMouseScroll(MouseScrollEvent event)
 		{
-			if (Minecraft.getInstance().player != null && inputManager.playerdata != null && inputManager.playerdata.isInaction())
+			if (minecraft.player != null && inputManager.playerdata != null && inputManager.playerdata.isInaction())
 			{
-				if(Minecraft.getInstance().screen == null)
+				if(minecraft.screen == null)
 				{
 					event.setCanceled(true);
 				}
 			}
 		}
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
 		public static void onKeyboardInput(KeyInputEvent event)
 		{
-			if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null)
+			if (minecraft.player != null && minecraft.screen == null)
 			{
 				Input input = InputMappings.Type.KEYSYM.getOrCreate(event.getKey());
 				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
@@ -358,21 +348,9 @@ public class InputManager
 				return;
 			}
 			
-			Minecraft minecraft = Minecraft.getInstance();
 			EntityState playerState = inputManager.playerdata.getEntityState();
 			
-			if(!inputManager.playerCanRotate(playerState) && inputManager.player.isAlive())
-			{
-				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
-				minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
-				minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
-			}
-			else
-			{
-				inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
-				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
-				minecraft.mouseHandler.setup(Minecraft.getInstance().getWindow().getWindow());
-			}
+			minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 			
 			if (!inputManager.playerCanMove(playerState))
 			{
@@ -388,7 +366,7 @@ public class InputManager
 			}
 			else
 			{
-				if (inputManager.minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
+				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -430,17 +408,11 @@ public class InputManager
 			}
 		}
 		
-		@SuppressWarnings("resource")
 		@SubscribeEvent
 		public static void preProcessKeyBindings(TickEvent.ClientTickEvent event)
 		{
-			if (event.phase == TickEvent.Phase.START)
-			{
-				if (Minecraft.getInstance().player != null)
-				{
-					inputManager.tick();
-				}
-			}
+			if (event.phase != TickEvent.Phase.START || minecraft.player == null) return;
+			inputManager.tick();
 		}
 	}
 }

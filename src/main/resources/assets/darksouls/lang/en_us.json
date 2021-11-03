@@ -135,6 +135,7 @@
 	"entity.generic.kill": "Generic kill",
 	"entity.asylum_demon.ambient": "Asylum Demon ambient",
 	"entity.asylum_demon.ambient.sub": "Asylum Demon roars",
+	"entity.player.shield_disarmed": "Player shield disarmed",
 	
 	
 	"itemGroup.soulstab": "Souls",

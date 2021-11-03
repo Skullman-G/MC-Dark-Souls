@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
-import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -38,7 +37,6 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 	protected float prevBodyYaw;
 	private ItemStack prevHeldItem;
 	private ItemStack prevHeldItemOffHand;
-	protected float stamina;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -223,34 +221,11 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		}
 	}
 	
-
 	
-	public void setStamina(float value)
-	{
-		this.stamina = value;
-	}
-	
-	public void increaseStamina(float increment)
-	{
-		this.stamina = MathUtils.clamp(stamina + increment, -5.0F, this.getMaxStamina());
-		if (increment < 0.0F && this.stamina == 0.0F) this.stamina = -5.0F;
-	}
-	
-	public float getStamina()
-	{
-		return this.stamina;
-	}
-	
-	public float getMaxStamina()
-	{
-		return (float)this.orgEntity.getAttributeValue(AttributeInit.MAX_STAMINA.get());
-	}
 	
 	@Override
 	protected void updateOnClient()
 	{
-		this.increaseStamina(this.orgEntity.isSprinting() ? -0.003F * this.tickSinceLastAction : 0.003F * this.tickSinceLastAction);
-		
 		this.prevYaw = this.yaw;
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;

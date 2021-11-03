@@ -13,12 +13,14 @@ import com.skullmangames.darksouls.core.event.EntityEventListener;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.AttributeInit;
 import com.skullmangames.darksouls.core.init.EffectInit;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -30,6 +32,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	protected float yaw;
 	protected EntityEventListener eventListeners;
 	protected int tickSinceLastAction;
+	
+	protected float stamina;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -52,6 +56,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		}
 		
 		for (Stat stat : Stats.getStats()) stat.init(this.orgEntity);
+		
+		this.stamina = this.getMaxStamina();
 	}
 	
 	@Override
@@ -93,6 +99,9 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		float stunArmor = this.getStunArmor();
 		float maxStunArmor = this.getMaxStunArmor();
 		
+		this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
+				: this.orgEntity.isBlocking() ? 0.05F : 0.1F);
+		
 		if (stunArmor < maxStunArmor && this.tickSinceLastAction > 60)
 		{
 			float stunArmorFactor = 1.0F + (stunArmor / maxStunArmor);
@@ -100,15 +109,12 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 			this.setStunArmor(stunArmor + maxStunArmor * 0.01F * healthFactor * stunArmorFactor);
 		}
 		
-		if (maxStunArmor < stunArmor)
-		{
-			this.setStunArmor(maxStunArmor);
-		}
+		if (maxStunArmor < stunArmor) this.setStunArmor(maxStunArmor);
 	}
 	
 	public float getAttackSpeed()
 	{
-		return (float) orgEntity.getAttributeValue(Attributes.ATTACK_SPEED);
+		return (float)this.orgEntity.getAttributeValue(Attributes.ATTACK_SPEED);
 	}
 	
 	public EntityEventListener getEventListener()
@@ -124,10 +130,28 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 			this.tickSinceLastAction = 0;
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		else return false;
+	}
+	
+	public void setStamina(float value)
+	{
+		this.stamina = value;
+	}
+	
+	public void increaseStamina(float increment)
+	{
+		this.stamina = MathUtils.clamp(stamina + increment, 0.0F, this.getMaxStamina());
+		if (increment < 0.0F && this.stamina == 0.0F) this.stamina = -5.0F;
+	}
+	
+	public float getStamina()
+	{
+		return this.stamina;
+	}
+	
+	public float getMaxStamina()
+	{
+		return (float)this.orgEntity.getAttributeValue(AttributeInit.MAX_STAMINA.get());
 	}
 	
 	@Override

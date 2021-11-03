@@ -45,7 +45,7 @@ public class IngameConfig
 	private Option<Boolean> registerBoolean(String name, boolean defaultValue)
 	{
 		name = "ingame."+name;
-		Option<Boolean> option = new Option<Boolean>(this.config.define(name, () -> defaultValue), name, defaultValue);
+		Option<Boolean> option = new Option.BooleanOption(this.config.define(name, () -> defaultValue), name, defaultValue);
 		OPTIONS.add(option);
 		return option;
 	}

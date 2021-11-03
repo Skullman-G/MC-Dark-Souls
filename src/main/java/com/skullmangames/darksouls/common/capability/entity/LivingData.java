@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.AnimatorServer;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.item.WeaponItem;
@@ -24,6 +25,7 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -40,6 +42,7 @@ import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -52,7 +55,7 @@ import net.minecraft.util.math.vector.Vector3d;
 public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 {
 	private float stunTimeReduction;
-	protected boolean inaction = false;
+	protected boolean inaction;
 	public LivingMotion currentMotion = LivingMotion.IDLE;
 	public LivingMotion currentMixMotion = LivingMotion.NONE;
 	protected Animator animator;
@@ -170,14 +173,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public void updateInactionState()
 	{
 		EntityState state = this.getEntityState();
-		if (!state.isCameraRotationLocked() && !state.isMovementLocked())
-		{
-			this.inaction = false;
-		}
-		else
-		{
-			this.inaction = true;
-		}
+		this.inaction = state.isMovementLocked();
 	}
 
 	protected final void commonBipedCreatureAnimatorInit(AnimatorClient animatorClient)
@@ -245,6 +241,40 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 			{
 				return false;
 			}
+		}
+		
+		return true;
+	}
+	
+	public boolean blockingAttack(IExtendedDamageSource damageSource)
+	{
+		if (!this.orgEntity.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
+		
+		WeaponCapability weaponCap = this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		if (!(weaponCap instanceof IShield)) return false;
+		
+		IShield shield = (IShield)weaponCap;
+		Entity attacker = damageSource.getOwner();
+		
+		float health = this.orgEntity.getHealth() - (damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		if (health < 0) health = 0;
+		this.orgEntity.setHealth(health);
+		
+		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel()) return false;
+
+		LivingData<?> attackerData = (LivingData<?>)attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (attackerData == null) return false;
+		
+		StaticAnimation deflectAnimation = attackerData.getDeflectAnimation();
+		if (deflectAnimation == null) return false;
+		
+		float stuntime = 0.0F;
+		attackerData.setStunTimeReduction();
+		attackerData.getAnimator().playAnimation(deflectAnimation, stuntime);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), attacker);
+		if(attacker instanceof ServerPlayerEntity)
+		{
+			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), (ServerPlayerEntity)attacker);
 		}
 		
 		return true;
@@ -675,19 +705,19 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public static enum EntityState
 	{
-		FREE(false, false, false, false, true, 0),
-		FREE_CAMERA(false, true, false, false, false, 1),
-		FREE_INPUT(false, false, false, false, true, 3),
-		NO_FREEDOM(true, true, false, false, false, 1),
-		PRE_DELAY(true, true, false, false, false, 1),
-		CONTACT(true, true, true, false, false, 2),
-		ROTATABLE_CONTACT(false, true, true, false, false, 2),
-		POST_DELAY(true, true, false, false, true, 3),
-		ROTATABLE_POST_DELAY(false, true, false, false, true, 3),
-		HIT(true, true, false, false, false, 3),
-		DODGE(true, true, false, true, false, 3);
+		FREE(false, false, false, true, 0),
+		FREE_CAMERA(true, false, false, false, 1),
+		FREE_INPUT(false, false, false, true, 3),
+		NO_FREEDOM(true, false, false, false, 1),
+		PRE_DELAY(true, false, false, false, 1),
+		CONTACT(true, true, false, false, 2),
+		ROTATABLE_CONTACT(true, true, false, false, 2),
+		POST_DELAY(true, false, false, true, 3),
+		ROTATABLE_POST_DELAY(true, false, false, true, 3),
+		HIT(true, false, false, false, 3),
+		DISARMED(true, true, false, false, 3),
+		DODGE(true, false, true, false, 3);
 		
-		boolean cameraLock;
 		boolean movementLock;
 		boolean collideDetection;
 		boolean invincible;
@@ -695,19 +725,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		// none : 0, beforeContact : 1, contact : 2, afterContact : 3
 		int contactLevel;
 		
-		EntityState(boolean cameraLock, boolean movementLock, boolean collideDetection, boolean invincible, boolean canAct, int level)
+		EntityState(boolean movementLock, boolean collideDetection, boolean invincible, boolean canAct, int level)
 		{
-			this.cameraLock = cameraLock;
 			this.movementLock = movementLock;
 			this.collideDetection = collideDetection;
 			this.invincible = invincible;
 			this.canAct = canAct;
 			this.contactLevel = level;
-		}
-		
-		public boolean isCameraRotationLocked()
-		{
-			return this.cameraLock;
 		}
 		
 		public boolean isMovementLocked()

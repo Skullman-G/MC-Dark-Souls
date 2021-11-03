@@ -51,22 +51,22 @@ public class AttackAnimation extends ActionAnimation
 	
 	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 	
 	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 	
 	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, false, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, boolean clientOnly, Phase... phases)
+	public AttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, Phase... phases)
 	{
-		super(id, convertTime, true, affectY, path, armature, clientOnly);
+		super(id, convertTime, true, affectY, path, armature);
 		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
 	}

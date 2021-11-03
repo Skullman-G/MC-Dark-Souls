@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
-
+import com.skullmangames.darksouls.network.client.CTSStamina;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
@@ -42,15 +42,8 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		super.onEntityJoinWorld(entityIn);
 		
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
-		{
-			ClientEngine.INSTANCE.switchToBattleMode();
-		}
-		else
-		{
-			ClientEngine.INSTANCE.switchToMiningMode();
-		}
+		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientEngine.INSTANCE.switchToBattleMode();
+		else ClientEngine.INSTANCE.switchToMiningMode();
 	}
 	
 	@Override
@@ -104,6 +97,9 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		this.animator.playAnimation(Animations.BIPED_ROLL_FORWARD, 0);
 		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_ROLL_FORWARD, 0, false, false));
+		
+		this.increaseStamina(-4.0F);
+		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
 	}
 	
 	public void performAttack(AttackType type)
@@ -112,8 +108,11 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		if (weapon == null) return;
 		AttackAnimation animation = weapon.getAttack(type, this);
 		if (animation == null) return;
-		this.animator.playAnimation(animation, 0);
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0, false, false));
+		this.animator.playAnimation(animation, 0.0F);
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
+		
+		this.increaseStamina(-4.0F);
+		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
 	}
 	
 	@Override

@@ -59,8 +59,8 @@ public class STCMobInitialSetting
 	{
 		ctx.get().enqueueWork(()->
 		{
-			@SuppressWarnings("resource")
-			Entity entity = Minecraft.getInstance().player.level.getEntity(msg.entityId);
+			Minecraft minecraft = Minecraft.getInstance();
+			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if(entity != null)
 			{
 				BipedMobData<?> entitydata = (BipedMobData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);

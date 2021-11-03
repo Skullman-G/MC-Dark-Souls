@@ -47,6 +47,14 @@ public class Option<T>
 		this.option = this.defaultOption;
 	}
 	
+	public static class BooleanOption extends Option<Boolean>
+	{
+		public BooleanOption(ConfigValue<Boolean> configValue, String name, boolean defaultValue)
+		{
+			super(configValue, name, defaultValue);
+		}
+	}
+	
 	public static class IntegerOption extends Option<Integer>
 	{
 		private final int minValue;

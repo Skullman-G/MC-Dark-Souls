@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
@@ -44,7 +43,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -137,20 +135,13 @@ public class EntityEvents
 		
 		if(event.getSource() instanceof IExtendedDamageSource) extSource = (IExtendedDamageSource)event.getSource();
 		
+		LivingData<?> targetData = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (targetData != null && targetData instanceof LivingData<?>) targetData.blockingAttack(extSource);
+		
 		if(trueSource != null)
 		{
 			if(event.getSource() instanceof IndirectEntityDamageSource)
-			{/*
-				EntityData<?> attackerdata = trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if(attackerdata != null) {
-					if(attackerdata instanceof IRangedAttackMobCapability) {
-						extSource = ((IRangedAttackMobCapability)attackerdata).getRangedDamageSource(event.getSource().getDirectEntity());
-					} else if(event.getSource().damageType.equals("arrow")) {
-						extSource = new IndirectDamageSourceExtended("arrow", trueSource, event.getSource().getDirectEntity(), StunType.SHORT);
-						extSource.setImpact(1.0F);
-					}
-				}*/
-				
+			{
 				Entity directSource = event.getSource().getDirectEntity();
 				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT);
 				
@@ -183,7 +174,9 @@ public class EntityEvents
 			        	if (hitEntity instanceof ServerPlayerEntity)
 			        	{
 			        		((ServerPlayerEntity)hitEntity).awardStat(Stats.DAMAGE_RESISTED, Math.round(f2 * 10.0F));
-			        	} else if(event.getSource().getDirectEntity() instanceof ServerPlayerEntity) {
+			        	}
+			        	else if(event.getSource().getDirectEntity() instanceof ServerPlayerEntity)
+			        	{
 			                ((ServerPlayerEntity)event.getSource().getDirectEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(f2 * 10.0F));
 			        	}
 			        }
@@ -282,49 +275,6 @@ public class EntityEvents
 						}
 						
 						hitEntityData.knockBackEntity(trueSource, knockBackAmount);
-					}
-				}
-			}
-		}
-		
-		if(event.getEntityLiving().isBlocking())
-		{
-			if(event.getEntityLiving() instanceof PlayerEntity)
-			{
-				event.getEntityLiving().level.playSound((PlayerEntity)event.getEntityLiving(), event.getEntityLiving().blockPosition(), SoundEvents.SHIELD_BLOCK,
-						event.getEntityLiving().getSoundSource(), 1.0F, 0.8F + event.getEntityLiving().getRandom().nextFloat() * 0.4F);
-			}
-			
-			if (extSource != null && !(extSource instanceof IndirectEntityDamageSource))
-			{
-				LivingEntity target = event.getEntityLiving();
-				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(target.getUseItem());
-				
-				if (cap instanceof IShield)
-				{
-					IShield shield = (IShield)cap;
-					float health = target.getHealth() - (extSource.getAmount() * (1 - shield.getPhysicalDefense()));
-					if (health < 0) health = 0;
-					target.setHealth(health);
-					
-					if (extSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel())
-					{
-						LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-						if (attacker != null)
-						{
-							StaticAnimation deflectAnimation = attacker.getDeflectAnimation();
-							if (deflectAnimation != null)
-							{
-								float stuntime = 0.0F;
-								attacker.setStunTimeReduction();
-								attacker.getAnimator().playAnimation(deflectAnimation, stuntime);
-								ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), trueSource);
-								if(trueSource instanceof ServerPlayerEntity)
-								{
-									ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), trueSource.getId(), stuntime), (ServerPlayerEntity)trueSource);
-								}
-							}
-						}
 					}
 				}
 			}

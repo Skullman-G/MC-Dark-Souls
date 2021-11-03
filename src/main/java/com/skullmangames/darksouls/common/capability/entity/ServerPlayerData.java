@@ -12,11 +12,16 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.SoundEvents;
 import com.skullmangames.darksouls.core.util.Formulars;
+import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.server.STCStamina;
+
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -54,6 +59,13 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		{
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
+	}
+	
+	@Override
+	public void updateOnServer()
+	{
+		super.updateOnServer();
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 	}
 	
 	@Override
@@ -97,6 +109,23 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		}
 		
 		this.modifiLivingMotions(mainHandCap);
+	}
+	
+	@Override
+	public boolean blockingAttack(IExtendedDamageSource damageSource)
+	{
+		if (!this.orgEntity.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
+
+		this.increaseStamina(-4.0F);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
+		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
+		
+		this.playSound(SoundEvents.PLAYER_SHIELD_DISARMED, 1.0F, 1.0F);
+		
+		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
+		this.animator.playAnimation(disarmAnimation, 0.0F);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(disarmAnimation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
+		return false;
 	}
 	
 	@Override

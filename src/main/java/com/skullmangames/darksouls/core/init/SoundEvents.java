@@ -25,6 +25,8 @@ public class SoundEvents
 	public static final SoundEvent ASYLUM_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
 	
 	public static final SoundEvent GENERIC_KILL = registerSound("entity.generic.kill");
+	
+	public static final SoundEvent PLAYER_SHIELD_DISARMED = registerSound("entity.player.shield_disarmed");
 
 	
 	private static SoundEvent registerSound(String name)

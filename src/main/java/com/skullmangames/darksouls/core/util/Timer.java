@@ -6,9 +6,9 @@ public class Timer
 	private float pastTime;
 	private boolean ticking;
 	
-	public Timer(int timer)
+	public Timer()
 	{
-		this.start(timer);
+		this.start(0);
 	}
 	
 	public void start(int value)

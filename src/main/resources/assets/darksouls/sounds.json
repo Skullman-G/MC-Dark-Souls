@@ -130,6 +130,15 @@
 		]
 	},
 	
+	"entity.player.shield_disarmed":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/generic/shield_disarmed", "stream": true }
+		]
+	},
+	
 	"item.sword.swing":
 	{
 		"category": "item",

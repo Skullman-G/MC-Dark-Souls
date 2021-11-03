@@ -22,16 +22,19 @@ public class GameOverlayManager
 {
 	private static Minecraft minecraft = Minecraft.getInstance();
 	
-	private static final Timer damageCooldown = new Timer(0);
-	private static final Timer damageTimer = new Timer(0);
-	private static final Timer healTimer = new Timer(0);
+	private static final Timer damageCooldown = new Timer();
+	private static final Timer damageTimer = new Timer();
+	private static final Timer healTimer = new Timer();
 	private static int lastHealth;
 	private static int saveLastHealth;
 	public static boolean isHealing = false;
 	
-	private static final Timer staminaTimer = new Timer(0);
+	private static final Timer staminaTimer = new Timer();
+	private static final Timer stamiaDrainTimer = new Timer();
+	private static final Timer stamiaDrainCooldownTimer = new Timer();
 	private static int lastStamina;
 	private static int saveLastStamina;
+	private static int saveLastStamina2;
 	
 	public static void render(ElementType type, MainWindow window, MatrixStack matrixstack)
 	{
@@ -147,26 +150,58 @@ public class GameOverlayManager
 		
 		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
-		double endurancepercentagedouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
-		int endurancepercentage = (int)endurancepercentagedouble;
+		double staminaPercentageDouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
+		int staminaPercentage = (int)staminaPercentageDouble;
 		
-		if (lastStamina != endurancepercentage || staminaTimer.isTicking())
+		// Yellow Bar
+		if (lastStamina > staminaPercentage && !getCameraPlayer().isSprinting())
+		{
+			if (!stamiaDrainCooldownTimer.isTicking() && !stamiaDrainTimer.isTicking())
+			{
+				saveLastStamina = lastStamina;
+			}
+			
+			stamiaDrainCooldownTimer.start(10);
+		}
+		
+		int drainedStamina = saveLastStamina - stamiaDrainTimer.getPastTime();
+		
+		if (stamiaDrainCooldownTimer.isTicking())
+		{
+			boolean flag = false;
+			if (drainedStamina <= staminaPercentage)
+			{
+				drainedStamina = saveLastStamina;
+				flag = true;
+			}
+			minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
+			stamiaDrainCooldownTimer.drain(1.0F);
+			if (!stamiaDrainCooldownTimer.isTicking() && (!stamiaDrainTimer.isTicking() || flag)) stamiaDrainTimer.start(drainedStamina);
+		}
+		else if (stamiaDrainTimer.isTicking())
+		{
+			minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
+			stamiaDrainTimer.drain(0.5F);
+		}
+		
+		// Green Bar
+		if (lastStamina != staminaPercentage || staminaTimer.isTicking())
 		{
 			if (!staminaTimer.isTicking())
 			{
-				saveLastStamina = lastStamina;
-				staminaTimer.start(endurancepercentage - saveLastStamina);
+				saveLastStamina2 = lastStamina;
+				staminaTimer.start(staminaPercentage - saveLastStamina2);
 			}
-			int percentage = saveLastStamina + staminaTimer.getPastTime();
+			int percentage = saveLastStamina2 + staminaTimer.getPastTime();
 			minecraft.gui.blit(matrixstack, x, y, 0, 35, percentage, 9);
 			staminaTimer.drain(1.0F);
 		}
 		else
 		{
-			minecraft.gui.blit(matrixstack, x, y, 0, 35, endurancepercentage, 9);
+			minecraft.gui.blit(matrixstack, x, y, 0, 35, staminaPercentage, 9);
 		}
 		
-		lastStamina = endurancepercentage;
+		lastStamina = staminaPercentage;
 	}
 	
 	private static AbstractClientPlayerEntity getCameraPlayer()

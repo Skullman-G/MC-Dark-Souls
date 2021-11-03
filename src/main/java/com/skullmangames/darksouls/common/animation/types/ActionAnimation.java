@@ -30,14 +30,14 @@ public class ActionAnimation extends ImmovableAnimation
 	protected final boolean affectYCoord;
 	protected float delayTime;
 	
-	public ActionAnimation(int id, float convertTime, boolean breakMove, boolean affectY, String path, String armature, boolean clientOnly)
+	public ActionAnimation(int id, float convertTime, boolean breakMove, boolean affectY, String path, String armature)
 	{
-		this(id, convertTime, -1.0F, breakMove, affectY, path, armature, clientOnly);
+		this(id, convertTime, -1.0F, breakMove, affectY, path, armature);
 	}
 
-	public ActionAnimation(int id, float convertTime, float postDelay, boolean breakMove, boolean affectY, String path, String armature, boolean clientOnly)
+	public ActionAnimation(int id, float convertTime, float postDelay, boolean breakMove, boolean affectY, String path, String armature)
 	{
-		super(id, convertTime, path, armature, clientOnly);
+		super(id, convertTime, path, armature, false);
 		this.breakMovement = breakMove;
 		this.affectYCoord = affectY;
 		this.delayTime = postDelay;

@@ -5,9 +5,12 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.widget.BooleanButton;
 import com.skullmangames.darksouls.client.gui.widget.OptionButton;
 import com.skullmangames.darksouls.client.gui.widget.RewindableButton;
 import com.skullmangames.darksouls.config.Option;
+import com.skullmangames.darksouls.config.Option.BooleanOption;
+import com.skullmangames.darksouls.config.Option.IntegerOption;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -28,38 +31,30 @@ public class IngameConfigurationScreen extends Screen
 	@Override
 	protected void init()
 	{
-		List<OptionButton> buttons = new ArrayList<OptionButton>();
+		List<OptionButton<?>> buttons = new ArrayList<OptionButton<?>>();
 		
 		int yDistance = -24;
 		
 		for (Option<?> option : DarkSouls.CLIENT_INGAME_CONFIG.OPTIONS)
 		{
-			if (option.getValue() instanceof Boolean)
+			if (option instanceof BooleanOption)
 			{
-				@SuppressWarnings("unchecked")
-				Option<Boolean> booleanOption = (Option<Boolean>)option;
-				buttons.add(this.addButton(new OptionButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20,booleanOption,
-						(button) ->
-						{
-							booleanOption.setValue(!booleanOption.getValue());
-							((OptionButton)button).refreshMessage();
-						}
-					)));
+				BooleanOption booleanOption = (BooleanOption)option;
+				buttons.add(this.addButton(new BooleanButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20, booleanOption)));
 			}
-			else if (option.getValue() instanceof Integer)
+			else if (option instanceof IntegerOption)
 			{
-				@SuppressWarnings("unchecked")
-				Option<Integer> intOption = (Option<Integer>)option;
+				IntegerOption intOption = (IntegerOption)option;
 				buttons.add(this.addButton(new RewindableButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20,	intOption,
 						(button) ->
 						{
 							intOption.setValue(intOption.getValue() + 1);
-							((OptionButton)button).refreshMessage();
+							((RewindableButton)button).refreshMessage();
 						},
 						(button) ->
 						{
 							intOption.setValue(intOption.getValue() - 1);
-							((OptionButton)button).refreshMessage();
+							((RewindableButton)button).refreshMessage();
 						}
 					)));
 			}
@@ -75,7 +70,7 @@ public class IngameConfigurationScreen extends Screen
 		this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".reset"), (button) ->
 		{
 			DarkSouls.CLIENT_INGAME_CONFIG.resetSettings();
-			for (OptionButton b : buttons)
+			for (OptionButton<?> b : buttons)
 			{
 				b.refreshMessage();
 			}

@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RewindableButton extends OptionButton
+public class RewindableButton extends OptionButton<Integer>
 {
 	protected final Button.IPressable onRewindPress;
 	
