@@ -1,16 +1,18 @@
 package com.skullmangames.darksouls.client.event;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.core.init.EffectInit;
 
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -26,21 +28,33 @@ public class ClientEvents
     }
 	
 	@SubscribeEvent
-	public static void onRenderGameOverlayPost(final RenderGameOverlayEvent.Post event)
-	{
-		GameOverlayManager.render(event.getType(), event.getWindow(), event.getMatrixStack());
-	}
-	
-	@SubscribeEvent
 	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{
-		if (event.getType() == ElementType.HEALTH)
+		Minecraft minecraft = Minecraft.getInstance();
+		MainWindow window = event.getWindow();
+		MatrixStack matStack = event.getMatrixStack();
+		
+		switch (event.getType())
 		{
-			event.setCanceled(true);
-		}
-		else if (event.getType() == ElementType.FOOD && Minecraft.getInstance().getCameraEntity() instanceof LivingEntity && ((LivingEntity)Minecraft.getInstance().getCameraEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get()))
-		{
-			event.setCanceled(true);
+			case HEALTH:
+				event.setCanceled(true);
+				GameOverlayManager.renderHealth(window, matStack);
+				break;
+				
+			case FOOD:
+				if (!(minecraft.getCameraEntity() instanceof LivingEntity)
+						|| !((LivingEntity)minecraft.getCameraEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get())) break;
+				event.setCanceled(true);
+				GameOverlayManager.renderStamina(window, matStack);
+				break;
+				
+			case ALL:
+				GameOverlayManager.renderAdditional(window, matStack);
+				break;
+				
+			default:
+				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+				break;
 		}
 	}
 }

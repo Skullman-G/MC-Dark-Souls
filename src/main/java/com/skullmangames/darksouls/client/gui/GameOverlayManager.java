@@ -15,7 +15,6 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class GameOverlayManager
@@ -36,18 +35,15 @@ public class GameOverlayManager
 	private static int saveLastStamina;
 	private static int saveLastStamina2;
 	
-	public static void render(ElementType type, MainWindow window, MatrixStack matrixstack)
+	public static void renderAdditional(MainWindow window, MatrixStack matrixstack)
 	{
 		if (minecraft.player.isCreative() || minecraft.player.isSpectator()) return;
-		if (type != ElementType.ALL) return;
 		
 		renderHumanity(window, matrixstack);
-		renderHealth(window, matrixstack);
 		renderSouls(window, matrixstack);
-		renderStamina(window, matrixstack);
 	}
 	
-	private static void renderHumanity(MainWindow window, MatrixStack matrixstack)
+	public static void renderHumanity(MainWindow window, MatrixStack matrixstack)
 	{
 		int x = window.getGuiScaledWidth() / 2;
 		int y = window.getGuiScaledHeight() - 45;
@@ -56,11 +52,12 @@ public class GameOverlayManager
 		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, MobNBTManager.getStringHumanity(minecraft.player), x, y, color);
 	}
 	
-	private static void renderHealth(MainWindow window, MatrixStack matrixstack)
+	public static void renderHealth(MainWindow window, MatrixStack matrixstack)
 	{
 		RenderSystem.enableBlend();
 		int x = window.getGuiScaledWidth() / 2 - 91;
 		int y = window.getGuiScaledHeight() - 39;
+		ForgeIngameGui.left_height += 10;
 		
 		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
@@ -122,11 +119,12 @@ public class GameOverlayManager
 		lastHealth = healthpercentage;
 	}
 	
-	private static void renderSouls(MainWindow window, MatrixStack matrixstack)
+	public static void renderSouls(MainWindow window, MatrixStack matrixstack)
 	{
 		int x = window.getGuiScaledWidth() - 76;
 		int y = window.getGuiScaledHeight() - 21;
 		
+		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
 		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
 		
 		x = window.getGuiScaledWidth() - (76 / 2);
@@ -139,7 +137,7 @@ public class GameOverlayManager
 		ForgeIngameGui.drawCenteredString(ms, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), Math.round(x / scale), Math.round(y / scale), color);
 	}
 	
-	private static void renderStamina(MainWindow window, MatrixStack matrixstack)
+	public static void renderStamina(MainWindow window, MatrixStack matrixstack)
 	{
 		RemoteClientPlayerData<?> player = getCameraPlayerData();
 		if (player == null) return;
@@ -147,6 +145,7 @@ public class GameOverlayManager
 		RenderSystem.enableBlend();
 		int y = window.getGuiScaledHeight() - 39;
 		int x = window.getGuiScaledWidth() / 2 + 3;
+		ForgeIngameGui.right_height += 10;
 		
 		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);

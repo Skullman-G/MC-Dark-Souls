@@ -16,6 +16,7 @@ import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,6 +57,7 @@ import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvent;
+import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.AttributeInit;
@@ -106,6 +108,7 @@ public class DarkSouls
     	Animations.registerAnimations(FMLEnvironment.dist);
     	
     	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	IEventBus forgeBus = MinecraftForge.EVENT_BUS;
     	
     	bus.addListener(this::doCommonStuff);
     	bus.addListener(this::doClientStuff);
@@ -126,10 +129,15 @@ public class DarkSouls
     	RecipeSerializerInit.RECIPE_SERIALIZERS.register(bus);
     	Particles.PARTICLES.register(bus);
     	
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(CapabilityEvent.class);
-        MinecraftForge.EVENT_BUS.register(PlayerEvents.class);
+    	System.out.print("\nkoko");
+    	forgeBus.register(this);
+        System.out.print("\nkiki");
+        forgeBus.register(EntityEvents.class);
+        System.out.print("\nkaka");
+        forgeBus.register(CapabilityEvent.class);
+        System.out.print("\npipi");
+        forgeBus.register(PlayerEvents.class);
+        System.out.print("\npopo");
         
         ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
         ConfigManager.INGAME_CONFIG.populateDefaultValues();
@@ -137,9 +145,7 @@ public class DarkSouls
         
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> IngameConfigurationScreen::new);
         
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
-        
         forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
     }
 
@@ -170,10 +176,7 @@ public class DarkSouls
     
 	private void doClientStuff(final FMLClientSetupEvent event)
     {
-        if (FMLEnvironment.dist.isDedicatedServer())
-        {
-            return;
-        }
+		if (FMLEnvironment.dist.isDedicatedServer()) return;
         
         new ClientEngine();
         
@@ -185,7 +188,6 @@ public class DarkSouls
 		
 		MinecraftForge.EVENT_BUS.register(InputManager.Events.class);
         MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
-        //MinecraftForge.EVENT_BUS.register(RegistryClientEvent.class);
         MinecraftForge.EVENT_BUS.register(ClientEvents.class);
         
         RenderTypeLookup.setRenderLayer(BlockInit.BIG_ACACIA_DOOR.get(), RenderType.cutout());
@@ -220,17 +222,18 @@ public class DarkSouls
     }
     
     private static Method GETCODEC_METHOD;
-    @SuppressWarnings("resource")
 	public void addDimensionalSpacing(final WorldEvent.Load event)
     {
-        if(event.getWorld() instanceof ServerWorld){
+        if(event.getWorld() instanceof ServerWorld)
+        {
             ServerWorld serverWorld = (ServerWorld)event.getWorld();
+            ServerChunkProvider scp = serverWorld.getChunkSource();
 
             try
             {
                 if(GETCODEC_METHOD == null) GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
-                @SuppressWarnings("unchecked")
-				ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
+				@SuppressWarnings("unchecked")
+				ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(scp.generator));
                 if(cgRL != null && cgRL.getNamespace().equals("terraforged")) return;
             }
             catch (Exception e)
@@ -243,10 +246,10 @@ public class DarkSouls
                 return;
             }
 
-			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
+			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(scp.generator.getSettings().structureConfig());
             tempMap.putIfAbsent(Structures.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.CHECKPOINT_PLAINS.get()));
             tempMap.putIfAbsent(Structures.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.UNDEAD_ASYLUM.get()));
-            serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
+            scp.generator.getSettings().structureConfig = tempMap;
         }
    }
 }
