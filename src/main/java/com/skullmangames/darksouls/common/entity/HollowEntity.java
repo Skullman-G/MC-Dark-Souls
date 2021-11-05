@@ -19,9 +19,10 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -69,8 +70,9 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	    
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, AsylumDemonEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.6D, 1.4D));
+	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, WitherEntity.class, 10.0F, 1.6D, 1.4D));
+	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, EnderDragonEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
 	}
 	
@@ -143,13 +145,13 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	    this.level.addFreshEntity(abstractarrowentity);
 	}
 	
-	protected AbstractArrowEntity getArrow(ItemStack p_213624_1_, float p_213624_2_)
+	protected AbstractArrowEntity getArrow(ItemStack itemstack, float p_213624_2_)
 	{
-		return ProjectileHelper.getMobArrow(this, p_213624_1_, p_213624_2_);
+		return ProjectileHelper.getMobArrow(this, itemstack, p_213624_2_);
 	}
 	
 	@Override
-	protected int getExperienceReward(PlayerEntity p_70693_1_)
+	protected int getExperienceReward(PlayerEntity player)
 	{
 		return 10;
 	}
