@@ -24,14 +24,5 @@ public class TileEntityTypeInit
 			BlockInit.BIG_JUNGLE_DOOR.get(),
 			BlockInit.BIG_OAK_DOOR.get(),
 			BlockInit.BIG_SPRUCE_DOOR.get(),
-			BlockInit.BIG_WARPED_DOOR.get(),
-			
-			BlockInit.ACACIA_DOOR.get(),
-			BlockInit.BIRCH_DOOR.get(),
-			BlockInit.CRIMSON_DOOR.get(),
-			BlockInit.DARK_OAK_DOOR.get(),
-			BlockInit.JUNGLE_DOOR.get(),
-			BlockInit.OAK_DOOR.get(),
-			BlockInit.SPRUCE_DOOR.get(),
-			BlockInit.WARPED_DOOR.get()).build(null));
+			BlockInit.BIG_WARPED_DOOR.get()).build(null));
 }
