@@ -41,11 +41,11 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 	@Override
 	public void render(ClientPlayerEntity entityIn, ClientPlayerData entitydata, EntityRenderer<ClientPlayerEntity> renderer, IRenderTypeBuffer buffer, MatrixStack matStackIn, int packedLightIn, float partialTicks)
 	{
-		ActiveRenderInfo renderInfo = minecraft.gameRenderer.getMainCamera();
-		Vector3d projView = renderInfo.getPosition();
+		ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
+		Vector3d projView = camera.getPosition();
 		double x = MathHelper.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
 		double y = MathHelper.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
-		double z = MathHelper.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z();
+		double z = MathHelper.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z() - 0.1F;
 		ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
@@ -55,7 +55,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 		matStackIn.pushPose();
 		Vector4f headPos = new Vector4f(0, entityIn.getEyeHeight(), 0, 1.0F);
 		PublicMatrix4f.transform(poses[9], headPos, headPos);
-		float pitch = renderInfo.getXRot();
+		float pitch = camera.getXRot();
 		
 		DynamicAnimation base = entitydata.getClientAnimator().getPlayer().getPlay();
 		DynamicAnimation mixLeft = entitydata.getClientAnimator().mixLayerLeft.animationPlayer.getPlay();

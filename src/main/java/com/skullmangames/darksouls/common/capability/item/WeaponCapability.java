@@ -191,12 +191,6 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		return this.weaponCategory;
 	}
 	
-	public void onHeld(PlayerData<?> playerdata)
-	{
-		if (!playerdata.isClientSide() || ClientEngine.INSTANCE.isBattleMode()) return;
-		ClientEngine.INSTANCE.switchToBattleMode();
-	}
-	
 	public SoundEvent getSwingSound()
 	{
 		return null;

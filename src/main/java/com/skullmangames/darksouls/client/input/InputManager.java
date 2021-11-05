@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -14,7 +15,6 @@ import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
@@ -24,8 +24,10 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
@@ -50,6 +52,9 @@ public class InputManager
 	private int sprintPressCounter;
 	private Minecraft minecraft;
 	public GameSettings options;
+	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
+	private double tracingMouseX;
+	private double tracingMouseY;
 	
 	
 	public InputManager()
@@ -119,17 +124,14 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1 && ClientEngine.INSTANCE.isBattleMode())
+		if (action == 1)
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
 
 			if (player.getTicksUsingItem() == 0)
 			{
-				if (!rightHandToggle)
-				{
-					rightHandToggle = true;
-				}
+				if (!rightHandToggle) rightHandToggle = true;
 			}
 		}
 
@@ -158,12 +160,6 @@ public class InputManager
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
-				for (Hand hand : Hand.values())
-				{
-					WeaponCapability item = this.playerdata.getHeldWeaponCapability(hand);
-					if (item == null || (hand == Hand.OFF_HAND && item.equals(ModCapabilities.FIST))) continue;
-					return;
-				}
 				ClientEngine.INSTANCE.switchToMiningMode();
 			}
 			else
@@ -210,7 +206,7 @@ public class InputManager
 		}
 		
 		this.sprintToggle = false;
-		if (ClientEngine.INSTANCE.isBattleMode() && this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
+		if (this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
 		this.sprintPressCounter = 0;
 	}
 	
@@ -285,6 +281,13 @@ public class InputManager
 		private static InputManager inputManager;
 		private static Minecraft minecraft = Minecraft.getInstance();
 		
+		// I'm using this only to cancel attacks
+		@SubscribeEvent
+		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
+		{
+			if (event.isAttack() && minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY) event.setCanceled(true);
+		}
+		
 		@SubscribeEvent
 		public static void onItemRightClick(RightClickItem event)
 		{
@@ -343,17 +346,24 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMoveInput(InputUpdateEvent event)
 		{
-			if(inputManager.playerdata == null)
-			{
-				return;
-			}
-			
+			if(inputManager.playerdata == null) return;
 			EntityState playerState = inputManager.playerdata.getEntityState();
-			
-			minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 			
 			if (!inputManager.playerCanMove(playerState))
 			{
+				if (minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
+				{
+					GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
+					minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
+					minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
+				}
+				else
+				{
+					inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
+					inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
+					minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
+				}
+				
 				event.getMovementInput().forwardImpulse = 0.0F;
 				event.getMovementInput().leftImpulse = 0.0F;
 				event.getMovementInput().up = false;
@@ -366,6 +376,10 @@ public class InputManager
 			}
 			else
 			{
+				inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
+				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
+				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
+				
 				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
 				{
 					float forward = 0.0F;

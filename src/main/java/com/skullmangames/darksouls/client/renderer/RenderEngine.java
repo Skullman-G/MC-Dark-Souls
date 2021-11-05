@@ -320,17 +320,12 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
-			boolean isBattleMode = ClientEngine.INSTANCE.isBattleMode();
-			
-			if(isBattleMode)
+			if (event.getHand() == Hand.MAIN_HAND)
 			{
-				if (event.getHand() == Hand.MAIN_HAND)
-				{
-					renderEngine.firstPersonRenderer.render(minecraft.player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
-							event.getMatrixStack(), event.getLight(), event.getPartialTicks());
-				}
-				event.setCanceled(true);
+				renderEngine.firstPersonRenderer.render(minecraft.player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
+						event.getMatrixStack(), event.getLight(), event.getPartialTicks());
 			}
+			event.setCanceled(true);
 		}
 		
 		@SubscribeEvent
