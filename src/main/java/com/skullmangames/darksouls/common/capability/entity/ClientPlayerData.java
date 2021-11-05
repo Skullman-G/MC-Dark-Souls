@@ -98,6 +98,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		this.animator.playAnimation(Animations.BIPED_ROLL_FORWARD, 0);
 		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_ROLL_FORWARD, 0, false, false));
 		
+		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);
 		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
 	}
@@ -111,6 +112,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 		
+		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);
 		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
 	}

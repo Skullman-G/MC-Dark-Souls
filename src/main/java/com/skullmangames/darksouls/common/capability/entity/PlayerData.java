@@ -99,8 +99,11 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		float stunArmor = this.getStunArmor();
 		float maxStunArmor = this.getMaxStunArmor();
 		
-		this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
-				: this.orgEntity.isBlocking() ? 0.05F : 0.1F);
+		if (!this.isCreativeOrSpectator())
+		{
+			this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
+					: this.orgEntity.isBlocking() ? 0.05F : 0.1F);
+		}
 		
 		if (stunArmor < maxStunArmor && this.tickSinceLastAction > 60)
 		{
@@ -152,6 +155,11 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	public float getMaxStamina()
 	{
 		return (float)this.orgEntity.getAttributeValue(AttributeInit.MAX_STAMINA.get());
+	}
+	
+	public boolean isCreativeOrSpectator()
+	{
+		return this.orgEntity.isCreative() || this.orgEntity.isSpectator();
 	}
 	
 	@Override

@@ -102,9 +102,10 @@ public class InputManager
 
 	public boolean playerCanExecuteSkill(EntityState playerState)
 	{
-		return !this.player.isSpectator() 
-				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct()) 
-				&& this.playerdata.getStamina() >= 3.0F;
+		return this.player.isCreative()
+				|| (!this.player.isSpectator()
+				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& this.playerdata.getStamina() >= 3.0F);
 	}
 	
 	private void toggleRenderCollision(int key, int action)
@@ -177,7 +178,7 @@ public class InputManager
 		
 		if (this.sprintToggle)
 		{
-			if (this.playerdata.getStamina() <= 0.0F)
+			if (!this.player.isCreative() && this.playerdata.getStamina() <= 0.0F)
 			{
 				this.player.setSprinting(false);
 				this.sprintToggle = false;

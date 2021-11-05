@@ -115,7 +115,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
 	{
 		if (!this.orgEntity.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
-
+		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
+		
 		this.increaseStamina(-4.0F);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
