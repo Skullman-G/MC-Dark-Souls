@@ -23,7 +23,6 @@ public class ClientEngine
 	public final Camera mainCamera;
 	
 	private ClientPlayerData playerdata;
-	private PlayerActingMode playerActingMode = PlayerActingMode.MINING;
 	
 	public ClientEngine()
 	{
@@ -39,15 +38,13 @@ public class ClientEngine
 		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
 	
-	public void switchToMiningMode()
+	public void switchToFirstPerson()
 	{
-		this.playerActingMode = PlayerActingMode.MINING;
 		this.options.setCameraType(PointOfView.FIRST_PERSON);
 	}
 	
-	public void switchToBattleMode()
+	public void switchToThirdPerson()
 	{
-		this.playerActingMode = PlayerActingMode.BATTLE;
 		this.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
 
 		this.playerdata.getOriginalEntity().xRot = 0.0F;
@@ -56,32 +53,14 @@ public class ClientEngine
 		this.playerdata.rotateTo(x, 180.0F, true);
 	}
 	
-	public PlayerActingMode getPlayerActingMode()
-	{
-		return this.playerActingMode;
-	}
-	
-	public boolean isBattleMode()
-	{
-		return this.playerActingMode == PlayerActingMode.BATTLE;
-	}
-	
 	public void setPlayerData(ClientPlayerData playerdata)
 	{
-		if(this.playerdata != null && this.playerdata != playerdata)
-		{
-			this.playerdata.discard();
-		}
+		if(this.playerdata != null && this.playerdata != playerdata) this.playerdata.discard();
 		this.playerdata = playerdata;
 	}
 	
 	public ClientPlayerData getPlayerData()
 	{
 		return this.playerdata;
-	}
-	
-	public static enum PlayerActingMode
-	{
-		MINING, BATTLE
 	}
 }

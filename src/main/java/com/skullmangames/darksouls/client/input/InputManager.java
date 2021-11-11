@@ -164,11 +164,11 @@ public class InputManager
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
-				ClientEngine.INSTANCE.switchToMiningMode();
+				ClientEngine.INSTANCE.switchToFirstPerson();
 			}
 			else
 			{
-				ClientEngine.INSTANCE.switchToBattleMode();
+				ClientEngine.INSTANCE.switchToThirdPerson();
 			}
 		}
 	}
@@ -324,7 +324,6 @@ public class InputManager
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
 						inputManager.keyFunctionMap.get(keybinding).accept(event.getButton(), event.getAction());
-						if (ClientEngine.INSTANCE.isBattleMode()) event.setCanceled(true);
 					}
 				}
 			}

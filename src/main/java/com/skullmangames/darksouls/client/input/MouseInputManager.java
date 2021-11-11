@@ -49,23 +49,17 @@ public class MouseInputManager extends MouseHelper
 
 	        this.accumulatedDX = 0.0D;
 	        this.accumulatedDY = 0.0D;
-	        int i = 1;
-	        if (this.minecraft.options.invertYMouse)
-	        {
-	           i = -1;
-	        }
+	        int i = this.minecraft.options.invertYMouse ? -1 : 1;
 
 	        this.minecraft.getTutorial().onMouse(d2, d3);
 	        if (this.minecraft.player != null)
 	        {
-	        	if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
+	        	if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON
+	        			|| ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}
-	        	else
-	        	{
-	        		this.camera.setPivotRot((float)d2, (float)d3 * i);
-	        	}
+	        	else this.camera.setPivotRot((float)d2, (float)d3 * i);
 	        }
 
 	     }

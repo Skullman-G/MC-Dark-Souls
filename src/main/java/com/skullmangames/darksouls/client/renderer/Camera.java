@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.client.renderer;
 
+import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -25,7 +26,7 @@ public class Camera extends ActiveRenderInfo
 	    
 	    this.setRotation(entity.getViewYRot(partialTick), entity.getViewXRot(partialTick));
 	    this.setPosition(MathHelper.lerp((double)partialTick, entity.xo, entity.getX()), MathHelper.lerp((double)partialTick, entity.yo, entity.getY()) + (double)MathHelper.lerp(partialTick, this.eyeHeightOld, this.eyeHeight), MathHelper.lerp((double)partialTick, entity.zo, entity.getZ()));
-	    if (detached)
+	    if (detached && !ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 	    {
 	    	this.setRotation(this.pivotRot.x, this.pivotRot.y);
 	    	this.move(-this.getMaxZoom(4.0D), 0.0D, 0.0D);

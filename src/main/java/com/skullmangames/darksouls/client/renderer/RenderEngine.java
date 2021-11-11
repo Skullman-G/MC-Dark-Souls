@@ -264,7 +264,6 @@ public class RenderEngine
 				if (livingentity instanceof ClientPlayerEntity)
 				{
 					if (event.getPartialRenderTick() == 1.0F) return;
-					else if (!ClientEngine.INSTANCE.isBattleMode() && DarkSouls.CLIENT_INGAME_CONFIG.filterAnimation.getValue()) return;
 				}
 				
 				LivingData<?> entitydata = (LivingData<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);

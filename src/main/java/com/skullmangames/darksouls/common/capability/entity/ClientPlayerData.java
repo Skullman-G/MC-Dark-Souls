@@ -42,8 +42,8 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		super.onEntityJoinWorld(entityIn);
 		
-		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientEngine.INSTANCE.switchToBattleMode();
-		else ClientEngine.INSTANCE.switchToMiningMode();
+		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientEngine.INSTANCE.switchToThirdPerson();
+		else ClientEngine.INSTANCE.switchToFirstPerson();
 	}
 	
 	@Override
