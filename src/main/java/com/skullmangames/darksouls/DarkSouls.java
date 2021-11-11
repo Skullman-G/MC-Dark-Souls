@@ -129,15 +129,10 @@ public class DarkSouls
     	RecipeSerializerInit.RECIPE_SERIALIZERS.register(bus);
     	Particles.PARTICLES.register(bus);
     	
-    	System.out.print("\nkoko");
     	forgeBus.register(this);
-        System.out.print("\nkiki");
         forgeBus.register(EntityEvents.class);
-        System.out.print("\nkaka");
         forgeBus.register(CapabilityEvent.class);
-        System.out.print("\npipi");
         forgeBus.register(PlayerEvents.class);
-        System.out.print("\npopo");
         
         ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
         ConfigManager.INGAME_CONFIG.populateDefaultValues();
@@ -218,7 +213,7 @@ public class DarkSouls
     		event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_UNDEAD_ASYLUM);
     	}
     	
-    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 50, 1, 1));
+    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 20, 1, 1));
     }
     
     private static Method GETCODEC_METHOD;

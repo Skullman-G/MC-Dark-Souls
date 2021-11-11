@@ -85,9 +85,9 @@ public class BaseLayer
 			play.onFinish(entitydata, animationPlayer.isEnd());
 		}
 
-		if (nextPlaying != null)
+		if (this.nextPlaying != null)
 		{
-			nextPlaying.onFinish(entitydata, false);
+			this.nextPlaying.onFinish(entitydata, false);
 		}
 	}
 }

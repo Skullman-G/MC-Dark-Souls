@@ -23,8 +23,10 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -102,10 +104,11 @@ public class InputManager
 
 	public boolean playerCanExecuteSkill(EntityState playerState)
 	{
-		return this.player.isCreative()
-				|| (!this.player.isSpectator()
+		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
-				&& this.playerdata.getStamina() >= 3.0F);
+				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
+				&& !this.player.isInWater()
+				&& this.player.isOnGround();
 	}
 	
 	private void toggleRenderCollision(int key, int action)
@@ -195,6 +198,17 @@ public class InputManager
 		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
 	
+	private boolean playerCanSprint()
+	{
+		Vector2f vector2f = this.player.input.getMoveVector();
+		return (this.player.isOnGround() || this.player.isUnderWater())
+				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
+				&& !this.player.isSprinting()
+				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F || this.player.abilities.mayfly
+				&& !this.player.isUsingItem() && !this.player.hasEffect(Effects.BLINDNESS)
+				&& vector2f.x != 0.0F || vector2f.y != 0.0F;
+	}
+	
 	private void handleSprintAction(EntityState playerState)
 	{
 		if (!this.sprintToggle) return;
@@ -202,7 +216,7 @@ public class InputManager
 		{
 			this.sprintPressCounter++;
 			
-			if (this.player.getDeltaMovement().x != 0.0D && this.player.getDeltaMovement().y != 0.0D && this.sprintPressCounter >= 5) this.player.setSprinting(true);
+			if (this.playerCanSprint()) this.player.setSprinting(true);
 			return;
 		}
 		

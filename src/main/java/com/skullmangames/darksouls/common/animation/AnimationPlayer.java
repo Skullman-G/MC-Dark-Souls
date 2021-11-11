@@ -25,34 +25,34 @@ public class AnimationPlayer
 	
 	public void update(float updateTime)
 	{
-		prevElapsedTime = elapsedTime;
-		elapsedTime += updateTime;
+		this.prevElapsedTime = this.elapsedTime;
+		this.elapsedTime += updateTime;
 
-		if (elapsedTime >= play.getTotalTime())
+		if (this.elapsedTime >= this.play.getTotalTime())
 		{
-			if (play.isRepeat())
+			if (this.play.isRepeat())
 			{
-				prevElapsedTime = 0;
-				elapsedTime %= play.getTotalTime();
+				this.prevElapsedTime = 0;
+				this.elapsedTime = (this.elapsedTime % this.play.getTotalTime()) + this.play.getStartingTime();
 			}
 			else
 			{
-				exceedTime = elapsedTime % play.getTotalTime();
-				elapsedTime = play.getTotalTime();
-				isEnd = true;
+				this.exceedTime = this.elapsedTime % this.play.getTotalTime();
+				this.elapsedTime = this.play.getTotalTime();
+				this.isEnd = true;
 			}
 		}
-		else if (elapsedTime < 0)
+		else if (this.elapsedTime < 0)
 		{
-			if (play.isRepeat())
+			if (this.play.isRepeat())
 			{
-				prevElapsedTime = play.getTotalTime();
-				elapsedTime = play.getTotalTime() + elapsedTime;
+				this.prevElapsedTime = this.play.getTotalTime();
+				this.elapsedTime = this.play.getTotalTime() + this.elapsedTime;
 			}
 			else
 			{
-				elapsedTime = 0;
-				isEnd = true;
+				this.elapsedTime = 0;
+				this.isEnd = true;
 			}
 		}
 	}

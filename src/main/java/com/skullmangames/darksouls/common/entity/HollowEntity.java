@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.skullmangames.darksouls.core.init.ItemInit;
 import com.skullmangames.darksouls.core.init.SoundEvents;
-
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -22,7 +21,6 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -69,7 +67,6 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	    this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 	    
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, AsylumDemonEntity.class, 10.0F, 1.6D, 1.4D));
-	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, WitherEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(0, new AvoidEntityGoal<>(this, EnderDragonEntity.class, 10.0F, 1.6D, 1.4D));
 	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));

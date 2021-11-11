@@ -538,7 +538,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		this.getClientAnimator().resetMixMotion();
 	}
 	
-	public void reserverAnimationSynchronize(StaticAnimation animation)
+	public void reserveAnimationSynchronize(StaticAnimation animation)
 	{
 		this.animator.reserveAnimation(animation);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(animation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);

@@ -17,6 +17,7 @@ public class DynamicAnimation
 	protected final boolean isRepeat;
 	protected final float convertTime;
 	protected float totalTime;
+	protected float startingTime = 0.0F;
 
 	public DynamicAnimation()
 	{
@@ -105,23 +106,33 @@ public class DynamicAnimation
 		return 1.0F;
 	}
 
-	public void setTotalTime(float totalTime)
+	public void setTotalTime(float value)
 	{
-		this.totalTime = totalTime;
+		this.totalTime = value;
 	}
 
 	public float getTotalTime()
 	{
-		return totalTime - 0.001F;
+		return this.totalTime - 0.001F;
 	}
 
 	public float getConvertTime()
 	{
-		return convertTime;
+		return this.convertTime;
 	}
 
 	public boolean isRepeat()
 	{
-		return isRepeat;
+		return this.isRepeat;
+	}
+	
+	public void setStartingTime(float value)
+	{
+		this.startingTime = value;
+	}
+	
+	public float getStartingTime()
+	{
+		return this.startingTime;
 	}
 }

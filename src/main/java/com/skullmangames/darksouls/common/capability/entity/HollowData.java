@@ -44,15 +44,9 @@ public class HollowData extends BipedMobData<HollowEntity>
 		
 		if (!this.isClientSide())
 		{
-			if (!this.orgEntity.canPickUpLoot())
-			{
-				this.orgEntity.setCanPickUpLoot(isArmed());
-			}
+			if (!this.orgEntity.canPickUpLoot()) this.orgEntity.setCanPickUpLoot(this.isArmed());
 		}
-		else
-		{
-			ModNetworkManager.sendToServer(new CTSReqSpawnInfo(this.orgEntity.getId()));
-		}
+		else ModNetworkManager.sendToServer(new CTSReqSpawnInfo(this.orgEntity.getId()));
 	}
 	
 	@Override
@@ -71,6 +65,8 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void updateMotion()
 	{
 		super.commonCreatureUpdateMotion();
+		if (this.currentMotion != LivingMotion.IDLE) return;
+		this.currentMotion = LivingMotion.POSING;
 	}
 	
 	@Override
@@ -98,8 +94,8 @@ public class HollowData extends BipedMobData<HollowEntity>
 	@Override
 	public void setAIAsArmed()
 	{
-		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, 4.0D, true, Animations.HOLLOW_ATTACKS, Animations.HOLLOW_JUMP_ATTACK));
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, 4.0D, true, Animations.HOLLOW_ATTACKS, Animations.HOLLOW_JUMP_ATTACK));
 	}
 	
 	@Override

@@ -12,15 +12,15 @@ public class LinkAnimation extends DynamicAnimation
 	{
 		if(!isEnd)
 		{
-			nextAnimation.onFinish(entity, isEnd);
+			this.nextAnimation.onFinish(entity, isEnd);
 		}
 		else
 		{
-			if (startsAt > 0)
+			if (this.startsAt > 0)
 			{
 				entity.getAnimator().getPlayer().setElapsedTime(startsAt);
 				entity.getAnimator().getPlayer().checkNoResetMark();
-				startsAt = 0;
+				this.startsAt = 0;
 			}
 		}
 	}
@@ -28,7 +28,7 @@ public class LinkAnimation extends DynamicAnimation
 	@Override
 	public LivingData.EntityState getState(float time)
 	{
-		return nextAnimation.getState(0.0F);
+		return this.nextAnimation.getState(0.0F);
 	}
 
 	@Override

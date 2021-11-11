@@ -238,9 +238,9 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	}
 	
 	@Override
-	public void reserverAnimationSynchronize(StaticAnimation animation)
+	public void reserveAnimationSynchronize(StaticAnimation animation)
 	{
-		super.reserverAnimationSynchronize(animation);
+		super.reserveAnimationSynchronize(animation);
 		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
 	

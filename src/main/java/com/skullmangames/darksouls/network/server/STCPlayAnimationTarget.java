@@ -30,14 +30,14 @@ public class STCPlayAnimationTarget extends STCPlayAnimation
 		this.targetId = targetId;
 	}
 	
-	@SuppressWarnings("resource")
 	@Override
 	public void onArrive()
 	{
 		super.onArrive();
 		
-		Entity entity = Minecraft.getInstance().player.level.getEntity(entityId);
-		Entity target = Minecraft.getInstance().player.level.getEntity(targetId);
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity entity = minecraft.player.level.getEntity(entityId);
+		Entity target = minecraft.player.level.getEntity(targetId);
 		
 		if(entity instanceof MobEntity && target instanceof LivingEntity)
 		{

@@ -232,10 +232,10 @@ public final class Animations
 										.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1)
 							}
 			};
-			
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(7005, 0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped")
 																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(7006, 0.2F, "hollow/deflected", "biped");
+	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(7024, 0.2F, true, "hollow/breakdown", "biped", true);
 	
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
