@@ -107,7 +107,8 @@ public class InputManager
 				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isInWater()
 				&& this.player.isOnGround()
-				&& !this.player.isUsingItem();
+				&& !this.player.isUsingItem()
+				&& this.minecraft.screen == null;
 	}
 	
 	private void toggleRenderCollision(int key, int action)
