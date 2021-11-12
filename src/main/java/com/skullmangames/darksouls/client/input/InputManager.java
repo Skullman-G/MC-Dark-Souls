@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.client.ClientEngine;
@@ -36,7 +35,6 @@ import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -108,7 +106,8 @@ public class InputManager
 				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isInWater()
-				&& this.player.isOnGround();
+				&& this.player.isOnGround()
+				&& !this.player.isUsingItem();
 	}
 	
 	private void toggleRenderCollision(int key, int action)
@@ -201,9 +200,10 @@ public class InputManager
 		return (this.player.isOnGround() || this.player.isUnderWater())
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
-				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F || this.player.abilities.mayfly
-				&& !this.player.isUsingItem() && !this.player.hasEffect(Effects.BLINDNESS)
-				&& vector2f.x != 0.0F || vector2f.y != 0.0F;
+				&& ((float)this.player.getFoodData().getFoodLevel() > 6.0F || this.player.abilities.mayfly)
+				&& !this.player.isUsingItem()
+				&& !this.player.hasEffect(Effects.BLINDNESS)
+				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
 	}
 	
 	private void handleSprintAction(EntityState playerState)
