@@ -26,10 +26,23 @@ public class Camera extends ActiveRenderInfo
 	    
 	    this.setRotation(entity.getViewYRot(partialTick), entity.getViewXRot(partialTick));
 	    this.setPosition(MathHelper.lerp((double)partialTick, entity.xo, entity.getX()), MathHelper.lerp((double)partialTick, entity.yo, entity.getY()) + (double)MathHelper.lerp(partialTick, this.eyeHeightOld, this.eyeHeight), MathHelper.lerp((double)partialTick, entity.zo, entity.getZ()));
-	    if (detached && !ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+	    
+	    if (detached)
 	    {
-	    	this.setRotation(this.pivotRot.x, this.pivotRot.y);
-	    	this.move(-this.getMaxZoom(4.0D), 0.0D, 0.0D);
+	    	if (ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+	    	{
+	    		this.move(-this.getMaxZoom(4.0D), 0.0D, -1.25D);
+	    		
+	    		this.pivotRotOld.y = entity.xRotO;
+	    		this.pivotRotOld.x = entity.yRotO;
+	    		this.pivotRot.y = entity.xRot;
+	    		this.pivotRot.x = entity.yRot;
+	    	}
+	    	else
+	    	{
+	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
+		    	this.move(-this.getMaxZoom(4.0D), 0.0D, 0.0D);
+	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
 	    {

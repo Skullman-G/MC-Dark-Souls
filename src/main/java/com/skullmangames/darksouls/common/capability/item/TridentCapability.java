@@ -39,37 +39,44 @@ public class TridentCapability extends RangedWeaponCapability
 	}
 	
 	@Override
-	public WieldStyle getStyle(LivingData<?> entitydata) {
+	public WieldStyle getStyle(LivingData<?> entitydata)
+	{
 		return WieldStyle.ONE_HAND;
 	}
 	
 	@Override
-	protected void registerAttribute() {
+	protected void registerAttribute()
+	{
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(2.25D)));
 	}
 	
 	@Override
-	public SoundEvent getHitSound() {
+	public SoundEvent getHitSound()
+	{
 		return null;
 	}
 	
 	@Override
-	public HitParticleType getHitParticle() {
+	public HitParticleType getHitParticle()
+	{
 		return null;
 	}
 
 	@Override
-	public Collider getWeaponCollider() {
+	public Collider getWeaponCollider()
+	{
 		return Colliders.spearNarrow;
 	}
 	
 	@Override
-	public List<StaticAnimation> getMountAttackMotion() {
+	public List<StaticAnimation> getMountAttackMotion()
+	{
 		return mountAttackMotion;
 	}
 	
 	@Override
-	public final HandProperty getHandProperty() {
+	public final HandProperty getHandProperty()
+	{
 		return HandProperty.MAINHAND_ONLY;
 	}
 }

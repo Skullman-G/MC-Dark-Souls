@@ -133,10 +133,7 @@ public class InputManager
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
 
-			if (player.getTicksUsingItem() == 0)
-			{
-				if (!rightHandToggle) rightHandToggle = true;
-			}
+			if (player.getTicksUsingItem() == 0 && !rightHandToggle) rightHandToggle = true;
 		}
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
@@ -278,10 +275,7 @@ public class InputManager
 		{
 			return GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(), key.getKey().getValue()) > 0;
 		}
-		else
-		{
-			return false;
-		}
+		else return false;
 	}
 	
 	public void setKeyBind(KeyBinding key, boolean setter)
@@ -296,21 +290,11 @@ public class InputManager
 		private static InputManager inputManager;
 		private static Minecraft minecraft = Minecraft.getInstance();
 		
-		// I'm using this only to cancel attacks
+		// I'm using this only to cancel vanilla attacks
 		@SubscribeEvent
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
 			if (event.isAttack() && minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY) event.setCanceled(true);
-		}
-		
-		@SubscribeEvent
-		public static void onItemRightClick(RightClickItem event)
-		{
-			if (event.getHand() == Hand.OFF_HAND) return;
-			CapabilityItem cap = inputManager.playerdata.getHeldItemCapability(event.getHand());
-            if (!(cap instanceof IShield)) return;
-            
-            event.setCanceled(true);
 		}
 		
 		@SubscribeEvent
@@ -394,7 +378,8 @@ public class InputManager
 				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
-				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
+				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON
+						&& !ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;

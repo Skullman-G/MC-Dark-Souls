@@ -62,14 +62,6 @@ public class HollowData extends BipedMobData<HollowEntity>
 	}
 	
 	@Override
-	public void updateMotion()
-	{
-		super.commonCreatureUpdateMotion();
-		if (this.currentMotion != LivingMotion.IDLE) return;
-		this.currentMotion = LivingMotion.POSING;
-	}
-	
-	@Override
 	public STCMobInitialSetting sendInitialInformationToClient()
 	{
 		STCMobInitialSetting packet = new STCMobInitialSetting(this.orgEntity.getId());
@@ -102,5 +94,11 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public <M extends Model>M getEntityModel(Models<M> modelDB)
 	{
 		return modelDB.ENTITY_BIPED_64_32_TEX;
+	}
+
+	@Override
+	public void updateMotion()
+	{
+		super.commonCreatureUpdateMotion();
 	}
 }

@@ -68,7 +68,8 @@ public abstract class EntityIndicator extends ModIngameGui
 		PublicMatrix4f finalMatrix = new PublicMatrix4f();
 		finalMatrix.translate(new Vector3f(-posX, posY, -posZ));
 		matStackIn.popPose();
-		if (lockRotation) {
+		if (lockRotation)
+		{
 			finalMatrix.m00 = viewMatrix.m00;
 			finalMatrix.m01 = viewMatrix.m10;
 			finalMatrix.m02 = viewMatrix.m20;
@@ -80,9 +81,7 @@ public abstract class EntityIndicator extends ModIngameGui
 			finalMatrix.m22 = viewMatrix.m22;
 		}
 		PublicMatrix4f.mul(viewMatrix, finalMatrix, finalMatrix);
-		if(setupProjection) {
-			PublicMatrix4f.mul(ClientEngine.INSTANCE.renderEngine.getCurrentProjectionMatrix(), finalMatrix, finalMatrix);
-		}
+		if(setupProjection) PublicMatrix4f.mul(ClientEngine.INSTANCE.renderEngine.getCurrentProjectionMatrix(), finalMatrix, finalMatrix);
 		
 		return PublicMatrix4f.exportMatrix(finalMatrix);
 	}

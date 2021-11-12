@@ -101,50 +101,50 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 				}
 			}
 		}
-		else if (orgEntity.isFallFlying())
+		else if (this.orgEntity.isFallFlying())
 		{
-			currentMotion = LivingMotion.FLYING;
+			this.currentMotion = LivingMotion.FLYING;
 		}
-		else if (orgEntity.getControllingPassenger() != null)
+		else if (this.orgEntity.getControllingPassenger() != null)
 		{
-			currentMotion = LivingMotion.MOUNT;
+			this.currentMotion = LivingMotion.MOUNT;
 		}
-		else if (orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
+		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{
-			currentMotion = LivingMotion.SWIMMING;
+			this.currentMotion = LivingMotion.SWIMMING;
 		}
 		else
 		{
 			AnimatorClient animator = getClientAnimator();
 
-			if (orgEntity.isSwimming() && orgEntity.getDeltaMovement().y < -0.005)
+			if (this.orgEntity.isSwimming() && this.orgEntity.getDeltaMovement().y < -0.005)
 			{
-				currentMotion = LivingMotion.FLOATING;
+				this.currentMotion = LivingMotion.FLOATING;
 			}
-			else if(orgEntity.getDeltaMovement().y < -0.55F)
+			else if(this.orgEntity.getDeltaMovement().y < -0.55F)
 			{
-				currentMotion = LivingMotion.FALL;
+				this.currentMotion = LivingMotion.FALL;
 			}
-			else if (orgEntity.animationSpeed > 0.01F)
+			else if (this.orgEntity.animationSpeed > 0.01F)
 			{
-				if(orgEntity.isCrouching())
+				if(this.orgEntity.isCrouching())
 				{
-					currentMotion = LivingMotion.SNEAKING;
+					this.currentMotion = LivingMotion.SNEAKING;
 				}
-				else if (orgEntity.isSprinting())
+				else if (this.orgEntity.isSprinting())
 				{
-					currentMotion = LivingMotion.RUNNING;
+					this.currentMotion = LivingMotion.RUNNING;
 				}
 				else
 				{
-					currentMotion = LivingMotion.WALKING;
+					this.currentMotion = LivingMotion.WALKING;
 				}
 
-				if (orgEntity.moveDist > 0)
+				if (this.orgEntity.moveDist > 0)
 				{
 					animator.setReverse(false, this.currentMotion);
 				}
-				else if (orgEntity.moveDist < 0)
+				else if (this.orgEntity.moveDist < 0)
 				{
 					animator.setReverse(true, this.currentMotion);
 				}
@@ -152,18 +152,18 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			else
 			{
 				animator.setReverse(false, this.currentMotion);
-				if (orgEntity.isCrouching())
+				if (this.orgEntity.isCrouching())
 				{
-					currentMotion = LivingMotion.KNEELING;
+					this.currentMotion = LivingMotion.KNEELING;
 				}
 				else
 				{
-					currentMotion = LivingMotion.IDLE;
+					this.currentMotion = LivingMotion.IDLE;
 				}
 			}
 		}
 
-		if (orgEntity.getUseItemRemainingTicks() > 0)
+		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
 			UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 			
@@ -192,10 +192,10 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		}
 		else
 		{
-			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) currentMixMotion = LivingMotion.AIMING;
+			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) this.currentMixMotion = LivingMotion.AIMING;
 			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
 			else if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
-			else currentMixMotion = LivingMotion.NONE;
+			else this.currentMixMotion = LivingMotion.NONE;
 		}
 	}
 	

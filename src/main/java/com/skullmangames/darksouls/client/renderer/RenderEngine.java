@@ -30,6 +30,7 @@ import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.EntityTypeInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -187,28 +188,32 @@ public class RenderEngine
 		zoomOutTimer = timer;
 	}
 	
-	private void updateCameraInfo(CameraSetup event, PointOfView pov, double partialTicks)
+	private void updateCamera(CameraSetup event, PointOfView pov, double partialTicks)
 	{
-		ActiveRenderInfo info = event.getInfo();
+		ActiveRenderInfo camera = event.getInfo();
 		Entity entity = minecraft.getCameraEntity();
-		Vector3d vector = info.getPosition();
-		double totalX = vector.x();
-		double totalY = vector.y();
-		double totalZ = vector.z();
-		if (pov == PointOfView.THIRD_PERSON_BACK && zoomCount > 0)
+		
+		Vector3d camPos = camera.getPosition();
+		
+		if (pov == PointOfView.THIRD_PERSON_BACK && zoomCount > 0 && this.aiming)
 		{
-			double posX = info.getPosition().x;
-			double posY = info.getPosition().y;
-			double posZ = info.getPosition().z;
+			double posX = camPos.x;
+			double posY = camPos.y;
+			double posZ = camPos.z;
+			
 			double entityPosX = entity.xOld + (entity.getX() - entity.xOld) * partialTicks;
 			double entityPosY = entity.yOld + (entity.getY() - entity.yOld) * partialTicks + entity.getEyeHeight();
 			double entityPosZ = entity.zOld + (entity.getZ() - entity.zOld) * partialTicks;
-			float intpol = pov == PointOfView.THIRD_PERSON_BACK ? ((float) zoomCount / (float) zoomMaxCount) : 0;
-			Vector3f interpolatedCorrection = new Vector3f(AIMING_CORRECTION.x() * intpol, AIMING_CORRECTION.y() * intpol, AIMING_CORRECTION.z() * intpol);
+			
+			float interpolation = (float)zoomCount / (float)zoomMaxCount;
+			Vector3f interpolatedCorrection = Vector3fHelper.scale(AIMING_CORRECTION, interpolation);
 			PublicMatrix4f rotationMatrix = ClientEngine.INSTANCE.getPlayerData().getMatrix((float)partialTicks);
-			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F), null);
+			Vector4f scaleVec = new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F);
+			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, scaleVec);
+			
 			double d3 = Math.sqrt((rotateVec.x() * rotateVec.x()) + (rotateVec.y() * rotateVec.y()) + (rotateVec.z() * rotateVec.z()));
 			double smallest = d3;
+			
 			double d00 = posX + rotateVec.x();
 			double d11 = posY - rotateVec.y();
 			double d22 = posZ + rotateVec.z();
@@ -225,20 +230,11 @@ public class RenderEngine
 				if (raytraceresult != null)
 				{
 					double d7 = raytraceresult.getLocation().distanceTo(new Vector3d(entityPosX, entityPosY, entityPosZ));
-					if (d7 < smallest)
-					{
-						smallest = d7;
-					}
+					if (d7 < smallest) smallest = d7;
 				}
 			}
-			
-			float dist = d3 == 0 ? 0 : (float) (smallest / d3);
-			totalX += rotateVec.x() * dist;
-			totalY -= rotateVec.y() * dist;
-			totalZ += rotateVec.z() * dist;
 		}
 		
-		info.setPosition(totalX, totalY, totalZ);
 		FloatBuffer fb = GLAllocation.createFloatBuffer(16);
 		GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, fb);
 		this.projectionMatrix.load(fb.asReadOnlyBuffer());
@@ -261,10 +257,7 @@ public class RenderEngine
 			LivingEntity livingentity = event.getEntity();
 			if (renderEngine.isEntityContained(livingentity))
 			{
-				if (livingentity instanceof ClientPlayerEntity)
-				{
-					if (event.getPartialRenderTick() == 1.0F) return;
-				}
+				if (livingentity instanceof ClientPlayerEntity && event.getPartialRenderTick() == 1.0F) return;
 				
 				LivingData<?> entitydata = (LivingData<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entitydata != null)
@@ -301,7 +294,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void cameraSetupEvent(CameraSetup event)
 		{
-			renderEngine.updateCameraInfo(event, minecraft.options.getCameraType(), event.getRenderPartialTicks());
+			renderEngine.updateCamera(event, minecraft.options.getCameraType(), event.getRenderPartialTicks());
 			if (renderEngine.zoomCount > 0)
 			{
 				if (renderEngine.zoomOutTimer > 0)
@@ -330,7 +323,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderWorldLast(RenderWorldLastEvent event)
 		{
-			if (renderEngine.zoomCount > 0 && minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
+			if (renderEngine.zoomCount > 0 && minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK && renderEngine.aiming)
 			{
 				renderEngine.aimHelper.doRender(event.getMatrixStack(), event.getPartialTicks());
 			}

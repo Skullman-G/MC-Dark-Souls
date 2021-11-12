@@ -158,6 +158,11 @@ public class PublicMatrix4f
 		return dest;
 	}
 	
+	public static Vector4f transform(PublicMatrix4f left, Vector4f right)
+	{
+		return transform(left, right, new Vector4f());
+	}
+	
 	public static Vector4f transform(PublicMatrix4f left, Vector4f right, Vector4f dest)
 	{
 		if (dest == null)
