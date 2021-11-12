@@ -156,13 +156,13 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 				Formulars.getAttackSpeedPenalty(this.getWeight(), offWeaponSpeed, this), Operation.ADDITION));
 	}
 	
-	public void modifiLivingMotions(CapabilityItem mainhand)
+	public void modifiLivingMotions(CapabilityItem itemCap)
 	{
 		this.resetModifiedLivingMotions();
 
-		if (mainhand != null)
+		if (itemCap != null)
 		{
-			Map<LivingMotion, StaticAnimation> motionChanger = mainhand.getLivingMotionChanges(this);
+			Map<LivingMotion, StaticAnimation> motionChanger = itemCap.getLivingMotionChanges(this);
 			if (motionChanger != null)
 			{
 				List<LivingMotion> motions = Lists.<LivingMotion>newArrayList();
