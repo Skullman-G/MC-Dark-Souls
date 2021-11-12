@@ -294,7 +294,7 @@ public class InputManager
 			
 			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
 					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
-					&& !minecraft.options.getCameraType().isFirstPerson())) event.setCanceled(true);
+					&& !minecraft.options.getCameraType().isFirstPerson() || inputManager.playerdata.getHeldWeaponCapability(Hand.MAIN_HAND) != null)) event.setCanceled(true);
 		}
 		
 		@SubscribeEvent

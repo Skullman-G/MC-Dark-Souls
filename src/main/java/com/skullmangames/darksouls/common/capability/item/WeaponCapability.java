@@ -148,8 +148,8 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
 	{
-		if (!(this.orgItem instanceof WeaponItem)) return null;
-		if (!((WeaponItem)this.orgItem).meetRequirements(playerdata.getOriginalEntity())) return this.getWeakAttack();
+		if (this.orgItem instanceof WeaponItem
+				&& !((WeaponItem)this.orgItem).meetRequirements(playerdata.getOriginalEntity())) return this.getWeakAttack();
 		
 		switch (type)
 		{
