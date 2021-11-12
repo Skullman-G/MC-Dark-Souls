@@ -126,7 +126,7 @@ public final class Animations
 					new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3", "biped")
 							.addProperty(DamageProperty.PARTICLE, null)	
 			};
-	public static final StaticAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped")
+	public static final AttackAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped")
 															.addProperty(DamageProperty.PARTICLE, null)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	

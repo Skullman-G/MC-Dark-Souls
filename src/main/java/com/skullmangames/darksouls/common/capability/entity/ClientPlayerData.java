@@ -8,6 +8,10 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCapability.Attac
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -17,6 +21,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -105,9 +110,32 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	
 	public void performAttack(AttackType type)
 	{
-		WeaponCapability weapon = this.getHeldWeaponCapability(Hand.MAIN_HAND);
-		if (weapon == null) return;
-		AttackAnimation animation = weapon.getAttack(type, this);
+		AttackAnimation animation = null;
+		if (this.minecraft.options.getCameraType() != PointOfView.FIRST_PERSON && this.orgEntity.getMainHandItem().getItem() == Items.AIR)
+		{
+			switch (type)
+			{
+				default:
+				case LIGHT:
+					List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.FIST_LIGHT_ATTACK));
+					int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+					if (combo + 1 < animations.size()) combo += 1;
+					else combo = 0;
+					animation = animations.get(combo);
+					break;
+					
+				case DASH:
+					animation = Animations.FIST_DASH_ATTACK;
+					break;
+			}
+		}
+		else
+		{
+			WeaponCapability weapon = this.getHeldWeaponCapability(Hand.MAIN_HAND);
+			if (weapon == null) return;
+			animation = weapon.getAttack(type, this);
+		}
+		
 		if (animation == null) return;
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));

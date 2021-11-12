@@ -198,10 +198,10 @@ public class InputManager
 	private boolean playerCanSprint()
 	{
 		Vector2f vector2f = this.player.input.getMoveVector();
-		return (this.player.isOnGround() || this.player.isUnderWater())
+		return (this.player.isOnGround() || this.player.isUnderWater() || this.player.abilities.mayfly)
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
-				&& ((float)this.player.getFoodData().getFoodLevel() > 6.0F || this.player.abilities.mayfly)
+				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
 				&& !this.player.isUsingItem()
 				&& !this.player.hasEffect(Effects.BLINDNESS)
 				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
