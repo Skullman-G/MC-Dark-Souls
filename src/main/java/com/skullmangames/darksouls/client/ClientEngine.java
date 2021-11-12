@@ -41,11 +41,13 @@ public class ClientEngine
 	public void switchToFirstPerson()
 	{
 		this.options.setCameraType(PointOfView.FIRST_PERSON);
+		this.playerdata.getOriginalEntity().abilities.mayBuild = true;
 	}
 	
 	public void switchToThirdPerson()
 	{
 		this.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+		this.playerdata.getOriginalEntity().abilities.mayBuild = false;
 
 		this.playerdata.getOriginalEntity().xRot = 0.0F;
 		this.playerdata.getOriginalEntity().xRotO = 0.0F;

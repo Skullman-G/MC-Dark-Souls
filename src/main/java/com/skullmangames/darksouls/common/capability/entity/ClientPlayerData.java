@@ -71,14 +71,13 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		super.updateOnClient();
 		
-		Minecraft minecraft = Minecraft.getInstance();
-		RayTraceResult rayResult = minecraft.hitResult;
+		RayTraceResult rayResult = this.minecraft.hitResult;
 
 		if (rayResult.getType() == RayTraceResult.Type.ENTITY)
 		{
-			Entity hit = ((EntityRayTraceResult) rayResult).getEntity();
+			Entity hit = ((EntityRayTraceResult)rayResult).getEntity();
 			if (hit instanceof LivingEntity)
-				this.rayTarget = (LivingEntity) hit;
+				this.rayTarget = (LivingEntity)hit;
 		}
 
 		if (this.rayTarget != null)
@@ -111,7 +110,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	public void performAttack(AttackType type)
 	{
 		AttackAnimation animation = null;
-		if (this.minecraft.options.getCameraType() != PointOfView.FIRST_PERSON && this.orgEntity.getMainHandItem().getItem() == Items.AIR)
+		if (!this.minecraft.options.getCameraType().isFirstPerson() && this.orgEntity.getMainHandItem().getItem() == Items.AIR)
 		{
 			switch (type)
 			{

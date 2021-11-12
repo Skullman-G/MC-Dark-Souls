@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.client.ClientEngine;
 import net.minecraft.client.GameSettings;
@@ -133,7 +132,7 @@ public class InputManager
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
 
-			if (player.getTicksUsingItem() == 0 && !rightHandToggle) rightHandToggle = true;
+			if (player.getTicksUsingItem() == 0 && !rightHandToggle) this.rightHandToggle = true;
 		}
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
@@ -254,12 +253,8 @@ public class InputManager
 	{
 		if (this.playerCanExecuteSkill(playerState))
 		{
-			WeaponCapability weapon = playerdata.getHeldWeaponCapability(Hand.MAIN_HAND);
-			if(weapon != null)
-			{
-				if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
-				else this.playerdata.performAttack(AttackType.LIGHT);
-			}
+			if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
+			else this.playerdata.performAttack(AttackType.LIGHT);
 		}
 		
 		this.rightHandToggle = false;
@@ -295,7 +290,11 @@ public class InputManager
 		@SubscribeEvent
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
-			if (event.isAttack() && minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY) event.setCanceled(true);
+			if (!event.isAttack()) return;
+			
+			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
+					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
+					&& !minecraft.options.getCameraType().isFirstPerson())) event.setCanceled(true);
 		}
 		
 		@SubscribeEvent
