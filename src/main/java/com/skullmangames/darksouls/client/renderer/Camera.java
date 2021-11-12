@@ -42,6 +42,9 @@ public class Camera extends ActiveRenderInfo
 	    	{
 	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
 		    	this.move(-this.getMaxZoom(4.0D), 0.0D, 0.0D);
+		    	
+		    	entity.xRotO = 0;
+		    	entity.xRot = 0;
 	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
