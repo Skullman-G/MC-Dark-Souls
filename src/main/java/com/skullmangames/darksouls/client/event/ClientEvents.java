@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.client.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
@@ -78,6 +79,7 @@ public class ClientEvents
         DarkSoulsSpawnEggItem.initSpawnEggs();
     }
 	
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{
@@ -98,6 +100,14 @@ public class ClientEvents
 				event.setCanceled(true);
 				GameOverlayManager.renderStamina(window, matStack);
 				break;
+				
+			case CROSSHAIRS:
+				event.setCanceled(true);
+				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+		        RenderSystem.enableBlend();
+		        RenderSystem.enableAlphaTest();
+		        GameOverlayManager.renderCrosshair(window, matStack);
+		        break;
 				
 			case ALL:
 				GameOverlayManager.renderAdditional(window, matStack);

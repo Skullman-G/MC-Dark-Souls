@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.gui;
 import java.awt.Color;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
@@ -11,10 +12,21 @@ import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Timer;
 
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.settings.AttackIndicatorStatus;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.GameType;
+import net.minecraft.world.World;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class GameOverlayManager
@@ -41,6 +53,72 @@ public class GameOverlayManager
 		
 		renderHumanity(window, matrixstack);
 		renderSouls(window, matrixstack);
+	}
+	
+	private static boolean canRenderCrosshairForSpectator(RayTraceResult raytraceresult)
+	{
+	      if (raytraceresult == null) return false;
+	      else if (raytraceresult.getType() == RayTraceResult.Type.ENTITY)
+	      {
+	         return ((EntityRayTraceResult)raytraceresult).getEntity() instanceof INamedContainerProvider;
+	      }
+	      else if (raytraceresult.getType() == RayTraceResult.Type.BLOCK)
+	      {
+	         BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getBlockPos();
+	         World world = minecraft.level;
+	         return world.getBlockState(blockpos).getMenuProvider(world, blockpos) != null;
+	      }
+	      else return false;
+	   }
+	
+	@SuppressWarnings("deprecation")
+	public static void renderCrosshair(MainWindow window, MatrixStack matrixstack)
+	{
+	   GameSettings gamesettings = minecraft.options;
+	   int screenWidth = window.getGuiScaledWidth();
+	   int screenHeight = window.getGuiScaledHeight();
+	   
+	   if (gamesettings.getCameraType().isFirstPerson())
+	   {
+	      if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || canRenderCrosshairForSpectator(minecraft.hitResult))
+	      {
+	         if (gamesettings.renderDebug && !gamesettings.hideGui && !minecraft.player.isReducedDebugInfo() && !gamesettings.reducedDebugInfo)
+	         {
+	            RenderSystem.pushMatrix();
+	            RenderSystem.translatef((float)(screenWidth / 2), (float)(screenHeight / 2), (float)minecraft.gui.getBlitOffset());
+	            ActiveRenderInfo activerenderinfo = minecraft.gameRenderer.getMainCamera();
+	            RenderSystem.rotatef(activerenderinfo.getXRot(), -1.0F, 0.0F, 0.0F);
+	            RenderSystem.rotatef(activerenderinfo.getYRot(), 0.0F, 1.0F, 0.0F);
+	            RenderSystem.scalef(-1.0F, -1.0F, -1.0F);
+	            RenderSystem.renderCrosshair(10);
+	            RenderSystem.popMatrix();
+	         }
+	         else
+	         {
+	            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
+	            		GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+	            minecraft.gui.blit(matrixstack, (screenWidth - 15) / 2, (screenHeight - 15) / 2, 0, 0, 15, 15);
+	            if (minecraft.options.attackIndicator == AttackIndicatorStatus.CROSSHAIR)
+	            {
+	               float f = minecraft.player.getAttackStrengthScale(0.0F);
+	               boolean flag = false;
+	               if (minecraft.crosshairPickEntity != null && minecraft.crosshairPickEntity instanceof LivingEntity && f >= 1.0F)
+	               {
+	                  flag = minecraft.player.getCurrentItemAttackStrengthDelay() > 5.0F;
+	                  flag = flag & minecraft.crosshairPickEntity.isAlive();
+	               }
+
+	               int j = screenHeight / 2 - 7 + 16;
+	               int k = screenWidth / 2 - 8;
+	               if (flag)
+	               {
+	                  minecraft.gui.blit(matrixstack, k, j, 68, 94, 16, 16);
+	               }
+	            }
+	         }
+
+	      }
+	   }
 	}
 	
 	public static void renderHumanity(MainWindow window, MatrixStack matrixstack)
