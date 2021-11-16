@@ -160,5 +160,14 @@
 	
 	"stat.darksouls.vigor": "Vigor",
 	"stat.darksouls.strength": "Strength",
-	"stat.darksouls.endurance": "Endurance"
+	"stat.darksouls.endurance": "Endurance",
+	
+	"attribute.darksouls.weight": "Weight",
+	"attribute.darksouls.stun_armor": "Stun Armor",
+	"attribute.darksouls.max_strikes": "Max Strikes",
+	"attribute.darksouls.armor_negation": "Armor Negation",
+	"attribute.darksouls.impact": "Impact",
+	"attribute.darksouls.offhand_attack_damage": "Offhand Attack Damage",
+	"attribute.darksouls.offhand_attack_speed": "Offhand Attack Speed",
+	"attribute.darksouls.max_stamina": "Max Stamina"
 }

@@ -104,7 +104,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		TileEntity tileentity = level.getBlockEntity(vertex);
 		
 		// Bonfire is not lit
-		if (!this.isLit(state) && player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		if (!state.getValue(LIT) && player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
 		{
 			// Has to hold Darksign to light bonfire
 			if (player.getItemInHand(hand).getItem() == ItemInit.DARKSIGN.get())
@@ -202,19 +202,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	@Override
 	public int getLightValue(BlockState state, IBlockReader level, BlockPos vertex)
 	{
-		if (this.isLit(state))
-		{
-			return 10;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	
-	public boolean isLit(BlockState blockstate)
-	{
-	    return blockstate.getValue(LIT);
+		return state.getValue(LIT) ? 10 : 0;
 	}
 	
 	public void setLit(World level, BlockState blockstate, BlockPos blockpos, boolean value)
@@ -263,7 +251,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos vertex, Random random)
 	{
-		if (this.isLit(state))
+		if (state.getValue(LIT))
 		{
 			if (random.nextInt(8) == 0)
 			{

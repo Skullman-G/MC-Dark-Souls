@@ -97,7 +97,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	
 	public void setLit(@Nullable PlayerEntity player, boolean value)
 	{
-		if (this.getBlock().isLit(this.getBlockState()) != value)
+		if (this.getBlockState().getValue(BonfireBlock.LIT) != value)
 		{
 			this.getBlock().setLit(this.level, this.getBlockState(), this.worldPosition, value);
 			
@@ -169,7 +169,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 			ServerWorld serverworld = (ServerWorld)this.level;
 			Random random = serverworld.random;
 			
-			if (this.needsFireKeeper && !this.hasFireKeeper && !this.getBlock().isLit(this.getBlockState()))
+			if (this.needsFireKeeper && !this.hasFireKeeper && !this.getBlockState().getValue(BonfireBlock.LIT))
 			{
 				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
 	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
@@ -192,7 +192,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 			{
 				this.ticktimer = 0;
 				
-				if (random.nextInt(10) == 1 && this.getBlock().isLit(this.getBlockState()))
+				if (random.nextInt(10) == 1 && this.getBlockState().getValue(BonfireBlock.LIT))
 				{
 					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
 			        int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);

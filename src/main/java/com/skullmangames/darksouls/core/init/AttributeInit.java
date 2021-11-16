@@ -19,20 +19,26 @@ public class AttributeInit
 {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, DarkSouls.MOD_ID);
 	
-    public static final RegistryObject<Attribute> MAX_STUN_ARMOR = ATTRIBUTES.register("stun_armor", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".stun_armor", 0.0D, 0.0D, 1024.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> WEIGHT = ATTRIBUTES.register("weight", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".weight", 0.0D, 0.0D, 1024.0).setSyncable(true));
-    public static final RegistryObject<Attribute> MAX_STRIKES = ATTRIBUTES.register("max_strikes", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".max_strikes", 1.0D, 1.0D, 1024.0).setSyncable(true));
-	public static final RegistryObject<Attribute> ARMOR_NEGATION = ATTRIBUTES.register("armor_negation", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".armor_negation", 0.0D, 0.0D, 100.0D).setSyncable(true));
-	public static final RegistryObject<Attribute> IMPACT = ATTRIBUTES.register("impact", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".impact", 0.0D, 0.0D, 1024.0).setSyncable(true));
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = ATTRIBUTES.register("offhand_attack_damage", () -> new RangedAttribute("offhand attack damage", 1.0D, 0.0D, 2048.0D));
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = ATTRIBUTES.register("offhand_attack_speed", () -> new RangedAttribute("offhand attack speed", 4.0D, 0.0D, 1024.0D).setSyncable(true));
-	public static final RegistryObject<Attribute> MAX_STAMINA = ATTRIBUTES.register("max_stamina", () -> new RangedAttribute("attribute.name." + DarkSouls.MOD_ID + ".max_stamina", 20.0D, 1.0D, 1024.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> MAX_STUN_ARMOR = registerRangedAttribute("stun_armor", 0.0D, 0.0D, 1024.0D);
+    public static final RegistryObject<Attribute> WEIGHT = registerRangedAttribute("weight", 0.0D, 0.0D, 1024.0D);
+    public static final RegistryObject<Attribute> MAX_STRIKES = registerRangedAttribute("max_strikes", 1.0D, 1.0D, 1024.0D);
+	public static final RegistryObject<Attribute> ARMOR_NEGATION = registerRangedAttribute("armor_negation", 0.0D, 0.0D, 100.0D);
+	public static final RegistryObject<Attribute> IMPACT = registerRangedAttribute("impact", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = registerRangedAttribute("offhand_attack_damage", 1.0D, 0.0D, 2048.0D);
+	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = registerRangedAttribute("offhand_attack_speed", 4.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
+	
 	public static final UUID IGNORE_DEFENCE_ID = UUID.fromString("b0a7436e-5734-11eb-ae93-0242ac130002");
 	public static final UUID HIT_AT_ONCE_ID = UUID.fromString("b0a745b2-5734-11eb-ae93-0242ac130002");
 	public static final UUID IMPACT_ID = UUID.fromString("b0a746ac-5734-11eb-ae93-0242ac130002");
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 	public static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
     
+	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
+	{
+		return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute."+DarkSouls.MOD_ID+"."+name, defaultValue, minValue, maxValue).setSyncable(true));
+	}
+	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
 	{
 		general(EntityTypeInit.HOLLOW.get(), event);
