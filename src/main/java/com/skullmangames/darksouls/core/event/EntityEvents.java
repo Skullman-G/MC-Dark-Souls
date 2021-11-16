@@ -23,7 +23,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
@@ -53,7 +52,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -434,45 +432,6 @@ public class EntityEvents
 			if (event.getEntityBeingMounted() instanceof MobEntity)
 			{
 				((BipedMobData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
-			}
-		}
-	}
-	
-	/*@SubscribeEvent
-	public static void tpEvent(EnderTeleportEvent event) {
-		LivingEntity entity = event.getEntityLiving();
-		if (event.getEntityLiving() instanceof EndermanEntity) {
-			EndermanEntity enderman = (EndermanEntity)entity;
-			EndermanData endermandata = (EndermanData) enderman.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			
-			if (endermandata != null) {
-				if (endermandata.isInaction()) {
-					for (Entity collideEntity : enderman.world.getEntitiesWithinAABB(Entity.class, enderman.getBoundingBox().grow(0.2D, 0.2D, 0.2D))) {
-						if (collideEntity instanceof ProjectileEntity) {
-	                    	return;
-	                    }
-	                }
-					
-					event.setCanceled(true);
-				} else if (endermandata.isRaging()) {
-					event.setCanceled(true);
-				}
-			}
-		}
-	}*/
-	
-	@SubscribeEvent
-	public static void jumpEvent(LivingJumpEvent event)
-	{
-		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		
-		if (entitydata != null && entitydata.isClientSide())
-		{
-			if (!entitydata.isInaction() && !event.getEntity().isInWater())
-			{
-				StaticAnimation jumpAnimation = entitydata.getClientAnimator().getJumpAnimation();
-				entitydata.getAnimator().playAnimation(jumpAnimation, 0);
-				ModNetworkManager.sendToServer(new CTSPlayAnimation(jumpAnimation.getId(), 0, true, false));
 			}
 		}
 	}

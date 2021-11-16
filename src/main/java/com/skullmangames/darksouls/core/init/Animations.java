@@ -48,7 +48,6 @@ public final class Animations
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(10, true, "biped/living/kneel", "biped", true);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(11, false, "biped/living/fall", "biped", true);
 	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(12, true, "biped/living/mount", "biped", true);
-	public static final StaticAnimation BIPED_JUMP = new StaticAnimation(21, 0.083F, false, "biped/living/jump", "biped", true);
 	public static final StaticAnimation BIPED_DEATH = new DeathAnimation(3003, 0.16F, "biped/living/death", "biped");
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(15, 0.11F, true, "biped/living/dig", "biped", true);
 	
