@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
+import com.skullmangames.darksouls.client.gui.screens.ModMainMenuScreen;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
 import com.skullmangames.darksouls.core.init.EffectInit;
@@ -13,6 +14,7 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -22,6 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseReleasedEvent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -79,7 +82,6 @@ public class ClientEvents
         DarkSoulsSpawnEggItem.initSpawnEggs();
     }
 	
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{
@@ -116,6 +118,27 @@ public class ClientEvents
 			default:
 				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
 				break;
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onOpenScreen(GuiOpenEvent event)
+	{
+		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+		{
+			if (event.getGui() instanceof MainMenuScreen)
+			{
+				MainMenuScreen screen = (MainMenuScreen)event.getGui();
+				event.setGui(new ModMainMenuScreen(screen.fading));
+			}
+		}
+		else
+		{
+			if (event.getGui() instanceof ModMainMenuScreen)
+			{
+				MainMenuScreen screen = (MainMenuScreen)event.getGui();
+				event.setGui(new MainMenuScreen(screen.fading));
+			}
 		}
 	}
 }
