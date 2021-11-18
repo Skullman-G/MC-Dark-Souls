@@ -15,7 +15,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class AttributeInit
+public class ModAttributes
 {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, DarkSouls.MOD_ID);
 	
@@ -41,8 +41,8 @@ public class AttributeInit
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
 	{
-		general(EntityTypeInit.HOLLOW.get(), event);
-		general(EntityTypeInit.ASYLUM_DEMON.get(), event);
+		general(ModEntities.HOLLOW.get(), event);
+		general(ModEntities.ASYLUM_DEMON.get(), event);
 		general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);
 		general(EntityType.EVOKER, event);
@@ -73,39 +73,39 @@ public class AttributeInit
     
     private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
-		event.add(entityType, AttributeInit.WEIGHT.get());
-		event.add(entityType, AttributeInit.ARMOR_NEGATION.get());
-		event.add(entityType, AttributeInit.IMPACT.get());
-		event.add(entityType, AttributeInit.MAX_STRIKES.get());
+		event.add(entityType, ModAttributes.WEIGHT.get());
+		event.add(entityType, ModAttributes.ARMOR_NEGATION.get());
+		event.add(entityType, ModAttributes.IMPACT.get());
+		event.add(entityType, ModAttributes.MAX_STRIKES.get());
 	}
     
     private static void withStunArmor(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
 		general(entityType, event);
-		event.add(entityType, AttributeInit.MAX_STUN_ARMOR.get());
+		event.add(entityType, ModAttributes.MAX_STUN_ARMOR.get());
 	}
     
     private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
     {
 		withStunArmor(entityType, event);
-		event.add(entityType, AttributeInit.OFFHAND_ATTACK_DAMAGE.get());
-		event.add(entityType, AttributeInit.OFFHAND_ATTACK_SPEED.get());
-		event.add(entityType, AttributeInit.MAX_STAMINA.get());
+		event.add(entityType, ModAttributes.OFFHAND_ATTACK_DAMAGE.get());
+		event.add(entityType, ModAttributes.OFFHAND_ATTACK_SPEED.get());
+		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
 	
 	public static AttributeModifier getArmorNegationModifier(double value)
 	{
-		return new AttributeModifier(AttributeInit.IGNORE_DEFENCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(ModAttributes.IGNORE_DEFENCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 
 	public static AttributeModifier getMaxStrikesModifier(int value)
 	{
-		return new AttributeModifier(AttributeInit.HIT_AT_ONCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", (double) value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(ModAttributes.HIT_AT_ONCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", (double) value, AttributeModifier.Operation.ADDITION);
 	}
 
 	public static AttributeModifier getImpactModifier(double value)
 	{
-		return new AttributeModifier(AttributeInit.IMPACT_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(ModAttributes.IMPACT_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 
 	public static AttributeModifier getAttackDamageModifier(double value)

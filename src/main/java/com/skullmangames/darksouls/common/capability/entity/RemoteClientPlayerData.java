@@ -190,6 +190,10 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 					break;
 			}
 		}
+		else if (this.orgEntity.swinging)
+		{
+			this.currentMixMotion = LivingMotion.DIGGING;
+		}
 		else
 		{
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) this.currentMixMotion = LivingMotion.AIMING;

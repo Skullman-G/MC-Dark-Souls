@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.common.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.RecipeTypeInit;
 
 import net.minecraft.inventory.IInventory;
@@ -27,7 +27,7 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	@Override
 	public boolean matches(IInventory inventory, World level)
 	{
-		return inventory.getItem(0).getItem() == ItemInit.ESTUS_FLASK.get() && EstusFlaskItem.getTotalUses(inventory.getItem(0)) < 20 && inventory.getItem(1).getItem() == ItemInit.ESTUS_SHARD.get();
+		return inventory.getItem(0).getItem() == ModItems.ESTUS_FLASK.get() && EstusFlaskItem.getTotalUses(inventory.getItem(0)) < 20 && inventory.getItem(1).getItem() == ModItems.ESTUS_SHARD.get();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	@Override
 	public ItemStack getResultItem()
 	{
-		return new ItemStack(ItemInit.ESTUS_FLASK.get());
+		return new ItemStack(ModItems.ESTUS_FLASK.get());
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	@Override
 	public IRecipeSerializer<?> getSerializer()
 	{
-		return RecipeSerializerInit.REINFORCE_ESTUS_FLASK.get();
+		return ModRecipes.REINFORCE_ESTUS_FLASK.get();
 	}
 
 	@Override
@@ -72,12 +72,12 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	@Override
 	public ItemStack getToastSymbol()
 	{
-		return new ItemStack(ItemInit.ESTUS_FLASK.get());
+		return new ItemStack(ModItems.ESTUS_FLASK.get());
 	}
 	
 	public boolean isAdditionIngredient(ItemStack itemstack)
 	{
-	      return itemstack.getItem() == ItemInit.ESTUS_SHARD.get();
+	      return itemstack.getItem() == ModItems.ESTUS_SHARD.get();
 	}
 	
 	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ReinforceEstusFlaskRecipe>

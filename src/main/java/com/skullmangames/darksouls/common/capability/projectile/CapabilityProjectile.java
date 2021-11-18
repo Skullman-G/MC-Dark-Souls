@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.RangedWeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.WieldStyle;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.entity.Entity;
@@ -36,9 +36,9 @@ public class CapabilityProjectile<T extends ProjectileEntity>
 			{
 				Map<Supplier<Attribute>, AttributeModifier> modifierMap = ((RangedWeaponCapability)itemCap).getDamageAttributesInCondition(WieldStyle.TWO_HAND);
 				
-				this.armorNegation = (float)modifierMap.get(AttributeInit.ARMOR_NEGATION).getAmount();
-				this.impact = (float)modifierMap.get(AttributeInit.IMPACT).getAmount();
-				this.setMaxStrikes(projectileEntity, (int)modifierMap.get(AttributeInit.MAX_STRIKES).getAmount());
+				this.armorNegation = (float)modifierMap.get(ModAttributes.ARMOR_NEGATION).getAmount();
+				this.impact = (float)modifierMap.get(ModAttributes.IMPACT).getAmount();
+				this.setMaxStrikes(projectileEntity, (int)modifierMap.get(ModAttributes.MAX_STRIKES).getAmount());
 				flag = false;
 			}
 		}

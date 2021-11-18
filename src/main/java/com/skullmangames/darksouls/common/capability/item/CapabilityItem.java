@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.WieldStyle;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -70,9 +70,9 @@ public class CapabilityItem
 	
 	public void addStyleAttributeSimple(WieldStyle style, double armorNegation, double impact, int maxStrikes)
 	{
-		this.addStyleAttibute(style, Pair.of(AttributeInit.ARMOR_NEGATION, AttributeInit.getArmorNegationModifier(armorNegation)));
-		this.addStyleAttibute(style, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(impact)));
-		this.addStyleAttibute(style, Pair.of(AttributeInit.MAX_STRIKES, AttributeInit.getMaxStrikesModifier(maxStrikes)));
+		this.addStyleAttibute(style, Pair.of(ModAttributes.ARMOR_NEGATION, ModAttributes.getArmorNegationModifier(armorNegation)));
+		this.addStyleAttibute(style, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(impact)));
+		this.addStyleAttibute(style, Pair.of(ModAttributes.MAX_STRIKES, ModAttributes.getMaxStrikesModifier(maxStrikes)));
 	}
 	
 	@OnlyIn(Dist.CLIENT)

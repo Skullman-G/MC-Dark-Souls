@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackMobGoal;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
@@ -92,7 +92,7 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 	@Override
 	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)
 	{
-		if(this.orgEntity.getAttributes().hasAttribute(AttributeInit.MAX_STUN_ARMOR.get()))
+		if(this.orgEntity.getAttributes().hasAttribute(ModAttributes.MAX_STUN_ARMOR.get()))
 		{
 			if(fromCap != null)
 			{
@@ -103,7 +103,7 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 				this.orgEntity.getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(slotType, this));
 			}
 			
-			this.setStunArmor((float)this.orgEntity.getAttributeValue(AttributeInit.MAX_STUN_ARMOR.get()));
+			this.setStunArmor((float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STUN_ARMOR.get()));
 		}
 	}
 	

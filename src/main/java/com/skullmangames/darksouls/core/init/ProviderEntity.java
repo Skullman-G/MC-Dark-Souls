@@ -29,8 +29,8 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	public static void makeMap()
 	{
 		capabilityMap.put(EntityType.PLAYER, (entityIn) -> ServerPlayerData::new);
-		capabilityMap.put(EntityTypeInit.HOLLOW.get(), (entityIn) -> HollowData::new);
-		capabilityMap.put(EntityTypeInit.ASYLUM_DEMON.get(), (entityIn) -> AsylumDemonData::new);
+		capabilityMap.put(ModEntities.HOLLOW.get(), (entityIn) -> HollowData::new);
+		capabilityMap.put(ModEntities.ASYLUM_DEMON.get(), (entityIn) -> AsylumDemonData::new);
 	}
 	
 	public static void makeMapClient()

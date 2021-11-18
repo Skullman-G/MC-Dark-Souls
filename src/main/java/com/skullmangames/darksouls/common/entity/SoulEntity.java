@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
-import com.skullmangames.darksouls.core.init.EntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.network.server.SSpawnSoulPacket;
 
 import net.minecraft.entity.Entity;
@@ -21,7 +21,7 @@ public class SoulEntity extends Entity
 	
 	public SoulEntity(World level, double posX, double posY, double posZ, int value)
 	{
-	   this(EntityTypeInit.SOUL.get(), level);
+	   this(ModEntities.SOUL.get(), level);
 	   this.setPos(posX, posY, posZ);
 	   this.yRot = (float)(this.random.nextDouble() * 360.0D);
 	   this.value = value;

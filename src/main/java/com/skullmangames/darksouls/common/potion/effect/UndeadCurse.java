@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.potion.effect;
 
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,14 +17,14 @@ public class UndeadCurse extends Effect
 	public void onPotionAdd(PlayerEntity playerentity)
 	{
 		this.onPotionRemove(playerentity);
-		playerentity.inventory.add(new ItemStack(ItemInit.DARKSIGN.get()));
+		playerentity.inventory.add(new ItemStack(ModItems.DARKSIGN.get()));
 	}
 	
 	public void onPotionRemove(PlayerEntity playerentity)
 	{
 		for (ItemStack itemstack : playerentity.inventory.items)
 		{
-			if (itemstack.getItem() == ItemInit.DARKSIGN.get())
+			if (itemstack.getItem() == ModItems.DARKSIGN.get())
 			{
 				playerentity.inventory.removeItem(itemstack);
 			}

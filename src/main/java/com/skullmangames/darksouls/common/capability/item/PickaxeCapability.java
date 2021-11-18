@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -19,8 +19,8 @@ public class PickaxeCapability extends MaterialItemCapability
 	@Override
 	protected void registerAttribute()
 	{
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(-0.4D + 0.1D * this.itemTier.getLevel())));
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.ARMOR_NEGATION, AttributeInit.getArmorNegationModifier(6.0D * this.itemTier.getLevel())));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(-0.4D + 0.1D * this.itemTier.getLevel())));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.ARMOR_NEGATION, ModAttributes.getArmorNegationModifier(6.0D * this.itemTier.getLevel())));
 	}
 
 	@Override

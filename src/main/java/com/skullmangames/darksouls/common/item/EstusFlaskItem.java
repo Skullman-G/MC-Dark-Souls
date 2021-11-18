@@ -5,7 +5,7 @@ import java.util.List;
 import com.skullmangames.darksouls.client.ClientEngine;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
@@ -126,7 +126,7 @@ public class EstusFlaskItem extends Item
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-		    	  if (playerentity.inventory.contains(new ItemStack(ItemInit.DARKSIGN.get())))
+		    	  if (playerentity.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
 		    		  playerentity.heal(getHeal(itemstack));
 		    	  }

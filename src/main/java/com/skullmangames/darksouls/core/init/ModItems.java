@@ -21,7 +21,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ItemInit 
+public class ModItems 
 {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
@@ -63,42 +63,42 @@ public class ItemInit
 			.tab(ItemGroup.TAB_REDSTONE)));*/
 	
 	//Block Items
-	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(BlockInit.TITANITE_ORE.get(),
+	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(ModBlocks.TITANITE_ORE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
 	
-	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(BlockInit.BONFIRE.get(),
+	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
 	
-	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(BlockInit.BIG_ACACIA_DOOR.get(),
+	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(ModBlocks.BIG_ACACIA_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_BIRCH_DOOR = ITEMS.register("big_birch_door", () -> new BlockItem(BlockInit.BIG_BIRCH_DOOR.get(),
+	public static final RegistryObject<Item> BIG_BIRCH_DOOR = ITEMS.register("big_birch_door", () -> new BlockItem(ModBlocks.BIG_BIRCH_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_OAK_DOOR = ITEMS.register("big_oak_door", () -> new BlockItem(BlockInit.BIG_OAK_DOOR.get(),
+	public static final RegistryObject<Item> BIG_OAK_DOOR = ITEMS.register("big_oak_door", () -> new BlockItem(ModBlocks.BIG_OAK_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_SPRUCE_DOOR = ITEMS.register("big_spruce_door", () -> new BlockItem(BlockInit.BIG_SPRUCE_DOOR.get(),
+	public static final RegistryObject<Item> BIG_SPRUCE_DOOR = ITEMS.register("big_spruce_door", () -> new BlockItem(ModBlocks.BIG_SPRUCE_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_JUNGLE_DOOR = ITEMS.register("big_jungle_door", () -> new BlockItem(BlockInit.BIG_JUNGLE_DOOR.get(),
+	public static final RegistryObject<Item> BIG_JUNGLE_DOOR = ITEMS.register("big_jungle_door", () -> new BlockItem(ModBlocks.BIG_JUNGLE_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_DARK_OAK_DOOR = ITEMS.register("big_dark_oak_door", () -> new BlockItem(BlockInit.BIG_DARK_OAK_DOOR.get(),
+	public static final RegistryObject<Item> BIG_DARK_OAK_DOOR = ITEMS.register("big_dark_oak_door", () -> new BlockItem(ModBlocks.BIG_DARK_OAK_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_CRIMSON_DOOR = ITEMS.register("big_crimson_door", () -> new BlockItem(BlockInit.BIG_CRIMSON_DOOR.get(),
+	public static final RegistryObject<Item> BIG_CRIMSON_DOOR = ITEMS.register("big_crimson_door", () -> new BlockItem(ModBlocks.BIG_CRIMSON_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(BlockInit.BIG_WARPED_DOOR.get(),
+	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(ModBlocks.BIG_WARPED_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
-	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(BlockInit.IRON_BAR_DOOR.get(),
+	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(ModBlocks.IRON_BAR_DOOR.get(),
 			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
 	
 	
 	//Spawn Eggs
-	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(EntityTypeInit.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
+	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
 			.tab(ItemGroup.TAB_MISC)));
 	
 	
@@ -106,7 +106,7 @@ public class ItemInit
 	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 	
 	
-	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(BlockInit.SMITHING_TABLE.get(),
+	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(ModBlocks.SMITHING_TABLE.get(),
 			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
 	
 	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new WeaponItem(ItemTier.WOOD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));

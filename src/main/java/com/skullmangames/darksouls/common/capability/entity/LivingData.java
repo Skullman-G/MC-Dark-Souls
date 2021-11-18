@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
@@ -111,10 +111,10 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	protected void initAttributes()
 	{
-		this.orgEntity.getAttribute(AttributeInit.WEIGHT.get()).setBaseValue(this.orgEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 2.0D);
-		this.orgEntity.getAttribute(AttributeInit.MAX_STRIKES.get()).setBaseValue(1.0D);
-		this.orgEntity.getAttribute(AttributeInit.ARMOR_NEGATION.get()).setBaseValue(0.0D);
-		this.orgEntity.getAttribute(AttributeInit.IMPACT.get()).setBaseValue(0.5D);
+		this.orgEntity.getAttribute(ModAttributes.WEIGHT.get()).setBaseValue(this.orgEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 2.0D);
+		this.orgEntity.getAttribute(ModAttributes.MAX_STRIKES.get()).setBaseValue(1.0D);
+		this.orgEntity.getAttribute(ModAttributes.ARMOR_NEGATION.get()).setBaseValue(0.0D);
+		this.orgEntity.getAttribute(ModAttributes.IMPACT.get()).setBaseValue(0.5D);
 	}
 	
 	@Override
@@ -384,7 +384,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public float getMaxStunArmor()
 	{
-		ModifiableAttributeInstance stun_resistance = this.orgEntity.getAttribute(AttributeInit.MAX_STUN_ARMOR.get());
+		ModifiableAttributeInstance stun_resistance = this.orgEntity.getAttribute(ModAttributes.MAX_STUN_ARMOR.get());
 		return (float) (stun_resistance == null ? 0 : stun_resistance.getValue());
 	}
 	
@@ -401,7 +401,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public double getWeight()
 	{
-		return this.orgEntity.getAttributeValue(AttributeInit.WEIGHT.get());
+		return this.orgEntity.getAttributeValue(ModAttributes.WEIGHT.get());
 	}
 	
 	public void rotateTo(float degree, float limit, boolean partialSync)
@@ -652,17 +652,17 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public int getHitEnemies()
 	{
-		return (int)this.orgEntity.getAttributeValue(AttributeInit.MAX_STRIKES.get());
+		return (int)this.orgEntity.getAttributeValue(ModAttributes.MAX_STRIKES.get());
 	}
 
 	public float getArmorNegation()
 	{
-		return (float)this.orgEntity.getAttributeValue(AttributeInit.ARMOR_NEGATION.get());
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.ARMOR_NEGATION.get());
 	}
 
 	public float getImpact()
 	{
-		return (float)this.orgEntity.getAttributeValue(AttributeInit.IMPACT.get());
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.IMPACT.get());
 	}
 
 	public boolean isTeam(Entity entityIn)

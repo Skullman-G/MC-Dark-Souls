@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.particle.HitParticleType;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -20,7 +20,7 @@ public class ShovelCapability extends MaterialItemCapability
 	protected void registerAttribute()
 	{
 		double impact = this.itemTier.getLevel() * 0.4D + 0.8D;
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(impact)));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(impact)));
 	}
 
 	@Override

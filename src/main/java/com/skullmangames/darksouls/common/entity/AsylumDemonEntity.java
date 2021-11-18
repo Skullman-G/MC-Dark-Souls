@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.entity.ai.goal.NearestNotKindOfMeTargetGoal;
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
@@ -45,7 +45,7 @@ public class AsylumDemonEntity extends CreatureEntity
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return SoundEvents.ASYLUM_DEMON_AMBIENT;
+		return ModSoundEvents.ASYLUM_DEMON_AMBIENT;
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class AsylumDemonEntity extends CreatureEntity
 	{
 		super.populateDefaultEquipmentSlots(difficulty);
 		
-		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemInit.DEMON_GREAT_HAMMER.get()));
+		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
 		this.setDropChance(EquipmentSlotType.MAINHAND, 0.04F);
 	}
 	

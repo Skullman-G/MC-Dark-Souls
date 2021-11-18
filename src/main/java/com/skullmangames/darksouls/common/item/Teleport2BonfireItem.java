@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.item;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.LivingEntity;
@@ -133,6 +133,6 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return SoundEvents.DARKSIGN_USE;
+		return ModSoundEvents.DARKSIGN_USE;
 	}
 }

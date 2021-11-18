@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.entity.LivingEntity;
@@ -36,7 +36,7 @@ public class Stats
 				@Override		
 				public void onChange(LivingEntity livingentity, boolean isinit, int value)
 				{
-					ModifiableAttributeInstance maxStamina = livingentity.getAttribute(AttributeInit.MAX_STAMINA.get());
+					ModifiableAttributeInstance maxStamina = livingentity.getAttribute(ModAttributes.MAX_STAMINA.get());
 					if (maxStamina.getModifier(this.getModifierUUID()) != null) maxStamina.removeModifier(this.getModifierUUID());
 					AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), "change_with_endurance", value - 1, Operation.ADDITION);
 					maxStamina.addPermanentModifier(modifier);

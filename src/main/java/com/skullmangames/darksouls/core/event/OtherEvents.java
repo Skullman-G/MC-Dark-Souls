@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.CommandInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class OtherEvents
 	@SubscribeEvent
 	public static void onItemToss(final ItemTossEvent event)
     {
-		if (event.getEntityItem().getItem().getItem() == ItemInit.DARKSIGN.get())
+		if (event.getEntityItem().getItem().getItem() == ModItems.DARKSIGN.get())
 		{
 			event.getPlayer().addItem(event.getEntityItem().getItem());
 		}

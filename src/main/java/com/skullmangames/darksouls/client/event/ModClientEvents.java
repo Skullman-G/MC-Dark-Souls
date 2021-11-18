@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRe
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
-import com.skullmangames.darksouls.core.init.EntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModEntities;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -34,18 +34,18 @@ public final class ModClientEvents
 	@SubscribeEvent
 	public static void setup(final FMLClientSetupEvent event)
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
-		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
-		RenderingRegistry.registerEntityRenderingHandler(EntityTypeInit.SOUL.get(), SoulRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.SOUL.get(), SoulRenderer::new);
 		LOGGER.debug("Registered Entity Renderers");
 	}
 	
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(final EntityAttributeCreationEvent event)
 	{
-		event.put(EntityTypeInit.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
-		event.put(EntityTypeInit.HOLLOW.get(), HollowEntity.createAttributes().build());
-		event.put(EntityTypeInit.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
+		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
+		event.put(ModEntities.HOLLOW.get(), HollowEntity.createAttributes().build());
+		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
 	}
 }

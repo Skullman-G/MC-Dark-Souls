@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.inventory.container.SmithingTableContainerOverride;
 
-public class ContainerTypeInit
+public class ModContainers
 {
 	public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, DarkSouls.MOD_ID);
 	

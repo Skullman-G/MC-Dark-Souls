@@ -8,10 +8,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import com.skullmangames.darksouls.core.init.EffectInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
-import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModEffects;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -104,10 +104,10 @@ public class BonfireBlock extends BaseHorizontalBlock
 		TileEntity tileentity = level.getBlockEntity(vertex);
 		
 		// Bonfire is not lit
-		if (!state.getValue(LIT) && player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		if (!state.getValue(LIT) && player.hasEffect(ModEffects.UNDEAD_CURSE.get()))
 		{
 			// Has to hold Darksign to light bonfire
-			if (player.getItemInHand(hand).getItem() == ItemInit.DARKSIGN.get())
+			if (player.getItemInHand(hand).getItem() == ModItems.DARKSIGN.get())
 			{
 				// SERVER SIDE
 				if (!level.isClientSide && tileentity instanceof BonfireTileEntity)
@@ -129,11 +129,11 @@ public class BonfireBlock extends BaseHorizontalBlock
 		}
 		
 		// Bonfire is lit
-		else if (player.hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		else if (player.hasEffect(ModEffects.UNDEAD_CURSE.get()))
 		{
 			// Cancel when using Item on
 			Item item = player.getItemInHand(hand).getItem();
-			if (item == ItemInit.ESTUS_FLASK.get() || item == ItemInit.UNDEAD_BONE_SHARD.get())
+			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
 			{
 				return ActionResultType.PASS;
 			}
@@ -236,7 +236,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) 
 	{
-		return TileEntityTypeInit.BONFIRE.get().create();
+		return ModTileEntities.BONFIRE.get().create();
 	}
 	
 	public void kindle(World level, BlockState blockstate, BlockPos blockpos)
@@ -255,7 +255,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 		{
 			if (random.nextInt(8) == 0)
 			{
-				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, SoundEvents.BONFIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
+				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, ModSoundEvents.BONFIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
 			}
 			
 			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)

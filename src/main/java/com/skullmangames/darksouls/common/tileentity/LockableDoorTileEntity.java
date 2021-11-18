@@ -5,7 +5,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.block.LockableBlock;
-import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ public class LockableDoorTileEntity extends TileEntity
 	
 	public LockableDoorTileEntity()
 	{
-		super(TileEntityTypeInit.LOCKABLE_BLOCK.get());
+		super(ModTileEntities.LOCKABLE_BLOCK.get());
 	}
 	
 	public void tryInteract(PlayerEntity player, UUID uuid)

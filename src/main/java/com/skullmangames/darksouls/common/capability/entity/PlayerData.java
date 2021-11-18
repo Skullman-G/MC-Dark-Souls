@@ -13,8 +13,8 @@ import com.skullmangames.darksouls.core.event.EntityEventListener;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AttributeInit;
-import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
@@ -49,9 +49,9 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 			return false;
 		}));
 		
-		if (!this.orgEntity.hasEffect(EffectInit.UNDEAD_CURSE.get()))
+		if (!this.orgEntity.hasEffect(ModEffects.UNDEAD_CURSE.get()))
 		{
-			EffectInstance effectinstance = new EffectInstance(EffectInit.UNDEAD_CURSE.get(), 1000000000);
+			EffectInstance effectinstance = new EffectInstance(ModEffects.UNDEAD_CURSE.get(), 1000000000);
 			this.orgEntity.addEffect(effectinstance);
 		}
 		
@@ -82,6 +82,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		animatorClient.addLivingMixAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
 		animatorClient.addLivingMixAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
 		animatorClient.addLivingMixAnimation(LivingMotion.SHOTING, Animations.BIPED_BOW_REBOUND);
+		animatorClient.addLivingMixAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
 		animatorClient.setCurrentLivingMotionsToDefault();
 	}
 	
@@ -153,7 +154,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	
 	public float getMaxStamina()
 	{
-		return (float)this.orgEntity.getAttributeValue(AttributeInit.MAX_STAMINA.get());
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
 	}
 	
 	public boolean isCreativeOrSpectator()

@@ -8,10 +8,10 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.item.Item;
@@ -41,17 +41,17 @@ public class SwordCapability extends MaterialItemCapability
 	@Override
 	public SoundEvent getSwingSound()
 	{
-		return SoundEvents.SWORD_SWING;
+		return ModSoundEvents.SWORD_SWING;
 	}
 	
 	@Override
 	protected void registerAttribute()
 	{
 		int i = this.itemTier.getLevel();
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.MAX_STRIKES, AttributeInit.getMaxStrikesModifier(1)));
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(0.5D + 0.2D * i)));
-		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(AttributeInit.MAX_STRIKES, AttributeInit.getMaxStrikesModifier(1)));
-		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(AttributeInit.IMPACT, AttributeInit.getImpactModifier(0.5D + 0.2D * i)));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.MAX_STRIKES, ModAttributes.getMaxStrikesModifier(1)));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
+		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(ModAttributes.MAX_STRIKES, ModAttributes.getMaxStrikesModifier(1)));
+		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
 	}
 	
 	@Override

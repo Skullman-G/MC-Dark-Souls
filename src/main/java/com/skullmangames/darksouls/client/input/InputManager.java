@@ -292,9 +292,17 @@ public class InputManager
 		{
 			if (!event.isAttack()) return;
 			
+			if (!minecraft.options.getCameraType().isFirstPerson())
+			{
+				event.setSwingHand(false);
+			}
+			
 			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
 					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
-					&& !minecraft.options.getCameraType().isFirstPerson())) event.setCanceled(true);
+					&& !minecraft.options.getCameraType().isFirstPerson()))
+			{
+				event.setCanceled(true);
+			}
 		}
 		
 		@SubscribeEvent

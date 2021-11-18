@@ -8,7 +8,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -126,7 +126,7 @@ public class ClearCommandOverride
 
 	 private static int clearOrCountMatchingItems(ItemStack itemstack, Predicate<ItemStack> predicate, int p_233535_2_, boolean flag)
 	 {
-	    if (!itemstack.isEmpty() && predicate.test(itemstack) && itemstack.getItem() != ItemInit.DARKSIGN.get())
+	    if (!itemstack.isEmpty() && predicate.test(itemstack) && itemstack.getItem() != ModItems.DARKSIGN.get())
 	    {
 	       if (flag)
 	       {

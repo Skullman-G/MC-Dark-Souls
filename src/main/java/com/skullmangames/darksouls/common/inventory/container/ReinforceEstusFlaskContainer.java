@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.item.crafting.ReinforceEstusFlaskRecipe;
-import com.skullmangames.darksouls.core.init.ContainerTypeInit;
+import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.RecipeTypeInit;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,12 +40,12 @@ public class ReinforceEstusFlaskContainer extends Container
 	
 	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, IWorldPosCallable access)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, access);
+		this(ModContainers.REINFORCE_ESTUS_FLASK.get(), id, inventory, access);
 	}
 	
 	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory)
 	{
-		this(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), id, inventory, IWorldPosCallable.NULL);
+		this(ModContainers.REINFORCE_ESTUS_FLASK.get(), id, inventory, IWorldPosCallable.NULL);
 	}
 	
 	public ReinforceEstusFlaskContainer(ContainerType<?> p_i50105_1_, int p_i50105_2_, PlayerInventory inventory, IWorldPosCallable access)

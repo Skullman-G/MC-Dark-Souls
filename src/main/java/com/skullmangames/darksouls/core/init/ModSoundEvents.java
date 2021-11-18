@@ -7,7 +7,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class SoundEvents
+public class ModSoundEvents
 {
 	public static final SoundEvent BONFIRE_LIT = registerSound("block.bonfire.lit");
 	public static final SoundEvent BONFIRE_AMBIENT = registerSound("block.bonfire.ambient");

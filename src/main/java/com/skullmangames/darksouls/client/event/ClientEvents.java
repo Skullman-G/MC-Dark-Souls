@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.screens.ModMainMenuScreen;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
-import com.skullmangames.darksouls.core.init.EffectInit;
+import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.MainWindow;
@@ -98,7 +98,7 @@ public class ClientEvents
 				
 			case FOOD:
 				if (!(minecraft.getCameraEntity() instanceof LivingEntity)
-						|| !((LivingEntity)minecraft.getCameraEntity()).hasEffect(EffectInit.UNDEAD_CURSE.get())) break;
+						|| !((LivingEntity)minecraft.getCameraEntity()).hasEffect(ModEffects.UNDEAD_CURSE.get())) break;
 				event.setCanceled(true);
 				GameOverlayManager.renderStamina(window, matStack);
 				break;

@@ -15,10 +15,9 @@ import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.EffectInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEffects;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
@@ -73,7 +72,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void spawnEvent(EntityJoinWorldEvent event)
 	{
-		if (event.getEntity() instanceof ItemEntity && ((ItemEntity)event.getEntity()).getItem().getItem() == ItemInit.DARKSIGN.get())
+		if (event.getEntity() instanceof ItemEntity && ((ItemEntity)event.getEntity()).getItem().getItem() == ModItems.DARKSIGN.get())
 		{
 			event.setCanceled(true);
 			return;
@@ -230,7 +229,7 @@ public class EntityEvents
 						switch(extSource.getStunType())
 						{
 						case SHORT:
-							if(!hitEntity.hasEffect(ModEffects.STUN_IMMUNITY) && (hitEntityData.getStunArmor() == 0))
+							if(hitEntityData.getStunArmor() == 0)
 							{
 								int i = EnchantmentHelper.getKnockbackBonus((LivingEntity)trueSource);
 								float totalStunTime = (float) ((0.25F + extSource.getImpact() * 0.1F + 0.1F * i) * weightReduction);
@@ -248,7 +247,7 @@ public class EntityEvents
 							}
 							break;
 						case LONG:
-							hitAnimation = hitEntity.hasEffect(ModEffects.STUN_IMMUNITY) ? null : hitEntityData.getHitAnimation(StunType.LONG);
+							hitAnimation = hitEntityData.getHitAnimation(StunType.LONG);
 							knockBackAmount = (extSource.getImpact() * 0.25F) * weightReduction;
 							break;
 						case HOLD:
@@ -380,7 +379,7 @@ public class EntityEvents
 	{
 		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && /*event.getPotionEffect().getEffect() != event.getOldPotionEffect().getEffect() &&*/ event.getEntityLiving() instanceof PlayerEntity)
 		{
-			EffectInit.UNDEAD_CURSE.get().onPotionAdd(((PlayerEntity)event.getEntityLiving()));
+			ModEffects.UNDEAD_CURSE.get().onPotionAdd(((PlayerEntity)event.getEntityLiving()));
 		}
 		
 		if(!event.getEntity().level.isClientSide)
@@ -441,13 +440,13 @@ public class EntityEvents
 	{
 		MobNBTManager.setHumanity(event.getEntityLiving(), 0);
 		
-		if (event.getEntityLiving().hasEffect(EffectInit.UNDEAD_CURSE.get())) MobNBTManager.setHuman(event.getEntityLiving(), false);
+		if (event.getEntityLiving().hasEffect(ModEffects.UNDEAD_CURSE.get())) MobNBTManager.setHuman(event.getEntityLiving(), false);
 		
 		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
 		if(entitydata != null)
 		{
-			if (entitydata.isClientSide()) entitydata.playSound(com.skullmangames.darksouls.core.init.SoundEvents.GENERIC_KILL, 0.0F, 0.0F);
+			if (entitydata.isClientSide()) entitydata.playSound(com.skullmangames.darksouls.core.init.ModSoundEvents.GENERIC_KILL, 0.0F, 0.0F);
 			entitydata.getAnimator().playDeathAnimation();
 		}
 	}

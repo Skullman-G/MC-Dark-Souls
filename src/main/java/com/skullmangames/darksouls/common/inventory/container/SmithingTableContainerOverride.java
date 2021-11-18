@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
-import com.skullmangames.darksouls.core.init.BlockInit;
-import com.skullmangames.darksouls.core.init.ContainerTypeInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModBlocks;
+import com.skullmangames.darksouls.core.init.ModContainers;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,14 +34,14 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 
 	public SmithingTableContainerOverride(int p_i231591_1_, PlayerInventory p_i231591_2_, IWorldPosCallable p_i231591_3_)
 	{
-	    super(ContainerTypeInit.SMITHING.get(), p_i231591_1_, p_i231591_2_, p_i231591_3_);
+	    super(ModContainers.SMITHING.get(), p_i231591_1_, p_i231591_2_, p_i231591_3_);
 	    this.level = p_i231591_2_.player.level;
 	    this.recipes = this.level.getRecipeManager().getAllRecipesFor(IRecipeType.SMITHING);
 	}
 
 	protected boolean isValidBlock(BlockState p_230302_1_)
 	{
-	    return p_230302_1_.is(BlockInit.SMITHING_TABLE.get());
+	    return p_230302_1_.is(ModBlocks.SMITHING_TABLE.get());
 	}
 
 	protected boolean mayPickup(PlayerEntity p_230303_1_, boolean p_230303_2_)
@@ -83,7 +83,7 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	       this.resultSlots.setRecipeUsed(this.selectedRecipe);
 	       if (itemstack.getItem() instanceof EstusFlaskItem)
 	       {
-	    	   if (this.inputSlots.getItem(0).getItem() instanceof EstusFlaskItem && this.inputSlots.getItem(1).getItem() == ItemInit.ESTUS_SHARD.get() && EstusFlaskItem.getTotalUses(itemstack) < 20)
+	    	   if (this.inputSlots.getItem(0).getItem() instanceof EstusFlaskItem && this.inputSlots.getItem(1).getItem() == ModItems.ESTUS_SHARD.get() && EstusFlaskItem.getTotalUses(itemstack) < 20)
 	    	   {
 	    		   EstusFlaskItem.setTotalUses(itemstack, EstusFlaskItem.getTotalUses(itemstack) + 1);
 	    		   EstusFlaskItem.setUses(itemstack, EstusFlaskItem.getTotalUses(itemstack));

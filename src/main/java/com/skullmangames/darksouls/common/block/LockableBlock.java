@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.block;
 
 import com.skullmangames.darksouls.common.tileentity.LockableDoorTileEntity;
-import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -41,6 +41,6 @@ public class LockableBlock extends Block
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return TileEntityTypeInit.LOCKABLE_BLOCK.get().create();
+		return ModTileEntities.LOCKABLE_BLOCK.get().create();
 	}
 }

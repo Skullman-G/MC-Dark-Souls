@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.item;
 
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +28,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
 	{
-		livingentity.playSound(SoundEvents.SOUL_CONTAINER_FINISH, 0.5F, 1.0F);
+		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH, 0.5F, 1.0F);
 		if (!level.isClientSide && this.getHumanity() != 0)
 		{
 			MobNBTManager.raiseHumanity(livingentity, this.getHumanity());
@@ -56,7 +56,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return SoundEvents.SOUL_CONTAINER_USE;
+		return ModSoundEvents.SOUL_CONTAINER_USE;
 	}
 	
 	@Override

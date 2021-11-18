@@ -6,10 +6,10 @@ import javax.annotation.Nullable;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
-import com.skullmangames.darksouls.core.init.EntityTypeInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
-import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -40,7 +40,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	
 	public BonfireTileEntity() 
 	{
-		super(TileEntityTypeInit.BONFIRE.get());
+		super(ModTileEntities.BONFIRE.get());
 	}
 	
 	@Override
@@ -103,7 +103,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 			
 			if (value)
 			{
-				this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				
 				if (player != null)
 				{
@@ -124,14 +124,14 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	{
 		if (!this.hasFireKeeper)
 		{
-			this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 		this.getBlock().kindle(this.level, this.getBlockState(), this.worldPosition);
 	}
 	
 	public void raiseEstusHealLevel()
 	{
-		this.level.playSound(null, this.worldPosition, SoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.getBlock().raiseEstusHealLevel(this.level, this.getBlockState(), this.worldPosition);
 	}
 	
@@ -174,9 +174,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
 	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
 				BlockPos blockpos = this.worldPosition.offset(i, 0, j);
-				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, EntityTypeInit.FIRE_KEEPER.get()))
+				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, ModEntities.FIRE_KEEPER.get()))
 				{
-					FireKeeperEntity entity = EntityTypeInit.FIRE_KEEPER.get().create(serverworld);
+					FireKeeperEntity entity = ModEntities.FIRE_KEEPER.get().create(serverworld);
 					if (entity != null)
 					{
 						entity.linkBonfire(this.worldPosition);
@@ -197,7 +197,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
 			        int j = ( random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
 					BlockPos blockpos = this.worldPosition.offset(i, this.worldPosition.getZ(), j);
-					ItemEntity homewardbone = new ItemEntity(serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), new ItemStack(ItemInit.HOMEWARD_BONE.get()));
+					ItemEntity homewardbone = new ItemEntity(serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(), new ItemStack(ModItems.HOMEWARD_BONE.get()));
 					serverworld.addFreshEntity(homewardbone);
 				}
 			}

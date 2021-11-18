@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -38,7 +38,7 @@ public class GiveCommandOverride
 
 	 private static int giveItem(CommandSource p_198497_0_, ItemInput iteminput, Collection<ServerPlayerEntity> p_198497_2_, int p_198497_3_) throws CommandSyntaxException
 	 {
-	      if (iteminput.getItem() != ItemInit.DARKSIGN.get())
+	      if (iteminput.getItem() != ModItems.DARKSIGN.get())
 	      {
 	    	  for(ServerPlayerEntity serverplayerentity : p_198497_2_)
 		      {

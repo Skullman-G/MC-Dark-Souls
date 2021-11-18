@@ -27,7 +27,7 @@ import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
-import com.skullmangames.darksouls.core.init.EntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
@@ -107,8 +107,8 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
-		this.entityRendererMap.put(EntityTypeInit.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
-		this.entityRendererMap.put(EntityTypeInit.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
+		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
+		this.entityRendererMap.put(ModEntities.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();

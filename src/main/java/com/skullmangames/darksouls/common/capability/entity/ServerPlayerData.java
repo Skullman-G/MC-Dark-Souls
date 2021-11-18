@@ -11,8 +11,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AttributeInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
@@ -89,22 +89,22 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		}
 		else
 		{
-			this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get()).removeModifier(WEIGHT_PENALTY_MODIFIIER);
-			float weaponSpeed = (float) this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get()).getBaseValue();
+			this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_SPEED.get()).removeModifier(WEIGHT_PENALTY_MODIFIIER);
+			float weaponSpeed = (float) this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_SPEED.get()).getBaseValue();
 			
 			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_SPEED))
 			{
 				weaponSpeed += attributeModifier.getAmount();
 			}
 			
-			this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get()).addTransientModifier(new AttributeModifier(WEIGHT_PENALTY_MODIFIIER, "weight penalty modifier",
+			this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_SPEED.get()).addTransientModifier(new AttributeModifier(WEIGHT_PENALTY_MODIFIIER, "weight penalty modifier",
 					Formulars.getAttackSpeedPenalty(this.getWeight(), weaponSpeed, this), Operation.ADDITION));
 			
-			this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_DAMAGE.get()).removeModifier(ATTACK_DAMAGE_MODIFIER);
+			this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).removeModifier(ATTACK_DAMAGE_MODIFIER);
 			
 			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE))
 			{
-				this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_DAMAGE.get()).addTransientModifier(attributeModifier);
+				this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).addTransientModifier(attributeModifier);
 			}
 		}
 		
@@ -121,7 +121,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
-		this.playSound(SoundEvents.PLAYER_SHIELD_DISARMED, 1.0F, 1.0F);
+		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED, 1.0F, 1.0F);
 		
 		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
 		this.animator.playAnimation(disarmAnimation, 0.0F);
@@ -133,7 +133,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)
 	{
 		ModifiableAttributeInstance mainhandAttackSpeed = this.orgEntity.getAttribute(Attributes.ATTACK_SPEED);
-		ModifiableAttributeInstance offhandAttackSpeed = this.orgEntity.getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get());
+		ModifiableAttributeInstance offhandAttackSpeed = this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_SPEED.get());
 		
 		mainhandAttackSpeed.removeModifier(WEIGHT_PENALTY_MODIFIIER);
 		float mainWeaponSpeed = (float) mainhandAttackSpeed.getBaseValue();

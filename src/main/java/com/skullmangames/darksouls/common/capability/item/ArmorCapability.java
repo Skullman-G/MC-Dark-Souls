@@ -7,7 +7,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -55,11 +55,11 @@ public class ArmorCapability extends CapabilityItem
 	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
 	{
 		itemTooltip.add(1, new StringTextComponent(TextFormatting.BLUE + " +" + (int)this.weight + " ")
-				.append(new TranslationTextComponent(AttributeInit.WEIGHT.get().getDescriptionId()).withStyle(TextFormatting.BLUE)));
+				.append(new TranslationTextComponent(ModAttributes.WEIGHT.get().getDescriptionId()).withStyle(TextFormatting.BLUE)));
 		if(this.stunArmor > 0.0F)
 		{
 			itemTooltip.add(1, new StringTextComponent(TextFormatting.BLUE + " +" + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.stunArmor) + " ")
-				.append(new TranslationTextComponent(AttributeInit.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(TextFormatting.BLUE)));
+				.append(new TranslationTextComponent(ModAttributes.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(TextFormatting.BLUE)));
 		}
 	}
 	
@@ -70,8 +70,8 @@ public class ArmorCapability extends CapabilityItem
 		
 		if (entitydata != null && equipmentSlot == this.equipmentSlot)
 		{
-			map.put(AttributeInit.WEIGHT.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.weight, Operation.ADDITION));
-			map.put(AttributeInit.MAX_STUN_ARMOR.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.stunArmor, Operation.ADDITION));
+			map.put(ModAttributes.WEIGHT.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.weight, Operation.ADDITION));
+			map.put(ModAttributes.MAX_STUN_ARMOR.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.stunArmor, Operation.ADDITION));
 		}
 		
         return map;

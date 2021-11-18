@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.common.entity;
 
 import java.util.Random;
 
-import com.skullmangames.darksouls.core.init.ItemInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -84,11 +84,11 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 		
 		if (weaponid <= 1)
 		{
-			item = new ItemStack(ItemInit.BROKEN_STRAIGHT_SWORD.get());
+			item = new ItemStack(ModItems.BROKEN_STRAIGHT_SWORD.get());
 		}
 		else if (weaponid <= 2)
 		{
-			item = new ItemStack(ItemInit.STRAIGHT_SWORD_HILT.get());
+			item = new ItemStack(ModItems.STRAIGHT_SWORD_HILT.get());
 		}
 		else
 		{
@@ -111,13 +111,13 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return SoundEvents.HOLLOW_AMBIENT;
+		return ModSoundEvents.HOLLOW_AMBIENT;
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return SoundEvents.HOLLOW_DEATH;
+		return ModSoundEvents.HOLLOW_DEATH;
 	}
 	
 	@Override

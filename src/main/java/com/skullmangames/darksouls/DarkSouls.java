@@ -60,25 +60,25 @@ import com.skullmangames.darksouls.core.event.CapabilityEvent;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AttributeInit;
-import com.skullmangames.darksouls.core.init.BlockInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
-import com.skullmangames.darksouls.core.init.ContainerTypeInit;
+import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
-import com.skullmangames.darksouls.core.init.EffectInit;
-import com.skullmangames.darksouls.core.init.EntityTypeInit;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModEffects;
+import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.init.Particles;
+import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
-import com.skullmangames.darksouls.core.init.RecipeSerializerInit;
-import com.skullmangames.darksouls.core.init.SoundEvents;
-import com.skullmangames.darksouls.core.init.Structures;
-import com.skullmangames.darksouls.core.init.TileEntityTypeInit;
+import com.skullmangames.darksouls.core.init.ModRecipes;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.ModStructures;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 @Mod(DarkSouls.MOD_ID)
@@ -112,22 +112,22 @@ public class DarkSouls
     	
     	bus.addListener(this::doCommonStuff);
     	bus.addListener(this::doClientStuff);
-    	bus.addListener(AttributeInit::modifyAttributeMap);
+    	bus.addListener(ModAttributes::modifyAttributeMap);
     	
-    	AttributeInit.ATTRIBUTES.register(bus);
-    	SoundEvents.VANILLA_SOUND_EVENTS.register(bus);
-    	BlockInit.BLOCKS.register(bus);
-    	BlockInit.VANILLA_BLOCKS.register(bus);
-    	TileEntityTypeInit.TILE_ENTITIES.register(bus);
-    	ItemInit.VANILLA_ITEMS.register(bus);
-    	Structures.STRUCTURES.register(bus);
-    	EffectInit.EFFECTS.register(bus);
-    	ContainerTypeInit.VANILLA_CONTAINERS.register(bus);
-    	ContainerTypeInit.CONTAINERS.register(bus);
-    	EntityTypeInit.ENTITIES.register(bus);
-    	ItemInit.ITEMS.register(bus);
-    	RecipeSerializerInit.RECIPE_SERIALIZERS.register(bus);
-    	Particles.PARTICLES.register(bus);
+    	ModAttributes.ATTRIBUTES.register(bus);
+    	ModSoundEvents.VANILLA_SOUND_EVENTS.register(bus);
+    	ModBlocks.BLOCKS.register(bus);
+    	ModBlocks.VANILLA_BLOCKS.register(bus);
+    	ModTileEntities.TILE_ENTITIES.register(bus);
+    	ModItems.VANILLA_ITEMS.register(bus);
+    	ModStructures.STRUCTURES.register(bus);
+    	ModEffects.EFFECTS.register(bus);
+    	ModContainers.VANILLA_CONTAINERS.register(bus);
+    	ModContainers.CONTAINERS.register(bus);
+    	ModEntities.ENTITIES.register(bus);
+    	ModItems.ITEMS.register(bus);
+    	ModRecipes.RECIPE_SERIALIZERS.register(bus);
+    	ModParticles.PARTICLES.register(bus);
     	
     	forgeBus.register(this);
         forgeBus.register(EntityEvents.class);
@@ -155,17 +155,17 @@ public class DarkSouls
 		
 		event.enqueueWork(() ->
     	{
-    	    ItemModelsProperties.register(ItemInit.ESTUS_FLASK.get(), new ResourceLocation(MOD_ID, "usage"), (stack, level, living) ->
+    	    ItemModelsProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(MOD_ID, "usage"), (stack, level, living) ->
     	    {
     	        float usage = (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
     	    	return usage;
     	    });
     	    
-    	    Structures.setupStructures();
+    	    ModStructures.setupStructures();
     	    ConfiguredStructureInit.registerConfiguredStructures();
     	});
     	
-    	EntityTypeInit.registerEntitySpawnPlacement();
+    	ModEntities.registerEntitySpawnPlacement();
     	CriteriaTriggerInit.register();
     }
     
@@ -185,13 +185,13 @@ public class DarkSouls
         MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
         MinecraftForge.EVENT_BUS.register(ClientEvents.class);
         
-        RenderTypeLookup.setRenderLayer(BlockInit.BIG_ACACIA_DOOR.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(BlockInit.BIG_OAK_DOOR.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(BlockInit.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(BlockInit.IRON_BAR_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
         
-        ScreenManager.register(ContainerTypeInit.SMITHING.get(), SmithingTableScreenOverride::new);
-        ScreenManager.register(ContainerTypeInit.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
+        ScreenManager.register(ModContainers.SMITHING.get(), SmithingTableScreenOverride::new);
+        ScreenManager.register(ModContainers.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
         
         CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
     }
@@ -213,7 +213,7 @@ public class DarkSouls
     		event.getGeneration().getStructures().add(() -> ConfiguredStructureInit.CONFIGURED_UNDEAD_ASYLUM);
     	}
     	
-    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityTypeInit.HOLLOW.get(), 20, 1, 1));
+    	event.getSpawns().addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.HOLLOW.get(), 20, 1, 1));
     }
     
     private static Method GETCODEC_METHOD;
@@ -242,8 +242,8 @@ public class DarkSouls
             }
 
 			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(scp.generator.getSettings().structureConfig());
-            tempMap.putIfAbsent(Structures.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.CHECKPOINT_PLAINS.get()));
-            tempMap.putIfAbsent(Structures.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.UNDEAD_ASYLUM.get()));
+            tempMap.putIfAbsent(ModStructures.CHECKPOINT_PLAINS.get(), DimensionStructuresSettings.DEFAULTS.get(ModStructures.CHECKPOINT_PLAINS.get()));
+            tempMap.putIfAbsent(ModStructures.UNDEAD_ASYLUM.get(), DimensionStructuresSettings.DEFAULTS.get(ModStructures.UNDEAD_ASYLUM.get()));
             scp.generator.getSettings().structureConfig = tempMap;
         }
    }

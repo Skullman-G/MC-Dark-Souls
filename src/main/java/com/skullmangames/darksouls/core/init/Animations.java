@@ -49,7 +49,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(11, false, "biped/living/fall", "biped", true);
 	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(12, true, "biped/living/mount", "biped", true);
 	public static final StaticAnimation BIPED_DEATH = new DeathAnimation(3003, 0.16F, "biped/living/death", "biped");
-	public static final StaticAnimation BIPED_DIG = new StaticAnimation(15, 0.11F, true, "biped/living/dig", "biped", true);
+	public static final StaticAnimation BIPED_DIG = new StaticAnimation(15, 0.2F, true, "biped/living/dig", "biped", true);
 	
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(7008, 0.2F, true, "biped/living/eat_r", "biped/living/eat_l", "biped", true);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(7009, 0.2F, true, "biped/living/drink_r", "biped/living/drink_l", "biped", true);
@@ -215,7 +215,7 @@ public final class Animations
 																				new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
 																				new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
 																				.addProperty(AnimationProperty.LOCK_ROTATION, Boolean.valueOf(true))
-																				.addProperty(DamageProperty.PREPARE_SOUND, SoundEvents.HOLLOW_PREPARE)
+																				.addProperty(DamageProperty.PREPARE_SOUND, ModSoundEvents.HOLLOW_PREPARE)
 							},
 					
 					// Light Attacks

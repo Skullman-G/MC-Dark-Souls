@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import com.skullmangames.darksouls.core.init.ItemInit;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -158,7 +158,7 @@ public class FireKeeperEntity extends QuestEntity
 				break;
 			
 			case "2":
-				if (serverplayer.inventory.contains(new ItemStack(ItemInit.ESTUS_SHARD.get())))
+				if (serverplayer.inventory.contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
 				{
 					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.estus_shard"), serverplayer.getUUID());
 				}

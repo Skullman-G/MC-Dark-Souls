@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.world;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import com.skullmangames.darksouls.core.init.AttributeInit;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -39,7 +39,7 @@ public class ModGamerules
 				if (playerdata != null)
 				{
 					ModifiableAttributeInstance mainhandAttackSpeed = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_SPEED);
-					ModifiableAttributeInstance offhandAttackSpeed = playerdata.getOriginalEntity().getAttribute(AttributeInit.OFFHAND_ATTACK_SPEED.get());
+					ModifiableAttributeInstance offhandAttackSpeed = playerdata.getOriginalEntity().getAttribute(ModAttributes.OFFHAND_ATTACK_SPEED.get());
 					
 					mainhandAttackSpeed.removeModifier(ServerPlayerData.WEIGHT_PENALTY_MODIFIIER);
 					float mainWeaponSpeed = (float) mainhandAttackSpeed.getBaseValue();
