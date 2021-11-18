@@ -154,11 +154,13 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		switch (type)
 		{
 			case LIGHT:
-				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(this.getLightAttack()));
-				int combo = animations.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
-				if (combo + 1 < animations.size()) combo += 1;
+				AttackAnimation[] animations = this.getLightAttack();
+				if (animations == null) return null;
+				List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
+				int combo = animationList.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
+				if (combo + 1 < animationList.size()) combo += 1;
 				else if (this.repeatLightAttack()) combo = 0;
-				return animations.get(combo);
+				return animationList.get(combo);
 				
 			case HEAVY:
 				return this.getHeavyAttack();

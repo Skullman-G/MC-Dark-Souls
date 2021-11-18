@@ -24,17 +24,20 @@ public class PickaxeCapability extends MaterialItemCapability
 	}
 
 	@Override
-	public SoundEvent getHitSound() {
+	public SoundEvent getHitSound()
+	{
 		return null;
 	}
 	
 	@Override
-	public HitParticleType getHitParticle() {
+	public HitParticleType getHitParticle()
+	{
 		return null;
 	}
 	
 	@Override
-	public Collider getWeaponCollider() {
+	public Collider getWeaponCollider()
+	{
 		return Colliders.tools;
 	}
 }

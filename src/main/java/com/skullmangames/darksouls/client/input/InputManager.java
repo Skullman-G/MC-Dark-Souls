@@ -127,7 +127,7 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1)
+		if (action == 1 && !this.minecraft.options.getCameraType().isFirstPerson())
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
@@ -294,7 +294,7 @@ public class InputManager
 			
 			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
 					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
-					&& !minecraft.options.getCameraType().isFirstPerson() || inputManager.playerdata.getHeldWeaponCapability(Hand.MAIN_HAND) != null)) event.setCanceled(true);
+					&& !minecraft.options.getCameraType().isFirstPerson())) event.setCanceled(true);
 		}
 		
 		@SubscribeEvent

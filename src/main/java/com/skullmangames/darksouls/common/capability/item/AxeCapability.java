@@ -15,11 +15,11 @@ import net.minecraft.item.Item;
 
 public class AxeCapability extends MaterialItemCapability
 {
-	public static List<StaticAnimation> axeAttackMotions = new ArrayList<StaticAnimation> ();
+	public static List<StaticAnimation> axeAttackMotions = new ArrayList<StaticAnimation>();
 	
 	static
 	{
-		axeAttackMotions = new ArrayList<StaticAnimation> ();
+		axeAttackMotions = new ArrayList<StaticAnimation>();
 	}
 	
 	public AxeCapability(Item item)
