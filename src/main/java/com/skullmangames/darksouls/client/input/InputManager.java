@@ -91,7 +91,7 @@ public class InputManager
 	
 	public boolean playerCanMove(EntityState playerState)
 	{
-		return !playerState.isMovementLocked() || this.player.isRidingJumpable();
+		return this.player.isAlive() && (!playerState.isMovementLocked() || this.player.isRidingJumpable());
 	}
 
 	public boolean playerCanAct(EntityState playerState)
@@ -355,7 +355,7 @@ public class InputManager
 			if(inputManager.playerdata == null) return;
 			EntityState playerState = inputManager.playerdata.getEntityState();
 			
-			if (!inputManager.playerCanMove(playerState))
+			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
 			{
 				if (minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
 				{
