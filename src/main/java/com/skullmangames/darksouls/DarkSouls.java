@@ -43,7 +43,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.serialization.Codec;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.event.ClientEvents;
 import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.gui.screens.ReinforceEstusFlaskScreen;
@@ -107,27 +107,27 @@ public class DarkSouls
     	
     	Animations.registerAnimations(FMLEnvironment.dist);
     	
-    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
     	IEventBus forgeBus = MinecraftForge.EVENT_BUS;
     	
-    	bus.addListener(this::doCommonStuff);
-    	bus.addListener(this::doClientStuff);
-    	bus.addListener(ModAttributes::modifyAttributeMap);
+    	modBus.addListener(this::doCommonStuff);
+    	modBus.addListener(this::doClientStuff);
+    	modBus.addListener(ModAttributes::modifyAttributeMap);
     	
-    	ModAttributes.ATTRIBUTES.register(bus);
-    	ModSoundEvents.VANILLA_SOUND_EVENTS.register(bus);
-    	ModBlocks.BLOCKS.register(bus);
-    	ModBlocks.VANILLA_BLOCKS.register(bus);
-    	ModTileEntities.TILE_ENTITIES.register(bus);
-    	ModItems.VANILLA_ITEMS.register(bus);
-    	ModStructures.STRUCTURES.register(bus);
-    	ModEffects.EFFECTS.register(bus);
-    	ModContainers.VANILLA_CONTAINERS.register(bus);
-    	ModContainers.CONTAINERS.register(bus);
-    	ModEntities.ENTITIES.register(bus);
-    	ModItems.ITEMS.register(bus);
-    	ModRecipes.RECIPE_SERIALIZERS.register(bus);
-    	ModParticles.PARTICLES.register(bus);
+    	ModAttributes.ATTRIBUTES.register(modBus);
+    	ModSoundEvents.VANILLA_SOUND_EVENTS.register(modBus);
+    	ModBlocks.BLOCKS.register(modBus);
+    	ModBlocks.VANILLA_BLOCKS.register(modBus);
+    	ModTileEntities.TILE_ENTITIES.register(modBus);
+    	ModItems.VANILLA_ITEMS.register(modBus);
+    	ModStructures.STRUCTURES.register(modBus);
+    	ModEffects.EFFECTS.register(modBus);
+    	ModContainers.VANILLA_CONTAINERS.register(modBus);
+    	ModContainers.CONTAINERS.register(modBus);
+    	ModEntities.ENTITIES.register(modBus);
+    	ModItems.ITEMS.register(modBus);
+    	ModRecipes.RECIPE_SERIALIZERS.register(modBus);
+    	ModParticles.PARTICLES.register(modBus);
     	
     	forgeBus.register(this);
         forgeBus.register(EntityEvents.class);
@@ -173,10 +173,10 @@ public class DarkSouls
     {
 		if (FMLEnvironment.dist.isDedicatedServer()) return;
         
-        new ClientEngine();
+        new ClientManager();
         
         ClientModels.CLIENT.buildMeshData();
-		ClientEngine.INSTANCE.renderEngine.buildRenderer();
+		ClientManager.INSTANCE.renderEngine.buildRenderer();
 		
 		ProviderEntity.makeMapClient();
 		ModKeys.registerKeys();

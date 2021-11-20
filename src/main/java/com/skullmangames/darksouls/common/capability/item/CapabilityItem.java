@@ -9,7 +9,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -103,7 +103,7 @@ public class CapabilityItem
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 		if (!description.contains(languagePath)) itemTooltip.add(1, new StringTextComponent("\u00A77" + description));
 		
-		if (!ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
+		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
 		
 		languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
 		description = new TranslationTextComponent(languagePath).getString();

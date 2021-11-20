@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.world.ModGamerules;
@@ -71,7 +71,7 @@ public class PlayerEvents
 		{
 			if (event.getEntity() instanceof ClientPlayerEntity)
 			{
-				ClientEngine.INSTANCE.renderEngine.zoomOut(0);
+				ClientManager.INSTANCE.renderEngine.zoomOut(0);
 			}
 		}
 	}

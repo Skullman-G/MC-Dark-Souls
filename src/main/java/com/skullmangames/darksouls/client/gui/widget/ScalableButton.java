@@ -2,37 +2,35 @@ package com.skullmangames.darksouls.client.gui.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.skullmangames.darksouls.DarkSouls;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 
-public class DSButton extends Button
+public class ScalableButton extends Button
 {
-	public static final ResourceLocation DS_BUTTON_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/widgets.png");
-	
-	public DSButton(int p_i232256_1_, int p_i232256_2_, int p_i232256_3_, int p_i232256_4_, ITextComponent p_i232256_5_,
-			IPressable p_i232256_6_)
-	{
-		super(p_i232256_1_, p_i232256_2_, p_i232256_3_, p_i232256_4_, p_i232256_5_, p_i232256_6_);
-	}
-	
-	public DSButton(int p_i232256_1_, int p_i232256_2_, int p_i232256_3_, int p_i232256_4_, ITextComponent p_i232256_5_,
-			IPressable p_i232256_6_, ITooltip p_i232256_7_)
+	public ScalableButton(int p_i232256_1_, int p_i232256_2_, int p_i232256_3_, int p_i232256_4_,
+			ITextComponent p_i232256_5_, IPressable p_i232256_6_, ITooltip p_i232256_7_)
 	{
 		super(p_i232256_1_, p_i232256_2_, p_i232256_3_, p_i232256_4_, p_i232256_5_, p_i232256_6_, p_i232256_7_);
 	}
 	
+	public ScalableButton(int p_i232256_1_, int p_i232256_2_, int p_i232256_3_, int p_i232256_4_,
+			ITextComponent p_i232256_5_, IPressable p_i232256_6_)
+	{
+		super(p_i232256_1_, p_i232256_2_, p_i232256_3_, p_i232256_4_, p_i232256_5_, p_i232256_6_);
+	}
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void renderButton(MatrixStack p_230431_1_, int p_230431_2_, int p_230431_3_, float p_230431_4_)
 	{
-	    Minecraft minecraft = Minecraft.getInstance();
+		Minecraft minecraft = Minecraft.getInstance();
 	    FontRenderer fontrenderer = minecraft.font;
-	    minecraft.getTextureManager().bind(DS_BUTTON_LOCATION);
+	    minecraft.getTextureManager().bind(Widget.WIDGETS_LOCATION);
 	    RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
 	    int i = this.getYImage(this.isHovered());
 	    RenderSystem.enableBlend();

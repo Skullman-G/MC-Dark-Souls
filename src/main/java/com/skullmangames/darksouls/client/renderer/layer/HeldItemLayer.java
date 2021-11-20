@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
@@ -37,7 +37,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> exte
 	public void renderLayer(T entitydata, E entityliving, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
 		ItemStack mainHandStack = entitydata.getOriginalEntity().getMainHandItem();
-		RenderEngine renderEngine = ClientEngine.INSTANCE.renderEngine;
+		RenderEngine renderEngine = ClientManager.INSTANCE.renderEngine;
 		matrixStackIn.pushPose();
 		
 		if (mainHandStack.getItem() != Items.AIR)

@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
@@ -99,7 +99,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 		
-		if (ClientEngine.INSTANCE.inputController.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
 			String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
 			String description = new TranslationTextComponent(languagePath).getString();

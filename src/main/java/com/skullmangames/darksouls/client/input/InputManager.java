@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -160,11 +160,11 @@ public class InputManager
 			
 			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
-				ClientEngine.INSTANCE.switchToFirstPerson();
+				ClientManager.INSTANCE.switchToFirstPerson();
 			}
 			else
 			{
-				ClientEngine.INSTANCE.switchToThirdPerson();
+				ClientManager.INSTANCE.switchToThirdPerson();
 			}
 		}
 	}
@@ -387,7 +387,7 @@ public class InputManager
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
 				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON
-						&& !ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+						&& !ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -396,18 +396,18 @@ public class InputManager
 					
 					if (event.getMovementInput().forwardImpulse > 0.0F)
 					{
-						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F);
+						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
 						forward = event.getMovementInput().forwardImpulse;
 					}
 					else if (event.getMovementInput().forwardImpulse < 0.0F)
 					{
-						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) - 180.0F;
+						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 180.0F;
 						forward = -event.getMovementInput().forwardImpulse;
 						back = true;
 					}
 					if (event.getMovementInput().leftImpulse > 0.0F)
 					{
-						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) - 90.0F;
+						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 90.0F;
 						
 						if (forward == 0.0F) forward = event.getMovementInput().leftImpulse;
 						else if (!back) left = -event.getMovementInput().leftImpulse;
@@ -415,7 +415,7 @@ public class InputManager
 					}
 					else if (event.getMovementInput().leftImpulse < 0.0F)
 					{
-						rot = ClientEngine.INSTANCE.mainCamera.getPivotXRot(1.0F) + 90.0F;
+						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) + 90.0F;
 						
 						if (forward == 0.0F) forward = -event.getMovementInput().leftImpulse;
 						else if (!back) left = -event.getMovementInput().leftImpulse;

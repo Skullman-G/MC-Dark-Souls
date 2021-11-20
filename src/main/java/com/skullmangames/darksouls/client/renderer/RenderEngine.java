@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.EntityIndicator;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
 import com.skullmangames.darksouls.client.renderer.item.RenderBow;
@@ -207,7 +207,7 @@ public class RenderEngine
 			
 			float interpolation = (float)zoomCount / (float)zoomMaxCount;
 			Vector3f interpolatedCorrection = Vector3fHelper.scale(AIMING_CORRECTION, interpolation);
-			PublicMatrix4f rotationMatrix = ClientEngine.INSTANCE.getPlayerData().getMatrix((float)partialTicks);
+			PublicMatrix4f rotationMatrix = ClientManager.INSTANCE.getPlayerData().getMatrix((float)partialTicks);
 			Vector4f scaleVec = new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F);
 			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, scaleVec);
 			
@@ -287,7 +287,7 @@ public class RenderEngine
 				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(event.getItemStack());
 				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if (cap != null && ClientEngine.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
+				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
 			}
 		}
 		
@@ -314,7 +314,7 @@ public class RenderEngine
 		{
 			if (event.getHand() == Hand.MAIN_HAND)
 			{
-				renderEngine.firstPersonRenderer.render(minecraft.player, ClientEngine.INSTANCE.getPlayerData(), null, event.getBuffers(),
+				renderEngine.firstPersonRenderer.render(minecraft.player, ClientManager.INSTANCE.getPlayerData(), null, event.getBuffers(),
 						event.getMatrixStack(), event.getLight(), event.getPartialTicks());
 			}
 			event.setCanceled(true);

@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -81,7 +81,7 @@ public abstract class EntityIndicator extends ModIngameGui
 			finalMatrix.m22 = viewMatrix.m22;
 		}
 		PublicMatrix4f.mul(viewMatrix, finalMatrix, finalMatrix);
-		if(setupProjection) PublicMatrix4f.mul(ClientEngine.INSTANCE.renderEngine.getCurrentProjectionMatrix(), finalMatrix, finalMatrix);
+		if(setupProjection) PublicMatrix4f.mul(ClientManager.INSTANCE.renderEngine.getCurrentProjectionMatrix(), finalMatrix, finalMatrix);
 		
 		return PublicMatrix4f.exportMatrix(finalMatrix);
 	}

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.input;
 
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.Camera;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ public class MouseInputManager extends MouseHelper
 	{
 		super(minecraft);
 		this.minecraft = minecraft;
-		this.camera = ClientEngine.INSTANCE.mainCamera;
+		this.camera = ClientManager.INSTANCE.mainCamera;
 	}
 	
 	@Override
@@ -58,7 +58,7 @@ public class MouseInputManager extends MouseHelper
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}
-	        	else if (ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+	        	else if (ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        		this.minecraft.player.yBodyRot = (float)((double)this.minecraft.player.yRot + d1);

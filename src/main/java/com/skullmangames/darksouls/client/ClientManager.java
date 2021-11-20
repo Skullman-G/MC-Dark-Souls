@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.client;
 
+import com.skullmangames.darksouls.client.gui.ScreenManager;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
 import com.skullmangames.darksouls.client.renderer.Camera;
@@ -13,23 +14,25 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientEngine
+public class ClientManager
 {
-	public static ClientEngine INSTANCE;
-	public Minecraft minecraft;
-	public RenderEngine renderEngine;
-	public InputManager inputController;
-	private GameSettings options;
+	public static ClientManager INSTANCE;
+	public final Minecraft minecraft;
+	public final RenderEngine renderEngine;
+	public final InputManager inputManager;
+	public final ScreenManager screenManager;
 	public final Camera mainCamera;
+	private GameSettings options;
 	
 	private ClientPlayerData playerdata;
 	
-	public ClientEngine()
+	public ClientManager()
 	{
 		INSTANCE = this;
 		this.minecraft = Minecraft.getInstance();
 		this.renderEngine = new RenderEngine();
-		this.inputController = new InputManager();
+		this.inputManager = new InputManager();
+		this.screenManager = new ScreenManager();
 		this.options = this.minecraft.options;
 		
 		this.minecraft.gameRenderer.mainCamera = new Camera();

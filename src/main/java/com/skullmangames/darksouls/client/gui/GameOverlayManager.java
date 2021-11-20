@@ -71,6 +71,7 @@ public class GameOverlayManager
 	      else return false;
 	   }
 	
+	@SuppressWarnings("deprecation")
 	public static void renderCrosshair(MainWindow window, MatrixStack matrixstack)
 	{
 	   GameSettings gamesettings = minecraft.options;

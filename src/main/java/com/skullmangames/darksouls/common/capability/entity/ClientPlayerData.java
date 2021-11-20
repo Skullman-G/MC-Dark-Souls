@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSStamina;
@@ -38,8 +38,8 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	public void onEntityConstructed(ClientPlayerEntity entity)
 	{
 		super.onEntityConstructed(entity);
-		ClientEngine.INSTANCE.setPlayerData(this);
-		ClientEngine.INSTANCE.inputController.setGamePlayer(this);
+		ClientManager.INSTANCE.setPlayerData(this);
+		ClientManager.INSTANCE.inputManager.setGamePlayer(this);
 	}
 	
 	@Override
@@ -47,8 +47,8 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		super.onEntityJoinWorld(entityIn);
 		
-		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientEngine.INSTANCE.switchToThirdPerson();
-		else ClientEngine.INSTANCE.switchToFirstPerson();
+		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
+		else ClientManager.INSTANCE.switchToFirstPerson();
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 			if (this.currentMixMotion == LivingMotion.AIMING)
 			{
 				this.orgEntity.getUseItemRemainingTicks();
-				ClientEngine.INSTANCE.renderEngine.zoomIn();
+				ClientManager.INSTANCE.renderEngine.zoomIn();
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	protected void playReboundAnimation()
 	{
 		this.getClientAnimator().playReboundAnimation();
-		ClientEngine.INSTANCE.renderEngine.zoomOut(40);
+		ClientManager.INSTANCE.renderEngine.zoomOut(40);
 	}
 	
 	@Override

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.client.renderer.entity.model.CustomModelBakery;
@@ -90,7 +90,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingData<E>> 
 		{
 			if (item != Items.AIR)
 			{
-				ClientEngine.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entitydata, buffer, matrixStackIn, packedLightIn, partialTicks);
+				ClientManager.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entitydata, buffer, matrixStackIn, packedLightIn, partialTicks);
 			}
 		}
 		

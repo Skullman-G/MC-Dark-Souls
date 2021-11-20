@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.renderer;
 
-import com.skullmangames.darksouls.client.ClientEngine;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -29,7 +29,7 @@ public class Camera extends ActiveRenderInfo
 	    
 	    if (detached)
 	    {
-	    	if (ClientEngine.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+	    	if (ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
 	    	{
 	    		this.move(-this.getMaxZoom(4.0D), 0.0D, -1.25D);
 	    		
