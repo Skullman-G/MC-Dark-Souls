@@ -79,7 +79,6 @@ public class ClientEvents
         DarkSoulsSpawnEggItem.initSpawnEggs();
     }
 	
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{

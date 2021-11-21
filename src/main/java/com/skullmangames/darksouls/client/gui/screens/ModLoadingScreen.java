@@ -84,7 +84,6 @@ public class ModLoadingScreen extends Screen
 		NarratorChatListener.INSTANCE.sayNow((new TranslationTextComponent("narrator.loading.done")).getString());
 	}
 
-	@SuppressWarnings("deprecation")
 	public void render(MatrixStack matStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 		if (this.fadeInStart == 0L) this.fadeInStart = Util.getMillis();
@@ -133,7 +132,6 @@ public class ModLoadingScreen extends Screen
 		AbstractGui.blit(matrixstack, x, y, 0, 0, 350, 200, 350, 200);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void renderFloatingItem(ItemStack itemstack, int posX, int yPos, int scale)
 	{
 		RenderSystem.translatef(0.0F, 0.0F, 32.0F);

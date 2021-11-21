@@ -102,7 +102,6 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 		this.refreshList(p_i49846_8_, false);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
@@ -242,7 +241,6 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			this.icon = this.loadServerIcon();
 		}
 
-		@SuppressWarnings("deprecation")
 		public void render(MatrixStack matStack, int field, int y, int x, int p_230432_5_,
 				int p_230432_6_, int p_230432_7_, int p_230432_8_, boolean isMouseOver, float p_230432_10_)
 		{
