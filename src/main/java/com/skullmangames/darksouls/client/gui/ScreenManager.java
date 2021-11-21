@@ -3,9 +3,12 @@ package com.skullmangames.darksouls.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModMainMenuScreen;
+import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.WorldLoadProgressScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -59,6 +62,10 @@ public class ScreenManager
 				{
 					MainMenuScreen screen = (MainMenuScreen)event.getGui();
 					event.setGui(new ModMainMenuScreen(screen.fading));
+				}
+				else if (event.getGui() instanceof WorldLoadProgressScreen)
+				{
+					event.setGui(new ModLoadingScreen());
 				}
 			}
 			else

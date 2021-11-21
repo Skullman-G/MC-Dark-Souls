@@ -540,7 +540,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 
 		private void queueLoadScreen()
 		{
-			this.minecraft.forceSetScreen(new DirtMessageScreen(new TranslationTextComponent("selectWorld.data_read")));
+			this.minecraft.forceSetScreen(new DirtMessageScreen(new StringTextComponent("")));
 		}
 
 		@Nullable

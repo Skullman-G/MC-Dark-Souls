@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.DarkSoulsSpawnEggItem;
@@ -23,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModItems 
 {
+	public static final List<Item> DESCRIPTION_ITEMS = new ArrayList<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
@@ -100,6 +104,22 @@ public class ModItems
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new DarkSoulsSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
 			.tab(ItemGroup.TAB_MISC)));
+	
+	
+	public static void registerDescriptionItems()
+	{
+		DESCRIPTION_ITEMS.add(ESTUS_FLASK.get());
+		DESCRIPTION_ITEMS.add(ESTUS_SHARD.get());
+		DESCRIPTION_ITEMS.add(FIRE_KEEPER_SOUL.get());
+		DESCRIPTION_ITEMS.add(EMERALD_FLASK.get());
+		DESCRIPTION_ITEMS.add(DARKSIGN.get());
+		DESCRIPTION_ITEMS.add(HOMEWARD_BONE.get());
+		DESCRIPTION_ITEMS.add(HUMANITY.get());
+		DESCRIPTION_ITEMS.add(BROKEN_STRAIGHT_SWORD.get());
+		DESCRIPTION_ITEMS.add(STRAIGHT_SWORD_HILT.get());
+		DESCRIPTION_ITEMS.add(UNDEAD_BONE_SHARD.get());
+		DESCRIPTION_ITEMS.add(DEMON_GREAT_HAMMER.get());
+	}
 	
 	
 	//Vanilla Overrides

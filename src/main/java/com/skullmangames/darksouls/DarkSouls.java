@@ -193,6 +193,8 @@ public class DarkSouls
         ScreenManager.register(ModContainers.SMITHING.get(), SmithingTableScreenOverride::new);
         ScreenManager.register(ModContainers.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);
         
+        ModItems.registerDescriptionItems();
+        
         CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
     }
 	
