@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.LoadingGui;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.WorldLoadProgressScreen;
@@ -53,26 +54,39 @@ public class ScreenManager
 	@Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID, value = Dist.CLIENT)
 	public static class Events
 	{
+		private static Minecraft minecraft = Minecraft.getInstance();
+		
 		@SubscribeEvent
 		public static void onOpenScreen(GuiOpenEvent event)
 		{
+			Screen gui = event.getGui();
+			
 			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
 			{
-				if (event.getGui() instanceof MainMenuScreen)
+				if (gui == null && minecraft.level != null)
 				{
-					MainMenuScreen screen = (MainMenuScreen)event.getGui();
+					LoadingGui overlay = minecraft.getOverlay();
+					if (overlay instanceof ModLoadingScreen)
+					{
+						((ModLoadingScreen)overlay).setCanFadeOut(true);
+					}
+				}
+				if (gui instanceof MainMenuScreen)
+				{
+					MainMenuScreen screen = (MainMenuScreen)gui;
 					event.setGui(new ModMainMenuScreen(screen.fading));
 				}
-				else if (event.getGui() instanceof WorldLoadProgressScreen)
+				else if (gui instanceof WorldLoadProgressScreen)
 				{
-					event.setGui(new ModLoadingScreen());
+					event.setCanceled(true);
+					minecraft.setOverlay(new ModLoadingScreen());
 				}
 			}
 			else
 			{
-				if (event.getGui() instanceof ModMainMenuScreen)
+				if (gui instanceof ModMainMenuScreen)
 				{
-					MainMenuScreen screen = (MainMenuScreen)event.getGui();
+					MainMenuScreen screen = (MainMenuScreen)gui;
 					event.setGui(new MainMenuScreen(screen.fading));
 				}
 			}
