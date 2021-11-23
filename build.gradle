@@ -1,13 +1,10 @@
-buildscript
-{
-    repositories
-    {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
-    dependencies
-    {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -78,8 +75,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies
 {
-
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
 }
 
 jar
@@ -101,19 +97,14 @@ jar
 
 jar.finalizedBy('reobfJar') 
 
-publishing
-{
-    publications
-    {
-        mavenJava(MavenPublication)
-        {
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
             artifact jar
         }
     }
-    repositories
-    {
-        maven
-        {
+    repositories {
+        maven {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
