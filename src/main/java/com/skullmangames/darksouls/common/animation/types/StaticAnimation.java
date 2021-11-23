@@ -81,6 +81,11 @@ public class StaticAnimation extends DynamicAnimation
 		this.mixPart = mixPart;
 	}
 	
+	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly)
+	{
+		this(id, repeatPlay, path, armature, clientOnly, MixPart.FULL);
+	}
+	
 	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
 	{
 		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
