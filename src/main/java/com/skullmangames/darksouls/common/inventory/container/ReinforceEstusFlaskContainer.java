@@ -31,7 +31,8 @@ public class ReinforceEstusFlaskContainer extends Container
 	private final CraftResultInventory resultSlots = new CraftResultInventory();
 	private final IInventory inputSlots = new Inventory(2)
 	{
-	      public void setChanged()
+	      @Override
+		public void setChanged()
 	      {
 	         super.setChanged();
 	         ReinforceEstusFlaskContainer.this.slotsChanged(this);
@@ -57,17 +58,20 @@ public class ReinforceEstusFlaskContainer extends Container
 	    this.addSlot(new Slot(this.inputSlots, 1, 76, 47));
 	    this.addSlot(new Slot(this.resultSlots, 2, 134, 47)
 	    {
-	         public boolean mayPlace(ItemStack p_75214_1_)
+	         @Override
+			public boolean mayPlace(ItemStack p_75214_1_)
 	         {
 	            return false;
 	         }
 
-	         public boolean mayPickup(PlayerEntity p_82869_1_)
+	         @Override
+			public boolean mayPickup(PlayerEntity p_82869_1_)
 	         {
 	            return ReinforceEstusFlaskContainer.this.mayPickup(p_82869_1_, this.hasItem());
 	         }
 
-	         public ItemStack onTake(PlayerEntity player, ItemStack itemstack)
+	         @Override
+			public ItemStack onTake(PlayerEntity player, ItemStack itemstack)
 	         {
 	        	 itemstack.onCraftedBy(player.level, player, itemstack.getCount());
 		   	     ReinforceEstusFlaskContainer.this.resultSlots.awardUsedRecipes(player);

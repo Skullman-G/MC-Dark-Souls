@@ -23,7 +23,7 @@ public class ModEffect extends Effect {
 		this.icon = new ResourceLocation(DarkSouls.MOD_ID, "textures/mob_effect/" + potionName + ".png");
 	}
 	
-	@SuppressWarnings({ "deprecation", "resource" })
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)@Override
 	public void renderHUDEffect(EffectInstance effect, AbstractGui gui, MatrixStack mStack, int x, int y, float z, float alpha) {
 		GlStateManager._disableTexture();
@@ -35,7 +35,7 @@ public class ModEffect extends Effect {
     	AbstractGui.blit(mStack, x+3, y+3, 1, 0, 0, 18, 18, 18, 18);
     }
 	
-	@SuppressWarnings({ "deprecation", "resource" })
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)@Override
 	public void renderInventoryEffect(EffectInstance effect, DisplayEffectsScreen<?> gui, MatrixStack mStack, int x, int y, float z) {
 		GlStateManager._disableTexture();

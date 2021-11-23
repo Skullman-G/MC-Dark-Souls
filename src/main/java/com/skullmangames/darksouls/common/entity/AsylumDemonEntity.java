@@ -55,12 +55,14 @@ public class AsylumDemonEntity extends CreatureEntity
 		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
 	}
 	
+	@Override
 	public void startSeenByPlayer(ServerPlayerEntity player)
 	{
 	    super.startSeenByPlayer(player);
 	    this.bossInfo.addPlayer(player);
 	}
 
+	@Override
 	public void stopSeenByPlayer(ServerPlayerEntity player)
 	{
 	    super.stopSeenByPlayer(player);

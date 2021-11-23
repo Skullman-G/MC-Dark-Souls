@@ -21,6 +21,7 @@ public class BooleanButton extends OptionButton<Boolean>
 		});
 	}
 	
+	@Override
 	protected ITextComponent getRefreshedMessage()
 	{
 		if (!(this.option.getValue() instanceof Boolean)) return new TranslationTextComponent(option.getName());

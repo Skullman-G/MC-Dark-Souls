@@ -32,16 +32,19 @@ public class ModWorldSelectionScreen extends Screen
 		this.lastScreen = p_i46592_1_;
 	}
 
+	@Override
 	public boolean mouseScrolled(double p_231043_1_, double p_231043_3_, double p_231043_5_)
 	{
 		return super.mouseScrolled(p_231043_1_, p_231043_3_, p_231043_5_);
 	}
 
+	@Override
 	public void tick()
 	{
 		this.searchBox.tick();
 	}
 
+	@Override
 	protected void init()
 	{
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
@@ -95,22 +98,26 @@ public class ModWorldSelectionScreen extends Screen
 		this.setInitialFocus(this.searchBox);
 	}
 
+	@Override
 	public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_)
 	{
 		return super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_) ? true
 				: this.searchBox.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
 	}
 
+	@Override
 	public void onClose()
 	{
 		this.minecraft.setScreen(this.lastScreen);
 	}
 
+	@Override
 	public boolean charTyped(char p_231042_1_, int p_231042_2_)
 	{
 		return this.searchBox.charTyped(p_231042_1_, p_231042_2_);
 	}
 
+	@Override
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 		this.toolTip = null;
@@ -138,6 +145,7 @@ public class ModWorldSelectionScreen extends Screen
 		this.copyButton.active = p_214324_1_;
 	}
 
+	@Override
 	public void removed()
 	{
 		if (this.list != null)

@@ -80,6 +80,7 @@ public class BigDoorBlock extends LockableBlock
 	    }
 	}
 	
+	@Override
 	public BlockPos[] getPartPositions(World world, BlockPos blockpos)
 	{
 		BlockPos[] positions = new BlockPos[3];
@@ -108,7 +109,6 @@ public class BigDoorBlock extends LockableBlock
 		return positions;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState updateShape(BlockState blockstate, Direction direction, BlockState blockstate2, IWorld world, BlockPos p_196271_5_, BlockPos p_196271_6_)
 	{
@@ -328,7 +328,6 @@ public class BigDoorBlock extends LockableBlock
 	    return p_185499_1_.setValue(FACING, p_185499_2_.rotate(p_185499_1_.getValue(FACING)));
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{

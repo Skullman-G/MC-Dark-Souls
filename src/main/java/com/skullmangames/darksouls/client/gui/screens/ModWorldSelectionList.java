@@ -158,21 +158,25 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 		}
 	}
 
+	@Override
 	protected int getScrollbarPosition()
 	{
 		return super.getScrollbarPosition() + 20;
 	}
 
+	@Override
 	public int getRowWidth()
 	{
 		return super.getRowWidth() + 50;
 	}
 
+	@Override
 	protected boolean isFocused()
 	{
 		return this.screen.getFocused() == this;
 	}
 
+	@Override
 	public void setSelected(@Nullable ModWorldSelectionList.Entry p_241215_1_)
 	{
 		super.setSelected(p_241215_1_);
@@ -192,6 +196,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 		this.screen.updateButtonStatus(p_241215_1_ != null && !p_241215_1_.summary.isLocked());
 	}
 
+	@Override
 	protected void moveSelection(AbstractList.Ordering p_241219_1_)
 	{
 		this.moveSelection(p_241219_1_, (p_241652_0_) ->
@@ -241,6 +246,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			this.icon = this.loadServerIcon();
 		}
 
+		@Override
 		public void render(MatrixStack matStack, int field, int y, int x, int p_230432_5_,
 				int p_230432_6_, int p_230432_7_, int p_230432_8_, boolean isMouseOver, float p_230432_10_)
 		{
@@ -323,6 +329,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			}
 		}
 
+		@Override
 		public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_)
 		{
 			if (this.summary.isLocked())
@@ -569,6 +576,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			}
 		}
 
+		@Override
 		public void close()
 		{
 			if (this.icon != null)

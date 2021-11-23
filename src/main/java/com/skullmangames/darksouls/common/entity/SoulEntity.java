@@ -79,24 +79,29 @@ public class SoulEntity extends Entity
 	    }
 	}
 
+	@Override
 	protected boolean isMovementNoisy()
 	{
 	   return false;
 	}
 
+	@Override
 	protected void defineSynchedData()
 	{
 	}
 
+	@Override
 	protected void doWaterSplashEffect()
 	{
 	}
 
+	@Override
 	public boolean hurt(DamageSource p_70097_1_, float p_70097_2_)
 	{
 	   return false;
 	}
 
+	@Override
 	public boolean isAttackable()
 	{
 	   return false;

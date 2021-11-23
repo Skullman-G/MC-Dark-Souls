@@ -28,12 +28,14 @@ public class SoulRenderer extends EntityRenderer<SoulEntity>
 	      this.shadowStrength = 0.75F;
 	   }
 
-	   protected int getBlockLightLevel(SoulEntity p_225624_1_, BlockPos p_225624_2_)
+	   @Override
+	protected int getBlockLightLevel(SoulEntity p_225624_1_, BlockPos p_225624_2_)
 	   {
 	      return MathHelper.clamp(super.getBlockLightLevel(p_225624_1_, p_225624_2_) + 7, 0, 15);
 	   }
 
-	   public void render(SoulEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_)
+	   @Override
+	public void render(SoulEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_)
 	   {
 	      p_225623_4_.pushPose();
 	      int i = 2;
@@ -64,7 +66,8 @@ public class SoulRenderer extends EntityRenderer<SoulEntity>
 	      p_229102_0_.vertex(p_229102_1_, p_229102_3_, p_229102_4_, 0.0F).color(red, green, blue, 128).uv(p_229102_8_, p_229102_9_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229102_10_).normal(p_229102_2_, 0.0F, 1.0F, 0.0F).endVertex();
 	   }
 
-	   public ResourceLocation getTextureLocation(SoulEntity p_110775_1_)
+	   @Override
+	public ResourceLocation getTextureLocation(SoulEntity p_110775_1_)
 	   {
 	      return SOUL_LOCATION;
 	   }

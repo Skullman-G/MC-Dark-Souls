@@ -38,12 +38,14 @@ public class SoulContainerParticle extends SpriteTexturedParticle
 	    this.lifetime = (int)(Math.random() * 10.0D) + 40;
 	}
 	
+	@Override
 	public void move(double p_187110_1_, double p_187110_3_, double p_187110_5_)
 	{
 	    this.setBoundingBox(this.getBoundingBox().move(p_187110_1_, p_187110_3_, p_187110_5_));
 	    this.setLocationFromBoundingbox();
 	}
 	
+	@Override
 	public float getQuadSize(float p_217561_1_)
 	{
 	    float f = ((float)this.age + p_217561_1_) / (float)this.lifetime;
@@ -53,11 +55,13 @@ public class SoulContainerParticle extends SpriteTexturedParticle
 	    return this.quadSize * f;
 	 }
 	
+	@Override
 	public int getLightColor(float p_189214_1_)
 	{
 	    return super.getLightColor(p_189214_1_);
 	}
 	
+	@Override
 	public void tick()
 	{
 	    this.xo = this.x;

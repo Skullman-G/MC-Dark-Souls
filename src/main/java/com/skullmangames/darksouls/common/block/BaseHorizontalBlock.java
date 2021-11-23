@@ -26,7 +26,6 @@ public class BaseHorizontalBlock extends Block
 		super(properties);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{

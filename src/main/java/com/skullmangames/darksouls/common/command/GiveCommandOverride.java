@@ -46,8 +46,7 @@ public class GiveCommandOverride
 
 		         while(i > 0)
 		         {
-		            @SuppressWarnings("deprecation")
-					int j = Math.min(iteminput.getItem().getMaxStackSize(), i);
+		            int j = Math.min(iteminput.getItem().getMaxStackSize(), i);
 		            i -= j;
 		            ItemStack itemstack = iteminput.createItemStack(j, false);
 		            boolean flag = serverplayerentity.inventory.add(itemstack);

@@ -39,16 +39,19 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	    this.recipes = this.level.getRecipeManager().getAllRecipesFor(IRecipeType.SMITHING);
 	}
 
+	@Override
 	protected boolean isValidBlock(BlockState p_230302_1_)
 	{
 	    return p_230302_1_.is(ModBlocks.SMITHING_TABLE.get());
 	}
 
+	@Override
 	protected boolean mayPickup(PlayerEntity p_230303_1_, boolean p_230303_2_)
 	{
 	    return this.selectedRecipe != null && this.selectedRecipe.matches(this.inputSlots, this.level);
 	}
 
+	@Override
 	protected ItemStack onTake(PlayerEntity p_230301_1_, ItemStack p_230301_2_)
 	{
 	    p_230301_2_.onCraftedBy(p_230301_1_.level, p_230301_1_, p_230301_2_.getCount());
@@ -69,6 +72,7 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	    this.inputSlots.setItem(p_234654_1_, itemstack);
 	}
 	
+	@Override
 	public void createResult()
 	{
 		List<SmithingRecipe> list = this.level.getRecipeManager().getRecipesFor(IRecipeType.SMITHING, this.inputSlots, this.level);
@@ -98,6 +102,7 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	    }
 	}
 	
+	@Override
 	protected boolean shouldQuickMoveToAdditionalSlot(ItemStack p_241210_1_)
 	{
 	    return this.recipes.stream().anyMatch((p_241444_1_) ->
@@ -106,6 +111,7 @@ public class SmithingTableContainerOverride extends AbstractRepairContainer
 	    });
 	}
 
+	@Override
 	public boolean canTakeItemForPickAll(ItemStack p_94530_1_, Slot p_94530_2_)
 	{
 	    return p_94530_2_.container != this.resultSlots && super.canTakeItemForPickAll(p_94530_1_, p_94530_2_);

@@ -58,6 +58,7 @@ public class ChasingGoal extends Goal
 		this(mobdata, host, speedIn, useLongMemory, chasing, walk, true);
 	}
 	
+	@Override
 	public boolean canUse()
 	{
 		LivingEntity livingentity = this.attacker.getTarget();

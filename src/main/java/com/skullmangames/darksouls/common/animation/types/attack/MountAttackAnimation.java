@@ -12,6 +12,7 @@ public class MountAttackAnimation extends AttackAnimation
 		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 	}
 	
+	@Override
 	protected Vector3f getCoordVector(LivingData<?> entitydata)
 	{
 		return new Vector3f(0, 0, 0);

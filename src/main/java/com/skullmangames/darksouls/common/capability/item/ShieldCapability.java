@@ -17,6 +17,7 @@ public class ShieldCapability extends WeaponCapability implements IShield
 		return Animations.SHIELD_LIGHT_ATTACK;
 	}
 	
+	@Override
 	public float getPhysicalDefense()
 	{
 		return 0.93F;

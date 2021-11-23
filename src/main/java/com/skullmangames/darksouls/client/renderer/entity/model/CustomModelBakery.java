@@ -183,6 +183,7 @@ public class CustomModelBakery
 			this.jointId = jointId;
 		}
 		
+		@Override
 		public void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices)
 		{
 			for (TexturedQuad quad : cube.polygons)

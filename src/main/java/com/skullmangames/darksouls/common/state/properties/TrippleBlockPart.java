@@ -8,6 +8,7 @@ public enum TrippleBlockPart implements IStringSerializable
 	MIDDLE,
 	LOWER;
 	
+	@Override
 	public String toString()
 	{
 	      return this.getSerializedName();

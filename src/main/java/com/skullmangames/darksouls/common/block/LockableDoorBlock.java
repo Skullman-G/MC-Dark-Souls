@@ -60,7 +60,8 @@ public class LockableDoorBlock extends LockableBlock
       this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, Boolean.valueOf(false)).setValue(HINGE, DoorHingeSide.LEFT).setValue(POWERED, Boolean.valueOf(false)).setValue(HALF, DoubleBlockHalf.LOWER));
    }
 
-   public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_)
+   @Override
+public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_)
    {
       Direction direction = p_220053_1_.getValue(FACING);
       boolean flag = !p_220053_1_.getValue(OPEN);
@@ -78,7 +79,7 @@ public class LockableDoorBlock extends LockableBlock
       }
    }
 
-   @SuppressWarnings("deprecation")
+   @Override
 public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, BlockState p_196271_3_, IWorld p_196271_4_, BlockPos p_196271_5_, BlockPos p_196271_6_)
    {
       DoubleBlockHalf doubleblockhalf = p_196271_1_.getValue(HALF);
@@ -92,7 +93,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       }
    }
 
-   public void playerWillDestroy(World level, BlockPos blockpos, BlockState blockstate, PlayerEntity player)
+   @Override
+public void playerWillDestroy(World level, BlockPos blockpos, BlockState blockstate, PlayerEntity player)
    {
       if (!level.isClientSide && player.isCreative())
       {
@@ -112,7 +114,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       super.playerWillDestroy(level, blockpos, blockstate, player);
    }
 
-   public boolean isPathfindable(BlockState p_196266_1_, IBlockReader p_196266_2_, BlockPos p_196266_3_, PathType p_196266_4_)
+   @Override
+public boolean isPathfindable(BlockState p_196266_1_, IBlockReader p_196266_2_, BlockPos p_196266_3_, PathType p_196266_4_)
    {
       switch(p_196266_4_)
       {
@@ -137,7 +140,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       return this.material == Material.METAL ? 1005 : 1006;
    }
 
-   @Nullable
+   @Override
+@Nullable
    public BlockState getStateForPlacement(BlockItemUseContext p_196258_1_)
    {
       BlockPos blockpos = p_196258_1_.getClickedPos();
@@ -150,7 +154,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       else return null;
    }
 
-   public void setPlacedBy(World p_180633_1_, BlockPos p_180633_2_, BlockState p_180633_3_, LivingEntity p_180633_4_, ItemStack p_180633_5_)
+   @Override
+public void setPlacedBy(World p_180633_1_, BlockPos p_180633_2_, BlockState p_180633_3_, LivingEntity p_180633_4_, ItemStack p_180633_5_)
    {
       p_180633_1_.setBlock(p_180633_2_.above(), p_180633_3_.setValue(HALF, DoubleBlockHalf.UPPER), 3);
    }
@@ -212,7 +217,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
 		return positions;
 	}
 
-   public ActionResultType use(BlockState blockstate, World level, BlockPos blockpos, PlayerEntity player, Hand hand, BlockRayTraceResult p_225533_6_)
+   @Override
+public ActionResultType use(BlockState blockstate, World level, BlockPos blockpos, PlayerEntity player, Hand hand, BlockRayTraceResult p_225533_6_)
    {
 	   if (this.isLocked(level, blockpos))
 	   {
@@ -242,7 +248,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       }
    }
 
-   public void neighborChanged(BlockState p_220069_1_, World p_220069_2_, BlockPos p_220069_3_, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_)
+   @Override
+public void neighborChanged(BlockState p_220069_1_, World p_220069_2_, BlockPos p_220069_3_, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_)
    {
       boolean flag = p_220069_2_.hasNeighborSignal(p_220069_3_) || p_220069_2_.hasNeighborSignal(p_220069_3_.relative(p_220069_1_.getValue(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
       if (p_220069_4_ != this && flag != p_220069_1_.getValue(POWERED))
@@ -253,7 +260,8 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
 
    }
 
-   public boolean canSurvive(BlockState p_196260_1_, IWorldReader p_196260_2_, BlockPos p_196260_3_)
+   @Override
+public boolean canSurvive(BlockState p_196260_1_, IWorldReader p_196260_2_, BlockPos p_196260_3_)
    {
       BlockPos blockpos = p_196260_3_.below();
       BlockState blockstate = p_196260_2_.getBlockState(blockpos);
@@ -265,29 +273,33 @@ public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, Blo
       p_196426_1_.levelEvent((PlayerEntity)null, p_196426_3_ ? this.getOpenSound() : this.getCloseSound(), p_196426_2_, 0);
    }
 
-   public PushReaction getPistonPushReaction(BlockState p_149656_1_)
+   @Override
+public PushReaction getPistonPushReaction(BlockState p_149656_1_)
    {
       return PushReaction.DESTROY;
    }
 
-   public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_)
+   @Override
+public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_)
    {
       return p_185499_1_.setValue(FACING, p_185499_2_.rotate(p_185499_1_.getValue(FACING)));
    }
 
-   @SuppressWarnings("deprecation")
+   @Override
 public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
    {
       return p_185471_2_ == Mirror.NONE ? p_185471_1_ : p_185471_1_.rotate(p_185471_2_.getRotation(p_185471_1_.getValue(FACING))).cycle(HINGE);
    }
 
-   @OnlyIn(Dist.CLIENT)
+   @Override
+@OnlyIn(Dist.CLIENT)
    public long getSeed(BlockState p_209900_1_, BlockPos p_209900_2_)
    {
       return MathHelper.getSeed(p_209900_2_.getX(), p_209900_2_.below(p_209900_1_.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), p_209900_2_.getZ());
    }
 
-   protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> p_206840_1_)
+   @Override
+protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> p_206840_1_)
    {
       p_206840_1_.add(HALF, FACING, OPEN, HINGE, POWERED);
    }
