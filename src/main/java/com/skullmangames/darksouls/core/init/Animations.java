@@ -118,15 +118,10 @@ public final class Animations
 	
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AAAnimation(2001, 0.08F, 0F, 0.1F, 0.15F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto1", "biped")
-							.addProperty(DamageProperty.PARTICLE, null),
-					new AAAnimation(2002, 0.08F, 0F, 0.1F, 0.15F, 4F, null, "111213", "biped/combat/fist_auto2", "biped")
-							.addProperty(DamageProperty.PARTICLE, null),
-					new AAAnimation(2003, 0.08F, 0F, 0.1F, 0.5F, 4F, Hand.OFF_HAND, null, "111313", "biped/combat/fist_auto3", "biped")
-							.addProperty(DamageProperty.PARTICLE, null)	
+					new AttackAnimation(2001, 0.2F, 0.0F, 0.28F, 0.4F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_1", "biped"),
+					new AttackAnimation(2002, 0.2F, 0.0F, 0.08F, 0.24F, 0.8F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_2", "biped")
 			};
 	public static final AttackAnimation FIST_DASH_ATTACK = new AADashAnimation(2004, 0.06F, 0.05F, 0.15F, 0.3F, 0.7F, null, "213", "biped/combat/fist_dash", "biped")
-															.addProperty(DamageProperty.PARTICLE, null)
 															.addProperty(AnimationProperty.LOCK_ROTATION, true);
 	
 	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AAAnimation(2012, 0.16F, 0.1F, 0.2F, 0.45F, 1.2F, null, "111213", "biped/combat/spear_onehand_auto", "biped");
