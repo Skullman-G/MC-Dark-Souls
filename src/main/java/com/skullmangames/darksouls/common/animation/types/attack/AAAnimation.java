@@ -15,21 +15,21 @@ public class AAAnimation extends TargetTraceAnimation
 {
 	protected final float basisSpeed;
 	
-	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature)
+	public AAAnimation(float convertTime, float antic, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, antic, antic, contact, recovery, basisSpeed, collider, index, path, armature);
+		this(convertTime, antic, antic, contact, recovery, basisSpeed, collider, index, path, armature);
 	}
 	
-	public AAAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature)
+	public AAAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, float basisSpeed, @Nullable Collider collider, String index, String path, String armature)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
+		super(convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 		this.basisSpeed = basisSpeed;
 	}
 	
-	public AAAnimation(int id, float convertTime, float antic, float contact, float recovery, float basisSpeed, Hand hand, @Nullable Collider collider,  String index, String path, String armature)
+	public AAAnimation(float convertTime, float antic, float contact, float recovery, float basisSpeed, Hand hand, @Nullable Collider collider,  String index, String path, String armature)
 	{
-		super(id, convertTime, antic, antic, contact, recovery, false, hand, collider, index, path, armature);
+		super(convertTime, antic, antic, contact, recovery, false, hand, collider, index, path, armature);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 		this.basisSpeed = basisSpeed;
 	}

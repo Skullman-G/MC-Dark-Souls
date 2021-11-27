@@ -11,17 +11,17 @@ import net.minecraft.entity.Entity;
 
 public class AADashAnimation extends AttackAnimation
 {
-	public AADashAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
+	public AADashAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
 			String path, String armature)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
+		super(convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 		this.addProperty(AnimationProperty.DIRECTIONAL, true);
 	}
 	
-	public AADashAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
+	public AADashAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index,
 			String path, boolean noDirectionAttack, String armature)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
+		super(convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 	}
 	
 	@Override

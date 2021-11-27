@@ -7,9 +7,9 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class MountAttackAnimation extends AttackAnimation
 {
-	public MountAttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, Collider collider, String index, String path, String armature)
+	public MountAttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, Collider collider, String index, String path, String armature)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
+		super(convertTime, antic, preDelay, contact, recovery, false, collider, index, path, armature);
 	}
 	
 	@Override

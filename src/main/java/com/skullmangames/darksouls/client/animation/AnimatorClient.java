@@ -48,7 +48,7 @@ public class AnimatorClient extends Animator
 	@Override
 	public void playAnimation(int id, float modifyTime)
 	{
-		this.playAnimation(Animations.findAnimationDataById(id), modifyTime);
+		this.playAnimation(Animations.getById(id), modifyTime);
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class AnimatorClient extends Animator
 
 	public void playMixLayerAnimation(int id)
 	{
-		playMixLayerAnimation(Animations.findAnimationDataById(id));
+		playMixLayerAnimation(Animations.getById(id));
 	}
 	
 	public void playMixLayerAnimation(StaticAnimation nextAnimation)

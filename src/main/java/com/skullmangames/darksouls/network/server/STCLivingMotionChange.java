@@ -67,7 +67,7 @@ public class STCLivingMotionChange
 		}
 			
 		for(int i = 0; i < msg.count; i++) {
-			idarr[i] = Animations.findAnimationDataById(buf.readInt());
+			idarr[i] = Animations.getById(buf.readInt());
 		}
 		
 		msg.motion = motionarr;

@@ -212,14 +212,14 @@ public class InputManager
 		if (this.isKeyDown(this.options.keySprint))
 		{
 			this.sprintPressCounter++;
-			
-			if (this.playerCanSprint()) this.player.setSprinting(true);
-			return;
+			if (this.playerCanSprint() && this.sprintPressCounter >= 5) this.player.setSprinting(true);
 		}
-		
-		this.sprintToggle = false;
-		if (this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
-		this.sprintPressCounter = 0;
+		else
+		{
+			this.sprintToggle = false;
+			if (this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
+			this.sprintPressCounter = 0;
+		}
 	}
 	
 	private void handleRightHandAction(EntityState playerState)

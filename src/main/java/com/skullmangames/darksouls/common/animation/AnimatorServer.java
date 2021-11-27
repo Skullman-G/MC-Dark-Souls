@@ -26,7 +26,7 @@ public class AnimatorServer extends Animator
 	@Override
 	public void playAnimation(int id, float modifyTime)
 	{
-		this.playAnimation(Animations.findAnimationDataById(id), modifyTime);
+		this.playAnimation(Animations.getById(id), modifyTime);
 	}
 	
 	@Override

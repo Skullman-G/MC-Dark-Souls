@@ -4,9 +4,9 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 
 public class DisarmAnimation extends ActionAnimation
 {
-	public DisarmAnimation(int id, float convertTime, String path, String armature)
+	public DisarmAnimation(float convertTime, String path, String armature)
 	{
-		super(id, convertTime, false, false, path, armature);
+		super(convertTime, false, path, armature);
 	}
 	
 	@Override

@@ -8,8 +8,8 @@ public class ExtendedLinkAnimation extends ActionAnimation
 	
 	public ExtendedLinkAnimation(int id, float convertTime, boolean breakMove, boolean affectY, float seperator, String path, String armature)
 	{
-		super(id, convertTime, breakMove, affectY, path, armature);
-		this.loopAnimation = new ActionAnimation(id+1, 0.2F, false, false, path, armature)
+		super(id, convertTime, affectY, path, armature);
+		this.loopAnimation = new ActionAnimation(id+1, 0.2F, false, path, armature)
 		{
 			@Override
 			public boolean isRepeat()

@@ -15,11 +15,11 @@ public class HoldingWeaponAnimation extends StaticAnimation
 	public final StaticAnimation offHandAnimation;
 	public final StaticAnimation bothHandAnimation;
 	
-	public HoldingWeaponAnimation(int id, float convertTime, boolean repeatPlay, String mainhandAnim, String offhandAnim, String bothhandAnim, String armature, boolean clientOnly)
+	public HoldingWeaponAnimation(float convertTime, boolean repeatPlay, String mainhandAnim, String offhandAnim, String bothhandAnim, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, mainhandAnim, armature, clientOnly, MixPart.RIGHT);
-		this.offHandAnimation = new StaticAnimation(convertTime, repeatPlay, offhandAnim, armature, clientOnly, MixPart.LEFT);
-		this.bothHandAnimation = new StaticAnimation(convertTime, repeatPlay, bothhandAnim, armature, clientOnly, MixPart.FULL);
+		super(true, convertTime, repeatPlay, mainhandAnim, armature, clientOnly, MixPart.RIGHT);
+		this.offHandAnimation = new StaticAnimation(false, convertTime, repeatPlay, offhandAnim, armature, clientOnly, MixPart.LEFT);
+		this.bothHandAnimation = new StaticAnimation(false, convertTime, repeatPlay, bothhandAnim, armature, clientOnly, MixPart.FULL);
 	}
 	
 	// 0 = main, 1 = off, 2 = both
@@ -44,19 +44,19 @@ public class HoldingWeaponAnimation extends StaticAnimation
 	{
 		if (this.clientOnly && dist != Dist.CLIENT) return;
 		
-		if(this.offHandAnimation.animationDataPath != null)
+		if(this.offHandAnimation.path != null)
 		{
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, this.offHandAnimation.animationDataPath), this.offHandAnimation, armature);
-			this.offHandAnimation.animationDataPath = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, this.offHandAnimation.path), this.offHandAnimation, armature);
+			this.offHandAnimation.path = null;
 		}
-		if(this.bothHandAnimation.animationDataPath != null)
+		if(this.bothHandAnimation.path != null)
 		{
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, this.bothHandAnimation.animationDataPath), this.bothHandAnimation, armature);
-			this.offHandAnimation.animationDataPath = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, this.bothHandAnimation.path), this.bothHandAnimation, armature);
+			this.offHandAnimation.path = null;
 		}
 		
 		super.bind(dist);

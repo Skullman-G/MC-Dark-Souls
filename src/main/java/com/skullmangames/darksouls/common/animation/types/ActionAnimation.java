@@ -26,19 +26,17 @@ import net.minecraftforge.api.distmarker.Dist;
 
 public class ActionAnimation extends ImmovableAnimation
 {
-	protected final boolean breakMovement;
 	protected final boolean affectYCoord;
 	protected float delayTime;
 	
-	public ActionAnimation(int id, float convertTime, boolean breakMove, boolean affectY, String path, String armature)
+	public ActionAnimation(float convertTime, boolean affectY, String path, String armature)
 	{
-		this(id, convertTime, -1.0F, breakMove, affectY, path, armature);
+		this(convertTime, -1.0F, affectY, path, armature);
 	}
 
-	public ActionAnimation(int id, float convertTime, float postDelay, boolean breakMove, boolean affectY, String path, String armature)
+	public ActionAnimation(float convertTime, float postDelay, boolean affectY, String path, String armature)
 	{
-		super(id, convertTime, path, armature, false);
-		this.breakMovement = breakMove;
+		super(convertTime, path, armature, false);
 		this.affectYCoord = affectY;
 		this.delayTime = postDelay;
 	}
@@ -53,11 +51,6 @@ public class ActionAnimation extends ImmovableAnimation
 		
 		orgEntity.setYHeadRot(yaw);
 		orgEntity.setYBodyRot(yaw);
-		
-		if(breakMovement)
-		{
-			entity.getOriginalEntity().setDeltaMovement(0.0D, orgEntity.getDeltaMovement().y, 0.0D);
-		}
 		
 		if(entity instanceof PlayerData)
 		{

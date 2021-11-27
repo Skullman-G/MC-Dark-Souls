@@ -20,8 +20,8 @@ import net.minecraftforge.api.distmarker.Dist;
 
 public class StaticAnimation extends DynamicAnimation
 {
-	protected String animationDataPath;
-	protected final int animationId;
+	protected String path;
+	protected final int id;
 	public List<SoundKey> soundStream;
 	protected final boolean clientOnly;
 	protected final String armature;
@@ -30,65 +30,49 @@ public class StaticAnimation extends DynamicAnimation
 	public StaticAnimation()
 	{
 		super();
-		this.animationId = -1;
+		this.id = -1;
 		this.clientOnly = true;
 		this.armature = "";
 		this.mixPart = MixPart.FULL;
 	}
 	
-	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
+	public StaticAnimation(boolean register, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
 	{
-		this(id, convertTime, isRepeat, path, armature, clientOnly, MixPart.FULL);
+		this(register, convertTime, isRepeat, path, armature, clientOnly, MixPart.FULL);
 	}
 	
-	public StaticAnimation(int id, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly, MixPart mixPart)
+	public StaticAnimation(boolean register, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly, MixPart mixPart)
 	{
 		super(convertTime, isRepeat);
 		
-		if(Animations.animationTable.keySet().contains(id))
-		{
-			DarkSouls.LOGGER.error("Duplicated Animation Key " + id);
-		}
-		
 		this.clientOnly = clientOnly;
 		this.armature = armature;
-		this.animationDataPath = this.makeDataPath(path);
+		this.path = this.makeDataPath(path);
 		this.totalTime = 0;
-		this.animationId = id;
 		this.mixPart = mixPart;
 		
-		if(id >= 0) Animations.animationTable.put(id, this);
+		if (register)
+		{
+			this.id = Animations.ANIMATIONS.size();
+			Animations.ANIMATIONS.add(this);
+		}
+		else this.id = -1;
 	}
 	
 	public StaticAnimation(String path)
 	{
 		this();
-		this.animationDataPath = this.makeDataPath(path);
+		this.path = this.makeDataPath(path);
 	}
 	
-	public StaticAnimation(float convertTime, boolean repeatPlay, String path, String armature, boolean clientOnly)
+	public StaticAnimation(boolean register, boolean repeatPlay, String path, String armature, boolean clientOnly)
 	{
-		this(convertTime, repeatPlay, path, armature, clientOnly, MixPart.FULL);
+		this(register, repeatPlay, path, armature, clientOnly, MixPart.FULL);
 	}
 	
-	public StaticAnimation(float convertTime, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
+	public StaticAnimation(boolean register, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
 	{
-		super(convertTime, repeatPlay);
-		this.animationId = -1;
-		this.clientOnly = clientOnly;
-		this.armature = armature;
-		this.animationDataPath = this.makeDataPath(path);
-		this.mixPart = mixPart;
-	}
-	
-	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly)
-	{
-		this(id, repeatPlay, path, armature, clientOnly, MixPart.FULL);
-	}
-	
-	public StaticAnimation(int id, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
-	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
+		this(register, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
 	}
 	
 	public MixPart getMixPart()
@@ -105,12 +89,12 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		if (this.clientOnly && dist != Dist.CLIENT) return;
 		
-		if(animationDataPath != null)
+		if(path != null)
 		{
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, animationDataPath), this, armature);
-			animationDataPath = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, path), this, armature);
+			path = null;
 		}
 		
 		if(this.soundStream != null) this.soundStream.sort(null);
@@ -142,22 +126,20 @@ public class StaticAnimation extends DynamicAnimation
 	
 	public int getId()
 	{
-		return animationId;
+		return id;
 	}
 	
 	public StaticAnimation registerSound(float time, SoundEvent sound, boolean isRemote)
 	{
-		if(this.soundStream == null)
-			this.soundStream = Lists.<SoundKey>newArrayList();
+		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
 		this.soundStream.add(new SoundKey(time, sound, isRemote));
-		
 		return this;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.valueOf(this.getId());
+		return this.id+" "+this.path;
 	}
 	
 	protected static class SoundKey implements Comparable<SoundKey>
@@ -176,10 +158,8 @@ public class StaticAnimation extends DynamicAnimation
 		@Override
 		public int compareTo(SoundKey arg0)
 		{
-			if(this.time == arg0.time)
-				return 0;
-			else
-				return this.time > arg0.time ? 1 : -1;
+			if(this.time == arg0.time) return 0;
+			else return this.time > arg0.time ? 1 : -1;
 		}
 	}
 }

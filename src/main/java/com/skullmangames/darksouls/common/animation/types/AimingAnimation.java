@@ -22,9 +22,9 @@ public class AimingAnimation extends StaticAnimation
 	public StaticAnimation lookUp;
 	public StaticAnimation lookDown;
 
-	public AimingAnimation(int id, float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
+	public AimingAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
 	{
-		super(id, convertTime, repeatPlay, path1, armature, clientOnly);
+		super(true, convertTime, repeatPlay, path1, armature, clientOnly);
 		lookUp = new StaticAnimation(path2);
 		lookDown = new StaticAnimation(path3);
 	}
@@ -90,16 +90,16 @@ public class AimingAnimation extends StaticAnimation
 	{
 		if (this.clientOnly && dist != Dist.CLIENT) return;
 		
-		if (animationDataPath != null)
+		if (path != null)
 		{
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, animationDataPath), this, armature);
-			animationDataPath = null;
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookUp.animationDataPath), lookUp, armature);
-			lookUp.animationDataPath = null;
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookDown.animationDataPath), lookDown, armature);
-			lookDown.animationDataPath = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, path), this, armature);
+			path = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookUp.path), lookUp, armature);
+			lookUp.path = null;
+			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookDown.path), lookDown, armature);
+			lookDown.path = null;
 		}
 		return;
 	}

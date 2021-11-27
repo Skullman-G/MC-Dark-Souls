@@ -49,24 +49,24 @@ public class AttackAnimation extends ActionAnimation
 	protected final Map<AnimationProperty<?>, Object> properties;
 	public final Phase[] phases;
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature)
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature)
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature)
 	{
-		this(id, convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 	
-	public AttackAnimation(int id, float convertTime, boolean affectY, String path, String armature, Phase... phases)
+	public AttackAnimation(float convertTime, boolean affectY, String path, String armature, Phase... phases)
 	{
-		super(id, convertTime, true, affectY, path, armature);
+		super(convertTime, affectY, path, armature);
 		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
 	}
@@ -93,6 +93,7 @@ public class AttackAnimation extends ActionAnimation
 		LivingData.EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		LivingEntity entity = entitydata.getOriginalEntity();
+		
 		if (this.shouldSmash(phase) && elapsedTime >= phase.contact - 0.1F && elapsedTime < phase.recovery && elapsedTime < phase.contact + 0.2F)
 		{
 			if (phase.collider != null)
