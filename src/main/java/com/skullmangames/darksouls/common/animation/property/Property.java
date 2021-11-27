@@ -12,9 +12,7 @@ public abstract class Property<T>
 {
 	public static class AnimationProperty<T> extends Property<T>
 	{
-		public static final AnimationProperty<Boolean> LOCK_ROTATION = new AnimationProperty<Boolean>();
 		public static final AnimationProperty<Boolean> DIRECTIONAL = new AnimationProperty<Boolean>();
-		
 	}
 	
 	public static class DamageProperty<T> extends Property<T>

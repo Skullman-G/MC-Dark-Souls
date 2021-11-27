@@ -208,19 +208,18 @@ public class AttackAnimation extends ActionAnimation
 	public LivingData.EntityState getState(float time)
 	{
 		Phase phase = this.getPhaseByTime(time);
-		boolean lockCameraRotation = this.getProperty(AnimationProperty.LOCK_ROTATION).orElse(false);
 		
 		if (time <= phase.antic || (phase.antic < time && time < phase.preDelay))
 		{
-			return lockCameraRotation ? LivingData.EntityState.NO_FREEDOM : LivingData.EntityState.FREE_CAMERA;
+			return LivingData.EntityState.FREE_CAMERA;
 		}
 		else if (phase.preDelay <= time && time <= phase.contact)
 		{
-			return lockCameraRotation ? LivingData.EntityState.CONTACT : LivingData.EntityState.ROTATABLE_CONTACT;
+			return LivingData.EntityState.CONTACT;
 		}
 		else if (time < phase.recovery)
 		{
-			return lockCameraRotation ? LivingData.EntityState.POST_DELAY : LivingData.EntityState.ROTATABLE_POST_DELAY;
+			return LivingData.EntityState.POST_DELAY;
 		}
 		else
 		{
