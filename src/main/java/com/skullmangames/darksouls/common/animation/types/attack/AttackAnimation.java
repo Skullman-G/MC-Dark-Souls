@@ -8,9 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.animation.JointTransform;
-import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.animation.property.Property.AnimationProperty;
 import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
@@ -24,7 +21,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.block.BlockState;
@@ -40,13 +36,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.entity.PartEntity;
 
 public class AttackAnimation extends ActionAnimation
 {
-	protected final Map<AnimationProperty<?>, Object> properties;
 	public final Phase[] phases;
 	
 	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
@@ -67,7 +60,6 @@ public class AttackAnimation extends ActionAnimation
 	public AttackAnimation(float convertTime, boolean affectY, String path, String armature, Phase... phases)
 	{
 		super(convertTime, affectY, path, armature);
-		this.properties = new HashMap<AnimationProperty<?>, Object>();
 		this.phases = phases;
 	}
 	
@@ -165,7 +157,6 @@ public class AttackAnimation extends ActionAnimation
 								{
 									e.invulnerableTime = 0;
 									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(), 1.0F, 1.0F);
-									this.spawnHitParticle(((ServerWorld)e.level), entitydata, e, phase);
 									if(flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
 									{
 										entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity)trueEntity, ((PlayerData<?>)entitydata).getOriginalEntity());
@@ -308,50 +299,6 @@ public class AttackAnimation extends ActionAnimation
 		return extDmgSource;
 	}
 	
-	protected void spawnHitParticle(ServerWorld level, LivingData<?> attacker, Entity hit, Phase phase)
-	{
-		/*Optional<RegistryObject<HitParticleType>> particleOptional = phase.getProperty(DamageProperty.PARTICLE);
-		HitParticleType particle;
-		
-		if(particleOptional.isPresent())
-		{
-			particle = particleOptional.get().get();
-		}
-		else
-		{
-			particle = attacker.getWeaponHitParticle(phase.hand);
-		}
-		
-		particle.spawnParticleWithArgument(level, HitParticleType.DEFAULT, hit, attacker.getOriginalEntity());*/
-	}
-	
-	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
-	{
-		Pose pose = super.getPoseByTime(entitydata, time);
-		
-		this.getProperty(AnimationProperty.DIRECTIONAL).ifPresent((b)->
-		{
-			float pitch = entitydata.getAttackDirectionPitch();
-			JointTransform chest = pose.getTransformByName("Chest");
-			chest.setCustomRotation(Quaternion.rotate((float)Math.toRadians(pitch), new Vector3f(1,0,0), null));
-			
-			if (entitydata instanceof PlayerData)
-			{
-				JointTransform head = pose.getTransformByName("Head");
-				head.setRotation(Quaternion.rotate((float)-Math.toRadians(pitch), new Vector3f(1,0,0), head.getRotation()));
-			}
-		});
-		
-		return pose;
-	}
-	
-	public <V> AttackAnimation addProperty(AnimationProperty<V> propertyType, V value)
-	{
-		this.properties.put(propertyType, value);
-		return this;
-	}
-	
 	public <V> AttackAnimation addProperty(DamageProperty<V> propertyType, V value)
 	{
 		return this.addProperty(propertyType, value, 0);
@@ -361,12 +308,6 @@ public class AttackAnimation extends ActionAnimation
 	{
 		this.phases[index].addProperty(propertyType, value);
 		return this;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <V> Optional<V> getProperty(AnimationProperty<V> propertyType)
-	{
-		return (Optional<V>)Optional.ofNullable(this.properties.get(propertyType));
 	}
 	
 	public int getIndexer(float elapsedTime)
@@ -386,12 +327,6 @@ public class AttackAnimation extends ActionAnimation
 			}
 		}
 		return currentPhase;
-	}
-	
-	@Deprecated
-	public void changeCollider(Collider newCollider, int index)
-	{
-		this.phases[index].collider = newCollider;
 	}
 	
 	public static class Phase

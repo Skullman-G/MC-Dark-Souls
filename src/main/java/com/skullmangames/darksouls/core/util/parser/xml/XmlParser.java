@@ -33,23 +33,20 @@ public class XmlParser
 	private static XmlNode loadXmlNode(BufferedReader reader) throws Exception
 	{
 		String line = reader.readLine().trim();
-		if (line.startsWith("</"))
-		{
-			return null;
-		}
+		
+		if (line.startsWith("</")) return null;
+		
 		String[] startTagParts = getStartTag(line).split(" ");
 		XmlNode node = new XmlNode(startTagParts[0].replace("/", ""));
+		
 		addAttributes(startTagParts, node);
 		addData(line, node);
-		if (CLOSED.matcher(line).find())
-		{
-			return node;
-		}
+		
+		if (CLOSED.matcher(line).find()) return node;
+		
 		XmlNode child = null;
-		while ((child = loadXmlNode(reader)) != null)
-		{
-			node.addChild(child);
-		}
+		
+		while ((child = loadXmlNode(reader)) != null) node.addChild(child);
 		return node;
 	}
 
@@ -77,8 +74,10 @@ public class XmlParser
 	{
 		Matcher nameMatch = ATTRIBUTE_NAME.matcher(attributeLine);
 		nameMatch.find();
+		
 		Matcher valMatch = ATTRIBUTE_VALUE.matcher(attributeLine);
 		valMatch.find();
+		
 		node.addAttribute(nameMatch.group(1), valMatch.group(1));
 	}
 

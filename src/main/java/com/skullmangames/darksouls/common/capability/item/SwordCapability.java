@@ -1,10 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -23,19 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SwordCapability extends MaterialItemCapability
 {
-	private static List<StaticAnimation> dualSwordAttackMotion;
-	
 	public SwordCapability(Item item)
 	{
 		super(item, WeaponCategory.SWORD);
-		if (dualSwordAttackMotion == null)
-		{
-			dualSwordAttackMotion = new ArrayList<StaticAnimation> ();
-			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_1);
-			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_2);
-			dualSwordAttackMotion.add(Animations.SWORD_DUAL_AUTO_3);
-			dualSwordAttackMotion.add(Animations.SWORD_DUAL_DASH);
-		}
 	}
 	
 	@Override

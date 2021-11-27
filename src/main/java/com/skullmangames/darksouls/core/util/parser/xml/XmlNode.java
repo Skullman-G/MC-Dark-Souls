@@ -38,10 +38,7 @@ public class XmlNode
 		{
 			return this.attributes.get(attribute);
 		}
-		else
-		{
-			return null;
-		}
+		else return null;
 	}
 	
 	public boolean hasChildNodes()
@@ -54,10 +51,7 @@ public class XmlNode
 		if (this.hasChildNodes())
 		{
 			List<XmlNode> children = childNodes.get(childname);
-			if (children != null)
-			{
-				return children;
-			}
+			if (children != null) return children;
 		}
 		
 		return new ArrayList<XmlNode>();
@@ -66,10 +60,7 @@ public class XmlNode
 	public XmlNode getChild(String childName)
 	{
 		List<XmlNode> children = this.getChildren(childName);
-		if (!children.isEmpty())
-		{
-			return children.get(0);
-		}
+		if (!children.isEmpty()) return children.get(0);
 		
 		return null;
 	}
@@ -82,10 +73,7 @@ public class XmlNode
 			for (XmlNode child : children)
 			{
 				String childattributevalue = child.getAttributeValue(attribute);
-				if (attributevalue.equals(childattributevalue))
-				{
-					return child;
-				}
+				if (attributevalue.equals(childattributevalue)) return child;
 			}
 		}
 		

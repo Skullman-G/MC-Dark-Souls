@@ -22,7 +22,7 @@ public class TridentCapability extends RangedWeaponCapability
 	
 	public TridentCapability(Item item)
 	{
-		super(item, null, Animations.BIPED_JAVELIN_AIM, Animations.BIPED_JAVELIN_REBOUND);
+		super(item, null, Animations.BIPED_SPEER_AIM, Animations.BIPED_SPEER_REBOUND);
 
 		if (attackMotion == null)
 		{
