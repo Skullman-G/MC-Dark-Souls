@@ -126,6 +126,10 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 				case DASH:
 					animation = Animations.FIST_DASH_ATTACK;
 					break;
+					
+				case HEAVY:
+					animation = Animations.FIST_HEAVY_ATTACK;
+					break;
 			}
 		}
 		else

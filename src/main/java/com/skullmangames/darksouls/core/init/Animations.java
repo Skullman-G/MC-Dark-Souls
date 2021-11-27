@@ -116,6 +116,7 @@ public final class Animations
 					new AttackAnimation(0.2F, 0.0F, 0.08F, 0.24F, 0.8F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_2", "biped")
 			};
 	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, Colliders.fist, "111213", "biped/combat/fist_dash_attack", "biped");
+	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_heavy_attack", "biped");
 	
 	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AAAnimation(0.16F, 0.1F, 0.2F, 0.45F, 1.2F, null, "111213", "biped/combat/spear_onehand_auto", "biped");
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_1 = new AAAnimation(0.25F, 0.05F, 0.15F, 0.45F, 1.2F, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto1", "biped");
