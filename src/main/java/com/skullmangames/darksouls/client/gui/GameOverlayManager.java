@@ -31,7 +31,9 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class GameOverlayManager
 {
-	private static Minecraft minecraft = Minecraft.getInstance();
+	private static final Minecraft minecraft = Minecraft.getInstance();
+	
+	private static final ResourceLocation LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png");
 	
 	private static final Timer damageCooldown = new Timer();
 	private static final Timer damageTimer = new Timer();
@@ -41,7 +43,7 @@ public class GameOverlayManager
 	public static boolean isHealing = false;
 	
 	private static final Timer staminaTimer = new Timer();
-	private static final Timer stamiaDrainTimer = new Timer();
+	private static final Timer staminaDrainTimer = new Timer();
 	private static final Timer stamiaDrainCooldownTimer = new Timer();
 	private static int lastStamina;
 	private static int saveLastStamina;
@@ -136,7 +138,7 @@ public class GameOverlayManager
 		int y = window.getGuiScaledHeight() - 39;
 		ForgeIngameGui.left_height += 10;
 		
-		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
+		minecraft.getTextureManager().bind(LOCATION);
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
 		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 90);
 		
@@ -201,7 +203,7 @@ public class GameOverlayManager
 		int x = window.getGuiScaledWidth() - 76;
 		int y = window.getGuiScaledHeight() - 21;
 		
-		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
+		minecraft.getTextureManager().bind(LOCATION);
 		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
 		
 		x = window.getGuiScaledWidth() - (76 / 2);
@@ -224,7 +226,7 @@ public class GameOverlayManager
 		int x = window.getGuiScaledWidth() / 2 + 3;
 		ForgeIngameGui.right_height += 10;
 		
-		minecraft.getTextureManager().bind(new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png"));
+		minecraft.getTextureManager().bind(LOCATION);
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
 		double staminaPercentageDouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
 		int staminaPercentage = (int)staminaPercentageDouble;
@@ -232,7 +234,7 @@ public class GameOverlayManager
 		// Yellow Bar
 		if (lastStamina > staminaPercentage && !getCameraPlayer().isSprinting())
 		{
-			if (!stamiaDrainCooldownTimer.isTicking() && !stamiaDrainTimer.isTicking())
+			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking())
 			{
 				saveLastStamina = lastStamina;
 			}
@@ -240,25 +242,24 @@ public class GameOverlayManager
 			stamiaDrainCooldownTimer.start(10);
 		}
 		
-		int drainedStamina = saveLastStamina - stamiaDrainTimer.getPastTime();
+		int drainedStamina = saveLastStamina - staminaDrainTimer.getPastTime();
+		
+		if (drainedStamina <= staminaPercentage)
+		{
+			staminaDrainTimer.stop();
+			saveLastStamina = 0;
+			drainedStamina = 0;
+		}
 		
 		if (stamiaDrainCooldownTimer.isTicking())
 		{
-			boolean flag = false;
-			if (drainedStamina <= staminaPercentage)
-			{
-				drainedStamina = saveLastStamina;
-				flag = true;
-			}
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
 			stamiaDrainCooldownTimer.drain(1.0F);
-			if (!stamiaDrainCooldownTimer.isTicking() && (!stamiaDrainTimer.isTicking() || flag)) stamiaDrainTimer.start(drainedStamina);
+			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start(drainedStamina);
 		}
-		else if (stamiaDrainTimer.isTicking())
-		{
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
-			stamiaDrainTimer.drain(0.5F);
-		}
+		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(0.5F);
+		
+		minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
+		
 		
 		// Green Bar
 		if (lastStamina != staminaPercentage || staminaTimer.isTicking())

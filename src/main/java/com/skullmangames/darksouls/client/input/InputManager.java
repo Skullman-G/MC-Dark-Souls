@@ -422,6 +422,12 @@ public class InputManager
 						else left = event.getMovementInput().leftImpulse;
 					}
 					
+					if (forward > 0 && left > 0)
+					{
+						forward *= 2.0F;
+						left *= 2.0F;
+					}
+					
 					inputManager.player.yRot = rot;
 					event.getMovementInput().forwardImpulse = forward;
 					event.getMovementInput().leftImpulse = left;
