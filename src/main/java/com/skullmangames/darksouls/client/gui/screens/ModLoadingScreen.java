@@ -27,10 +27,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class ModLoadingScreen extends LoadingGui
 {
 	private Minecraft minecraft;
-	private static final ResourceLocation ITEM_DESCRIPTION_WINDOW = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/loading.png");
-	private static final ResourceLocation BONFIRE_LOADING = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/bonfire_loading.png");
+	private static final ResourceLocation ITEM_DESCRIPTION_WINDOW = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/loading.png");
+	private static final ResourceLocation BONFIRE_LOADING = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/bonfire_loading.png");
 	private static final int BACKGROUND = ColorHelper.PackedColor.color(0, 0, 0, 0);
 	private static final int BACKGROUND_NO_ALPHA = BACKGROUND & 16777215;
 	private final ItemStack descriptionItem;
@@ -45,12 +43,10 @@ public class ModLoadingScreen extends LoadingGui
 	{
 		this.minecraft = Minecraft.getInstance();
 		Random random = new Random();
-		this.descriptionItem = new ItemStack(
-				ModItems.DESCRIPTION_ITEMS.get(random.nextInt(ModItems.DESCRIPTION_ITEMS.size())));
+		this.descriptionItem = new ItemStack(ModItems.DESCRIPTION_ITEMS.get(random.nextInt(ModItems.DESCRIPTION_ITEMS.size())));
 
 		String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
-				+ ((IForgeRegistryEntry<Item>) this.descriptionItem.getItem()).getRegistryName().getPath()
-				+ ".extended";
+				+ ((IForgeRegistryEntry<Item>) this.descriptionItem.getItem()).getRegistryName().getPath() + ".extended";
 		this.description = this.addLinebreaks(new TranslationTextComponent(languagePath).getString(), 40);
 	}
 
@@ -87,7 +83,7 @@ public class ModLoadingScreen extends LoadingGui
 	{
 		int width = this.minecraft.getWindow().getGuiScaledWidth();
 		int height = this.minecraft.getWindow().getGuiScaledHeight();
-		
+
 		long millis = Util.getMillis();
 		if (this.fadeInStart == -1L)
 			this.fadeInStart = millis;
@@ -131,8 +127,8 @@ public class ModLoadingScreen extends LoadingGui
 			this.minecraft.getTextureManager().bind(BONFIRE_LOADING);
 			float loadingscale = 1.5F;
 			matStack.scale(loadingscale, loadingscale, 1.0F);
-			AbstractGui.blit(matStack, (int) (20 / loadingscale), (int) ((height - 40) / loadingscale),
-					0 + (int) (this.loadingGif++ * 0.25F) * 16, 0, 16, 16, 48, 16);
+			AbstractGui.blit(matStack, (int) (20 / loadingscale), (int) ((height - 40) / loadingscale), 0 + (int) (this.loadingGif++ * 0.25F) * 16, 0,
+					16, 16, 48, 16);
 			matStack.scale(1.0F / loadingscale, 1.0F / loadingscale, 1.0F);
 			if (this.loadingGif * 0.25F > 3)
 				this.loadingGif = 0;
@@ -140,7 +136,7 @@ public class ModLoadingScreen extends LoadingGui
 			int x = width / 2;
 			int y = height / 2;
 
-			this.renderFloatingItem(this.descriptionItem, x - 119, y - 58);
+			if (alpha > 0.5F) this.renderItem(this.descriptionItem, x - 119, y - 58);
 
 			drawString(matStack, this.minecraft.font, this.descriptionItem.getHoverName(), x - 100, y - 50, 16755200 | l);
 
@@ -148,15 +144,14 @@ public class ModLoadingScreen extends LoadingGui
 			matStack.scale(scale, scale, 1.0F);
 			for (int i = 0; i < this.description.length; i++)
 			{
-				drawString(matStack, this.minecraft.font, description[i], (int) ((x - 100) / scale),
-						(int) ((y - 27 + 13 * i) / scale), 16777215 | l);
+				drawString(matStack, this.minecraft.font, description[i], (int) ((x - 100) / scale), (int) ((y - 27 + 13 * i) / scale), 16777215 | l);
 			}
 			matStack.scale(1.0F / scale, 1.0F / scale, 1.0F);
 		}
 
 		if (outf >= 2.0F)
 		{
-			this.minecraft.setOverlay((LoadingGui)null);
+			this.minecraft.setOverlay((LoadingGui) null);
 		}
 		if (this.fadeOutStart == -1L && this.canFadeOut && inf >= 2.0F)
 		{
@@ -169,7 +164,7 @@ public class ModLoadingScreen extends LoadingGui
 			}
 		}
 	}
-	
+
 	public void setCanFadeOut(boolean value)
 	{
 		this.canFadeOut = value;
@@ -183,15 +178,16 @@ public class ModLoadingScreen extends LoadingGui
 		AbstractGui.blit(matrixstack, x, y, 0, 0, 350, 200, 350, 200);
 	}
 
-	private void renderFloatingItem(ItemStack itemstack, int posX, int yPos)
+	private void renderItem(ItemStack itemstack, int posX, int yPos)
 	{
 		ItemRenderer itemRenderer = this.minecraft.getItemRenderer();
-		
+
 		RenderSystem.translatef(0.0F, 0.0F, 32.0F);
 		this.setBlitOffset(200);
 		itemRenderer.blitOffset = 200.0F;
 		net.minecraft.client.gui.FontRenderer font = itemstack.getItem().getFontRenderer(itemstack);
-		if (font == null) font = this.minecraft.font;
+		if (font == null)
+			font = this.minecraft.font;
 		itemRenderer.renderAndDecorateItem(itemstack, posX, yPos);
 		itemRenderer.renderGuiItemDecorations(font, itemstack, posX, yPos, "");
 		setBlitOffset(0);

@@ -99,8 +99,9 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	
 	public void performDodge()
 	{
-		this.animator.playAnimation(Animations.BIPED_ROLL_FORWARD, 0);
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_ROLL_FORWARD, 0, false, false));
+		if (this.isFirstPerson()) return;
+		this.animator.playAnimation(Animations.BIPED_DODGE, 0);
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_DODGE, 0, false, false));
 		
 		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);

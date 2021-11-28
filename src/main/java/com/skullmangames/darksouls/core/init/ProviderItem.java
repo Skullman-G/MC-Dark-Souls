@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.common.capability.item.HoeCapability;
 import com.skullmangames.darksouls.common.capability.item.PickaxeCapability;
 import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
 import com.skullmangames.darksouls.common.capability.item.ShovelCapability;
-import com.skullmangames.darksouls.common.capability.item.SwordCapability;
+import com.skullmangames.darksouls.common.capability.item.StraightSwordCapability;
 import com.skullmangames.darksouls.common.capability.item.TridentCapability;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCapability;
 import com.skullmangames.darksouls.common.item.GreatHammerItem;
@@ -67,12 +67,12 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.GOLDEN_SHOVEL, ShovelCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.DIAMOND_SHOVEL, ShovelCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.NETHERITE_SHOVEL, ShovelCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.WOODEN_SWORD, SwordCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.STONE_SWORD, SwordCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.IRON_SWORD, SwordCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.GOLDEN_SWORD, SwordCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.DIAMOND_SWORD, SwordCapability::new);
-		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.NETHERITE_SWORD, SwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.WOODEN_SWORD, StraightSwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.STONE_SWORD, StraightSwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.IRON_SWORD, StraightSwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.GOLDEN_SWORD, StraightSwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.DIAMOND_SWORD, StraightSwordCapability::new);
+		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.NETHERITE_SWORD, StraightSwordCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.LEATHER_BOOTS, VanillaArmorCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.LEATHER_CHESTPLATE, VanillaArmorCapability::new);
 		CAPABILITY_BY_INSTANCE.computeIfAbsent(Items.LEATHER_HELMET, VanillaArmorCapability::new);
@@ -104,7 +104,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		
 		CAPABILITY_BY_CLASS.put(Item.class, CapabilityItem::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
-		CAPABILITY_BY_CLASS.put(SwordItem.class, SwordCapability::new);
+		CAPABILITY_BY_CLASS.put(SwordItem.class, StraightSwordCapability::new);
 		CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
 		CAPABILITY_BY_CLASS.put(AxeItem.class, AxeCapability::new);
 		CAPABILITY_BY_CLASS.put(ShovelItem.class, ShovelCapability::new);

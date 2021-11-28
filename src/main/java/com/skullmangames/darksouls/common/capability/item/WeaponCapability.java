@@ -290,7 +290,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, SWORD, SHIELD, GREAT_HAMMER
+		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER
 	}
 	
 	public enum HandProperty

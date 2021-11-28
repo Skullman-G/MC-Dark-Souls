@@ -64,8 +64,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_LONG = new HitAnimation(0.08F, "biped/combat/hit_long", "biped");
 	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(0.08F, "biped/combat/hit_on_mount", "biped");
 	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.08F, "biped/living/land_damage", "biped");
-	public static final StaticAnimation BIPED_ROLL_FORWARD = new DodgingAnimation(0.09F, false, "biped/combat/roll_forward", 0.6F, 0.5F, "biped");
-	public static final StaticAnimation BIPED_ROLL_BACKWARD = new DodgingAnimation(0.09F, false, "biped/combat/roll_backward", 0.6F, 0.5F, "biped");
+	public static final StaticAnimation BIPED_DODGE = new DodgingAnimation(0.09F, false, "biped/combat/dodge", 0.6F, 0.5F, "biped");
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", "biped");
 	
 	public static final AttackAnimation[][] ARMED_MOB_ONEHAND_ATTACKS = new AttackAnimation[][]
@@ -74,7 +73,6 @@ public final class Animations
 				new AttackAnimation[]
 						{
 								new TargetTraceAnimation(0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack1", "biped"),
-								
 								new TargetTraceAnimation(0.08F, 0.45F, 0.55F, 0.65F, 0.95F, false, null, "111213", "biped/combat/armed_mob_attack2", "biped")
 						}
 			};
@@ -118,15 +116,15 @@ public final class Animations
 	public static final StaticAnimation SPEAR_DASH = new AttackAnimation(0.16F, 0.05F, 0.2F, 0.3F, 0.7F, false, null, "111213", "biped/combat/spear_dash", "biped");
 	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped");
 	
-	public static final AttackAnimation[] SWORD_LIGHT_ATTACK = new AttackAnimation[]
+	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.2F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped"),
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.52F, 1.0F, false, "111213", "biped/combat/straight_sword_light_attack_2", "biped")
 			};
-	public static final AttackAnimation SWORD_DASH_ATTACK = new AttackAnimation(0.12F, 0.1F, 0.25F, 0.4F, 0.65F, false, Colliders.swordDash, "111213", "biped/combat/sword_dash", "biped");
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped");
+	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/straight_sword_dash_attack", "biped");
 	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
 	
-	public static final AttackAnimation SWEEPING_EDGE = new AttackAnimation(0.11F, 0.1F, 0.5F, 0.6F, 0.85F, false, Colliders.swordSwingFast, "111213", "biped/skill/sweeping_edge", "biped");
 	public static final StaticAnimation DANCING_EDGE = new AttackAnimation(0.25F, true, "biped/skill/dancing_edge", "biped",
 														new Phase(0.2F, 0.2F, 0.26F, 0.3F, "111213", Colliders.sword), new Phase(0.5F, 0.5F, 0.56F, 0.6F, Hand.OFF_HAND, "111313", Colliders.sword),
 														new Phase(0.75F, 0.75F, 0.8F, 1.15F, "111213", Colliders.sword));
