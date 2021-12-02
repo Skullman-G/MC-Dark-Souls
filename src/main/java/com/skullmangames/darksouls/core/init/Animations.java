@@ -83,17 +83,20 @@ public final class Animations
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
-	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
+	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 1.0F, 1.72F, 3.6F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
 	
-	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
-			.addProperty(AttackProperty.SMASHING, true);
+	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
+			.addProperty(AttackProperty.SMASHING, true)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE);
 	
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
-				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
-				.addProperty(AttackProperty.SMASHING, true),
-				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
+				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
 				.addProperty(AttackProperty.SMASHING, true)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE),
+				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
+				.addProperty(AttackProperty.SMASHING, true)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			};
 	
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
