@@ -43,12 +43,6 @@ public class AxeCapability extends MaterialItemCapability
 	protected void registerAttribute()
 	{
 		int i = this.itemTier.getLevel();
-		
-		if(i != 0)
-		{
-			this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.ARMOR_NEGATION, ModAttributes.getArmorNegationModifier(10.0D * i)));
-		}
-		
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.7D + 0.3D * i)));
 	}
 

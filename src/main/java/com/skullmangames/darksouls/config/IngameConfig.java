@@ -2,6 +2,9 @@ package com.skullmangames.darksouls.config;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.skullmangames.darksouls.client.gui.ScreenManager;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class IngameConfig
@@ -40,6 +43,7 @@ public class IngameConfig
 	public void save()
 	{
 		for (Option<?> option : OPTIONS) option.save();
+		ScreenManager.onDarkSoulsUIChanged(this.darkSoulsUI.getValue());
 	}
 	
 	private Option<Boolean> registerBoolean(String name, boolean defaultValue)

@@ -6,33 +6,23 @@ import net.minecraft.util.IndirectEntityDamageSource;
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements IExtendedDamageSource
 {
 	private float impact;
-	private float armorIgnore;
 	private StunType stunType;
-	private DamageType damageType;
 	private float amount;
+	private DamageType damageType;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, DamageType damageType)
 	{
 		super(damageTypeIn, source, owner);
-		
-		//EntitydataLiving entityCap = (EntitydataLiving) source.getCapability(ModCapabilities.CAPABILITY_ENTITY, null);
-		//CapabilityItem capItem = entityCap.getHeldItemCapability(EnumHand.MAIN_HAND);
-		/**
-		if(capItem != null)
-		{
-			this.impact = (float) capItem.getDamageAttributesInCondition(entityCap.getOriginalEntity().getHeldItemOffhand().isEmpty()).getImpact();
-			this.armorIgnore = (float) capItem.getDamageAttributesInCondition(entityCap.getOriginalEntity().getHeldItemOffhand().isEmpty()).getArmorIgnore();
-		}**/
-		
 		this.stunType = stunType;
+		this.damageType = damageType;
 	}
-	
+
 	@Override
 	public int getRequiredDeflectionLevel()
 	{
 		return 4;
 	}
-	
+
 	@Override
 	public float getAmount()
 	{
@@ -40,52 +30,62 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 	
 	@Override
-	public void setImpact(float amount) {
+	public void setAmount(float amount)
+	{
+		this.amount = amount;
+	}
+
+	@Override
+	public void setImpact(float amount)
+	{
 		this.impact = amount;
 	}
 
 	@Override
-	public void setArmorNegation(float amount) {
-		this.armorIgnore = amount;
-	}
-
-	@Override
-	public void setStunType(StunType stunType) {
+	public void setStunType(StunType stunType)
+	{
 		this.stunType = stunType;
 	}
 
 	@Override
-	public float getImpact() {
+	public float getImpact()
+	{
 		return impact;
 	}
 
 	@Override
-	public float getArmorNegation() {
-		return armorIgnore;
-	}
-
-	@Override
-	public StunType getStunType() {
+	public StunType getStunType()
+	{
 		return stunType;
 	}
 
 	@Override
-	public DamageType getExtDamageType() {
-		return damageType;
-	}
-
-	@Override
-	public Entity getOwner() {
+	public Entity getOwner()
+	{
 		return super.getDirectEntity();
 	}
 
 	@Override
-	public String getType() {
+	public String getType()
+	{
 		return super.getMsgId();
 	}
 
 	@Override
-	public int getSkillId() {
+	public int getSkillId()
+	{
 		return -1;
+	}
+
+	@Override
+	public DamageType getAttackType()
+	{
+		return this.damageType;
+	}
+
+	@Override
+	public void setAttackType(DamageType damageType)
+	{
+		this.damageType = damageType;
 	}
 }

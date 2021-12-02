@@ -21,15 +21,18 @@ public class ModAttributes
 	
     public static final RegistryObject<Attribute> MAX_STUN_ARMOR = registerRangedAttribute("stun_armor", 0.0D, 0.0D, 1024.0D);
     public static final RegistryObject<Attribute> WEIGHT = registerRangedAttribute("weight", 0.0D, 0.0D, 1024.0D);
-    public static final RegistryObject<Attribute> MAX_STRIKES = registerRangedAttribute("max_strikes", 1.0D, 1.0D, 1024.0D);
-	public static final RegistryObject<Attribute> ARMOR_NEGATION = registerRangedAttribute("armor_negation", 0.0D, 0.0D, 100.0D);
 	public static final RegistryObject<Attribute> IMPACT = registerRangedAttribute("impact", 0.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = registerRangedAttribute("offhand_attack_damage", 1.0D, 0.0D, 2048.0D);
 	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = registerRangedAttribute("offhand_attack_speed", 4.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
 	
-	public static final UUID IGNORE_DEFENCE_ID = UUID.fromString("b0a7436e-5734-11eb-ae93-0242ac130002");
-	public static final UUID HIT_AT_ONCE_ID = UUID.fromString("b0a745b2-5734-11eb-ae93-0242ac130002");
+	// Defense
+	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 1024.0D);
+	
+	// UUID
 	public static final UUID IMPACT_ID = UUID.fromString("b0a746ac-5734-11eb-ae93-0242ac130002");
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 	public static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
@@ -74,9 +77,12 @@ public class ModAttributes
     private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
 		event.add(entityType, ModAttributes.WEIGHT.get());
-		event.add(entityType, ModAttributes.ARMOR_NEGATION.get());
 		event.add(entityType, ModAttributes.IMPACT.get());
-		event.add(entityType, ModAttributes.MAX_STRIKES.get());
+		
+		event.add(entityType, ModAttributes.STANDARD_DEFENSE.get());
+		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
+		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
+		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
 	}
     
     private static void withStunArmor(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
@@ -91,16 +97,6 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.OFFHAND_ATTACK_DAMAGE.get());
 		event.add(entityType, ModAttributes.OFFHAND_ATTACK_SPEED.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
-	}
-	
-	public static AttributeModifier getArmorNegationModifier(double value)
-	{
-		return new AttributeModifier(ModAttributes.IGNORE_DEFENCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
-	}
-
-	public static AttributeModifier getMaxStrikesModifier(int value)
-	{
-		return new AttributeModifier(ModAttributes.HIT_AT_ONCE_ID, DarkSouls.MOD_ID + ":weapon_modifier", (double) value, AttributeModifier.Operation.ADDITION);
 	}
 
 	public static AttributeModifier getImpactModifier(double value)

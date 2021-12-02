@@ -196,6 +196,8 @@ public class DarkSouls
         ModItems.registerDescriptionItems();
         
         CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
+        
+        com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
     }
 	
 	public static boolean isPhysicalClient()

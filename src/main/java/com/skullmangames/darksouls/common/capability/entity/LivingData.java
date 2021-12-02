@@ -44,7 +44,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
@@ -112,8 +111,6 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	protected void initAttributes()
 	{
 		this.orgEntity.getAttribute(ModAttributes.WEIGHT.get()).setBaseValue(this.orgEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 2.0D);
-		this.orgEntity.getAttribute(ModAttributes.MAX_STRIKES.get()).setBaseValue(1.0D);
-		this.orgEntity.getAttribute(ModAttributes.ARMOR_NEGATION.get()).setBaseValue(0.0D);
 		this.orgEntity.getAttribute(ModAttributes.IMPACT.get()).setBaseValue(0.5D);
 	}
 	
@@ -280,29 +277,34 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return true;
 	}
 	
-	public IExtendedDamageSource getDamageSource(StunType stunType, DamageType damageType, int animationId, float amount, int requireddeflectionlevel)
+	public IExtendedDamageSource getDamageSource(StunType stunType, int animationId, float amount, int requireddeflectionlevel, DamageType damageType)
 	{
-		return IExtendedDamageSource.causeMobDamage(orgEntity, stunType, damageType, animationId, amount, requireddeflectionlevel);
+		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, animationId, amount, requireddeflectionlevel, damageType);
 	}
 	
 	public float getDamageToEntity(Entity targetEntity, Hand hand)
 	{
 		float damage = 1.0F;
 		
-		Item weapon = this.orgEntity.getItemInHand(hand).getItem();
-		if (weapon instanceof WeaponItem) damage += ((WeaponItem)weapon).getDamage(this.orgEntity);
+		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
+		if (weapon != null)
+		{
+			float physicalAtk = ((WeaponItem)weapon.getOriginalItem()).getDamage(this.orgEntity);
+			float physicalDef = weapon.getPhysicalDefense();
+			
+			damage += physicalAtk - physicalDef;
+		}
 		
-		float bonus;
 		if (targetEntity instanceof LivingEntity)
 		{
-			bonus = EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), ((LivingEntity) targetEntity).getMobType());
+			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), ((LivingEntity) targetEntity).getMobType());
 		}
 		else
 		{
-			bonus = EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), CreatureAttribute.UNDEFINED);
+			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), CreatureAttribute.UNDEFINED);
 		}
 		
-		return damage + bonus;
+		return damage;
 	}
 	
 	public boolean hurtEntity(Entity hitTarget, Hand handIn, IExtendedDamageSource source, float amount)
@@ -648,16 +650,6 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
-	}
-
-	public int getHitEnemies()
-	{
-		return (int)this.orgEntity.getAttributeValue(ModAttributes.MAX_STRIKES.get());
-	}
-
-	public float getArmorNegation()
-	{
-		return (float)this.orgEntity.getAttributeValue(ModAttributes.ARMOR_NEGATION.get());
 	}
 
 	public float getImpact()

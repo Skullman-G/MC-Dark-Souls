@@ -45,7 +45,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class WeaponCapability extends CapabilityItem implements IShield
 {
 	protected final WeaponCategory weaponCategory;
-	protected Map<LivingMotion, StaticAnimation> animationSet;
+	protected final Map<LivingMotion, StaticAnimation> animationSet;
 	
 	public WeaponCapability(Item item, WeaponCategory category)
 	{

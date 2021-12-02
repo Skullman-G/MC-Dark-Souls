@@ -70,9 +70,7 @@ public class CapabilityItem
 	
 	public void addStyleAttributeSimple(WieldStyle style, double armorNegation, double impact, int maxStrikes)
 	{
-		this.addStyleAttibute(style, Pair.of(ModAttributes.ARMOR_NEGATION, ModAttributes.getArmorNegationModifier(armorNegation)));
 		this.addStyleAttibute(style, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(impact)));
-		this.addStyleAttibute(style, Pair.of(ModAttributes.MAX_STRIKES, ModAttributes.getMaxStrikesModifier(maxStrikes)));
 	}
 	
 	@OnlyIn(Dist.CLIENT)

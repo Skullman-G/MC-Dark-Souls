@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -20,6 +19,7 @@ import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.Property.AttackProperty;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -41,51 +41,56 @@ import net.minecraftforge.entity.PartEntity;
 public class AttackAnimation extends ActionAnimation
 {
 	public final Phase[] phases;
-	
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path, String armature)
+
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path,
+			String armature)
 	{
 		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
-	
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, String path, String armature)
+
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY,
+			@Nullable Collider collider, String index, String path, String armature)
 	{
 		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
-	
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, String path, String armature)
+
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand,
+			@Nullable Collider collider, String index, String path, String armature)
 	{
 		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
-	
+
 	public AttackAnimation(float convertTime, boolean affectY, String path, String armature, Phase... phases)
 	{
 		super(convertTime, affectY, path, armature);
 		this.phases = phases;
 	}
-	
+
 	@Override
 	public void onActivate(LivingData<?> entity)
 	{
 		super.onActivate(entity);
-		
+
 		SoundEvent prepare = this.getPrepareSound(entity, this.getPhaseByTime(0.0F));
-		if (prepare != null && !entity.isClientSide()) entity.playSound(prepare, 0.0F, 0.0F);
+		if (prepare != null && !entity.isClientSide())
+			entity.playSound(prepare, 0.0F, 0.0F);
 	}
-	
+
 	@Override
 	public void onUpdate(LivingData<?> entitydata)
 	{
 		super.onUpdate(entitydata);
-		
-		if (entitydata.isClientSide()) return;
-		
+
+		if (entitydata.isClientSide())
+			return;
+
 		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
 		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
 		LivingData.EntityState state = this.getState(elapsedTime);
 		LivingData.EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		LivingEntity entity = entitydata.getOriginalEntity();
-		
+
 		if (this.shouldSmash(phase) && elapsedTime >= phase.contact - 0.1F && elapsedTime < phase.recovery && elapsedTime < phase.contact + 0.2F)
 		{
 			if (phase.collider != null)
@@ -94,51 +99,54 @@ public class AttackAnimation extends ActionAnimation
 				BlockPos blockpos = new BlockPos(hitpos);
 				Minecraft minecraft = Minecraft.getInstance();
 				BlockState blockstate = entity.level.getBlockState(blockpos);
-				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2, hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
-				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2, hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
-				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2, hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
-				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2, hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2,
+						hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2,
+						hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x - 0.2,
+						hitpos.y - 0.2F, -hitpos.z + 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
+				minecraft.player.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(blockpos), -hitpos.x + 0.2,
+						hitpos.y - 0.2F, -hitpos.z - 0.2F, -hitpos.x, hitpos.y + 0.2F, -hitpos.z);
 			}
 			if (!phase.smashed)
 			{
 				phase.smashed = true;
-				entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase), entity.getSoundSource(), 1.0F, 1.0F);
+				entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), this.getSmashSound(entitydata, phase),
+						entity.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
-		
-		if(state == LivingData.EntityState.FREE_CAMERA)
+
+		if (state == LivingData.EntityState.FREE_CAMERA)
 		{
-			if(entitydata instanceof MobData)
+			if (entitydata instanceof MobData)
 			{
 				((MobEntity) entitydata.getOriginalEntity()).getNavigation().stop();
 				LivingEntity target = entitydata.getTarget();
-				if(target != null)
+				if (target != null)
 				{
 					entitydata.rotateTo(target, 60.0F, false);
 				}
 			}
-		}
-		else if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
+		} else if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
-			if(!prevState.shouldDetectCollision())
+			if (!prevState.shouldDetectCollision())
 			{
 				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F);
 				entitydata.currentlyAttackedEntity.clear();
 			}
-			
+
 			Collider collider = this.getCollider(entitydata, elapsedTime);
 			entitydata.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 			PublicMatrix4f jointTransform = entitydata.getServerAnimator().getColliderTransformMatrix(phase.jointIndexer);
 			collider.transform(PublicMatrix4f.mul(entitydata.getModelMatrix(1.0F), jointTransform, null));
 			List<Entity> list = entity.level.getEntities(entity, collider.getHitboxAABB());
 			collider.extractHitEntities(list);
-			
+
 			if (list.size() > 0)
 			{
 				AttackResult attackResult = new AttackResult(entity, list);
 				boolean flag1 = true;
-				int maxStrikes = this.getMaxStrikes(entitydata, phase);
-				while (entitydata.currentlyAttackedEntity.size() < maxStrikes)
+				do
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
@@ -146,20 +154,24 @@ public class AttackAnimation extends ActionAnimation
 					{
 						if (e instanceof LivingEntity || e instanceof PartEntity)
 						{
-							if(entity.level.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double)e.getEyeHeight(), e.getZ()),
-									new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()), 
-									RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)).getType() == RayTraceResult.Type.MISS)
+							if (entity.level
+									.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
+											new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
+											RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity))
+									.getType() == RayTraceResult.Type.MISS)
 							{
-								
+
 								float amount = this.getDamageAmount(entitydata, e, phase);
 								IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
-								if(entitydata.hurtEntity(e, phase.hand, source, amount))
+								if (entitydata.hurtEntity(e, phase.hand, source, amount))
 								{
 									e.invulnerableTime = 0;
-									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(), 1.0F, 1.0F);
-									if(flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
+									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(),
+											1.0F, 1.0F);
+									if (flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
 									{
-										entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity)trueEntity, ((PlayerData<?>)entitydata).getOriginalEntity());
+										entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
+												((PlayerData<?>) entitydata).getOriginalEntity());
 										flag1 = false;
 									}
 								}
@@ -167,171 +179,154 @@ public class AttackAnimation extends ActionAnimation
 							}
 						}
 					}
-					
-					if(!attackResult.next()) break;
-				}
+				} while (attackResult.next());
 			}
 		}
 	}
-	
+
 	@Override
 	public void onFinish(LivingData<?> entitydata, boolean isEnd)
 	{
 		super.onFinish(entitydata, isEnd);
-		
-		if(entitydata instanceof PlayerData)
+
+		if (entitydata instanceof PlayerData)
 		{
-			((PlayerData<?>)entitydata).getEventListener().activateEvents(EventType.ON_ATTACK_END_EVENT, entitydata.currentlyAttackedEntity.size(), this.getId());
+			((PlayerData<?>) entitydata).getEventListener().activateEvents(EventType.ON_ATTACK_END_EVENT, entitydata.currentlyAttackedEntity.size(),
+					this.getId());
 		}
-		
+
 		entitydata.currentlyAttackedEntity.clear();
-		
-		if(entitydata instanceof BipedMobData && entitydata.isClientSide())
+
+		if (entitydata instanceof BipedMobData && entitydata.isClientSide())
 		{
 			MobEntity entity = (MobEntity) entitydata.getOriginalEntity();
-			if(entity.getTarget() !=null && !entity.getTarget().isAlive())
-				entity.setTarget((LivingEntity)null);
+			if (entity.getTarget() != null && !entity.getTarget().isAlive())
+				entity.setTarget((LivingEntity) null);
 		}
-		
-		for (Phase phase : this.phases) phase.smashed = false;
+
+		for (Phase phase : this.phases)
+			phase.smashed = false;
 	}
-	
+
 	@Override
 	public LivingData.EntityState getState(float time)
 	{
 		Phase phase = this.getPhaseByTime(time);
-		
+
 		if (time <= phase.antic || (phase.antic < time && time < phase.preDelay))
 		{
 			return LivingData.EntityState.FREE_CAMERA;
-		}
-		else if (phase.preDelay <= time && time <= phase.contact)
+		} else if (phase.preDelay <= time && time <= phase.contact)
 		{
 			return LivingData.EntityState.CONTACT;
-		}
-		else if (time < phase.recovery)
+		} else if (time < phase.recovery)
 		{
 			return LivingData.EntityState.POST_DELAY;
-		}
-		else
+		} else
 		{
 			return LivingData.EntityState.FREE_INPUT;
 		}
 	}
-	
+
 	public Collider getCollider(LivingData<?> entitydata, float elapsedTime)
 	{
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		return phase.collider != null ? phase.collider : entitydata.getColliderMatching(phase.hand);
 	}
-	
+
 	public Entity getTrueEntity(Entity entity)
 	{
 		if (entity instanceof PartEntity)
 		{
-			return ((PartEntity<?>)entity).getParent();
+			return ((PartEntity<?>) entity).getParent();
 		}
-		
+
 		return entity;
 	}
-	
-	protected int getMaxStrikes(LivingData<?> entitydata, Phase phase)
-	{
-		int i = entitydata.getHitEnemies();
-		phase.getProperty(DamageProperty.MAX_STRIKES).ifPresent((opt)->opt.get(i));
-		
-		return i;
-	}
-	
+
 	protected boolean shouldSmash(Phase phase)
 	{
-		return phase.getProperty(DamageProperty.SMASHING).orElse(false);
+		return phase.getProperty(AttackProperty.SMASHING).orElse(false);
 	}
-	
+
 	protected float getDamageAmount(LivingData<?> entitydata, Entity target, Phase phase)
 	{
-		float f = entitydata.getDamageToEntity(target, phase.hand);
-		phase.getProperty(DamageProperty.DAMAGE).ifPresent((opt)->opt.get(f));
-		return f;
+		return entitydata.getDamageToEntity(target, phase.hand);
 	}
-	
+
 	protected int getRequiredDeflectionLevel(Phase phase)
 	{
-		return phase.getProperty(DamageProperty.DEFLECTABLE_LEVEL).orElse(4);
+		return phase.getProperty(AttackProperty.DEFLECTABLE_LEVEL).orElse(4);
 	}
-	
+
 	protected SoundEvent getSwingSound(LivingData<?> entitydata, Phase phase)
 	{
-		return phase.getProperty(DamageProperty.SWING_SOUND).orElse(entitydata.getSwingSound(phase.hand));
+		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(entitydata.getSwingSound(phase.hand));
 	}
-	
+
 	protected SoundEvent getHitSound(LivingData<?> entitydata, Phase phase)
 	{
-		return phase.getProperty(DamageProperty.HIT_SOUND).orElse(entitydata.getWeaponHitSound(phase.hand));
+		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(entitydata.getWeaponHitSound(phase.hand));
 	}
-	
+
 	protected SoundEvent getSmashSound(LivingData<?> entitydata, Phase phase)
 	{
-		return phase.getProperty(DamageProperty.SMASH_SOUND).orElse(entitydata.getWeaponSmashSound(phase.hand));
+		return phase.getProperty(AttackProperty.SMASH_SOUND).orElse(entitydata.getWeaponSmashSound(phase.hand));
 	}
-	
+
 	@Nullable
 	protected SoundEvent getPrepareSound(LivingData<?> entitydata, Phase phase)
 	{
-		return phase.getProperty(DamageProperty.PREPARE_SOUND).orElse(null);
+		return phase.getProperty(AttackProperty.PREPARE_SOUND).orElse(null);
 	}
-	
+
 	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
 	{
-		DamageType dmgType = phase.getProperty(DamageProperty.DAMAGE_TYPE).orElse(DamageType.PHYSICAL);
-		StunType stunType = phase.getProperty(DamageProperty.STUN_TYPE).orElse(StunType.SHORT);
-		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, dmgType, this.getId(), amount, this.getRequiredDeflectionLevel(phase));
+		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT);
+		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.STANDARD);
+		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, this.getId(), amount, this.getRequiredDeflectionLevel(phase), damageType);
 		
-		phase.getProperty(DamageProperty.ARMOR_NEGATION).ifPresent((opt) ->
-		{
-			extDmgSource.setArmorNegation(opt.get(extDmgSource.getArmorNegation()));
-		});
-		phase.getProperty(DamageProperty.IMPACT).ifPresent((opt) ->
+		phase.getProperty(AttackProperty.IMPACT).ifPresent((opt) ->
 		{
 			extDmgSource.setImpact(opt.get(extDmgSource.getImpact()));
 		});
-		
+
 		return extDmgSource;
 	}
-	
-	public <V> AttackAnimation addProperty(DamageProperty<V> propertyType, V value)
+
+	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value)
 	{
 		return this.addProperty(propertyType, value, 0);
 	}
-	
-	public <V> AttackAnimation addProperty(DamageProperty<V> propertyType, V value, int index)
+
+	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value, int index)
 	{
 		this.phases[index].addProperty(propertyType, value);
 		return this;
 	}
-	
+
 	public int getIndexer(float elapsedTime)
 	{
 		return this.getPhaseByTime(elapsedTime).jointIndexer;
 	}
-	
+
 	public Phase getPhaseByTime(float elapsedTime)
 	{
 		Phase currentPhase = null;
-		for(Phase phase : this.phases)
+		for (Phase phase : this.phases)
 		{
 			currentPhase = phase;
-			if(phase.recovery > elapsedTime)
+			if (phase.recovery > elapsedTime)
 			{
 				break;
 			}
 		}
 		return currentPhase;
 	}
-	
+
 	public static class Phase
 	{
-		protected final Map<DamageProperty<?>, Object> properties = new HashMap<DamageProperty<?>, Object> ();;
+		protected final Map<AttackProperty<?>, Object> properties = new HashMap<AttackProperty<?>, Object>();;
 		protected final float antic;
 		protected final float preDelay;
 		protected final float contact;
@@ -340,12 +335,12 @@ public class AttackAnimation extends ActionAnimation
 		protected final Hand hand;
 		protected Collider collider;
 		protected boolean smashed = false;
-		
+
 		public Phase(float antic, float preDelay, float contact, float recovery, String indexer, Collider collider)
 		{
 			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, indexer, collider);
 		}
-		
+
 		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String indexer, Collider collider)
 		{
 			this.antic = antic;
@@ -354,13 +349,12 @@ public class AttackAnimation extends ActionAnimation
 			this.recovery = recovery;
 			this.collider = collider;
 			this.hand = hand;
-			
+
 			int coded = 0;
 			if (indexer.length() == 0)
 			{
 				this.jointIndexer = -1;
-			}
-			else
+			} else
 			{
 				for (int i = 0; i < indexer.length(); i++)
 				{
@@ -371,23 +365,23 @@ public class AttackAnimation extends ActionAnimation
 				this.jointIndexer = coded;
 			}
 		}
-		
-		public <V> Phase addProperty(DamageProperty<V> propertyType, V value)
+
+		public <V> Phase addProperty(AttackProperty<V> propertyType, V value)
 		{
 			this.properties.put(propertyType, value);
 			return this;
 		}
-		
-		public void addProperties(Set<Map.Entry<DamageProperty<?>, Object>> set)
+
+		public void addProperties(Set<Map.Entry<AttackProperty<?>, Object>> set)
 		{
-			for(Map.Entry<DamageProperty<?>, Object> entry : set)
+			for (Map.Entry<AttackProperty<?>, Object> entry : set)
 			{
 				this.properties.put(entry.getKey(), entry.getValue());
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
-		protected <V> Optional<V> getProperty(DamageProperty<V> propertyType)
+		protected <V> Optional<V> getProperty(AttackProperty<V> propertyType)
 		{
 			return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
 		}

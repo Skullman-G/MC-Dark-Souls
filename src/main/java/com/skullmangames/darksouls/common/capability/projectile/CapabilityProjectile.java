@@ -36,9 +36,7 @@ public class CapabilityProjectile<T extends ProjectileEntity>
 			{
 				Map<Supplier<Attribute>, AttributeModifier> modifierMap = ((RangedWeaponCapability)itemCap).getDamageAttributesInCondition(WieldStyle.TWO_HAND);
 				
-				this.armorNegation = (float)modifierMap.get(ModAttributes.ARMOR_NEGATION).getAmount();
 				this.impact = (float)modifierMap.get(ModAttributes.IMPACT).getAmount();
-				this.setMaxStrikes(projectileEntity, (int)modifierMap.get(ModAttributes.MAX_STRIKES).getAmount());
 				flag = false;
 			}
 		}
@@ -48,11 +46,6 @@ public class CapabilityProjectile<T extends ProjectileEntity>
 			this.armorNegation = 0.0F;
 			this.impact = 0.0F;
 		}
-	}
-	
-	protected void setMaxStrikes(T projectileEntity, int maxStrikes)
-	{
-		
 	}
 	
 	public float getArmorNegation()

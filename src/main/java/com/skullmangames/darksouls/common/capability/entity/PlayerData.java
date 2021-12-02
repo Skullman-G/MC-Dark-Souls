@@ -163,9 +163,9 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	}
 	
 	@Override
-	public IExtendedDamageSource getDamageSource(StunType stunType, DamageType damageType, int id, float amount, int requireddeflectionlevel)
+	public IExtendedDamageSource getDamageSource(StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
 	{
-		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, damageType, id, amount, requireddeflectionlevel);
+		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, id, amount, requireddeflectionlevel, damageType);
 	}
 	
 	public void discard()

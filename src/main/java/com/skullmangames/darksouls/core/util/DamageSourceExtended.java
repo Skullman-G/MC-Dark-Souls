@@ -8,25 +8,23 @@ import net.minecraft.util.EntityDamageSource;
 public class DamageSourceExtended extends EntityDamageSource implements IExtendedDamageSource
 {
 	private float impact;
-	private float armorNegation;
 	private StunType stunType;
-	private DamageType damageType;
 	private final int id;
 	private float amount;
 	private int requiredDeflectionLevel;
+	private DamageType damageType;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, DamageType damageType, int id, float amount, int requireddeflectionlevel)
+	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
 	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
 		LivingData<?> entityCap = (LivingData<?>) damageSourceEntityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
 		this.stunType = stunType;
-		this.damageType = damageType;
 		this.impact = entityCap.getImpact();
-		this.armorNegation = entityCap.getArmorNegation();
 		this.id = id;
 		this.amount = amount;
+		this.damageType = damageType;
 	}
 	
 	@Override
@@ -42,15 +40,15 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	}
 	
 	@Override
+	public void setAmount(float amount)
+	{
+		this.amount = amount;
+	}
+	
+	@Override
 	public void setImpact(float amount)
 	{
 		this.impact = amount;
-	}
-
-	@Override
-	public void setArmorNegation(float amount)
-	{
-		this.armorNegation = amount;
 	}
 
 	@Override
@@ -66,21 +64,9 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	}
 
 	@Override
-	public float getArmorNegation()
-	{
-		return armorNegation;
-	}
-
-	@Override
 	public StunType getStunType()
 	{
 		return stunType;
-	}
-
-	@Override
-	public DamageType getExtDamageType()
-	{
-		return damageType;
 	}
 
 	@Override
@@ -99,5 +85,17 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	public int getSkillId()
 	{
 		return this.id;
+	}
+
+	@Override
+	public DamageType getAttackType()
+	{
+		return this.damageType;
+	}
+
+	@Override
+	public void setAttackType(DamageType damageType)
+	{
+		this.damageType = damageType;
 	}
 }

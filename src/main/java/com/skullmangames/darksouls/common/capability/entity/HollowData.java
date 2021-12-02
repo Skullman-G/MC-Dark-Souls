@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
@@ -29,6 +30,17 @@ public class HollowData extends BipedMobData<HollowEntity>
 	{
 		super.onEntityJoinWorld(entityIn);
 		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(10.0F));
+	}
+	
+	@Override
+	protected void initAttributes()
+	{
+		super.initAttributes();
+		
+		this.orgEntity.getAttribute(ModAttributes.STANDARD_DEFENSE.get()).setBaseValue(1.11D);
+		this.orgEntity.getAttribute(ModAttributes.STRIKE_DEFENSE.get()).setBaseValue(1.11D);
+		this.orgEntity.getAttribute(ModAttributes.SLASH_DEFENSE.get()).setBaseValue(1.11D);
+		this.orgEntity.getAttribute(ModAttributes.THRUST_DEFENSE.get()).setBaseValue(1.11D);
 	}
 	
 	@Override

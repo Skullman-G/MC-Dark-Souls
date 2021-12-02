@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.skullmangames.darksouls.common.animation.property.Property.DamageProperty;
+
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
@@ -18,6 +18,8 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.VariableHitAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.TargetTraceAnimation;
 
@@ -84,14 +86,14 @@ public final class Animations
 	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 0.6F, 1.04F, 2.4F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
 	
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
-			.addProperty(DamageProperty.SMASHING, true);
+			.addProperty(AttackProperty.SMASHING, true);
 	
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
 				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
-				.addProperty(DamageProperty.SMASHING, true),
+				.addProperty(AttackProperty.SMASHING, true),
 				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, Colliders.great_hammer, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
-				.addProperty(DamageProperty.SMASHING, true)
+				.addProperty(AttackProperty.SMASHING, true)
 			};
 	
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
@@ -104,11 +106,15 @@ public final class Animations
 	
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.2F, 0.0F, 0.28F, 0.4F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_1", "biped"),
+					new AttackAnimation(0.2F, 0.0F, 0.28F, 0.4F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_1", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE),
 					new AttackAnimation(0.2F, 0.0F, 0.08F, 0.24F, 0.8F, false, Colliders.fist, "111213", "biped/combat/fist_light_attack_2", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			};
-	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, Colliders.fist, "111213", "biped/combat/fist_dash_attack", "biped");
-	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_heavy_attack", "biped");
+	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, Colliders.fist, "111213", "biped/combat/fist_dash_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE);
+	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F, false, Colliders.fist, "111213", "biped/combat/fist_heavy_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE);
 	
 	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AttackAnimation(0.16F, 0.1F, 0.1F, 0.2F, 0.45F, false, null, "111213", "biped/combat/spear_onehand_auto", "biped");
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_1 = new AttackAnimation(0.25F, 0.05F, 0.05F, 0.15F, 0.45F, false, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto1", "biped");
@@ -118,11 +124,15 @@ public final class Animations
 	
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.2F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped"),
+					new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.2F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD),
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.52F, 1.0F, false, "111213", "biped/combat/straight_sword_light_attack_2", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 			};
-	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped");
-	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/straight_sword_dash_attack", "biped");
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST);
+	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/straight_sword_dash_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD);
 	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
 	
 	public static final StaticAnimation DANCING_EDGE = new AttackAnimation(0.25F, true, "biped/skill/dancing_edge", "biped",
@@ -134,9 +144,9 @@ public final class Animations
 	public static final StaticAnimation SPEAR_SLASH = new AttackAnimation(0.1F, false, "biped/skill/spear_slash", "biped",
 														new Phase(0.24F, 0.24F, 0.36F, 0.5F, "111213", Colliders.spearSwing), new Phase(0.5F, 0.75F, 0.9F, 1.25F, "111213", Colliders.spearSwing));
 	public static final StaticAnimation FATAL_DRAW = new AttackAnimation(0.15F, 0.0F, 0.7F, 0.8F, 1.0F, false, Colliders.fatal_draw, "", "biped/skill/fatal_draw", "biped")
-														.addProperty(DamageProperty.SWING_SOUND, null);
+														.addProperty(AttackProperty.SWING_SOUND, null);
 	public static final StaticAnimation FATAL_DRAW_DASH = new AttackAnimation(0.15F, 0.43F, 0.85F, 0.91F, 1.4F, false, Colliders.fatal_draw_dash, "", "biped/skill/fatal_draw_dash", "biped")
-														.addProperty(DamageProperty.SWING_SOUND, null);
+														.addProperty(AttackProperty.SWING_SOUND, null);
 	public static final StaticAnimation LETHAL_SLICING = new AttackAnimation(0.15F, 0.0F, 0.0F, 0.1F, 0.38F, false, Colliders.fist_fast, "", "biped/skill/lethal_slicing_start", "biped");
 	public static final StaticAnimation LETHAL_SLICING_ONCE = new AttackAnimation(0.016F, 0.0F, 0.0F, 0.1F, 0.6F, false, Colliders.spearSwing, "111213", "biped/skill/lethal_slicing_once", "biped");
 	public static final StaticAnimation LETHAL_SLICING_TWICE = new AttackAnimation(0.016F, false, "biped/skill/lethal_slicing_twice", "biped",
@@ -154,7 +164,7 @@ public final class Animations
 					new AttackAnimation[]
 							{
 									new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped")
-																				.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2)
+																				.addProperty(AttackProperty.DEFLECTABLE_LEVEL, 2)
 							},
 							
 					// Fury Swing
@@ -167,24 +177,24 @@ public final class Animations
 																				new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.brokenSword),
 																				new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
 																				new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
-																				.addProperty(DamageProperty.PREPARE_SOUND, ModSoundEvents.HOLLOW_PREPARE)
+																				.addProperty(AttackProperty.PREPARE_SOUND, ModSoundEvents.HOLLOW_PREPARE)
 							},
 					
 					// Light Attacks
 					new AttackAnimation[]
 							{
 									new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_1", "biped")
-									.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
+									.addProperty(AttackProperty.DEFLECTABLE_LEVEL, 1),
 								
 									new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/swing_2", "biped")
-										.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1),
+										.addProperty(AttackProperty.DEFLECTABLE_LEVEL, 1),
 								
 									new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_3", "biped")
-										.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 1)
+										.addProperty(AttackProperty.DEFLECTABLE_LEVEL, 1)
 							}
 			};
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped")
-																.addProperty(DamageProperty.DEFLECTABLE_LEVEL, 2);
+																.addProperty(AttackProperty.DEFLECTABLE_LEVEL, 2);
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(0.2F, "hollow/deflected", "biped");
 	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(true, 0.2F, true, "hollow/breakdown", "biped", true);
 	
@@ -206,20 +216,20 @@ public final class Animations
 					new AttackAnimation[]
 						{
 								new AttackAnimation(1.0F, 0.0F, 1.36F, 1.84F, 3.2F, false, null, "11131", "asylum_demon/heavy_attack", "asylum_demon")
-								.addProperty(DamageProperty.SMASHING, true)
+								.addProperty(AttackProperty.SMASHING, true)
 						},
 						
 					// Light Attacks
 					new AttackAnimation[]
 							{
 									new AttackAnimation(1.0F, 0.0F, 0.88F, 1.36F, 1.4F, false, null, "11131", "asylum_demon/light_attack_1", "asylum_demon")
-									.addProperty(DamageProperty.SMASHING, true),
+									.addProperty(AttackProperty.SMASHING, true),
 									
 									new AttackAnimation(1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_2", "asylum_demon")
-									.addProperty(DamageProperty.SMASHING, true),
+									.addProperty(AttackProperty.SMASHING, true),
 									
 									new AttackAnimation(1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_3", "asylum_demon")
-									.addProperty(DamageProperty.SMASHING, true)
+									.addProperty(AttackProperty.SMASHING, true)
 							}
 			};
 	

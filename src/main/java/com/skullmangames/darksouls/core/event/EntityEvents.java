@@ -15,11 +15,14 @@ import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
+import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -36,9 +39,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.Effects;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.CombatRules;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -48,7 +48,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -133,82 +132,72 @@ public class EntityEvents
 		if(event.getSource() instanceof IExtendedDamageSource) extSource = (IExtendedDamageSource)event.getSource();
 		
 		LivingData<?> targetData = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (targetData != null && targetData instanceof LivingData<?>) targetData.blockingAttack(extSource);
 		
 		if(trueSource != null)
 		{
+			// Projectile Damage
 			if(event.getSource() instanceof IndirectEntityDamageSource)
 			{
 				Entity directSource = event.getSource().getDirectEntity();
-				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT);
+				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT, DamageType.THRUST);
 				
 				CapabilityProjectile<?> projectileCap = directSource.getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
 				
 				if (projectileCap != null)
 				{
-					extSource.setArmorNegation(projectileCap.getArmorNegation());
 					extSource.setImpact(projectileCap.getImpact());
 				}
 			}
 			
 			if(extSource != null)
 			{
-				float totalDamage = event.getAmount();
-				float ignoreDamage = event.getAmount() * extSource.getArmorNegation() * 0.01F;
-				float calculatedDamage = ignoreDamage;
+				// Damage Calculation
 				LivingEntity hitEntity = event.getEntityLiving();
+				float damage = event.getAmount();
 				
-			    if(hitEntity.hasEffect(Effects.DAMAGE_RESISTANCE))
-			    {
-			    	int i = (hitEntity.getEffect(Effects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
-			        int j = 25 - i;
-			        float f = calculatedDamage * (float)j;
-			        float f1 = calculatedDamage;
-			        calculatedDamage = Math.max(f / 25.0F, 0.0F);
-			        float f2 = f1 - calculatedDamage;
-			        if (f2 > 0.0F && f2 < 3.4028235E37F)
-			        {
-			        	if (hitEntity instanceof ServerPlayerEntity)
-			        	{
-			        		((ServerPlayerEntity)hitEntity).awardStat(Stats.DAMAGE_RESISTED, Math.round(f2 * 10.0F));
-			        	}
-			        	else if(event.getSource().getDirectEntity() instanceof ServerPlayerEntity)
-			        	{
-			                ((ServerPlayerEntity)event.getSource().getDirectEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(f2 * 10.0F));
-			        	}
-			        }
-			    }
-			    
-			    if(calculatedDamage > 0.0F)
-			    {
-			    	int k = EnchantmentHelper.getDamageProtection(hitEntity.getArmorSlots(), event.getSource());
-			        if(k > 0)
-			        {
-			        	calculatedDamage = CombatRules.getDamageAfterMagicAbsorb(calculatedDamage, (float)k);
-			        }
-			    }
-			    
-			    float absorpAmount = hitEntity.getAbsorptionAmount() - calculatedDamage;
-			    hitEntity.setAbsorptionAmount(Math.max(absorpAmount, 0.0F));
-		        float realHealthDamage = Math.max(-absorpAmount, 0.0F);
-		        if (realHealthDamage > 0.0F && realHealthDamage < 3.4028235E37F && event.getSource().getDirectEntity() instanceof ServerPlayerEntity)
-		        {
-		        	((ServerPlayerEntity)event.getSource().getDirectEntity()).awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(realHealthDamage * 10.0F));
-		        }
-		        
-		        if(absorpAmount < 0.0F)
-		        {
-		        	hitEntity.setHealth(hitEntity.getHealth() + absorpAmount);
-		        	LivingData<?> attacker = (LivingData<?>)trueSource.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-					if(attacker != null)
+				if (extSource instanceof DamageSourceExtended)
+				{
+					// Physical
+					switch(extSource.getAttackType())
 					{
-						attacker.gatherDamageDealt(extSource, calculatedDamage);
+						default:
+						case STANDARD:
+							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STANDARD_DEFENSE.get()))
+							{
+								damage -= hitEntity.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get());
+							}
+							break;
+						
+						case STRIKE:
+							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STRIKE_DEFENSE.get()))
+							{
+								damage -= hitEntity.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get());
+							}
+							break;
+						
+						case SLASH:
+							if (hitEntity.getAttributes().hasAttribute(ModAttributes.SLASH_DEFENSE.get()))
+							{
+								damage -= hitEntity.getAttributeValue(ModAttributes.SLASH_DEFENSE.get());
+							}
+							break;
+						
+						case THRUST:
+							if (hitEntity.getAttributes().hasAttribute(ModAttributes.THRUST_DEFENSE.get()))
+							{
+								damage -= hitEntity.getAttributeValue(ModAttributes.THRUST_DEFENSE.get());
+							}
+							break;
 					}
-		        }
-		        
-				event.setAmount(totalDamage - ignoreDamage);
+				}
 				
-				if(event.getAmount() + ignoreDamage > 0.0F)
+				event.setAmount(damage);
+				extSource.setAmount(damage);
+				
+				if (targetData != null && targetData instanceof LivingData<?>) targetData.blockingAttack(extSource);
+				
+				// Stun Animation
+				if(damage > 0.0F)
 				{
 					LivingData<?> hitEntityData = (LivingData<?>)hitEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 					
@@ -277,9 +266,6 @@ public class EntityEvents
 			}
 		}
 	}
-	
-	@SubscribeEvent
-	public static void damageEvent(LivingDamageEvent event) {}
 	
 	@SubscribeEvent
 	public static void attackEvent(LivingAttackEvent event)

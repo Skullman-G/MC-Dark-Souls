@@ -20,7 +20,6 @@ public class PickaxeCapability extends MaterialItemCapability
 	protected void registerAttribute()
 	{
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(-0.4D + 0.1D * this.itemTier.getLevel())));
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.ARMOR_NEGATION, ModAttributes.getArmorNegationModifier(6.0D * this.itemTier.getLevel())));
 	}
 
 	@Override

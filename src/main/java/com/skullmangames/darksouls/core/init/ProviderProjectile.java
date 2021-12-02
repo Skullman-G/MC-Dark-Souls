@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.projectile.ArrowData;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.SnowballEntity;
@@ -24,7 +24,7 @@ public class ProviderProjectile<P extends ProjectileEntity> implements ICapabili
 	
 	public static void makeMap()
 	{
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> ArrowData::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> CapabilityProjectile<ArrowEntity>::new);
 		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.SNOWBALL, (type) -> CapabilityProjectile<SnowballEntity>::new);
 		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.EGG, (type) -> CapabilityProjectile<EggEntity>::new);
 	}
