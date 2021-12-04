@@ -289,10 +289,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
 		if (weapon != null)
 		{
-			float physicalAtk = ((WeaponItem)weapon.getOriginalItem()).getDamage(this.orgEntity);
-			float physicalDef = weapon.getPhysicalDefense();
-			
-			damage += physicalAtk - physicalDef;
+			damage += ((WeaponItem)weapon.getOriginalItem()).getDamage(this.orgEntity);
 		}
 		
 		if (targetEntity instanceof LivingEntity)

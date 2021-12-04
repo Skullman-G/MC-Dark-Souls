@@ -163,7 +163,7 @@ public final class Animations
 	
 	public static final AttackAnimation[][] HOLLOW_ATTACKS = new AttackAnimation[][]
 			{
-					// Overhead swing (Heavy Attack)			
+					// Overhead swing (Heavy Attack)
 					new AttackAnimation[]
 							{
 									new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped")

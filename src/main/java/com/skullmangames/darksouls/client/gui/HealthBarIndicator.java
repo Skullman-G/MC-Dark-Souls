@@ -9,13 +9,12 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.common.potion.effect.ModEffect;
-import com.skullmangames.darksouls.core.util.Timer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
@@ -27,10 +26,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class HealthBarIndicator extends EntityIndicator
 {
-	private final Timer damageTimer = new Timer();
-	private float lastHealth;
-	private float damage;
-
 	@Override
 	public boolean shouldDraw(LivingEntity entityIn)
 	{
@@ -110,32 +105,39 @@ public class HealthBarIndicator extends EntityIndicator
 			this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, absorptionRatio - 0.5F, 0.05F, 1, 0, absTexRatio, 25);
 		}
 		
-		if (this.lastHealth > entityIn.getHealth())
+		CompoundNBT nbt = entityIn.getPersistentData();
+		float lastHealth = nbt.getFloat("HBI_lastHealth");
+		
+		if (lastHealth > entityIn.getHealth())
 		{
-			this.damage = this.lastHealth - entityIn.getHealth();
-			this.damageTimer.start(100);
+			float damage = nbt.getFloat("HBI_damageTimer") > 0 ? lastHealth - entityIn.getHealth() + nbt.getFloat("HBI_damage")
+							: lastHealth - entityIn.getHealth();
+			nbt.putFloat("HBI_damage", damage);
+			nbt.putFloat("HBI_damageTimer", 100.0F);
 		}
 		
-		if (this.damageTimer.isTicking())
+		float damageTimer = nbt.getFloat("HBI_damageTimer");
+		
+		if (damageTimer > 0)
 		{
 			matStack.pushPose();
 			ActiveRenderInfo camera = ClientManager.INSTANCE.mainCamera;
 			float scale = 0.03F;
-			matStack.translate(0, 2.5, 0);
+			matStack.translate(0, entityIn.getBbHeight() + 0.5, 0);
 			matStack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
 			matStack.mulPose(Vector3f.XP.rotationDegrees(camera.getXRot()));
 			matStack.scale(-scale, -scale, scale);
-			this.renderDamageNumber(matStack, this.damage, 10, 0);
+			this.renderDamageNumber(matStack, nbt.getFloat("HBI_damage"), 10, 0);
 			matStack.popPose();
-			this.damageTimer.drain(1.0F);
+			nbt.putFloat("HBI_damageTimer", damageTimer - 1.0F);
 		}
 
-		this.lastHealth = entityIn.getHealth();
+		nbt.putFloat("HBI_lastHealth", entityIn.getHealth());
 	}
 
 	public void renderDamageNumber(MatrixStack matrix, float damage, double x, double y)
 	{
-		int i = Math.abs(Math.round(damage));
+		int i = Math.abs(Math.round(damage * 100));
 		if (i == 0) return;
 		String s = "-"+String.valueOf(i);
 		Minecraft minecraft = Minecraft.getInstance();

@@ -37,10 +37,10 @@ public class HollowData extends BipedMobData<HollowEntity>
 	{
 		super.initAttributes();
 		
-		this.orgEntity.getAttribute(ModAttributes.STANDARD_DEFENSE.get()).setBaseValue(1.11D);
-		this.orgEntity.getAttribute(ModAttributes.STRIKE_DEFENSE.get()).setBaseValue(1.11D);
-		this.orgEntity.getAttribute(ModAttributes.SLASH_DEFENSE.get()).setBaseValue(1.11D);
-		this.orgEntity.getAttribute(ModAttributes.THRUST_DEFENSE.get()).setBaseValue(1.11D);
+		this.orgEntity.getAttribute(ModAttributes.STANDARD_DEFENSE.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.STRIKE_DEFENSE.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.SLASH_DEFENSE.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.THRUST_DEFENSE.get()).setBaseValue(0.1D);
 	}
 	
 	@Override

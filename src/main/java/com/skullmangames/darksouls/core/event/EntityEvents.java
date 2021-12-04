@@ -157,6 +157,8 @@ public class EntityEvents
 				
 				if (extSource instanceof DamageSourceExtended)
 				{
+					double defense = 0.0D;
+					
 					// Physical
 					switch(extSource.getAttackType())
 					{
@@ -164,31 +166,33 @@ public class EntityEvents
 						case STANDARD:
 							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STANDARD_DEFENSE.get()))
 							{
-								damage -= hitEntity.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get());
+								defense = hitEntity.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get());
 							}
 							break;
 						
 						case STRIKE:
 							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STRIKE_DEFENSE.get()))
 							{
-								damage -= hitEntity.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get());
+								defense = hitEntity.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get());
 							}
 							break;
 						
 						case SLASH:
 							if (hitEntity.getAttributes().hasAttribute(ModAttributes.SLASH_DEFENSE.get()))
 							{
-								damage -= hitEntity.getAttributeValue(ModAttributes.SLASH_DEFENSE.get());
+								defense = hitEntity.getAttributeValue(ModAttributes.SLASH_DEFENSE.get());
 							}
 							break;
 						
 						case THRUST:
 							if (hitEntity.getAttributes().hasAttribute(ModAttributes.THRUST_DEFENSE.get()))
 							{
-								damage -= hitEntity.getAttributeValue(ModAttributes.THRUST_DEFENSE.get());
+								defense = hitEntity.getAttributeValue(ModAttributes.THRUST_DEFENSE.get());
 							}
 							break;
 					}
+					
+					damage *= 1 - defense;
 				}
 				
 				event.setAmount(damage);

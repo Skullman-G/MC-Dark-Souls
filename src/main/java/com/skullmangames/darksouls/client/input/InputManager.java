@@ -12,7 +12,9 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientManager;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
@@ -34,6 +36,7 @@ import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -291,7 +294,6 @@ public class InputManager
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
 			if (!event.isAttack()) return;
-			
 			if (!minecraft.options.getCameraType().isFirstPerson())
 			{
 				event.setSwingHand(false);
@@ -303,6 +305,17 @@ public class InputManager
 			{
 				event.setCanceled(true);
 			}
+		}
+		
+		@SubscribeEvent
+		public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
+		{
+			if (event.getHand() == Hand.OFF_HAND) return;
+			WeaponCapability mainCap = ModCapabilities.stackWeaponCapabilityGetter(event.getItemStack());
+			if (mainCap == null) return;
+			WeaponCapability offCap = ModCapabilities.stackWeaponCapabilityGetter(event.getEntityLiving().getOffhandItem());
+			if (offCap == null) return;
+			event.setCanceled(true);
 		}
 		
 		@SubscribeEvent
