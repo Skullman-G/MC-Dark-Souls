@@ -137,7 +137,7 @@ public class HealthBarIndicator extends EntityIndicator
 
 	public void renderDamageNumber(MatrixStack matrix, float damage, double x, double y)
 	{
-		int i = Math.abs(Math.round(damage * 100));
+		int i = Math.abs(Math.round(damage * 10));
 		if (i == 0) return;
 		String s = "-"+String.valueOf(i);
 		Minecraft minecraft = Minecraft.getInstance();
