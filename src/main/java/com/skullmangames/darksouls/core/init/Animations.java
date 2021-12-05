@@ -34,10 +34,10 @@ public final class Animations
 	public static final StaticAnimation DUMMY_ANIMATION = new StaticAnimation();
 	
 	public static final StaticAnimation BIPED_IDLE = new StaticAnimation(true, 0.2F, true, "biped/living/idle", "biped", true);
-	public static final StaticAnimation BIPED_WALK = new MovementAnimation(0.2F, true, "biped/living/walk", "biped", true);
-	public static final StaticAnimation BIPED_RUN = new MovementAnimation(true, "biped/living/run", "biped", true);
-	public static final StaticAnimation BIPED_SNEAK = new MovementAnimation(true, "biped/living/sneak", "biped", true);
-	public static final StaticAnimation BIPED_SWIM = new MovementAnimation(true, "biped/living/swim", "biped", true);
+	public static final StaticAnimation BIPED_WALK = new MovementAnimation(0.2F, true, "biped/living/walk", "biped");
+	public static final StaticAnimation BIPED_RUN = new MovementAnimation(true, "biped/living/run", "biped");
+	public static final StaticAnimation BIPED_SNEAK = new MovementAnimation(true, "biped/living/sneak", "biped");
+	public static final StaticAnimation BIPED_SWIM = new MovementAnimation(true, "biped/living/swim", "biped");
 	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(true, true, "biped/living/float", "biped", true);
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(true, true, "biped/living/kneel", "biped", true);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(true, false, "biped/living/fall", "biped", true);
@@ -51,7 +51,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_BLOCK = new MirrorAnimation(0.2F, true, "biped/combat/block", "biped/combat/block_mirror", "biped", true);
 	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(true, 0.2F, true, "biped/living/idle_crossbow", "biped", true);
-	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", "biped", true);
+	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", "biped");
 	public static final StaticAnimation BIPED_CROSSBOW_AIM = new AimingAnimation(0.16F, false, "biped/combat/crossbow_aim_mid", "biped/combat/crossbow_aim_up", "biped/combat/crossbow_aim_down", "biped", true);
 	public static final StaticAnimation BIPED_CROSSBOW_SHOT = new ReboundAnimation(0.16F, false, "biped/combat/crossbow_shot_mid", "biped/combat/crossbow_shot_up", "biped/combat/crossbow_shot_down", "biped", true);
 	public static final StaticAnimation BIPED_CROSSBOW_RELOAD = new StaticAnimation(true, 0.16F, false, "biped/combat/crossbow_reload", "biped", true);
@@ -209,7 +209,7 @@ public final class Animations
 	// Asylum Demon
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 0.9F, true, "asylum_demon/idle", "asylum_demon", true);
 	
-	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true);
+	public static final StaticAnimation ASYLUM_DEMON_MOVE = new MovementAnimation(0.5F, true, "asylum_demon/move", "asylum_demon");
 	
 	public static final StaticAnimation ASYLUM_DEMON_DEATH = new DeathAnimation(0.5F, "asylum_demon/death", "asylum_demon");
 	
@@ -218,20 +218,20 @@ public final class Animations
 					// Heavy Attack		
 					new AttackAnimation[]
 						{
-								new AttackAnimation(1.0F, 0.0F, 1.36F, 1.84F, 3.2F, false, null, "11131", "asylum_demon/heavy_attack", "asylum_demon")
+								new AttackAnimation(1.0F, 0.0F, 1.36F, 1.84F, 3.2F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 								.addProperty(AttackProperty.SMASHING, true)
 						},
 						
 					// Light Attacks
 					new AttackAnimation[]
 							{
-									new AttackAnimation(1.0F, 0.0F, 0.88F, 1.36F, 1.4F, false, null, "11131", "asylum_demon/light_attack_1", "asylum_demon")
+									new AttackAnimation(1.0F, 0.0F, 0.88F, 1.36F, 2.4F, false, "11131", "asylum_demon/light_attack_1", "asylum_demon")
 									.addProperty(AttackProperty.SMASHING, true),
 									
-									new AttackAnimation(1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_2", "asylum_demon")
+									new AttackAnimation(1.0F, 0.0F, 0.88F, 1.4F, 2.4F, false, "11131", "asylum_demon/light_attack_2", "asylum_demon")
 									.addProperty(AttackProperty.SMASHING, true),
 									
-									new AttackAnimation(1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, null, "11131", "asylum_demon/light_attack_3", "asylum_demon")
+									new AttackAnimation(1.0F, 0.0F, 0.92F, 1.56F, 1.6F, false, "11131", "asylum_demon/light_attack_3", "asylum_demon")
 									.addProperty(AttackProperty.SMASHING, true)
 							}
 			};

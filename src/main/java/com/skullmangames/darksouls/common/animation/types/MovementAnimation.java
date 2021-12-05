@@ -6,14 +6,14 @@ import com.skullmangames.darksouls.config.IngameConfig;
 
 public class MovementAnimation extends StaticAnimation
 {
-	public MovementAnimation(float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
+	public MovementAnimation(float convertTime, boolean isRepeat, String path, String armature)
 	{
-		super(true, convertTime, isRepeat, path, armature, clientOnly);
+		super(true, convertTime, isRepeat, path, armature, true);
 	}
 
-	public MovementAnimation(boolean repeatPlay, String path, String armature, boolean clientOnly)
+	public MovementAnimation(boolean repeatPlay, String path, String armature)
 	{
-		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly);
+		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature);
 	}
 	
 	@Override
