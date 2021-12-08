@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
@@ -82,7 +83,10 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	{
 		super.initAI();
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 4.0D, true, Animations.ASYLUM_DEMON_ATTACKS));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 1.0F, true)
+				.addAttack(new AttackInstance(2.0F, Animations.ASYLUM_DEMON_LIGHT_ATTACK))
+				.addAttack(new AttackInstance(2.0F, Animations.ASYLUM_DEMON_HAMMER_DRIVE))
+				.addAttack(new AttackInstance(10.0F, 15.0F, Animations.ASYLUM_DEMON_JUMP_ATTACK)));
 	}
 	
 	@Override

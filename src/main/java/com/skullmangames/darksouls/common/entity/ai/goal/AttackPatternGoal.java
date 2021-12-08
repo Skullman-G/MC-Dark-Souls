@@ -1,13 +1,9 @@
 package com.skullmangames.darksouls.common.entity.ai.goal;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
-import javax.annotation.Nullable;
-
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import java.util.List;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
-
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -17,66 +13,58 @@ public class AttackPatternGoal extends Goal
 {
 	protected final MobEntity attacker;
 	protected final MobData<?> mobdata;
-	protected final double minDist;
-	protected final double maxDist;
-	protected final double maxDashDist;
-	protected final AttackAnimation[][] attacks;
-	protected final AttackAnimation dashAttack;
-	private int dashCooldown;
+	protected final float minDist;
+	protected float maxDist;
 	protected final boolean affectHorizon;
+	
 	protected int combo = 0;
 	protected int currentAttack = -1;
 	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, AttackAnimation attackAnimation)
-	{
-		this(mobdata, attacker, minDist, maxDist, affectHorizon, new AttackAnimation[][] { new AttackAnimation[] { attackAnimation } });
-	}
+	protected final List<AttackInstance> attacks = new ArrayList<>();
 	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, boolean affectHorizon, AttackAnimation[][] attackAnimations)
+	public AttackPatternGoal(MobData<?> mobdata, float minDist, boolean affectHorizon)
 	{
-		this(mobdata, attacker, minDist, maxDist, maxDist, affectHorizon, attackAnimations, null);
-	}
-	
-	public AttackPatternGoal(MobData<?> mobdata, MobEntity attacker, double minDist, double maxDist, double maxDashDist, boolean affectHorizon, AttackAnimation[][] attackAnimations, @Nullable AttackAnimation dashattack)
-	{
-		this.attacker = attacker;
 		this.mobdata = mobdata;
+		this.attacker = this.mobdata.getOriginalEntity();
 		this.minDist = minDist * minDist;
-		this.maxDist = maxDist * maxDist;
-		this.maxDashDist = maxDashDist * maxDashDist;
-		this.attacks = attackAnimations;
-		this.dashAttack = dashattack;
+		this.maxDist = this.minDist;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
-		this.dashCooldown = 0;
+	}
+	
+	public AttackPatternGoal addAttack(AttackInstance attack)
+	{
+		this.attacks.add(attack);
+		if (attack.range > this.maxDist) this.maxDist = attack.range;
+		return this;
 	}
 	
 	@Override
     public boolean canUse()
     {
-		if (this.attacks.length <= 0) return false;
-		LivingEntity LivingEntity = this.attacker.getTarget();
-		return isValidTarget(LivingEntity) && isTargetInRange(LivingEntity);
+		if (this.attacks.isEmpty()) return false;
+		LivingEntity target = this.attacker.getTarget();
+		return this.isValidTarget(target) && this.isTargetInRange(target);
     }
 
     @Override
     public boolean canContinueToUse()
     {
-    	LivingEntity livingEntity = this.attacker.getTarget();
-    	return this.isValidTarget(livingEntity) && (this.isTargetInRange(livingEntity) || this.isTargetInDashRange(livingEntity));
+    	LivingEntity target = this.attacker.getTarget();
+    	return this.isValidTarget(target) && this.isTargetInRange(target);
     }
-    
-    @Override
-    public void start() {}
     
     protected boolean canExecuteAttack()
     {
-    	return !mobdata.isInaction();
+    	return !mobdata.isInaction() && this.mobdata.getEntityState().getContactLevel() != 3;
     }
     
     protected boolean canExecuteComboAttack()
     {
-    	return this.combo > 0 && this.mobdata.getEntityState().getContactLevel() == 3;
+    	return this.combo > 0
+    			&& this.currentAttack > -1
+    			&& this.attacks.get(this.currentAttack).isValidRange(this.getTargetRange(this.attacker.getTarget()))
+    			&& this.mobdata.getEntityState().getContactLevel() == 3;
     }
     
     @Override
@@ -86,51 +74,54 @@ public class AttackPatternGoal extends Goal
     	if(!canExecuteAttack && !this.canExecuteComboAttack()) return;
     	else if (canExecuteAttack && this.combo > 0) this.combo = 0;
     	
-    	AttackAnimation animation;
-        
-    	if (this.dashAttack != null && this.dashCooldown == 0 && !this.isTargetInRange(this.attacker.getTarget()) && this.isTargetInDashRange(this.attacker.getTarget()))
+    	AttackInstance attack = null;
+    	
+    	if (this.combo > 0)
     	{
-    		if (this.combo > 0) return;
-    		animation = this.dashAttack;
-    		this.dashCooldown = 5;
+    		attack = this.attacks.get(this.currentAttack);
     	}
     	else
     	{
-    		if (this.combo <= 0) this.currentAttack = this.attacker.getRandom().nextInt(this.attacks.length);
-    		animation = this.attacks[this.currentAttack][this.combo];
-    		if (this.attacks[this.currentAttack].length > 1) this.combo = this.combo >= this.attacks[this.currentAttack].length - 1 ? 0 : this.combo + 1;
+    		double targetRange = this.getTargetRange(this.attacker.getTarget());
+    		for (AttackInstance a : this.attacks)
+        	{
+    			if (a.isValidRange(targetRange) && (attack == null
+    					|| !attack.isValidRange(targetRange)
+						|| this.currentAttack != this.attacks.indexOf(a))) attack = a;
+        	}
     	}
+    	
+    	if (attack == null) return;
+    	
+        attack.performAttack(this.mobdata, this.combo);
+        this.currentAttack = this.attacks.indexOf(attack);
+        if (attack.animation.length > 1) this.combo = this.combo + 1 >= attack.animation.length ? 0 : this.combo + 1;
         
-        if (animation == null) return;
-        
-        mobdata.getServerAnimator().playAnimation(animation, 0);
-    	mobdata.updateInactionState();
-    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(animation.getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);
-    	if (this.dashCooldown > 0) this.dashCooldown--;
     }
     
-    protected boolean isTargetInRange(LivingEntity attackTarget)
+    protected double getTargetRange(LivingEntity target)
     {
-    	double targetRange = this.attacker.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
-    	return targetRange <= this.maxDist && targetRange >= this.minDist && isInSameHorizontalPosition(attackTarget);
+    	double x = target.getX() - this.attacker.getX();
+    	double z = target.getZ() - this.attacker.getZ();
+    	return Math.sqrt(x * x + z * z);
     }
     
-    protected boolean isTargetInDashRange(LivingEntity target)
+    protected boolean isTargetInRange(LivingEntity target)
     {
-    	double targetRange = this.attacker.distanceToSqr(target.getX(), target.getBoundingBox().minY, target.getZ());
-    	return targetRange <= this.maxDashDist && targetRange >= this.minDist && isInSameHorizontalPosition(target);
+    	double targetRange = this.getTargetRange(target);
+    	return targetRange <= this.maxDist && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
     }
     
     protected boolean isValidTarget(LivingEntity attackTarget)
     {
-    	return attackTarget != null && attackTarget.isAlive() && 
+    	return attackTarget != null && attackTarget.isAlive() &&
     			!((attackTarget instanceof PlayerEntity) && (((PlayerEntity)attackTarget).isSpectator() || ((PlayerEntity)attackTarget).isCreative()));
     }
     
     protected boolean isInSameHorizontalPosition(LivingEntity attackTarget)
     {
     	if(affectHorizon)
-    		return Math.abs(attacker.getY() - attackTarget.getY()) <= attacker.getEyeHeight();
+    		return attacker.getY() == attackTarget.getY();
     	
     	return true;
     }

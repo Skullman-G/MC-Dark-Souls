@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -99,7 +100,11 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void setAIAsArmed()
 	{
 		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 1.75D, 4.0D, true, Animations.HOLLOW_ATTACKS, Animations.HOLLOW_JUMP_ATTACK));
+		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_LIGHT_ATTACKS))
+				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_BARRAGE))
+				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_OVERHEAD_SWING))
+				.addAttack(new AttackInstance(3.0F, Animations.HOLLOW_JUMP_ATTACK)));
 	}
 	
 	@Override

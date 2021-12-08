@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
@@ -256,7 +257,7 @@ public class AttackAnimation extends ActionAnimation
 
 	protected int getRequiredDeflectionLevel(Phase phase)
 	{
-		return phase.getProperty(AttackProperty.DEFLECTABLE_LEVEL).orElse(4);
+		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE).getLevel();
 	}
 
 	protected SoundEvent getSwingSound(LivingData<?> entitydata, Phase phase)
@@ -296,7 +297,11 @@ public class AttackAnimation extends ActionAnimation
 
 	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value)
 	{
-		return this.addProperty(propertyType, value, 0);
+		for (int i = 0; i < this.phases.length; i++)
+		{
+			this.addProperty(propertyType, value, i);
+		}
+		return this;
 	}
 
 	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value, int index)
@@ -336,6 +341,11 @@ public class AttackAnimation extends ActionAnimation
 		protected Collider collider;
 		protected boolean smashed = false;
 
+		public Phase(float antic, float preDelay, float contact, float recovery, String indexer)
+		{
+			this(antic, preDelay, contact, recovery, indexer, null);
+		}
+		
 		public Phase(float antic, float preDelay, float contact, float recovery, String indexer, Collider collider)
 		{
 			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, indexer, collider);

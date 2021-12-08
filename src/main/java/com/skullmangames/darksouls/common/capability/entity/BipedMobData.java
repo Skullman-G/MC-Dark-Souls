@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
@@ -67,15 +68,17 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 
 	public void setAIAsArmed()
 	{
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, Animations.ARMED_MOB_ONEHAND_ATTACKS));
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+				.addAttack(new AttackInstance(1.0F, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)));
 	}
 	
 	public void setAIAsMounted(Entity ridingEntity)
 	{
 		if (isArmed())
 		{
-			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, this.orgEntity, 0.0D, 2.0D, true, Animations.SWORD_MOUNT_ATTACK));
+			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+					.addAttack(new AttackInstance(1.0F, Animations.SWORD_MOUNT_ATTACK)));
 
 			if (ridingEntity instanceof AbstractHorseEntity)
 			{
