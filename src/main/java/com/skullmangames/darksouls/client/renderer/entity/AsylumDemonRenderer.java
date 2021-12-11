@@ -31,6 +31,8 @@ public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, Asy
 	@Override
 	protected void applyRotations(MatrixStack matStack, Armature armature, AsylumDemonEntity entityIn, AsylumDemonData entitydata, float partialTicks)
 	{
+		float scale = 1.4F;
+		matStack.scale(scale, scale, scale);
 		super.applyRotations(matStack, armature, entityIn, entitydata, partialTicks);
 		this.transformJoint(2, armature, entitydata.getHeadMatrix(partialTicks));
 	}

@@ -115,7 +115,7 @@ public class StaticAnimation extends DynamicAnimation
 				if(key.time < prevElapsed || key.time >= elapsed) continue;
 				else
 				{
-					if(entitydata.isClientSide() == key.isRemote)
+					if(entitydata.isClientSide() == key.isClientSide)
 					{
 						entitydata.playSound(key.sound, 0.0F, 0.0F);
 					}
@@ -129,7 +129,7 @@ public class StaticAnimation extends DynamicAnimation
 		return id;
 	}
 	
-	public StaticAnimation registerSound(float time, SoundEvent sound, boolean isRemote)
+	public StaticAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
 	{
 		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
 		this.soundStream.add(new SoundKey(time, sound, isRemote));
@@ -146,13 +146,13 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		float time;
 		SoundEvent sound;
-		boolean isRemote;
+		boolean isClientSide;
 		
 		protected SoundKey(float time, SoundEvent sound, boolean isRemote)
 		{
 			this.time = time;
 			this.sound = sound;
-			this.isRemote = isRemote;
+			this.isClientSide = isRemote;
 		}
 
 		@Override

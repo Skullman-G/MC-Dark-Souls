@@ -101,10 +101,10 @@ public class HollowData extends BipedMobData<HollowEntity>
 	{
 		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
 		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
-				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_BARRAGE))
-				.addAttack(new AttackInstance(1.0F, Animations.HOLLOW_OVERHEAD_SWING))
-				.addAttack(new AttackInstance(3.0F, Animations.HOLLOW_JUMP_ATTACK)));
+				.addAttack(new AttackInstance(4, 1.0F, Animations.HOLLOW_LIGHT_ATTACKS))
+				.addAttack(new AttackInstance(4, 1.0F, Animations.HOLLOW_BARRAGE))
+				.addAttack(new AttackInstance(4, 1.0F, Animations.HOLLOW_OVERHEAD_SWING))
+				.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_JUMP_ATTACK)));
 	}
 	
 	@Override

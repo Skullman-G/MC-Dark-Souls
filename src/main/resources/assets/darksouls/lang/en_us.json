@@ -138,6 +138,18 @@
 	"entity.asylum_demon.ambient": "Asylum Demon ambient",
 	"entity.asylum_demon.ambient.sub": "Asylum Demon roars",
 	"entity.player.shield_disarmed": "Player shield disarmed",
+	"entity.asylum_demon.land": "Asylum Demon land",
+	"entity.asylum_demon.land.sub": "Asylum Demon landing",
+	"entity.asylum_demon.wing": "Asylum Demon wing",
+	"entity.asylum_demon.wing.sub": "Asylum Demon flying",
+	"entity.asylum_demon.foot": "Asylum Demon foot",
+	"entity.asylum_demon.foot.sub": "Asylum Demon walking",
+	"entity.asylum_demon.death": "Asylum Demon death",
+	"entity.asylum_demon.death.sub": "Asylum Demon dying",
+	"entity.asylum_demon.swing": "Asylum Demon swing",
+	"entity.asylum_demon.swing.sub": "Asylum Demon swinging his weapon",
+	"entity.asylum_demon.smash": "Asylum Demon smash",
+	"entity.asylum_demon.smash.sub": "Asylum Demon smashing his weapon",
 	
 	
 	"itemGroup.soulstab": "Souls",

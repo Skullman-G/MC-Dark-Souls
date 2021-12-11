@@ -13,7 +13,7 @@ public interface IShield
 	
 	public enum Deflection
 	{
-		NONE(0), LIGHT(1), MEDIUM(2), HEAVY(3);
+		NONE(0), LIGHT(1), MEDIUM(2), HEAVY(3), IMPOSSIBLE(4);
 		
 		private final int level;
 		

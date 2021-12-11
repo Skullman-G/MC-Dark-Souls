@@ -70,7 +70,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 	{
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
 		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
-				.addAttack(new AttackInstance(1.0F, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)));
+				.addAttack(new AttackInstance(1, 1.0F, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)));
 	}
 	
 	public void setAIAsMounted(Entity ridingEntity)
@@ -78,7 +78,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 		if (isArmed())
 		{
 			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
-					.addAttack(new AttackInstance(1.0F, Animations.SWORD_MOUNT_ATTACK)));
+					.addAttack(new AttackInstance(1, 1.0F, Animations.SWORD_MOUNT_ATTACK)));
 
 			if (ridingEntity instanceof AbstractHorseEntity)
 			{

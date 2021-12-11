@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.core.util.physics.ColliderOBB;
 public class Colliders
 {
 	public static Collider body = new ColliderOBB(0.5F, 0.7F, 0.7F, 0F, 1.0F, -0.6F);
+	public static Collider bodyShockwave = new ColliderOBB(2.0F, 0.7F, 2.8F, 0F, 1.0F, -0.6F);
 	public static Collider dualSwordDash = new ColliderOBB(0.8F, 0.5F, 1.5F, 0F, 1.0F, 0.0F);
 	public static Collider fatal_draw = new ColliderOBB(1.75F, 0.7F, 1.5F, 0F, 1.0F, -1.5F);
 	public static Collider fatal_draw_dash = new ColliderOBB(0.7F, 0.7F, 5.0F, 0F, 1.0F, -4.0F);
@@ -21,11 +22,4 @@ public class Colliders
 	public static Collider tools = new ColliderOBB(0.4F, 0.4F, 0.55F, 0F, 0.0F, 0F);
 	public static Collider fist_fast = new ColliderOBB(0.4F, 0.4F, 0.5F, 0F, 1.0F, -0.85F);
 	public static Collider great_hammer = new ColliderOBB(0.4F, 0.5F, 0.5F, 0.0F, 0.2F, -1.9F);
-	
-	public static void update()
-	{/**
-		Collider newCOllider = new ColliderOBB(0.4F, 0.4F, 0.9F, 0F, 0F, -1.35F);
-		((AttackAnimation)Animations.SPEAR_DASH).changeCollider(newCOllider, 0);
-		((AttackAnimation)Animations.SPEAR_ONEHAND_AUTO).changeCollider(newCOllider, 0);**/
-	}
 }

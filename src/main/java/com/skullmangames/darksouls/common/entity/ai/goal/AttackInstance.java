@@ -6,23 +6,26 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
 
 import net.minecraft.entity.MobEntity;
+import net.minecraft.util.math.MathHelper;
 
 public class AttackInstance
 {
 	protected final AttackAnimation[] animation;
 	protected final float offset;
 	protected final float range;
+	protected final int priority;
 	
-	public AttackInstance(float range, AttackAnimation... animation)
+	public AttackInstance(int priority, float range, AttackAnimation... animation)
 	{
-		this(0.0F, range, animation);
+		this(priority, 0.0F, range, animation);
 	}
 	
-	public AttackInstance(float offset, float range, AttackAnimation... animation)
+	public AttackInstance(int priority, float offset, float range, AttackAnimation... animation)
 	{
 		this.animation = animation;
 		this.offset = offset;
 		this.range = range;
+		this.priority = MathHelper.clamp(priority, 0, 9);
 	}
 	
 	public boolean isValidRange(double targetRange)

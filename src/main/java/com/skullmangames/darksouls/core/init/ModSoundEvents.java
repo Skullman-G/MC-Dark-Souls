@@ -23,6 +23,12 @@ public class ModSoundEvents
 	public static final SoundEvent HOLLOW_PREPARE = registerSound("entity.hollow.prepare");
 	
 	public static final SoundEvent ASYLUM_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
+	public static final SoundEvent ASYLUM_DEMON_LAND = registerSound("entity.asylum_demon.land");
+	public static final SoundEvent ASYLUM_DEMON_WING = registerSound("entity.asylum_demon.wing");
+	public static final SoundEvent ASYLUM_DEMON_FOOT = registerSound("entity.asylum_demon.foot");
+	public static final SoundEvent ASYLUM_DEMON_DEATH = registerSound("entity.asylum_demon.death");
+	public static final SoundEvent ASYLUM_DEMON_SWING = registerSound("entity.asylum_demon.swing");
+	public static final SoundEvent ASYLUM_DEMON_SMASH = registerSound("entity.asylum_demon.smash");
 	
 	public static final SoundEvent GENERIC_KILL = registerSound("entity.generic.kill");
 	

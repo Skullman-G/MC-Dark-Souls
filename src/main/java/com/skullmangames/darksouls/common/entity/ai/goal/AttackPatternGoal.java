@@ -87,7 +87,7 @@ public class AttackPatternGoal extends Goal
         	{
     			if (a.isValidRange(targetRange) && (attack == null
     					|| !attack.isValidRange(targetRange)
-						|| this.currentAttack != this.attacks.indexOf(a))) attack = a;
+						|| this.attacker.getRandom().nextInt(10) <= a.priority)) attack = a;
         	}
     	}
     	
@@ -121,7 +121,7 @@ public class AttackPatternGoal extends Goal
     protected boolean isInSameHorizontalPosition(LivingEntity attackTarget)
     {
     	if(affectHorizon)
-    		return attacker.getY() == attackTarget.getY();
+    		return attackTarget.getY() - attacker.getY() <= 1.0F && attackTarget.getY() - attacker.getY() >= -1.0F;
     	
     	return true;
     }

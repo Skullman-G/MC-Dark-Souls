@@ -37,6 +37,13 @@ public class AsylumDemonEntity extends CreatureEntity
 	}
 	
 	@Override
+	protected int calculateFallDamage(float distance, float p_225508_2_)
+	{
+		if (distance < 10.0F) return 0;
+		return super.calculateFallDamage(distance, p_225508_2_);
+	}
+	
+	@Override
 	protected int getExperienceReward(PlayerEntity p_70693_1_)
 	{
 		return 100;
@@ -46,6 +53,12 @@ public class AsylumDemonEntity extends CreatureEntity
 	protected SoundEvent getAmbientSound()
 	{
 		return ModSoundEvents.ASYLUM_DEMON_AMBIENT;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return ModSoundEvents.ASYLUM_DEMON_DEATH;
 	}
 	
 	@Override
@@ -95,7 +108,7 @@ public class AsylumDemonEntity extends CreatureEntity
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 41.25D)
+				.add(Attributes.MAX_HEALTH, 80.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)

@@ -169,5 +169,66 @@
 			{ "name": "darksouls:entities/asylum_demon/ambient_1", "stream": true },
 			{ "name": "darksouls:entities/asylum_demon/ambient_2", "stream": true }
 		]
+	},
+	
+	"entity.asylum_demon.land":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.land.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/land", "stream": true }
+		]
+	},
+	
+	"entity.asylum_demon.wing":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.wing.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/wing", "stream": true }
+		]
+	},
+	
+	"entity.asylum_demon.foot":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.foot.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/foot", "stream": true }
+		]
+	},
+	
+	"entity.asylum_demon.death":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.death.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/death", "stream": true }
+		]
+	},
+	
+	"entity.asylum_demon.swing":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.swing.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/swing_1", "stream": true },
+			{ "name": "darksouls:entities/asylum_demon/swing_2", "stream": true }
+		]
+	},
+	
+	"entity.asylum_demon.smash":
+	{
+		"category": "entity",
+		"subtitle": "entity.asylum_demon.smash.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/asylum_demon/smash", "stream": true }
+		]
 	}
 }
