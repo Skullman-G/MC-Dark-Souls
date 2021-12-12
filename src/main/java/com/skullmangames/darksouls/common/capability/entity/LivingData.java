@@ -16,7 +16,6 @@ import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.item.WeaponItem;
-import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -634,13 +633,6 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		if (cap == null) return null;
 		return cap.getSwingSound();
-	}
-	
-	public HitParticleType getWeaponHitParticle(Hand hand)
-	{
-		WeaponCapability cap = this.getHeldWeaponCapability(hand);
-		if (cap == null) return null;
-		return cap.getHitParticle();
 	}
 
 	public Collider getColliderMatching(Hand hand)

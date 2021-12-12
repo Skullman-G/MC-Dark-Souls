@@ -22,7 +22,7 @@ public class StaticAnimation extends DynamicAnimation
 {
 	protected String path;
 	protected final int id;
-	public List<SoundKey> soundStream;
+	protected List<SoundKey> soundStream;
 	protected final boolean clientOnly;
 	protected final String armature;
 	private final MixPart mixPart;

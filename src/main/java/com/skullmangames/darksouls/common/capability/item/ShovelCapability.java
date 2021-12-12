@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -25,12 +24,6 @@ public class ShovelCapability extends MaterialItemCapability
 
 	@Override
 	public SoundEvent getHitSound()
-	{
-		return null;
-	}
-
-	@Override
-	public HitParticleType getHitParticle()
 	{
 		return null;
 	}

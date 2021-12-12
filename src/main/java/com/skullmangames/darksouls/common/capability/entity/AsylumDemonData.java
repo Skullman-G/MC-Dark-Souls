@@ -3,16 +3,18 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
-import com.skullmangames.darksouls.core.util.physics.ColliderOBB;
 
 import net.minecraft.util.Hand;
 
@@ -42,17 +44,17 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 		animatorClient.setCurrentLivingMotionsToDefault();
 	}
 	
-	@Override
-	public Collider getColliderMatching(Hand hand)
-	{
-		Collider collider = super.getColliderMatching(hand);
-		if (!(collider instanceof ColliderOBB)) return collider;
-		return ((ColliderOBB)collider).getScaledCollider(getWeaponScale());
-	}
-	
 	public static float getWeaponScale()
 	{
 		return 1.5F;
+	}
+	
+	@Override
+	public Collider getColliderMatching(Hand hand)
+	{
+		WeaponCapability cap = this.getHeldWeaponCapability(hand);
+		if (cap instanceof GreatHammerCapability) return Colliders.asylum_demon_great_hammer;
+		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
@@ -20,18 +21,21 @@ import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.Property.AttackProperty;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 
 public class AttackAnimation extends ActionAnimation
@@ -66,16 +70,20 @@ public class AttackAnimation extends ActionAnimation
 	public void onUpdate(LivingData<?> entitydata)
 	{
 		super.onUpdate(entitydata);
-
+		
+		LivingEntity entity = entitydata.getOriginalEntity();
+		
 		if (entitydata.isClientSide())
+		{
+			this.onClientUpdate(entitydata);
 			return;
+		}
 
 		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
 		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
 		LivingData.EntityState state = this.getState(elapsedTime);
 		LivingData.EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
-		LivingEntity entity = entitydata.getOriginalEntity();
 
 		if (state == LivingData.EntityState.FREE_CAMERA)
 		{
@@ -143,6 +151,39 @@ public class AttackAnimation extends ActionAnimation
 				} while (attackResult.next());
 			}
 		}
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void onClientUpdate(LivingData<?> entitydata)
+	{
+		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
+		Phase phase = this.getPhaseByTime(elapsedTime);
+		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
+		
+		if (spawner == null) return;
+		
+		LivingEntity entity = entitydata.getOriginalEntity();
+		LivingData.EntityState state = this.getState(elapsedTime);
+		
+		Collider collider = this.getCollider(entitydata, elapsedTime);
+		Vector3d pos = collider.getCenter();
+		pos = new Vector3d(-pos.x, pos.y, -pos.z);
+		if (state.getContactLevel() == spawner.contactLevel) this.spawnParticle(spawner.particle.get(), (ClientWorld)entity.level, pos);
+	}
+	
+	public void spawnParticle(IParticleData particle, ClientWorld world, Vector3d pos)
+	{
+		float distance = 0.1F;
+		
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, 0D);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, 0D);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, 0D, 0D, distance);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, 0D, 0D, -distance);
+		
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, distance);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, -distance);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, -distance);
+		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, distance);
 	}
 
 	@Override

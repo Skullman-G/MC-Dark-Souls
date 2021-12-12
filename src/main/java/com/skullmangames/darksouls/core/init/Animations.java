@@ -18,9 +18,10 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.VariableHitAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.ParticleSpawner;
 import com.skullmangames.darksouls.common.animation.types.attack.TargetTraceJumpAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
@@ -74,13 +75,12 @@ public final class Animations
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
+	// Great Hammer
 	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 1.0F, 1.72F, 3.6F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
-	
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
 			.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.52F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
-	
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
 				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
@@ -93,6 +93,7 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 			};
 	
+	// Axe
 	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
 			{
 					new AttackAnimation(0.16F, 0.25F, 0.25F, 0.35F, 0.7F, false, null, "111213", "biped/combat/axe_auto1", "biped"),
@@ -101,6 +102,7 @@ public final class Animations
 	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.25F, 0.08F, 0.4F, 0.46F, 0.9F, false, null, "111213", "biped/combat/axe_dash", "biped");
 	public static final AttackAnimation GUILLOTINE_AXE = new AttackAnimation(0.08F, 0.2F, 0.5F, 0.65F, 1.0F, true, null, "111213", "biped/skill/axe_special", "biped");
 	
+	// Fist
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(0.2F, 0.0F, 0.28F, 0.4F, 1.0F, false, "111213", "biped/combat/fist_light_attack_1", "biped")
@@ -115,18 +117,21 @@ public final class Animations
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	
+	// Shield
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, "111213", "biped/combat/shield_strike", "biped")
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 			};
 	
+	// Spear
 	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AttackAnimation(0.16F, 0.1F, 0.1F, 0.2F, 0.45F, false, null, "111213", "biped/combat/spear_onehand_auto", "biped");
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_1 = new AttackAnimation(0.25F, 0.05F, 0.05F, 0.15F, 0.45F, false, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto1", "biped");
 	public static final StaticAnimation SPEAR_TWOHAND_AUTO_2 = new AttackAnimation(0.25F, 0.05F, 0.05F, 0.15F, 0.45F, false, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto2", "biped");
 	public static final StaticAnimation SPEAR_DASH = new AttackAnimation(0.16F, 0.05F, 0.2F, 0.3F, 0.7F, false, null, "111213", "biped/combat/spear_dash", "biped");
 	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped");
 	
+	// Straight Sword
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.2F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped")
@@ -172,20 +177,20 @@ public final class Animations
 	
 	public static final AttackAnimation[] HOLLOW_LIGHT_ATTACKS = new AttackAnimation[]
 						{
-								new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, "111213", "hollow/swing_1", "biped")
+								new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_1", "biped")
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-								new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, "111213", "hollow/swing_2", "biped")
+								new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/swing_2", "biped")
 									.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-								new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, "111213", "hollow/swing_3", "biped")
+								new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, false, Colliders.brokenSword, "111213", "hollow/swing_3", "biped")
 									.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 						};
 	public static final AttackAnimation HOLLOW_BARRAGE = new AttackAnimation(0.05F, false, "hollow/fury_attack", "biped",
-																new Phase(0.0F, 1.76F, 2.08F, 2.08F, "111213"),
-																new Phase(2.08F, 2.12F, 2.28F, 2.28F, "111213"),
-																new Phase(2.28F, 2.44F, 2.6F, 2.6F, "111213"),
-																new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213"),
-																new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213"),
-																new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213"))
+																new Phase(0.0F, 1.76F, 2.08F, 2.08F, "111213", Colliders.brokenSword),
+																new Phase(2.08F, 2.12F, 2.28F, 2.28F, "111213", Colliders.brokenSword),
+																new Phase(2.28F, 2.44F, 2.6F, 2.6F, "111213", Colliders.brokenSword),
+																new Phase(2.6F, 2.76F, 2.92F, 2.92F, "111213", Colliders.brokenSword),
+																new Phase(2.92F, 3.08F, 3.24F, 3.24F, "111213", Colliders.brokenSword),
+																new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.brokenSword))
 																.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 																.registerSound(ModSoundEvents.HOLLOW_PREPARE, 0.04F, true);
 	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped")
@@ -194,7 +199,7 @@ public final class Animations
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	
 	// Asylum Demon
-	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 0.9F, true, "asylum_demon/idle", "asylum_demon", true);
+	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
 	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_FOOT, 0.4F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_FOOT, 1.2F, true);
@@ -202,32 +207,38 @@ public final class Animations
 			
 	public static final AttackAnimation[] ASYLUM_DEMON_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.5F, 0.0F, 0.52F, 1.0F, 2.0F, false, "11131", "asylum_demon/light_attack_1", "asylum_demon")
+					new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, false, "11131", "asylum_demon/light_attack_1", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SWING, 0.52F, true)
-						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE),
-					new AttackAnimation(0.5F, 0.0F, 0.6F, 0.92F, 2.0F, false, "11131", "asylum_demon/light_attack_2", "asylum_demon")
+						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3)),
+					new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, false, "11131", "asylum_demon/light_attack_2", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SWING, 0.6F, true)
-						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE),
-					new AttackAnimation(0.5F, 0.0F, 0.6F, 0.84F, 1.2F, false, "11131", "asylum_demon/light_attack_3", "asylum_demon")
+						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3)),
+					new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, false, "11131", "asylum_demon/light_attack_3", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.72F, true)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3))
 			};
-	public static final AttackAnimation ASYLUM_DEMON_HAMMER_DRIVE = new AttackAnimation(0.5F, 0.0F, 0.64F, 1.04F, 2.8F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
+	public static final AttackAnimation ASYLUM_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.92F, true)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
-	public static final AttackAnimation ASYLUM_DEMON_JUMP_ATTACK = new TargetTraceJumpAnimation(0.5F, 0.0F, 0.64F, 1.08F, 2.0F, true, null, "11131", 4.0F, "asylum_demon/dash_attack", "asylum_demon")
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3));
+	public static final AttackAnimation ASYLUM_DEMON_JUMP_ATTACK = new TargetTraceJumpAnimation(1.0F, 0.0F, 0.64F, 1.2F, 2.0F, true, null, "11131", 4.0F, "asylum_demon/dash_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 0.04F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_LAND, 0.8F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.8F, true)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
-	public static final AttackAnimation ASYLUM_DEMON_GROUND_POUND = new AttackAnimation(0.5F, true, "asylum_demon/ground_pound", "asylum_demon",
-			new Phase(0.0F, 2.32F, 2.6F, 2.6F, "1", Colliders.body),
-			new Phase(2.6F, 2.64F, 2.96F, 4.0F, "1", Colliders.bodyShockwave))
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3));
+	public static final AttackAnimation ASYLUM_DEMON_GROUND_POUND = new AttackAnimation(1.0F, true, "asylum_demon/ground_pound", "asylum_demon",
+			new Phase(0.0F, 2.32F, 2.6F, 2.6F, "", Colliders.asylum_demon_body),
+			new Phase(0.0F, 2.6F, 2.96F, 4.0F, "", Colliders.asylum_demon_body))
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 0.4F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 1.0F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 1.76F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_LAND, 2.76F, true)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.PARTICLE, new ParticleSpawner(ModParticles.DUST_CLOUD, 3));
 	
 	public static StaticAnimation getById(int id)
 	{

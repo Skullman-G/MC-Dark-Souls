@@ -24,7 +24,6 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.WeaponItem;
-import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -211,11 +210,6 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	public Collider getWeaponCollider()
 	{
 		return Colliders.fist;
-	}
-
-	public HitParticleType getHitParticle()
-	{
-		return null;
 	}
 	
 	public WieldStyle getStyle(LivingData<?> entitydata)

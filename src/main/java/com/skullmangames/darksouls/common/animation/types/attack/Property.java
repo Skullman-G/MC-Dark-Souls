@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.core.util;
+package com.skullmangames.darksouls.common.animation.types.attack;
 
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
@@ -18,5 +18,7 @@ public abstract class Property<T>
 
 		public static final AttackProperty<SoundEvent> SWING_SOUND = new AttackProperty<SoundEvent>();
 		public static final AttackProperty<SoundEvent> HIT_SOUND = new AttackProperty<SoundEvent>();
+		
+		public static final AttackProperty<ParticleSpawner> PARTICLE = new AttackProperty<ParticleSpawner>();
 	}
 }

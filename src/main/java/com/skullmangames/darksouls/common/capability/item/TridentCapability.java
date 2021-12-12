@@ -6,7 +6,6 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.particle.HitParticleType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -52,12 +51,6 @@ public class TridentCapability extends RangedWeaponCapability
 	
 	@Override
 	public SoundEvent getHitSound()
-	{
-		return null;
-	}
-	
-	@Override
-	public HitParticleType getHitParticle()
 	{
 		return null;
 	}
