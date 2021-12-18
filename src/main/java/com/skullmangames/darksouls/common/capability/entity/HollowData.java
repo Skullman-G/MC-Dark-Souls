@@ -66,8 +66,8 @@ public class HollowData extends BipedMobData<HollowEntity>
 	protected void initAnimator(AnimatorClient animatorClient)
 	{
 		super.initAnimator(animatorClient);
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
@@ -91,8 +91,8 @@ public class HollowData extends BipedMobData<HollowEntity>
 		
 		if (buf.readBoolean())
 		{
-			animator.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-			animator.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+			animator.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
+			animator.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
 		}
 	}
 	

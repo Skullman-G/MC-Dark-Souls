@@ -175,6 +175,8 @@ public final class Animations
 			new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast));
 	
 	// Hollow
+	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(true, 0.2F, true, "hollow/idle", "biped", true);
+	public static final StaticAnimation HOLLOW_WALK = new StaticAnimation(true, 0.2F, true, "hollow/move", "biped", true);
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(0.2F, "hollow/deflected", "biped");
 	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(true, 0.2F, true, "hollow/breakdown", "biped", true);
 	
