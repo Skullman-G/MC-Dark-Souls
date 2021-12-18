@@ -25,5 +25,5 @@ public class Colliders
 	
 	//Asylum Demon
 	public static final Collider asylum_demon_great_hammer = great_hammer.getScaledCollider(AsylumDemonData.getWeaponScale());
-	public static final Collider asylum_demon_body = new Collider(3F, 1F, 3F, 0F, -0.25F, 0F);
+	public static final Collider asylum_demon_body = new Collider(3F, 1F, 3F, 0F, 0F, 0F);
 }

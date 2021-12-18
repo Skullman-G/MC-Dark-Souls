@@ -28,7 +28,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceContext;
@@ -157,33 +156,18 @@ public class AttackAnimation extends ActionAnimation
 	public void onClientUpdate(LivingData<?> entitydata)
 	{
 		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
+		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
 		
 		if (spawner == null) return;
 		
 		LivingEntity entity = entitydata.getOriginalEntity();
-		LivingData.EntityState state = this.getState(elapsedTime);
 		
 		Collider collider = this.getCollider(entitydata, elapsedTime);
 		Vector3d pos = collider.getCenter();
 		pos = new Vector3d(-pos.x, pos.y, -pos.z);
-		if (state.getContactLevel() == spawner.contactLevel) this.spawnParticle(spawner.particle.get(), (ClientWorld)entity.level, pos);
-	}
-	
-	public void spawnParticle(IParticleData particle, ClientWorld world, Vector3d pos)
-	{
-		float distance = 0.1F;
-		
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, 0D);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, 0D);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, 0D, 0D, distance);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, 0D, 0D, -distance);
-		
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, distance);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, -distance);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, distance, 0D, -distance);
-		world.addParticle(particle, pos.x, pos.y+1, pos.z, -distance, 0D, distance);
+		if (elapsedTime >= phase.contactEnd && prevElapsedTime - 0.4F < phase.contactEnd) spawner.spawnParticles((ClientWorld)entity.level, pos);
 	}
 
 	@Override
@@ -215,13 +199,13 @@ public class AttackAnimation extends ActionAnimation
 	{
 		Phase phase = this.getPhaseByTime(time);
 
-		if (time <= phase.antic || (phase.antic < time && time < phase.preDelay))
+		if (time <= phase.begin || (phase.begin < time && time < phase.contactStart))
 		{
 			return LivingData.EntityState.FREE_CAMERA;
-		} else if (phase.preDelay <= time && time <= phase.contact)
+		} else if (phase.contactStart <= time && time <= phase.contactEnd)
 		{
 			return LivingData.EntityState.CONTACT;
-		} else if (time < phase.recovery)
+		} else if (time < phase.end)
 		{
 			return LivingData.EntityState.POST_DELAY;
 		} else
@@ -313,7 +297,7 @@ public class AttackAnimation extends ActionAnimation
 		for (Phase phase : this.phases)
 		{
 			currentPhase = phase;
-			if (phase.recovery > elapsedTime)
+			if (phase.end > elapsedTime)
 			{
 				break;
 			}
@@ -324,10 +308,10 @@ public class AttackAnimation extends ActionAnimation
 	public static class Phase
 	{
 		protected final Map<AttackProperty<?>, Object> properties = new HashMap<AttackProperty<?>, Object>();;
-		protected final float antic;
-		protected final float preDelay;
-		protected final float contact;
-		protected final float recovery;
+		protected final float begin;
+		protected final float contactStart;
+		protected final float contactEnd;
+		protected final float end;
 		protected final int jointIndexer;
 		protected final Hand hand;
 		protected Collider collider;
@@ -345,10 +329,10 @@ public class AttackAnimation extends ActionAnimation
 
 		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String indexer, Collider collider)
 		{
-			this.antic = antic;
-			this.preDelay = preDelay;
-			this.contact = contact;
-			this.recovery = recovery;
+			this.begin = antic;
+			this.contactStart = preDelay;
+			this.contactEnd = contact;
+			this.end = recovery;
 			this.collider = collider;
 			this.hand = hand;
 

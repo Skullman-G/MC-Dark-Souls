@@ -20,7 +20,7 @@ public class ModParticles
 {
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, DarkSouls.MOD_ID);
 	
-	public static final RegistryObject<BasicParticleType> DUST_CLOUD = PARTICLES.register("dust_cloud", () -> new BasicParticleType(false));
+	public static final RegistryObject<BasicParticleType> DUST_CLOUD = PARTICLES.register("dust_cloud", () -> new BasicParticleType(true));
 	
 	@SubscribeEvent
 	public static void registerParticleFactories(ParticleFactoryRegisterEvent event)

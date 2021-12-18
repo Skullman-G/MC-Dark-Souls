@@ -445,7 +445,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		double d0 = target.getX() - this.orgEntity.getX();
         double d1 = target.getZ() - this.orgEntity.getZ();
         float degree = (float)(MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
-    	rotateTo(degree, limit, partialSync);
+    	this.rotateTo(degree, limit, partialSync);
 	}
 	
 	public void playSound(SoundEvent sound, float minPitch, float maxPitch)
