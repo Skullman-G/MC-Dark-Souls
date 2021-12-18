@@ -23,7 +23,7 @@ public class CapabilityEvent
 	{
 		if (event.getObject().getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null) == null)
 		{
-			ProviderItem prov = new ProviderItem(event.getObject().getItem(), true);
+			ProviderItem prov = new ProviderItem(event.getObject());
 			if (prov.hasCapability())
 			{
 				event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "item_cap"), prov);

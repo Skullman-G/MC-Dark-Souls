@@ -312,8 +312,8 @@ public class EntityEvents
 		{
 			if (event.getSlot() == EquipmentSlotType.MAINHAND)
 			{
-				CapabilityItem fromCap = ModCapabilities.stackCapabilityGetter(event.getFrom());
-				CapabilityItem toCap = ModCapabilities.stackCapabilityGetter(event.getTo());
+				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
+				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
 				entitycap.cancelUsingItem();
 				
 				if(fromCap != null)
@@ -345,8 +345,8 @@ public class EntityEvents
 			}
 			else if (event.getSlot().getType() == EquipmentSlotType.Group.ARMOR)
 			{
-				CapabilityItem fromCap = ModCapabilities.stackCapabilityGetter(event.getFrom());
-				CapabilityItem toCap = ModCapabilities.stackCapabilityGetter(event.getTo());
+				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
+				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
 				
 				if(fromCap != null)
 				{

@@ -216,12 +216,12 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public CapabilityItem getHeldItemCapability(Hand hand)
 	{
-		return ModCapabilities.stackCapabilityGetter(this.orgEntity.getItemInHand(hand));
+		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
 	}
 	
 	public WeaponCapability getHeldWeaponCapability(Hand hand)
 	{
-		return ModCapabilities.stackWeaponCapabilityGetter(this.orgEntity.getItemInHand(hand));
+		return ModCapabilities.getWeaponCapability(this.orgEntity.getItemInHand(hand));
 	}
 
 	public boolean isInaction()

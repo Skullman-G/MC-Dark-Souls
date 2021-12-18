@@ -148,7 +148,10 @@ public class DarkSouls
     {
 		ModCapabilities.registerCapabilities();
     	ModNetworkManager.registerPackets();
-    	ProviderItem.makeMap();
+    	
+    	ProviderItem.initCapabilityMap();
+    	ProviderItem.registerCapabilityItems();
+    	
     	ProviderEntity.makeMap();
     	ProviderProjectile.makeMap();
     	ModGamerules.registerRules();

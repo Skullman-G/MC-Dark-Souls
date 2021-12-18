@@ -32,89 +32,92 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientEvents
 {
 	private static final Minecraft minecraft = Minecraft.getInstance();
-	private static final Pair<ResourceLocation, ResourceLocation> OFFHAND_TEXTURE
-	= Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+	private static final Pair<ResourceLocation, ResourceLocation> OFFHAND_TEXTURE = Pair.of(PlayerContainer.BLOCK_ATLAS,
+			PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
 
 	@SubscribeEvent
 	public static void mouseClickEvent(MouseClickedEvent.Pre event)
 	{
-		if(event.getGui() instanceof ContainerScreen)
+		if (event.getGui() instanceof ContainerScreen)
 		{
-			Slot slotUnderMouse = ((ContainerScreen<?>)event.getGui()).getSlotUnderMouse();
-			
-			if(slotUnderMouse != null)
+			Slot slotUnderMouse = ((ContainerScreen<?>) event.getGui()).getSlotUnderMouse();
+
+			if (slotUnderMouse != null)
 			{
 				CapabilityItem cap = minecraft.player.inventory.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
-				
-				if(cap != null && !cap.canUsedInOffhand())
+
+				if (cap != null && !cap.canUsedInOffhand())
 				{
-					if(slotUnderMouse.getNoItemIcon() != null && slotUnderMouse.getNoItemIcon().equals(OFFHAND_TEXTURE)) event.setCanceled(true);
+					if (slotUnderMouse.getNoItemIcon() != null && slotUnderMouse.getNoItemIcon().equals(OFFHAND_TEXTURE))
+						event.setCanceled(true);
 				}
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void mouseReleaseEvent(MouseReleasedEvent.Pre event)
 	{
-		if(event.getGui() instanceof ContainerScreen)
+		if (event.getGui() instanceof ContainerScreen)
 		{
-			Slot slotUnderMouse = ((ContainerScreen<?>)event.getGui()).getSlotUnderMouse();
-			
-			if(slotUnderMouse != null)
+			Slot slotUnderMouse = ((ContainerScreen<?>) event.getGui()).getSlotUnderMouse();
+
+			if (slotUnderMouse != null)
 			{
 				CapabilityItem cap = minecraft.player.inventory.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
-				
-				if(cap != null && !cap.canUsedInOffhand())
+
+				if (cap != null && !cap.canUsedInOffhand())
 				{
-					if(slotUnderMouse.getNoItemIcon() != null && slotUnderMouse.getNoItemIcon().equals(OFFHAND_TEXTURE)) event.setCanceled(true);
+					if (slotUnderMouse.getNoItemIcon() != null && slotUnderMouse.getNoItemIcon().equals(OFFHAND_TEXTURE))
+						event.setCanceled(true);
 				}
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
-    public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event)
+	public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event)
 	{
-        DarkSoulsSpawnEggItem.initSpawnEggs();
-    }
-	
+		DarkSoulsSpawnEggItem.initSpawnEggs();
+	}
+
 	@SubscribeEvent
 	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		MainWindow window = event.getWindow();
 		MatrixStack matStack = event.getMatrixStack();
-		
+
 		switch (event.getType())
 		{
-			case HEALTH:
-				event.setCanceled(true);
-				GameOverlayManager.renderHealth(window, matStack);
+		case HEALTH:
+			event.setCanceled(true);
+			GameOverlayManager.renderHealth(window, matStack);
+			break;
+
+		case FOOD:
+			if (!(minecraft.getCameraEntity() instanceof LivingEntity)
+					|| !((LivingEntity) minecraft.getCameraEntity()).hasEffect(ModEffects.UNDEAD_CURSE.get()))
 				break;
-				
-			case FOOD:
-				if (!(minecraft.getCameraEntity() instanceof LivingEntity)
-						|| !((LivingEntity)minecraft.getCameraEntity()).hasEffect(ModEffects.UNDEAD_CURSE.get())) break;
-				event.setCanceled(true);
-				GameOverlayManager.renderStamina(window, matStack);
-				break;
-				
-			case CROSSHAIRS:
-				event.setCanceled(true);
-				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
-		        RenderSystem.enableBlend();
-		        RenderSystem.enableAlphaTest();
-		        GameOverlayManager.renderCrosshair(window, matStack);
-		        break;
-				
-			case ALL:
-				GameOverlayManager.renderAdditional(window, matStack);
-				break;
-				
-			default:
-				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
-				break;
+			event.setCanceled(true);
+			GameOverlayManager.renderStamina(window, matStack);
+			break;
+
+		case CROSSHAIRS:
+			event.setCanceled(true);
+			minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+			RenderSystem.enableBlend();
+			RenderSystem.enableAlphaTest();
+			GameOverlayManager.renderCrosshair(window, matStack);
+			break;
+
+		case ALL:
+			GameOverlayManager.renderAdditional(window, matStack);
+			break;
+
+		default:
+			minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+			break;
 		}
 	}
 }

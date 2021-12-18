@@ -80,7 +80,7 @@ public class StraightSwordCapability extends MaterialItemCapability
 	@Override
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
-		WeaponCapability cap = ModCapabilities.stackWeaponCapabilityGetter(item);
+		WeaponCapability cap = ModCapabilities.getWeaponCapability(item);
 		return super.canBeRenderedBoth(item) || (cap != null && cap.weaponCategory == WeaponCategory.STRAIGHT_SWORD);
 	}
 }

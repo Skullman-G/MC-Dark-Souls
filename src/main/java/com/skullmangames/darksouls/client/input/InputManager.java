@@ -311,9 +311,9 @@ public class InputManager
 		public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
 		{
 			if (event.getHand() == Hand.OFF_HAND) return;
-			WeaponCapability mainCap = ModCapabilities.stackWeaponCapabilityGetter(event.getItemStack());
+			WeaponCapability mainCap = ModCapabilities.getWeaponCapability(event.getItemStack());
 			if (mainCap == null) return;
-			WeaponCapability offCap = ModCapabilities.stackWeaponCapabilityGetter(event.getEntityLiving().getOffhandItem());
+			WeaponCapability offCap = ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem());
 			if (offCap == null) return;
 			event.setCanceled(true);
 		}

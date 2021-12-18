@@ -72,14 +72,14 @@ public class ModCapabilities
 		}, () -> null);
 	}
 	
-	public static CapabilityItem stackCapabilityGetter(ItemStack stack)
+	public static CapabilityItem getItemCapability(ItemStack stack)
 	{
 		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 	
-	public static WeaponCapability stackWeaponCapabilityGetter(ItemStack stack)
+	public static WeaponCapability getWeaponCapability(ItemStack stack)
 	{
-		CapabilityItem cap = stackCapabilityGetter(stack);
+		CapabilityItem cap = getItemCapability(stack);
 		return cap instanceof WeaponCapability ? (WeaponCapability)cap : null;
 	}
 }

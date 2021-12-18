@@ -284,7 +284,7 @@ public class RenderEngine
 		{
 			if (event.getPlayer() != null)
 			{
-				CapabilityItem cap = ModCapabilities.stackCapabilityGetter(event.getItemStack());
+				CapabilityItem cap = ModCapabilities.getItemCapability(event.getItemStack());
 				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
