@@ -22,7 +22,7 @@ public class FireKeeperScreen extends Screen
 	private ServerPlayerEntity serverPlayer;
 	
 	
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/fire_keeper_main.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private int buttonWidth = 100;
@@ -75,18 +75,19 @@ public class FireKeeperScreen extends Screen
 	public void render(MatrixStack matrixstack, int mouseX, int mouseY, float partialticks)
 	{
 		super.renderBackground(matrixstack);
-		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
 		
-		drawCenteredString(matrixstack, this.font, "Fire Keeper", this.width / 2, this.height / 2 - 55, 16777215);
+		int x = (this.width - this.imageWidth) / 2;
+	    int y = (this.height - this.imageHeight) / 2;
+		this.renderBg(matrixstack, partialticks, x, y);
+		
+		drawCenteredString(matrixstack, this.font, "Fire Keeper", this.width / 2, y + 10, 16777215);
 		
 		super.render(matrixstack, mouseX, mouseY, partialticks);
 	}
 	
-	private void renderBg(MatrixStack matrixstack, float partialticks, int mouseX, int mouseY)
+	private void renderBg(MatrixStack matrixstack, float partialticks, int x, int y)
 	{
 		this.minecraft.getTextureManager().bind(TEXTURE_LOCATION);
-		int x = (this.width - this.imageWidth) / 2;
-	    int y = (this.height - this.imageHeight) / 2;
 	    this.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 	}
 	

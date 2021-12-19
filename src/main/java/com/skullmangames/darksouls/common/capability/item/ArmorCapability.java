@@ -54,16 +54,16 @@ public class ArmorCapability extends CapabilityItem
 	{
 		itemTooltip.add(new StringTextComponent(""));
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+this.standardDef)));
+				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.standardDef*100)+"%")));
 		
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+this.strikeDef)));
+				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.strikeDef*100)+"%")));
 		
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+this.slashDef)));
+				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.slashDef*100)+"%")));
 		
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+this.thrustDef)));
+				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
 		
 		itemTooltip.add(new StringTextComponent(""));
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.WEIGHT.get().getDescriptionId()).withStyle(TextFormatting.BLUE)

@@ -2,10 +2,9 @@ package com.skullmangames.darksouls.client.gui.widget;
 
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
 
-public class LevelButton extends Button
+public class LevelButton extends ScalableButton
 {
 	private final Stat stat;
 	

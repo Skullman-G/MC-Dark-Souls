@@ -16,6 +16,8 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
+
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -71,6 +73,7 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
 		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
+		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
 		
 		try
 		{
@@ -117,6 +120,12 @@ public class InputManager
 	{
 		if (action != 1) return;
 		this.minecraft.getEntityRenderDispatcher().setRenderHitBoxes(!this.minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes());
+	}
+	
+	private void openPlayerStatScreen(int key, int action)
+	{
+		if (action != 1 || this.minecraft.screen != null) return;
+		this.minecraft.setScreen(new PlayerStatsScreen(this.player));
 	}
 	
 	private void onSprintKeyPressed(int key, int action)
