@@ -22,7 +22,6 @@ import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleS
 import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.TargetTraceJumpAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
 import net.minecraft.util.Hand;
@@ -200,7 +199,7 @@ public final class Animations
 																.registerSound(ModSoundEvents.HOLLOW_PREPARE, 0.04F, true);
 	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.brokenSword, "111213", "hollow/overhead_swing", "biped")
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new TargetTraceJumpAnimation(0.05F, 0.0F, 0.52F, 0.8F, 1.6F, false, Colliders.brokenSword, "111213", 0.0F, "hollow/jump_attack", "biped")
+	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.72F, 1.2F, 1.8F, true, Colliders.brokenSword, "111213", "hollow/jump_attack", "biped")
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	
 	// Asylum Demon
