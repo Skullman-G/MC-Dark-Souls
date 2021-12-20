@@ -18,11 +18,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class FireKeeperScreen extends Screen
 {
-	private FireKeeperEntity fireKeeper;
-	private ServerPlayerEntity serverPlayer;
+	private final FireKeeperEntity fireKeeper;
+	private final ServerPlayerEntity serverPlayer;
 	
+	private final int color;
 	
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/fire_keeper_main.png");
+	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private int buttonWidth = 100;
@@ -34,6 +36,8 @@ public class FireKeeperScreen extends Screen
 		
 		this.fireKeeper = firekeeper;
 		this.serverPlayer = serverplayer;
+		
+		this.color = DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
 	}
 	
 	@Override
@@ -80,14 +84,15 @@ public class FireKeeperScreen extends Screen
 	    int y = (this.height - this.imageHeight) / 2;
 		this.renderBg(matrixstack, partialticks, x, y);
 		
-		drawCenteredString(matrixstack, this.font, "Fire Keeper", this.width / 2, y + 10, 16777215);
+		this.font.draw(matrixstack, "Fire Keeper", (float)(this.width / 2 - this.font.width("Fire Keeper") / 2), y + 10, this.color);
 		
 		super.render(matrixstack, mouseX, mouseY, partialticks);
 	}
 	
 	private void renderBg(MatrixStack matrixstack, float partialticks, int x, int y)
 	{
-		this.minecraft.getTextureManager().bind(TEXTURE_LOCATION);
+		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue()) this.minecraft.getTextureManager().bind(DS_TEXTURE_LOCATION);
+		else this.minecraft.getTextureManager().bind(TEXTURE_LOCATION);
 	    this.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 	}
 	
