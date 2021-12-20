@@ -16,7 +16,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -85,19 +84,8 @@ public class PlayerEvents
 	}
 	
 	@SubscribeEvent
-	public static void attackEntityEvent(AttackEntityEvent event)
-	{
-		if (!event.getEntity().level.getGameRules().getBoolean(ModGamerules.DO_VANILLA_ATTACK))
-		{
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
 	public static void playerLogInEvent(PlayerLoggedInEvent event)
 	{
-		ModNetworkManager.sendToPlayer(new STCGameruleChange(Gamerules.HAS_FALL_ANIMATION,
-					event.getEntity().level.getGameRules().getBoolean(ModGamerules.HAS_FALL_ANIMATION)), (ServerPlayerEntity)event.getPlayer());
 		ModNetworkManager.sendToPlayer(new STCGameruleChange(Gamerules.SPEED_PENALTY_PERCENT,
 				event.getEntity().level.getGameRules().getInt(ModGamerules.SPEED_PENALTY_PERCENT)), (ServerPlayerEntity)event.getPlayer());
 	}

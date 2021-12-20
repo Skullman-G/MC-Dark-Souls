@@ -19,17 +19,10 @@ import net.minecraft.world.GameRules.RuleKey;
 
 public class ModGamerules
 {
-	public static RuleKey<GameRules.BooleanValue> DO_VANILLA_ATTACK;
-	public static RuleKey<GameRules.BooleanValue> HAS_FALL_ANIMATION;
 	public static RuleKey<GameRules.IntegerValue> SPEED_PENALTY_PERCENT;
 	
 	public static void registerRules()
 	{
-		DO_VANILLA_ATTACK = GameRules.register("doVanillaAttack", GameRules.Category.PLAYER, GameRules.BooleanValue.create(true));
-		HAS_FALL_ANIMATION = GameRules.register("hasFallAnimation", GameRules.Category.PLAYER, GameRules.BooleanValue.create(true, (server, value) ->
-		{
-			ModNetworkManager.sendToAll(new STCGameruleChange(Gamerules.HAS_FALL_ANIMATION, value.get()));
-		}));
 		SPEED_PENALTY_PERCENT = GameRules.register("speedPenaltyPercent", GameRules.Category.PLAYER, GameRules.IntegerValue.create(100, (server, value) ->
 		{
 			

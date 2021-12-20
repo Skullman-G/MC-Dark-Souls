@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
-import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModEffects;
@@ -444,18 +443,15 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void fallEvent(LivingFallEvent event)
 	{
-		if (event.getEntity().level.getGameRules().getBoolean(ModGamerules.HAS_FALL_ANIMATION))
+		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		
+		if (entitydata != null && !entitydata.isInaction())
 		{
-			LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			
-			if (entitydata != null && !entitydata.isInaction())
-			{
-				float distance = event.getDistance();
+			float distance = event.getDistance();
 
-				if (distance > 5.0F)
-				{
-					entitydata.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
-				}
+			if (distance > 5.0F)
+			{
+				entitydata.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
 			}
 		}
 	}
