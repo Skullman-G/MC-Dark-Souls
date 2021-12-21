@@ -15,6 +15,7 @@ public class AttackPatternGoal extends Goal
 	protected final MobData<?> mobdata;
 	protected final float minDist;
 	protected float maxDist;
+	protected final int yDist;
 	protected final boolean affectHorizon;
 	
 	protected int combo = 0;
@@ -24,10 +25,16 @@ public class AttackPatternGoal extends Goal
 	
 	public AttackPatternGoal(MobData<?> mobdata, float minDist, boolean affectHorizon)
 	{
+		this(mobdata, minDist, 0, affectHorizon);
+	}
+	
+	public AttackPatternGoal(MobData<?> mobdata, float minDist, int yDist, boolean affectHorizon)
+	{
 		this.mobdata = mobdata;
 		this.attacker = this.mobdata.getOriginalEntity();
 		this.minDist = minDist * minDist;
 		this.maxDist = this.minDist;
+		this.yDist = yDist;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.noneOf(Flag.class));
 	}
@@ -121,7 +128,7 @@ public class AttackPatternGoal extends Goal
     protected boolean isInSameHorizontalPosition(LivingEntity attackTarget)
     {
     	if(affectHorizon)
-    		return attackTarget.getY() - attacker.getY() <= 1.0F && attackTarget.getY() - attacker.getY() >= -1.0F;
+    		return attackTarget.getY() - attacker.getY() <= this.yDist && attackTarget.getY() - attacker.getY() >= -this.yDist;
     	
     	return true;
     }
