@@ -12,31 +12,37 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class PlayerStatsScreen extends Screen
 {
-	private Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
-	private int displayedLevel;
-	private final PlayerEntity player;
+	protected final Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
+	protected int displayedLevel;
+	protected final PlayerEntity player;
 
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");
 	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_level_up.png");
 
-	private final int imageWidth;
-	private final int imageHeight;
+	protected final int imageWidth;
+	protected final int imageHeight;
 
-	private final int color;
+	protected final int color;
 
 	public PlayerStatsScreen(PlayerEntity player)
 	{
-		super(NarratorChatListener.NO_TITLE);
+		this(player, new StringTextComponent("Status"));
+	}
+	
+	public PlayerStatsScreen(PlayerEntity player, ITextComponent title)
+	{
+		super(title);
 		this.player = player;
 		this.displayedLevel = Stats.getLevel(this.player);
 		for (Stat stat : Stats.getStats())
@@ -63,7 +69,7 @@ public class PlayerStatsScreen extends Screen
 		x /= scale;
 		y /= scale;
 
-		this.font.draw(matrixstack, "Status", x + 10, y + 10, 16777215);
+		this.font.draw(matrixstack, this.title, x + 10, y + 10, 16777215);
 
 		int firstX = x + 19;
 		this.font.draw(matrixstack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
