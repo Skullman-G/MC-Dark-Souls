@@ -1,12 +1,9 @@
 package com.skullmangames.darksouls.common.world.structures;
 
 import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
@@ -15,7 +12,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -26,8 +22,6 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -51,7 +45,7 @@ public class UndeadAsylumStructure extends Structure<NoFeatureConfig>
 		return Decoration.TOP_LAYER_MODIFICATION;
 	}
 
-	private static final List<MobSpawnInfo.Spawners> EMPTY_LIST = ImmutableList.of();
+	private static final List<MobSpawnInfo.Spawners> CREATURES = ImmutableList.of(new MobSpawnInfo.Spawners(EntityType.PIG, 1, 0, 0));
 	private static final List<MobSpawnInfo.Spawners> MONSTERS = ImmutableList.of(new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 1, 0, 0));
 
 	@Override
@@ -63,7 +57,7 @@ public class UndeadAsylumStructure extends Structure<NoFeatureConfig>
 	@Override
 	public List<MobSpawnInfo.Spawners> getDefaultCreatureSpawnList()
 	{
-		return EMPTY_LIST;
+		return CREATURES;
 	}
 
 	@Override
@@ -100,48 +94,6 @@ public class UndeadAsylumStructure extends Structure<NoFeatureConfig>
 			this.pieces.forEach(piece -> piece.move(0, 1, 0));
 
 			this.calculateBoundingBox();
-		}
-
-		@Override
-		public void placeInChunk(ISeedReader seedReader, StructureManager p_230366_2_, ChunkGenerator p_230366_3_, Random p_230366_4_,
-				MutableBoundingBox bb, ChunkPos p_230366_6_)
-		{
-			super.placeInChunk(seedReader, p_230366_2_, p_230366_3_, p_230366_4_, bb, p_230366_6_);
-
-			int y = this.boundingBox.y0;
-
-			for (int x = bb.x0; x <= bb.x1; ++x)
-			{
-				for (int z = bb.z0; z <= bb.z1; ++z)
-				{
-					BlockPos blockpos = new BlockPos(x, y, z);
-					if (seedReader.isEmptyBlock(blockpos) || !this.boundingBox.isInside(blockpos))
-						continue;
-
-					boolean flag = false;
-
-					for (StructurePiece structurepiece : this.pieces)
-					{
-						if (structurepiece.getBoundingBox().isInside(blockpos))
-						{
-							flag = true;
-							break;
-						}
-					}
-
-					if (flag)
-					{
-						for (int l = y - 1; l > 1; --l)
-						{
-							BlockPos blockpos1 = new BlockPos(x, l, z);
-							if (!seedReader.isEmptyBlock(blockpos1) && !seedReader.getBlockState(blockpos1).getMaterial().isLiquid())
-								break;
-
-							seedReader.setBlock(blockpos1, Blocks.STONE.defaultBlockState(), 2);
-						}
-					}
-				}
-			}
 		}
 	}
 }
