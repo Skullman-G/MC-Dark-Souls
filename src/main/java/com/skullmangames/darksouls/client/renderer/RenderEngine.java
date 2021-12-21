@@ -312,6 +312,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
+			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue()) return;
 			if (event.getHand() == Hand.MAIN_HAND)
 			{
 				renderEngine.firstPersonRenderer.render(minecraft.player, ClientManager.INSTANCE.getPlayerData(), null, event.getBuffers(),
