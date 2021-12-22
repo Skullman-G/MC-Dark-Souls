@@ -4,17 +4,12 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
-import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModTileEntities;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -29,25 +24,16 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.spawner.WorldEntitySpawner;
 
 public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
-	private boolean needsFireKeeper;
 	private String fireKeeperStringUUID = "";
 	
 	public BonfireTileEntity() 
 	{
 		super(ModTileEntities.BONFIRE.get());
-	}
-	
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-		this.needsFireKeeper = this.getLevel().getRandom().nextBoolean();
 	}
 	
 	@Override
@@ -168,25 +154,6 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 		{
 			ServerWorld serverworld = (ServerWorld)this.level;
 			Random random = serverworld.random;
-			
-			if (this.needsFireKeeper && !this.hasFireKeeper && !this.getBlockState().getValue(BonfireBlock.LIT))
-			{
-				int i = (random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-	            int j = ( random.nextInt(10)) * (random.nextBoolean() ? -1 : 1);
-				BlockPos blockpos = this.worldPosition.offset(i, 0, j);
-				if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, serverworld, blockpos, ModEntities.FIRE_KEEPER.get()))
-				{
-					FireKeeperEntity entity = ModEntities.FIRE_KEEPER.get().create(serverworld);
-					if (entity != null)
-					{
-						entity.linkBonfire(this.worldPosition);
-						entity.finalizeSpawn(serverworld, serverworld.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-				        entity.moveTo(blockpos, 0.0F, 0.0F);
-						serverworld.addFreshEntityWithPassengers(entity);
-						this.needsFireKeeper = false;
-					}
-				}
-			}
 			
 			if (this.ticktimer >= 1000)
 			{
