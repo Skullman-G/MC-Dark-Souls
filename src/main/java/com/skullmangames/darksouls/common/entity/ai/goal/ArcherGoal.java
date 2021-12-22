@@ -13,7 +13,9 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.BowItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
 {
@@ -25,9 +27,6 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
     private final float maxAttackDistance;
     private int attackTime = -1;
     private int seeTime;
-    private boolean strafingClockwise;
-    private boolean strafingBackwards;
-    private int strafingTime = -1;
 
     public ArcherGoal(BipedMobData<?> entitydata, T p_i47515_1_, double p_i47515_2_, int p_i47515_4_, float p_i47515_5_)
     {
@@ -52,9 +51,8 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
     
     protected boolean isBowInMainhand()
     {
-        net.minecraft.item.ItemStack main = this.entity.getMainHandItem();
-        net.minecraft.item.ItemStack off  = this.entity.getMainHandItem();
-        return main.getItem() instanceof BowItem || off.getItem() instanceof BowItem;
+        ItemStack main = this.entity.getMainHandItem();
+        return main.getItem() instanceof BowItem;
     }
     
     @Override
@@ -89,74 +87,61 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
     @Override
     public void tick()
     {
-        LivingEntity LivingEntity = this.entity.getTarget();
+        LivingEntity target = this.entity.getTarget();
         
-        if (LivingEntity != null)
+        if (target != null)
         {
-            double d0 = this.entity.distanceToSqr(LivingEntity.getX(), LivingEntity.getBoundingBox().minY, LivingEntity.getZ());
-            boolean flag = this.entity.getSensing().canSee(LivingEntity);
-            boolean flag1 = this.seeTime > 0;
-            this.chasingTarget = LivingEntity;
+            double targetDistance = this.entity.distanceToSqr(target.getX(), target.getBoundingBox().minY, target.getZ());
+            boolean canSee = this.entity.getSensing().canSee(target);
+            boolean saw = this.seeTime > 0;
+            this.chasingTarget = target;
             
-            if (flag != flag1)
+            if (canSee != saw)
                 this.seeTime = 0;
 
-            if (flag)
+            if (canSee)
                 ++this.seeTime;
             else
                 --this.seeTime;
 
-            if (d0 <= (double)this.maxAttackDistance * 1.5F && this.seeTime >= 20)
+            if (this.entity.isUsingItem() || this.entitydata.isInaction())
             {
                 this.entity.getNavigation().stop();
-                ++this.strafingTime;
+            }
+            else if (this.seeTime >= 20)
+            {
+            	if (targetDistance <= (double)((this.maxAttackDistance * 1.5F) / 2))
+            	{
+            		Vector3d tpos = target.position();
+                	Vector3d apos = this.entity.position();
+                	double x = apos.x + (apos.x - tpos.x);
+                	double z = apos.z + (apos.z - tpos.z);
+                	this.entity.getNavigation().moveTo(x, apos.y, z, this.moveSpeedAmp);
+            	}
+            	else if (targetDistance <= (double)this.maxAttackDistance * 1.5F)
+            	{
+            		this.entity.getNavigation().stop();
+            	}
             }
             else
             {
-                this.entity.getNavigation().moveTo(LivingEntity, this.moveSpeedAmp);
-                this.strafingTime = -1;
+                this.entity.getNavigation().moveTo(target, this.moveSpeedAmp);
             }
 
-            if (this.strafingTime >= 20)
-            {
-                if ((double)this.entity.getRandom().nextFloat() < 0.3D)
-                    this.strafingClockwise = !this.strafingClockwise;
-
-                if ((double)this.entity.getRandom().nextFloat() < 0.3D)
-                    this.strafingBackwards = !this.strafingBackwards;
-
-                this.strafingTime = 0;
-            }
-
-            if (this.strafingTime > -1)
-            {
-                if (d0 > (double)(this.maxAttackDistance * 0.75F))
-                    this.strafingBackwards = false;
-                else if (d0 < (double)(this.maxAttackDistance * 0.25F))
-                    this.strafingBackwards = true;
-                
-                if(this.entity.getTicksUsingItem() < 10)
-                	this.entity.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
-                else
-                	this.entity.getMoveControl().strafe(0, 0);
-                
-                this.entity.getLookControl().setLookAt(LivingEntity, entity.getMaxHeadXRot(), entity.getMaxHeadYRot());
-                this.entity.lookAt(LivingEntity, 30.0F, 30.0F);
-            }
-            else
-                this.entity.getLookControl().setLookAt(LivingEntity, 30.0F, 30.0F);
+            this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
+            this.entity.lookAt(target, 30.0F, 30.0F);
 
             if (this.entity.isUsingItem())
             {
-                if (!flag && this.seeTime < -60)
+                if (!canSee && this.seeTime < -60)
                     this.entity.stopUsingItem();
-                else if(flag)
+                else if(canSee)
                 {
                     int i = this.entity.getTicksUsingItem();
                     if (i >= 20)
                     {
                         this.entity.stopUsingItem();
-                        ((IRangedAttackMob)this.entity).performRangedAttack(LivingEntity, BowItem.getPowerForTime(i));
+                        ((IRangedAttackMob)this.entity).performRangedAttack(target, BowItem.getPowerForTime(i));
                         ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND.getId(), entity.getId(), 0.0F, true), entity);
                         this.attackTime = this.attackCooldown;
                     }
@@ -168,26 +153,24 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
                 this.entity.startUsingItem(ProjectileHelper.getWeaponHoldingHand(this.entity, Items.BOW));
             }
         }
-        else
+        else if(this.chasingTarget != null)
         {
-        	if(chasingTarget != null)
+        	double targetDistance = this.entity.distanceToSqr(chasingTarget.getX(), chasingTarget.getBoundingBox().minY, chasingTarget.getZ());
+        	
+        	if(targetDistance <= (double)this.maxAttackDistance * 2.0F && this.seeTime >= 20)
         	{
-        		double d0 = this.entity.distanceToSqr(chasingTarget.getX(), chasingTarget.getBoundingBox().minY, chasingTarget.getZ());
-            	
-            	if(d0 <= (double)this.maxAttackDistance * 2.0F && this.seeTime >= 20)
-            	{
-            		if(d0 <= (double)this.maxAttackDistance)
-            			this.chasingTarget = null;
-            		else
-            		{
-            			this.entity.stopUsingItem();
-                		this.entity.getNavigation().moveTo(chasingTarget, this.moveSpeedAmp);
-            		}
-            		return;
-            	}
+        		if(targetDistance <= (double)this.maxAttackDistance)
+        			this.chasingTarget = null;
+        		else
+        		{
+        			this.entity.stopUsingItem();
+            		this.entity.getNavigation().moveTo(chasingTarget, this.moveSpeedAmp);
+        		}
+        		return;
         	}
         	
         	this.chasingTarget = null;
+        	this.entity.stopUsingItem();
         }
     }
 }

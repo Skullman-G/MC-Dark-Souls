@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
-import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackMobGoal;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
@@ -70,7 +69,7 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
             Goal inner = goal.getGoal();
             
             if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof ArcherGoal || inner instanceof ChasingGoal
-            		|| inner instanceof RangedAttackGoal || inner instanceof RangeAttackMobGoal || inner instanceof AttackPatternGoal || inner instanceof RangedCrossbowAttackGoal)
+            		|| inner instanceof RangedAttackGoal || inner instanceof AttackPatternGoal || inner instanceof RangedCrossbowAttackGoal)
             {
             	toRemove.add(inner);
             }
