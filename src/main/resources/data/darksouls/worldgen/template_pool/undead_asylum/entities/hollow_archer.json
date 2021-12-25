@@ -1,0 +1,17 @@
+{
+	"name": "darksouls:undead_asylum/entities/hollow_archer",
+	"fallback": "minecraft:empty",
+	"elements":
+	[
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:undead_asylum/entities/hollow_archer",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		}
+	]
+}

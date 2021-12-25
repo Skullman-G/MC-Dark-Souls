@@ -4,6 +4,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
@@ -64,9 +65,22 @@ public class UndeadAsylumStructure extends Structure<NoFeatureConfig>
 	protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeProvider biomeSource, long seed, SharedSeedRandom chunkRandom, int chunkX,
 			int chunkZ, Biome biome, ChunkPos chunkPos, NoFeatureConfig featureConfig)
 	{
-		BlockPos centerOfChunk = new BlockPos((chunkX << 4) + 7, 0, (chunkZ << 4) + 7);
-		int landHeight = chunkGenerator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
-		return landHeight > 100;
+		BlockPos[] positions = new BlockPos[]
+		{
+				new BlockPos((chunkX * 16) + 7, 0, (chunkZ * 16) + 7),
+				new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) - 1),
+				new BlockPos((chunkX * 16) + 15, 0, (chunkZ * 16) + 15),
+				new BlockPos((chunkX * 16) + 15, 0, (chunkZ * 16) - 1),
+				new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) + 15)
+		};
+		boolean flag = true;
+		for (BlockPos pos : positions)
+		{
+			int landHeight = chunkGenerator.getFirstOccupiedHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+			if (landHeight < 100)
+				flag = false;
+		}
+		return flag;
 	}
 
 	public static class Start extends StructureStart<NoFeatureConfig>

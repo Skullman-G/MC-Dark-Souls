@@ -69,6 +69,7 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_)
 	{
+		if (this.getMainHandItem().getItem() != Items.AIR) return;
 		super.populateDefaultEquipmentSlots(p_180481_1_);
 		
 		Random random = this.level.random;

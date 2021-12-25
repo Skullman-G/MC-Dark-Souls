@@ -1,5 +1,5 @@
 {
-	"name": "darksouls:undead_asylum/cell_3",
+	"name": "darksouls:undead_asylum/player_cell",
 	"fallback": "minecraft:empty",
 	"elements":
 	[
@@ -7,7 +7,7 @@
 			"weight": 1,
 			"element":
 			{
-				"location": "darksouls:undead_asylum/cell_3",
+				"location": "darksouls:undead_asylum/player_cell",
 				"processors": "minecraft:empty",
 				"projection": "rigid",
 				"element_type": "minecraft:single_pool_element"
