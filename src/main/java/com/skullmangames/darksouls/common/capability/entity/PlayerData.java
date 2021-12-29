@@ -174,15 +174,21 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	}
 	
 	@Override
+	public <M extends Model> M getEntityModel(Models<M> modelDB)
+	{
+		return modelDB.ENTITY_BIPED;
+	}
+	
+	@Override
 	public StaticAnimation getHitAnimation(StunType stunType)
 	{
-		if(orgEntity.getControllingPassenger() != null)
+		if (orgEntity.getControllingPassenger() != null)
 		{
 			return Animations.BIPED_HIT_ON_MOUNT;
 		}
 		else
 		{
-			switch(stunType)
+			switch (stunType)
 			{
 				case LONG:
 					return Animations.BIPED_HIT_LONG;
@@ -193,15 +199,15 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 				case HOLD:
 					return Animations.BIPED_HIT_SHORT;
 					
+				case SMASH_FRONT:
+					return Animations.BIPED_HIT_DOWN_FRONT;
+					
+				case SMASH_BACK:
+					return Animations.BIPED_HIT_DOWN_BACK;
+					
 				default:
 					return null;
 			}
 		}
-	}
-	
-	@Override
-	public <M extends Model> M getEntityModel(Models<M> modelDB)
-	{
-		return modelDB.ENTITY_BIPED;
 	}
 }

@@ -146,6 +146,12 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 				case HOLD:
 					return Animations.BIPED_HIT_SHORT;
 					
+				case SMASH_FRONT:
+					return Animations.BIPED_HIT_DOWN_FRONT;
+					
+				case SMASH_BACK:
+					return Animations.BIPED_HIT_DOWN_BACK;
+					
 				default:
 					return null;
 			}

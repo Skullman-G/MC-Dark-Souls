@@ -37,7 +37,7 @@ public interface IExtendedDamageSource
 	
 	public static enum StunType
 	{
-		SHORT, LONG, HOLD
+		SHORT, HOLD, LONG, SMASH_FRONT, SMASH_BACK
 	}
 	
 	public enum DamageType

@@ -238,13 +238,25 @@ public class EntityEvents
 								}
 							}
 							break;
+							
+						case HOLD:
+							hitAnimation = hitEntityData.getHitAnimation(StunType.SHORT);
+							extendStunTime = extSource.getImpact() * 0.1F;
+							break;
+							
 						case LONG:
 							hitAnimation = hitEntityData.getHitAnimation(StunType.LONG);
 							knockBackAmount = (extSource.getImpact() * 0.25F) * weightReduction;
 							break;
-						case HOLD:
-							hitAnimation = hitEntityData.getHitAnimation(StunType.SHORT);
-							extendStunTime = extSource.getImpact() * 0.1F;
+							
+						case SMASH_FRONT:
+							hitAnimation = hitEntityData.getHitAnimation(StunType.SMASH_FRONT);
+							extendStunTime = 0.01F;
+							break;
+							
+						case SMASH_BACK:
+							hitAnimation = hitEntityData.getHitAnimation(StunType.SMASH_BACK);
+							extendStunTime = 0.01F;
 							break;
 						}
 						

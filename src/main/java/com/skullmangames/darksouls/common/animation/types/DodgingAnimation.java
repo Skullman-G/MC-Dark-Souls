@@ -63,7 +63,7 @@ public class DodgingAnimation extends ActionAnimation
 		}
 		else
 		{
-			return LivingData.EntityState.DODGE;
+			return LivingData.EntityState.INVINCIBLE;
 		}
 	}
 }

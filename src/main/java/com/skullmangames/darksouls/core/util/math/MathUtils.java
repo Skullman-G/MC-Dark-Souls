@@ -57,4 +57,17 @@ public class MathUtils
 		else if (value > max) value = max;
 		return value;
 	}
+	
+	public static int getNearestTo(int value, int... destined)
+	{
+		int a = 0;
+		for (int i = 1; i < destined.length; i++)
+		{
+			int i1 = Math.abs(value - destined[i]);
+			int i2 = Math.abs(value - destined[a]);
+			if (i1 < i2) a = i;
+		}
+		
+		return destined[a];
+	}
 }

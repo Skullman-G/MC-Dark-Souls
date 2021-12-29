@@ -694,19 +694,19 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		POST_DELAY(true, false, false, true, 3),
 		HIT(true, false, false, false, 3),
 		DISARMED(true, true, false, false, 3),
-		DODGE(true, false, true, false, 3);
+		INVINCIBLE(true, false, true, false, 3);
 		
 		boolean movementLock;
-		boolean collideDetection;
+		boolean collisionDetection;
 		boolean invincible;
 		boolean canAct;
 		// none : 0, beforeContact : 1, contact : 2, afterContact : 3
 		int contactLevel;
 		
-		EntityState(boolean movementLock, boolean collideDetection, boolean invincible, boolean canAct, int level)
+		EntityState(boolean movementLock, boolean collisionDetection, boolean invincible, boolean canAct, int level)
 		{
 			this.movementLock = movementLock;
-			this.collideDetection = collideDetection;
+			this.collisionDetection = collisionDetection;
 			this.invincible = invincible;
 			this.canAct = canAct;
 			this.contactLevel = level;
@@ -719,7 +719,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		
 		public boolean shouldDetectCollision()
 		{
-			return this.collideDetection;
+			return this.collisionDetection;
 		}
 		
 		public boolean isInvincible()

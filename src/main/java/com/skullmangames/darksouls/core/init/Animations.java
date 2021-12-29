@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.animation.types.DisarmAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
+import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.ReboundAnimation;
@@ -21,6 +22,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleSpawner;
 import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
@@ -66,6 +68,8 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_SHORT = new VariableHitAnimation(0.05F, "biped/combat/hit_short", "biped");
 	public static final StaticAnimation BIPED_HIT_LONG = new HitAnimation(0.08F, "biped/combat/hit_long", "biped");
 	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(0.08F, "biped/combat/hit_on_mount", "biped");
+	public static final StaticAnimation BIPED_HIT_DOWN_BACK = new InvincibleAnimation(0.08F, "biped/combat/hit_down_back", "biped");
+	public static final StaticAnimation BIPED_HIT_DOWN_FRONT = new InvincibleAnimation(0.08F, "biped/combat/hit_down_front", "biped");
 	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.08F, "biped/living/land_damage", "biped");
 	public static final StaticAnimation BIPED_DODGE = new DodgingAnimation(0.09F, false, "biped/combat/dodge", 0.6F, 0.5F, "biped");
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", "biped");
@@ -80,6 +84,7 @@ public final class Animations
 			.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.52F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -87,11 +92,13 @@ public final class Animations
 					.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.24F, true)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.LONG)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
 					.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.24F, true)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.LONG)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 			};
 	
@@ -214,25 +221,30 @@ public final class Animations
 					new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, false, "11131", "asylum_demon/light_attack_1", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SWING, 0.52F, true)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 					new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, false, "11131", "asylum_demon/light_attack_2", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SWING, 0.6F, true)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 					new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, false, "11131", "asylum_demon/light_attack_3", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.72F, true)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 			};
 	public static final AttackAnimation ASYLUM_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.92F, true)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation ASYLUM_DEMON_JUMP_ATTACK = new AttackAnimation(1.0F, 0.0F, 0.6F, 1.2F, 2.0F, true, "11131", "asylum_demon/dash_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 0.04F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_LAND, 0.8F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.8F, true)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation ASYLUM_DEMON_GROUND_POUND = new AttackAnimation(1.0F, true, "asylum_demon/ground_pound", "asylum_demon",
 			new Phase(0.0F, 2.32F, 2.6F, 2.6F, "", Colliders.asylum_demon_body),
@@ -242,6 +254,7 @@ public final class Animations
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 1.76F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_LAND, 2.76F, true)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
 	
 	public static StaticAnimation getById(int id)
