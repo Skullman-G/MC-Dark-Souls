@@ -56,7 +56,7 @@ import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
-import com.skullmangames.darksouls.core.event.CapabilityEvent;
+import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -131,7 +131,7 @@ public class DarkSouls
     	
     	forgeBus.register(this);
         forgeBus.register(EntityEvents.class);
-        forgeBus.register(CapabilityEvent.class);
+        forgeBus.register(CapabilityEvents.class);
         forgeBus.register(PlayerEvents.class);
         
         ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());

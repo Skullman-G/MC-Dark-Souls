@@ -16,43 +16,41 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID)
-public class CapabilityEvent
+public class CapabilityEvents
 {
 	@SubscribeEvent
 	public static void attachItemCapability(AttachCapabilitiesEvent<ItemStack> event)
 	{
-		if (event.getObject().getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null) == null)
+		ProviderItem prov = new ProviderItem(event.getObject());
+		if (prov.hasCapability())
 		{
-			ProviderItem prov = new ProviderItem(event.getObject());
-			if (prov.hasCapability())
-			{
-				event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "item_cap"), prov);
-			}
+			event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "item_cap"), prov);
 		}
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	@SuppressWarnings(
+	{ "unchecked", "rawtypes" })
 	@SubscribeEvent
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event)
 	{
-		if(event.getObject().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) == null)
+		if (event.getObject().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) == null)
 		{
 			ProviderEntity prov = new ProviderEntity(event.getObject());
-			if(prov.hasCapability())
+			if (prov.hasCapability())
 			{
 				EntityData entityCap = prov.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				entityCap.onEntityConstructed(event.getObject());
 				event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "entity_cap"), prov);
 			}
 		}
-		
+
 		if (event.getObject() instanceof ProjectileEntity)
 		{
-			ProjectileEntity projectile = ((ProjectileEntity)event.getObject());
-			if(event.getObject().getCapability(ModCapabilities.CAPABILITY_PROJECTILE).orElse(null) == null)
+			ProjectileEntity projectile = ((ProjectileEntity) event.getObject());
+			if (event.getObject().getCapability(ModCapabilities.CAPABILITY_PROJECTILE).orElse(null) == null)
 			{
 				ProviderProjectile prov = new ProviderProjectile(projectile);
-				if(prov.hasCapability())
+				if (prov.hasCapability())
 				{
 					event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "projectile_cap"), prov);
 				}
