@@ -31,6 +31,7 @@ public class ModSoundEvents
 	public static final SoundEvent ASYLUM_DEMON_SMASH = registerSound("entity.asylum_demon.smash");
 	
 	public static final SoundEvent GENERIC_KILL = registerSound("entity.generic.kill");
+	public static final SoundEvent GENERIC_HUMAN_FORM = registerSound("entity.generic.human_form");
 	
 	public static final SoundEvent PLAYER_SHIELD_DISARMED = registerSound("entity.player.shield_disarmed");
 

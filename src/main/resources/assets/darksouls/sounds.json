@@ -230,5 +230,15 @@
 		[
 			{ "name": "darksouls:entities/asylum_demon/smash", "stream": true }
 		]
+	},
+	
+	"entity.generic.human_form":
+	{
+		"category": "entity",
+		"subtitle": "entity.generic.human_form.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/generic/human_form", "stream": true }
+		]
 	}
 }

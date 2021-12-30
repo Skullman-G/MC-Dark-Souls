@@ -150,6 +150,8 @@
 	"entity.asylum_demon.swing.sub": "Asylum Demon swinging his weapon",
 	"entity.asylum_demon.smash": "Asylum Demon smash",
 	"entity.asylum_demon.smash.sub": "Asylum Demon smashing his weapon",
+	"entity.generic.human_form": "Human Form",
+	"entity.generic.human_form.sub": "Human Form achieved",
 	
 	
 	"itemGroup.soulstab": "Souls",

@@ -67,9 +67,12 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		}
 		
 		CompoundNBT nbt = this.orgEntity.getPersistentData();
-		this.setHumanity(nbt.getInt("Humanity"));
-		this.setSouls(nbt.getInt("Souls"));
-		this.setHuman(nbt.getBoolean("IsHuman"));
+		this.humanity = nbt.getInt("Humanity");
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
+		this.souls = nbt.getInt("Souls");
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
+		this.human = nbt.getBoolean("IsHuman");
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
 	}
 	
 	@Override
@@ -84,8 +87,12 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	public void setHuman(boolean value)
 	{
 		if (this.human == value) return;
+		if (value)
+		{
+			this.orgEntity.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.humanity_restored_message")));
+			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM, -0.2F, -0.2F);
+		}
 		super.setHuman(value);
-		this.orgEntity.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.humanity_restored_message")));
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
 	}
 	
