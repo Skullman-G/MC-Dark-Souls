@@ -1,15 +1,20 @@
 package com.skullmangames.darksouls.client;
 
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.ScreenManager;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
 import com.skullmangames.darksouls.client.renderer.Camera;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.item.EstusFlaskItem;
+import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.PointOfView;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,6 +44,12 @@ public class ClientManager
 		this.mainCamera = (Camera)this.minecraft.gameRenderer.mainCamera;
 		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
 		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
+		
+		ItemModelsProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living) ->
+	    {
+	        float usage = (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
+	    	return usage;
+	    });
 	}
 	
 	public void switchToFirstPerson()

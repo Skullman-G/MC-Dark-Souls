@@ -6,10 +6,11 @@ import java.util.Map;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
@@ -26,6 +27,7 @@ public class PlayerStatsScreen extends Screen
 	protected final Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
 	protected int displayedLevel;
 	protected final PlayerEntity player;
+	protected final PlayerData<?> playerdata;
 
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");
 	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_level_up.png");
@@ -44,6 +46,7 @@ public class PlayerStatsScreen extends Screen
 	{
 		super(title);
 		this.player = player;
+		this.playerdata = (PlayerData<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		this.displayedLevel = Stats.getLevel(this.player);
 		for (Stat stat : Stats.getStats())
 			this.displayedStats.put(stat, stat.getValue(this.player));
@@ -73,7 +76,7 @@ public class PlayerStatsScreen extends Screen
 
 		int firstX = x + 19;
 		this.font.draw(matrixstack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
-		this.font.draw(matrixstack, "Souls: " + (this.player.isCreative() ? "INFINITE" : MobNBTManager.getSouls(this.player)), firstX, y + 60,
+		this.font.draw(matrixstack, "Souls: " + (this.player.isCreative() ? "INFINITE" : this.playerdata.getSouls()), firstX, y + 60,
 				this.color);
 		this.font.draw(matrixstack, "Attributes", firstX, y + 128, this.color);
 

@@ -23,6 +23,7 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 
@@ -34,6 +35,9 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	protected int tickSinceLastAction;
 	
 	protected float stamina;
+	protected int humanity;
+	protected boolean human;
+	protected int souls;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -58,6 +62,54 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		for (Stat stat : Stats.getStats()) stat.init(this.orgEntity);
 		
 		this.stamina = this.getMaxStamina();
+	}
+	
+	public void onSave()
+	{
+		CompoundNBT nbt = this.orgEntity.getPersistentData();
+		nbt.putInt("Humanity", this.humanity);
+		nbt.putInt("Souls", this.souls);
+		nbt.putBoolean("IsHuman", this.human);
+	}
+	
+	public int getSouls()
+	{
+		return this.souls;
+	}
+	
+	public void setSouls(int value)
+	{
+		this.souls = value;
+	}
+	
+	public void raiseSouls(int value)
+	{
+		this.setSouls(this.souls + value);
+	}
+	
+	public boolean isHuman()
+	{
+		return this.human;
+	}
+	
+	public void setHuman(boolean value)
+	{
+		this.human = value;
+	}
+	
+	public int getHumanity()
+	{
+		return this.humanity;
+	}
+	
+	public void setHumanity(int value)
+	{
+		this.humanity = MathUtils.clamp(value, 0, 99);
+	}
+	
+	public void raiseHumanity(int value)
+	{
+		this.setHumanity(this.humanity + value);
 	}
 	
 	@Override

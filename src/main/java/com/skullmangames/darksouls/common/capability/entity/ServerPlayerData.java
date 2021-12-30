@@ -17,9 +17,12 @@ import com.skullmangames.darksouls.core.util.Formulars;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCHuman;
+import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -29,7 +32,10 @@ import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 {
@@ -59,6 +65,36 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		{
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
+		
+		CompoundNBT nbt = this.orgEntity.getPersistentData();
+		this.setHumanity(nbt.getInt("Humanity"));
+		this.setSouls(nbt.getInt("Souls"));
+		this.setHuman(nbt.getBoolean("IsHuman"));
+	}
+	
+	@Override
+	public void setHumanity(int value)
+	{
+		if (this.humanity == value) return;
+		super.setHumanity(value);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
+	}
+	
+	@Override
+	public void setHuman(boolean value)
+	{
+		if (this.human == value) return;
+		super.setHuman(value);
+		this.orgEntity.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.humanity_restored_message")));
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
+	}
+	
+	@Override
+	public void setSouls(int value)
+	{
+		if (this.souls == value) return;
+		super.setSouls(value);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
 	}
 	
 	@Override

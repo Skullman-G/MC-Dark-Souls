@@ -14,7 +14,10 @@ import java.util.List;
 
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSHuman;
+import com.skullmangames.darksouls.network.client.CTSHumanity;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
+import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -187,5 +190,29 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	public boolean isFirstPerson()
 	{
 		return this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON;
+	}
+	
+	@Override
+	public void setHumanity(int value)
+	{
+		if (this.humanity == value) return;
+		super.setHumanity(value);
+		ModNetworkManager.sendToServer(new CTSHumanity(this.humanity));
+	}
+	
+	@Override
+	public void setHuman(boolean value)
+	{
+		if (this.human == value) return;
+		super.setHuman(value);
+		ModNetworkManager.sendToServer(new CTSHuman(this.human));
+	}
+	
+	@Override
+	public void setSouls(int value)
+	{
+		if (this.souls == value) return;
+		super.setSouls(value);
+		ModNetworkManager.sendToServer(new CTSSouls(this.souls));
 	}
 }

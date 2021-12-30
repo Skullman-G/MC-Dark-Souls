@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ModEffects;
@@ -152,7 +153,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 				}
 				else
 				{
-					ClientUtils.openBonfireScreen(bonfiretileentity, player);
+					ClientUtils.openBonfireScreen(bonfiretileentity, ClientManager.INSTANCE.getPlayerData());
 				}
 				
 				// Set spawn point

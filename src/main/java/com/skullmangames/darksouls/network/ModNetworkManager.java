@@ -1,12 +1,17 @@
 package com.skullmangames.darksouls.network;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.network.client.CTSHuman;
+import com.skullmangames.darksouls.network.client.CTSHumanity;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
+import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
 import com.skullmangames.darksouls.network.server.STCGameruleChange;
+import com.skullmangames.darksouls.network.server.STCHuman;
+import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
@@ -15,6 +20,7 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimationTP;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCResetBasicAttackCool;
+import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.entity.Entity;
@@ -64,6 +70,9 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSRotatePlayerYaw.class, CTSRotatePlayerYaw::toBytes, CTSRotatePlayerYaw::fromBytes, CTSRotatePlayerYaw::handle);
 		INSTANCE.registerMessage(id++, CTSReqPlayerInfo.class, CTSReqPlayerInfo::toBytes, CTSReqPlayerInfo::fromBytes, CTSReqPlayerInfo::handle);
 		INSTANCE.registerMessage(id++, CTSStamina.class, CTSStamina::toBytes, CTSStamina::fromBytes, CTSStamina::handle);
+		INSTANCE.registerMessage(id++, CTSHumanity.class, CTSHumanity::toBytes, CTSHumanity::fromBytes, CTSHumanity::handle);
+		INSTANCE.registerMessage(id++, CTSHuman.class, CTSHuman::toBytes, CTSHuman::fromBytes, CTSHuman::handle);
+		INSTANCE.registerMessage(id++, CTSSouls.class, CTSSouls::toBytes, CTSSouls::fromBytes, CTSSouls::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
@@ -75,5 +84,8 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCResetBasicAttackCool.class, STCResetBasicAttackCool::toBytes, STCResetBasicAttackCool::fromBytes, STCResetBasicAttackCool::handle);
 		INSTANCE.registerMessage(id++, STCGameruleChange.class, STCGameruleChange::toBytes, STCGameruleChange::fromBytes, STCGameruleChange::handle);
 		INSTANCE.registerMessage(id++, STCStamina.class, STCStamina::toBytes, STCStamina::fromBytes, STCStamina::handle);
+		INSTANCE.registerMessage(id++, STCHumanity.class, STCHumanity::toBytes, STCHumanity::fromBytes, STCHumanity::handle);
+		INSTANCE.registerMessage(id++, STCHuman.class, STCHuman::toBytes, STCHuman::fromBytes, STCHuman::handle);
+		INSTANCE.registerMessage(id++, STCSouls.class, STCSouls::toBytes, STCSouls::fromBytes, STCSouls::handle);
 	}
 }

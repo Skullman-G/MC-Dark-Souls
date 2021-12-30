@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.util;
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 
@@ -25,9 +26,9 @@ public final class ClientUtils
 		Minecraft.getInstance().setScreen(new BonfireNameScreen(player, tileentity));
 	}
 	
-	public static void openBonfireScreen(BonfireTileEntity tileentity, PlayerEntity player)
+	public static void openBonfireScreen(BonfireTileEntity tileentity, ClientPlayerData playerdata)
 	{
-		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity, player));
+		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity, playerdata));
 	}
 	
 	public static void openFireKeeperScreen(FireKeeperEntity firekeeper, ServerPlayerEntity serverplayer)

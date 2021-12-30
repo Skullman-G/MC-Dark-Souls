@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -51,7 +50,6 @@ import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverrid
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
@@ -158,12 +156,6 @@ public class DarkSouls
 		
 		event.enqueueWork(() ->
     	{
-    	    ItemModelsProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(MOD_ID, "usage"), (stack, level, living) ->
-    	    {
-    	        float usage = (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
-    	    	return usage;
-    	    });
-    	    
     	    ModStructures.setupStructures();
     	    ConfiguredStructureInit.registerConfiguredStructures();
     	});
@@ -226,7 +218,7 @@ public class DarkSouls
     private static Method GETCODEC_METHOD;
 	public void addDimensionalSpacing(final WorldEvent.Load event)
     {
-        if(event.getWorld() instanceof ServerWorld)
+		if(event.getWorld() instanceof ServerWorld)
         {
             ServerWorld serverWorld = (ServerWorld)event.getWorld();
             ServerChunkProvider scp = serverWorld.getChunkSource();

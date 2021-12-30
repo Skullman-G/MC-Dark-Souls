@@ -6,9 +6,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Timer;
 
@@ -124,11 +125,12 @@ public class GameOverlayManager
 	
 	public static void renderHumanity(MainWindow window, MatrixStack matrixstack)
 	{
+		ClientPlayerData playerdata = ClientManager.INSTANCE.getPlayerData();
 		int x = window.getGuiScaledWidth() / 2;
 		int y = window.getGuiScaledHeight() - 45;
-		int color = MobNBTManager.isHuman(minecraft.player) ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
 		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, MobNBTManager.getStringHumanity(minecraft.player), x, y, color);
+		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
 	}
 	
 	public static void renderHealth(MainWindow window, MatrixStack matrixstack)
@@ -213,7 +215,7 @@ public class GameOverlayManager
 		MatrixStack ms = new MatrixStack();
 		float scale = 0.8F;
 		ms.scale(scale, scale, scale);
-		ForgeIngameGui.drawCenteredString(ms, minecraft.font, MobNBTManager.getStringSouls(getCameraPlayer()), Math.round(x / scale), Math.round(y / scale), color);
+		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerData().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
 	}
 	
 	public static void renderStamina(MainWindow window, MatrixStack matrixstack)

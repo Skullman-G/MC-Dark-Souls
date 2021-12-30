@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.client.gui.widget.LevelButton;
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import net.minecraft.client.gui.widget.button.Button;
@@ -74,7 +73,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	private boolean canEffort()
 	{
-		return this.player.isCreative() ? true : MobNBTManager.getSouls(this.player) >= this.getCost();
+		return this.player.isCreative() ? true : this.playerdata.getSouls() >= this.getCost();
 	}
 	
 	private int getCost()
@@ -103,7 +102,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 		if (this.displayedLevel != Stats.getLevel(this.player))
 		{
 			this.displayedLevel -= 1;
-			MobNBTManager.shrinkSouls(this.player, this.getCost());
+			this.playerdata.raiseSouls(-this.getCost());
 		}
 		for (Stat stat : Stats.getStats())
 		{

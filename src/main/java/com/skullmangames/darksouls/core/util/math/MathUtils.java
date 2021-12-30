@@ -45,6 +45,14 @@ public class MathUtils
 		return par3 * f;
 	}
 	
+	public static int clamp(int value, int min, int max)
+	{
+		if (min >= max) new Exception("Min value bigger then max value.").printStackTrace();
+		else if (value < min) value = min;
+		else if (value > max) value = max;
+		return value;
+	}
+	
 	public static float clamp(float value, float range)
 	{
 		return clamp(value, -range, range);

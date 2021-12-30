@@ -8,7 +8,7 @@ public class FireKeeperSoulItem extends SoulContainerItem
 	}
 	
 	@Override
-	public int getHumanity()
+	public int getAmount()
 	{
 		return 5;
 	}

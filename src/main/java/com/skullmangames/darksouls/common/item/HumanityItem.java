@@ -8,7 +8,7 @@ public class HumanityItem extends SoulContainerItem
 	}
 	
 	@Override
-	public int getHumanity()
+	public int getAmount()
 	{
 		return 1;
 	}

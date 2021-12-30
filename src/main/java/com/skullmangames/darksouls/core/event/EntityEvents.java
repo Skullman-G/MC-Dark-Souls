@@ -8,15 +8,16 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
 import com.skullmangames.darksouls.common.potion.effect.UndeadCurse;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
@@ -378,7 +379,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectAddEvent(PotionAddedEvent event)
 	{
-		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && /*event.getPotionEffect().getEffect() != event.getOldPotionEffect().getEffect() &&*/ event.getEntityLiving() instanceof PlayerEntity)
+		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
 		{
 			ModEffects.UNDEAD_CURSE.get().onPotionAdd(((PlayerEntity)event.getEntityLiving()));
 		}
@@ -396,7 +397,6 @@ public class EntityEvents
 		{
 			event.setCanceled(true);
 			return;
-			//EffectInit.UNDEAD_CURSE.get().onPotionRemove(((PlayerEntity)event.getEntityLiving()));
 		}
 		
 		if(!event.getEntity().level.isClientSide && event.getPotionEffect() != null)
@@ -412,7 +412,6 @@ public class EntityEvents
 		{
 			event.setCanceled(true);
 			return;
-			//EffectInit.UNDEAD_CURSE.get().onPotionRemove(((PlayerEntity)event.getEntityLiving()));
 		}
 		
 		if(!event.getEntity().level.isClientSide)
@@ -439,17 +438,17 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void deathEvent(LivingDeathEvent event)
 	{
-		MobNBTManager.setHumanity(event.getEntityLiving(), 0);
-		
-		if (event.getEntityLiving().hasEffect(ModEffects.UNDEAD_CURSE.get())) MobNBTManager.setHuman(event.getEntityLiving(), false);
-		
 		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		
-		if(entitydata != null)
+		if(entitydata == null) return;
+		if (entitydata instanceof PlayerData<?> && !entitydata.isClientSide())
 		{
-			if (entitydata.isClientSide()) entitydata.playSound(com.skullmangames.darksouls.core.init.ModSoundEvents.GENERIC_KILL, 0.0F, 0.0F);
-			entitydata.getAnimator().playDeathAnimation();
+			PlayerData<?> playerdata = (PlayerData<?>)entitydata;
+			playerdata.setHumanity(0);
+			if (event.getEntityLiving().hasEffect(ModEffects.UNDEAD_CURSE.get())) playerdata.setHuman(false);
 		}
+		
+		if (entitydata.isClientSide()) entitydata.playSound(ModSoundEvents.GENERIC_KILL, 0.0F, 0.0F);
+		entitydata.getAnimator().playDeathAnimation();
 	}
 	
 	@SubscribeEvent

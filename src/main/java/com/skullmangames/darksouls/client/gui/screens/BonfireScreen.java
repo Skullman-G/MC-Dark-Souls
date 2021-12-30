@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 
@@ -12,7 +12,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -28,7 +27,7 @@ public class BonfireScreen extends Screen
 	private Button reverseHollowingButton;
 	private Button kindleButton;
 	private BonfireTileEntity bonfiretileentity;
-	private PlayerEntity playerEntity;
+	private ClientPlayerData playerData;
 	private int buttonWidth = 100;
 	private int buttonHeight = 20;
 	private String estusVolumeLevel;
@@ -36,11 +35,11 @@ public class BonfireScreen extends Screen
 	private ImageButton estusHealIcon;
 	private ImageButton estusVolumeIcon;
 	
-	public BonfireScreen(BonfireTileEntity tileentity, PlayerEntity playerentity)
+	public BonfireScreen(BonfireTileEntity tileentity, ClientPlayerData playerdata)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
-		this.playerEntity = playerentity;
+		this.playerData = playerdata;
 	}
 	
 	@Override
@@ -81,8 +80,8 @@ public class BonfireScreen extends Screen
 		{
 			String description = new TranslationTextComponent("gui.darksouls.reverse_hollowing_tooltip").getString();
 			String warning = "";
-			if (!(MobNBTManager.getHumanity(this.playerEntity) > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
-			if (MobNBTManager.isHuman(playerEntity)) warning = new TranslationTextComponent("gui.darksouls.already_human").getString();
+			if (!(this.playerData.getHumanity() > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
+			if (this.playerData.isHuman()) warning = new TranslationTextComponent("gui.darksouls.already_human").getString();
 			StringTextComponent textcomponent = warning == "" ? new StringTextComponent(description) : new StringTextComponent(description + "\n\n" + "\u00A74" + warning);
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
@@ -91,14 +90,14 @@ public class BonfireScreen extends Screen
 		{
 	         this.reverseHollowing();
 	    }, tooltip));
-		this.reverseHollowingButton.active = !MobNBTManager.isHuman(this.playerEntity) && MobNBTManager.getHumanity(this.playerEntity) > 0 ? true : false;
+		this.reverseHollowingButton.active = !this.playerData.isHuman() && this.playerData.getHumanity() > 0 ? true : false;
 		
 		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
 		{
 			String description = new TranslationTextComponent("gui.darksouls.kindle_tooltip").getString();
 			String warning = "";
-			if (!(MobNBTManager.getHumanity(this.playerEntity) > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
-			if (!MobNBTManager.isHuman(this.playerEntity)) warning = new TranslationTextComponent("gui.darksouls.not_human").getString();
+			if (!(this.playerData.getHumanity() > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
+			if (!this.playerData.isHuman()) warning = new TranslationTextComponent("gui.darksouls.not_human").getString();
 			if (this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) >= 2) warning = new TranslationTextComponent("gui.darksouls.cannot_kindle_further").getString();
 			StringTextComponent textcomponent = warning == "" ? new StringTextComponent(description) : new StringTextComponent(description + "\n\n" + "\u00A74" + warning);
 			
@@ -108,7 +107,7 @@ public class BonfireScreen extends Screen
 		{
 	         this.kindle();
 	    }, tooltip));
-		this.kindleButton.active = MobNBTManager.isHuman(this.playerEntity) && MobNBTManager.getHumanity(this.playerEntity) > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
+		this.kindleButton.active = this.playerData.isHuman() && this.playerData.getHumanity() > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
 		this.addButton(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         super.onClose();
@@ -145,14 +144,14 @@ public class BonfireScreen extends Screen
 	
 	protected void reverseHollowing()
 	{
-		MobNBTManager.shrinkHumanity(this.playerEntity, 1);
-		MobNBTManager.setHuman(this.playerEntity, true);
+		this.playerData.raiseHumanity(-1);
+		this.playerData.setHuman(true);
 		super.onClose();
 	}
 	
 	protected void kindle()
 	{
-		MobNBTManager.shrinkHumanity(this.playerEntity, 1);
+		this.playerData.raiseHumanity(-1);
 		this.bonfiretileentity.kindle();
 		super.onClose();
 	}

@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -88,5 +89,13 @@ public class PlayerEvents
 	{
 		ModNetworkManager.sendToPlayer(new STCGameruleChange(Gamerules.SPEED_PENALTY_PERCENT,
 				event.getEntity().level.getGameRules().getInt(ModGamerules.SPEED_PENALTY_PERCENT)), (ServerPlayerEntity)event.getPlayer());
+	}
+	
+	@SubscribeEvent
+	public static void playerLogOutEvent(PlayerLoggedOutEvent event)
+	{
+		PlayerData<?> playerdata = (PlayerData<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerdata == null) return;
+		playerdata.onSave();
 	}
 }

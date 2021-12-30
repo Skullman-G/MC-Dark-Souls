@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.item;
 
-import com.skullmangames.darksouls.common.entity.nbt.MobNBTManager;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.entity.LivingEntity;
@@ -29,9 +30,13 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
 	{
 		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH, 0.5F, 1.0F);
-		if (!level.isClientSide && this.getHumanity() != 0)
+		if (!level.isClientSide && this.getAmount() > 0)
 		{
-			MobNBTManager.raiseHumanity(livingentity, this.getHumanity());
+			PlayerData<?> playerdata = (PlayerData<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (playerdata != null)
+			{
+				playerdata.raiseHumanity(this.getAmount());
+			}
 			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
 		}
 		if (!(livingentity instanceof PlayerEntity) || !((PlayerEntity)livingentity).abilities.instabuild)
@@ -65,7 +70,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 		return 32;
 	}
 	
-	public int getHumanity()
+	public int getAmount()
 	{
 		return 0;
 	}
