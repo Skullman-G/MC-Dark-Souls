@@ -1,15 +1,10 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.gui.GameOverlayManager;
-import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.CommandInit;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
-import com.skullmangames.darksouls.server.IntegratedPlayerListOverride;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -17,13 +12,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,28 +45,11 @@ public class OtherEvents
 	public static void onServerAboutToStart(final FMLServerAboutToStartEvent event)
     {
 		MinecraftServer server = event.getServer();
-		
 		if (server instanceof DedicatedServer)
 		{
 			server.setPlayerList(new DedicatedPlayerListOverride((DedicatedServer)server, server.registryHolder, server.playerDataStorage));
 		}
-		else if (server instanceof IntegratedServer)
-		{
-			server.setPlayerList(new IntegratedPlayerListOverride((IntegratedServer)server, server.registryHolder, server.playerDataStorage));
-		}
     }
-	
-	@SubscribeEvent
-	public static void onRenderHand(final RenderHandEvent event)
-	{
-		if (event.getItemStack().getItem() instanceof IHaveDarkSoulsUseAction)
-		{
-			event.setCanceled(true);
-			Minecraft minecraft = Minecraft.getInstance();
-			IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
-			FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getMatrixStack(), event.getBuffers(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
-		}
-	}
 	
 	@SubscribeEvent
 	public static void onCheckSpawn(final CheckSpawn event)
@@ -82,16 +57,6 @@ public class OtherEvents
 		if (event.getEntityLiving() instanceof ZombieEntity)
 		{
 			event.setResult(Result.DENY);
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onLivingHeal(final LivingHealEvent event)
-	{
-		Minecraft minecraft = Minecraft.getInstance();
-		if (event.getEntityLiving() instanceof PlayerEntity && event.getEntityLiving().getUUID() == minecraft.player.getUUID() && !event.getEntityLiving().isSpectator())
-		{
-			GameOverlayManager.isHealing = true;
 		}
 	}
 	

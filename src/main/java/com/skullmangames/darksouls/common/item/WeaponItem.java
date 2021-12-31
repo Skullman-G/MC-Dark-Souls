@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
@@ -26,25 +26,20 @@ public class WeaponItem extends SwordItem
 		super(itemtier, damage, speed, properties);
 	}
 	
-	public float getDamage(LivingEntity entity)
-	{
-		return this.meetRequirements(entity) ? super.getDamage() : 0.0F;
-	}
-	
 	public WeaponItem addStat(Stat stat, int value)
 	{
 		this.requiredStats.put(stat, value);
 		return this;
 	}
 	
-	public boolean meetRequirement(Stat stat, LivingEntity livingentity)
+	public boolean meetRequirement(Stat stat, PlayerData<?> playerdata)
 	{
-		return this.getRequiredStat(stat) <= stat.getValue(livingentity);
+		return this.getRequiredStat(stat) <= playerdata.getStats().getStatValue(stat);
 	}
 	
-	public boolean meetRequirements(LivingEntity livingentity)
+	public boolean meetRequirements(PlayerData<?> playerdata)
 	{
-		for (Stat stat : this.requiredStats.keySet()) if (!this.meetRequirement(stat, livingentity)) return false;
+		for (Stat stat : this.requiredStats.keySet()) if (!this.meetRequirement(stat, playerdata)) return false;
 		return true;
 	}
 	

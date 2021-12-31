@@ -284,13 +284,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public float getDamageToEntity(Entity targetEntity, Hand hand)
 	{
 		float damage = 1.0F;
-		
-		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
-		if (weapon != null)
-		{
-			damage += ((WeaponItem)weapon.getOriginalItem()).getDamage(this.orgEntity);
-		}
-		
+		damage += this.getWeaponDamage(hand);
 		if (targetEntity instanceof LivingEntity)
 		{
 			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), ((LivingEntity) targetEntity).getMobType());
@@ -301,6 +295,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		}
 		
 		return damage;
+	}
+	
+	public float getWeaponDamage(Hand hand)
+	{
+		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
+		if (weapon == null) return 0.0F;
+		return ((WeaponItem)weapon.getOriginalItem()).getDamage();
 	}
 	
 	public boolean hurtEntity(Entity hitTarget, Hand handIn, IExtendedDamageSource source, float amount)

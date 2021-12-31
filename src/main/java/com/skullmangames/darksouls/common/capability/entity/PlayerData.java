@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -26,6 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 
 public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 {
@@ -33,6 +36,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	protected float yaw;
 	protected EntityEventListener eventListeners;
 	protected int tickSinceLastAction;
+	
+	protected Stats stats = new Stats();
 	
 	protected float stamina;
 	protected int humanity;
@@ -59,9 +64,17 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 			this.orgEntity.addEffect(effectinstance);
 		}
 		
-		for (Stat stat : Stats.getStats()) stat.init(this.orgEntity);
-		
 		this.stamina = this.getMaxStamina();
+	}
+	
+	public Stats getStats()
+	{
+		return this.stats;
+	}
+	
+	public int getSoulLevel()
+	{
+		return this.stats.getLevel();
 	}
 	
 	public void onSave()
@@ -70,6 +83,8 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
+		
+		this.stats.saveStats(nbt);
 	}
 	
 	public int getSouls()
@@ -113,6 +128,14 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	}
 	
 	@Override
+	public float getWeaponDamage(Hand hand)
+	{
+		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
+		if (weapon == null || !weapon.meetRequirements(this)) return 0.0F;
+		return ((WeaponItem)weapon.getOriginalItem()).getDamage();
+	}
+	
+	@Override
 	public void initAnimator(AnimatorClient animatorClient)
 	{
 		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
@@ -141,6 +164,16 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	public void changeYaw(float amount)
 	{
 		this.yaw = amount;
+	}
+	
+	public void setStatValue(Stat stat, int value)
+	{
+		this.stats.setStatValue(this.orgEntity, stat, value);
+	}
+	
+	public void setStatValue(String statname, int value)
+	{
+		this.stats.setStatValue(this.orgEntity, statname, value);
 	}
 	
 	@Override

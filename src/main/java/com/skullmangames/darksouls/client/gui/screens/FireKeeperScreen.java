@@ -72,7 +72,7 @@ public class FireKeeperScreen extends Screen
 	
 	private void openLevelUpScreen()
 	{
-		this.minecraft.setScreen(new LevelUpScreen(this.serverPlayer));
+		this.minecraft.setScreen(new LevelUpScreen());
 	}
 	
 	@Override

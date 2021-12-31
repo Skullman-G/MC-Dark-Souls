@@ -9,7 +9,6 @@ import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
@@ -20,13 +19,6 @@ import net.minecraft.util.Hand;
 
 public class AsylumDemonData extends MobData<AsylumDemonEntity>
 {
-	@Override
-	public void onEntityJoinWorld(AsylumDemonEntity entityIn)
-	{
-		super.onEntityJoinWorld(entityIn);
-		Stats.STRENGTH.setValue(entityIn, 46);
-	}
-	
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{

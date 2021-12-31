@@ -6,9 +6,11 @@ import java.util.Map;
 import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSStat;
+
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -19,9 +21,9 @@ public class LevelUpScreen extends PlayerStatsScreen
 	protected final int buttonWidth = 70;
 	protected final int buttonHeight = 20;
 	
-	public LevelUpScreen(PlayerEntity player)
+	public LevelUpScreen()
 	{
-		super(player, new StringTextComponent("Level Up"));
+		super(new StringTextComponent("Level Up"));
 	}
 	
 	@Override
@@ -34,15 +36,15 @@ public class LevelUpScreen extends PlayerStatsScreen
 		int buttonheight2 = 10;
 		
 		int upDownButtonHeight = y + 112;
-		for (Stat stat : Stats.getStats())
+		for (Stat stat : Stats.STATS)
 		{
-			int statValue = stat.getValue(this.player);
+			int statValue = this.playerdata.getStats().getStatValue(stat);
 			LevelButton downButton = this.addButton(new LevelButton(x + 93, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent("<"), (button) ->
 			{
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			downButton.active = this.player.isCreative() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
+			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
 			
 			LevelButton upButton = this.addButton(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
 			{
@@ -65,50 +67,43 @@ public class LevelUpScreen extends PlayerStatsScreen
 	{
 		this.levelButtons.forEach((down, up) ->
 		{
-			int statvalue = down.getStat().getValue(this.player);
-			down.active = this.player.isCreative() ? this.displayedStats.getOrDefault(down.getStat(), 1).intValue() > 1 : this.displayedStats.getOrDefault(down.getStat(), 1).intValue() > statvalue;
-			up.active = this.displayedStats.getOrDefault(up.getStat(), 1).intValue() < 99 && this.canEffort();
+			int statvalue = this.playerdata.getStats().getStatValue(down.getStat());
+			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
+			down.active = this.playerdata.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
+			up.active = displayedstatvalue < 99 && this.canEffort();
 		});
 	}
 	
 	private boolean canEffort()
 	{
-		return this.player.isCreative() ? true : this.playerdata.getSouls() >= this.getCost();
-	}
-	
-	private int getCost()
-	{
-		return this.displayedLevel * (10 + this.displayedLevel);
+		return this.playerdata.isCreativeOrSpectator() ? true : this.playerdata.getSouls() >= this.getCost();
 	}
 	
 	private void levelUp(Stat stat)
 	{
-		int statvalue = stat.getValue(this.player);
-		int displaystatvalue = this.displayedStats.getOrDefault(stat, Integer.valueOf(statvalue)).intValue();
-		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, Integer.valueOf(displaystatvalue)).intValue() + 1);
+		this.displayedStats.put(stat, this.displayedStats.get(stat).intValue() + 1);
 		this.displayedLevel += 1;
 	}
 	
 	private void levelDown(Stat stat)
 	{
-		int statvalue = stat.getValue(this.player);
-		int displaystatvalue = this.displayedStats.getOrDefault(stat, statvalue).intValue();
-		this.displayedStats.put(stat, this.displayedStats.getOrDefault(stat, displaystatvalue).intValue() - 1);
+		this.displayedStats.put(stat, this.displayedStats.get(stat).intValue() - 1);
 		this.displayedLevel -= 1;
 	}
 	
 	private void accept()
 	{
-		if (this.displayedLevel != Stats.getLevel(this.player))
+		if (this.displayedLevel != this.playerdata.getSoulLevel())
 		{
 			this.displayedLevel -= 1;
-			this.playerdata.raiseSouls(-this.getCost());
+			if (!this.playerdata.isCreativeOrSpectator()) this.playerdata.raiseSouls(-this.getCost());
 		}
-		for (Stat stat : Stats.getStats())
+		for (Stat stat : Stats.STATS)
 		{
-			int statvalue = stat.getValue(this.player);
-			int displaystatvalue = this.displayedStats.getOrDefault(stat, statvalue).intValue();
-			stat.setValue(this.player, this.displayedStats.getOrDefault(stat, displaystatvalue));
+			int statvalue = this.playerdata.getStats().getStatValue(stat);
+			int value = this.displayedStats.getOrDefault(stat, statvalue).intValue();
+			this.playerdata.setStatValue(stat, value);
+			ModNetworkManager.sendToServer(new CTSStat(stat.toString(), value));
 		}
 		super.onClose();
 	}

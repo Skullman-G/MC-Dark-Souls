@@ -27,7 +27,6 @@ import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -51,6 +50,11 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		super(item);
 		this.animationSet = new HashMap<LivingMotion, StaticAnimation>();
 		this.weaponCategory = category;
+	}
+	
+	public boolean meetRequirements(PlayerData<?> playerdata)
+	{
+		return ((WeaponItem)this.orgItem).meetRequirements(playerdata);
 	}
 	
 	@Nullable
@@ -92,7 +96,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
@@ -109,24 +113,23 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		{
 			if (!(this.orgItem instanceof WeaponItem)) return;
 			WeaponItem weapon = (WeaponItem)this.orgItem;
-			LivingEntity entity = entitydata.getOriginalEntity();
 			itemTooltip.add(new StringTextComponent("\u00A72Physical Damage: "+weapon.getDamage()));
 			itemTooltip.add(new StringTextComponent("\u00A72Durability: "+weapon.getDurabilityForDisplay(stack)));
 			
 			itemTooltip.add(new StringTextComponent(""));
 			itemTooltip.add(new StringTextComponent("Requirements:"));
-			itemTooltip.add(new StringTextComponent("  Strength: "+this.getStatValue(Stats.STRENGTH, weapon, entity)));
+			itemTooltip.add(new StringTextComponent("  Strength: "+this.getStatValue(Stats.STRENGTH, weapon, playerdata)));
 		}
 	}
 	
-	private String getStatValue(Stat stat, WeaponItem weapon, LivingEntity entity)
+	private String getStatValue(Stat stat, WeaponItem weapon, PlayerData<?> playerdata)
 	{
-		return this.getStatColor(Stats.STRENGTH, weapon, entity)+weapon.getRequiredStat(Stats.STRENGTH);
+		return this.getStatColor(Stats.STRENGTH, weapon, playerdata)+weapon.getRequiredStat(Stats.STRENGTH);
 	}
 	
-	private String getStatColor(Stat stat, WeaponItem weapon, LivingEntity entity)
+	private String getStatColor(Stat stat, WeaponItem weapon, PlayerData<?> playerdata)
 	{
-		return weapon.meetRequirement(stat, entity) ? "\u00A7f" : "\u00A74";
+		return weapon.meetRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
 	}
 	
 	protected AttackAnimation[] getLightAttack()
@@ -148,7 +151,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
 	{
 		if (this.orgItem instanceof WeaponItem
-				&& !((WeaponItem)this.orgItem).meetRequirements(playerdata.getOriginalEntity())) return this.getWeakAttack();
+				&& !((WeaponItem)this.orgItem).meetRequirements(playerdata)) return this.getWeakAttack();
 		
 		switch (type)
 		{

@@ -125,7 +125,7 @@ public class InputManager
 	private void openPlayerStatScreen(int key, int action)
 	{
 		if (action != 1 || this.minecraft.screen != null) return;
-		this.minecraft.setScreen(new PlayerStatsScreen(this.player));
+		this.minecraft.setScreen(new PlayerStatsScreen());
 	}
 	
 	private void onSprintKeyPressed(int key, int action)

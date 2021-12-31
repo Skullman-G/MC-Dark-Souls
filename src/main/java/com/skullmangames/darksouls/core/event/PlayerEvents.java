@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.world.ModGamerules;
@@ -10,7 +9,6 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCGameruleChange;
 import com.skullmangames.darksouls.network.server.STCGameruleChange.Gamerules;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BowItem;
@@ -53,18 +51,6 @@ public class PlayerEvents
 		if (playerdata.getOriginalEntity() != null)
 		{
 			playerdata.discard();
-		}
-	}
-	
-	@SubscribeEvent
-	public static void itemUseStopEvent(LivingEntityUseItemEvent.Stop event)
-	{
-		if (!event.getEntity().level.isClientSide)
-		{
-			if (event.getEntity() instanceof ClientPlayerEntity)
-			{
-				ClientManager.INSTANCE.renderEngine.zoomOut(0);
-			}
 		}
 	}
 	

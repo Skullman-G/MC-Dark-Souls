@@ -7,6 +7,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
@@ -50,7 +51,7 @@ public class ArmorCapability extends CapabilityItem
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
 		itemTooltip.add(new StringTextComponent(""));
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)

@@ -66,13 +66,15 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
 		
-		CompoundNBT nbt = this.orgEntity.getPersistentData();
+		CompoundNBT nbt = entityIn.getPersistentData();
 		this.humanity = nbt.getInt("Humanity");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(entityIn.getId(), this.humanity), entityIn);
 		this.souls = nbt.getInt("Souls");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(entityIn.getId(), this.souls), entityIn);
 		this.human = nbt.getBoolean("IsHuman");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(entityIn.getId(), this.human), entityIn);
+		
+		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
 	@Override

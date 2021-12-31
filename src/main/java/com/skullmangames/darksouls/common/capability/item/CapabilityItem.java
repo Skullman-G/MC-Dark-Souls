@@ -91,7 +91,7 @@ public class CapabilityItem
 
 	protected void registerAttribute() {}
 	
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, LivingData<?> entitydata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
