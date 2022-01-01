@@ -19,6 +19,8 @@ import com.skullmangames.darksouls.network.client.CTSHumanity;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
+import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
@@ -43,6 +45,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		super.onEntityConstructed(entity);
 		ClientManager.INSTANCE.setPlayerData(this);
 		ClientManager.INSTANCE.inputManager.setGamePlayer(this);
+		ModNetworkManager.connection = new ModClientPlayNetHandler();
 	}
 	
 	@Override

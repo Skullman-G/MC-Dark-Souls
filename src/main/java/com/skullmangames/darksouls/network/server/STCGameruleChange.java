@@ -83,7 +83,7 @@ public class STCGameruleChange
 	
 	public static enum Gamerules
 	{
-		SPEED_PENALTY_PERCENT(1, ValueType.INTEGER, ModGamerules.SPEED_PENALTY_PERCENT);
+		SPEED_PENALTY_PERCENT(0, ValueType.INTEGER, ModGamerules.SPEED_PENALTY_PERCENT);
 		
 		ValueType valueType;
 		RuleKey<?> key;

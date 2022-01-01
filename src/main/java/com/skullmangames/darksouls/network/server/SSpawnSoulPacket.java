@@ -3,14 +3,10 @@ package com.skullmangames.darksouls.network.server;
 import java.io.IOException;
 
 import com.skullmangames.darksouls.common.entity.SoulEntity;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.play.ClientPlayNetHandler;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 import net.minecraft.client.network.play.IClientPlayNetHandler;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.PacketThreadUtil;
 
 public class SSpawnSoulPacket implements IPacket<IClientPlayNetHandler>
 {
@@ -47,20 +43,36 @@ public class SSpawnSoulPacket implements IPacket<IClientPlayNetHandler>
 	    buffer.writeDouble(this.z);
 	    buffer.writeInt(this.value);
 	}
+	
+	public double getX()
+	{
+		return this.x;
+	}
+	
+	public double getY()
+	{
+		return this.y;
+	}
+	
+	public double getZ()
+	{
+		return this.z;
+	}
+	
+	public int getValue()
+	{
+		return this.value;
+	}
+	
+	public int getId()
+	{
+		return this.id;
+	}
 
 	@Override
 	public void handle(IClientPlayNetHandler ihandler)
 	{
-		if (ihandler instanceof ClientPlayNetHandler)
-		{
-			ClientPlayNetHandler handler = (ClientPlayNetHandler)ihandler;
-			PacketThreadUtil.ensureRunningOnSameThread(this, handler, Minecraft.getInstance());
-			Entity entity = new SoulEntity(handler.getLevel(), this.x, this.y, this.z, this.value);
-			entity.setPacketCoordinates(this.x, this.y, this.z);
-		    entity.yRot = 0.0F;
-		    entity.xRot = 0.0F;
-		    entity.setId(this.id);
-		    handler.getLevel().putNonPlayerEntity(this.id, entity);
-		}
+		if (ModNetworkManager.connection == null) return;
+		ModNetworkManager.connection.handleAddSoulEntity(this);
 	}
 }

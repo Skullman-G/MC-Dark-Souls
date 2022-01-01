@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
@@ -35,11 +36,11 @@ public class BonfireScreen extends Screen
 	private ImageButton estusHealIcon;
 	private ImageButton estusVolumeIcon;
 	
-	public BonfireScreen(BonfireTileEntity tileentity, ClientPlayerData playerdata)
+	public BonfireScreen(BonfireTileEntity tileentity)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
-		this.playerData = playerdata;
+		this.playerData = ClientManager.INSTANCE.getPlayerData();
 	}
 	
 	@Override

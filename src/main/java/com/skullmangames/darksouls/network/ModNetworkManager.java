@@ -10,6 +10,8 @@ import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
 import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
 import com.skullmangames.darksouls.network.client.CTSStat;
+import com.skullmangames.darksouls.network.client.CTSTriggerBonfireLit;
+import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCGameruleChange;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -36,6 +38,7 @@ public class ModNetworkManager
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DarkSouls.MOD_ID, "network_manager"),
 			() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static IModClientPlayNetHandler connection;
 
 	public static <MSG> void sendToServer(MSG message)
 	{
@@ -75,6 +78,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSHuman.class, CTSHuman::toBytes, CTSHuman::fromBytes, CTSHuman::handle);
 		INSTANCE.registerMessage(id++, CTSSouls.class, CTSSouls::toBytes, CTSSouls::fromBytes, CTSSouls::handle);
 		INSTANCE.registerMessage(id++, CTSStat.class, CTSStat::toBytes, CTSStat::fromBytes, CTSStat::handle);
+		INSTANCE.registerMessage(id++, CTSTriggerBonfireLit.class, CTSTriggerBonfireLit::toBytes, CTSTriggerBonfireLit::fromBytes, CTSTriggerBonfireLit::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);

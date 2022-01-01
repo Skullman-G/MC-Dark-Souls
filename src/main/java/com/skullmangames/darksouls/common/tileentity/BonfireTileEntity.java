@@ -4,15 +4,15 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModTileEntities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSTriggerBonfireLit;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -83,20 +83,15 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	
 	public void setLit(@Nullable PlayerEntity player, boolean value)
 	{
-		if (this.getBlockState().getValue(BonfireBlock.LIT) != value)
+		if (this.getBlockState().getValue(BonfireBlock.LIT) == value) return;
+		this.getBlock().setLit(this.level, this.getBlockState(), this.worldPosition, value);
+		if (value)
 		{
-			this.getBlock().setLit(this.level, this.getBlockState(), this.worldPosition, value);
-			
-			if (value)
+			this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			if (player != null && ModNetworkManager.connection != null)
 			{
-				this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				
-				if (player != null)
-				{
-					ServerPlayerEntity serverplayer = player.getServer().getPlayerList().getPlayer(player.getUUID());
-					serverplayer.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.bonfire_lit_message")));
-					CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, this.getBlockState().getValue(BonfireBlock.LIT));
-				}
+				ModNetworkManager.connection.handleSetTitles(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.bonfire_lit_message")));
+				ModNetworkManager.sendToServer(new CTSTriggerBonfireLit());
 			}
 		}
 	}

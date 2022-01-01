@@ -25,6 +25,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -50,6 +51,10 @@ import com.skullmangames.darksouls.client.gui.screens.SmithingTableScreenOverrid
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
+import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRenderer;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
@@ -110,6 +115,7 @@ public class DarkSouls
     	
     	modBus.addListener(this::doCommonStuff);
     	modBus.addListener(this::doClientStuff);
+    	modBus.addListener(ModAttributes::onEntityAttributeCreation);
     	modBus.addListener(ModAttributes::modifyAttributeMap);
     	
     	ModAttributes.ATTRIBUTES.register(modBus);
@@ -184,6 +190,11 @@ public class DarkSouls
         RenderTypeLookup.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
+        
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.SOUL.get(), SoulRenderer::new);
         
         ScreenManager.register(ModContainers.SMITHING.get(), SmithingTableScreenOverride::new);
         ScreenManager.register(ModContainers.REINFORCE_ESTUS_FLASK.get(), ReinforceEstusFlaskScreen::new);

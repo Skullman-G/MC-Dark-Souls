@@ -19,72 +19,75 @@ public class SoulEntity extends Entity
 {
 	private PlayerEntity followingEntity;
 	private int value;
-	
+
 	public SoulEntity(World level, double posX, double posY, double posZ, int value)
 	{
-	   this(ModEntities.SOUL.get(), level);
-	   this.setPos(posX, posY, posZ);
-	   this.yRot = (float)(this.random.nextDouble() * 360.0D);
-	   this.value = value;
+		this(ModEntities.SOUL.get(), level);
+		this.setPos(posX, posY, posZ);
+		this.yRot = (float) (this.random.nextDouble() * 360.0D);
+		this.value = value;
 	}
 
 	public SoulEntity(EntityType<? extends SoulEntity> type, World level)
 	{
-	   super(type, level);
+		super(type, level);
 	}
-	
+
 	@Override
 	public void tick()
 	{
 		super.tick();
-		
+
 		this.xo = this.getX();
-	    this.yo = this.getY();
-	    this.zo = this.getZ();
-		
+		this.yo = this.getY();
+		this.zo = this.getZ();
+
 		if (this.followingEntity == null || this.followingEntity.distanceToSqr(this) > 64.0D)
 		{
 			this.followingEntity = this.level.getNearestPlayer(this, 8.0D);
 		}
-		
+
 		if (this.followingEntity != null && this.followingEntity.isSpectator())
 		{
-	        this.followingEntity = null;
-	    }
-		
+			this.followingEntity = null;
+		}
+
 		if (this.followingEntity != null)
 		{
-	       Vector3d vector3d = new Vector3d(this.followingEntity.getX() - this.getX(), this.followingEntity.getY() + (double)this.followingEntity.getEyeHeight() / 2.0D - this.getY(), this.followingEntity.getZ() - this.getZ());
-	       double d1 = vector3d.lengthSqr();
-	       if (d1 < 64.0D)
-	       {
-	          double d2 = 1.0D - Math.sqrt(d1) / 8.0D;
-	          this.setDeltaMovement(this.getDeltaMovement().add(vector3d.normalize().scale(d2 * d2 * 0.1D)));
-	       }
-	    }
-		
+			Vector3d vector3d = new Vector3d(this.followingEntity.getX() - this.getX(),
+					this.followingEntity.getY() + (double) this.followingEntity.getEyeHeight() / 2.0D - this.getY(),
+					this.followingEntity.getZ() - this.getZ());
+			double d1 = vector3d.lengthSqr();
+			if (d1 < 64.0D)
+			{
+				double d2 = 1.0D - Math.sqrt(d1) / 8.0D;
+				this.setDeltaMovement(this.getDeltaMovement().add(vector3d.normalize().scale(d2 * d2 * 0.1D)));
+			}
+		}
+
 		this.move(MoverType.SELF, this.getDeltaMovement());
 	}
-	
+
 	@Override
 	public void playerTouch(PlayerEntity player)
 	{
 		if (!this.level.isClientSide)
 		{
-	        if (this.value > 0)
-	        {
-	        	PlayerData<?> playerdata = (PlayerData<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-	        	if (playerdata != null) playerdata.raiseSouls(this.value);
-	        }
+			if (this.value > 0)
+			{
+				PlayerData<?> playerdata = (PlayerData<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				if (playerdata != null)
+					playerdata.raiseSouls(this.value);
+			}
 
-	        this.remove();
-	    }
+			this.remove();
+		}
 	}
 
 	@Override
 	protected boolean isMovementNoisy()
 	{
-	   return false;
+		return false;
 	}
 
 	@Override
@@ -100,13 +103,13 @@ public class SoulEntity extends Entity
 	@Override
 	public boolean hurt(DamageSource p_70097_1_, float p_70097_2_)
 	{
-	   return false;
+		return false;
 	}
 
 	@Override
 	public boolean isAttackable()
 	{
-	   return false;
+		return false;
 	}
 
 	@Override
@@ -126,7 +129,7 @@ public class SoulEntity extends Entity
 	{
 		nbt.putInt("Value", this.value);
 	}
-	
+
 	public int getValue()
 	{
 		return this.value;

@@ -3,6 +3,9 @@ package com.skullmangames.darksouls.core.init;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.HollowEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +13,7 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -40,6 +44,13 @@ public class ModAttributes
 	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
 	{
 		return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute."+DarkSouls.MOD_ID+"."+name, defaultValue, minValue, maxValue).setSyncable(true));
+	}
+	
+	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event)
+	{
+		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
+		event.put(ModEntities.HOLLOW.get(), HollowEntity.createAttributes().build());
+		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
