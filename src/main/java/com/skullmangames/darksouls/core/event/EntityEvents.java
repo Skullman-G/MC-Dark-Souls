@@ -210,7 +210,6 @@ public class EntityEvents
 						StaticAnimation hitAnimation = null;
 						float extendStunTime = 0;
 						float knockBackAmount = 0;
-						float weightReduction = 40.0F / (float)hitEntityData.getWeight();
 						
 						float currentStunResistance = hitEntityData.getStunArmor();
 						if(currentStunResistance > 0)
@@ -225,7 +224,7 @@ public class EntityEvents
 							if(hitEntityData.getStunArmor() == 0)
 							{
 								int i = EnchantmentHelper.getKnockbackBonus((LivingEntity)trueSource);
-								float totalStunTime = (float) ((0.25F + extSource.getImpact() * 0.1F + 0.1F * i) * weightReduction);
+								float totalStunTime = (float) ((0.25F + extSource.getImpact() * 0.1F + 0.1F * i));
 								totalStunTime *= (1.0F - hitEntityData.getStunTimeTimeReduction());
 								
 								if(totalStunTime >= 0.1F)
@@ -247,7 +246,7 @@ public class EntityEvents
 							
 						case LONG:
 							hitAnimation = hitEntityData.getHitAnimation(StunType.LONG);
-							knockBackAmount = (extSource.getImpact() * 0.25F) * weightReduction;
+							knockBackAmount = (extSource.getImpact() * 0.25F);
 							break;
 							
 						case SMASH_FRONT:

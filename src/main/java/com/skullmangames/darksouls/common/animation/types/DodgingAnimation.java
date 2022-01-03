@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.util.Formulars;
-
 import net.minecraft.entity.EntitySize;
 
 public class DodgingAnimation extends ActionAnimation
@@ -51,7 +49,7 @@ public class DodgingAnimation extends ActionAnimation
 	@Override
 	public float getPlaySpeed(LivingData<?> entitydata)
 	{
-		return Formulars.getRollAnimationSpeedPenalty((float)entitydata.getWeight(), entitydata);
+		return 1.0F;
 	}
 	
 	@Override

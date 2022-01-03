@@ -66,12 +66,9 @@ public class ArmorCapability extends CapabilityItem
 		itemTooltip.add(new TranslationTextComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
 				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
 		
-		itemTooltip.add(new StringTextComponent(""));
-		itemTooltip.add(new TranslationTextComponent(ModAttributes.WEIGHT.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+this.weight)));
-		
 		if(this.stunArmor > 0.0F)
 		{
+			itemTooltip.add(new StringTextComponent(""));
 			itemTooltip.add(new TranslationTextComponent(ModAttributes.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
 					.append(new StringTextComponent(TextFormatting.BLUE+": "+ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.stunArmor))));
 		}
@@ -84,7 +81,6 @@ public class ArmorCapability extends CapabilityItem
 		
 		if (entitydata != null && equipmentSlot == this.equipmentSlot)
 		{
-			map.put(ModAttributes.WEIGHT.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.weight, Operation.ADDITION));
 			map.put(ModAttributes.MAX_STUN_ARMOR.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.stunArmor, Operation.ADDITION));
 			
 			map.put(ModAttributes.STANDARD_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.standardDef, Operation.ADDITION));
