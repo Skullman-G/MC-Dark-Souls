@@ -109,6 +109,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	protected void initAttributes()
 	{
+		this.orgEntity.getAttribute(ModAttributes.WEIGHT.get()).setBaseValue(this.orgEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 2.0D);
 		this.orgEntity.getAttribute(ModAttributes.IMPACT.get()).setBaseValue(0.5D);
 	}
 	
@@ -395,6 +396,11 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		float f1 = Math.max(Math.min(value, this.getMaxStunArmor()), 0);
 		this.orgEntity.getEntityData().set(DataKeys.STUN_ARMOR, f1);
+	}
+	
+	public double getWeight()
+	{
+		return this.orgEntity.getAttributeValue(ModAttributes.WEIGHT.get());
 	}
 	
 	public void rotateTo(float degree, float limit, boolean partialSync)
