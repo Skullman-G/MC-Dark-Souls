@@ -111,8 +111,8 @@ public class AnimationDataExtractor
 			String fir = jointName.substring(9);
 			if (fir.length() - 12 <= 0)
 			{
+				if (jointName.contains("Armature_")) continue;
 				System.err.println("Joint " + jointName + " not correctly titled.");
-				continue;
 			}
 			String sec = fir.substring(0, fir.length() - 12);
 			
