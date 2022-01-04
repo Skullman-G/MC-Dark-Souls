@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModRecipes;
-import com.skullmangames.darksouls.core.init.RecipeTypeInit;
+import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -66,7 +66,7 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	@Override
 	public IRecipeType<?> getType()
 	{
-		return RecipeTypeInit.REINFORCE_ESTUS_FLASK;
+		return ModRecipeTypes.REINFORCE_ESTUS_FLASK;
 	}
 
 	@Override
@@ -82,19 +82,19 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<IInventory>
 	
 	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ReinforceEstusFlaskRecipe>
 	{
-	    @Override  
+	    @Override
 		public ReinforceEstusFlaskRecipe fromJson(ResourceLocation id, JsonObject p_199425_2_)
 	    {
 	    	return new ReinforceEstusFlaskRecipe(id);
 	    }
 
-	    @Override  
+	    @Override
 	    public ReinforceEstusFlaskRecipe fromNetwork(ResourceLocation id, PacketBuffer p_199426_2_)
 	    {
 	    	return new ReinforceEstusFlaskRecipe(id);
 	    }
 
-	    @Override  
+	    @Override
 	    public void toNetwork(PacketBuffer p_199427_1_, ReinforceEstusFlaskRecipe p_199427_2_)
 	    {
 	    	return;

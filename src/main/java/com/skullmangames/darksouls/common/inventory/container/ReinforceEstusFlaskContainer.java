@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.item.crafting.ReinforceEstusFlaskRecipe;
 import com.skullmangames.darksouls.core.init.ModContainers;
-import com.skullmangames.darksouls.core.init.RecipeTypeInit;
+import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -113,7 +113,7 @@ public class ReinforceEstusFlaskContainer extends Container
 	
 	public void createResult()
 	{
-		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeTypeInit.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);
+		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(ModRecipeTypes.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);
 	    if (list.isEmpty())
 	    {
 	        this.resultSlots.setItem(0, ItemStack.EMPTY);
@@ -207,7 +207,7 @@ public class ReinforceEstusFlaskContainer extends Container
 	
 	private boolean shouldQuickMoveToAdditionalSlot(ItemStack p_241210_1_)
 	{
-		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeTypeInit.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);  
+		List<ReinforceEstusFlaskRecipe> list = this.level.getRecipeManager().getRecipesFor(ModRecipeTypes.REINFORCE_ESTUS_FLASK, this.inputSlots, this.level);  
 		return list.stream().anyMatch((p_241444_1_) ->
 		{
 	         return p_241444_1_.isAdditionIngredient(p_241210_1_);
