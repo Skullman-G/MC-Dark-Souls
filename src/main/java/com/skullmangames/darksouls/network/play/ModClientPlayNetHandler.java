@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.network.play;
 
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.network.server.STCSpawnSoulPacket;
@@ -78,5 +79,11 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 		}
 
 		minecraft.gui.setTitles(title, subtitle, packet.getFadeInTime(), packet.getStayTime(), packet.getFadeOutTime());
+	}
+
+	@Override
+	public void openFireKeeperScreen(int firekeeperid)
+	{
+		Minecraft.getInstance().setScreen(new FireKeeperScreen(firekeeperid));
 	}
 }

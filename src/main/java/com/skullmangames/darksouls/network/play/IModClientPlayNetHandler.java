@@ -15,4 +15,6 @@ public interface IModClientPlayNetHandler
 	void openBonfireScreen(BonfireTileEntity tileentity);
 	
 	void handleSetTitles(STitlePacket packet);
+	
+	void openFireKeeperScreen(int firekeeperid);
 }

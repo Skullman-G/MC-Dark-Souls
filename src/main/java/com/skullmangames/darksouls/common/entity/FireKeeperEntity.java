@@ -3,11 +3,11 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skullmangames.darksouls.client.util.ClientUtils;
 import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -30,6 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
@@ -45,24 +46,29 @@ public class FireKeeperEntity extends QuestEntity
 	{
 		super(entity, level);
 	}
-
+	
 	@Override
-	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_,
-			ILivingEntityData p_213386_4_, CompoundNBT p_213386_5_)
+	public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason,
+			ILivingEntityData data, CompoundNBT nbt)
 	{
-		for (TileEntity t : this.level.blockEntityList)
+		if (!this.hasLinkedBonfire)
 		{
-			if (t instanceof BonfireTileEntity && !((BonfireTileEntity) t).hasFireKeeper()
-					&& t.getBlockPos().distSqr(this.position().x, this.position().y, this.position().z, false) <= 1000)
+			for (TileEntity t : this.level.blockEntityList)
 			{
-				this.linkBonfire(t.getBlockPos());
-				break;
+				if (t instanceof BonfireTileEntity
+						&& !((BonfireTileEntity) t).hasFireKeeper()
+						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)
+				{
+					this.linkBonfire(t.getBlockPos());
+					break;
+				}
 			}
 		}
-		return super.finalizeSpawn(p_213386_1_, p_213386_2_, p_213386_3_, p_213386_4_, p_213386_5_);
+		
+		return super.finalizeSpawn(world, difficulty, reason, data, nbt);
 	}
 
-	public void linkBonfire(BlockPos blockpos)
+	private void linkBonfire(BlockPos blockpos)
 	{
 		this.linkedBonfirePos = blockpos;
 		this.getLinkedBonfire().addFireKeeper(this.stringUUID);
@@ -81,8 +87,9 @@ public class FireKeeperEntity extends QuestEntity
 
 	public BonfireTileEntity getLinkedBonfire()
 	{
-		return this.level.getBlockEntity(this.linkedBonfirePos) instanceof BonfireTileEntity
-				? (BonfireTileEntity) this.level.getBlockEntity(this.linkedBonfirePos)
+		TileEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
+		return tileentity instanceof BonfireTileEntity
+				? (BonfireTileEntity) tileentity
 				: null;
 	}
 
@@ -110,10 +117,10 @@ public class FireKeeperEntity extends QuestEntity
 	public void addAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.addAdditionalSaveData(nbt);
-		nbt.putInt("linked_bonfire_x", this.linkedBonfirePos.getX());
-		nbt.putInt("linked_bonfire_y", this.linkedBonfirePos.getY());
-		nbt.putInt("linked_bonfire_z", this.linkedBonfirePos.getZ());
-		nbt.putBoolean("has_linked_bonfire", this.hasLinkedBonfire);
+		nbt.putInt("LinkedBonfireX", this.linkedBonfirePos.getX());
+		nbt.putInt("LinkedBonfireY", this.linkedBonfirePos.getY());
+		nbt.putInt("LinkedBonfireZ", this.linkedBonfirePos.getZ());
+		nbt.putBoolean("HasLinkedBonfire", this.hasLinkedBonfire);
 		nbt.putString("QuestPath", this.getCurrentQuestPath());
 	}
 
@@ -121,8 +128,8 @@ public class FireKeeperEntity extends QuestEntity
 	public void readAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.readAdditionalSaveData(nbt);
-		this.linkedBonfirePos = new BlockPos(nbt.getInt("linked_bonfire_x"), nbt.getInt("linked_bonfire_y"), nbt.getInt("linked_bonfire_z"));
-		this.hasLinkedBonfire = nbt.getBoolean("has_linked_bonfire");
+		this.linkedBonfirePos = new BlockPos(nbt.getInt("LinkedBonfireX"), nbt.getInt("LinkedBonfireY"), nbt.getInt("LinkedBonfireZ"));
+		this.hasLinkedBonfire = nbt.getBoolean("HasLinkedBonfire");
 		this.setCurrentQuestPath(nbt.getString("QuestPath"));
 	}
 
@@ -131,23 +138,26 @@ public class FireKeeperEntity extends QuestEntity
 	{
 		super.tick();
 
+		if (!this.hasLinkedBonfire)
+		{
+			for (TileEntity t : this.level.blockEntityList)
+			{
+				if (t instanceof BonfireTileEntity
+						&& !((BonfireTileEntity) t).hasFireKeeper()
+						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)
+				{
+					this.linkBonfire(t.getBlockPos());
+					break;
+				}
+			}
+		}
+		
 		if (!this.level.isClientSide() && !this.isDeadOrDying())
 		{
 			if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
 			{
 				this.hurt(DamageSource.STARVE, this.getHealth());
 			}
-		}
-	}
-
-	@Override
-	public void checkDespawn()
-	{
-		super.checkDespawn();
-
-		if (!this.hasLinkedBonfire)
-		{
-			this.remove();
 		}
 	}
 
@@ -167,31 +177,29 @@ public class FireKeeperEntity extends QuestEntity
 	@Override
 	protected ActionResultType mobInteract(PlayerEntity player, Hand hand)
 	{
-		if (player instanceof ServerPlayerEntity)
+		if (player.level.isClientSide)
 		{
-			ServerPlayerEntity serverplayer = (ServerPlayerEntity) player;
-
 			switch (this.getCurrentQuestPath())
 			{
-			case "1":
-				serverplayer.sendMessage(new TranslationTextComponent("dialogue.darksouls.fire_keeper.introduction"), serverplayer.getUUID());
-				this.setCurrentQuestPath("2");
-				break;
-
-			case "2":
-				if (serverplayer.inventory.contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
-				{
-					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.estus_shard"), serverplayer.getUUID());
-				} else
-				{
-					serverplayer.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.general"), serverplayer.getUUID());
-				}
-				ClientUtils.openFireKeeperScreen(this, serverplayer);
-				break;
+				case "1":
+					player.sendMessage(new TranslationTextComponent("dialogue.darksouls.fire_keeper.introduction"),  Util.NIL_UUID);
+					this.setCurrentQuestPath("2");
+					break;
+		
+				case "2":
+					if (player.inventory.contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
+					{
+						player.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.estus_shard"),  Util.NIL_UUID);
+					} else
+					{
+						player.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.general"),  Util.NIL_UUID);
+					}
+					if (ModNetworkManager.connection != null) ModNetworkManager.connection.openFireKeeperScreen(this.getId());
+					break;
 			}
 		}
 
-		return ActionResultType.SUCCESS;
+		return ActionResultType.sidedSuccess(player.level.isClientSide);
 	}
 
 	public void openContainer(ServerPlayerEntity serverplayer)

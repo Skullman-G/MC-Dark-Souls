@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.network;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.network.client.CTSHuman;
 import com.skullmangames.darksouls.network.client.CTSHumanity;
+import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
@@ -77,6 +78,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSSouls.class, CTSSouls::toBytes, CTSSouls::fromBytes, CTSSouls::handle);
 		INSTANCE.registerMessage(id++, CTSStat.class, CTSStat::toBytes, CTSStat::fromBytes, CTSStat::handle);
 		INSTANCE.registerMessage(id++, CTSUpdateBonfireBlock.class, CTSUpdateBonfireBlock::toBytes, CTSUpdateBonfireBlock::fromBytes, CTSUpdateBonfireBlock::handle);
+		INSTANCE.registerMessage(id++, CTSOpenFireKeeperContainer.class, CTSOpenFireKeeperContainer::toBytes, CTSOpenFireKeeperContainer::fromBytes, CTSOpenFireKeeperContainer::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);

@@ -127,9 +127,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	public void addFireKeeper(String uuid)
 	{
 		this.fireKeeperStringUUID = uuid;
-		this.setLit(true);
 		this.hasFireKeeper = true;
-		this.kindle();
+		this.playKindleSound();
+		this.level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.LIT, true).setValue(BonfireBlock.ESTUS_VOLUME_LEVEL, 2), 3);
 		this.markDirty();
 	}
 

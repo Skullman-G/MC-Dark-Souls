@@ -3,13 +3,13 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,8 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class FireKeeperScreen extends Screen
 {
-	private final FireKeeperEntity fireKeeper;
-	private final ServerPlayerEntity serverPlayer;
+	private final int fireKeeperId;
 	
 	private final int color;
 	
@@ -30,13 +29,10 @@ public class FireKeeperScreen extends Screen
 	private int buttonWidth = 100;
 	private int buttonHeight = 20;
 	
-	public FireKeeperScreen(FireKeeperEntity firekeeper, ServerPlayerEntity serverplayer)
+	public FireKeeperScreen(int firekeeperid)
 	{
 		super(NarratorChatListener.NO_TITLE);
-		
-		this.fireKeeper = firekeeper;
-		this.serverPlayer = serverplayer;
-		
+		this.fireKeeperId = firekeeperid;
 		this.color = DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
 	}
 	
@@ -67,7 +63,7 @@ public class FireKeeperScreen extends Screen
 	
 	private void openReinforceEstusFlaskScreen()
 	{
-		this.fireKeeper.openContainer(this.serverPlayer);
+		ModNetworkManager.sendToServer(new CTSOpenFireKeeperContainer(this.fireKeeperId));
 	}
 	
 	private void openLevelUpScreen()
