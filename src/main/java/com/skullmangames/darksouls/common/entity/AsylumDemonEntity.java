@@ -49,13 +49,13 @@ public class AsylumDemonEntity extends CreatureEntity
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return ModSoundEvents.ASYLUM_DEMON_AMBIENT;
+		return ModSoundEvents.ASYLUM_DEMON_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return ModSoundEvents.ASYLUM_DEMON_DEATH;
+		return ModSoundEvents.ASYLUM_DEMON_DEATH.get();
 	}
 	
 	@Override

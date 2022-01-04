@@ -29,7 +29,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
 	{
-		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH, 0.5F, 1.0F);
+		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
 		if (!level.isClientSide && this.getAmount() > 0)
 		{
 			PlayerData<?> playerdata = (PlayerData<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
@@ -61,7 +61,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return ModSoundEvents.SOUL_CONTAINER_USE;
+		return ModSoundEvents.SOUL_CONTAINER_USE.get();
 	}
 	
 	@Override

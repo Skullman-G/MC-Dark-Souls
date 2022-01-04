@@ -8,7 +8,7 @@ import net.minecraft.client.network.play.IClientPlayNetHandler;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 
-public class SSpawnSoulPacket implements IPacket<IClientPlayNetHandler>
+public class STCSpawnSoulPacket implements IPacket<IClientPlayNetHandler>
 {
 	private int id;
 	private double x;
@@ -16,7 +16,7 @@ public class SSpawnSoulPacket implements IPacket<IClientPlayNetHandler>
 	private double z;
 	private int value;
 	
-	public SSpawnSoulPacket(SoulEntity entity)
+	public STCSpawnSoulPacket(SoulEntity entity)
 	{
 		this.id = entity.getId();
 		this.x = entity.getX();

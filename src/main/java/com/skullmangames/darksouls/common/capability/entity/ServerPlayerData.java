@@ -88,7 +88,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		if (value)
 		{
 			this.orgEntity.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.humanity_restored_message")));
-			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM, -0.2F, -0.2F);
+			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get(), -0.2F, -0.2F);
 		}
 		super.setHuman(value);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
@@ -139,7 +139,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
-		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED, 1.0F, 1.0F);
+		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get(), 1.0F, 1.0F);
 		
 		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
 		this.animator.playAnimation(disarmAnimation, 0.0F);

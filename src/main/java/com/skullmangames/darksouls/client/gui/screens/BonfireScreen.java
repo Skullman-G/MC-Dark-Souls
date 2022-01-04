@@ -7,6 +7,8 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
@@ -153,7 +155,7 @@ public class BonfireScreen extends Screen
 	protected void kindle()
 	{
 		this.playerData.raiseHumanity(-1);
-		this.bonfiretileentity.kindle();
+		ModNetworkManager.sendToServer(new CTSUpdateBonfireBlock("", false, true, this.bonfiretileentity.getBlockPos()));
 		super.onClose();
 	}
 	

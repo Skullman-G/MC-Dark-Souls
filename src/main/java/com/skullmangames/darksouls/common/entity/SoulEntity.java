@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEntities;
-import com.skullmangames.darksouls.network.server.SSpawnSoulPacket;
+import com.skullmangames.darksouls.network.server.STCSpawnSoulPacket;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -115,7 +115,7 @@ public class SoulEntity extends Entity
 	@Override
 	public IPacket<?> getAddEntityPacket()
 	{
-		return new SSpawnSoulPacket(this);
+		return new STCSpawnSoulPacket(this);
 	}
 
 	@Override

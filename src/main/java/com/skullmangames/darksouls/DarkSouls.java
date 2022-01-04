@@ -56,7 +56,6 @@ import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRenderer;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
-import com.skullmangames.darksouls.common.world.ModGamerules;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
@@ -119,6 +118,7 @@ public class DarkSouls
     	modBus.addListener(ModAttributes::modifyAttributeMap);
     	
     	ModAttributes.ATTRIBUTES.register(modBus);
+    	ModSoundEvents.SOUND_EVENTS.register(modBus);
     	ModSoundEvents.VANILLA_SOUND_EVENTS.register(modBus);
     	ModBlocks.BLOCKS.register(modBus);
     	ModBlocks.VANILLA_BLOCKS.register(modBus);
@@ -158,7 +158,6 @@ public class DarkSouls
     	
     	ProviderEntity.makeMap();
     	ProviderProjectile.makeMap();
-    	ModGamerules.registerRules();
 		
 		event.enqueueWork(() ->
     	{

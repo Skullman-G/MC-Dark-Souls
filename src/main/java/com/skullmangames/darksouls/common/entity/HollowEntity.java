@@ -105,13 +105,13 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return ModSoundEvents.HOLLOW_AMBIENT;
+		return ModSoundEvents.HOLLOW_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return ModSoundEvents.HOLLOW_DEATH;
+		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
 	
 	@Override

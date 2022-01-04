@@ -132,7 +132,7 @@ public class StaticAnimation extends DynamicAnimation
 	public StaticAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
 	{
 		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
-		this.soundStream.add(new SoundKey(time, sound, isRemote));
+		this.soundStream.add(new SoundKey(sound, time, isRemote));
 		return this;
 	}
 	
@@ -144,17 +144,16 @@ public class StaticAnimation extends DynamicAnimation
 	
 	protected static class SoundKey implements Comparable<SoundKey>
 	{
-		float time;
 		SoundEvent sound;
+		float time;
 		boolean isClientSide;
 		
-		protected SoundKey(float time, SoundEvent sound, boolean isRemote)
+		protected SoundKey(SoundEvent sound, float time, boolean isClientSide)
 		{
-			this.time = time;
 			this.sound = sound;
-			this.isClientSide = isRemote;
+			this.time = time;
+			this.isClientSide = isClientSide;
 		}
-
 		@Override
 		public int compareTo(SoundKey arg0)
 		{

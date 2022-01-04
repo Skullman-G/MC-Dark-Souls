@@ -158,7 +158,7 @@ public class FireKeeperEntity extends QuestEntity
 		{
 			if (this.hasLinkedBonfire && this.getLinkedBonfire() != null && this.getLinkedBonfire().getFireKeeperStringUUID() == this.stringUUID)
 			{
-				this.getLinkedBonfire().setLit(null, false);
+				this.getLinkedBonfire().setLit(false);
 			}
 		}
 		super.die(source);

@@ -446,7 +446,7 @@ public class EntityEvents
 			if (event.getEntityLiving().hasEffect(ModEffects.UNDEAD_CURSE.get())) playerdata.setHuman(false);
 		}
 		
-		if (entitydata.isClientSide()) entitydata.playSound(ModSoundEvents.GENERIC_KILL, 0.0F, 0.0F);
+		if (entitydata.isClientSide()) entitydata.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);
 		entitydata.getAnimator().playDeathAnimation();
 	}
 	

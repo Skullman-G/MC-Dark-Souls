@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import com.skullmangames.darksouls.network.server.SSpawnSoulPacket;
+import com.skullmangames.darksouls.network.server.STCSpawnSoulPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 {
 	@Override
-	public void handleAddSoulEntity(SSpawnSoulPacket packet)
+	public void handleAddSoulEntity(STCSpawnSoulPacket packet)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientPlayNetHandler handler = minecraft.getConnection();
