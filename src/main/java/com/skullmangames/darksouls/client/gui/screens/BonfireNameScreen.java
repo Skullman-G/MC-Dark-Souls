@@ -96,7 +96,7 @@ public class BonfireNameScreen extends Screen
 	    {
 	    	ModNetworkManager.connection.handleSetTitles(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.bonfire_lit_message")));
 	    	BlockPos pos = this.tileentity.getBlockPos();
-	    	this.tileentity.getLevel().playLocalSound(pos.getX(), pos.getY(), pos.getZ(), ModSoundEvents.GENERIC_HUMAN_FORM.get(), SoundCategory.AMBIENT, 1.0F, 0.8F, false);
+	    	this.minecraft.player.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), ModSoundEvents.GENERIC_HUMAN_FORM.get(), SoundCategory.AMBIENT, 1.0F, 0.8F, false);
 	    }
 	    ModNetworkManager.sendToServer(new CTSUpdateBonfireBlock(this.titleEdit.getValue(), true, false, this.tileentity.getBlockPos()));
 	    

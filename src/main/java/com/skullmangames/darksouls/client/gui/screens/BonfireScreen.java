@@ -83,7 +83,7 @@ public class BonfireScreen extends Screen
 		{
 			String description = new TranslationTextComponent("gui.darksouls.reverse_hollowing_tooltip").getString();
 			String warning = "";
-			if (!(this.playerData.getHumanity() > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
+			if (!this.playerData.hasEnoughHumanity(1)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
 			if (this.playerData.isHuman()) warning = new TranslationTextComponent("gui.darksouls.already_human").getString();
 			StringTextComponent textcomponent = warning == "" ? new StringTextComponent(description) : new StringTextComponent(description + "\n\n" + "\u00A74" + warning);
 			
@@ -93,13 +93,13 @@ public class BonfireScreen extends Screen
 		{
 	         this.reverseHollowing();
 	    }, tooltip));
-		this.reverseHollowingButton.active = !this.playerData.isHuman() && this.playerData.getHumanity() > 0 ? true : false;
+		this.reverseHollowingButton.active = !this.playerData.isHuman() && this.playerData.hasEnoughHumanity(1) ? true : false;
 		
 		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
 		{
 			String description = new TranslationTextComponent("gui.darksouls.kindle_tooltip").getString();
 			String warning = "";
-			if (!(this.playerData.getHumanity() > 0)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
+			if (!this.playerData.hasEnoughHumanity(1)) warning = new TranslationTextComponent("gui.darksouls.not_enough_humanity").getString();
 			if (!this.playerData.isHuman()) warning = new TranslationTextComponent("gui.darksouls.not_human").getString();
 			if (this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) >= 2) warning = new TranslationTextComponent("gui.darksouls.cannot_kindle_further").getString();
 			StringTextComponent textcomponent = warning == "" ? new StringTextComponent(description) : new StringTextComponent(description + "\n\n" + "\u00A74" + warning);

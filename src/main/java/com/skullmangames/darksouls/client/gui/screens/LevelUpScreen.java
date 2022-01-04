@@ -51,7 +51,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 				this.levelUp(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.canEffort();
+			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(this.getCost());
 			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 10;
@@ -70,13 +70,8 @@ public class LevelUpScreen extends PlayerStatsScreen
 			int statvalue = this.playerdata.getStats().getStatValue(down.getStat());
 			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
 			down.active = this.playerdata.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
-			up.active = displayedstatvalue < 99 && this.canEffort();
+			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(this.getCost());
 		});
-	}
-	
-	private boolean canEffort()
-	{
-		return this.playerdata.isCreativeOrSpectator() ? true : this.playerdata.getSouls() >= this.getCost();
 	}
 	
 	private void levelUp(Stat stat)

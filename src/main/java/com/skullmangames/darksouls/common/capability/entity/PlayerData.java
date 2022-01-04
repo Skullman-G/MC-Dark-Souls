@@ -112,6 +112,16 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		this.human = value;
 	}
 	
+	public boolean hasEnoughHumanity(int cost)
+	{
+		return this.isCreativeOrSpectator() ? true : this.humanity >= cost;
+	}
+	
+	public boolean hasEnoughSouls(int cost)
+	{
+		return this.isCreativeOrSpectator() ? true : this.souls >= cost;
+	}
+	
 	public int getHumanity()
 	{
 		return this.humanity;
