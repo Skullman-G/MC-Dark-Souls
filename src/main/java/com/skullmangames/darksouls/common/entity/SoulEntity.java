@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModParticles;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -45,10 +47,12 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 	public void tick()
 	{
 		super.tick();
-
+		
 		this.xo = this.getX();
 		this.yo = this.getY();
 		this.zo = this.getZ();
+		
+		this.level.addParticle(ModParticles.SOUL.get(), this.getX(), this.getY()+0.2D, this.getZ(), 0, 0, 0);
 
 		if (this.followingEntity == null || this.followingEntity.distanceToSqr(this) > 64.0D)
 		{
@@ -68,8 +72,7 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 			double d1 = vector3d.lengthSqr();
 			if (d1 < 64.0D)
 			{
-				double d2 = 1.0D - Math.sqrt(d1) / 8.0D;
-				this.setDeltaMovement(this.getDeltaMovement().add(vector3d.normalize().scale(d2 * d2 * 0.1D)));
+				this.setDeltaMovement(this.getDeltaMovement().add(vector3d.normalize().scale(0.01D)));
 			}
 		}
 
@@ -79,7 +82,7 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 	@Override
 	public void playerTouch(PlayerEntity player)
 	{
-		if (!this.level.isClientSide)
+		if (!this.level.isClientSide && this.tickCount > 50)
 		{
 			if (this.value > 0)
 			{

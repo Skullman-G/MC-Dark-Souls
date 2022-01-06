@@ -137,7 +137,7 @@ public class FireKeeperEntity extends QuestEntity
 	public void tick()
 	{
 		super.tick();
-
+		
 		if (!this.hasLinkedBonfire)
 		{
 			for (TileEntity t : this.level.blockEntityList)
