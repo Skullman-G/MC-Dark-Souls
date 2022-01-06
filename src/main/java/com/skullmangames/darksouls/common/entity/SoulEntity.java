@@ -3,19 +3,20 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEntities;
-import com.skullmangames.darksouls.network.server.STCSpawnSoulPacket;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public class SoulEntity extends Entity
+public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 {
 	private PlayerEntity followingEntity;
 	private int value;
@@ -26,6 +27,13 @@ public class SoulEntity extends Entity
 		this.setPos(posX, posY, posZ);
 		this.yRot = (float) (this.random.nextDouble() * 360.0D);
 		this.value = value;
+	}
+	
+	public SoulEntity(World level, double posX, double posY, double posZ)
+	{
+		this(ModEntities.SOUL.get(), level);
+		this.setPos(posX, posY, posZ);
+		this.yRot = (float) (this.random.nextDouble() * 360.0D);
 	}
 
 	public SoulEntity(EntityType<? extends SoulEntity> type, World level)
@@ -115,7 +123,7 @@ public class SoulEntity extends Entity
 	@Override
 	public IPacket<?> getAddEntityPacket()
 	{
-		return new STCSpawnSoulPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
@@ -133,5 +141,17 @@ public class SoulEntity extends Entity
 	public int getValue()
 	{
 		return this.value;
+	}
+
+	@Override
+	public void writeSpawnData(PacketBuffer buffer)
+	{
+		buffer.writeInt(this.value);
+	}
+
+	@Override
+	public void readSpawnData(PacketBuffer buffer)
+	{
+		this.value = buffer.readInt();
 	}
 }

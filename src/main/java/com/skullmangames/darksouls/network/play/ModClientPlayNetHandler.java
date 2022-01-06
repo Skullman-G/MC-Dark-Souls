@@ -3,13 +3,8 @@ package com.skullmangames.darksouls.network.play;
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
-import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import com.skullmangames.darksouls.network.server.STCSpawnSoulPacket;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.play.ClientPlayNetHandler;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketThreadUtil;
 import net.minecraft.network.play.server.STitlePacket;
@@ -21,23 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 {
-	@Override
-	public void handleAddSoulEntity(STCSpawnSoulPacket packet)
-	{
-		Minecraft minecraft = Minecraft.getInstance();
-		ClientPlayNetHandler handler = minecraft.getConnection();
-		PacketThreadUtil.ensureRunningOnSameThread(packet, handler, minecraft);
-		double x = packet.getX();
-		double y = packet.getY();
-		double z = packet.getZ();
-		Entity entity = new SoulEntity(handler.getLevel(), x, y, z, packet.getValue());
-		entity.setPacketCoordinates(x, y, z);
-		entity.yRot = 0.0F;
-		entity.xRot = 0.0F;
-		entity.setId(packet.getId());
-		handler.getLevel().putNonPlayerEntity(packet.getId(), entity);
-	}
-
 	@Override
 	public void openBonfireNameScreen(PlayerEntity player, BonfireTileEntity tileentity)
 	{
