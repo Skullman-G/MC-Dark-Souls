@@ -12,12 +12,13 @@
     	"0.2.1": "-Added first person to battle mode-Added fist attack\n-Added shield bash\n-Replaced idle animation\n-Removed the jump animation\n-Hollows now only attack players and villagers and flee from boss monsters\n-Added bonfires to undead asylum structures\n-Fixed a bug where the player would run out of stamina in creative mode\n-Fixed bow/crossbow/trident attacks\n-Fixed overlapping problems in the ui\n-Fixed a bug where the player would be able to run while using an item\n-Fixed a bug where the player would be able roll while in the menu",
     	"0.2.2": "-Added new title screen style (you can toggle it in the config menu of the mod)\n-Added new dig animation\n-Fixed the player not being able to destroy blocks in survival\n-Fixed death animations\n-Fixed the game crashing after using a weapon with no attack animation",
     	"0.2.3": "-New fist attack animations\n-New straight sword attack animations\n-Damage Indicator\n-Dark Souls UI option extended\n-Updated Forge version to 36.2.0\n-Fixed a bug where the camera would clip into the player model when crouching\n-Fixed buggy stamina bar animations-Set Hollow and Asylum Demon spawnpoints in Undead Asylum Structure\n-Updated idle and walking animation of Hollow\n-Updated attack pattern of Hollow\n-Updated Level Up Screen\n-Added Status Screen\n-Added advancement 'Prison Break' for killing the Asylum Demon\n-Updated texture and model of Asylum Demon\n-Added Asylum Demon dash attack\n-Added Asylum Demon ground pound attack\n-Added dust particle\n-Reimplemented vanilla first person mode",
-    	"0.2.4": "-Added new stun animation when hit by a greathammer\n-Fixed crash when loading a world while in forge version 36.2.15 and above (#6)"
+    	"0.2.4": "-Added new stun animation when hit by a greathammer\n-Fixed crash when loading a world while in forge version 36.2.15 and above (#6)",
+    	"0.2.5": "-Works on server now\n-Added Soul particles\n-Added Fire Keeper spawns (which I forgor in the previous version)\n-You have now infinite humanity in creative\n-Fixed a bug where Hollows where able to rotate when stunned by Asylum Demon"
     },
     
     "promos":
     {
-      "1.16.5-latest": "0.2.4",
-      "1.16.5-recommended": "0.2.4"
+      "1.16.5-latest": "0.2.5",
+      "1.16.5-recommended": "0.2.5"
     }
   }
