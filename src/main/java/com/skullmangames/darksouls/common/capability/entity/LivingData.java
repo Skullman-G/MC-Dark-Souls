@@ -681,26 +681,28 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public static enum EntityState
 	{
-		FREE(false, false, false, true, 0),
-		FREE_CAMERA(true, false, false, false, 1),
-		FREE_INPUT(false, false, false, true, 3),
-		PRE_DELAY(true, false, false, false, 1),
-		CONTACT(true, true, false, false, 2),
-		POST_DELAY(true, false, false, true, 3),
-		HIT(true, false, false, false, 3),
-		DISARMED(true, true, false, false, 3),
-		INVINCIBLE(true, false, true, false, 3);
+		FREE(false, false, false, false, true, 0),
+		FREE_CAMERA(true, false, false, false, false, 1),
+		FREE_INPUT(false, false, false, false, true, 3),
+		PRE_DELAY(true, true, false, false, false, 1),
+		CONTACT(true, true, true, false, false, 2),
+		POST_DELAY(true, true, false, false, true, 3),
+		HIT(true, true, false, false, false, 3),
+		DISARMED(true, true, true, false, false, 3),
+		INVINCIBLE(true, true, false, true, false, 3);
 		
 		boolean movementLock;
+		boolean rotationLock;
 		boolean collisionDetection;
 		boolean invincible;
 		boolean canAct;
 		// none : 0, beforeContact : 1, contact : 2, afterContact : 3
 		int contactLevel;
 		
-		EntityState(boolean movementLock, boolean collisionDetection, boolean invincible, boolean canAct, int level)
+		EntityState(boolean movementLock, boolean rotationLock, boolean collisionDetection, boolean invincible, boolean canAct, int level)
 		{
 			this.movementLock = movementLock;
+			this.rotationLock = rotationLock;
 			this.collisionDetection = collisionDetection;
 			this.invincible = invincible;
 			this.canAct = canAct;
@@ -710,6 +712,11 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		public boolean isMovementLocked()
 		{
 			return this.movementLock;
+		}
+		
+		public boolean isRotationLocked()
+		{
+			return this.rotationLock;
 		}
 		
 		public boolean shouldDetectCollision()
