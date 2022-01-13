@@ -8,9 +8,9 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSPlayAnimation
 {
@@ -39,12 +39,12 @@ public class CTSPlayAnimation
 		this.resendToSender = resendToSender;
 	}
 	
-	public static CTSPlayAnimation fromBytes(PacketBuffer buf)
+	public static CTSPlayAnimation fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSPlayAnimation(buf.readInt(), buf.readFloat(), buf.readBoolean(), buf.readBoolean());
 	}
 
-	public static void toBytes(CTSPlayAnimation msg, PacketBuffer buf)
+	public static void toBytes(CTSPlayAnimation msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.animationId);
 		buf.writeFloat(msg.modifyTime);
@@ -56,7 +56,7 @@ public class CTSPlayAnimation
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayerEntity serverPlayer = ctx.get().getSender();
+			ServerPlayer serverPlayer = ctx.get().getSender();
 			ServerPlayerData playerdata = (ServerPlayerData) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if(!msg.isClientSideAnimation)
 				playerdata.getAnimator().playAnimation(msg.animationId, msg.modifyTime);

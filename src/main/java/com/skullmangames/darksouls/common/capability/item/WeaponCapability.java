@@ -27,15 +27,15 @@ import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -76,7 +76,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, LivingData<?> entitydata)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, LivingData<?> entitydata)
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(equipmentSlot, entitydata);
 		
@@ -96,7 +96,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
@@ -105,20 +105,20 @@ public class WeaponCapability extends CapabilityItem implements IShield
 		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
 			String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
-			String description = new TranslationTextComponent(languagePath).getString();
+			String description = new TranslatableComponent(languagePath).getString();
 			
-			if (!description.contains(languagePath)) itemTooltip.add(new StringTextComponent("\u00A77\n" + description));
+			if (!description.contains(languagePath)) itemTooltip.add(new TextComponent("\u00A77\n" + description));
 		}
 		else
 		{
 			if (!(this.orgItem instanceof WeaponItem)) return;
 			WeaponItem weapon = (WeaponItem)this.orgItem;
-			itemTooltip.add(new StringTextComponent("\u00A72Physical Damage: "+weapon.getDamage()));
-			itemTooltip.add(new StringTextComponent("\u00A72Durability: "+weapon.getDurabilityForDisplay(stack)));
+			itemTooltip.add(new TextComponent("\u00A72Physical Damage: "+weapon.getDamage()));
+			itemTooltip.add(new TextComponent("\u00A72Durability: "+weapon.getTier().getUses()));
 			
-			itemTooltip.add(new StringTextComponent(""));
-			itemTooltip.add(new StringTextComponent("Requirements:"));
-			itemTooltip.add(new StringTextComponent("  Strength: "+this.getStatValue(Stats.STRENGTH, weapon, playerdata)));
+			itemTooltip.add(new TextComponent(""));
+			itemTooltip.add(new TextComponent("Requirements:"));
+			itemTooltip.add(new TextComponent("  Strength: "+this.getStatValue(Stats.STRENGTH, weapon, playerdata)));
 		}
 	}
 	

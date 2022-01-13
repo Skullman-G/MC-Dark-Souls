@@ -1,36 +1,31 @@
 package com.skullmangames.darksouls.common.tileentity;
 
-import java.util.Random;
-
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModTileEntities;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
 
-public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BonfireTileEntity extends BlockEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
 	private String fireKeeperStringUUID = "";
 
-	public BonfireTileEntity()
+	public BonfireTileEntity(BlockPos pos, BlockState state)
 	{
-		super(ModTileEntities.BONFIRE.get());
+		super(ModTileEntities.BONFIRE.get(), pos, state);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT nbt)
+	public CompoundTag save(CompoundTag nbt)
 	{
 		super.save(nbt);
 		nbt.putString("name", this.name);
@@ -40,9 +35,9 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT nbt)
+	public void load(CompoundTag nbt)
 	{
-		super.load(state, nbt);
+		super.load(nbt);
 		this.name = nbt.getString("name");
 		this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
 		this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
@@ -54,23 +49,15 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket()
+	public Packet<ClientGamePacketListener> getUpdatePacket()
 	{
-		CompoundNBT nbt = this.save(new CompoundNBT());
-		return new SUpdateTileEntityPacket(this.worldPosition, -1, nbt);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 	
 	@Override
-	public CompoundNBT getUpdateTag()
+	public CompoundTag getUpdateTag()
 	{
 		return this.save(super.getUpdateTag());
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-	{
-		this.load(this.getBlockState(), pkt.getTag());
-		this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 2);
 	}
 
 	private void markDirty()
@@ -108,7 +95,7 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 
 	private void playKindleSound()
 	{
-		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 
 	public void raiseEstusHealLevel()
@@ -141,35 +128,5 @@ public class BonfireTileEntity extends TileEntity implements ITickableTileEntity
 	public String getFireKeeperStringUUID()
 	{
 		return this.fireKeeperStringUUID;
-	}
-
-	private int ticktimer;
-
-	@Override
-	public void tick()
-	{
-		if (this.level instanceof ServerWorld)
-		{
-			ServerWorld serverworld = (ServerWorld) this.level;
-			Random random = serverworld.random;
-
-			if (this.ticktimer >= 1000)
-			{
-				this.ticktimer = 0;
-
-				if (random.nextInt(10) == 1 && this.getBlockState().getValue(BonfireBlock.LIT))
-				{
-					int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
-					int j = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
-					BlockPos blockpos = this.worldPosition.offset(i, this.worldPosition.getZ(), j);
-					ItemEntity homewardbone = new ItemEntity(serverworld, blockpos.getX(), blockpos.getY(), blockpos.getZ(),
-							new ItemStack(ModItems.HOMEWARD_BONE.get()));
-					serverworld.addFreshEntity(homewardbone);
-				}
-			} else
-			{
-				this.ticktimer++;
-			}
-		}
 	}
 }

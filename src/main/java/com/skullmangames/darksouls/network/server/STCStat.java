@@ -6,9 +6,9 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class STCStat
 {
@@ -23,12 +23,12 @@ public class STCStat
 		this.value = value;
 	}
 	
-	public static STCStat fromBytes(PacketBuffer buf)
+	public static STCStat fromBytes(FriendlyByteBuf buf)
 	{
 		return new STCStat(buf.readInt(), buf.readUtf(), buf.readInt());
 	}
 	
-	public static void toBytes(STCStat msg, PacketBuffer buf)
+	public static void toBytes(STCStat msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeUtf(msg.name);

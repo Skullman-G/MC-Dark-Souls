@@ -7,9 +7,9 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSRotatePlayerYaw
 {
@@ -25,12 +25,12 @@ public class CTSRotatePlayerYaw
 		this.yaw = yaw;
 	}
 	
-	public static CTSRotatePlayerYaw fromBytes(PacketBuffer buf)
+	public static CTSRotatePlayerYaw fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSRotatePlayerYaw(buf.readFloat());
 	}
 
-	public static void toBytes(CTSRotatePlayerYaw msg, PacketBuffer buf)
+	public static void toBytes(CTSRotatePlayerYaw msg, FriendlyByteBuf buf)
 	{
 		buf.writeFloat(msg.yaw);
 	}
@@ -38,7 +38,7 @@ public class CTSRotatePlayerYaw
 	public static void handle(CTSRotatePlayerYaw msg, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(()->{
-			ServerPlayerEntity player = ctx.get().getSender();
+			ServerPlayer player = ctx.get().getSender();
 			
 			if(player != null)
 			{

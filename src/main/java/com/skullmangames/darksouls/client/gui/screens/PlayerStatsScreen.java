@@ -3,7 +3,8 @@ package com.skullmangames.darksouls.client.gui.screens;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
@@ -11,14 +12,13 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class PlayerStatsScreen extends Screen
 {
@@ -36,10 +36,10 @@ public class PlayerStatsScreen extends Screen
 
 	public PlayerStatsScreen()
 	{
-		this(new StringTextComponent("Status"));
+		this(new TextComponent("Status"));
 	}
 	
-	public PlayerStatsScreen(ITextComponent title)
+	public PlayerStatsScreen(TextComponent title)
 	{
 		super(title);
 		this.playerdata = ClientManager.INSTANCE.getPlayerData();
@@ -54,7 +54,7 @@ public class PlayerStatsScreen extends Screen
 	}
 
 	@Override
-	public void render(MatrixStack matrixstack, int mouseX, int mouseY, float partialticks)
+	public void render(PoseStack matrixstack, int mouseX, int mouseY, float partialticks)
 	{
 		super.renderBackground(matrixstack);
 
@@ -80,7 +80,7 @@ public class PlayerStatsScreen extends Screen
 		int textheight = y + 143;
 		for (Stat stat : Stats.STATS)
 		{
-			this.font.draw(matrixstack, new TranslationTextComponent(stat.toString()), firstX, textheight, this.color);
+			this.font.draw(matrixstack, new TranslatableComponent(stat.toString()), firstX, textheight, this.color);
 
 			int statvalue = this.playerdata.getStats().getStatValue(stat);
 			int displaystatvalue = this.displayedStats.get(stat).intValue();
@@ -132,15 +132,15 @@ public class PlayerStatsScreen extends Screen
 		return this.displayedLevel * (10 + this.displayedLevel);
 	}
 
-	private void renderBg(MatrixStack matrixstack, float partialticks, int mouseX, int mouseY)
+	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
 		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
-			this.minecraft.getTextureManager().bind(DS_TEXTURE_LOCATION);
+			this.minecraft.getTextureManager().bindForSetup(DS_TEXTURE_LOCATION);
 		else
-			this.minecraft.getTextureManager().bind(TEXTURE_LOCATION);
+			this.minecraft.getTextureManager().bindForSetup(TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 		int y = (this.height - this.imageHeight) / 2;
-		AbstractGui.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+		GuiComponent.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class PlayerStatsScreen extends Screen
 	@Override
 	public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_)
 	{
-		InputMappings.Input mouseKey = InputMappings.getKey(p_231046_1_, p_231046_2_);
+		InputConstants.Key mouseKey = InputConstants.getKey(p_231046_1_, p_231046_2_);
 		if (super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_))
 			return true;
 		else if (ModKeys.OPEN_STAT_SCREEN.isActiveAndMatches(mouseKey))

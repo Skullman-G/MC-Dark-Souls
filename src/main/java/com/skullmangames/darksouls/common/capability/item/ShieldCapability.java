@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class ShieldCapability extends WeaponCapability implements IShield
 {

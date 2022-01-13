@@ -2,15 +2,15 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.DialogTexts;
-import net.minecraft.client.gui.screen.CreateWorldScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,17 +18,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModWorldSelectionScreen extends Screen
 {
 	protected final Screen lastScreen;
-	private List<IReorderingProcessor> toolTip;
+	private List<FormattedCharSequence> toolTip;
 	private Button deleteButton;
 	private Button selectButton;
 	private Button renameButton;
 	private Button copyButton;
-	protected TextFieldWidget searchBox;
+	protected EditBox searchBox;
 	private ModWorldSelectionList list;
 
 	public ModWorldSelectionScreen(Screen p_i46592_1_)
 	{
-		super(new TranslationTextComponent("selectWorld.title"));
+		super(new TranslatableComponent("selectWorld.title"));
 		this.lastScreen = p_i46592_1_;
 	}
 
@@ -48,8 +48,8 @@ public class ModWorldSelectionScreen extends Screen
 	protected void init()
 	{
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		this.searchBox = new TextFieldWidget(this.font, this.width / 2 - 100, 22, 200, 20, this.searchBox,
-				new TranslationTextComponent("selectWorld.search"));
+		this.searchBox = new EditBox(this.font, this.width / 2 - 100, 22, 200, 20, this.searchBox,
+				new TranslatableComponent("selectWorld.search"));
 		this.searchBox.setResponder((p_214329_1_) ->
 		{
 			this.list.refreshList(() ->
@@ -62,35 +62,35 @@ public class ModWorldSelectionScreen extends Screen
 				{
 					return this.searchBox.getValue();
 				}, this.list);
-		this.children.add(this.searchBox);
-		this.children.add(this.list);
-		this.selectButton = this.addButton(new Button(this.width / 2 - 154, this.height - 52, 150, 20,
-				new TranslationTextComponent("selectWorld.select"), (p_214325_1_) ->
+		this.addWidget(this.searchBox);
+		this.addWidget(this.list);
+		this.selectButton = this.addRenderableWidget(new Button(this.width / 2 - 154, this.height - 52, 150, 20,
+				new TranslatableComponent("selectWorld.select"), (p_214325_1_) ->
 				{
 					this.list.getSelectedOpt().ifPresent(ModWorldSelectionList.Entry::joinWorld);
 				}));
-		this.addButton(new Button(this.width / 2 + 4, this.height - 52, 150, 20,
-				new TranslationTextComponent("selectWorld.create"), (p_214326_1_) ->
+		this.addRenderableWidget(new Button(this.width / 2 + 4, this.height - 52, 150, 20,
+				new TranslatableComponent("selectWorld.create"), (p_214326_1_) ->
 				{
 					this.minecraft.setScreen(CreateWorldScreen.create(this));
 				}));
-		this.renameButton = this.addButton(new Button(this.width / 2 - 154, this.height - 28, 72, 20,
-				new TranslationTextComponent("selectWorld.edit"), (p_214323_1_) ->
+		this.renameButton = this.addRenderableWidget(new Button(this.width / 2 - 154, this.height - 28, 72, 20,
+				new TranslatableComponent("selectWorld.edit"), (p_214323_1_) ->
 				{
 					this.list.getSelectedOpt().ifPresent(ModWorldSelectionList.Entry::editWorld);
 				}));
-		this.deleteButton = this.addButton(new Button(this.width / 2 - 76, this.height - 28, 72, 20,
-				new TranslationTextComponent("selectWorld.delete"), (p_214330_1_) ->
+		this.deleteButton = this.addRenderableWidget(new Button(this.width / 2 - 76, this.height - 28, 72, 20,
+				new TranslatableComponent("selectWorld.delete"), (p_214330_1_) ->
 				{
 					this.list.getSelectedOpt().ifPresent(ModWorldSelectionList.Entry::deleteWorld);
 				}));
-		this.copyButton = this.addButton(new Button(this.width / 2 + 4, this.height - 28, 72, 20,
-				new TranslationTextComponent("selectWorld.recreate"), (p_214328_1_) ->
+		this.copyButton = this.addRenderableWidget(new Button(this.width / 2 + 4, this.height - 28, 72, 20,
+				new TranslatableComponent("selectWorld.recreate"), (p_214328_1_) ->
 				{
 					this.list.getSelectedOpt().ifPresent(ModWorldSelectionList.Entry::recreateWorld);
 				}));
-		this.addButton(
-				new Button(this.width / 2 + 82, this.height - 28, 72, 20, DialogTexts.GUI_CANCEL, (p_214327_1_) ->
+		this.addRenderableWidget(
+				new Button(this.width / 2 + 82, this.height - 28, 72, 20, CommonComponents.GUI_CANCEL, (p_214327_1_) ->
 				{
 					this.minecraft.setScreen(this.lastScreen);
 				}));
@@ -118,7 +118,7 @@ public class ModWorldSelectionScreen extends Screen
 	}
 
 	@Override
-	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
+	public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 		this.toolTip = null;
 		this.list.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
@@ -132,7 +132,7 @@ public class ModWorldSelectionScreen extends Screen
 
 	}
 
-	public void setToolTip(List<IReorderingProcessor> p_239026_1_)
+	public void setToolTip(List<FormattedCharSequence> p_239026_1_)
 	{
 		this.toolTip = p_239026_1_;
 	}

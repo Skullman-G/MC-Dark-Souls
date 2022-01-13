@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -30,7 +29,6 @@ public class HollowData extends BipedMobData<HollowEntity>
 	public void onEntityJoinWorld(HollowEntity entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(10.0F));
 	}
 	
 	@Override

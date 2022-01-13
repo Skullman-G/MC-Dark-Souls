@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

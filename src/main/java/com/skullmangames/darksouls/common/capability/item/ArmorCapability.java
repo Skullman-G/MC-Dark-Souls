@@ -11,18 +11,18 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,7 +33,7 @@ public class ArmorCapability extends CapabilityItem
 	protected double weight;
 	protected double stunArmor;
 	
-	private final EquipmentSlotType equipmentSlot;
+	private final EquipmentSlot equipmentSlot;
 	
 	protected float standardDef;
 	protected float strikeDef;
@@ -44,38 +44,38 @@ public class ArmorCapability extends CapabilityItem
 	{
 		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
-		IArmorMaterial armorMaterial = armorItem.getMaterial();
+		ArmorMaterial armorMaterial = armorItem.getMaterial();
 		this.equipmentSlot = armorItem.getSlot();
 		this.weight = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 2.5F;
 		this.stunArmor = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 0.375F;
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
-		itemTooltip.add(new StringTextComponent(""));
-		itemTooltip.add(new TranslationTextComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.standardDef*100)+"%")));
+		itemTooltip.add(new TextComponent(""));
+		itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.standardDef*100)+"%")));
 		
-		itemTooltip.add(new TranslationTextComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.strikeDef*100)+"%")));
+		itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.strikeDef*100)+"%")));
 		
-		itemTooltip.add(new TranslationTextComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.slashDef*100)+"%")));
+		itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.slashDef*100)+"%")));
 		
-		itemTooltip.add(new TranslationTextComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-				.append(new StringTextComponent(TextFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
+		itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
 		
 		if(this.stunArmor > 0.0F)
 		{
-			itemTooltip.add(new StringTextComponent(""));
-			itemTooltip.add(new TranslationTextComponent(ModAttributes.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
-					.append(new StringTextComponent(TextFormatting.BLUE+": "+ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.stunArmor))));
+			itemTooltip.add(new TextComponent(""));
+			itemTooltip.add(new TranslatableComponent(ModAttributes.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.stunArmor))));
 		}
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, LivingData<?> entitydata)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, LivingData<?> entitydata)
 	{
 		Multimap<Attribute, AttributeModifier> map = HashMultimap.<Attribute, AttributeModifier>create();
 		
@@ -93,13 +93,13 @@ public class ArmorCapability extends CapabilityItem
     }
 	
 	@OnlyIn(Dist.CLIENT)
-	public ClientModel getArmorModel(EquipmentSlotType slot)
+	public ClientModel getArmorModel(EquipmentSlot slot)
 	{
 		return getBipedArmorModel(slot);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static ClientModel getBipedArmorModel(EquipmentSlotType slot)
+	public static ClientModel getBipedArmorModel(EquipmentSlot slot)
 	{
 		ClientModels modelDB = ClientModels.CLIENT;
 		

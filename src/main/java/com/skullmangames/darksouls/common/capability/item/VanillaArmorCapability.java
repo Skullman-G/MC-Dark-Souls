@@ -1,8 +1,9 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
 
 public class VanillaArmorCapability extends ArmorCapability
 {
@@ -15,7 +16,7 @@ public class VanillaArmorCapability extends ArmorCapability
 			ArmorItem armorItem = ((ArmorItem) item);
 			if (armorItem.getMaterial() instanceof ArmorMaterial)
 			{
-				switch ((ArmorMaterial) armorItem.getMaterial())
+				switch ((ArmorMaterials) armorItem.getMaterial())
 				{
 					case LEATHER:
 						this.weight = armorItem.getToughness();

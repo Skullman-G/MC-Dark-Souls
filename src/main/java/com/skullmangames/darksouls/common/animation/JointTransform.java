@@ -1,27 +1,26 @@
 package com.skullmangames.darksouls.common.animation;
 
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
-
-import net.minecraft.util.math.vector.Vector3f;
+import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 
 public class JointTransform
 {
-	public static final JointTransform DEFAULT = new JointTransform(new Vector3f(0.0F,0.0F,0.0F), new Quaternion(0.0F,0.0F,0.0F,1.0F), new Vector3f(1.0F,1.0F,1.0F));
+	public static final JointTransform DEFAULT = new JointTransform(new Vector3f(0.0F,0.0F,0.0F), new ModQuaternion(0.0F,0.0F,0.0F,1.0F), new Vector3f(1.0F,1.0F,1.0F));
 	
 	private Vector3f position;
 	private Vector3f scale;
-	private Quaternion rotation;
-	private Quaternion customRotation;
+	private ModQuaternion rotation;
+	private ModQuaternion customRotation;
 
-	public JointTransform(Vector3f position, Quaternion rotation, Vector3f scale)
+	public JointTransform(Vector3f position, ModQuaternion rotation, Vector3f scale)
 	{
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 	}
 	
-	public JointTransform(Vector3f position, Quaternion rotation, Quaternion customRotation, Vector3f scale)
+	public JointTransform(Vector3f position, ModQuaternion rotation, ModQuaternion customRotation, Vector3f scale)
 	{
 		this.position = position;
 		this.rotation = rotation;
@@ -34,12 +33,12 @@ public class JointTransform
 		return position;
 	}
 
-	public Quaternion getRotation()
+	public ModQuaternion getRotation()
 	{
 		return rotation;
 	}
 	
-	public Quaternion getCustomRotation()
+	public ModQuaternion getCustomRotation()
 	{
 		return customRotation;
 	}
@@ -49,12 +48,12 @@ public class JointTransform
 		return scale;
 	}
 
-	public void setRotation(Quaternion quat)
+	public void setRotation(ModQuaternion quat)
 	{
 		this.rotation = quat;
 	}
 	
-	public void setCustomRotation(Quaternion quat)
+	public void setCustomRotation(ModQuaternion quat)
 	{
 		this.customRotation = quat;
 	}
@@ -76,21 +75,21 @@ public class JointTransform
 		}
 		
 		Vector3f vertex = interpolate(prev.position, next.position, progression);
-		Quaternion rot = Quaternion.interpolate(prev.rotation, next.rotation, progression);
+		ModQuaternion rot = ModQuaternion.interpolate(prev.rotation, next.rotation, progression);
 		Vector3f scale = interpolate(prev.scale, next.scale, progression);
 		
 		if (prev.customRotation != null || next.customRotation != null)
 		{
 			if (prev.customRotation == null)
 			{
-				prev.customRotation = new Quaternion(0, 0, 0, 1);
+				prev.customRotation = new ModQuaternion(0, 0, 0, 1);
 			}
 			if (next.customRotation == null)
 			{
-				next.customRotation = new Quaternion(0, 0, 0, 1);
+				next.customRotation = new ModQuaternion(0, 0, 0, 1);
 			}
 			
-			return new JointTransform(vertex, rot, Quaternion.interpolate(prev.customRotation, next.customRotation, progression), scale);
+			return new JointTransform(vertex, rot, ModQuaternion.interpolate(prev.customRotation, next.customRotation, progression), scale);
 			
 		}
 		else

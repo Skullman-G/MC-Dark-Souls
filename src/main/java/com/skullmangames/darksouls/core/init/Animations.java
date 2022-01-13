@@ -26,7 +26,7 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 
 public final class Animations
@@ -159,7 +159,7 @@ public final class Animations
 	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
 	
 	public static final StaticAnimation DANCING_EDGE = new AttackAnimation(0.25F, true, "biped/skill/dancing_edge", "biped",
-														new Phase(0.2F, 0.2F, 0.26F, 0.3F, "111213", Colliders.sword), new Phase(0.5F, 0.5F, 0.56F, 0.6F, Hand.OFF_HAND, "111313", Colliders.sword),
+														new Phase(0.2F, 0.2F, 0.26F, 0.3F, "111213", Colliders.sword), new Phase(0.5F, 0.5F, 0.56F, 0.6F, InteractionHand.OFF_HAND, "111313", Colliders.sword),
 														new Phase(0.75F, 0.75F, 0.8F, 1.15F, "111213", Colliders.sword));
 	public static final StaticAnimation SPEAR_THRUST = new AttackAnimation(0.11F, false, "biped/skill/spear_thrust", "biped",
 														new Phase(0.3F, 0.3F, 0.36F, 0.51F, "111213", Colliders.spearNarrow), new Phase(0.51F, 0.51F, 0.56F, 0.73F, "111213", Colliders.spearNarrow),
@@ -175,10 +175,10 @@ public final class Animations
 	public static final StaticAnimation LETHAL_SLICING_TWICE = new AttackAnimation(0.016F, false, "biped/skill/lethal_slicing_twice", "biped",
 														new Phase(0.0F, 0.0F, 0.1F, 0.15F, "111213", Colliders.spearSwing), new Phase(0.15F, 0.15F, 0.25F, 0.6F, "111213", Colliders.spearSwing));
 	public static final StaticAnimation RELENTLESS_COMBO = new AttackAnimation(0.05F, false, "biped/skill/relentless_combo", "biped",
-			new Phase(0.016F, 0.016F, 0.066F, 0.133F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.133F, 0.133F, 0.183F, 0.25F, "", Colliders.fist_fast),
-			new Phase(0.25F, 0.25F, 0.3F, 0.366F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.366F, 0.366F, 0.416F, 0.483F, "", Colliders.fist_fast),
-			new Phase(0.483F, 0.483F, 0.533F, 0.6F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
-			new Phase(0.716F, 0.716F, 0.766F, 0.833F, Hand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast));
+			new Phase(0.016F, 0.016F, 0.066F, 0.133F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.133F, 0.133F, 0.183F, 0.25F, "", Colliders.fist_fast),
+			new Phase(0.25F, 0.25F, 0.3F, 0.366F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.366F, 0.366F, 0.416F, 0.483F, "", Colliders.fist_fast),
+			new Phase(0.483F, 0.483F, 0.533F, 0.6F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
+			new Phase(0.716F, 0.716F, 0.766F, 0.833F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast));
 	
 	// Hollow
 	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(true, 0.2F, true, "hollow/idle", "biped", true);

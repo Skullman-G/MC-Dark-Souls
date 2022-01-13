@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.BooleanButton;
 import com.skullmangames.darksouls.client.gui.widget.OptionButton;
@@ -13,10 +13,10 @@ import com.skullmangames.darksouls.config.Option.BooleanOption;
 import com.skullmangames.darksouls.config.Option.IntegerOption;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class IngameConfigurationScreen extends Screen
 {
@@ -24,7 +24,7 @@ public class IngameConfigurationScreen extends Screen
 	
 	public IngameConfigurationScreen(Minecraft mc, Screen screen)
 	{
-		super(new StringTextComponent(DarkSouls.MOD_ID + ".gui.configuration"));
+		super(new TextComponent(DarkSouls.MOD_ID + ".gui.configuration"));
 		this.parentScreen = screen;
 	}
 	
@@ -40,12 +40,12 @@ public class IngameConfigurationScreen extends Screen
 			if (option instanceof BooleanOption)
 			{
 				BooleanOption booleanOption = (BooleanOption)option;
-				buttons.add(this.addButton(new BooleanButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20, booleanOption)));
+				buttons.add(this.addRenderableWidget(new BooleanButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20, booleanOption)));
 			}
 			else if (option instanceof IntegerOption)
 			{
 				IntegerOption intOption = (IntegerOption)option;
-				buttons.add(this.addButton(new RewindableButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20,	intOption,
+				buttons.add(this.addRenderableWidget(new RewindableButton(this.width / 2 - 100, this.height / 4 + yDistance, 200, 20,	intOption,
 						(button) ->
 						{
 							intOption.setValue(intOption.getValue() + 1);
@@ -62,12 +62,12 @@ public class IngameConfigurationScreen extends Screen
 			yDistance += 24;
 		}
 		
-		this.addButton(new Button(this.width / 2 - 100, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".done"), (button) ->
+		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 4 + 150, 96, 20, new TranslatableComponent("gui."+DarkSouls.MOD_ID+".done"), (button) ->
 		{
 			this.onClose();
 		}));
 		
-		this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslationTextComponent("gui."+DarkSouls.MOD_ID+".reset"), (button) ->
+		this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslatableComponent("gui."+DarkSouls.MOD_ID+".reset"), (button) ->
 		{
 			DarkSouls.CLIENT_INGAME_CONFIG.resetSettings();
 			for (OptionButton<?> b : buttons)
@@ -78,7 +78,7 @@ public class IngameConfigurationScreen extends Screen
 	}
 	
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
 	{
 		this.renderDirtBackground(0);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
@@ -25,15 +26,15 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
@@ -54,7 +55,7 @@ public class AttackAnimation extends ActionAnimation
 		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand,
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
 			@Nullable Collider collider, String index, String path, String armature)
 	{
 		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
@@ -89,7 +90,7 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (entitydata instanceof MobData)
 			{
-				((MobEntity) entitydata.getOriginalEntity()).getNavigation().stop();
+				((Mob) entitydata.getOriginalEntity()).getNavigation().stop();
 				LivingEntity target = entitydata.getTarget();
 				if (target != null)
 				{
@@ -124,10 +125,10 @@ public class AttackAnimation extends ActionAnimation
 						if (e instanceof LivingEntity || e instanceof PartEntity)
 						{
 							if (entity.level
-									.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
-											new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
-											RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity))
-									.getType() == RayTraceResult.Type.MISS)
+									.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
+											new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
+											ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
+									.getType() == HitResult.Type.MISS)
 							{
 
 								float amount = this.getDamageAmount(entitydata, e, phase);
@@ -185,7 +186,7 @@ public class AttackAnimation extends ActionAnimation
 		Collider collider = this.getCollider(entitydata, elapsedTime);
 		Vector3d pos = collider.getCenter();
 		pos = new Vector3d(-pos.x, pos.y, -pos.z);
-		if (elapsedTime >= phase.contactEnd && prevElapsedTime - 0.4F < phase.contactEnd) spawner.spawnParticles((ClientWorld)entity.level, pos);
+		if (elapsedTime >= phase.contactEnd && prevElapsedTime - 0.4F < phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
 	}
 
 	@Override
@@ -203,7 +204,7 @@ public class AttackAnimation extends ActionAnimation
 
 		if (entitydata instanceof BipedMobData && entitydata.isClientSide())
 		{
-			MobEntity entity = (MobEntity) entitydata.getOriginalEntity();
+			Mob entity = (Mob) entitydata.getOriginalEntity();
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
@@ -331,7 +332,7 @@ public class AttackAnimation extends ActionAnimation
 		protected final float contactEnd;
 		protected final float end;
 		protected final int jointIndexer;
-		protected final Hand hand;
+		protected final InteractionHand hand;
 		protected Collider collider;
 		protected boolean smashed = false;
 
@@ -342,10 +343,10 @@ public class AttackAnimation extends ActionAnimation
 		
 		public Phase(float antic, float preDelay, float contact, float recovery, String indexer, Collider collider)
 		{
-			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, indexer, collider);
+			this(antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, indexer, collider);
 		}
 
-		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String indexer, Collider collider)
+		public Phase(float antic, float preDelay, float contact, float recovery, InteractionHand hand, String indexer, Collider collider)
 		{
 			this.begin = antic;
 			this.contactStart = preDelay;

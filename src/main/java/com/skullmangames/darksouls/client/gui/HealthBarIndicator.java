@@ -3,23 +3,23 @@ package com.skullmangames.darksouls.client.gui;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
-import com.skullmangames.darksouls.common.potion.effect.ModEffect;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,9 +36,9 @@ public class HealthBarIndicator extends EntityIndicator
 			return false;
 		else if (entityIn.distanceToSqr(minecraft.getCameraEntity()) >= 400)
 			return false;
-		else if (entityIn instanceof PlayerEntity)
+		else if (entityIn instanceof Player)
 		{
-			PlayerEntity playerIn = (PlayerEntity) entityIn;
+			Player playerIn = (Player) entityIn;
 			if (playerIn == minecraft.player)
 				return false;
 			else if (playerIn.isCreative() || playerIn.isSpectator())
@@ -51,14 +51,14 @@ public class HealthBarIndicator extends EntityIndicator
 	}
 
 	@Override
-	public void drawIndicator(LivingEntity entityIn, MatrixStack matStack, IRenderTypeBuffer bufferIn, float partialTicks)
+	public void drawIndicator(LivingEntity entityIn, PoseStack matStack, MultiBufferSource bufferIn, float partialTicks)
 	{
 		Matrix4f mvMatrix = super.getMVMatrix(matStack, entityIn, 0.0F, entityIn.getBbHeight() + 0.25F, 0.0F, true, false, partialTicks);
 
 		if (!entityIn.getActiveEffects().isEmpty())
 		{
-			Collection<EffectInstance> activeEffects = entityIn.getActiveEffects();
-			Iterator<EffectInstance> iter = activeEffects.iterator();
+			Collection<MobEffectInstance> activeEffects = entityIn.getActiveEffects();
+			Iterator<MobEffectInstance> iter = activeEffects.iterator();
 			int acives = activeEffects.size();
 			int row = acives > 1 ? 1 : 0;
 			int column = ((acives - 1) / 2);
@@ -69,19 +69,16 @@ public class HealthBarIndicator extends EntityIndicator
 			{
 				for (int j = 0; j <= row; j++)
 				{
-					Effect effect = iter.next().getEffect();
+					MobEffect effect = iter.next().getEffect();
 					ResourceLocation rl;
 
-					if (effect instanceof ModEffect)
-						rl = ((ModEffect) effect).getIcon();
-					else
-						rl = new ResourceLocation("textures/mob_effect/" + effect.getRegistryName().getPath() + ".png");
+					rl = new ResourceLocation("textures/mob_effect/" + effect.getRegistryName().getPath() + ".png");
 
-					Minecraft.getInstance().getTextureManager().bind(rl);
+					RenderSystem.setShaderTexture(0, rl);
 					float x = startX + 0.3F * j;
 					float y = startY + -0.3F * i;
 
-					IVertexBuilder vertexBuilder1 = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(rl));
+					VertexConsumer vertexBuilder1 = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(rl));
 
 					this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder1, x, y, x + 0.3F, y + 0.3F, 0, 0, 256, 256);
 					if (!iter.hasNext())
@@ -90,7 +87,7 @@ public class HealthBarIndicator extends EntityIndicator
 			}
 		}
 
-		IVertexBuilder vertexBuilder = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(BATTLE_ICON));
+		VertexConsumer vertexBuilder = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(BATTLE_ICON));
 		float ratio = entityIn.getHealth() / entityIn.getMaxHealth();
 		float healthRatio = -0.5F + ratio;
 		int textureRatio = (int) (62 * ratio);
@@ -105,7 +102,7 @@ public class HealthBarIndicator extends EntityIndicator
 			this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, absorptionRatio - 0.5F, 0.05F, 1, 0, absTexRatio, 25);
 		}
 		
-		CompoundNBT nbt = entityIn.getPersistentData();
+		CompoundTag nbt = entityIn.getPersistentData();
 		float lastHealth = nbt.getFloat("HBI_lastHealth");
 		
 		if (lastHealth > entityIn.getHealth())
@@ -121,7 +118,7 @@ public class HealthBarIndicator extends EntityIndicator
 		if (damageTimer > 0)
 		{
 			matStack.pushPose();
-			ActiveRenderInfo camera = ClientManager.INSTANCE.mainCamera;
+			Camera camera = ClientManager.INSTANCE.mainCamera;
 			float scale = 0.03F;
 			matStack.translate(0, entityIn.getBbHeight() + 0.5, 0);
 			matStack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
@@ -135,7 +132,7 @@ public class HealthBarIndicator extends EntityIndicator
 		nbt.putFloat("HBI_lastHealth", entityIn.getHealth());
 	}
 
-	public void renderDamageNumber(MatrixStack matrix, float damage, double x, double y)
+	public void renderDamageNumber(PoseStack matrix, float damage, double x, double y)
 	{
 		int i = Math.abs(Math.round(damage * 10));
 		if (i == 0) return;

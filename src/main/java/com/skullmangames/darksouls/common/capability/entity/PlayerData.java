@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
-import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.WeaponItem;
@@ -18,19 +17,19 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.CursedFoodStats;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 
-public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+
+public abstract class PlayerData<T extends Player> extends LivingData<T>
 {
 	private static final UUID ACTION_EVENT_UUID = UUID.fromString("e6beeac4-77d2-11eb-9439-0242ac130002");
 	protected float yaw;
@@ -48,9 +47,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.orgEntity.foodData = new CursedFoodStats();
 		this.eventListeners = new EntityEventListener(this);
-		this.orgEntity.getEntityData().define(DataKeys.STUN_ARMOR, Float.valueOf(0.0F));
 		this.tickSinceLastAction = 40;
 		this.eventListeners.addEventListener(EventType.ON_ACTION_EVENT, PlayerEvent.makeEvent(ACTION_EVENT_UUID, (player, args) ->
 		{
@@ -60,7 +57,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		
 		if (!this.orgEntity.hasEffect(ModEffects.UNDEAD_CURSE.get()))
 		{
-			EffectInstance effectinstance = new EffectInstance(ModEffects.UNDEAD_CURSE.get(), 1000000000);
+			MobEffectInstance effectinstance = new MobEffectInstance(ModEffects.UNDEAD_CURSE.get(), 1000000000);
 			this.orgEntity.addEffect(effectinstance);
 		}
 		
@@ -79,7 +76,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	
 	public void onSave()
 	{
-		CompoundNBT nbt = this.orgEntity.getPersistentData();
+		CompoundTag nbt = this.orgEntity.getPersistentData();
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
@@ -138,7 +135,7 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 	}
 	
 	@Override
-	public float getWeaponDamage(Hand hand)
+	public float getWeaponDamage(InteractionHand hand)
 	{
 		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
 		if (weapon == null || !weapon.meetRequirements(this)) return 0.0F;
@@ -208,6 +205,13 @@ public abstract class PlayerData<T extends PlayerEntity> extends LivingData<T>
 		}
 		
 		if (maxStunArmor < stunArmor) this.setStunArmor(maxStunArmor);
+	}
+	
+	@Override
+	public void update()
+	{
+		super.update();
+		this.orgEntity.getFoodData().setFoodLevel(15);
 	}
 	
 	public float getAttackSpeed()

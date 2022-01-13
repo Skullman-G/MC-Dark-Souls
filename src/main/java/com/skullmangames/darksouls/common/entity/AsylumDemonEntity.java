@@ -3,32 +3,32 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.BossInfo;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
-public class AsylumDemonEntity extends CreatureEntity
+public class AsylumDemonEntity extends PathfinderMob
 {
-	private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	
-	public AsylumDemonEntity(EntityType<? extends CreatureEntity> p_i48575_1_, World p_i48575_2_)
+	public AsylumDemonEntity(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
 	{
 		super(p_i48575_1_, p_i48575_2_);
 	}
@@ -41,7 +41,7 @@ public class AsylumDemonEntity extends CreatureEntity
 	}
 	
 	@Override
-	protected int getExperienceReward(PlayerEntity p_70693_1_)
+	protected int getExperienceReward(Player p_70693_1_)
 	{
 		return 100;
 	}
@@ -62,18 +62,18 @@ public class AsylumDemonEntity extends CreatureEntity
 	protected void customServerAiStep()
 	{
 		super.customServerAiStep();
-		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+		this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
 	}
 	
 	@Override
-	public void startSeenByPlayer(ServerPlayerEntity player)
+	public void startSeenByPlayer(ServerPlayer player)
 	{
 	    super.startSeenByPlayer(player);
 	    this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void stopSeenByPlayer(ServerPlayerEntity player)
+	public void stopSeenByPlayer(ServerPlayer player)
 	{
 	    super.stopSeenByPlayer(player);
 	    this.bossInfo.removePlayer(player);
@@ -84,12 +84,12 @@ public class AsylumDemonEntity extends CreatureEntity
 	{
 		super.populateDefaultEquipmentSlots(difficulty);
 		
-		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
-		this.setDropChance(EquipmentSlotType.MAINHAND, 0.04F);
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
+		this.setDropChance(EquipmentSlot.MAINHAND, 0.04F);
 	}
 	
 	@Override
-	public ILivingEntityData finalizeSpawn(IServerWorld level, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData data, CompoundNBT nbt)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData data, CompoundTag nbt)
 	{
 		data = super.finalizeSpawn(level, difficulty, reason, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
@@ -102,9 +102,9 @@ public class AsylumDemonEntity extends CreatureEntity
 		return true;
 	}
 	
-	public static AttributeModifierMap.MutableAttribute createAttributes()
+	public static AttributeSupplier.Builder createAttributes()
 	{
-		return MobEntity.createMobAttributes()
+		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 80.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
@@ -121,8 +121,8 @@ public class AsylumDemonEntity extends CreatureEntity
 	@Override
 	protected void registerGoals()
 	{
-	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
+	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowEntity.class, true));
 	}
 }

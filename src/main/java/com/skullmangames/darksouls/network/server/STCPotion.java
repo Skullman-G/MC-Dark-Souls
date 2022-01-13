@@ -3,16 +3,16 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class STCPotion
 {
-	private Effect effect;
+	private MobEffect effect;
 	private Action action;
 	private int entityId;
 	
@@ -23,25 +23,25 @@ public class STCPotion
 		this.action = Action.REMOVE;
 	}
 	
-	public STCPotion(Effect effect, Action action, int entityId)
+	public STCPotion(MobEffect effect, Action action, int entityId)
 	{
 		this.effect = effect;
 		this.entityId = entityId;
 		this.action = action;
 	}
 	
-	public static STCPotion fromBytes(PacketBuffer buf)
+	public static STCPotion fromBytes(FriendlyByteBuf buf)
 	{
-		Effect effect = Effect.byId(buf.readInt());
+		MobEffect effect = MobEffect.byId(buf.readInt());
 		int entityId = buf.readInt();
 		Action action = Action.getAction(buf.readInt());
 		
 		return new STCPotion(effect, action, entityId);
 	}
 	
-	public static void toBytes(STCPotion msg, PacketBuffer buf)
+	public static void toBytes(STCPotion msg, FriendlyByteBuf buf)
 	{
-		buf.writeInt(Effect.getId(msg.effect));
+		buf.writeInt(MobEffect.getId(msg.effect));
 		buf.writeInt(msg.entityId);
 		buf.writeInt(msg.action.getSymb());
 	}
@@ -50,8 +50,8 @@ public class STCPotion
 	{
 		ctx.get().enqueueWork(()->
 		{
-			@SuppressWarnings("resource")
-			Entity entity = Minecraft.getInstance().level.getEntity(msg.entityId);
+			Minecraft minecraft = Minecraft.getInstance();
+			Entity entity = minecraft.level.getEntity(msg.entityId);
 			
 			if(entity != null && entity instanceof LivingEntity)
 			{
@@ -60,7 +60,7 @@ public class STCPotion
 				switch(msg.action)
 				{
 					case ACTIVE:
-						livEntity.addEffect(new EffectInstance(msg.effect, 0));
+						livEntity.addEffect(new MobEffectInstance(msg.effect, 0));
 						break;
 					case REMOVE:
 						livEntity.removeEffect(msg.effect);

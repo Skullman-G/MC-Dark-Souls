@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class STCPlayAnimationTP extends STCPlayAnimationTarget
 {
@@ -41,20 +41,20 @@ public class STCPlayAnimationTP extends STCPlayAnimationTarget
 	public void onArrive()
 	{
 		super.onArrive();
-		@SuppressWarnings("resource")
-		Entity entity = Minecraft.getInstance().player.level.getEntity(this.entityId);
-		entity.setPosAndOldPos(this.posX, this.posY, this.posZ);
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity entity = minecraft.player.level.getEntity(this.entityId);
+		entity.setPos(this.posX, this.posY, this.posZ);
 		entity.yRotO = yaw;
 		entity.yRot = yaw;
 	}
 	
-	public static STCPlayAnimationTP fromBytes(PacketBuffer buf)
+	public static STCPlayAnimationTP fromBytes(FriendlyByteBuf buf)
 	{
 		return new STCPlayAnimationTP(buf.readInt(), buf.readInt(), buf.readFloat(), buf.readBoolean(), buf.readInt(),
 				buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat());
 	}
 	
-	public static void toBytes(STCPlayAnimationTP msg, PacketBuffer buf)
+	public static void toBytes(STCPlayAnimationTP msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.animationId);
 		buf.writeInt(msg.entityId);

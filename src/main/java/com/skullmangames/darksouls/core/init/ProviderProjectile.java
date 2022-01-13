@@ -6,27 +6,27 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.EggEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.SnowballEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.Snowball;
+import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
 
-public class ProviderProjectile<P extends ProjectileEntity> implements ICapabilityProvider, NonNullSupplier<CapabilityProjectile<?>>
+public class ProviderProjectile<P extends Projectile> implements ICapabilityProvider, NonNullSupplier<CapabilityProjectile<?>>
 {
 	private static final Map<EntityType<?>, Supplier<CapabilityProjectile<?>>> CAPABILITY_BY_TYPE
 					= new HashMap<EntityType<?>, Supplier<CapabilityProjectile<?>>> ();
 	
 	public static void makeMap()
 	{
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> CapabilityProjectile<ArrowEntity>::new);
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.SNOWBALL, (type) -> CapabilityProjectile<SnowballEntity>::new);
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.EGG, (type) -> CapabilityProjectile<EggEntity>::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> CapabilityProjectile<Arrow>::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.SNOWBALL, (type) -> CapabilityProjectile<Snowball>::new);
+		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.EGG, (type) -> CapabilityProjectile<ThrownEgg>::new);
 	}
 	
 	private CapabilityProjectile<?> capability;

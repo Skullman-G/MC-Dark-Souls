@@ -3,11 +3,11 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class STCPlayAnimationTarget extends STCPlayAnimation
 {
@@ -39,19 +39,19 @@ public class STCPlayAnimationTarget extends STCPlayAnimation
 		Entity entity = minecraft.player.level.getEntity(entityId);
 		Entity target = minecraft.player.level.getEntity(targetId);
 		
-		if(entity instanceof MobEntity && target instanceof LivingEntity)
+		if(entity instanceof Mob && target instanceof LivingEntity)
 		{
-			MobEntity entityliving = (MobEntity) entity;
+			Mob entityliving = (Mob) entity;
 			entityliving.setTarget((LivingEntity) target);
 		}
 	}
 	
-	public static STCPlayAnimationTarget fromBytes(PacketBuffer buf)
+	public static STCPlayAnimationTarget fromBytes(FriendlyByteBuf buf)
 	{
 		return new STCPlayAnimationTarget(buf.readInt(), buf.readInt(), buf.readFloat(), buf.readBoolean(), buf.readInt());
 	}
 	
-	public static void toBytes(STCPlayAnimationTarget msg, PacketBuffer buf)
+	public static void toBytes(STCPlayAnimationTarget msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.animationId);
 		buf.writeInt(msg.entityId);

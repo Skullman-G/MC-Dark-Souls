@@ -4,9 +4,9 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BowItem;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
@@ -19,11 +19,11 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void itemUseStartEvent(LivingEntityUseItemEvent.Start event)
 	{
-		if (event.getEntity() instanceof PlayerEntity)
+		if (event.getEntity() instanceof Player)
 		{
-			PlayerEntity player = (PlayerEntity)event.getEntity();
+			Player player = (Player)event.getEntity();
 			PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+			CapabilityItem itemCap = playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			
 			if (playerdata.isInaction())
 			{
@@ -41,7 +41,7 @@ public class PlayerEvents
 	{
 		PlayerData<?> playerdata = (PlayerData<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (playerdata.getOriginalEntity() != null)
+		if (playerdata != null && playerdata.getOriginalEntity() != null)
 		{
 			playerdata.discard();
 		}
@@ -50,7 +50,7 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void itemUseTickEvent(LivingEntityUseItemEvent.Tick event)
 	{
-		if (event.getEntity() instanceof PlayerEntity)
+		if (event.getEntity() instanceof Player)
 		{
 			if (event.getItem().getItem() instanceof BowItem)
 			{

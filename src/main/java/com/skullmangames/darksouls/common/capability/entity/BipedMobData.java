@@ -10,18 +10,18 @@ import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ShootableItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
-import net.minecraft.item.TridentItem;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.Difficulty;
 
-public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
+public abstract class BipedMobData<T extends Mob> extends MobData<T>
 {
 	public BipedMobData(Faction faction)
 	{
@@ -36,11 +36,11 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 			super.resetCombatAI();
 			Item heldItem = this.orgEntity.getMainHandItem().getItem();
 			
-			if (heldItem instanceof ShootableItem && this.orgEntity instanceof IRangedAttackMob)
+			if (heldItem instanceof ProjectileWeaponItem && this.orgEntity instanceof RangedAttackMob)
 			{
 				this.setAIAsRange();
 			}
-			else if(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof MobEntity)
+			else if(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob)
 			{
 				this.setAIAsMounted(this.orgEntity.getControllingPassenger());
 			}
@@ -80,7 +80,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 			orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 					.addAttack(new AttackInstance(1, 1.0F, Animations.SWORD_MOUNT_ATTACK)));
 
-			if (ridingEntity instanceof AbstractHorseEntity)
+			if (ridingEntity instanceof AbstractHorse)
 			{
 				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
 			}
@@ -97,7 +97,7 @@ public abstract class BipedMobData<T extends MobEntity> extends MobData<T>
 	public boolean isArmed()
 	{
 		Item heldItem = this.orgEntity.getMainHandItem().getItem();
-		return heldItem instanceof SwordItem || heldItem instanceof ToolItem || heldItem instanceof TridentItem;
+		return heldItem instanceof SwordItem || heldItem instanceof DiggerItem || heldItem instanceof TridentItem;
 	}
 	
 	public void onMount(boolean isMount, Entity ridingEntity)

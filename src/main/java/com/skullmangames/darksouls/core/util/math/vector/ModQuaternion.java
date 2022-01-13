@@ -1,12 +1,12 @@
 package com.skullmangames.darksouls.core.util.math.vector;
 
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.math.Vector3f;
 
-public class Quaternion
+public class ModQuaternion
 {
 	private float x, y, z, w;
 
-	public Quaternion(float x, float y, float z, float w)
+	public ModQuaternion(float x, float y, float z, float w)
 	{
 		this.x = x;
 		this.y = y;
@@ -48,7 +48,7 @@ public class Quaternion
 		return matrix;
 	}
 
-	public static Quaternion fromMatrix(PublicMatrix4f matrix)
+	public static ModQuaternion fromMatrix(PublicMatrix4f matrix)
 	{
 		float w, x, y, z;
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
@@ -84,12 +84,12 @@ public class Quaternion
 			y = (matrix.m12 + matrix.m21) / z4;
 			z = z4 / 4f;
 		}
-		return new Quaternion(x, y, z, w);
+		return new ModQuaternion(x, y, z, w);
 	}
 
-	public static Quaternion interpolate(Quaternion a, Quaternion b, float blend)
+	public static ModQuaternion interpolate(ModQuaternion a, ModQuaternion b, float blend)
 	{
-		Quaternion result = new Quaternion(0, 0, 0, 1);
+		ModQuaternion result = new ModQuaternion(0, 0, 0, 1);
 		float dot = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
 		float blendI = 1f - blend;
 
@@ -112,7 +112,7 @@ public class Quaternion
 		return result;
 	}
 
-	public static Quaternion rotate(float degree, Vector3f axis, Quaternion src)
+	public static ModQuaternion rotate(float degree, Vector3f axis, ModQuaternion src)
 	{
 		PublicMatrix4f quatmat;
 		if (src == null)
@@ -127,7 +127,7 @@ public class Quaternion
 		PublicMatrix4f rotMat = new PublicMatrix4f();
 		PublicMatrix4f.rotate(degree, axis, rotMat, rotMat);
 		PublicMatrix4f.mul(quatmat, rotMat,  quatmat);
-		return Quaternion.fromMatrix(quatmat);
+		return ModQuaternion.fromMatrix(quatmat);
 	}
 	
 	@Override

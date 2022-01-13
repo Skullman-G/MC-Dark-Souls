@@ -4,11 +4,11 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 
 public class PublicMatrix4f
 {
@@ -449,18 +449,18 @@ public class PublicMatrix4f
 		return par1 + par3 * f;
 	}
 	
-	public static void rotateStack(MatrixStack mStack, PublicMatrix4f mat)
+	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
 	{
 		mStack.mulPose(getQuaternionFromMatrix(mat));
 	}
 	
-	public static void scaleStack(MatrixStack mStack, PublicMatrix4f mat)
+	public static void scaleStack(PoseStack mStack, PublicMatrix4f mat)
 	{
 		Vector3f vector = getScaleFromMatrix(mat);
 		mStack.scale(vector.x(), vector.y(), vector.z());
 	}
 	
-	private static net.minecraft.util.math.vector.Quaternion getQuaternionFromMatrix(PublicMatrix4f mat)
+	private static Quaternion getQuaternionFromMatrix(PublicMatrix4f mat)
 	{
 		float w, x, y, z;
 		float diagonal = mat.m00 + mat.m11 + mat.m22;
@@ -498,7 +498,7 @@ public class PublicMatrix4f
 			z = z4 * 0.25F;
 		}
 		
-		net.minecraft.util.math.vector.Quaternion quat = new net.minecraft.util.math.vector.Quaternion(x, y, z, w);
+		Quaternion quat = new Quaternion(x, y, z, w);
 		quat.normalize();
 		return quat;
 	}

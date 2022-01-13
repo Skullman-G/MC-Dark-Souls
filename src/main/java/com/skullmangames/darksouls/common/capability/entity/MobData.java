@@ -14,24 +14,25 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.ai.goal.RangedCrossbowAttackGoal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.world.entity.ai.goal.RangedCrossbowAttackGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.phys.Vec3;
 
-public abstract class MobData<T extends MobEntity> extends LivingData<T>
+public abstract class MobData<T extends Mob> extends LivingData<T>
 {
 	protected final Faction mobFaction;
 	
@@ -59,13 +60,13 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 
 	protected void resetCombatAI()
 	{
-		Stream<PrioritizedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
-		Iterator<PrioritizedGoal> iterator = goals.iterator();
+		Stream<WrappedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
+		Iterator<WrappedGoal> iterator = goals.iterator();
 		List<Goal> toRemove = Lists.<Goal>newArrayList();
 		
 		while (iterator.hasNext())
 		{
-        	PrioritizedGoal goal = iterator.next();
+        	WrappedGoal goal = iterator.next();
             Goal inner = goal.getGoal();
             
             if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof ArcherGoal || inner instanceof ChasingGoal
@@ -89,7 +90,7 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 	public void clientInitialSettings(ByteBuf buf) {}
 	
 	@Override
-	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType)
+	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlot slotType)
 	{
 		if(this.orgEntity.getAttributes().hasAttribute(ModAttributes.MAX_STUN_ARMOR.get()))
 		{
@@ -135,13 +136,13 @@ public abstract class MobData<T extends MobEntity> extends LivingData<T>
 		if (attackTarget != null)
 		{
 			float partialTicks = DarkSouls.isPhysicalClient() ? Minecraft.getInstance().getFrameTime() : 1.0F;
-			Vector3d target = attackTarget.getEyePosition(partialTicks);
-			Vector3d vector3d = this.orgEntity.getEyePosition(partialTicks);
+			Vec3 target = attackTarget.getEyePosition(partialTicks);
+			Vec3 vector3d = this.orgEntity.getEyePosition(partialTicks);
 			double d0 = target.x - vector3d.x;
 			double d1 = target.y - vector3d.y;
 			double d2 = target.z - vector3d.z;
-			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-			return MathHelper.clamp(MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI)))), -30.0F, 30.0F);
+			double d3 = (double) Math.sqrt(d0 * d0 + d2 * d2);
+			return MathUtils.clamp(Mth.wrapDegrees((float) ((Math.atan2(d1, d3) * (double) (180F / (float) Math.PI)))), -30.0F, 30.0F);
 		}
 		else
 		{

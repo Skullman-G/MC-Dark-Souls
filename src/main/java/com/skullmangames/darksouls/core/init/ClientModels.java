@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class ClientModels extends Models<ClientModel>
 {

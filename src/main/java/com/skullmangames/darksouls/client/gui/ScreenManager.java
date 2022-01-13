@@ -1,24 +1,26 @@
 package com.skullmangames.darksouls.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModMainMenuScreen;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.LoadingGui;
-import net.minecraft.client.gui.screen.MainMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.WorldLoadProgressScreen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import net.minecraft.client.gui.screens.Overlay;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -35,24 +37,24 @@ public class ScreenManager
 	{
 		if (value)
 		{
-			Widget.WIDGETS_LOCATION = DS_WIDGETS_PATH;
-			AbstractGui.BACKGROUND_LOCATION = DS_BACKGROUND_PATH;
+			AbstractWidget.WIDGETS_LOCATION = DS_WIDGETS_PATH;
+			GuiComponent.BACKGROUND_LOCATION = DS_BACKGROUND_PATH;
 		}
 		else
 		{
-			Widget.WIDGETS_LOCATION = WIDGETS_PATH;
-			AbstractGui.BACKGROUND_LOCATION = BACKGROUND_PATH;
+			AbstractWidget.WIDGETS_LOCATION = WIDGETS_PATH;
+			GuiComponent.BACKGROUND_LOCATION = BACKGROUND_PATH;
 		}
 	}
 
 	public static void renderDarkBackground(Screen screen)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		Tessellator tessellator = Tessellator.getInstance();
+		Tesselator tessellator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuilder();
-		minecraft.getTextureManager().bind(Screen.BACKGROUND_LOCATION);
-		RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+		RenderSystem.setShaderTexture(0, Screen.BACKGROUND_LOCATION);
+	    RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		bufferbuilder.vertex(0.0D, (double) screen.height, 0.0D).uv(0.0F, (float) screen.height / 32.0F + (float) 0).color(0, 0, 0, 255).endVertex();
 		bufferbuilder.vertex((double) screen.width, (double) screen.height, 0.0D)
 				.uv((float) screen.width / 32.0F, (float) screen.height / 32.0F + (float) 0).color(0, 0, 0, 255).endVertex();
@@ -67,26 +69,26 @@ public class ScreenManager
 		private static Minecraft minecraft = Minecraft.getInstance();
 
 		@SubscribeEvent
-		public static void onOpenScreen(GuiOpenEvent event)
+		public static void onOpenScreen(ScreenOpenEvent event)
 		{
-			Screen gui = event.getGui();
+			Screen gui = event.getScreen();
 
 			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
 			{
 				if (gui == null && minecraft.level != null)
 				{
-					LoadingGui overlay = minecraft.getOverlay();
+					Overlay overlay = minecraft.getOverlay();
 					if (overlay instanceof ModLoadingScreen)
 					{
 						((ModLoadingScreen) overlay).setCanFadeOut(true);
 					}
 				}
-				if (gui instanceof MainMenuScreen)
+				if (gui instanceof TitleScreen)
 				{
-					MainMenuScreen screen = (MainMenuScreen) gui;
-					event.setGui(new ModMainMenuScreen(screen.fading));
+					TitleScreen screen = (TitleScreen) gui;
+					event.setScreen(new ModMainMenuScreen(screen.fading));
 				}
-				else if (gui instanceof WorldLoadProgressScreen)
+				else if (gui instanceof LevelLoadingScreen)
 				{
 					event.setCanceled(true);
 					minecraft.setOverlay(new ModLoadingScreen());
@@ -96,8 +98,8 @@ public class ScreenManager
 			{
 				if (gui instanceof ModMainMenuScreen)
 				{
-					MainMenuScreen screen = (MainMenuScreen) gui;
-					event.setGui(new MainMenuScreen(screen.fading));
+					TitleScreen screen = (TitleScreen) gui;
+					event.setScreen(new TitleScreen(screen.fading));
 				}
 			}
 		}

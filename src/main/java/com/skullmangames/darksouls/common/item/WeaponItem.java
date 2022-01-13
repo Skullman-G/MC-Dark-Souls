@@ -6,22 +6,23 @@ import java.util.Map;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class WeaponItem extends SwordItem
 {
 	protected final Map<Stat, Integer> requiredStats = new HashMap<Stat, Integer>();
 	
-	public WeaponItem(IItemTier itemtier, int damage, float speed, Properties properties)
+	public WeaponItem(Tier itemtier, int damage, float speed, Properties properties)
 	{
 		super(itemtier, damage, speed, properties);
 	}
@@ -54,9 +55,9 @@ public class WeaponItem extends SwordItem
 	}
 	
 	@Override
-	public UseAction getUseAnimation(ItemStack p_77661_1_)
+	public UseAnim getUseAnimation(ItemStack p_77661_1_)
 	{
-		return UseAction.BLOCK;
+		return UseAnim.BLOCK;
 	}
 	
 	@Override
@@ -66,13 +67,13 @@ public class WeaponItem extends SwordItem
 	}
 	
 	@Override
-	public ActionResult<ItemStack> use(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_)
+	public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_)
 	{
 		ItemStack itemstack = p_77659_2_.getItemInHand(p_77659_3_);
 	    p_77659_2_.startUsingItem(p_77659_3_);
-	    return ActionResult.consume(itemstack);
+	    return InteractionResultHolder.consume(itemstack);
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack p_77624_1_, World p_77624_2_, List<ITextComponent> p_77624_3_, ITooltipFlag p_77624_4_) {}
+	public void appendHoverText(ItemStack p_77624_1_, Level p_77624_2_, List<Component> p_77624_3_, TooltipFlag p_77624_4_) {}
 }

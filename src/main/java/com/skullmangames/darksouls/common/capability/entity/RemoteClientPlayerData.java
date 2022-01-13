@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -14,21 +15,20 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extends PlayerData<T>
+public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends PlayerData<T>
 {
 	protected float prevYaw;
 	protected float bodyYaw;
@@ -82,7 +82,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			}
 			else
 			{
-				UseAction useaction = useitem.getUseAnimation();
+				UseAnim useaction = useitem.getUseAnimation();
 				
 				switch (useaction)
 				{
@@ -163,7 +163,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
-			UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+			UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 			
 			switch (useAction)
 			{
@@ -196,7 +196,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		{
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) this.currentMixMotion = LivingMotion.AIMING;
 			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
-			else if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
+			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
 			else this.currentMixMotion = LivingMotion.NONE;
 		}
 	}
@@ -232,25 +232,25 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		boolean isMainHandChanged = prevHeldItem != this.orgEntity.getItemInHand(Hand.MAIN_HAND);
-		boolean isOffHandChanged = prevHeldItemOffHand != this.orgEntity.getItemInHand(Hand.OFF_HAND);
+		boolean isMainHandChanged = prevHeldItem != this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
+		boolean isOffHandChanged = prevHeldItemOffHand != this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
 			this.getClientAnimator().resetMixMotion();
 			if(isMainHandChanged)
 			{
-				prevHeldItem = this.orgEntity.getItemInHand(Hand.MAIN_HAND);
+				prevHeldItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
 				MixLayer right = this.getClientAnimator().mixLayerRight;
-				if (right.isActive() && !this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND)) this.getClientAnimator().offMixLayer(right, false);
+				if (right.isActive() && !this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND)) this.getClientAnimator().offMixLayer(right, false);
 			}
 			if(isOffHandChanged)
 			{
-				prevHeldItemOffHand = this.orgEntity.getItemInHand(Hand.OFF_HAND);
+				prevHeldItemOffHand = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
 				MixLayer left = this.getClientAnimator().mixLayerLeft;
-				if (left.isActive() && !this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND)) this.getClientAnimator().offMixLayer(left, false);
+				if (left.isActive() && !this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND)) this.getClientAnimator().offMixLayer(left, false);
 			}
-			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
+			this.onHeldItemChange(this.getHeldItemCapability(InteractionHand.MAIN_HAND), this.getHeldItemCapability(InteractionHand.OFF_HAND));
 			this.updateClientAnimator();
 		}
 		else super.updateOnClient();
@@ -337,11 +337,11 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			PublicMatrix4f.rotate((float)-Math.toRadians(entity.yBodyRot), new Vector3f(0F, 1F, 0F), mat, mat);
 			
             float f = (float)orgEntity.getFallFlyingTicks() + Minecraft.getInstance().getFrameTime();
-            float f1 = MathHelper.clamp(f * f / 100.0F, 0.0F, 1.0F);
+            float f1 = MathUtils.clamp(f * f / 100.0F, 0.0F, 1.0F);
             PublicMatrix4f.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), new Vector3f(1F, 0F, 0F), mat, mat);
             
-            Vector3d vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
-            Vector3d vec3d1 = orgEntity.getDeltaMovement();
+            Vec3 vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
+            Vec3 vec3d1 = orgEntity.getDeltaMovement();
             
             double d0 = vec3d1.x * vec3d1.x + vec3d1.z * vec3d1.z;
             double d1 = vec3d.x * vec3d.x + vec3d.z * vec3d.z;
@@ -381,7 +381,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayerEntity> extend
 			{
 				float f = this.orgEntity.getSwimAmount(partialTick);
 				float f3 = this.orgEntity.isInWater() ? this.orgEntity.xRot : 0;
-		        float f4 = MathHelper.lerp(f, 0.0F, f3);
+		        float f4 = Mth.lerp(f, 0.0F, f3);
 		        prevPitch = f4;
 		        pitch = f4;
 			}

@@ -1,13 +1,14 @@
 package com.skullmangames.darksouls.client.input;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import com.mojang.blaze3d.platform.InputConstants;
 
-public class FakeKeyBinding extends KeyBinding
+import net.minecraft.client.KeyMapping;
+
+public class FakeKeyBinding extends KeyMapping
 {
 	public FakeKeyBinding(String name)
 	{
-		super("fake."+name, InputMappings.Type.KEYSYM, 0, "key.categories.fake");
+		super("fake."+name, InputConstants.Type.KEYSYM, 0, "key.categories.fake");
 		
 		ALL.remove("fake."+name, this);
 	    CATEGORIES.remove("key.categories.fake");

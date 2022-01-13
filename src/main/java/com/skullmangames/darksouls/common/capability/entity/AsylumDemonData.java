@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 
 public class AsylumDemonData extends MobData<AsylumDemonEntity>
 {
@@ -42,7 +42,7 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	}
 	
 	@Override
-	public Collider getColliderMatching(Hand hand)
+	public Collider getColliderMatching(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		if (cap instanceof GreatHammerCapability) return Colliders.asylum_demon_great_hammer;

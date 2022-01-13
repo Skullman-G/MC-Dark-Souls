@@ -10,10 +10,10 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -59,7 +59,7 @@ public class StraightSwordCapability extends MaterialItemCapability
 	@Override
 	public WieldStyle getStyle(LivingData<?> entitydata)
 	{
-		WeaponCapability item = entitydata.getHeldWeaponCapability(Hand.OFF_HAND);
+		WeaponCapability item = entitydata.getHeldWeaponCapability(InteractionHand.OFF_HAND);
 		if(item != null && item.weaponCategory == WeaponCategory.STRAIGHT_SWORD)
 		{
 			return WieldStyle.TWO_HAND;

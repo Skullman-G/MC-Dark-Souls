@@ -6,8 +6,8 @@ import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 
 public class MirrorAnimation extends StaticAnimation
@@ -20,7 +20,7 @@ public class MirrorAnimation extends StaticAnimation
 		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly);
 	}
 	
-	public StaticAnimation checkHandAndReturnAnimation(Hand hand)
+	public StaticAnimation checkHandAndReturnAnimation(InteractionHand hand)
 	{
 		switch(hand)
 		{

@@ -2,8 +2,12 @@ package com.skullmangames.darksouls.client.renderer.entity.model;
 
 import java.io.IOException;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector4fHelper;
@@ -11,11 +15,7 @@ import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
 
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,7 +47,7 @@ public class ClientModel extends Model
 		}
 	}
 
-	public void draw(MatrixStack matrixStackIn, IVertexBuilder builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
+	public void draw(PoseStack posestack, VertexConsumer builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
 	{
 		float[] animatedPosition = this.mesh.positionList.clone();
 		float[] animatedNormal = this.mesh.normalList.clone();		
@@ -80,8 +80,8 @@ public class ClientModel extends Model
 			animatedNormal[k + 2] = totalNormal.z();
 		}
 		
-		Matrix4f matrix4f = matrixStackIn.last().pose();
-		Matrix3f matrix3f = matrixStackIn.last().normal();
+		Matrix4f matrix4f = posestack.last().pose();
+		Matrix3f matrix3f = posestack.last().normal();
 		
 		for(int i = 0; i < this.mesh.indexCount; i++)
 		{

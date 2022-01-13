@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.client.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -13,19 +15,17 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.phys.Vec3;
 
-public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, ClientPlayerData>
+public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPlayerData>
 {
 	private Minecraft minecraft = Minecraft.getInstance();
 	
@@ -33,19 +33,19 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 	{
 		super();
 		layers.add(new HeldItemLayer<>());
-		layers.add(new WearableItemLayer<>(EquipmentSlotType.CHEST));
-		layers.add(new WearableItemLayer<>(EquipmentSlotType.LEGS));
-		layers.add(new WearableItemLayer<>(EquipmentSlotType.FEET));
+		layers.add(new WearableItemLayer<>(EquipmentSlot.CHEST));
+		layers.add(new WearableItemLayer<>(EquipmentSlot.LEGS));
+		layers.add(new WearableItemLayer<>(EquipmentSlot.FEET));
 	}
 	
 	@Override
-	public void render(ClientPlayerEntity entityIn, ClientPlayerData entitydata, EntityRenderer<ClientPlayerEntity> renderer, IRenderTypeBuffer buffer, MatrixStack matStackIn, int packedLightIn, float partialTicks)
+	public void render(LocalPlayer entityIn, ClientPlayerData entitydata, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
 	{
-		ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
-		Vector3d projView = camera.getPosition();
-		double x = MathHelper.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
-		double y = MathHelper.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
-		double z = MathHelper.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z() - 0.1F;
+		Camera camera = minecraft.gameRenderer.getMainCamera();
+		Vec3 projView = camera.getPosition();
+		double x = Mth.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
+		double y = Mth.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
+		double z = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z() - 0.1F;
 		ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
@@ -93,7 +93,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Cl
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(ClientPlayerEntity entityIn)
+	protected ResourceLocation getEntityTexture(LocalPlayer entityIn)
 	{
 		return entityIn.getSkinTextureLocation();
 	}

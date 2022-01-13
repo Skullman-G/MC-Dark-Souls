@@ -3,15 +3,15 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.Level;
 
-public class QuestEntity extends CreatureEntity
+public class QuestEntity extends PathfinderMob
 {
 	private String questPath = this.getQuestPaths().get(0);
 	
-	protected QuestEntity(EntityType<? extends CreatureEntity> p_i48575_1_, World p_i48575_2_)
+	protected QuestEntity(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
 	{
 		super(p_i48575_1_, p_i48575_2_);
 	}

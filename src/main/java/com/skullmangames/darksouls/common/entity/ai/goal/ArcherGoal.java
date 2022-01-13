@@ -7,17 +7,17 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 
-public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
+public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
 {
 	private final T entity;
 	private final BipedMobData<?> entitydata;
@@ -84,7 +84,8 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
         }
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void tick()
     {
         LivingEntity target = this.entity.getTarget();
@@ -92,7 +93,7 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
         if (target != null)
         {
             double targetDistance = this.entity.distanceToSqr(target.getX(), target.getBoundingBox().minY, target.getZ());
-            boolean canSee = this.entity.getSensing().canSee(target);
+            boolean canSee = this.entity.getSensing().hasLineOfSight(target);
             boolean saw = this.seeTime > 0;
             this.chasingTarget = target;
             
@@ -112,8 +113,8 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
             {
             	if (targetDistance <= (double)((this.maxAttackDistance * 1.5F) / 2))
             	{
-            		Vector3d tpos = target.position();
-                	Vector3d apos = this.entity.position();
+            		Vec3 tpos = target.position();
+                	Vec3 apos = this.entity.position();
                 	double x = apos.x + (apos.x - tpos.x);
                 	double z = apos.z + (apos.z - tpos.z);
                 	this.entity.getNavigation().moveTo(x, apos.y, z, this.moveSpeedAmp);
@@ -141,7 +142,7 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
                     if (i >= 20)
                     {
                         this.entity.stopUsingItem();
-                        ((IRangedAttackMob)this.entity).performRangedAttack(target, BowItem.getPowerForTime(i));
+                        ((RangedAttackMob)this.entity).performRangedAttack(target, BowItem.getPowerForTime(i));
                         ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND.getId(), entity.getId(), 0.0F, true), entity);
                         this.attackTime = this.attackCooldown;
                     }
@@ -150,7 +151,7 @@ public class ArcherGoal<T extends MobEntity & IRangedAttackMob> extends Goal
             else if (--this.attackTime <= 0 && this.seeTime >= -60)
             {
             	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_AIM.getId(), entity.getId(), 0.0F, true), entity);
-                this.entity.startUsingItem(ProjectileHelper.getWeaponHoldingHand(this.entity, Items.BOW));
+                this.entity.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.entity, Items.BOW));
             }
         }
         else if(this.chasingTarget != null)

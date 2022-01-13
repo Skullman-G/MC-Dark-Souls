@@ -4,14 +4,14 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class UndeadBoneShardItem extends Item
 {
@@ -21,9 +21,9 @@ public class UndeadBoneShardItem extends Item
 	}
 	
 	@Override
-	public ActionResultType useOn(ItemUseContext itemusecontext)
+	public InteractionResult useOn(UseOnContext itemusecontext)
 	{
-		World level = itemusecontext.getLevel();
+		Level level = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = level.getBlockState(blockpos);
 		ItemStack itemstack = itemusecontext.getItemInHand();
@@ -32,19 +32,19 @@ public class UndeadBoneShardItem extends Item
 			BonfireTileEntity bonfire = (BonfireTileEntity)level.getBlockEntity(blockpos);
 			if (blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL) == 9)
 			{
-				if (itemusecontext.getPlayer() instanceof ServerPlayerEntity)
+				if (itemusecontext.getPlayer() instanceof ServerPlayer)
 				{
-					CriteriaTriggerInit.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
+					CriteriaTriggerInit.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayer)itemusecontext.getPlayer());
 				}
 			}
 			bonfire.raiseEstusHealLevel();
-			if (!itemusecontext.getPlayer().abilities.instabuild)
+			if (!itemusecontext.getPlayer().getAbilities().instabuild)
 			{
 				itemstack.shrink(1);
 	        }
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 		
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 }

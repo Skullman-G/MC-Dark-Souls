@@ -6,9 +6,9 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class STCStamina
 {
@@ -21,12 +21,12 @@ public class STCStamina
 		this.stamina = value;
 	}
 	
-	public static STCStamina fromBytes(PacketBuffer buf)
+	public static STCStamina fromBytes(FriendlyByteBuf buf)
 	{
 		return new STCStamina(buf.readInt(), buf.readFloat());
 	}
 	
-	public static void toBytes(STCStamina msg, PacketBuffer buf)
+	public static void toBytes(STCStamina msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeFloat(msg.stamina);

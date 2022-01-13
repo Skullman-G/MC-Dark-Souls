@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.common.state.properties;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum TrippleBlockPart implements IStringSerializable
+public enum TrippleBlockPart implements StringRepresentable
 {
 	UPPER,
 	MIDDLE,

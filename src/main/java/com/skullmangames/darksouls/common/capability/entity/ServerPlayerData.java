@@ -24,17 +24,15 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.STitlePacket;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 
-public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
+public class ServerPlayerData extends PlayerData<ServerPlayer>
 {
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = Maps.<LivingMotion, StaticAnimation>newHashMap();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = Maps.<LivingMotion, StaticAnimation>newHashMap();
@@ -43,7 +41,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 	
 	@Override
-	public void onEntityJoinWorld(ServerPlayerEntity entityIn)
+	public void onEntityJoinWorld(ServerPlayer entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
 		livingMotionMap.put(LivingMotion.IDLE, Animations.BIPED_IDLE);
@@ -62,7 +60,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
 		
-		CompoundNBT nbt = entityIn.getPersistentData();
+		CompoundTag nbt = entityIn.getPersistentData();
 		this.humanity = nbt.getInt("Humanity");
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(entityIn.getId(), this.humanity), entityIn);
 		this.souls = nbt.getInt("Souls");
@@ -87,7 +85,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 		if (this.human == value) return;
 		if (value)
 		{
-			this.orgEntity.connection.send(new STitlePacket(STitlePacket.Type.TITLE, new TranslationTextComponent("gui.darksouls.humanity_restored_message")));
 			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get(), -0.2F, -0.2F);
 		}
 		super.setHuman(value);
@@ -112,15 +109,15 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	@Override
 	public void updateMotion() {}
 	
-	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, Hand hand)
+	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, InteractionHand hand)
 	{
-		CapabilityItem mainHandCap = hand == Hand.MAIN_HAND ? toChange : this.getHeldItemCapability(Hand.MAIN_HAND);
+		CapabilityItem mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange : this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if(mainHandCap != null) mainHandCap.onHeld(this);
-		if (hand != Hand.MAIN_HAND)
+		if (hand != InteractionHand.MAIN_HAND)
 		{
 			this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).removeModifier(ATTACK_DAMAGE_MODIFIER);
 			
-			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE))
+			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE))
 			{
 				this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).addTransientModifier(attributeModifier);
 			}
@@ -244,7 +241,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayerEntity>
 	}
 	
 	@Override
-	public ServerPlayerEntity getOriginalEntity()
+	public ServerPlayer getOriginalEntity()
 	{
 		return orgEntity;
 	}

@@ -29,20 +29,21 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
 
-import net.minecraft.command.arguments.EntityAnchorArgument.Type;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -92,10 +93,10 @@ public class EntityEvents
 			}	
 		}
 		
-		if (event.getEntity() instanceof ProjectileEntity)
+		if (event.getEntity() instanceof Projectile)
 		{
-			ProjectileEntity projectileentity = (ProjectileEntity)event.getEntity();
-			CapabilityProjectile<ProjectileEntity> projectileData = event.getEntity().getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
+			Projectile projectileentity = (Projectile)event.getEntity();
+			CapabilityProjectile<Projectile> projectileData = event.getEntity().getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
 			if(projectileData != null && event.getEntity().tickCount == 0)
 			{
 				projectileData.onJoinWorld(projectileentity);
@@ -262,16 +263,16 @@ public class EntityEvents
 						
 						if(hitAnimation != null)
 						{
-							if(!(hitEntity instanceof PlayerEntity))
+							if(!(hitEntity instanceof Player))
 							{
-								hitEntity.lookAt(Type.FEET, trueSource.getDeltaMovement());
+								hitEntity.lookAt(Anchor.FEET, trueSource.getDeltaMovement());
 							}
 							hitEntityData.setStunTimeReduction();
 							hitEntityData.getAnimator().playAnimation(hitAnimation, extendStunTime);
 							ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), hitEntity);
-							if(hitEntity instanceof ServerPlayerEntity)
+							if(hitEntity instanceof ServerPlayer)
 							{
-								ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), (ServerPlayerEntity)hitEntity);
+								ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), (ServerPlayer)hitEntity);
 							}
 						}
 						
@@ -297,14 +298,14 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void arrowHitEvent(ProjectileImpactEvent.Arrow event)
+	public static void arrowHitEvent(ProjectileImpactEvent event)
 	{
-		if (event.getRayTraceResult() instanceof EntityRayTraceResult)
+		if (event.getProjectile() instanceof Arrow && event.getRayTraceResult() instanceof EntityHitResult)
 		{
-			EntityRayTraceResult rayresult = ((EntityRayTraceResult) event.getRayTraceResult());
-			if (rayresult.getEntity() != null && event.getArrow().getOwner() != null)
+			EntityHitResult rayresult = ((EntityHitResult) event.getRayTraceResult());
+			if (rayresult.getEntity() != null && event.getProjectile().getOwner() != null)
 			{
-				if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger()))
+				if (rayresult.getEntity().equals(event.getProjectile().getOwner().getControllingPassenger()))
 				{
 					event.setCanceled(true);
 				}
@@ -321,7 +322,7 @@ public class EntityEvents
 		
 		if (entitycap != null && entitycap.getOriginalEntity() != null)
 		{
-			if (event.getSlot() == EquipmentSlotType.MAINHAND)
+			if (event.getSlot() == EquipmentSlot.MAINHAND)
 			{
 				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
 				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
@@ -340,21 +341,21 @@ public class EntityEvents
 				if (entitycap instanceof ServerPlayerData)
 				{
 					ServerPlayerData playercap = (ServerPlayerData)entitycap;
-					playercap.onHeldItemChange(toCap, event.getTo(), Hand.MAIN_HAND);
+					playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.MAIN_HAND);
 				}
 			}
-			else if (event.getSlot() == EquipmentSlotType.OFFHAND)
+			else if (event.getSlot() == EquipmentSlot.OFFHAND)
 			{
 				entitycap.cancelUsingItem();
 				
 				if (entitycap instanceof ServerPlayerData)
 				{
 					ServerPlayerData playercap = (ServerPlayerData)entitycap;
-					CapabilityItem toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(Hand.MAIN_HAND);
-					playercap.onHeldItemChange(toCap, event.getTo(), Hand.OFF_HAND);
+					CapabilityItem toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+					playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.OFF_HAND);
 				}
 			}
-			else if (event.getSlot().getType() == EquipmentSlotType.Group.ARMOR)
+			else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
 			{
 				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
 				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
@@ -378,9 +379,9 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectAddEvent(PotionAddedEvent event)
 	{
-		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
+		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof Player)
 		{
-			ModEffects.UNDEAD_CURSE.get().onPotionAdd(((PlayerEntity)event.getEntityLiving()));
+			ModEffects.UNDEAD_CURSE.get().onPotionAdd(((Player)event.getEntityLiving()));
 		}
 		
 		if(!event.getEntity().level.isClientSide)
@@ -392,7 +393,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectRemoveEvent(PotionRemoveEvent event)
 	{
-		if (event.getPotion() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
+		if (event.getPotion() instanceof UndeadCurse && event.getEntityLiving() instanceof Player)
 		{
 			event.setCanceled(true);
 			return;
@@ -407,7 +408,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void effectExpiryEvent(PotionExpiryEvent event)
 	{
-		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof PlayerEntity)
+		if (event.getPotionEffect().getEffect() instanceof UndeadCurse && event.getEntityLiving() instanceof Player)
 		{
 			event.setCanceled(true);
 			return;
@@ -424,10 +425,10 @@ public class EntityEvents
 	{
 		EntityData<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		World world = event.getWorldObj();
+		Level world = event.getWorldObj();
 		if (!world.isClientSide && mountEntity instanceof BipedMobData && mountEntity.getOriginalEntity() != null)
 		{
-			if (event.getEntityBeingMounted() instanceof MobEntity)
+			if (event.getEntityBeingMounted() instanceof Mob)
 			{
 				((BipedMobData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
 			}
@@ -469,9 +470,9 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event)
 	{
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 		ServerPlayerData playerData = (ServerPlayerData) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		playerData.modifiLivingMotions(playerData.getHeldItemCapability(Hand.MAIN_HAND));
+		playerData.modifiLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
 	}
 	
 	@SubscribeEvent

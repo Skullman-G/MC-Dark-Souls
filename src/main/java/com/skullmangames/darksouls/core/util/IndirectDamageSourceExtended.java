@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements IExtendedDamageSource
 {

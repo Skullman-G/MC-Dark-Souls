@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
@@ -7,21 +9,19 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 
 public class ActionAnimation extends ImmovableAnimation
@@ -65,19 +65,19 @@ public class ActionAnimation extends ImmovableAnimation
 
 		LivingEntity livingentity = entity.getOriginalEntity();
 
-		if (entity.isClientSide()) if (!(livingentity instanceof ClientPlayerEntity)) return;
-		else if ((livingentity instanceof ServerPlayerEntity)) return;
+		if (entity.isClientSide()) if (!(livingentity instanceof LocalPlayer)) return;
+		else if ((livingentity instanceof ServerPlayer)) return;
 		
 		if (entity.isInaction())
 		{
 			Vector3f vec3 = this.getCoordVector(entity);
 			BlockPos blockpos = new BlockPos(livingentity.getX(), livingentity.getBoundingBox().minY - 1.0D, livingentity.getZ());
 			BlockState blockState = livingentity.level.getBlockState(blockpos);
-			ModifiableAttributeInstance attribute = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
+			AttributeInstance attribute = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 			boolean soulboost = blockState.is(BlockTags.SOUL_SPEED_BLOCKS) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SOUL_SPEED, livingentity) > 0;
 			double speedFactor = soulboost ? 1.0D : livingentity.level.getBlockState(blockpos).getBlock().getSpeedFactor();
 			double moveMultiplier = attribute.getValue() / attribute.getBaseValue() * speedFactor;
-			livingentity.move(MoverType.SELF, new Vector3d(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier));
+			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier));
 		}
 	}
 	
@@ -139,7 +139,7 @@ public class ActionAnimation extends ImmovableAnimation
 		float dz = prevPos.z() - currentPos.z();
 		
 		if (this.affectYCoord && currentPos.y() > 0.0F && !hasNoGravity) {
-			Vector3d motion = elb.getDeltaMovement();
+			Vec3 motion = elb.getDeltaMovement();
 			elb.setDeltaMovement(motion.x, motion.y + 0.08D, motion.z);
 		}
 		

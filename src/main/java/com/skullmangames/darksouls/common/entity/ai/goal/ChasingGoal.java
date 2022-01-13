@@ -8,19 +8,18 @@ import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
 
 public class ChasingGoal extends Goal
 {
 	protected MobData<?> mobdata;
-	protected final MobEntity attacker;
+	protected final Mob attacker;
 	private final double speedTowardsTarget;
 	private final boolean longMemory;
 	private Path path;
@@ -36,7 +35,7 @@ public class ChasingGoal extends Goal
 	protected final StaticAnimation walkingAnimation;
 	protected final boolean changeMotion;
 
-	public ChasingGoal(MobData<?> mobdata, MobEntity host, double speedIn, boolean useLongMemory, StaticAnimation chasingId, StaticAnimation walkId, boolean changeMotion)
+	public ChasingGoal(MobData<?> mobdata, Mob host, double speedIn, boolean useLongMemory, StaticAnimation chasingId, StaticAnimation walkId, boolean changeMotion)
 	{
 		this.mobdata = mobdata;
 		this.attacker = host;
@@ -48,12 +47,12 @@ public class ChasingGoal extends Goal
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
-	public ChasingGoal(MobData<?> mobdata, MobEntity host, double speedIn, boolean useLongMemory)
+	public ChasingGoal(MobData<?> mobdata, Mob host, double speedIn, boolean useLongMemory)
 	{
 		this(mobdata, host, speedIn, useLongMemory, null, null, false);
 	}
 	
-	public ChasingGoal(MobData<?> mobdata, MobEntity host, double speedIn, boolean useLongMemory, StaticAnimation chasing, StaticAnimation walk)
+	public ChasingGoal(MobData<?> mobdata, Mob host, double speedIn, boolean useLongMemory, StaticAnimation chasing, StaticAnimation walk)
 	{
 		this(mobdata, host, speedIn, useLongMemory, chasing, walk, true);
 	}
@@ -118,7 +117,7 @@ public class ChasingGoal extends Goal
 		}
 		else
 		{
-			return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity) livingentity).isCreative();
+			return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player) livingentity).isCreative();
 		}
 	}
 
@@ -142,7 +141,7 @@ public class ChasingGoal extends Goal
 	public void stop()
 	{
 		LivingEntity livingentity = this.attacker.getTarget();
-		if(!EntityPredicates.ATTACK_ALLOWED.test(livingentity))
+		if(!livingentity.isAttackable())
 		{
 			this.attacker.setTarget((LivingEntity) null);
 		}
@@ -173,7 +172,7 @@ public class ChasingGoal extends Goal
 		this.attacker.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 		double d0 = this.attacker.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
 		
-		if (this.longMemory || this.attacker.getSensing().canSee(livingentity) && --this.delayCounter <= 0 && 
+		if (this.longMemory || this.attacker.getSensing().hasLineOfSight(livingentity) && --this.delayCounter <= 0 && 
 				(this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0D
 				|| this.attacker.getRandom().nextFloat() < 0.05F))
 		{
@@ -187,7 +186,7 @@ public class ChasingGoal extends Goal
 				this.delayCounter += failedPathFindingPenalty;
 				if(this.attacker.getNavigation().getPath() != null)
 				{
-					PathPoint finalPathPoint = this.attacker.getNavigation().getPath().getEndNode();
+					Node finalPathPoint = this.attacker.getNavigation().getPath().getEndNode();
 					if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
 						failedPathFindingPenalty = 0;
 					else

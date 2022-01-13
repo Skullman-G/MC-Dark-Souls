@@ -15,55 +15,42 @@ version = '1.0'
 group = 'com.skullmangames.darksouls'
 archivesBaseName = 'darksouls'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: 'official', version: '1.18.1'
 
-minecraft
-{
-    
-    mappings channel: 'official', version: '1.16.5'
-    
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    
-    runs
-    {
-        client
-        {
+
+    runs {
+        client {
             workingDirectory project.file('run')
 
-            mods
-            {
-                examplemod
-                {
+            mods {
+                examplemod {
                     source sourceSets.main
                 }
             }
         }
 
-        server
-        {
+        server {
             workingDirectory project.file('run')
 
-            mods
-            {
-                examplemod
-                {
+            mods {
+                examplemod {
                     source sourceSets.main
                 }
             }
         }
 
-        data
-        {
+        data {
             workingDirectory project.file('run')
 
             args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
-            mods
-            {
-                examplemod
-                {
+            mods {
+                examplemod {
                     source sourceSets.main
                 }
             }
@@ -73,17 +60,16 @@ minecraft
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-dependencies
-{
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.20'
+repositories {
 }
 
-jar
-{
-    manifest
-    {
-        attributes
-        ([
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.19'
+}
+
+jar {
+    manifest {
+        attributes ([
             "Specification-Title": "Minecraft: Dark Souls",
             "Specification-Vendor": "Skullman Games",
             "Specification-Version": "1",
@@ -105,7 +91,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }

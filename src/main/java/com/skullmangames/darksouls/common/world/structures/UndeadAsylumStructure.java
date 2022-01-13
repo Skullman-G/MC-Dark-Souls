@@ -1,113 +1,99 @@
 package com.skullmangames.darksouls.common.world.structures;
 
 import java.util.List;
+import java.util.Optional;
+
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome.BiomeCategory;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
+import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.GenerationStage.Decoration;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
-import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureStart;
-import net.minecraft.world.gen.feature.structure.VillageConfig;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-
-public class UndeadAsylumStructure extends Structure<NoFeatureConfig>
+public class UndeadAsylumStructure extends ModStructure
 {
-	public UndeadAsylumStructure(Codec<NoFeatureConfig> p_i231997_1_)
+	public UndeadAsylumStructure(Codec<JigsawConfiguration> codec)
 	{
-		super(p_i231997_1_);
+		super(codec, UndeadAsylumStructure::createPiecesGenerator, PostPlacementProcessor.NONE);
 	}
 
+	public static final List<MobSpawnSettings.SpawnerData> MONSTERS = ImmutableList
+			.of(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 0, 0));
+	public static final List<MobSpawnSettings.SpawnerData> CREATURES = ImmutableList
+			.of(new MobSpawnSettings.SpawnerData(EntityType.PIG, 1, 0, 0));
+	
 	@Override
-	public IStartFactory<NoFeatureConfig> getStartFactory()
+	public void setupSpawns(StructureSpawnListGatherEvent event)
 	{
-		return UndeadAsylumStructure.Start::new;
+		event.addEntitySpawns(MobCategory.MONSTER, MONSTERS);
+		event.addEntitySpawns(MobCategory.CREATURE, CREATURES);
 	}
-
+	
 	@Override
 	public Decoration step()
 	{
-		return Decoration.TOP_LAYER_MODIFICATION;
+		return Decoration.SURFACE_STRUCTURES;
 	}
 
-	private static final List<MobSpawnInfo.Spawners> CREATURES = ImmutableList.of(new MobSpawnInfo.Spawners(EntityType.PIG, 1, 0, 0));
-	private static final List<MobSpawnInfo.Spawners> MONSTERS = ImmutableList.of(new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 1, 0, 0));
-
-	@Override
-	public List<MobSpawnInfo.Spawners> getDefaultSpawnList()
+	private static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
 	{
-		return MONSTERS;
-	}
-
-	@Override
-	public List<MobSpawnInfo.Spawners> getDefaultCreatureSpawnList()
-	{
-		return CREATURES;
-	}
-
-	@Override
-	protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeProvider biomeSource, long seed, SharedSeedRandom chunkRandom, int chunkX,
-			int chunkZ, Biome biome, ChunkPos chunkPos, NoFeatureConfig featureConfig)
-	{
+		int chunkX = context.chunkPos().x;
+		int chunkZ = context.chunkPos().z;
 		BlockPos[] positions = new BlockPos[]
-		{
-				new BlockPos((chunkX * 16) + 7, 0, (chunkZ * 16) + 7),
-				new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) - 1),
+		{ new BlockPos((chunkX * 16) + 7, 0, (chunkZ * 16) + 7), new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) - 1),
 				new BlockPos((chunkX * 16) + 15, 0, (chunkZ * 16) + 15),
 				new BlockPos((chunkX * 16) + 15, 0, (chunkZ * 16) - 1),
-				new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) + 15)
-		};
+				new BlockPos((chunkX * 16) - 1, 0, (chunkZ * 16) + 15) };
 		boolean flag = true;
 		for (BlockPos pos : positions)
 		{
-			int landHeight = chunkGenerator.getFirstOccupiedHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+			int landHeight = context.getLowestY(pos.getX(), pos.getZ());
 			if (landHeight < 100)
 				flag = false;
 		}
 		return flag;
 	}
-
-	public static class Start extends StructureStart<NoFeatureConfig>
+	
+	public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(
+			PieceGeneratorSupplier.Context<JigsawConfiguration> context)
 	{
-		public Start(Structure<NoFeatureConfig> structure, int chunkX, int chunkZ, MutableBoundingBox mutableBoundingBox, int referenceIn,
-				long seedIn)
+		if (!isFeatureChunk(context))
 		{
-			super(structure, chunkX, chunkZ, mutableBoundingBox, referenceIn, seedIn);
+			return Optional.empty();
 		}
 
-		@Override
-		public void generatePieces(DynamicRegistries dynamicregistries, ChunkGenerator generator, TemplateManager templatemanager, int chunkX,
-				int chunkZ, Biome biome, NoFeatureConfig config)
-		{
-			int x = chunkX * 16;
-			int z = chunkZ * 16;
+		JigsawConfiguration newConfig = new JigsawConfiguration(
+				() -> context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
+						.get(new ResourceLocation(DarkSouls.MOD_ID, "undead_asylum/center_building")),
+				10);
 
-			BlockPos centerPos = new BlockPos(x, 0, z);
+		PieceGeneratorSupplier.Context<JigsawConfiguration> newContext = new PieceGeneratorSupplier.Context<>(
+				context.chunkGenerator(), context.biomeSource(), context.seed(), context.chunkPos(), newConfig,
+				context.heightAccessor(), context.validBiome(), context.structureManager(), context.registryAccess());
 
-			ResourceLocation startpoollocation = new ResourceLocation(DarkSouls.MOD_ID, "undead_asylum/center_building");
-			JigsawManager.addPieces(dynamicregistries,
-					new VillageConfig(() -> dynamicregistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).get(startpoollocation), 20),
-					AbstractVillagePiece::new, generator, templatemanager, centerPos, this.pieces, this.random, false, true);
+		BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
 
-			this.pieces.forEach(piece -> piece.move(0, 1, 0));
+		Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator = JigsawPlacement.addPieces(newContext,
+				PoolElementStructurePiece::new, blockpos, false, true);
 
-			this.calculateBoundingBox();
-		}
+		return structurePiecesGenerator;
+	}
+
+	@Override
+	public boolean canSpawnInBiome(BiomeCategory biome)
+	{
+		return biome == BiomeCategory.EXTREME_HILLS;
 	}
 }

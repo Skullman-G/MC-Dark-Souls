@@ -3,27 +3,27 @@ package com.skullmangames.darksouls.core.util.physics;
 import java.util.Iterator;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Collider
 {
 	private final Vector3f modelCenter;
-	private AxisAlignedBB hitboxAABB;
+	private AABB hitboxAABB;
 	
 	private Vector3f worldCenter;
 	
@@ -50,7 +50,7 @@ public class Collider
 		
 		float maxLength = Math.max(xLength, Math.max(yLength, zLength));
 		
-		this.hitboxAABB = new AxisAlignedBB(maxLength, maxLength, maxLength, -maxLength, -maxLength, -maxLength);
+		this.hitboxAABB = new AABB(maxLength, maxLength, maxLength, -maxLength, -maxLength, -maxLength);
 		
 		modelVertex = new Vector3f[4];
 		modelNormal = new Vector3f[3];
@@ -79,7 +79,7 @@ public class Collider
 	 * @param pos The upper right front corner of the collider
 	 * @param center Center of the collider
 	 */
-	public Collider(AxisAlignedBB entityCallAABB, float pos1_x, float pos1_y, float pos1_z, float pos2_x, float pos2_y, float pos2_z, 
+	public Collider(AABB entityCallAABB, float pos1_x, float pos1_y, float pos1_z, float pos2_x, float pos2_y, float pos2_z, 
 			float norm1_x, float norm1_y, float norm1_z, float norm2_x, float norm2_y, float norm2_z, float center_x, float center_y, float center_z)
 	{
 		this.modelCenter = new Vector3f(center_x, center_y, center_z);
@@ -103,9 +103,9 @@ public class Collider
 	}
 	
 	/**
-	 * Copies a Collider from an AxisAlignedBB
+	 * Copies a Collider from an AABB
 	 */
-	public Collider(AxisAlignedBB aabb)
+	public Collider(AABB aabb)
 	{
 		this.modelCenter = null;
 		this.hitboxAABB = null;
@@ -136,7 +136,7 @@ public class Collider
 		return new Vector3d(worldCenter.x(), worldCenter.y(), worldCenter.z());
 	}
 
-	public AxisAlignedBB getHitboxAABB()
+	public AABB getHitboxAABB()
 	{
 		return hitboxAABB.move(-worldCenter.x(), worldCenter.y(), -worldCenter.z());
 	}
@@ -277,9 +277,9 @@ public class Collider
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void draw(MatrixStack matrixStackIn, IRenderTypeBuffer buffer, PublicMatrix4f pose, float partialTicks, boolean red)
+	public void draw(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, float partialTicks, boolean red)
 	{
-		IVertexBuilder vertexBuilder = buffer.getBuffer(ModRenderTypes.getBoundingBox());
+		VertexConsumer vertexBuilder = buffer.getBuffer(ModRenderTypes.getBoundingBox());
 		PublicMatrix4f transpose = new PublicMatrix4f();
 		PublicMatrix4f.transpose(pose, transpose);
 		MathUtils.translateStack(matrixStackIn, pose);

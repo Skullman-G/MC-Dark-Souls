@@ -5,8 +5,8 @@ import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.util.Mth;
 
 public class AttackInstance
 {
@@ -25,7 +25,7 @@ public class AttackInstance
 		this.animation = animation;
 		this.offset = offset;
 		this.range = range;
-		this.priority = MathHelper.clamp(priority, 0, 9);
+		this.priority = Mth.clamp(priority, 0, 9);
 	}
 	
 	public boolean isValidRange(double targetRange)
@@ -35,7 +35,7 @@ public class AttackInstance
 	
 	public void performAttack(MobData<?> mobdata, int combo)
 	{
-		MobEntity attacker = mobdata.getOriginalEntity();
+		Mob attacker = mobdata.getOriginalEntity();
 		mobdata.getServerAnimator().playAnimation(this.animation[combo], 0);
     	mobdata.updateInactionState();
     	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(this.animation[combo].getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);

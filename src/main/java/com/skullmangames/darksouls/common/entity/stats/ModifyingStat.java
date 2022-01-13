@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.stats;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class ModifyingStat extends Stat
 {
@@ -15,16 +15,16 @@ public class ModifyingStat extends Stat
 	}
 	
 	@Override
-	public void onChange(PlayerEntity player, int value)
+	public void onChange(Player player, int value)
 	{
 		this.modifyAttributes(player, value);
 		super.onChange(player, value);
 	}
 	
-	public void modifyAttributes(PlayerEntity player, int value) {}
+	public void modifyAttributes(Player player, int value) {}
 	
 	@Override
-	public void init(PlayerEntity player, int value)
+	public void init(Player player, int value)
 	{
 		super.init(player, value);
 		this.modifyAttributes(player, value);

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 public class AttackPatternGoal extends Goal
 {
-	protected final MobEntity attacker;
+	protected final Mob attacker;
 	protected final MobData<?> mobdata;
 	protected final float minDist;
 	protected float maxDist;
@@ -122,7 +122,7 @@ public class AttackPatternGoal extends Goal
     protected boolean isValidTarget(LivingEntity attackTarget)
     {
     	return attackTarget != null && attackTarget.isAlive() &&
-    			!((attackTarget instanceof PlayerEntity) && (((PlayerEntity)attackTarget).isSpectator() || ((PlayerEntity)attackTarget).isCreative()));
+    			!((attackTarget instanceof Player) && (((Player)attackTarget).isSpectator() || ((Player)attackTarget).isCreative()));
     }
     
     protected boolean isInSameHorizontalPosition(LivingEntity attackTarget)

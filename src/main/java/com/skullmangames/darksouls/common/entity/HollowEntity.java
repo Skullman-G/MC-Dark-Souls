@@ -4,43 +4,44 @@ import java.util.Random;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.entity.npc.AbstractVillager;
 
-public class HollowEntity extends CreatureEntity implements IRangedAttackMob
+public class HollowEntity extends PathfinderMob implements RangedAttackMob
 {
-	public HollowEntity(EntityType<? extends CreatureEntity> p_i48576_1_, World p_i48576_2_)
+	public HollowEntity(EntityType<? extends PathfinderMob> p_i48576_1_, Level p_i48576_2_)
 	{
 		super(p_i48576_1_, p_i48576_2_);
 	}
 	
-	public static AttributeModifierMap.MutableAttribute createAttributes()
+	public static AttributeSupplier.Builder createAttributes()
 	{
-		return MobEntity.createMobAttributes()
+		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
@@ -48,16 +49,16 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 	
-	public static boolean checkSpawnRules(EntityType<? extends CreatureEntity> p_223324_0_, IWorld p_223324_1_, SpawnReason p_223324_2_, BlockPos p_223324_3_, Random p_223324_4_)
+	public static boolean checkSpawnRules(EntityType<HollowEntity> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
 	{
-		return p_223324_1_.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(p_223324_0_, p_223324_1_, p_223324_2_, p_223324_3_, p_223324_4_);
+		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
 	
 	@Override
 	protected void registerGoals()
 	{
-	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
+	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 	}
 	
 	@Override
@@ -83,12 +84,12 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 			item = new ItemStack(Items.BOW);
 		}
 		
-		this.setItemSlot(EquipmentSlotType.MAINHAND, item);
-		this.setDropChance(EquipmentSlotType.MAINHAND, 0.04F);
+		this.setItemSlot(EquipmentSlot.MAINHAND, item);
+		this.setDropChance(EquipmentSlot.MAINHAND, 0.04F);
 	}
 	
 	@Override
-	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, ILivingEntityData data, CompoundNBT nbt)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, SpawnGroupData data, CompoundTag nbt)
 	{
 		data = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
@@ -117,26 +118,26 @@ public class HollowEntity extends CreatureEntity implements IRangedAttackMob
 	@Override
 	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
 	{
-		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileHelper.getWeaponHoldingHand(this, Items.BOW)));
-	    AbstractArrowEntity abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
-	    if (this.getMainHandItem().getItem() instanceof net.minecraft.item.BowItem)
-	       abstractarrowentity = ((net.minecraft.item.BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
+		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
+	    AbstractArrow abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
+	    if (this.getMainHandItem().getItem() instanceof BowItem)
+	       abstractarrowentity = ((BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
 	    double d0 = p_82196_1_.getX() - this.getX();
 	    double d1 = p_82196_1_.getY(0.3333333333333333D) - abstractarrowentity.getY();
 	    double d2 = p_82196_1_.getZ() - this.getZ();
-	    double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+	    double d3 = (double)Math.sqrt(d0 * d0 + d2 * d2);
 	    abstractarrowentity.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
-	    this.playSound(net.minecraft.util.SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+	    this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 	    this.level.addFreshEntity(abstractarrowentity);
 	}
 	
-	protected AbstractArrowEntity getArrow(ItemStack itemstack, float p_213624_2_)
+	protected AbstractArrow getArrow(ItemStack itemstack, float p_213624_2_)
 	{
-		return ProjectileHelper.getMobArrow(this, itemstack, p_213624_2_);
+		return ProjectileUtil.getMobArrow(this, itemstack, p_213624_2_);
 	}
 	
 	@Override
-	protected int getExperienceReward(PlayerEntity player)
+	protected int getExperienceReward(Player player)
 	{
 		return 10;
 	}

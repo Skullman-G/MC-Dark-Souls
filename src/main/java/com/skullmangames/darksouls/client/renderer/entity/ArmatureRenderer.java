@@ -3,8 +3,10 @@ package com.skullmangames.darksouls.client.renderer.entity;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -19,19 +21,17 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderNameplateEvent;
@@ -48,7 +48,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 		this.layers = Lists.newArrayList();
 	}
 	
-	public void render(E livingEntity, T entitydata, EntityRenderer<E> renderer, IRenderTypeBuffer buffer, MatrixStack matStack, int packedLightIn, float partialTicks)
+	public void render(E livingEntity, T entitydata, EntityRenderer<E> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
 	{
 		if(this.shouldRenderNameTag(entitydata, livingEntity))
 		{
@@ -64,7 +64,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 		
 		if(renderType != null)
 		{
-			IVertexBuilder builder = buffer.getBuffer(renderType);
+			VertexConsumer builder = buffer.getBuffer(renderType);
 			ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
 			Armature armature = model.getArmature();
 			armature.initializeTransform();
@@ -119,7 +119,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 	
 	protected abstract ResourceLocation getEntityTexture(E entityIn);
 	
-	protected void renderLayer(T entitydata, E entityIn, PublicMatrix4f[] poses, IRenderTypeBuffer buffer, MatrixStack matrixStackIn, int packedLightIn, float partialTicks)
+	protected void renderLayer(T entitydata, E entityIn, PublicMatrix4f[] poses, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLightIn, float partialTicks)
 	{
 		for(Layer<E, T> layer : this.layers) layer.renderLayer(entitydata, entityIn, matrixStackIn, buffer, packedLightIn, poses, partialTicks);
 	}
@@ -140,7 +140,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
         PublicMatrix4f.mul(joint.getAnimatedTransform(), mat, joint.getAnimatedTransform());
 	}
 	
-	protected void applyRotations(MatrixStack matStack, Armature armature, E entityIn, T entitydata, float partialTicks)
+	protected void applyRotations(PoseStack matStack, Armature armature, E entityIn, T entitydata, float partialTicks)
 	{
         PublicMatrix4f transpose = entitydata.getModelMatrix(partialTicks).transpose();
         matStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
@@ -156,7 +156,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 		if (d0 >= (double) (f * f)) flag1 = false;
 		else
 		{
-			ClientPlayerEntity clientplayerentity = this.minecraft.player;
+			LocalPlayer clientplayerentity = this.minecraft.player;
 			boolean flag = !entity.isInvisibleTo(clientplayerentity);
 			if (entity != clientplayerentity)
 			{
@@ -164,7 +164,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 				Team team1 = clientplayerentity.getTeam();
 				if (team != null)
 				{
-					Team.Visible team$visible = team.getNameTagVisibility();
+					Team.Visibility team$visible = team.getNameTagVisibility();
 					switch (team$visible)
 					{
 						case ALWAYS:
@@ -186,12 +186,12 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 
 		return flag1 && (entity.shouldShowName()
 				|| entity.hasCustomName() && (entity == this.minecraft.getEntityRenderDispatcher().crosshairPickEntity
-						|| entity instanceof PlayerEntity));
+						|| entity instanceof Player));
 	}
 	
-	protected void renderNameTag(T entitydata, E entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	protected void renderNameTag(T entitydata, E entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
 	{
-		EntityRendererManager renderManager = this.minecraft.getEntityRenderDispatcher();
+		EntityRenderDispatcher renderManager = this.minecraft.getEntityRenderDispatcher();
 		
 		double d0 = renderManager.distanceToSqr(entityIn);
 		if (net.minecraftforge.client.ForgeHooksClient.isNameplateInRenderDistance(entityIn, d0))
@@ -206,7 +206,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 			Matrix4f matrix4f = matrixStackIn.last().pose();
 			float f1 = this.minecraft.options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
-			FontRenderer fontrenderer = renderManager.getFont();
+			Font fontrenderer = this.minecraft.font;
 			float f2 = (float) (-fontrenderer.width(displayNameIn) / 2);
 			fontrenderer.drawInBatch(displayNameIn, f2, (float) i, 553648127, false, matrix4f, bufferIn, flag, j,
 					packedLightIn);

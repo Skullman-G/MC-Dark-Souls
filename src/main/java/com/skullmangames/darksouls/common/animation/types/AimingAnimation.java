@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -9,12 +10,11 @@ import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
+import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 
 public class AimingAnimation extends StaticAnimation
@@ -66,8 +66,8 @@ public class AimingAnimation extends StaticAnimation
 			float f = 90.0F;
 			float ratio = (f - Math.abs(entitydata.getOriginalEntity().xRot)) / f;
 			float yawOffset = entitydata.getOriginalEntity().getVehicle() != null ? entitydata.getOriginalEntity().yRot : entitydata.getOriginalEntity().yBodyRot;
-			head.setRotation(Quaternion.rotate((float)-Math.toRadians((yawOffset - entitydata.getOriginalEntity().yRot) * ratio), new Vector3f(0,1,0), head.getRotation()));
-			chest.setCustomRotation(Quaternion.rotate((float)-Math.toRadians((entitydata.getOriginalEntity().yRot - yawOffset) * ratio),
+			head.setRotation(ModQuaternion.rotate((float)-Math.toRadians((yawOffset - entitydata.getOriginalEntity().yRot) * ratio), new Vector3f(0,1,0), head.getRotation()));
+			chest.setCustomRotation(ModQuaternion.rotate((float)-Math.toRadians((entitydata.getOriginalEntity().yRot - yawOffset) * ratio),
 					new Vector3f(0,1,0), null));
 			
 			return interpolatedPose;

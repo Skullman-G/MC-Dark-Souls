@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.stats;
 
 import com.skullmangames.darksouls.DarkSouls;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class Stat
 {
@@ -19,6 +19,6 @@ public class Stat
 		return this.name;
 	}
 	
-	public void onChange(PlayerEntity player, int value) {}
-	public void init(PlayerEntity player, int value) {}
+	public void onChange(Player player, int value) {}
+	public void init(Player player, int value) {}
 }

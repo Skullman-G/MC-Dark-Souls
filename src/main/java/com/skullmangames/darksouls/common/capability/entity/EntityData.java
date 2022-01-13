@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public abstract class EntityData<T extends Entity>
 {

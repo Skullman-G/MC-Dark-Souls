@@ -3,16 +3,16 @@ package com.skullmangames.darksouls.client.gui.screens;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSStat;
 
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class LevelUpScreen extends PlayerStatsScreen
 {
@@ -23,7 +23,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	public LevelUpScreen()
 	{
-		super(new StringTextComponent("Level Up"));
+		super(new TextComponent("Level Up"));
 	}
 	
 	@Override
@@ -39,14 +39,14 @@ public class LevelUpScreen extends PlayerStatsScreen
 		for (Stat stat : Stats.STATS)
 		{
 			int statValue = this.playerdata.getStats().getStatValue(stat);
-			LevelButton downButton = this.addButton(new LevelButton(x + 93, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent("<"), (button) ->
+			LevelButton downButton = this.addRenderableWidget(new LevelButton(x + 93, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent("<"), (button) ->
 			{
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
 			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
 			
-			LevelButton upButton = this.addButton(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
+			LevelButton upButton = this.addRenderableWidget(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent(">"), (button) ->
 			{
 				this.levelUp(stat);
 				this.refreshLevelButtons();
@@ -57,7 +57,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 			upDownButtonHeight += 10;
 		}
 		
-		this.addButton(new Button(x + 35, y + 205, this.buttonWidth, this.buttonHeight, new TranslationTextComponent("gui.darksouls.accept"), (p_214187_1_) ->
+		this.addRenderableWidget(new Button(x + 35, y + 205, this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.accept"), (p_214187_1_) ->
 		{
 	         this.accept();
 	    }));
@@ -106,7 +106,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 	@Override
 	public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_)
 	{
-		InputMappings.Input mouseKey = InputMappings.getKey(p_231046_1_, p_231046_2_);
+		InputConstants.Key mouseKey = InputConstants.getKey(p_231046_1_, p_231046_2_);
 		if (this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) 
 		{
 	         this.onClose();

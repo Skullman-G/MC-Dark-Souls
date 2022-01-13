@@ -1,21 +1,24 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class SoulRenderer extends EntityRenderer<SoulEntity>
 {
 	private static final ResourceLocation SOUL_LOCATION = new ResourceLocation("textures/particle/soul.png");
 
-	public SoulRenderer(EntityRendererManager p_i46178_1_)
+	public SoulRenderer(EntityRendererProvider.Context p_i46178_1_)
 	{
 		super(p_i46178_1_);
 		this.shadowRadius = 0.15F;
@@ -25,24 +28,23 @@ public class SoulRenderer extends EntityRenderer<SoulEntity>
 	@Override
 	protected int getBlockLightLevel(SoulEntity p_225624_1_, BlockPos p_225624_2_)
 	{
-		return MathHelper.clamp(super.getBlockLightLevel(p_225624_1_, p_225624_2_) + 7, 0, 15);
+		return MathUtils.clamp(super.getBlockLightLevel(p_225624_1_, p_225624_2_) + 7, 0, 15);
 	}
 
 	@Override
-	public void render(SoulEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_,
-			int p_225623_6_)
+	public void render(SoulEntity p_114485_, float p_114486_, float p_114487_, PoseStack poseStack, MultiBufferSource p_114489_, int p_114490_)
 	{
-		p_225623_4_.pushPose();
-		p_225623_4_.translate(0.0D, (double) 0.1F, 0.0D);
-		p_225623_4_.mulPose(this.entityRenderDispatcher.cameraOrientation());
-		p_225623_4_.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-		p_225623_4_.scale(0.3F, 0.3F, 0.3F);
-		p_225623_4_.popPose();
-		super.render(p_225623_1_, p_225623_2_, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_);
+		poseStack.pushPose();
+		poseStack.translate(0.0D, (double) 0.1F, 0.0D);
+		poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		poseStack.scale(0.3F, 0.3F, 0.3F);
+		poseStack.popPose();
+		super.render(p_114485_, p_114486_, p_114487_, poseStack, p_114489_, p_114490_);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SoulEntity p_110775_1_)
+	public ResourceLocation getTextureLocation(SoulEntity p_114482_)
 	{
 		return SOUL_LOCATION;
 	}

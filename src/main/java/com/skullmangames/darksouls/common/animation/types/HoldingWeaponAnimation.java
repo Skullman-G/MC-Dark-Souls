@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 
 public class HoldingWeaponAnimation extends StaticAnimation

@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class Model
 {

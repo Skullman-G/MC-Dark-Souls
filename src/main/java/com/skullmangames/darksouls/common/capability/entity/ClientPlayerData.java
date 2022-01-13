@@ -21,26 +21,27 @@ import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Items;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.EntityHitResult;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
+public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 {
 	private LivingEntity rayTarget;
 	private Minecraft minecraft = Minecraft.getInstance();
 	
 	@Override
-	public void onEntityConstructed(ClientPlayerEntity entity)
+	public void onEntityConstructed(LocalPlayer entity)
 	{
 		super.onEntityConstructed(entity);
 		ClientManager.INSTANCE.setPlayerData(this);
@@ -49,11 +50,11 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	}
 	
 	@Override
-	public void onEntityJoinWorld(ClientPlayerEntity entityIn)
+	public void onEntityJoinWorld(LocalPlayer entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
 		
-		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
+		if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
 		else ClientManager.INSTANCE.switchToFirstPerson();
 	}
 	
@@ -77,11 +78,11 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		super.updateOnClient();
 		
-		RayTraceResult rayResult = this.minecraft.hitResult;
+		HitResult rayResult = this.minecraft.hitResult;
 
-		if (rayResult.getType() == RayTraceResult.Type.ENTITY)
+		if (rayResult.getType() == HitResult.Type.ENTITY)
 		{
-			Entity hit = ((EntityRayTraceResult)rayResult).getEntity();
+			Entity hit = ((EntityHitResult)rayResult).getEntity();
 			if (hit instanceof LivingEntity)
 				this.rayTarget = (LivingEntity)hit;
 		}
@@ -141,7 +142,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 		}
 		else
 		{
-			WeaponCapability weapon = this.getHeldWeaponCapability(Hand.MAIN_HAND);
+			WeaponCapability weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
 			if (weapon == null) return;
 			animation = weapon.getAttack(type, this);
 		}
@@ -192,7 +193,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	@Override
 	public boolean isFirstPerson()
 	{
-		return this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON;
+		return this.minecraft.options.getCameraType() == CameraType.FIRST_PERSON;
 	}
 	
 	@Override
@@ -208,6 +209,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<ClientPlayerEntity>
 	{
 		if (this.human == value) return;
 		super.setHuman(value);
+		if (value) ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 2, 10, 2);
 		ModNetworkManager.sendToServer(new CTSHuman(this.human));
 	}
 	

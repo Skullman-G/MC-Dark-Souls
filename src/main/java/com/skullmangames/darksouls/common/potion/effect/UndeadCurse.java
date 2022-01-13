@@ -2,31 +2,31 @@ package com.skullmangames.darksouls.common.potion.effect;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public class UndeadCurse extends Effect
+public class UndeadCurse extends MobEffect
 {
 	public UndeadCurse()
 	{
-		super(EffectType.NEUTRAL, 0);
+		super(MobEffectCategory.NEUTRAL, 0);
 	}
 	
-	public void onPotionAdd(PlayerEntity playerentity)
+	public void onPotionAdd(Player playerentity)
 	{
 		this.onPotionRemove(playerentity);
-		playerentity.inventory.add(new ItemStack(ModItems.DARKSIGN.get()));
+		playerentity.inventoryMenu.setCarried(new ItemStack(ModItems.DARKSIGN.get()));
 	}
 	
-	public void onPotionRemove(PlayerEntity playerentity)
+	public void onPotionRemove(Player playerentity)
 	{
-		for (ItemStack itemstack : playerentity.inventory.items)
+		for (ItemStack itemstack : playerentity.inventoryMenu.getItems())
 		{
 			if (itemstack.getItem() == ModItems.DARKSIGN.get())
 			{
-				playerentity.inventory.removeItem(itemstack);
+				playerentity.getInventory().removeItem(itemstack);
 			}
 		}
 	}

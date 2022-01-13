@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class AxeCapability extends MaterialItemCapability
 {

@@ -7,17 +7,17 @@ import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModAttributes
 {
@@ -100,7 +100,7 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.MAX_STUN_ARMOR.get());
 	}
     
-    private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
+    private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
     {
 		withStunArmor(entityType, event);
 		event.add(entityType, ModAttributes.OFFHAND_ATTACK_DAMAGE.get());

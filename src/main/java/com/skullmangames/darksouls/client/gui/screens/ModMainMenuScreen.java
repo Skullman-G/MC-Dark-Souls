@@ -1,43 +1,50 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.realmsclient.RealmsMainScreen;
+import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.ScreenManager;
-import com.skullmangames.darksouls.client.gui.widget.ScalableButton;
+import com.skullmangames.darksouls.client.gui.widget.TextButton;
 
-import net.minecraft.client.gui.AccessibilityScreen;
-import net.minecraft.client.gui.DialogTexts;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.LanguageScreen;
-import net.minecraft.client.gui.screen.MainMenuScreen;
-import net.minecraft.client.gui.screen.MultiplayerScreen;
-import net.minecraft.client.gui.screen.MultiplayerWarningScreen;
-import net.minecraft.client.gui.screen.OptionsScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.toasts.SystemToast;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.ImageButton;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.realms.RealmsBridgeScreen;
+import net.minecraft.SharedConstants;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.OptionsScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
-import net.minecraft.world.storage.SaveFormat;
-import net.minecraft.world.storage.WorldSummary;
+import net.minecraft.util.ModCheck.Confidence;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.WorldGenSettings;
+import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.level.storage.LevelSummary;
+import net.minecraftforge.client.gui.NotificationModUpdateScreen;
+import net.minecraftforge.internal.BrandingControl;
 
-public class ModMainMenuScreen extends MainMenuScreen
+public class ModMainMenuScreen extends Screen
 {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final ResourceLocation DS_ACCESSIBILITY_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID,
@@ -47,19 +54,153 @@ public class ModMainMenuScreen extends MainMenuScreen
 	private static final ResourceLocation DS_MINECRAFT_EDITION = new ResourceLocation(DarkSouls.MOD_ID,
 			"textures/guis/title/edition.png");
 	private net.minecraftforge.client.gui.NotificationModUpdateScreen modUpdateNotification;
+	private long fadeInStart;
+	private int copyrightWidth;
+	private int copyrightX;
+	private final boolean fading;
+	private Screen realmsNotificationsScreen;
+	private Button resetDemoButton;
 
 	public ModMainMenuScreen(boolean fading)
 	{
-		super(fading);
+		super(new TranslatableComponent("narrator.screen.title"));
+		this.fading = fading;
 	}
 
-	private void confirmDemo(boolean p_213087_1_)
+	@Override
+	public boolean isPauseScreen()
 	{
-		if (p_213087_1_)
+		return false;
+	}
+
+	@Override
+	public boolean shouldCloseOnEsc()
+	{
+		return false;
+	}
+
+	private boolean checkDemoWorldPresence()
+	{
+		try
 		{
-			try (SaveFormat.LevelSave saveformat$levelsave = this.minecraft.getLevelSource().createAccess("Demo_World"))
+			LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = this.minecraft
+					.getLevelSource().createAccess("Demo_World");
+
+			boolean flag;
+			try
 			{
-				saveformat$levelsave.deleteLevel();
+				flag = levelstoragesource$levelstorageaccess.getSummary() != null;
+			} catch (Throwable throwable1)
+			{
+				if (levelstoragesource$levelstorageaccess != null)
+				{
+					try
+					{
+						levelstoragesource$levelstorageaccess.close();
+					} catch (Throwable throwable)
+					{
+						throwable1.addSuppressed(throwable);
+					}
+				}
+
+				throw throwable1;
+			}
+
+			if (levelstoragesource$levelstorageaccess != null)
+			{
+				levelstoragesource$levelstorageaccess.close();
+			}
+
+			return flag;
+		} catch (IOException ioexception)
+		{
+			SystemToast.onWorldAccessFailure(this.minecraft, "Demo_World");
+			LOGGER.warn("Failed to read demo world data", (Throwable) ioexception);
+			return false;
+		}
+	}
+
+	private void createNormalMenuOptions(int x, int y, int buttonwidth, int buttonheight)
+	{
+		this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.singleplayer"), (p_96781_) ->
+				{
+					this.minecraft.setScreen(new ModWorldSelectionScreen(this));
+				}));
+		y += buttonheight;
+		boolean flag = this.minecraft.allowsMultiplayer();
+		Button.OnTooltip button$ontooltip = flag ? Button.NO_TOOLTIP : new Button.OnTooltip()
+		{
+			private final Component text = new TranslatableComponent("title.multiplayer.disabled");
+
+			public void onTooltip(Button p_169458_, PoseStack p_169459_, int p_169460_, int p_169461_)
+			{
+				if (!p_169458_.active)
+				{
+					ModMainMenuScreen.this.renderTooltip(p_169459_, ModMainMenuScreen.this.minecraft.font.split(
+							this.text, Math.max(ModMainMenuScreen.this.width / 2 - 43, 170)), p_169460_, p_169461_);
+				}
+
+			}
+
+			public void narrateTooltip(Consumer<Component> p_169456_)
+			{
+				p_169456_.accept(this.text);
+			}
+		};
+		(this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.multiplayer"), (p_169450_) ->
+				{
+					Screen screen = (Screen) (this.minecraft.options.skipMultiplayerWarning
+							? new JoinMultiplayerScreen(this)
+							: new SafetyScreen(this));
+					this.minecraft.setScreen(screen);
+				}, button$ontooltip))).active = flag;
+		y += buttonheight;
+		(this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.online"), (p_96771_) ->
+				{
+					this.realmsButtonClicked();
+				}, button$ontooltip))).active = flag;
+	}
+
+	private void realmsButtonClicked()
+	{
+		this.minecraft.setScreen(new RealmsMainScreen(this));
+	}
+
+	private void confirmDemo(boolean p_96778_)
+	{
+		if (p_96778_)
+		{
+			try
+			{
+				LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = this.minecraft
+						.getLevelSource().createAccess("Demo_World");
+
+				try
+				{
+					levelstoragesource$levelstorageaccess.deleteLevel();
+				} catch (Throwable throwable1)
+				{
+					if (levelstoragesource$levelstorageaccess != null)
+					{
+						try
+						{
+							levelstoragesource$levelstorageaccess.close();
+						} catch (Throwable throwable)
+						{
+							throwable1.addSuppressed(throwable);
+						}
+					}
+
+					throw throwable1;
+				}
+
+				if (levelstoragesource$levelstorageaccess != null)
+				{
+					levelstoragesource$levelstorageaccess.close();
+				}
 			} catch (IOException ioexception)
 			{
 				SystemToast.onWorldDeleteFailure(this.minecraft, "Demo_World");
@@ -70,75 +211,66 @@ public class ModMainMenuScreen extends MainMenuScreen
 		this.minecraft.setScreen(this);
 	}
 
-	@Override
-	public void createNormalMenuOptions(int p_73969_1_, int p_73969_2_)
-	{
-		this.addButton(new ScalableButton(this.width / 2 - 50, p_73969_1_, 100, 13,
-				new TranslationTextComponent("menu.singleplayer"), (p_213089_1_) ->
-				{
-					this.minecraft.setScreen(new ModWorldSelectionScreen(this));
-				}));
-		boolean flag = this.minecraft.allowsMultiplayer();
-		Button.ITooltip button$itooltip = flag ? Button.NO_TOOLTIP
-				: (p_238659_1_, p_238659_2_, p_238659_3_, p_238659_4_) ->
-				{
-					if (!p_238659_1_.active)
-					{
-						this.renderTooltip(p_238659_2_,
-								this.minecraft.font.split(new TranslationTextComponent("title.multiplayer.disabled"),
-										Math.max(this.width / 2 - 43, 170)),
-								p_238659_3_, p_238659_4_);
-					}
-
-				};
-		(this.addButton(new ScalableButton(this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 1, 100, 13,
-				new TranslationTextComponent("menu.multiplayer"), (p_213095_1_) ->
-				{
-					Screen screen = (Screen) (this.minecraft.options.skipMultiplayerWarning
-							? new MultiplayerScreen(this)
-							: new MultiplayerWarningScreen(this));
-					this.minecraft.setScreen(screen);
-				}, button$itooltip))).active = flag;
-		(this.addButton(new ScalableButton(this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 2, 100, 13,
-				new TranslationTextComponent("menu.online"), (p_238661_1_) ->
-				{
-					this.realmsButtonClicked();
-				}, button$itooltip))).active = flag;
-	}
-
-	@Override
-	public void createDemoMenuOptions(int p_73972_1_, int p_73972_2_)
+	private void createDemoMenuOptions(int x, int y, int buttonwidth, int buttonheight)
 	{
 		boolean flag = this.checkDemoWorldPresence();
-		this.addButton(new ScalableButton(this.width / 2 - 50, p_73972_1_, 100, 13,
-				new TranslationTextComponent("menu.playdemo"), (p_213091_2_) ->
+		this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.playdemo"), (p_169444_) ->
 				{
 					if (flag)
 					{
 						this.minecraft.loadLevel("Demo_World");
 					} else
 					{
-						DynamicRegistries.Impl dynamicregistries$impl = DynamicRegistries.builtin();
-						this.minecraft.createLevel("Demo_World", MinecraftServer.DEMO_SETTINGS, dynamicregistries$impl,
-								DimensionGeneratorSettings.demoSettings(dynamicregistries$impl));
+						RegistryAccess.RegistryHolder registryaccess$registryholder = RegistryAccess.builtin();
+						this.minecraft.createLevel("Demo_World", MinecraftServer.DEMO_SETTINGS,
+								registryaccess$registryholder,
+								WorldGenSettings.demoSettings(registryaccess$registryholder));
 					}
 
 				}));
-		this.resetDemoButton = this.addButton(new ScalableButton(this.width / 2 - 50, p_73972_1_ + p_73972_2_ * 1, 100,
-				13, new TranslationTextComponent("menu.resetdemo"), (p_238658_1_) ->
+		y += buttonheight;
+		this.resetDemoButton = this.addRenderableWidget(new TextButton(x, y, buttonwidth,
+				buttonheight, new TranslatableComponent("menu.resetdemo"), (p_169441_) ->
 				{
-					SaveFormat saveformat = this.minecraft.getLevelSource();
+					LevelStorageSource levelstoragesource = this.minecraft.getLevelSource();
 
-					try (SaveFormat.LevelSave saveformat$levelsave = saveformat.createAccess("Demo_World"))
+					try
 					{
-						WorldSummary worldsummary = saveformat$levelsave.getSummary();
-						if (worldsummary != null)
+						LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = levelstoragesource
+								.createAccess("Demo_World");
+
+						try
 						{
-							this.minecraft.setScreen(new ConfirmScreen(this::confirmDemo,
-									new TranslationTextComponent("selectWorld.deleteQuestion"),
-									new TranslationTextComponent("selectWorld.deleteWarning",
-											worldsummary.getLevelName()),
-									new TranslationTextComponent("selectWorld.deleteButton"), DialogTexts.GUI_CANCEL));
+							LevelSummary levelsummary = levelstoragesource$levelstorageaccess.getSummary();
+							if (levelsummary != null)
+							{
+								this.minecraft.setScreen(new ConfirmScreen(this::confirmDemo,
+										new TranslatableComponent("selectWorld.deleteQuestion"),
+										new TranslatableComponent("selectWorld.deleteWarning",
+												levelsummary.getLevelName()),
+										new TranslatableComponent("selectWorld.deleteButton"),
+										CommonComponents.GUI_CANCEL));
+							}
+						} catch (Throwable throwable1)
+						{
+							if (levelstoragesource$levelstorageaccess != null)
+							{
+								try
+								{
+									levelstoragesource$levelstorageaccess.close();
+								} catch (Throwable throwable)
+								{
+									throwable1.addSuppressed(throwable);
+								}
+							}
+
+							throw throwable1;
+						}
+
+						if (levelstoragesource$levelstorageaccess != null)
+						{
+							levelstoragesource$levelstorageaccess.close();
 						}
 					} catch (IOException ioexception)
 					{
@@ -153,50 +285,64 @@ public class ModMainMenuScreen extends MainMenuScreen
 	@Override
 	protected void init()
 	{
+		super.init();
+
 		this.copyrightWidth = this.font.width("Copyright Mojang AB. Do not distribute!");
 		this.copyrightX = this.width - this.copyrightWidth - 2;
-		int j = this.height / 2;
+		int buttonwidth = 90;
+		int buttonheight = 15;
+		int x = this.width / 2 - buttonwidth / 2;
+		int y = this.height - this.height / 2;
 		Button modButton = null;
+		
 		if (this.minecraft.isDemo())
-			this.createDemoMenuOptions(j, 17);
-		else
 		{
-			this.createNormalMenuOptions(j, 17);
-			modButton = this.addButton(new ScalableButton(this.width / 2 - 50, j + 17 * this.buttons.size(), 100, 13,
-					new TranslationTextComponent("fml.menu.mods"), button ->
+			this.createDemoMenuOptions(x, y, buttonwidth, buttonheight);
+			y += buttonheight * 2;
+		} else
+		{
+			this.createNormalMenuOptions(x, y, buttonwidth, buttonheight);
+			y += buttonheight * 3;
+			modButton = this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+					new TranslatableComponent("fml.menu.mods"), button ->
 					{
-						this.minecraft.setScreen(new net.minecraftforge.fml.client.gui.screen.ModListScreen(this));
+						this.minecraft.setScreen(new net.minecraftforge.client.gui.ModListScreen(this));
 					}));
+			y += buttonheight;
 		}
-		this.modUpdateNotification = net.minecraftforge.client.gui.NotificationModUpdateScreen.init(this, modButton);
+		modUpdateNotification = this.initNotificationModUpdateScreen(modButton);
 
-		this.addButton(new ScalableButton(this.width / 2 - 50, j + 17 * this.buttons.size(), 100, 13,
-				new TranslationTextComponent("menu.options"), (p_213096_1_) ->
+		int y1 = this.height - this.height / 4;
+		this.addRenderableWidget(new ImageButton(this.width / 2 - 70, y1, 20, 20, 0, 106, 20,
+				Button.WIDGETS_LOCATION, 256, 256, (p_96791_) ->
+				{
+					this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options,
+							this.minecraft.getLanguageManager()));
+				}, new TranslatableComponent("narrator.button.language")));
+
+		this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.options"), (p_96788_) ->
 				{
 					this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
 				}));
-		this.addButton(new ScalableButton(this.width / 2 - 50, j + 17 * this.buttons.size(), 100, 13,
-				new TranslationTextComponent("menu.quit"), (p_213094_1_) ->
+		y += buttonheight;
+
+		this.addRenderableWidget(new TextButton(x, y, buttonwidth, buttonheight,
+				new TranslatableComponent("menu.quit"), (p_96786_) ->
 				{
 					this.minecraft.stop();
 				}));
-		this.addButton(new ImageButton(this.width / 2 - 124, j + 72 + 12, 20, 20, 0, 106, 20,
-				ScreenManager.DS_WIDGETS_PATH, 256, 256, (p_213090_1_) ->
+		y += buttonheight;
+
+		this.addRenderableWidget(new ImageButton(this.width / 2 + 50, y1, 20, 20, 0, 0, 20,
+				DS_ACCESSIBILITY_TEXTURE, 32, 64, (p_96784_) ->
 				{
-					this.minecraft.setScreen(
-							new LanguageScreen(this, this.minecraft.options, this.minecraft.getLanguageManager()));
-				}, new TranslationTextComponent("narrator.button.language")));
-		this.addButton(new ImageButton(this.width / 2 + 104, j + 72 + 12, 20, 20, 0, 0, 20, DS_ACCESSIBILITY_TEXTURE,
-				32, 64, (p_213088_1_) ->
-				{
-					this.minecraft.setScreen(new AccessibilityScreen(this, this.minecraft.options));
-				}, new TranslationTextComponent("narrator.button.accessibility")));
+					this.minecraft.setScreen(new AccessibilityOptionsScreen(this, this.minecraft.options));
+				}, new TranslatableComponent("narrator.button.accessibility")));
 		this.minecraft.setConnectedToRealms(false);
-		if (this.minecraft.options.realmsNotifications && !this.realmsNotificationsInitialized)
+		if (this.minecraft.options.realmsNotifications && this.realmsNotificationsScreen == null)
 		{
-			RealmsBridgeScreen realmsbridgescreen = new RealmsBridgeScreen();
-			this.realmsNotificationsScreen = realmsbridgescreen.getNotificationScreen(this);
-			this.realmsNotificationsInitialized = true;
+			this.realmsNotificationsScreen = new RealmsNotificationsScreen();
 		}
 
 		if (this.realmsNotificationsEnabled())
@@ -205,8 +351,16 @@ public class ModMainMenuScreen extends MainMenuScreen
 		}
 	}
 
+	private NotificationModUpdateScreen initNotificationModUpdateScreen(Button modButton)
+	{
+		NotificationModUpdateScreen notificationModUpdateScreen = new NotificationModUpdateScreen(modButton);
+		notificationModUpdateScreen.resize(this.minecraft, this.width, this.height);
+		notificationModUpdateScreen.init();
+		return notificationModUpdateScreen;
+	}
+
 	@Override
-	public void render(MatrixStack matStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
+	public void render(PoseStack matStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 		if (this.fadeInStart == 0L && this.fading)
 			this.fadeInStart = Util.getMillis();
@@ -217,22 +371,22 @@ public class ModMainMenuScreen extends MainMenuScreen
 
 		ScreenManager.renderDarkBackground(this);
 
-		float f1 = this.fading ? MathHelper.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
-		int l = MathHelper.ceil(f1 * 255.0F) << 24;
+		float f1 = this.fading ? Mth.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
+		int l = Mth.ceil(f1 * 255.0F) << 24;
 		if ((l & -67108864) != 0)
 		{
-			this.minecraft.getTextureManager().bind(DS_MINECRAFT_LOGO);
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, f1);
+			RenderSystem.setShaderTexture(0, DS_MINECRAFT_LOGO);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f1);
 			this.blitOutlineBlack(j, 30, (p_238657_2_, p_238657_3_) ->
 			{
 				this.blit(matStack, p_238657_2_ + 0, p_238657_3_, 0, 0, 155, 44);
 				this.blit(matStack, p_238657_2_ + 156, p_238657_3_ - 1, 0, 45, 155, 44);
 			});
 
-			this.minecraft.getTextureManager().bind(DS_MINECRAFT_EDITION);
+			RenderSystem.setShaderTexture(0, DS_MINECRAFT_EDITION);
 			blit(matStack, j + 88, 80, 0.0F, 0.0F, 98, 14, 128, 16);
-			net.minecraftforge.client.ForgeHooksClient.renderMainMenu(this, matStack, this.font, this.width,
-					this.height, l);
+			net.minecraftforge.client.ForgeHooksClient.renderMainMenu(null, matStack, this.font,
+					this.width, this.height, l);
 
 			String s = "Minecraft " + SharedConstants.getCurrentVersion().getName();
 			if (this.minecraft.isDemo())
@@ -243,15 +397,15 @@ public class ModMainMenuScreen extends MainMenuScreen
 						: "/" + this.minecraft.getVersionType());
 			}
 
-			if (this.minecraft.isProbablyModded())
+			if (Minecraft.checkModStatus().confidence() != Confidence.PROBABLY_NOT)
 			{
 				s = s + I18n.get("menu.modded");
 			}
 
-			net.minecraftforge.fml.BrandingControl.forEachLine(true, true, (brdline, brd) -> drawString(matStack,
-					this.font, brd, 2, this.height - (10 + brdline * (this.font.lineHeight + 1)), 11184810 | l));
+			BrandingControl.forEachLine(true, true, (brdline, brd) -> drawString(matStack, this.font, brd, 2,
+					this.height - (10 + brdline * (this.font.lineHeight + 1)), 11184810 | l));
 
-			net.minecraftforge.fml.BrandingControl.forEachAboveCopyrightLine(
+			BrandingControl.forEachAboveCopyrightLine(
 					(brdline, brd) -> drawString(matStack, this.font, brd, this.width - font.width(brd),
 							this.height - (10 + (brdline + 1) * (this.font.lineHeight + 1)), 11184810 | l));
 
@@ -264,19 +418,26 @@ public class ModMainMenuScreen extends MainMenuScreen
 						11184810 | l);
 			}
 
-			for (Widget widget : this.buttons)
-				widget.setAlpha(f1);
-
-			for (int i = 0; i < this.buttons.size(); ++i)
+			for (GuiEventListener guieventlistener : this.children())
 			{
-				this.buttons.get(i).render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
+				if (guieventlistener instanceof AbstractWidget)
+				{
+					((AbstractWidget) guieventlistener).setAlpha(f1);
+				}
 			}
+			
+			super.render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
+			
 			if (this.realmsNotificationsEnabled() && f1 >= 1.0F)
 			{
 				this.realmsNotificationsScreen.render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
 			}
 			modUpdateNotification.render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
-
 		}
+	}
+
+	private boolean realmsNotificationsEnabled()
+	{
+		return this.minecraft.options.realmsNotifications && this.realmsNotificationsScreen != null;
 	}
 }

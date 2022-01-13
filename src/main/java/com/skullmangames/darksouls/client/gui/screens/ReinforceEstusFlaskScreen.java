@@ -1,27 +1,24 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFlaskContainer> implements IContainerListener
+public class ReinforceEstusFlaskScreen extends AbstractContainerScreen<ReinforceEstusFlaskContainer> implements MenuAccess<ReinforceEstusFlaskContainer>
 {
 	private static final ResourceLocation REINFORCE_ESTUS_FLASK_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/containers/reinforce_estus_flask.png");
 	
-	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskContainer p_i232291_1_, PlayerInventory p_i232291_2_, ITextComponent p_i232291_3_)
+	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskContainer p_i232291_1_, Inventory p_i232291_2_, Component p_i232291_3_)
 	{
 		super(p_i232291_1_, p_i232291_2_, p_i232291_3_);
 		this.titleLabelX = 10;
@@ -29,7 +26,7 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 	}
 	
 	@Override
-	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
+	public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 	   this.renderBackground(p_230430_1_);
 	   super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
@@ -38,9 +35,9 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 	}
 
 	@Override
-	protected void renderBg(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_)
+	protected void renderBg(PoseStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_)
 	{
-	    this.minecraft.getTextureManager().bind(REINFORCE_ESTUS_FLASK_LOCATION);
+	    this.minecraft.getTextureManager().bindForSetup(REINFORCE_ESTUS_FLASK_LOCATION);
 	    int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;
 	    this.blit(p_230450_1_, x, y, 0, 0, this.imageWidth, this.imageHeight);
@@ -52,41 +49,9 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 	}
 	
 	@Override
-	protected void renderLabels(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_)
+	protected void renderLabels(PoseStack p_230451_1_, int p_230451_2_, int p_230451_3_)
 	{
 		RenderSystem.disableBlend();
 		super.renderLabels(p_230451_1_, p_230451_2_, p_230451_3_);
-	}
-
-	@Override
-	public void refreshContainer(Container p_71110_1_, NonNullList<ItemStack> p_71110_2_)
-	{
-		this.slotChanged(p_71110_1_, 0, p_71110_1_.getSlot(0).getItem());
-	}
-
-	@Override
-	public void slotChanged(Container p_71111_1_, int p_71111_2_, ItemStack p_71111_3_)
-	{
-		
-	}
-
-	@Override
-	public void setContainerData(Container p_71112_1_, int p_71112_2_, int p_71112_3_)
-	{
-		
-	}
-	
-	@Override
-	protected void init()
-	{
-		super.init();
-		this.menu.addSlotListener(this);
-	}
-	
-	@Override
-	public void removed()
-	{
-		super.removed();
-		this.menu.removeSlotListener(this);
 	}
 }

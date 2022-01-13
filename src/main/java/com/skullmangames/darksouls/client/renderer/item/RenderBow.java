@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

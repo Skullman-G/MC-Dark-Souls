@@ -2,9 +2,8 @@ package com.skullmangames.darksouls.client.gui;
 
 import java.awt.Color;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
@@ -13,22 +12,11 @@ import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerDa
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.Timer;
 
-import net.minecraft.client.GameSettings;
-import net.minecraft.client.MainWindow;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.settings.AttackIndicatorStatus;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.GameType;
-import net.minecraft.world.World;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
 
 public class GameOverlayManager
 {
@@ -50,98 +38,54 @@ public class GameOverlayManager
 	private static int saveLastStamina;
 	private static int saveLastStamina2;
 	
-	public static void renderAdditional(MainWindow window, MatrixStack matrixstack)
+	public static void registerOverlayElements()
 	{
-		if (minecraft.player.isCreative() || minecraft.player.isSpectator()) return;
+		OverlayRegistry.registerOverlayTop("Mod Player Health", (gui, pStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderHealth(gui, screenWidth, screenHeight, pStack);
+	        }
+	    });
 		
-		renderHumanity(window, matrixstack);
-		renderSouls(window, matrixstack);
-	}
-	
-	private static boolean canRenderCrosshairForSpectator(RayTraceResult raytraceresult)
-	{
-	      if (raytraceresult == null) return false;
-	      else if (raytraceresult.getType() == RayTraceResult.Type.ENTITY)
-	      {
-	         return ((EntityRayTraceResult)raytraceresult).getEntity() instanceof INamedContainerProvider;
-	      }
-	      else if (raytraceresult.getType() == RayTraceResult.Type.BLOCK)
-	      {
-	         BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getBlockPos();
-	         World world = minecraft.level;
-	         return world.getBlockState(blockpos).getMenuProvider(world, blockpos) != null;
-	      }
-	      else return false;
-	   }
-	
-	public static void renderCrosshair(MainWindow window, MatrixStack matrixstack)
-	{
-	   GameSettings gamesettings = minecraft.options;
-	   int screenWidth = window.getGuiScaledWidth();
-	   int screenHeight = window.getGuiScaledHeight();
-	   
-	   if (gamesettings.getCameraType().isFirstPerson())
-	   {
-	      if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || canRenderCrosshairForSpectator(minecraft.hitResult))
-	      {
-	         if (gamesettings.renderDebug && !gamesettings.hideGui && !minecraft.player.isReducedDebugInfo() && !gamesettings.reducedDebugInfo)
-	         {
-	            RenderSystem.pushMatrix();
-	            RenderSystem.translatef((float)(screenWidth / 2), (float)(screenHeight / 2), (float)minecraft.gui.getBlitOffset());
-	            ActiveRenderInfo activerenderinfo = minecraft.gameRenderer.getMainCamera();
-	            RenderSystem.rotatef(activerenderinfo.getXRot(), -1.0F, 0.0F, 0.0F);
-	            RenderSystem.rotatef(activerenderinfo.getYRot(), 0.0F, 1.0F, 0.0F);
-	            RenderSystem.scalef(-1.0F, -1.0F, -1.0F);
-	            RenderSystem.renderCrosshair(10);
-	            RenderSystem.popMatrix();
-	         }
-	         else
-	         {
-	            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-	            		GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-	            minecraft.gui.blit(matrixstack, (screenWidth - 15) / 2, (screenHeight - 15) / 2, 0, 0, 15, 15);
-	            if (minecraft.options.attackIndicator == AttackIndicatorStatus.CROSSHAIR)
-	            {
-	               float f = minecraft.player.getAttackStrengthScale(0.0F);
-	               boolean flag = false;
-	               if (minecraft.crosshairPickEntity != null && minecraft.crosshairPickEntity instanceof LivingEntity && f >= 1.0F)
-	               {
-	                  flag = minecraft.player.getCurrentItemAttackStrengthDelay() > 5.0F;
-	                  flag = flag & minecraft.crosshairPickEntity.isAlive();
-	               }
-
-	               int j = screenHeight / 2 - 7 + 16;
-	               int k = screenWidth / 2 - 8;
-	               if (flag)
-	               {
-	                  minecraft.gui.blit(matrixstack, k, j, 68, 94, 16, 16);
-	               }
-	            }
-	         }
-
-	      }
-	   }
-	}
-	
-	public static void renderHumanity(MainWindow window, MatrixStack matrixstack)
-	{
-		ClientPlayerData playerdata = ClientManager.INSTANCE.getPlayerData();
-		int x = window.getGuiScaledWidth() / 2;
-		int y = window.getGuiScaledHeight() - 45;
-		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		OverlayRegistry.registerOverlayTop("Player Stamina", (gui, pStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderStamina(gui, screenWidth, screenHeight, pStack);
+	        }
+	    });
 		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
+		OverlayRegistry.registerOverlayTop("Player Humanity", (gui, pStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderHumanity(gui, screenWidth, screenHeight, pStack);
+	        }
+	    });
+		
+		OverlayRegistry.registerOverlayTop("Player Souls", (gui, pStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderSouls(gui, screenWidth, screenHeight, pStack);
+	        }
+	    });
 	}
 	
-	public static void renderHealth(MainWindow window, MatrixStack matrixstack)
+	private static void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack posestack)
 	{
 		RenderSystem.enableBlend();
-		int x = window.getGuiScaledWidth() / 2 - 91;
-		int y = window.getGuiScaledHeight() - 39;
-		ForgeIngameGui.left_height += 10;
+		int x = width / 2 - 91;
+		int y = height - 39;
+		gui.left_height += 10;
 		
-		minecraft.getTextureManager().bind(LOCATION);
-		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
+		RenderSystem.setShaderTexture(0, LOCATION);
+		minecraft.gui.blit(posestack, x, y, 0, 0, 90, 9);
 		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 90);
 		
 		// Damage Animation
@@ -166,14 +110,14 @@ public class GameOverlayManager
 				damagedHealth = saveLastHealth;
 				flag = true;
 			}
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
+			minecraft.gui.blit(posestack, x, y, 0, 18, damagedHealth, 9);
 			damageCooldown.drain(1.0F);
 			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
+			minecraft.gui.blit(posestack, x, y, 0, 18, damagedHealth, 9);
 			damageTimer.drain(0.5F);
 		}
 		
@@ -187,48 +131,31 @@ public class GameOverlayManager
 				healTimer.start(healthpercentage - saveLastHealth);
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
-			minecraft.gui.blit(matrixstack, x, y, 0, 9, healcentage, 9);
+			minecraft.gui.blit(posestack, x, y, 0, 9, healcentage, 9);
 			healTimer.drain(1.0F);
 		}
 		
 		// Default
 		else
 		{
-			minecraft.gui.blit(matrixstack, x, y, 0, 9, healthpercentage, 9);
+			minecraft.gui.blit(posestack, x, y, 0, 9, healthpercentage, 9);
 		}
 		
 		lastHealth = healthpercentage;
+		RenderSystem.disableBlend();
 	}
 	
-	public static void renderSouls(MainWindow window, MatrixStack matrixstack)
-	{
-		int x = window.getGuiScaledWidth() - 76;
-		int y = window.getGuiScaledHeight() - 21;
-		
-		minecraft.getTextureManager().bind(LOCATION);
-		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
-		
-		x = window.getGuiScaledWidth() - (76 / 2);
-		y = window.getGuiScaledHeight() - 15;
-		int color = Color.WHITE.getRGB();
-		
-		MatrixStack ms = new MatrixStack();
-		float scale = 0.8F;
-		ms.scale(scale, scale, scale);
-		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerData().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
-	}
-	
-	public static void renderStamina(MainWindow window, MatrixStack matrixstack)
+	private static void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
 	{
 		RemoteClientPlayerData<?> player = getCameraPlayerData();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = window.getGuiScaledHeight() - 39;
-		int x = window.getGuiScaledWidth() / 2 + 3;
-		ForgeIngameGui.right_height += 10;
+		int y = height - 39;
+		int x = width / 2 + 3;
+		gui.right_height += 10;
 		
-		minecraft.getTextureManager().bind(LOCATION);
+		RenderSystem.setShaderTexture(0, LOCATION);
 		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
 		double staminaPercentageDouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
 		int staminaPercentage = (int)staminaPercentageDouble;
@@ -281,19 +208,50 @@ public class GameOverlayManager
 		}
 		
 		lastStamina = staminaPercentage;
+		RenderSystem.disableBlend();
 	}
 	
-	private static AbstractClientPlayerEntity getCameraPlayer()
+	private static void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
 	{
-	    return !(Minecraft.getInstance().getCameraEntity() instanceof AbstractClientPlayerEntity) ? null : (AbstractClientPlayerEntity)Minecraft.getInstance().getCameraEntity();
+		ClientPlayerData playerdata = ClientManager.INSTANCE.getPlayerData();
+		int x = width / 2;
+		int y = height - 45;
+		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		
+		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
+	}
+
+	private static void renderSouls(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
+	{
+		RenderSystem.enableBlend();
+		int x = width - 76;
+		int y = height - 21;
+		
+		RenderSystem.setShaderTexture(0, LOCATION);
+		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
+		
+		x = width - (76 / 2);
+		y = height - 15;
+		int color = Color.WHITE.getRGB();
+		
+		PoseStack ms = new PoseStack();
+		float scale = 0.8F;
+		ms.scale(scale, scale, scale);
+		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerData().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
+		RenderSystem.disableBlend();
 	}
 	
-	private static RemoteClientPlayerData<?> getCameraPlayerData()
+	private static LocalPlayer getCameraPlayer()
 	{
-		AbstractClientPlayerEntity player = getCameraPlayer();
+	    return minecraft.player;
+	}
+	
+	private static ClientPlayerData getCameraPlayerData()
+	{
+		LocalPlayer player = getCameraPlayer();
 		if (player == null) return null;
 		EntityData<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (!(entitydata instanceof RemoteClientPlayerData<?>)) return null;
-		return (RemoteClientPlayerData<?>)entitydata;
+		if (!(entitydata instanceof ClientPlayerData)) return null;
+		return (ClientPlayerData)entitydata;
 	}
 }

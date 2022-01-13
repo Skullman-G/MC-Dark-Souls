@@ -14,7 +14,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
-import com.skullmangames.darksouls.common.entity.DataKeys;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -33,22 +32,21 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 {
@@ -82,22 +80,21 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		super.onEntityJoinWorld(entityIn);
 		this.initAttributes();
-		this.orgEntity.pushthrough = 1.0F;
 	}
 	
 	@Nullable
 	public StaticAnimation getHoldingWeaponAnimation()
 	{
 		StaticAnimation animation = null;
-		if (this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND))
+		if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
 		{
-			animation = this.getHeldWeaponCapability(Hand.OFF_HAND).getHoldingAnimation();
-			if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND)) animation = ((HoldingWeaponAnimation)animation).getAnimation(2);
+			animation = this.getHeldWeaponCapability(InteractionHand.OFF_HAND).getHoldingAnimation();
+			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND)) animation = ((HoldingWeaponAnimation)animation).getAnimation(2);
 			else animation = ((HoldingWeaponAnimation)animation).getAnimation(1);
 		}
-		else if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND))
+		else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
 		{
-			animation = this.getHeldWeaponCapability(Hand.MAIN_HAND).getHoldingAnimation().getAnimation(0);
+			animation = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation().getAnimation(0);
 		}
 		
 		return animation;
@@ -135,7 +132,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		}
 	}
 	
-	public boolean isHoldingWeaponWithHoldingAnimation(Hand hand)
+	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		return cap != null && cap.getHoldingAnimation() != null;
@@ -213,12 +210,12 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		net.minecraftforge.event.ForgeEventFactory.onUseItemStop(this.orgEntity, this.orgEntity.getUseItem(), this.orgEntity.getUseItemRemainingTicks());
 	}
 	
-	public CapabilityItem getHeldItemCapability(Hand hand)
+	public CapabilityItem getHeldItemCapability(InteractionHand hand)
 	{
 		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
 	}
 	
-	public WeaponCapability getHeldWeaponCapability(Hand hand)
+	public WeaponCapability getHeldWeaponCapability(InteractionHand hand)
 	{
 		return ModCapabilities.getWeaponCapability(this.orgEntity.getItemInHand(hand));
 	}
@@ -267,9 +264,9 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		attackerData.setStunTimeReduction();
 		attackerData.getAnimator().playAnimation(deflectAnimation, stuntime);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), attacker);
-		if(attacker instanceof ServerPlayerEntity)
+		if(attacker instanceof ServerPlayer)
 		{
-			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), (ServerPlayerEntity)attacker);
+			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), (ServerPlayer)attacker);
 		}
 		
 		return true;
@@ -280,7 +277,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, animationId, amount, requireddeflectionlevel, damageType);
 	}
 	
-	public float getDamageToEntity(Entity targetEntity, Hand hand)
+	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)
 	{
 		float damage = 1.0F;
 		damage += this.getWeaponDamage(hand);
@@ -290,20 +287,20 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		}
 		else
 		{
-			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), CreatureAttribute.UNDEFINED);
+			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), MobType.UNDEFINED);
 		}
 		
 		return damage;
 	}
 	
-	public float getWeaponDamage(Hand hand)
+	public float getWeaponDamage(InteractionHand hand)
 	{
 		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
 		if (weapon == null) return 0.0F;
 		return ((WeaponItem)weapon.getOriginalItem()).getDamage();
 	}
 	
-	public boolean hurtEntity(Entity hitTarget, Hand handIn, IExtendedDamageSource source, float amount)
+	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, IExtendedDamageSource source, float amount)
 	{
 		boolean succed = hitTarget.hurt((DamageSource) source, amount);
 		
@@ -351,10 +348,10 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
         
 		if (orgEntity.getRandom().nextDouble() >= orgEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
 		{
-        	Vector3d vec = orgEntity.getDeltaMovement();
+        	Vec3 vec = orgEntity.getDeltaMovement();
         	
         	orgEntity.hasImpulse = true;
-            float f = MathHelper.sqrt(d1 * d1 + d0 * d0);
+            float f = (float)Math.sqrt(d1 * d1 + d0 * d0);
             
             double x = vec.x;
             double y = vec.y;
@@ -382,25 +379,24 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	
 	public float getMaxStunArmor()
 	{
-		ModifiableAttributeInstance stun_resistance = this.orgEntity.getAttribute(ModAttributes.MAX_STUN_ARMOR.get());
+		AttributeInstance stun_resistance = this.orgEntity.getAttribute(ModAttributes.MAX_STUN_ARMOR.get());
 		return (float) (stun_resistance == null ? 0 : stun_resistance.getValue());
 	}
 	
 	public float getStunArmor()
 	{
-		return this.getMaxStunArmor() == 0 ? 0 : this.orgEntity.getEntityData().get(DataKeys.STUN_ARMOR).floatValue();
+		return 0.0F; // TODO: Reimplement Stun Armor as Poise
 	}
 	
 	public void setStunArmor(float value)
 	{
-		float f1 = Math.max(Math.min(value, this.getMaxStunArmor()), 0);
-		this.orgEntity.getEntityData().set(DataKeys.STUN_ARMOR, f1);
+		// TODO: Reimplement Stun Armor as Poise
 	}
 	
 	public void rotateTo(float degree, float limit, boolean partialSync)
 	{
 		LivingEntity entity = this.getOriginalEntity();
-		float amount = MathHelper.wrapDegrees(degree - entity.yRot);
+		float amount = Mth.wrapDegrees(degree - entity.yRot);
 		
         while(amount < -180.0F)
         {
@@ -439,7 +435,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		double d0 = target.getX() - this.orgEntity.getX();
         double d1 = target.getZ() - this.orgEntity.getZ();
-        float degree = (float)(MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
+        float degree = (float)(Math.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
     	this.rotateTo(degree, limit, partialSync);
 	}
 	
@@ -468,7 +464,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		float pitch = -this.getOriginalEntity().getViewXRot(partialTicks);
 		float correct = (pitch > 0) ? 0.03333F * (float)Math.pow(pitch, 2) : -0.03333F * (float)Math.pow(pitch, 2);
 		
-		return MathHelper.clamp(correct, -30.0F, 30.0F);
+		return MathUtils.clamp(correct, -30.0F, 30.0F);
 	}
 	
 	public PublicMatrix4f getHeadMatrix(float partialTicks)
@@ -548,33 +544,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		this.playAnimationSynchronize(animation.getId(), modifyTime);
 	}
 	
-	public void resetSize(EntitySize size)
-	{
-		// Dimensions
-		/*EntitySize entitysize = this.orgEntity.size;
-		EntitySize entitysize1 = size;
-		this.orgEntity.size = entitysize1;
-	    if (entitysize1.width < entitysize.width)
-	    {
-	    	double d0 = (double)entitysize1.width / 2.0D;
-	    	this.orgEntity.setBoundingBox(new AxisAlignedBB(orgEntity.getX() - d0, orgEntity.getY(), orgEntity.getZ() - d0, orgEntity.getX() + d0,
-	    			orgEntity.getY() + (double)entitysize1.height, orgEntity.getZ() + d0));
-	    }
-	    else
-	    {
-	    	AxisAlignedBB axisalignedbb = this.orgEntity.getBoundingBox();
-	    	this.orgEntity.setBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double)entitysize1.width,
-	    			axisalignedbb.minY + (double)entitysize1.height, axisalignedbb.minZ + (double)entitysize1.width));
-	    	
-	    	if (entitysize1.width > entitysize.width && orgEntity.level.isClientSide)
-	    	{
-	    		float f = entitysize.width - entitysize1.width;
-	        	this.orgEntity.move(MoverType.SELF, new Vector3d((double)f, 0.0D, (double)f));
-	    	}
-	    }*/
-    }
-	
-	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlotType slotType) {}
+	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlot slotType) {}
 	
 	@SuppressWarnings("unchecked")
 	public <A extends Animator>A getAnimator()
@@ -609,28 +579,28 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return orgEntity;
 	}
 
-	public SoundEvent getWeaponHitSound(Hand hand)
+	public SoundEvent getWeaponHitSound(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		if (cap == null) return null;
 		return cap.getHitSound();
 	}
 	
-	public SoundEvent getWeaponSmashSound(Hand hand)
+	public SoundEvent getWeaponSmashSound(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		if (cap == null) return null;
 		return cap.getSmashSound();
 	}
 
-	public SoundEvent getSwingSound(Hand hand)
+	public SoundEvent getSwingSound(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		if (cap == null) return null;
 		return cap.getSwingSound();
 	}
 
-	public Collider getColliderMatching(Hand hand)
+	public Collider getColliderMatching(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
 		return cap != null ? cap.getWeaponCollider() : Colliders.fist;

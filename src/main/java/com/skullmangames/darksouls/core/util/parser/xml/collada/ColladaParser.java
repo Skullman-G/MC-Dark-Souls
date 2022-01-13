@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.core.util.math.vector;
 
-import net.minecraft.util.math.vector.Vector4f;
+import com.mojang.math.Vector4f;
 
 public class Vector4fHelper
 {

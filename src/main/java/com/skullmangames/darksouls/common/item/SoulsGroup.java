@@ -2,12 +2,11 @@ package com.skullmangames.darksouls.common.item;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-public class SoulsGroup extends ItemGroup
+public class SoulsGroup extends CreativeModeTab
 {
-
 	public SoulsGroup(String label)
 	{
 		super(label);
@@ -18,5 +17,4 @@ public class SoulsGroup extends ItemGroup
 	{
 		return ModItems.FIRE_KEEPER_SOUL.get().getDefaultInstance();
 	}
-	
 }

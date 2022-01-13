@@ -4,14 +4,14 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.sounds.SoundEvent;
 
 public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 {
@@ -21,13 +21,13 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	}
 	
 	@Override
-	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
 	{
 		return ItemUser.startUsing(this, level, player, hand);
 	}
 	
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemstack, World level, LivingEntity livingentity)
+	public ItemStack finishUsingItem(ItemStack itemstack, Level level, LivingEntity livingentity)
 	{
 		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
 		if (!level.isClientSide && this.getAmount() > 0)
@@ -39,7 +39,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 			}
 			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
 		}
-		if (!(livingentity instanceof PlayerEntity) || !((PlayerEntity)livingentity).abilities.instabuild)
+		if (!(livingentity instanceof Player) || !((Player)livingentity).getAbilities().instabuild)
 		{
 			itemstack.shrink(1);
         }
@@ -47,7 +47,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	}
 	
 	@Override
-	public void onUseTick(World level, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
+	public void onUseTick(Level level, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
 	{
 		ItemUser.triggerItemUseEffects(livingentity, itemstack, this, durationremaining);
 	}

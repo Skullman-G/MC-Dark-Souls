@@ -3,29 +3,28 @@ package com.skullmangames.darksouls.client.renderer;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.client.Camera;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockGetter;
 
-public class Camera extends ActiveRenderInfo
+public class ModCamera extends Camera
 {
 	private Vector2f pivotRot = Vector2f.ZERO;
 	private Vector2f pivotRotOld = Vector2f.ZERO;
 	
 	@Override
-	public void setup(IBlockReader world, Entity entity, boolean detached, boolean mirror, float partialTick)
+	public void setup(BlockGetter world, Entity entity, boolean detached, boolean mirror, float partialTick)
 	{
 		this.initialized = true;
 	    this.level = world;
 	    this.entity = entity;
 	    this.detached = detached;
-	    this.mirror = mirror;
 	    
 	    this.setRotation(entity.getViewYRot(partialTick), entity.getViewXRot(partialTick));
-	    this.setPosition(MathHelper.lerp((double)partialTick, entity.xo, entity.getX()), MathHelper.lerp((double)partialTick, entity.yo, entity.getY()) + (double)MathHelper.lerp(partialTick, this.eyeHeightOld, this.eyeHeight), MathHelper.lerp((double)partialTick, entity.zo, entity.getZ()));
+	    this.setPosition(Mth.lerp((double)partialTick, entity.xo, entity.getX()), Mth.lerp((double)partialTick, entity.yo, entity.getY()) + (double)Mth.lerp(partialTick, this.eyeHeightOld, this.eyeHeight), Mth.lerp((double)partialTick, entity.zo, entity.getZ()));
 	    
 	    if (detached)
 	    {
@@ -57,12 +56,12 @@ public class Camera extends ActiveRenderInfo
 	
 	public float getPivotXRot(float partialTicks)
 	{
-	   return partialTicks == 1.0F ? this.pivotRot.x : MathHelper.lerp(partialTicks, this.pivotRotOld.x, this.pivotRot.x);
+	   return partialTicks == 1.0F ? this.pivotRot.x : Mth.lerp(partialTicks, this.pivotRotOld.x, this.pivotRot.x);
 	}
 
 	public float getPivotYRot(float partialTicks)
 	{
-	   return partialTicks == 1.0F ? this.pivotRot.y : MathHelper.lerp(partialTicks, this.pivotRotOld.y, this.pivotRot.y);
+	   return partialTicks == 1.0F ? this.pivotRot.y : Mth.lerp(partialTicks, this.pivotRotOld.y, this.pivotRot.y);
 	}
 	
 	public void setPivotRot(float x, float y)
@@ -72,10 +71,10 @@ public class Camera extends ActiveRenderInfo
 	    
 	    this.pivotRot.x = this.pivotRot.x + xMod;
 	    this.pivotRot.y = this.pivotRot.y + yMod;
-	    this.pivotRot.y = MathHelper.clamp(this.pivotRot.y, -90.0F, 90.0F);
+	    this.pivotRot.y = Mth.clamp(this.pivotRot.y, -90.0F, 90.0F);
 	    
 	    this.pivotRotOld.x = this.pivotRotOld.x + xMod;
 	    this.pivotRotOld.y = this.pivotRotOld.y + yMod;
-	    this.pivotRotOld.y = MathHelper.clamp(this.pivotRotOld.y, -90.0F, 90.0F);
+	    this.pivotRotOld.y = Mth.clamp(this.pivotRotOld.y, -90.0F, 90.0F);
 	}
 }

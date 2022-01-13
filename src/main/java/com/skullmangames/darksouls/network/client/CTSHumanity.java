@@ -5,9 +5,9 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSHumanity
 {
@@ -18,12 +18,12 @@ public class CTSHumanity
 		this.humanity = value;
 	}
 	
-	public static CTSHumanity fromBytes(PacketBuffer buf)
+	public static CTSHumanity fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSHumanity(buf.readInt());
 	}
 	
-	public static void toBytes(CTSHumanity msg, PacketBuffer buf)
+	public static void toBytes(CTSHumanity msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.humanity);
 	}
@@ -32,7 +32,7 @@ public class CTSHumanity
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayerEntity serverPlayer = ctx.get().getSender();
+			ServerPlayer serverPlayer = ctx.get().getSender();
 			ServerPlayerData playerdata = (ServerPlayerData) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			

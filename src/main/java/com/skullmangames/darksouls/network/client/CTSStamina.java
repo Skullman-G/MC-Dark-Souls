@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSStamina
 {
@@ -17,12 +17,12 @@ public class CTSStamina
 		this.stamina = value;
 	}
 	
-	public static CTSStamina fromBytes(PacketBuffer buf)
+	public static CTSStamina fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSStamina(buf.readFloat());
 	}
 	
-	public static void toBytes(CTSStamina msg, PacketBuffer buf)
+	public static void toBytes(CTSStamina msg, FriendlyByteBuf buf)
 	{
 		buf.writeFloat(msg.stamina);
 	}
@@ -31,7 +31,7 @@ public class CTSStamina
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayerEntity serverPlayer = ctx.get().getSender();
+			ServerPlayer serverPlayer = ctx.get().getSender();
 			ServerPlayerData playerdata = (ServerPlayerData) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			

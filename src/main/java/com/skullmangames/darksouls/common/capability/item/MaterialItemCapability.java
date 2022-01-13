@@ -1,12 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.TieredItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TieredItem;
 
 public abstract class MaterialItemCapability extends WeaponCapability
 {
-	protected IItemTier itemTier;
+	protected Tier itemTier;
 	
 	public MaterialItemCapability(Item item, WeaponCategory category)
 	{

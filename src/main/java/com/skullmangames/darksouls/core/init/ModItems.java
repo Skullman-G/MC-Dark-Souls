@@ -14,96 +14,90 @@ import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.SpawnEggItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-public class ModItems 
+public class ModItems
 {
 	public static final List<Item> DESCRIPTION_ITEMS = new ArrayList<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING)));
+			.tab(CreativeModeTab.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
-			.tab(ItemGroup.TAB_MATERIALS)));
+			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoulItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING)));
+			.tab(CreativeModeTab.TAB_BREWING)));
 	
 	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Teleport2BonfireItem(DarkSoulsUseAction.DARKSIGN, true, false, true, new Item.Properties()
 			.stacksTo(1)));
 	
 	public static final RegistryObject<Item> HOMEWARD_BONE = ITEMS.register("homeward_bone", () -> new Teleport2BonfireItem(DarkSoulsUseAction.MIRACLE, false, true, false, new Item.Properties()
-			.tab(ItemGroup.TAB_TOOLS)));
+			.tab(CreativeModeTab.TAB_TOOLS)));
 	
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new WeaponItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new WeaponItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
 	
-	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new WeaponItem(ItemTier.WOOD, 0, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new WeaponItem(Tiers.WOOD, 0, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
-			.tab(ItemGroup.TAB_MATERIALS)));
+			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new GreatHammerItem(ItemTier.WOOD, 7, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT))
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new GreatHammerItem(Tiers.WOOD, 7, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT))
 			.addStat(Stats.STRENGTH, 46));
 	
-	/*public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new KeyItem(new Item.Properties()
-			.tab(ItemGroup.TAB_REDSTONE)));*/
-	
 	//Block Items
-	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(ModBlocks.TITANITE_ORE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
-	
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
+			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
 	
 	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(ModBlocks.BIG_ACACIA_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_BIRCH_DOOR = ITEMS.register("big_birch_door", () -> new BlockItem(ModBlocks.BIG_BIRCH_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_OAK_DOOR = ITEMS.register("big_oak_door", () -> new BlockItem(ModBlocks.BIG_OAK_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_SPRUCE_DOOR = ITEMS.register("big_spruce_door", () -> new BlockItem(ModBlocks.BIG_SPRUCE_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_JUNGLE_DOOR = ITEMS.register("big_jungle_door", () -> new BlockItem(ModBlocks.BIG_JUNGLE_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_DARK_OAK_DOOR = ITEMS.register("big_dark_oak_door", () -> new BlockItem(ModBlocks.BIG_DARK_OAK_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_CRIMSON_DOOR = ITEMS.register("big_crimson_door", () -> new BlockItem(ModBlocks.BIG_CRIMSON_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(ModBlocks.BIG_WARPED_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(ModBlocks.IRON_BAR_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
 	
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
-			.tab(ItemGroup.TAB_MISC)));
+			.tab(CreativeModeTab.TAB_MISC)));
 	
 	
 	public static void registerDescriptionItems()
@@ -125,14 +119,10 @@ public class ModItems
 	//Vanilla Overrides
 	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 	
-	
-	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(ModBlocks.SMITHING_TABLE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
-	
-	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new WeaponItem(ItemTier.WOOD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> DIAMOND_SWORD = VANILLA_ITEMS.register("diamond_sword", () -> new WeaponItem(ItemTier.DIAMOND, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> GOLDEN_SWORD = VANILLA_ITEMS.register("golden_sword", () -> new WeaponItem(ItemTier.GOLD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new WeaponItem(ItemTier.IRON, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new WeaponItem(ItemTier.NETHERITE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new WeaponItem(ItemTier.STONE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
+	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new WeaponItem(Tiers.WOOD, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> DIAMOND_SWORD = VANILLA_ITEMS.register("diamond_sword", () -> new WeaponItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> GOLDEN_SWORD = VANILLA_ITEMS.register("golden_sword", () -> new WeaponItem(Tiers.GOLD, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new WeaponItem(Tiers.IRON, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new WeaponItem(Tiers.NETHERITE, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new WeaponItem(Tiers.STONE, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 }

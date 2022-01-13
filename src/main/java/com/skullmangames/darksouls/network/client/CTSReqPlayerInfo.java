@@ -12,10 +12,10 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSReqPlayerInfo
 {
@@ -31,12 +31,12 @@ public class CTSReqPlayerInfo
 		this.entityId = entityId;
 	}
 	
-	public static CTSReqPlayerInfo fromBytes(PacketBuffer buf)
+	public static CTSReqPlayerInfo fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSReqPlayerInfo(buf.readInt());
 	}
 	
-	public static void toBytes(CTSReqPlayerInfo msg, PacketBuffer buf)
+	public static void toBytes(CTSReqPlayerInfo msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
 	}
@@ -47,7 +47,7 @@ public class CTSReqPlayerInfo
 		{
 			Entity entity = ctx.get().getSender().level.getEntity(msg.entityId);
 			
-			if(entity != null && entity instanceof ServerPlayerEntity)
+			if(entity != null && entity instanceof ServerPlayer)
 			{
 				ServerPlayerData playerdata = (ServerPlayerData) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				

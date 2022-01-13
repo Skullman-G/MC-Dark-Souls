@@ -1,12 +1,12 @@
 package com.skullmangames.darksouls.core.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface IExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(PlayerEntity player, StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
+	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
 	{
         return new DamageSourceExtended("player", player, stunType, id, amount, requireddeflectionlevel, damageType);
     }

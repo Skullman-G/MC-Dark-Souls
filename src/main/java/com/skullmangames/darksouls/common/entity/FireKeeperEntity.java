@@ -7,65 +7,40 @@ import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModTileEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class FireKeeperEntity extends QuestEntity
 {
 	private BlockPos linkedBonfirePos;
 	private boolean hasLinkedBonfire = false;
 
-	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, World level)
+	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, Level level)
 	{
 		super(entity, level);
-	}
-	
-	@Override
-	public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason,
-			ILivingEntityData data, CompoundNBT nbt)
-	{
-		if (!this.hasLinkedBonfire)
-		{
-			for (TileEntity t : this.level.blockEntityList)
-			{
-				if (t instanceof BonfireTileEntity
-						&& !((BonfireTileEntity) t).hasFireKeeper()
-						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)
-				{
-					this.linkBonfire(t.getBlockPos());
-					break;
-				}
-			}
-		}
-		
-		return super.finalizeSpawn(world, difficulty, reason, data, nbt);
 	}
 
 	private void linkBonfire(BlockPos blockpos)
@@ -87,24 +62,23 @@ public class FireKeeperEntity extends QuestEntity
 
 	public BonfireTileEntity getLinkedBonfire()
 	{
-		TileEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
+		BlockEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
 		return tileentity instanceof BonfireTileEntity
 				? (BonfireTileEntity) tileentity
 				: null;
 	}
 
-	public static AttributeModifierMap.MutableAttribute createAttributes()
+	public static AttributeSupplier.Builder createAttributes()
 	{
-		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15D);
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15D);
 	}
 
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new WalkAroundBonfireGoal(this, 1.0D));
-		this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new WalkAroundBonfireGoal(this, 1.0D));
+		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
+		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -114,7 +88,7 @@ public class FireKeeperEntity extends QuestEntity
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbt)
+	public void addAdditionalSaveData(CompoundTag nbt)
 	{
 		super.addAdditionalSaveData(nbt);
 		nbt.putInt("LinkedBonfireX", this.linkedBonfirePos.getX());
@@ -125,7 +99,7 @@ public class FireKeeperEntity extends QuestEntity
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbt)
+	public void readAdditionalSaveData(CompoundTag nbt)
 	{
 		super.readAdditionalSaveData(nbt);
 		this.linkedBonfirePos = new BlockPos(nbt.getInt("LinkedBonfireX"), nbt.getInt("LinkedBonfireY"), nbt.getInt("LinkedBonfireZ"));
@@ -140,10 +114,11 @@ public class FireKeeperEntity extends QuestEntity
 		
 		if (!this.hasLinkedBonfire)
 		{
-			for (TileEntity t : this.level.blockEntityList)
+			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 			{
-				if (t instanceof BonfireTileEntity
-						&& !((BonfireTileEntity) t).hasFireKeeper()
+				BonfireTileEntity t = this.level.getBlockEntity(pos, ModTileEntities.BONFIRE.get()).orElse(null);
+				if (t != null
+						&& !t.hasFireKeeper()
 						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)
 				{
 					this.linkBonfire(t.getBlockPos());
@@ -175,39 +150,39 @@ public class FireKeeperEntity extends QuestEntity
 	}
 
 	@Override
-	protected ActionResultType mobInteract(PlayerEntity player, Hand hand)
+	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
 		if (player.level.isClientSide)
 		{
 			switch (this.getCurrentQuestPath())
 			{
 				case "1":
-					player.sendMessage(new TranslationTextComponent("dialogue.darksouls.fire_keeper.introduction"),  Util.NIL_UUID);
+					player.sendMessage(new TranslatableComponent("dialogue.darksouls.fire_keeper.introduction"),  Util.NIL_UUID);
 					this.setCurrentQuestPath("2");
 					break;
 		
 				case "2":
-					if (player.inventory.contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
+					if (player.getInventory().contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
 					{
-						player.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.estus_shard"),  Util.NIL_UUID);
+						player.sendMessage(new TranslatableComponent("dialogie.darksouls.fire_keeper.estus_shard"),  Util.NIL_UUID);
 					} else
 					{
-						player.sendMessage(new TranslationTextComponent("dialogie.darksouls.fire_keeper.general"),  Util.NIL_UUID);
+						player.sendMessage(new TranslatableComponent("dialogie.darksouls.fire_keeper.general"),  Util.NIL_UUID);
 					}
 					if (ModNetworkManager.connection != null) ModNetworkManager.connection.openFireKeeperScreen(this.getId());
 					break;
 			}
 		}
 
-		return ActionResultType.sidedSuccess(player.level.isClientSide);
+		return InteractionResult.sidedSuccess(player.level.isClientSide);
 	}
 
-	public void openContainer(ServerPlayerEntity serverplayer)
+	public void openContainer(ServerPlayer serverplayer)
 	{
-		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
+		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, p_235576_4_) ->
 		{
-			return new ReinforceEstusFlaskContainer(id, inventory, IWorldPosCallable.create(this.level, this.blockPosition()));
-		}, new TranslationTextComponent("container.reinforce_estus_flask.title"));
+			return new ReinforceEstusFlaskContainer(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
+		}, new TranslatableComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}
 

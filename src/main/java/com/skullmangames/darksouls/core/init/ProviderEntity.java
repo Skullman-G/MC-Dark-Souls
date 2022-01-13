@@ -11,12 +11,13 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.Direction;
+
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,15 +38,15 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	{
 		capabilityMap.put(EntityType.PLAYER, (entityIn) ->
 		{
-			if(entityIn instanceof ClientPlayerEntity)
+			if(entityIn instanceof LocalPlayer)
 			{
 				return ClientPlayerData::new;
 			}
-			else if (entityIn instanceof RemoteClientPlayerEntity)
+			else if (entityIn instanceof RemotePlayer)
 			{
-				return RemoteClientPlayerData<RemoteClientPlayerEntity>::new;
+				return RemoteClientPlayerData<RemotePlayer>::new;
 			}
-			else if (entityIn instanceof ServerPlayerEntity)
+			else if (entityIn instanceof ServerPlayer)
 			{
 				return ServerPlayerData::new;
 			}

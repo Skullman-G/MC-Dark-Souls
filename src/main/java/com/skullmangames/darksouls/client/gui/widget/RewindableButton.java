@@ -3,28 +3,28 @@ package com.skullmangames.darksouls.client.gui.widget;
 import com.skullmangames.darksouls.config.Option;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RewindableButton extends OptionButton<Integer>
 {
-	protected final Button.IPressable onRewindPress;
+	protected final Button.OnPress onRewindPress;
 	
-	public RewindableButton(int x, int y, int width, int height, Option<Integer> option, IPressable pressedAction, IPressable rewindPressedAction)
+	public RewindableButton(int x, int y, int width, int height, Option<Integer> option, OnPress pressedAction, OnPress rewindPressedAction)
 	{
 		super(x, y, width, height, option, pressedAction);
 		this.onRewindPress = rewindPressedAction;
 	}
 	
 	@Override
-	protected ITextComponent getRefreshedMessage()
+	protected Component getRefreshedMessage()
 	{
-		return new StringTextComponent(new TranslationTextComponent(this.option.getName()).getString()+": "+this.option.getValue());
+		return new TextComponent(new TranslatableComponent(this.option.getName()).getString()+": "+this.option.getValue());
 	}
 	
 	@Override

@@ -4,10 +4,11 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CTSUpdateBonfireBlock
 {
@@ -24,12 +25,12 @@ public class CTSUpdateBonfireBlock
 		this.blockPos = pos;
 	}
 
-	public static CTSUpdateBonfireBlock fromBytes(PacketBuffer buf)
+	public static CTSUpdateBonfireBlock fromBytes(FriendlyByteBuf buf)
 	{
 		return new CTSUpdateBonfireBlock(buf.readUtf(), buf.readBoolean(), buf.readBoolean(), buf.readBlockPos());
 	}
 
-	public static void toBytes(CTSUpdateBonfireBlock msg, PacketBuffer buf)
+	public static void toBytes(CTSUpdateBonfireBlock msg, FriendlyByteBuf buf)
 	{
 		buf.writeUtf(msg.name);
 		buf.writeBoolean(msg.lit);
@@ -41,7 +42,7 @@ public class CTSUpdateBonfireBlock
 	{
 		ctx.get().enqueueWork(() ->
 		{
-			ServerPlayerEntity serverplayer = ctx.get().getSender();
+			ServerPlayer serverplayer = ctx.get().getSender();
 			BonfireTileEntity bonfire = (BonfireTileEntity)serverplayer.level.getBlockEntity(msg.blockPos);
 			if (bonfire == null) return;
 			if (msg.name != "") bonfire.setName(msg.name);

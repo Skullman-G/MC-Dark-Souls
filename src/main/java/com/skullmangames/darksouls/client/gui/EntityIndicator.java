@@ -3,18 +3,18 @@ package com.skullmangames.darksouls.client.gui;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,13 +29,13 @@ public abstract class EntityIndicator extends ModIngameGui
 		new HealthBarIndicator();
 	}
 	
-	public void drawTexturedModalRect2DPlane(Matrix4f matrix, IVertexBuilder vertexBuilder, 
+	public void drawTexturedModalRect2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
 			float minX, float minY, float maxX, float maxY, float minTexU, float minTexV, float maxTexU, float maxTexV)
     {
 		this.drawTexturedModalRect3DPlane(matrix, vertexBuilder, minX, minY, this.getBlitOffset(), maxX, maxY, this.getBlitOffset(), minTexU, minTexV, maxTexU, maxTexV);
     }
 	
-	public void drawTexturedModalRect3DPlane(Matrix4f matrix, IVertexBuilder vertexBuilder, 
+	public void drawTexturedModalRect3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
 			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minTexU, float minTexV, float maxTexU, float maxTexV)
     {
         float cor = 0.00390625F;
@@ -51,11 +51,11 @@ public abstract class EntityIndicator extends ModIngameGui
 		EntityIndicator.ENTITY_INDICATOR_RENDERERS.add(this);
 	}
 	
-	public Matrix4f getMVMatrix(MatrixStack matStackIn, LivingEntity entityIn, float correctionX, float correctionY, float correctionZ, boolean lockRotation, boolean setupProjection, float partialTicks)
+	public Matrix4f getMVMatrix(PoseStack matStackIn, LivingEntity entityIn, float correctionX, float correctionY, float correctionZ, boolean lockRotation, boolean setupProjection, float partialTicks)
 	{
-		float posX = (float)MathHelper.lerp((double)partialTicks, entityIn.xOld, entityIn.getX());
-		float posY = (float)MathHelper.lerp((double)partialTicks, entityIn.yOld, entityIn.getY());
-		float posZ = (float)MathHelper.lerp((double)partialTicks, entityIn.zOld, entityIn.getZ());
+		float posX = (float)Mth.lerp((double)partialTicks, entityIn.xOld, entityIn.getX());
+		float posY = (float)Mth.lerp((double)partialTicks, entityIn.yOld, entityIn.getY());
+		float posZ = (float)Mth.lerp((double)partialTicks, entityIn.zOld, entityIn.getZ());
 		matStackIn.pushPose();
 		matStackIn.translate(-posX, -posY, -posZ);
 		matStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
@@ -63,7 +63,7 @@ public abstract class EntityIndicator extends ModIngameGui
 		return this.getMVMatrix(matStackIn, posX + correctionX, posY + correctionY, posZ + correctionZ, lockRotation, setupProjection);
 	}
 	
-	public Matrix4f getMVMatrix(MatrixStack matStackIn, float posX, float posY, float posZ, boolean lockRotation, boolean setupProjection) {
+	public Matrix4f getMVMatrix(PoseStack matStackIn, float posX, float posY, float posZ, boolean lockRotation, boolean setupProjection) {
 		PublicMatrix4f viewMatrix = PublicMatrix4f.importMatrix(matStackIn.last().pose());
 		PublicMatrix4f finalMatrix = new PublicMatrix4f();
 		finalMatrix.translate(new Vector3f(-posX, posY, -posZ));
@@ -86,6 +86,6 @@ public abstract class EntityIndicator extends ModIngameGui
 		return PublicMatrix4f.exportMatrix(finalMatrix);
 	}
 	
-	public abstract void drawIndicator(LivingEntity entityIn, MatrixStack matStackIn, IRenderTypeBuffer ivertexBuilder, float partialTicks);
+	public abstract void drawIndicator(LivingEntity entityIn, PoseStack matStackIn, MultiBufferSource ivertexBuilder, float partialTicks);
 	public abstract boolean shouldDraw(LivingEntity entityIn);
 }

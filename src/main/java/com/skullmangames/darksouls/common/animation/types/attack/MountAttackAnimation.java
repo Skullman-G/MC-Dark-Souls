@@ -1,9 +1,8 @@
 package com.skullmangames.darksouls.common.animation.types.attack;
 
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.util.physics.Collider;
-
-import net.minecraft.util.math.vector.Vector3f;
 
 public class MountAttackAnimation extends AttackAnimation
 {

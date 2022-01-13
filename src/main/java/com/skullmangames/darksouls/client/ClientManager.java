@@ -1,20 +1,22 @@
 package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.ScreenManager;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
-import com.skullmangames.darksouls.client.renderer.Camera;
+import com.skullmangames.darksouls.client.renderer.ModCamera;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
+import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModItems;
 
-import net.minecraft.client.GameSettings;
+import net.minecraft.client.Options;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,8 +28,8 @@ public class ClientManager
 	public final RenderEngine renderEngine;
 	public final InputManager inputManager;
 	public final ScreenManager screenManager;
-	public final Camera mainCamera;
-	private GameSettings options;
+	public final ModCamera mainCamera;
+	private Options options;
 	
 	private ClientPlayerData playerdata;
 	
@@ -40,28 +42,30 @@ public class ClientManager
 		this.screenManager = new ScreenManager();
 		this.options = this.minecraft.options;
 		
-		this.minecraft.gameRenderer.mainCamera = new Camera();
-		this.mainCamera = (Camera)this.minecraft.gameRenderer.mainCamera;
+		this.minecraft.gameRenderer.mainCamera = new ModCamera();
+		this.mainCamera = (ModCamera)this.minecraft.gameRenderer.mainCamera;
 		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
 		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 		
-		ItemModelsProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living) ->
+		GameOverlayManager.registerOverlayElements();
+		ModContainers.registerScreens();
+		
+		ItemProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living, id) ->
 	    {
-	        float usage = (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
-	    	return usage;
+	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
 	    });
 	}
 	
 	public void switchToFirstPerson()
 	{
-		this.options.setCameraType(PointOfView.FIRST_PERSON);
-		this.playerdata.getOriginalEntity().abilities.mayBuild = true;
+		this.options.setCameraType(CameraType.FIRST_PERSON);
+		this.playerdata.getOriginalEntity().getAbilities().mayBuild = true;
 	}
 	
 	public void switchToThirdPerson()
 	{
-		this.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
-		this.playerdata.getOriginalEntity().abilities.mayBuild = false;
+		this.options.setCameraType(CameraType.THIRD_PERSON_BACK);
+		this.playerdata.getOriginalEntity().getAbilities().mayBuild = false;
 
 		this.playerdata.getOriginalEntity().xRot = 0.0F;
 		this.playerdata.getOriginalEntity().xRotO = 0.0F;
