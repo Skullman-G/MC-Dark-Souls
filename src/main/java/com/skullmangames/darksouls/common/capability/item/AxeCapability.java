@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.TierSortingRegistry;
 
 public class AxeCapability extends MaterialItemCapability
 {
@@ -42,7 +43,7 @@ public class AxeCapability extends MaterialItemCapability
 	@Override
 	protected void registerAttribute()
 	{
-		int i = this.itemTier.getLevel();
+		int i = TierSortingRegistry.getSortedTiers().indexOf(this.itemTier);
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.7D + 0.3D * i)));
 	}
 

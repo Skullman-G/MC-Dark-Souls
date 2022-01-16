@@ -118,7 +118,7 @@ public class HollowEntity extends PathfinderMob implements RangedAttackMob
 	@Override
 	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
 	{
-		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
+		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
 	    AbstractArrow abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
 	    if (this.getMainHandItem().getItem() instanceof BowItem)
 	       abstractarrowentity = ((BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);

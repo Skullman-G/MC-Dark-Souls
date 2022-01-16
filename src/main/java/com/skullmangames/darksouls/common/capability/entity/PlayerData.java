@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.ModEffects;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
@@ -24,9 +24,9 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 public abstract class PlayerData<T extends Player> extends LivingData<T>
@@ -55,10 +55,9 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 			return false;
 		}));
 		
-		if (!this.orgEntity.hasEffect(ModEffects.UNDEAD_CURSE.get()))
+		if (!this.orgEntity.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
 		{
-			MobEffectInstance effectinstance = new MobEffectInstance(ModEffects.UNDEAD_CURSE.get(), 1000000000);
-			this.orgEntity.addEffect(effectinstance);
+			this.orgEntity.getInventory().add(new ItemStack(ModItems.DARKSIGN.get()));
 		}
 		
 		this.stamina = this.getMaxStamina();

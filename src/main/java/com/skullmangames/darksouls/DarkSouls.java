@@ -44,7 +44,6 @@ import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
-import com.skullmangames.darksouls.core.init.ModEffects;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModModelLayers;
@@ -101,7 +100,6 @@ public class DarkSouls
 		ModTileEntities.TILE_ENTITIES.register(modBus);
 		ModItems.VANILLA_ITEMS.register(modBus);
 		ModStructures.STRUCTURES.register(modBus);
-		ModEffects.EFFECTS.register(modBus);
 		ModContainers.CONTAINERS.register(modBus);
 		ModEntities.ENTITIES.register(modBus);
 		ModItems.ITEMS.register(modBus);

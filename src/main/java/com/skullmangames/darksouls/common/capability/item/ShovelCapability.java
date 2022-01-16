@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraft.sounds.SoundEvent;
 
 public class ShovelCapability extends MaterialItemCapability
@@ -18,7 +19,7 @@ public class ShovelCapability extends MaterialItemCapability
 	@Override
 	protected void registerAttribute()
 	{
-		double impact = this.itemTier.getLevel() * 0.4D + 0.8D;
+		double impact = TierSortingRegistry.getSortedTiers().indexOf(this.itemTier) * 0.4D + 0.8D;
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(impact)));
 	}
 

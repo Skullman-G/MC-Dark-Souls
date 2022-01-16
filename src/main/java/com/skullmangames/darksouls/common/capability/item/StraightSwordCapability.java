@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.TierSortingRegistry;
 
 public class StraightSwordCapability extends MaterialItemCapability
 {
@@ -33,7 +34,7 @@ public class StraightSwordCapability extends MaterialItemCapability
 	@Override
 	protected void registerAttribute()
 	{
-		int i = this.itemTier.getLevel();
+		int i = TierSortingRegistry.getSortedTiers().indexOf(this.itemTier);
 		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
 		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
 	}

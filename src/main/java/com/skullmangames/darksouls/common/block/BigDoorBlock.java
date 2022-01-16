@@ -319,6 +319,7 @@ public class BigDoorBlock extends HorizontalDirectionalBlock
 	    return p_185499_1_.setValue(FACING, p_185499_2_.rotate(p_185499_1_.getValue(FACING)));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{

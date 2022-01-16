@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraft.sounds.SoundEvent;
 
 public class PickaxeCapability extends MaterialItemCapability
@@ -18,7 +19,7 @@ public class PickaxeCapability extends MaterialItemCapability
 	@Override
 	protected void registerAttribute()
 	{
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(-0.4D + 0.1D * this.itemTier.getLevel())));
+		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(-0.4D + 0.1D * TierSortingRegistry.getSortedTiers().indexOf(this.itemTier))));
 	}
 
 	@Override
