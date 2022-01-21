@@ -21,8 +21,8 @@
 	"item.darksouls.demon_great_hammer": "Demon's Great Hammer",
 	"item.darksouls.key": "Key",
 	"item.darksouls.iron_bar_door": "Iron Bar Door",
+	"item.darksouls.dagger": "Dagger",
 	
-	"block.darksouls.titanite_ore": "Titanite Ore",
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
 	"block.darksouls.big_acacia_door": "Big Acacia Door",
@@ -73,6 +73,7 @@
 	"tooltip.darksouls.undead_bone_shard.extended": "Undead bones that yet burn. The bonfire's cinders are the bones of Undead, and a bone that still burns is a fresh cinder indeed. Before feeding upon death, one must first pray to it.",
 	"tooltip.darksouls.straight_sword_hilt.extended": "The hilt of this lost sword. Only slightly better than one's bare hands, and not recommended for extensive use.",
 	"tooltip.darksouls.demon_great_hammer.extended": "A Demon weapon built from the stone archtrees. Used by lesser demons at the Undead Asylum. This hammer is imbued with no special power, but will merrily beat foes to a pulp, provided you have the strength to wield it.",
+	"tooltip.darksouls.dagger.extended": "This standard small dagger has only a modest attack but can be jabbed in rapid succession, and is effective in critical hits such as after a parry or when stabbing in the back. With both slash and thrust attacks this dagger is useful in various situations.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be registered as holding the key.",
 	"tooltip.darksouls.filter_animation": "Turns the animation invisible in non-combat mode.",
@@ -118,9 +119,11 @@
 	"item.soul_container.finish": "Soul Container finish",
 	"item.soul_container.finish.sub": "Soul Container breaks",
 	"item.sword.swing": "Sword swing",
-	"item.sword.swing.sub": "Sword swinging",
+	"item.sword.swing.sub": "Sword swings",
 	"item.great_hammer.smash": "Great Hammer Smash",
 	"item.great_hammer.smash.sub": "Great Hammer hits the ground too hard",
+	"item.fist.swing": "Fist swing",
+	"item.fist.swing.sub": "Fist swings",
 	
 	"entity.hollow.ambient": "Hollow ambient",
 	"entity.hollow.ambient.sub": "Hollow groans",
@@ -177,8 +180,9 @@
 	"ingame.first_person_3d": "3D First Person",
 	
 	"stat.darksouls.vigor": "Vigor",
-	"stat.darksouls.strength": "Strength",
 	"stat.darksouls.endurance": "Endurance",
+	"stat.darksouls.strength": "Strength",
+	"stat.darksouls.dexterity": "Dexterity",
 	
 	"attribute.darksouls.weight": "Weight",
 	"attribute.darksouls.stun_armor": "Stun Armor",

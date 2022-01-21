@@ -19,6 +19,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
@@ -596,7 +597,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public SoundEvent getSwingSound(InteractionHand hand)
 	{
 		WeaponCapability cap = this.getHeldWeaponCapability(hand);
-		if (cap == null) return null;
+		if (cap == null) return ModSoundEvents.FIST_SWING;
 		return cap.getSwingSound();
 	}
 

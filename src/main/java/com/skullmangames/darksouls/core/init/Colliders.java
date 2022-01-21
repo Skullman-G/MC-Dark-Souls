@@ -7,21 +7,14 @@ public class Colliders
 {
 	public static final Collider body = new Collider(0.5F, 0.7F, 0.7F, 0F, 1.0F, -0.6F);
 	public static final Collider bodyShockwave = new Collider(2.0F, 0.7F, 2.8F, 0F, 1.0F, -0.6F);
-	public static final Collider dualSwordDash = new Collider(0.8F, 0.5F, 1.5F, 0F, 1.0F, 0.0F);
-	public static final Collider fatal_draw = new Collider(1.75F, 0.7F, 1.5F, 0F, 1.0F, -1.5F);
-	public static final Collider fatal_draw_dash = new Collider(0.7F, 0.7F, 5.0F, 0F, 1.0F, -4.0F);
 	public static final Collider fist = new Collider(0.4F, 0.4F, 0.4F, 0F, 0F, 0F);
-	public static final Collider headbutt = new Collider(0.4F, 0.4F, 0.4F, 0F, 0F, -0.3F);
-	public static final Collider headbutt_ravaber = new Collider(0.8F, 0.8F, 0.8F, 0F, 0F, -0.3F);
-	public static final Collider sword = new Collider(0.75F, 0.55F, 0.85F, 0F, 0F, -0.25F);
+	public static final Collider sword = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
 	public static final Collider swordDash = new Collider(0.4F, 0.4F, 0.75F, 0F, 0F, -0.6F);
 	public static final Collider brokenSword = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
-	public static final Collider swordSwingFast = new Collider(0.4F, 1.0F, 0.75F, 0F, 0F, -0.3F);
-	public static final Collider spearNarrow = new Collider(0.4F, 0.4F, 0.9F, 0F, 0F, -1.35F);
-	public static final Collider spearSwing = new Collider(0.5F, 1.0F, 0.9F, 0F, 0F, -1.0F);
 	public static final Collider tools = new Collider(0.4F, 0.4F, 0.55F, 0F, 0.0F, 0F);
-	public static final Collider fist_fast = new Collider(0.4F, 0.4F, 0.5F, 0F, 1.0F, -0.85F);
 	public static final Collider great_hammer = new Collider(0.6F, 0.6F, 0.7F, 0.0F, 0.3F, -1.9F);
+	public static final Collider dagger = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
+	
 	
 	//Asylum Demon
 	public static final Collider asylum_demon_great_hammer = great_hammer.getScaledCollider(AsylumDemonData.getWeaponScale());

@@ -240,5 +240,15 @@
 		[
 			{ "name": "darksouls:entities/generic/human_form", "stream": true }
 		]
+	},
+	
+	"item.fist.swing":
+	{
+		"category": "item",
+		"subtitle": "item.fist.swing.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/fist/swing", "stream": true }
+		]
 	}
 }

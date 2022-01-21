@@ -141,7 +141,7 @@ public class ChasingGoal extends Goal
 	public void stop()
 	{
 		LivingEntity livingentity = this.attacker.getTarget();
-		if(!livingentity.isAttackable())
+		if(livingentity != null && !livingentity.isAttackable())
 		{
 			this.attacker.setTarget((LivingEntity) null);
 		}

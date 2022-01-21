@@ -26,7 +26,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.animation.types.attack.MountAttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 
 public final class Animations
@@ -78,6 +77,20 @@ public final class Animations
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
+	// Dagger
+	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation[] DAGGER_LIGHT_ATTACK = new AttackAnimation[]
+			{
+					new AttackAnimation(0.1F, 0.0F, 0.16F, 0.4F, 1.0F, false, "111213", "biped/combat/dagger_light_attack_1", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+					new AttackAnimation(0.2F, 0.0F, 0.04F, 0.32F, 1.0F, false, "111213", "biped/combat/dagger_light_attack_2", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			};
+	
 	// Great Hammer
 	public static final AttackAnimation GREAT_HAMMER_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 1.0F, 1.72F, 3.6F, false, "111213", "biped/combat/great_hammer_weak_attack", "biped");
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 1.36F, 1.72F, 3.0F, false, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
@@ -92,13 +105,13 @@ public final class Animations
 					.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.24F, true)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.LONG)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 				new AttackAnimation(0.2F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_2", "biped")
 					.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.24F, true)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.LONG)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 			};
 	
@@ -109,7 +122,6 @@ public final class Animations
 					new AttackAnimation(0.16F, 0.25F, 0.25F, 0.35F, 0.85F, false, null, "111213", "biped/combat/axe_auto2", "biped")
 			}));
 	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.25F, 0.08F, 0.4F, 0.46F, 0.9F, false, null, "111213", "biped/combat/axe_dash", "biped");
-	public static final AttackAnimation GUILLOTINE_AXE = new AttackAnimation(0.08F, 0.2F, 0.5F, 0.65F, 1.0F, true, null, "111213", "biped/skill/axe_special", "biped");
 	
 	// Fist
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
@@ -133,13 +145,6 @@ public final class Animations
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 			};
 	
-	// Spear
-	public static final AttackAnimation SPEAR_ONEHAND_AUTO = new AttackAnimation(0.16F, 0.1F, 0.1F, 0.2F, 0.45F, false, null, "111213", "biped/combat/spear_onehand_auto", "biped");
-	public static final StaticAnimation SPEAR_TWOHAND_AUTO_1 = new AttackAnimation(0.25F, 0.05F, 0.05F, 0.15F, 0.45F, false, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto1", "biped");
-	public static final StaticAnimation SPEAR_TWOHAND_AUTO_2 = new AttackAnimation(0.25F, 0.05F, 0.05F, 0.15F, 0.45F, false, Colliders.spearSwing, "111213", "biped/combat/spear_twohand_auto2", "biped");
-	public static final StaticAnimation SPEAR_DASH = new AttackAnimation(0.16F, 0.05F, 0.2F, 0.3F, 0.7F, false, null, "111213", "biped/combat/spear_dash", "biped");
-	public static final StaticAnimation SPEAR_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.38F, 0.38F, 0.45F, 0.8F, null, "111213", "biped/combat/spear_mount_attack", "biped");
-	
 	// Straight Sword
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -151,34 +156,12 @@ public final class Animations
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 			};
 	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped")
-			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/straight_sword_dash_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
-	
-	public static final StaticAnimation DANCING_EDGE = new AttackAnimation(0.25F, true, "biped/skill/dancing_edge", "biped",
-														new Phase(0.2F, 0.2F, 0.26F, 0.3F, "111213", Colliders.sword), new Phase(0.5F, 0.5F, 0.56F, 0.6F, InteractionHand.OFF_HAND, "111313", Colliders.sword),
-														new Phase(0.75F, 0.75F, 0.8F, 1.15F, "111213", Colliders.sword));
-	public static final StaticAnimation SPEAR_THRUST = new AttackAnimation(0.11F, false, "biped/skill/spear_thrust", "biped",
-														new Phase(0.3F, 0.3F, 0.36F, 0.51F, "111213", Colliders.spearNarrow), new Phase(0.51F, 0.51F, 0.56F, 0.73F, "111213", Colliders.spearNarrow),
-														new Phase(0.73F, 0.73F, 0.78F, 1.05F, "111213", Colliders.spearNarrow));
-	public static final StaticAnimation SPEAR_SLASH = new AttackAnimation(0.1F, false, "biped/skill/spear_slash", "biped",
-														new Phase(0.24F, 0.24F, 0.36F, 0.5F, "111213", Colliders.spearSwing), new Phase(0.5F, 0.75F, 0.9F, 1.25F, "111213", Colliders.spearSwing));
-	public static final StaticAnimation FATAL_DRAW = new AttackAnimation(0.15F, 0.0F, 0.7F, 0.8F, 1.0F, false, Colliders.fatal_draw, "", "biped/skill/fatal_draw", "biped")
-														.addProperty(AttackProperty.SWING_SOUND, null);
-	public static final StaticAnimation FATAL_DRAW_DASH = new AttackAnimation(0.15F, 0.43F, 0.85F, 0.91F, 1.4F, false, Colliders.fatal_draw_dash, "", "biped/skill/fatal_draw_dash", "biped")
-														.addProperty(AttackProperty.SWING_SOUND, null);
-	public static final StaticAnimation LETHAL_SLICING = new AttackAnimation(0.15F, 0.0F, 0.0F, 0.1F, 0.38F, false, Colliders.fist_fast, "", "biped/skill/lethal_slicing_start", "biped");
-	public static final StaticAnimation LETHAL_SLICING_ONCE = new AttackAnimation(0.016F, 0.0F, 0.0F, 0.1F, 0.6F, false, Colliders.spearSwing, "111213", "biped/skill/lethal_slicing_once", "biped");
-	public static final StaticAnimation LETHAL_SLICING_TWICE = new AttackAnimation(0.016F, false, "biped/skill/lethal_slicing_twice", "biped",
-														new Phase(0.0F, 0.0F, 0.1F, 0.15F, "111213", Colliders.spearSwing), new Phase(0.15F, 0.15F, 0.25F, 0.6F, "111213", Colliders.spearSwing));
-	public static final StaticAnimation RELENTLESS_COMBO = new AttackAnimation(0.05F, false, "biped/skill/relentless_combo", "biped",
-			new Phase(0.016F, 0.016F, 0.066F, 0.133F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.133F, 0.133F, 0.183F, 0.25F, "", Colliders.fist_fast),
-			new Phase(0.25F, 0.25F, 0.3F, 0.366F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.366F, 0.366F, 0.416F, 0.483F, "", Colliders.fist_fast),
-			new Phase(0.483F, 0.483F, 0.533F, 0.6F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.6F, 0.6F, 0.65F, 0.716F, "", Colliders.fist_fast),
-			new Phase(0.716F, 0.716F, 0.766F, 0.833F, InteractionHand.OFF_HAND, "", Colliders.fist_fast), new Phase(0.833F, 0.833F, 0.883F, 1.1F, "", Colliders.fist_fast));
 	
 	// Hollow
 	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(true, 0.2F, true, "hollow/idle", "biped", true);

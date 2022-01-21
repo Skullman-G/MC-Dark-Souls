@@ -1,12 +1,6 @@
 package com.skullmangames.darksouls.common.item;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
-import com.skullmangames.darksouls.common.entity.stats.Stat;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,38 +14,9 @@ import net.minecraft.world.level.Level;
 
 public class WeaponItem extends SwordItem
 {
-	protected final Map<Stat, Integer> requiredStats = new HashMap<Stat, Integer>();
-	
 	public WeaponItem(Tier itemtier, int damage, float speed, Properties properties)
 	{
 		super(itemtier, damage, speed, properties);
-	}
-	
-	public WeaponItem addStat(Stat stat, int value)
-	{
-		this.requiredStats.put(stat, value);
-		return this;
-	}
-	
-	public boolean meetRequirement(Stat stat, PlayerData<?> playerdata)
-	{
-		return this.getRequiredStat(stat) <= playerdata.getStats().getStatValue(stat);
-	}
-	
-	public boolean meetRequirements(PlayerData<?> playerdata)
-	{
-		for (Stat stat : this.requiredStats.keySet()) if (!this.meetRequirement(stat, playerdata)) return false;
-		return true;
-	}
-	
-	public int getRequiredStat(Stat stat)
-	{
-		return this.requiredStats.getOrDefault(stat, 0);
-	}
-	
-	public Map<Stat, Integer> getRequiredStats()
-	{
-		return this.requiredStats;
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -25,6 +26,7 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.core.init.Colliders;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.network.chat.Component;
@@ -43,18 +45,25 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class WeaponCapability extends CapabilityItem implements IShield
 {
 	protected final WeaponCategory weaponCategory;
-	protected final Map<LivingMotion, StaticAnimation> animationSet;
+	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
+	protected final Map<Stat, Integer> requiredStats;
 	
-	public WeaponCapability(Item item, WeaponCategory category)
+	public WeaponCapability(Item item, WeaponCategory category, int requiredStrength, int requiredDex)
 	{
 		super(item);
-		this.animationSet = new HashMap<LivingMotion, StaticAnimation>();
 		this.weaponCategory = category;
+		this.requiredStats = ImmutableMap.<Stat, Integer>builder().put(Stats.STRENGTH, MathUtils.clamp(requiredStrength, 0, 99)).put(Stats.DEXTERITY, MathUtils.clamp(requiredDex, 0, 99)).build();
 	}
 	
 	public boolean meetRequirements(PlayerData<?> playerdata)
 	{
-		return ((WeaponItem)this.orgItem).meetRequirements(playerdata);
+		for (Stat stat : this.requiredStats.keySet()) if (!this.meetRequirement(stat, playerdata)) return false;
+		return true;
+	}
+	
+	public boolean meetRequirement(Stat stat, PlayerData<?> playerdata)
+	{
+		return this.requiredStats.get(stat) <= playerdata.getStats().getStatValue(stat);
 	}
 	
 	@Nullable
@@ -124,12 +133,12 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	
 	private String getStatValue(Stat stat, WeaponItem weapon, PlayerData<?> playerdata)
 	{
-		return this.getStatColor(Stats.STRENGTH, weapon, playerdata)+weapon.getRequiredStat(Stats.STRENGTH);
+		return this.getStatColor(Stats.STRENGTH, weapon, playerdata)+this.requiredStats.get(Stats.STRENGTH);
 	}
 	
 	private String getStatColor(Stat stat, WeaponItem weapon, PlayerData<?> playerdata)
 	{
-		return weapon.meetRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
+		return this.meetRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
 	}
 	
 	protected AttackAnimation[] getLightAttack()
@@ -150,8 +159,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
 	{
-		if (this.orgItem instanceof WeaponItem
-				&& !((WeaponItem)this.orgItem).meetRequirements(playerdata)) return this.getWeakAttack();
+		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
 		
 		switch (type)
 		{
@@ -287,7 +295,7 @@ public class WeaponCapability extends CapabilityItem implements IShield
 	
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER
+		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER
 	}
 	
 	public enum HandProperty

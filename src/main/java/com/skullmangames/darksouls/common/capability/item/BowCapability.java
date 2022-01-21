@@ -6,9 +6,9 @@ import net.minecraft.world.item.Item;
 
 public class BowCapability extends RangedWeaponCapability
 {
-	public BowCapability(Item item)
+	public BowCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND);
+		super(item, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND, requiredStrength, requiredDex);
 	}
 	
 	@Override

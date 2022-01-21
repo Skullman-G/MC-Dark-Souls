@@ -11,9 +11,9 @@ import net.minecraftforge.common.TierSortingRegistry;
 
 public class HoeCapability extends MaterialItemCapability
 {
-	public HoeCapability(Item item)
+	public HoeCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.HOE);
+		super(item, WeaponCategory.HOE, requiredStrength, requiredDex);
 	}
 
 	@Override

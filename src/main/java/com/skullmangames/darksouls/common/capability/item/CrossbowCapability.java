@@ -7,9 +7,9 @@ import net.minecraft.world.item.Item;
 
 public class CrossbowCapability extends RangedWeaponCapability
 {
-	public CrossbowCapability(Item item)
+	public CrossbowCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, Animations.BIPED_CROSSBOW_RELOAD, Animations.BIPED_CROSSBOW_AIM, Animations.BIPED_CROSSBOW_SHOT);
+		super(item, Animations.BIPED_CROSSBOW_RELOAD, Animations.BIPED_CROSSBOW_AIM, Animations.BIPED_CROSSBOW_SHOT, requiredStrength, requiredDex);
 		this.animationSet.put(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW);
 		this.animationSet.put(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW);
 		this.animationSet.put(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW);

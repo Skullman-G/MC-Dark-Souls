@@ -11,9 +11,9 @@ import net.minecraft.sounds.SoundEvent;
 
 public class PickaxeCapability extends MaterialItemCapability
 {
-	public PickaxeCapability(Item item)
+	public PickaxeCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.PICKAXE);
+		super(item, WeaponCategory.PICKAXE, requiredStrength, requiredDex);
 	}
 	
 	@Override

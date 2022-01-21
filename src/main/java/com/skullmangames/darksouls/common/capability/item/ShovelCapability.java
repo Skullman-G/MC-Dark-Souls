@@ -11,9 +11,9 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ShovelCapability extends MaterialItemCapability
 {
-	public ShovelCapability(Item item)
+	public ShovelCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.SHOVEL);
+		super(item, WeaponCategory.SHOVEL, requiredStrength, requiredDex);
 	}
 	
 	@Override

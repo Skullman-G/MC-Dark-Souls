@@ -50,6 +50,7 @@ public class Stats
 				};
 			});
 	public static final Stat STRENGTH = register(new Stat("strength"));
+	public static final Stat DEXTERITY = register(new Stat("dexterity"));
 	
 	private static Stat register(Stat stat)
 	{
@@ -61,7 +62,7 @@ public class Stats
 	
 	public int getStatValue(Stat stat)
 	{
-		return statValues.getOrDefault(stat.toString(), 1);
+		return statValues.getOrDefault(stat.toString(), 10);
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)

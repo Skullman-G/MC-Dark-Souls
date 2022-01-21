@@ -8,7 +8,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
@@ -19,21 +18,18 @@ public class TridentCapability extends RangedWeaponCapability
 	private static List<StaticAnimation> attackMotion;
 	private static List<StaticAnimation> mountAttackMotion;
 	
-	public TridentCapability(Item item)
+	public TridentCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, null, Animations.BIPED_SPEER_AIM, Animations.BIPED_SPEER_REBOUND);
+		super(item, null, Animations.BIPED_SPEER_AIM, Animations.BIPED_SPEER_REBOUND, requiredStrength, requiredDex);
 
 		if (attackMotion == null)
 		{
 			attackMotion = new ArrayList<StaticAnimation> ();
-			attackMotion.add(Animations.SPEAR_ONEHAND_AUTO);
-			attackMotion.add(Animations.SPEAR_DASH);
 		}
 		
 		if (mountAttackMotion == null)
 		{
 			mountAttackMotion = new ArrayList<StaticAnimation> ();
-			mountAttackMotion.add(Animations.SPEAR_MOUNT_ATTACK);
 		}
 	}
 	
@@ -58,7 +54,7 @@ public class TridentCapability extends RangedWeaponCapability
 	@Override
 	public Collider getWeaponCollider()
 	{
-		return Colliders.spearNarrow;
+		return null;
 	}
 	
 	@Override

@@ -5,32 +5,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.common.capability.item.ArmorCapability;
-import com.skullmangames.darksouls.common.capability.item.AxeCapability;
-import com.skullmangames.darksouls.common.capability.item.BowCapability;
 import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.CrossbowCapability;
+import com.skullmangames.darksouls.common.capability.item.DaggerCapability;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
-import com.skullmangames.darksouls.common.capability.item.HoeCapability;
-import com.skullmangames.darksouls.common.capability.item.PickaxeCapability;
-import com.skullmangames.darksouls.common.capability.item.ShieldCapability;
-import com.skullmangames.darksouls.common.capability.item.ShovelCapability;
 import com.skullmangames.darksouls.common.capability.item.StraightSwordCapability;
-import com.skullmangames.darksouls.common.capability.item.TridentCapability;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCapability;
-import com.skullmangames.darksouls.common.item.GreatHammerItem;
-
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.TridentItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraftforge.common.capabilities.Capability;
@@ -54,6 +36,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 
 	public static void initCapabilityMap()
 	{
+		// ARMOR
 		CAPABILITIES.computeIfAbsent(Items.LEATHER_BOOTS, VanillaArmorCapability::new);
 		CAPABILITIES.computeIfAbsent(Items.LEATHER_CHESTPLATE, VanillaArmorCapability::new);
 		CAPABILITIES.computeIfAbsent(Items.LEATHER_HELMET, VanillaArmorCapability::new);
@@ -78,19 +61,37 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITIES.computeIfAbsent(Items.NETHERITE_CHESTPLATE, VanillaArmorCapability::new);
 		CAPABILITIES.computeIfAbsent(Items.NETHERITE_HELMET, VanillaArmorCapability::new);
 		CAPABILITIES.computeIfAbsent(Items.NETHERITE_LEGGINGS, VanillaArmorCapability::new);
+		
+		// WEAPONS
+		putCap(new DaggerCapability(ModItems.DAGGER.get(), 5, 8));
+		
+		putCap(new GreatHammerCapability(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0));
+		
+		putCap(new StraightSwordCapability(ModItems.WOODEN_SWORD.get(), 8, 10));
+		putCap(new StraightSwordCapability(ModItems.STONE_SWORD.get(), 10, 10));
+		putCap(new StraightSwordCapability(ModItems.IRON_SWORD.get(), 9, 10));
+		putCap(new StraightSwordCapability(ModItems.GOLDEN_SWORD.get(), 8, 10));
+		putCap(new StraightSwordCapability(ModItems.DIAMOND_SWORD.get(), 10, 15));
+		putCap(new StraightSwordCapability(ModItems.NETHERITE_SWORD.get(), 12, 15));
+		putCap(new StraightSwordCapability(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8));
+		putCap(new StraightSwordCapability(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6));
 
+		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, CapabilityItem::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
-		CAPABILITY_BY_CLASS.put(SwordItem.class, StraightSwordCapability::new);
-		CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
+		/*CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
 		CAPABILITY_BY_CLASS.put(AxeItem.class, AxeCapability::new);
 		CAPABILITY_BY_CLASS.put(ShovelItem.class, ShovelCapability::new);
 		CAPABILITY_BY_CLASS.put(HoeItem.class, HoeCapability::new);
 		CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
 		CAPABILITY_BY_CLASS.put(ShieldItem.class, ShieldCapability::new);
-		CAPABILITY_BY_CLASS.put(GreatHammerItem.class, GreatHammerCapability::new);
-		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);
+		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/
+	}
+	
+	private static void putCap(CapabilityItem cap)
+	{
+		CAPABILITIES.put(cap.getOriginalItem(), cap);
 	}
 
 	public static void registerCapabilityItems()

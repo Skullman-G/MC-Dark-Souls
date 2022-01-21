@@ -20,6 +20,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_FINISH = registerSound("item.soul_container.finish");
 	
 	public static final SoundEvent SWORD_SWING = makeSoundEvent("item.sword.swing");
+	public static final SoundEvent FIST_SWING = makeSoundEvent("item.fist.swing");
 	public static final SoundEvent GREAT_HAMMER_SMASH = makeSoundEvent("item.great_hammer.smash");
 	
 	public static final RegistryObject<SoundEvent> HOLLOW_AMBIENT = registerSound("entity.hollow.ambient");

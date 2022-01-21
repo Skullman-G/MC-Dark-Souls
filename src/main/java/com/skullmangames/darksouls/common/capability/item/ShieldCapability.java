@@ -6,9 +6,9 @@ import net.minecraft.world.item.Item;
 
 public class ShieldCapability extends WeaponCapability implements IShield
 {
-	public ShieldCapability(Item item)
+	public ShieldCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.SHIELD);
+		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex);
 	}
 	
 	@Override

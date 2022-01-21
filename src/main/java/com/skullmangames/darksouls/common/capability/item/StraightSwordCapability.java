@@ -20,9 +20,9 @@ import net.minecraftforge.common.TierSortingRegistry;
 
 public class StraightSwordCapability extends MaterialItemCapability
 {
-	public StraightSwordCapability(Item item)
+	public StraightSwordCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.STRAIGHT_SWORD);
+		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex);
 	}
 	
 	@Override

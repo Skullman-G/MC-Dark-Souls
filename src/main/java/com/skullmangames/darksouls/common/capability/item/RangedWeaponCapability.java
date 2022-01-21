@@ -6,9 +6,9 @@ import net.minecraft.world.item.Item;
 
 public class RangedWeaponCapability extends WeaponCapability
 {
-	public RangedWeaponCapability(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot)
+	public RangedWeaponCapability(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.NONE_WEAON);
+		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex);
 		
 		if(reload != null)
 		{

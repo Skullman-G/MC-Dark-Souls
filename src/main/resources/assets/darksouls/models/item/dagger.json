@@ -1,0 +1,53 @@
+{
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"loader": "forge:obj",
+  		"model": "darksouls:models/item/obj/dagger.obj",
+  		"flip-v": true,
+  		"materialLibraryOverride": "dagger.mtl",
+		"display":
+  		{
+    		"thirdperson_righthand":
+    		{
+      			"translation": [-3, -3, 4],
+      			"rotation": [86, 0, 90],
+      			"scale": [0.4, 0.4, 0.4]
+    		},
+    		"firstperson_righthand":
+    		{
+      			"translation": [10, -20, -5],
+      			"rotation": [86, 0, 90],
+      			"scale": [1.0, 1.0, 1.0]
+    		}
+  		}
+	},
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/dagger"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/dagger"
+			},
+			"gui_light": "front"
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/dagger"
+			}
+		}
+	}
+}

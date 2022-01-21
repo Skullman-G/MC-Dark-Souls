@@ -23,15 +23,9 @@ public class AxeCapability extends MaterialItemCapability
 		axeAttackMotions = new ArrayList<StaticAnimation>();
 	}
 	
-	public AxeCapability(Item item)
+	public AxeCapability(Item item, int requiredStrength, int requiredDex)
 	{
-		super(item, WeaponCategory.AXE);
-	}
-
-	@Override
-	protected AttackAnimation getHeavyAttack()
-	{
-		return Animations.GUILLOTINE_AXE;
+		super(item, WeaponCategory.AXE, requiredStrength, requiredDex);
 	}
 	
 	@Override

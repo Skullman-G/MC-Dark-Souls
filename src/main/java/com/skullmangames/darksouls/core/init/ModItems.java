@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
-import com.skullmangames.darksouls.common.item.GreatHammerItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
@@ -59,9 +57,11 @@ public class ModItems
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new GreatHammerItem(Tiers.WOOD, 7, -2.4F, new Item.Properties()
-			.tab(CreativeModeTab.TAB_COMBAT))
-			.addStat(Stats.STRENGTH, 46));
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new WeaponItem(Tiers.WOOD, 7, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new WeaponItem(Tiers.WOOD, 3, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
