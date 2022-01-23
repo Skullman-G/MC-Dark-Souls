@@ -1,14 +1,10 @@
 package com.skullmangames.darksouls.core.util;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 
 public class DamageSourceExtended extends EntityDamageSource implements IExtendedDamageSource
 {
-	private float impact;
 	private StunType stunType;
 	private final int id;
 	private float amount;
@@ -19,10 +15,7 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
-		LivingData<?> entityCap = (LivingData<?>) damageSourceEntityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		
 		this.stunType = stunType;
-		this.impact = entityCap.getImpact();
 		this.id = id;
 		this.amount = amount;
 		this.damageType = damageType;
@@ -45,23 +38,11 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	{
 		this.amount = amount;
 	}
-	
-	@Override
-	public void setImpact(float amount)
-	{
-		this.impact = amount;
-	}
 
 	@Override
 	public void setStunType(StunType stunType)
 	{
 		this.stunType = stunType;
-	}
-
-	@Override
-	public float getImpact()
-	{
-		return impact;
 	}
 
 	@Override

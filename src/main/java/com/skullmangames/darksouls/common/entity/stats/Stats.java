@@ -9,10 +9,7 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCStat;
 
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,48 +18,49 @@ public class Stats
 {
 	public static List<Stat> STATS = new ArrayList<>();
 	
-	public static final Stat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553")
+	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
 			{
 				@Override		
 				public void onChange(Player player, int value)
 				{
+					super.onChange(player, value);
 					player.setHealth(player.getMaxHealth());
 				}
 				
 				@Override
-				public void modifyAttributes(Player player, int value)
+				public double getModifyValue(Player player, int value)
 				{
-					AttributeInstance instance = player.getAttribute(Attributes.MAX_HEALTH);
-					if (instance.getModifier(this.getModifierUUID()) != null) instance.removeModifier(this.getModifierUUID());
-					AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), this.toString(), value - 1, Operation.ADDITION);
-					instance.addPermanentModifier(modifier);
+					return -0.0065D * (value - 10) * (value - 188);
 				}
 			});
-	public static final Stat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c")
+	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
 			{
-				@Override		
-				public void modifyAttributes(Player player, int value)
+				@Override
+				public double getModifyValue(Player player, int value)
 				{
-					AttributeInstance instance = player.getAttribute(ModAttributes.MAX_STAMINA.get());
-					if (instance.getModifier(this.getModifierUUID()) != null) instance.removeModifier(this.getModifierUUID());
-					AttributeModifier modifier = new AttributeModifier(this.getModifierUUID(), this.toString(), value - 1, Operation.ADDITION);
-					instance.addPermanentModifier(modifier);
-				};
+					return -0.0065D * (value - 10) * (value - 188);
+				}
 			});
-	public static final Stat STRENGTH = register(new Stat("strength"));
-	public static final Stat DEXTERITY = register(new Stat("dexterity"));
+	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
+	public static final ScalingStat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2"));
 	
-	private static Stat register(Stat stat)
+	private static <T extends Stat>T register(T stat)
 	{
 		STATS.add(stat);
 		return stat;
+	}
+	
+	public static double getTotalDamageAmount(Player player, int strength, int dex)
+	{
+		return STRENGTH.getModifyValue(player, strength)
+				+ DEXTERITY.getModifyValue(player, dex);
 	}
 	
 	private final Map<String, Integer> statValues = new HashMap<>();
 	
 	public int getStatValue(Stat stat)
 	{
-		return statValues.getOrDefault(stat.toString(), 10);
+		return statValues.getOrDefault(stat.toString(), 11);
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)
@@ -74,7 +72,7 @@ public class Stats
 	public void setStatValue(Player player, String statname, int value)
 	{
 		this.statValues.put(statname, value);
-		STATS.forEach((stat) -> { if (stat.toString() == statname) stat.onChange(player, value); });
+		for (Stat stat : STATS) if (stat.toString().equals(statname)) stat.onChange(player, value);
 	}
 	
 	public void loadStats(ServerPlayer player, CompoundTag nbt)
@@ -82,7 +80,7 @@ public class Stats
 		for (Stat stat : STATS)
 		{
 			int value = nbt.getInt(stat.toString());
-			if (value <= 0) value = 1;
+			if (value <= 0) value = 10;
 			this.initStatValue(player, stat.toString(), value);
 			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStat(player.getId(), stat.toString(), value), player);
 		}
@@ -107,7 +105,7 @@ public class Stats
 		int level = 1;
 		for (Stat stat : STATS)
 		{
-			level += this.getStatValue(stat) - 1;
+			level += this.getStatValue(stat) - 10;
 		}
 		
 		return level;

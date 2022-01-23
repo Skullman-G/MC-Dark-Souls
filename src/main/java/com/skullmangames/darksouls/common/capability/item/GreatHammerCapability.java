@@ -12,9 +12,9 @@ import net.minecraft.world.item.Item;
 
 public class GreatHammerCapability extends WeaponCapability
 {
-	public GreatHammerCapability(Item item, int requiredStrength, int requiredDex)
+	public GreatHammerCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.GREAT_HAMMER, requiredStrength, requiredDex);
+		super(item, WeaponCategory.GREAT_HAMMER, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
@@ -161,16 +161,14 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 			}
 		}
 
+		if (this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+		
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
 			UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 			
 			switch (useAction)
 			{
-				case BLOCK:
-					this.currentMixMotion = LivingMotion.BLOCKING;
-					break;
-					
 				case BOW:
 					this.currentMixMotion = LivingMotion.AIMING;
 					break;
@@ -261,7 +259,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 		}
 	}
 
-	public void onHeldItemChange(CapabilityItem mainHandCap, CapabilityItem offHandCap)
+	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)
 	{
 		this.cancelUsingItem();
 	}

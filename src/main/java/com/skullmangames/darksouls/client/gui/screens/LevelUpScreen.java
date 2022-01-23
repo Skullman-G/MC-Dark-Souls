@@ -44,7 +44,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
+			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 10).intValue() > 10 : this.displayedStats.getOrDefault(stat, 10).intValue() > statValue;
 			
 			LevelButton upButton = this.addRenderableWidget(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent(">"), (button) ->
 			{

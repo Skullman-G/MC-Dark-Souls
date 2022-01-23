@@ -11,6 +11,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -64,19 +65,19 @@ public class AsylumDemonEntity extends PathfinderMob
 		super.customServerAiStep();
 		this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
 	}
-	
-	@Override
-	public void startSeenByPlayer(ServerPlayer player)
-	{
-	    super.startSeenByPlayer(player);
-	    this.bossInfo.addPlayer(player);
-	}
 
 	@Override
 	public void stopSeenByPlayer(ServerPlayer player)
 	{
 	    super.stopSeenByPlayer(player);
 	    this.bossInfo.removePlayer(player);
+	}
+	
+	@Override
+	public void setTarget(LivingEntity target)
+	{
+		super.setTarget(target);
+		if (target instanceof ServerPlayer) this.bossInfo.addPlayer((ServerPlayer) target);
 	}
 	
 	@Override

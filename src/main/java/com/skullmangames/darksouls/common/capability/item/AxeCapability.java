@@ -1,44 +1,29 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.TierSortingRegistry;
 
 public class AxeCapability extends MaterialItemCapability
 {
-	public static List<StaticAnimation> axeAttackMotions = new ArrayList<StaticAnimation>();
-	
-	static
+	public AxeCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		axeAttackMotions = new ArrayList<StaticAnimation>();
+		super(item, WeaponCategory.AXE, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 	
-	public AxeCapability(Item item, int requiredStrength, int requiredDex)
+	@Override
+	protected AttackAnimation[] getLightAttack()
 	{
-		super(item, WeaponCategory.AXE, requiredStrength, requiredDex);
+		return Animations.AXE_LIGHT_ATTACK;
 	}
 	
 	@Override
 	protected AttackAnimation getDashAttack()
 	{
 		return Animations.AXE_DASH_ATTACK;
-	}
-	
-	@Override
-	protected void registerAttribute()
-	{
-		int i = TierSortingRegistry.getSortedTiers().indexOf(this.itemTier);
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.7D + 0.3D * i)));
 	}
 
 	@Override

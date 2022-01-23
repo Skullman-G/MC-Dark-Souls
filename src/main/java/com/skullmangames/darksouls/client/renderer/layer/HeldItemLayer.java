@@ -5,7 +5,7 @@ import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -44,7 +44,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> exte
 		{
 			if (entitydata.getOriginalEntity().getControllingPassenger() != null)
 			{
-				CapabilityItem itemCap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+				ItemCapability itemCap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 				if (itemCap != null && !itemCap.canUseOnMount())
 				{
 					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entitydata, buffer, matrixStackIn, packedLightIn);
@@ -60,7 +60,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> exte
 		
 		if (offHandStack.getItem() != Items.AIR)
 		{
-			CapabilityItem cap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			ItemCapability cap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			if (cap != null)
 			{
 				if (cap.canBeRenderedBoth(offHandStack))

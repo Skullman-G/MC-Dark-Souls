@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.core.init;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
@@ -83,7 +82,7 @@ public final class Animations
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation[] DAGGER_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.1F, 0.0F, 0.16F, 0.4F, 1.0F, false, "111213", "biped/combat/dagger_light_attack_1", "biped")
+					new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 1.0F, false, "111213", "biped/combat/dagger_light_attack_1", "biped")
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
 					new AttackAnimation(0.2F, 0.0F, 0.04F, 0.32F, 1.0F, false, "111213", "biped/combat/dagger_light_attack_2", "biped")
@@ -116,11 +115,15 @@ public final class Animations
 			};
 	
 	// Axe
-	public static final List<AttackAnimation> AXE_LIGHT_ATTACK = new ArrayList<AttackAnimation>(Arrays.asList(new AttackAnimation[]
+	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.16F, 0.25F, 0.25F, 0.35F, 0.7F, false, null, "111213", "biped/combat/axe_auto1", "biped"),
-					new AttackAnimation(0.16F, 0.25F, 0.25F, 0.35F, 0.85F, false, null, "111213", "biped/combat/axe_auto2", "biped")
-			}));
+					new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 1.2F, false, null, "111213", "biped/combat/axe_light_attack_1", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.4F, 1.0F, false, null, "111213", "biped/combat/axe_light_attack_2", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+			};
 	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.25F, 0.08F, 0.4F, 0.46F, 0.9F, false, null, "111213", "biped/combat/axe_dash", "biped");
 	
 	// Fist
@@ -143,6 +146,7 @@ public final class Animations
 			{
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, "111213", "biped/combat/shield_strike", "biped")
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			};
 	
 	// Straight Sword

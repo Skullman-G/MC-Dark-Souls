@@ -5,11 +5,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.common.capability.item.ArmorCapability;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.AxeCapability;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.DaggerCapability;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
-import com.skullmangames.darksouls.common.capability.item.StraightSwordCapability;
+import com.skullmangames.darksouls.common.capability.item.SwordCapability;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCapability;
+import com.skullmangames.darksouls.common.capability.item.WeaponCapability.Scaling;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,13 +24,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ProviderItem implements ICapabilityProvider, NonNullSupplier<CapabilityItem>
+public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCapability>
 {
-	public static final Map<Item, CapabilityItem> CAPABILITIES = new HashMap<Item, CapabilityItem>();
-	private static final Map<Class<? extends Item>, Function<Item, CapabilityItem>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, CapabilityItem>>();
+	public static final Map<Item, ItemCapability> CAPABILITIES = new HashMap<Item, ItemCapability>();
+	private static final Map<Class<? extends Item>, Function<Item, ItemCapability>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, ItemCapability>>();
 
-	private CapabilityItem capability;
-	private LazyOptional<CapabilityItem> optional = LazyOptional.of(this);
+	private ItemCapability capability;
+	private LazyOptional<ItemCapability> optional = LazyOptional.of(this);
 
 	public ProviderItem(ItemStack itemstack)
 	{
@@ -63,24 +66,30 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITIES.computeIfAbsent(Items.NETHERITE_LEGGINGS, VanillaArmorCapability::new);
 		
 		// WEAPONS
-		putCap(new DaggerCapability(ModItems.DAGGER.get(), 5, 8));
+		putCap(new DaggerCapability(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
-		putCap(new GreatHammerCapability(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0));
+		putCap(new GreatHammerCapability(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
 		
-		putCap(new StraightSwordCapability(ModItems.WOODEN_SWORD.get(), 8, 10));
-		putCap(new StraightSwordCapability(ModItems.STONE_SWORD.get(), 10, 10));
-		putCap(new StraightSwordCapability(ModItems.IRON_SWORD.get(), 9, 10));
-		putCap(new StraightSwordCapability(ModItems.GOLDEN_SWORD.get(), 8, 10));
-		putCap(new StraightSwordCapability(ModItems.DIAMOND_SWORD.get(), 10, 15));
-		putCap(new StraightSwordCapability(ModItems.NETHERITE_SWORD.get(), 12, 15));
-		putCap(new StraightSwordCapability(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8));
-		putCap(new StraightSwordCapability(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6));
-
+		putCap(new AxeCapability(Items.WOODEN_AXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new AxeCapability(Items.STONE_AXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new AxeCapability(Items.IRON_AXE, 10, 10, Scaling.C, Scaling.D));
+		putCap(new AxeCapability(Items.GOLDEN_AXE, 8, 10, Scaling.C, Scaling.D));
+		putCap(new AxeCapability(Items.DIAMOND_AXE, 15, 15, Scaling.C, Scaling.D));
+		putCap(new AxeCapability(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
+		
+		putCap(new SwordCapability(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(Items.GOLDEN_SWORD, 8, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(Items.DIAMOND_SWORD, 10, 15, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(Items.NETHERITE_SWORD, 12, 15, Scaling.C, Scaling.C));
+		putCap(new SwordCapability(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
+		putCap(new SwordCapability(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
+		
 		// CLASS
-		CAPABILITY_BY_CLASS.put(Item.class, CapabilityItem::new);
+		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
 		/*CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
-		CAPABILITY_BY_CLASS.put(AxeItem.class, AxeCapability::new);
 		CAPABILITY_BY_CLASS.put(ShovelItem.class, ShovelCapability::new);
 		CAPABILITY_BY_CLASS.put(HoeItem.class, HoeCapability::new);
 		CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
@@ -89,7 +98,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/
 	}
 	
-	private static void putCap(CapabilityItem cap)
+	private static void putCap(ItemCapability cap)
 	{
 		CAPABILITIES.put(cap.getOriginalItem(), cap);
 	}
@@ -101,7 +110,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 			if (!CAPABILITIES.containsKey(item))
 			{
 				Class<?> clazz = item.getClass();
-				CapabilityItem capability = null;
+				ItemCapability capability = null;
 
 				for (; clazz != null && capability == null; clazz = clazz.getSuperclass())
 				{
@@ -125,7 +134,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 	}
 
 	@Override
-	public CapabilityItem get()
+	public ItemCapability get()
 	{
 		return this.capability;
 	}

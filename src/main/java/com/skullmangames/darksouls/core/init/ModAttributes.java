@@ -24,9 +24,6 @@ public class ModAttributes
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, DarkSouls.MOD_ID);
 	
     public static final RegistryObject<Attribute> MAX_STUN_ARMOR = registerRangedAttribute("stun_armor", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> IMPACT = registerRangedAttribute("impact", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = registerRangedAttribute("offhand_attack_damage", 1.0D, 0.0D, 2048.0D);
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = registerRangedAttribute("offhand_attack_speed", 4.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
 	
 	// Defense
@@ -86,8 +83,6 @@ public class ModAttributes
     
     private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
-		event.add(entityType, ModAttributes.IMPACT.get());
-		
 		event.add(entityType, ModAttributes.STANDARD_DEFENSE.get());
 		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
 		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
@@ -103,8 +98,6 @@ public class ModAttributes
     private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
     {
 		withStunArmor(entityType, event);
-		event.add(entityType, ModAttributes.OFFHAND_ATTACK_DAMAGE.get());
-		event.add(entityType, ModAttributes.OFFHAND_ATTACK_SPEED.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
 

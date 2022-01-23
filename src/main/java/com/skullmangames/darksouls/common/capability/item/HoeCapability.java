@@ -1,26 +1,16 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.TierSortingRegistry;
 
 public class HoeCapability extends MaterialItemCapability
 {
-	public HoeCapability(Item item, int requiredStrength, int requiredDex)
+	public HoeCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.HOE, requiredStrength, requiredDex);
-	}
-
-	@Override
-	protected void registerAttribute()
-	{
-		this.addStyleAttibute(WieldStyle.ONE_HAND,
-				Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(-0.4D + 0.1D * TierSortingRegistry.getSortedTiers().indexOf(this.itemTier))));
+		super(item, WeaponCategory.HOE, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 
 	@Override

@@ -98,7 +98,6 @@ public class DarkSouls
 		ModSoundEvents.VANILLA_SOUND_EVENTS.register(modBus);
 		ModBlocks.BLOCKS.register(modBus);
 		ModTileEntities.TILE_ENTITIES.register(modBus);
-		ModItems.VANILLA_ITEMS.register(modBus);
 		ModStructures.STRUCTURES.register(modBus);
 		ModContainers.CONTAINERS.register(modBus);
 		ModEntities.ENTITIES.register(modBus);

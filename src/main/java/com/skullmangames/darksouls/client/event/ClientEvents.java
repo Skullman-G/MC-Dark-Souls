@@ -5,7 +5,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -73,7 +73,7 @@ public class ClientEvents
 
 			if (slotUnderMouse != null)
 			{
-				CapabilityItem cap = minecraft.player.inventoryMenu.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
+				ItemCapability cap = minecraft.player.inventoryMenu.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
 
 				if (cap != null && !cap.canUsedInOffhand())
 				{
@@ -93,7 +93,7 @@ public class ClientEvents
 
 			if (slotUnderMouse != null)
 			{
-				CapabilityItem cap = minecraft.player.inventoryMenu.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
+				ItemCapability cap = minecraft.player.inventoryMenu.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
 
 				if (cap != null && !cap.canUsedInOffhand())
 				{

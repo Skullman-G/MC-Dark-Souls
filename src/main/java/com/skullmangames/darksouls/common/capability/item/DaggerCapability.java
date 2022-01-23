@@ -11,9 +11,9 @@ import net.minecraft.world.item.Item;
 
 public class DaggerCapability extends WeaponCapability
 {
-	public DaggerCapability(Item item, int requiredStrength, int requiredDex)
+	public DaggerCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex);
+		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 	
 	@Override

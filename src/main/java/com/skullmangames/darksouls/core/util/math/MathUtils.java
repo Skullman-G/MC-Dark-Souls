@@ -9,6 +9,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class MathUtils
 {
+	public static double round(double value, int multiply)
+	{
+		return (double)Math.round(value * multiply) / multiply;
+	}
+	
 	public static double getAngleBetween(Entity e1, Entity e2)
 	{
 		Vec3 a = e1.getLookAngle();

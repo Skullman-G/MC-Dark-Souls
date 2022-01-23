@@ -1,10 +1,8 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -16,27 +14,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.TierSortingRegistry;
 
-public class StraightSwordCapability extends MaterialItemCapability
+public class SwordCapability extends MaterialItemCapability
 {
-	public StraightSwordCapability(Item item, int requiredStrength, int requiredDex)
+	public SwordCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex);
+		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 	
 	@Override
 	public SoundEvent getSwingSound()
 	{
 		return ModSoundEvents.SWORD_SWING;
-	}
-	
-	@Override
-	protected void registerAttribute()
-	{
-		int i = TierSortingRegistry.getSortedTiers().indexOf(this.itemTier);
-		this.addStyleAttibute(WieldStyle.ONE_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
-		this.addStyleAttibute(WieldStyle.TWO_HAND, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(0.5D + 0.2D * i)));
 	}
 	
 	@Override

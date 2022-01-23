@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCapability;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -90,7 +90,7 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
 	public void clientInitialSettings(ByteBuf buf) {}
 	
 	@Override
-	public void onArmorSlotChanged(CapabilityItem fromCap, CapabilityItem toCap, EquipmentSlot slotType)
+	public void onArmorSlotChanged(AttributeItemCapability fromCap, AttributeItemCapability toCap, EquipmentSlot slotType)
 	{
 		if(this.orgEntity.getAttributes().hasAttribute(ModAttributes.MAX_STUN_ARMOR.get()))
 		{

@@ -37,7 +37,7 @@ public class ReinforceEstusFlaskScreen extends AbstractContainerScreen<Reinforce
 	@Override
 	protected void renderBg(PoseStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_)
 	{
-	    this.minecraft.getTextureManager().bindForSetup(REINFORCE_ESTUS_FLASK_LOCATION);
+	    RenderSystem.setShaderTexture(0, REINFORCE_ESTUS_FLASK_LOCATION);
 	    int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;
 	    this.blit(p_230450_1_, x, y, 0, 0, this.imageWidth, this.imageHeight);

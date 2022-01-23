@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
@@ -96,9 +97,9 @@ public class FireKeeperScreen extends Screen
 	private void renderBg(PoseStack matrixstack, float partialticks, int x, int y)
 	{
 		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
-			this.minecraft.getTextureManager().bindForSetup(DS_TEXTURE_LOCATION);
+			RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else
-			this.minecraft.getTextureManager().bindForSetup(TEXTURE_LOCATION);
+			RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 		this.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 	}
 

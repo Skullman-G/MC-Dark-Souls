@@ -2,43 +2,28 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability.WieldStyle;
-import com.skullmangames.darksouls.core.init.ModAttributes;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class CapabilityItem
+public class ItemCapability
 {
 	protected final Item orgItem;
-	protected Map<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>> attributeMap;
 	
-	public CapabilityItem(Item item)
+	public ItemCapability(Item item)
 	{
 		this.orgItem = item;
-		this.attributeMap = Maps.<WieldStyle, Map<Supplier<Attribute>, AttributeModifier>>newHashMap();
 	}
 	
 	public Item getOriginalItem()
@@ -56,23 +41,6 @@ public class CapabilityItem
 		return null;
 	}
 	
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, LivingData<?> entitydata)
-	{
-		Multimap<Attribute, AttributeModifier> map = HashMultimap.<Attribute, AttributeModifier>create();
-		return map;
-    }
-	
-	public void addStyleAttibute(WieldStyle style, Pair<Supplier<Attribute>, AttributeModifier> attributePair)
-	{
-		this.attributeMap.computeIfAbsent(style, (key) -> Maps.<Supplier<Attribute>, AttributeModifier>newHashMap());
-		this.attributeMap.get(style).put(attributePair.getFirst(), attributePair.getSecond());
-	}
-	
-	public void addStyleAttributeSimple(WieldStyle style, double armorNegation, double impact, int maxStrikes)
-	{
-		this.addStyleAttibute(style, Pair.of(ModAttributes.IMPACT, ModAttributes.getImpactModifier(impact)));
-	}
-	
 	@OnlyIn(Dist.CLIENT)
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
@@ -88,8 +56,6 @@ public class CapabilityItem
 	{
 		return true;
 	}
-
-	protected void registerAttribute() {}
 	
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{

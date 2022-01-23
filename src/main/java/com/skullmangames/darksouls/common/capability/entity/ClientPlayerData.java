@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -170,7 +170,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	}
 	
 	@Override
-	public void onHeldItemChange(CapabilityItem mainHandCap, CapabilityItem offHandCap)
+	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)
 	{
 		super.onHeldItemChange(mainHandCap, offHandCap);
 		if (mainHandCap != null) mainHandCap.onHeld(this);

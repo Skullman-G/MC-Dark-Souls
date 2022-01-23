@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
@@ -25,7 +25,7 @@ public class CapabilityEvents
 	public void registerCaps(RegisterCapabilitiesEvent event)
 	{
 	    event.register(EntityData.class);
-	    event.register(CapabilityItem.class);
+	    event.register(ItemCapability.class);
 	    event.register(CapabilityProjectile.class);
 	}
 	

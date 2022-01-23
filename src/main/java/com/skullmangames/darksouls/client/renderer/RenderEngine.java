@@ -25,7 +25,7 @@ import com.skullmangames.darksouls.client.renderer.entity.SimpleTexturedBipedRen
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -276,7 +276,7 @@ public class RenderEngine
 		{
 			if (event.getPlayer() != null)
 			{
-				CapabilityItem cap = ModCapabilities.getItemCapability(event.getItemStack());
+				ItemCapability cap = ModCapabilities.getItemCapability(event.getItemStack());
 				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());

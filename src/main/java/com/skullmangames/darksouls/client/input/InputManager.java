@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -146,7 +146,7 @@ public class InputManager
 	
 	private void onSwapHandKeyPressed(int key, int action)
 	{
-		CapabilityItem cap = this.playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability cap = this.playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 
 		if (this.playerdata.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
@@ -310,12 +310,14 @@ public class InputManager
 		@SubscribeEvent
 		public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
 		{
-			if (event.getHand() == InteractionHand.OFF_HAND) return;
-			WeaponCapability mainCap = ModCapabilities.getWeaponCapability(event.getItemStack());
-			if (mainCap == null) return;
-			WeaponCapability offCap = ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem());
-			if (offCap == null) return;
-			event.setCanceled(true);
+			WeaponCapability weaponCap = ModCapabilities.getWeaponCapability(event.getItemStack());
+			if (weaponCap == null) return;
+			if (event.getHand() == InteractionHand.MAIN_HAND)
+			{
+				if (ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem()) == null) return;
+				event.setCanceled(true);
+			}
+			event.setCancellationResult(weaponCap.onUse(event.getPlayer(), event.getHand()));
 		}
 		
 		@SubscribeEvent

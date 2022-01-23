@@ -10,7 +10,8 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCapability;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -139,13 +140,6 @@ public class EntityEvents
 			{
 				Entity directSource = event.getSource().getDirectEntity();
 				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT, DamageType.THRUST);
-				
-				CapabilityProjectile<?> projectileCap = directSource.getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
-				
-				if (projectileCap != null)
-				{
-					extSource.setImpact(projectileCap.getImpact());
-				}
 			}
 			
 			if(extSource != null)
@@ -213,7 +207,7 @@ public class EntityEvents
 						float currentStunResistance = hitEntityData.getStunArmor();
 						if(currentStunResistance > 0)
 						{
-							float impact = extSource.getImpact();
+							float impact = 0;
 							hitEntityData.setStunArmor(currentStunResistance - impact);
 						}
 						
@@ -223,7 +217,7 @@ public class EntityEvents
 							if(hitEntityData.getStunArmor() == 0)
 							{
 								int i = EnchantmentHelper.getKnockbackBonus((LivingEntity)trueSource);
-								float totalStunTime = (float) ((0.25F + extSource.getImpact() * 0.1F + 0.1F * i));
+								float totalStunTime = (float) ((0.25F + 0.1F + 0.1F * i));
 								totalStunTime *= (1.0F - hitEntityData.getStunTimeTimeReduction());
 								
 								if(totalStunTime >= 0.1F)
@@ -240,12 +234,12 @@ public class EntityEvents
 							
 						case HOLD:
 							hitAnimation = hitEntityData.getHitAnimation(StunType.SHORT);
-							extendStunTime = extSource.getImpact() * 0.1F;
+							extendStunTime = 0.1F;
 							break;
 							
 						case LONG:
 							hitAnimation = hitEntityData.getHitAnimation(StunType.LONG);
-							knockBackAmount = (extSource.getImpact() * 0.25F);
+							knockBackAmount = 0.25F;
 							break;
 							
 						case SMASH_FRONT:
@@ -322,8 +316,8 @@ public class EntityEvents
 		{
 			if (event.getSlot() == EquipmentSlot.MAINHAND)
 			{
-				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
-				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
+				AttributeItemCapability fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+				AttributeItemCapability toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
 				entitycap.cancelUsingItem();
 				
 				if(fromCap != null)
@@ -349,14 +343,14 @@ public class EntityEvents
 				if (entitycap instanceof ServerPlayerData)
 				{
 					ServerPlayerData playercap = (ServerPlayerData)entitycap;
-					CapabilityItem toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+					ItemCapability toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 					playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.OFF_HAND);
 				}
 			}
 			else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
 			{
-				CapabilityItem fromCap = ModCapabilities.getItemCapability(event.getFrom());
-				CapabilityItem toCap = ModCapabilities.getItemCapability(event.getTo());
+				AttributeItemCapability fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+				AttributeItemCapability toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
 				
 				if(fromCap != null)
 				{

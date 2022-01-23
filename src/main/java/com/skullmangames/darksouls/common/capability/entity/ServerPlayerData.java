@@ -9,9 +9,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
@@ -25,9 +24,6 @@ import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -109,19 +105,10 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 	@Override
 	public void updateMotion() {}
 	
-	public void onHeldItemChange(CapabilityItem toChange, ItemStack stack, InteractionHand hand)
+	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
-		CapabilityItem mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange : this.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange : this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if(mainHandCap != null) mainHandCap.onHeld(this);
-		if (hand != InteractionHand.MAIN_HAND)
-		{
-			this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).removeModifier(ATTACK_DAMAGE_MODIFIER);
-			
-			for(AttributeModifier attributeModifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE))
-			{
-				this.orgEntity.getAttribute(ModAttributes.OFFHAND_ATTACK_DAMAGE.get()).addTransientModifier(attributeModifier);
-			}
-		}
 		
 		this.modifiLivingMotions(mainHandCap);
 	}
@@ -129,7 +116,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 	@Override
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
 	{
-		if (!this.orgEntity.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
+		if (!this.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 		
 		this.increaseStamina(-4.0F);
@@ -144,7 +131,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 		return false;
 	}
 	
-	public void modifiLivingMotions(CapabilityItem itemCap)
+	public void modifiLivingMotions(ItemCapability itemCap)
 	{
 		this.resetModifiedLivingMotions();
 

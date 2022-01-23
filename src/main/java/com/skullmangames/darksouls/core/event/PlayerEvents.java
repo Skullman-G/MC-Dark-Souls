@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
@@ -23,7 +23,7 @@ public class PlayerEvents
 		{
 			Player player = (Player)event.getEntity();
 			PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			CapabilityItem itemCap = playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			ItemCapability itemCap = playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			
 			if (playerdata.isInaction())
 			{

@@ -101,7 +101,7 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F);
+				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F, 0.5F);
 				entitydata.currentlyAttackedEntity.clear();
 			}
 
@@ -281,11 +281,6 @@ public class AttackAnimation extends ActionAnimation
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.STANDARD);
 		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, this.getId(), amount, this.getRequiredDeflectionLevel(phase), damageType);
-		
-		phase.getProperty(AttackProperty.IMPACT).ifPresent((opt) ->
-		{
-			extDmgSource.setImpact(opt.get(extDmgSource.getImpact()));
-		});
 
 		return extDmgSource;
 	}

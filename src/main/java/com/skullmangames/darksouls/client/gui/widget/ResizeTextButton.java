@@ -30,7 +30,7 @@ public class ResizeTextButton extends Button
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Font fontrenderer = minecraft.font;
-		minecraft.getTextureManager().bindForSetup(WIDGETS_LOCATION);
+		RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
 		int i = this.getYImage(this.isHovered);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();

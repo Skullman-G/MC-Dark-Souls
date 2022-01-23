@@ -10,12 +10,11 @@ import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
-import com.skullmangames.darksouls.common.item.WeaponItem;
-
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -48,19 +47,19 @@ public class ModItems
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new WeaponItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
-	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new WeaponItem(Tiers.WOOD, 0, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new SwordItem(Tiers.WOOD, 0, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new WeaponItem(Tiers.WOOD, 7, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 10, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
-	public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new WeaponItem(Tiers.WOOD, 3, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 3, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	//Block Items
@@ -114,15 +113,4 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(UNDEAD_BONE_SHARD.get());
 		DESCRIPTION_ITEMS.add(DEMON_GREAT_HAMMER.get());
 	}
-	
-	
-	//Vanilla Overrides
-	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
-	
-	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new WeaponItem(Tiers.WOOD, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-	public static final RegistryObject<Item> DIAMOND_SWORD = VANILLA_ITEMS.register("diamond_sword", () -> new WeaponItem(Tiers.DIAMOND, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-	public static final RegistryObject<Item> GOLDEN_SWORD = VANILLA_ITEMS.register("golden_sword", () -> new WeaponItem(Tiers.GOLD, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new WeaponItem(Tiers.IRON, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new WeaponItem(Tiers.NETHERITE, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new WeaponItem(Tiers.STONE, 3, -2.4F, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 }

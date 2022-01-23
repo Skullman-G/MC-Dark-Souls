@@ -21,9 +21,7 @@ public interface IExtendedDamageSource
 		return new DamageSourceExtended(original.getType(), original.getOwner(), original.getStunType(), original.getSkillId(), original.getAmount(), original.getRequiredDeflectionLevel(), original.getAttackType());
 	}
 	
-	public void setImpact(float amount);
 	public void setStunType(StunType stunType);
-	public float getImpact();
 	public float getAmount();
 	public void setAmount(float amount);
 	public int getSkillId();

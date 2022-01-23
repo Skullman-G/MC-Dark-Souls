@@ -6,9 +6,9 @@ import net.minecraft.world.item.Item;
 
 public class RangedWeaponCapability extends WeaponCapability
 {
-	public RangedWeaponCapability(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, int requiredStrength, int requiredDex)
+	public RangedWeaponCapability(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex);
+		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex, strengthScaling, dexScaling);
 		
 		if(reload != null)
 		{
@@ -23,12 +23,6 @@ public class RangedWeaponCapability extends WeaponCapability
 			this.animationSet.put(LivingMotion.SHOTING, shot);
 		}
 		this.registerAttribute();
-	}
-	
-	@Override
-	protected void registerAttribute()
-	{
-		this.addStyleAttributeSimple(WieldStyle.TWO_HAND, 0.0D, 1.1D, 3);
 	}
 
 	@Override

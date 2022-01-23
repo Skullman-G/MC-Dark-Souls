@@ -5,7 +5,6 @@ import net.minecraft.world.entity.Entity;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements IExtendedDamageSource
 {
-	private float impact;
 	private StunType stunType;
 	private float amount;
 	private DamageType damageType;
@@ -36,21 +35,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public void setImpact(float amount)
-	{
-		this.impact = amount;
-	}
-
-	@Override
 	public void setStunType(StunType stunType)
 	{
 		this.stunType = stunType;
-	}
-
-	@Override
-	public float getImpact()
-	{
-		return impact;
 	}
 
 	@Override

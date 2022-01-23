@@ -4,10 +4,8 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
-import com.skullmangames.darksouls.common.item.WeaponItem;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -22,7 +20,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -134,14 +131,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	}
 	
 	@Override
-	public float getWeaponDamage(InteractionHand hand)
-	{
-		WeaponCapability weapon = this.getHeldWeaponCapability(hand);
-		if (weapon == null || !weapon.meetRequirements(this)) return 0.0F;
-		return ((WeaponItem)weapon.getOriginalItem()).getDamage();
-	}
-	
-	@Override
 	public void initAnimator(AnimatorClient animatorClient)
 	{
 		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
@@ -193,7 +182,7 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		if (!this.isCreativeOrSpectator())
 		{
 			this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
-					: this.orgEntity.isBlocking() ? 0.05F : 0.1F);
+					: this.isBlocking() ? 0.05F : 0.1F);
 		}
 		
 		if (stunArmor < maxStunArmor && this.tickSinceLastAction > 60)
