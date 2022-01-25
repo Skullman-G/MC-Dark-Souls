@@ -136,7 +136,7 @@ public class ModLoadingScreen extends Overlay
 			int x = width / 2;
 			int y = height / 2;
 
-			if (alpha > 0.5F) this.renderItem(matStack, this.descriptionItem, x - 119, y - 58);
+			if (alpha > 0.5F) this.renderItem(matStack, this.descriptionItem, x - 121, y - 57);
 
 			drawString(matStack, this.minecraft.font, this.descriptionItem.getHoverName(), x - 100, y - 50, 16755200 | l);
 

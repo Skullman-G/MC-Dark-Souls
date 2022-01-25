@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.event.EntityEventListener;
@@ -19,7 +20,6 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -60,6 +60,24 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		this.stamina = this.getMaxStamina();
 	}
 	
+	public void onLoad(CompoundTag nbt)
+	{
+		this.humanity = nbt.getInt("Humanity");
+		this.souls = nbt.getInt("Souls");
+		this.human = nbt.getBoolean("IsHuman");
+	}
+	
+	public void onSave()
+	{
+		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundTag());
+		CompoundTag nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
+		nbt.putInt("Humanity", this.humanity);
+		nbt.putInt("Souls", this.souls);
+		nbt.putBoolean("IsHuman", this.human);
+		
+		this.stats.saveStats(nbt);
+	}
+	
 	public Stats getStats()
 	{
 		return this.stats;
@@ -68,16 +86,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	public int getSoulLevel()
 	{
 		return this.stats.getLevel();
-	}
-	
-	public void onSave()
-	{
-		CompoundTag nbt = this.orgEntity.getPersistentData();
-		nbt.putInt("Humanity", this.humanity);
-		nbt.putInt("Souls", this.souls);
-		nbt.putBoolean("IsHuman", this.human);
-		
-		this.stats.saveStats(nbt);
 	}
 	
 	public int getSouls()

@@ -55,7 +55,7 @@ import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModStructures;
-import com.skullmangames.darksouls.core.init.ModTileEntities;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 @Mod(DarkSouls.MOD_ID)
@@ -97,7 +97,7 @@ public class DarkSouls
 		ModSoundEvents.SOUND_EVENTS.register(modBus);
 		ModSoundEvents.VANILLA_SOUND_EVENTS.register(modBus);
 		ModBlocks.BLOCKS.register(modBus);
-		ModTileEntities.TILE_ENTITIES.register(modBus);
+		ModBlockEntities.BLOCK_ENTITIES.register(modBus);
 		ModStructures.STRUCTURES.register(modBus);
 		ModContainers.CONTAINERS.register(modBus);
 		ModEntities.ENTITIES.register(modBus);

@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.tileentity;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.init.ModTileEntities;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,25 +13,24 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BonfireTileEntity extends BlockEntity
+public class BonfireBlockEntity extends BlockEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
 	private String fireKeeperStringUUID = "";
 
-	public BonfireTileEntity(BlockPos pos, BlockState state)
+	public BonfireBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(ModTileEntities.BONFIRE.get(), pos, state);
+		super(ModBlockEntities.BONFIRE.get(), pos, state);
 	}
-
+	
 	@Override
-	public CompoundTag save(CompoundTag nbt)
+	protected void saveAdditional(CompoundTag nbt)
 	{
-		super.save(nbt);
+		super.saveAdditional(nbt);
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
 		nbt.putString("fire_keeper_string_uuid", this.fireKeeperStringUUID);
-		return nbt;
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class BonfireTileEntity extends BlockEntity
 	@Override
 	public CompoundTag getUpdateTag()
 	{
-		return this.save(super.getUpdateTag());
+		return this.saveWithoutMetadata();
 	}
 
 	private void markDirty()
@@ -108,7 +107,7 @@ public class BonfireTileEntity extends BlockEntity
 
 	public boolean hasName()
 	{
-		return this.name != "";
+		return !this.name.isBlank();
 	}
 
 	public void addFireKeeper(String uuid)

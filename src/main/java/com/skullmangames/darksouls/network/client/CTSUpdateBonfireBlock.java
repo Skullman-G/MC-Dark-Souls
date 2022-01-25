@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public class CTSUpdateBonfireBlock
 		ctx.get().enqueueWork(() ->
 		{
 			ServerPlayer serverplayer = ctx.get().getSender();
-			BonfireTileEntity bonfire = (BonfireTileEntity)serverplayer.level.getBlockEntity(msg.blockPos);
+			BonfireBlockEntity bonfire = (BonfireBlockEntity)serverplayer.level.getBlockEntity(msg.blockPos);
 			if (bonfire == null) return;
 			if (msg.name != "") bonfire.setName(msg.name);
 			if (msg.lit)

@@ -6,10 +6,13 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -103,64 +106,57 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
 	{
-		BlockEntity t = level.getBlockEntity(pos);
-		if (t instanceof BonfireTileEntity)
+		BonfireBlockEntity blockentity = level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
+		if (blockentity == null) return InteractionResult.PASS;
+		if (!state.getValue(LIT))
 		{
-			BonfireTileEntity tileentity = (BonfireTileEntity)t;
-			if (!state.getValue(LIT))
+			if (player.getItemInHand(hand).getItem() == ModItems.DARKSIGN.get())
 			{
-				if (player.getItemInHand(hand).getItem() == ModItems.DARKSIGN.get())
+				if (blockentity.hasFireKeeper())
 				{
-					if (tileentity.hasFireKeeper())
-					{
-						player.sendMessage(new TranslatableComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
-					}
-					else if (!tileentity.hasName() && ModNetworkManager.connection != null)
-					{
-						ModNetworkManager.connection.openBonfireNameScreen(player, tileentity);
-					}
-					return InteractionResult.sidedSuccess(level.isClientSide);
+					player.sendMessage(new TranslatableComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
 				}
-				return InteractionResult.PASS;
+				else if (!blockentity.hasName() && !player.level.isClientSide)
+				{
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireNameScreen(pos), (ServerPlayer) player);
+				}
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else
-			{
-				Item item = player.getItemInHand(hand).getItem();
-				if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
-				{
-					return InteractionResult.PASS;
-				}
-				
-				player.heal(player.getMaxHealth() - player.getHealth());
-				
-				if (ModNetworkManager.connection != null)
-				{
-					if (!tileentity.hasName())
-					{
-						ModNetworkManager.connection.openBonfireNameScreen(player, tileentity);
-					}
-					else
-					{
-						ModNetworkManager.connection.openBonfireScreen(tileentity);
-					}
-				}
-				
-				Optional<Vec3> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
-				if (optional.isPresent())
-				{
-					if (player instanceof ServerPlayer) ((ServerPlayer)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
-				}
-				else
-				{
-					player.sendMessage(new TranslatableComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
-				}
-				
-				return InteractionResult.SUCCESS;
-			}
+			return InteractionResult.PASS;
 		}
 		else
 		{
-			return InteractionResult.PASS;
+			Item item = player.getItemInHand(hand).getItem();
+			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
+			{
+				return InteractionResult.PASS;
+			}
+			
+			player.heal(player.getMaxHealth() - player.getHealth());
+			
+			if (!player.level.isClientSide)
+			{
+				if (!blockentity.hasName())
+				{
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireNameScreen(pos), (ServerPlayer) player);
+				}
+				else
+				{
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireScreen(pos), (ServerPlayer) player);
+				}
+			}
+			
+			Optional<Vec3> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
+			if (optional.isPresent())
+			{
+				if (player instanceof ServerPlayer) ((ServerPlayer)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+			}
+			else
+			{
+				player.sendMessage(new TranslatableComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
+			}
+			
+			return InteractionResult.SUCCESS;
 		}
 	}
 	
@@ -264,6 +260,6 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BonfireTileEntity(pos, state);
+		return new BonfireBlockEntity(pos, state);
 	}
 }

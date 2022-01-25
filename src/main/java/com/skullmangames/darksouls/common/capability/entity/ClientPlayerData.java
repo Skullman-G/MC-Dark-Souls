@@ -204,7 +204,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	{
 		if (this.human == value) return;
 		super.setHuman(value);
-		if (value) ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 2, 10, 2);
+		if (value) ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
 		ModNetworkManager.sendToServer(new CTSHuman(this.human));
 	}
 	

@@ -1,12 +1,13 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
@@ -25,11 +26,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireScreen extends Screen
 {
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/bonfire_main.png");
+	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_bonfire_main.png");
+	
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private Button reverseHollowingButton;
 	private Button kindleButton;
-	private BonfireTileEntity bonfiretileentity;
+	private BonfireBlockEntity bonfiretileentity;
 	private ClientPlayerData playerData;
 	private int buttonWidth = 100;
 	private int buttonHeight = 20;
@@ -37,8 +40,9 @@ public class BonfireScreen extends Screen
 	private String estusHealLevel;
 	private ImageButton estusHealIcon;
 	private ImageButton estusVolumeIcon;
+	private String[] nameparts = new String[3];
 	
-	public BonfireScreen(BonfireTileEntity tileentity)
+	public BonfireScreen(BonfireBlockEntity tileentity)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
@@ -55,6 +59,16 @@ public class BonfireScreen extends Screen
 	protected void init()
 	{
 		super.init();
+		
+		String name = this.bonfiretileentity.getName();
+		nameparts[0] = StringHelper.trySubstring(name, 0, 12);
+		nameparts[1] = name.length() >= 12 ? StringHelper.trySubstring(name, 12, 24) : "";
+		nameparts[2] = name.length() >= 24 ? StringHelper.trySubstring(name, 24, 36) : "";
+		if (nameparts[1].isBlank())
+		{
+			nameparts[1] = nameparts[0];
+			nameparts[0] = "";
+		}
 		
 		estusVolumeLevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL));
 		estusHealLevel = String.valueOf(this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
@@ -123,13 +137,10 @@ public class BonfireScreen extends Screen
 		super.renderBackground(matrixstack);
 		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
 		
-		String name = this.bonfiretileentity.getName();
-		String namepart1 = StringHelper.trySubstring(name, 0, 12);
-		String namepart2 = name.length() >= 12 ? StringHelper.trySubstring(name, 12, 24) : "";
-		String namepart3 = name.length() >= 24 ? StringHelper.trySubstring(name, 24, 36) : "";
-	    drawCenteredString(matrixstack, this.font, namepart1, this.width / 2, this.height / 2 - 55, 16777215);
-	    if (namepart2 != "") drawCenteredString(matrixstack, this.font, namepart2, this.width / 2, this.height / 2 - 45, 16777215);
-	    if (namepart3 != "") drawCenteredString(matrixstack, this.font, namepart3, this.width / 2, this.height / 2 - 35, 16777215);
+		
+	    drawCenteredString(matrixstack, this.font, this.nameparts[0], this.width / 2, this.height / 2 - 55, 16777215);
+	    drawCenteredString(matrixstack, this.font, this.nameparts[1], this.width / 2, this.height / 2 - 45, 16777215);
+	    drawCenteredString(matrixstack, this.font, this.nameparts[2], this.width / 2, this.height / 2 - 35, 16777215);
 	    
 	    drawCenteredString(matrixstack, this.font, estusVolumeLevel, this.width / 2 + 25, this.height / 2 - 70, 16777215);
 	    drawCenteredString(matrixstack, this.font, estusHealLevel, this.width / 2 - 5, this.height / 2 - 70, 16777215);
@@ -139,7 +150,8 @@ public class BonfireScreen extends Screen
 	
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
-		this.minecraft.getTextureManager().bindForSetup(TEXTURE_LOCATION);
+		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+		else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;
 	    this.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight);

@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.item;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.core.BlockPos;
@@ -27,9 +27,9 @@ public class UndeadBoneShardItem extends Item
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = level.getBlockState(blockpos);
 		ItemStack itemstack = itemusecontext.getItemInHand();
-		if (level.getBlockEntity(blockpos) instanceof BonfireTileEntity && blockstate.getValue(BonfireBlock.LIT))
+		if (level.getBlockEntity(blockpos) instanceof BonfireBlockEntity && blockstate.getValue(BonfireBlock.LIT))
 		{
-			BonfireTileEntity bonfire = (BonfireTileEntity)level.getBlockEntity(blockpos);
+			BonfireBlockEntity bonfire = (BonfireBlockEntity)level.getBlockEntity(blockpos);
 			if (blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL) == 9)
 			{
 				if (itemusecontext.getPlayer() instanceof ServerPlayer)

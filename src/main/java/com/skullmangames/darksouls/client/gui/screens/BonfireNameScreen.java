@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,9 +25,9 @@ public class BonfireNameScreen extends Screen
 {
 	protected EditBox titleEdit;
 	protected Button doneButton;
-	private final BonfireTileEntity tileentity;
+	private final BonfireBlockEntity tileentity;
 	
-	public BonfireNameScreen(Player player, BonfireTileEntity tileentity)
+	public BonfireNameScreen(BonfireBlockEntity tileentity)
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.tileentity = tileentity;
@@ -93,7 +92,7 @@ public class BonfireNameScreen extends Screen
 	    BlockState state = this.tileentity.getBlockState();
 	    if (!state.getValue(BonfireBlock.LIT))
 	    {
-	    	ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.bonfire_lit_message"), 2, 10, 2);
+	    	ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.bonfire_lit_message"), 10, 50, 10);
 	    	BlockPos pos = this.tileentity.getBlockPos();
 	    	this.minecraft.player.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), ModSoundEvents.GENERIC_HUMAN_FORM.get(), SoundSource.AMBIENT, 1.0F, 0.8F, false);
 	    }

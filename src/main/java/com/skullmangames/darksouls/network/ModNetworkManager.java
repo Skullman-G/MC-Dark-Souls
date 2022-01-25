@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
+import com.skullmangames.darksouls.network.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -25,6 +26,8 @@ import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -93,5 +96,8 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCHuman.class, STCHuman::toBytes, STCHuman::fromBytes, STCHuman::handle);
 		INSTANCE.registerMessage(id++, STCSouls.class, STCSouls::toBytes, STCSouls::fromBytes, STCSouls::handle);
 		INSTANCE.registerMessage(id++, STCStat.class, STCStat::toBytes, STCStat::fromBytes, STCStat::handle);
+		INSTANCE.registerMessage(id++, STCOpenBonfireNameScreen.class, STCOpenBonfireNameScreen::toBytes, STCOpenBonfireNameScreen::fromBytes, STCOpenBonfireNameScreen::handle);
+		INSTANCE.registerMessage(id++, STCOpenBonfireScreen.class, STCOpenBonfireScreen::toBytes, STCOpenBonfireScreen::fromBytes, STCOpenBonfireScreen::handle);
+		INSTANCE.registerMessage(id++, STCLoadPlayerData.class, STCLoadPlayerData::toBytes, STCLoadPlayerData::fromBytes, STCLoadPlayerData::handle);
 	}
 }

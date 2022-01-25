@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.init.ModTileEntities;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.Util;
@@ -60,11 +60,11 @@ public class FireKeeperEntity extends QuestEntity
 		return this.hasLinkedBonfire;
 	}
 
-	public BonfireTileEntity getLinkedBonfire()
+	public BonfireBlockEntity getLinkedBonfire()
 	{
 		BlockEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
-		return tileentity instanceof BonfireTileEntity
-				? (BonfireTileEntity) tileentity
+		return tileentity instanceof BonfireBlockEntity
+				? (BonfireBlockEntity) tileentity
 				: null;
 	}
 
@@ -116,7 +116,7 @@ public class FireKeeperEntity extends QuestEntity
 		{
 			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 			{
-				BonfireTileEntity t = this.level.getBlockEntity(pos, ModTileEntities.BONFIRE.get()).orElse(null);
+				BonfireBlockEntity t = this.level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
 				if (t != null
 						&& !t.hasFireKeeper()
 						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)

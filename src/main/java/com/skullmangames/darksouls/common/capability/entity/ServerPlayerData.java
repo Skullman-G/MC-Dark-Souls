@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
@@ -17,6 +18,7 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
+import com.skullmangames.darksouls.network.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCSouls;
@@ -55,13 +57,11 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
 		
-		CompoundTag nbt = entityIn.getPersistentData();
+		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.humanity = nbt.getInt("Humanity");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(entityIn.getId(), this.humanity), entityIn);
 		this.souls = nbt.getInt("Souls");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(entityIn.getId(), this.souls), entityIn);
 		this.human = nbt.getBoolean("IsHuman");
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(entityIn.getId(), this.human), entityIn);
+		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
 		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
