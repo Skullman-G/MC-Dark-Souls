@@ -5,20 +5,21 @@ import net.minecraft.world.entity.Entity;
 
 public class DamageSourceExtended extends EntityDamageSource implements IExtendedDamageSource
 {
-	private StunType stunType;
-	private final int id;
 	private float amount;
-	private int requiredDeflectionLevel;
-	private DamageType damageType;
+	private final int requiredDeflectionLevel;
+	private final float poiseDamage;
+	private final StunType stunType;
+	private final DamageType damageType;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
+	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
 		this.stunType = stunType;
-		this.id = id;
 		this.amount = amount;
 		this.damageType = damageType;
+		this.poiseDamage = poiseDamage;
+		this.requiredDeflectionLevel = requireddeflectionlevel;
 	}
 	
 	@Override
@@ -40,15 +41,9 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	}
 
 	@Override
-	public void setStunType(StunType stunType)
-	{
-		this.stunType = stunType;
-	}
-
-	@Override
 	public StunType getStunType()
 	{
-		return stunType;
+		return this.stunType;
 	}
 
 	@Override
@@ -64,20 +59,23 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	}
 
 	@Override
-	public int getSkillId()
-	{
-		return this.id;
-	}
-
-	@Override
-	public DamageType getAttackType()
+	public DamageType getDamageType()
 	{
 		return this.damageType;
 	}
 
 	@Override
-	public void setAttackType(DamageType damageType)
+	public float getPoiseDamage()
 	{
-		this.damageType = damageType;
+		return this.poiseDamage;
 	}
+
+	@Override
+	public boolean isHeadshot()
+	{
+		return false;
+	}
+
+	@Override
+	public void setHeadshot(boolean value) {}
 }

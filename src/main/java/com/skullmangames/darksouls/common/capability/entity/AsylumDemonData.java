@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
+import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -44,8 +44,8 @@ public class AsylumDemonData extends MobData<AsylumDemonEntity>
 	@Override
 	public Collider getColliderMatching(InteractionHand hand)
 	{
-		WeaponCapability cap = this.getHeldWeaponCapability(hand);
-		if (cap instanceof GreatHammerCapability) return Colliders.asylum_demon_great_hammer;
+		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		if (cap instanceof GreatHammerCap) return Colliders.asylum_demon_great_hammer;
 		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
 	}
 	

@@ -4,11 +4,11 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.core.init.Animations;
 import net.minecraft.world.item.Item;
 
-public class ShieldCapability extends WeaponCapability implements IShield
+public class ShieldCap extends MeleeWeaponCap
 {
-	public ShieldCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public ShieldCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
 	}
 	
 	@Override

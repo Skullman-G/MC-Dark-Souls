@@ -86,7 +86,7 @@ public class DarkSouls
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addListener(this::doCommonStuff);
 		modBus.addListener(this::doClientStuff);
-		modBus.addListener(ModAttributes::onEntityAttributeCreation);
+		modBus.addListener(ModAttributes::createAttributeMap);
 		modBus.addListener(ModAttributes::modifyAttributeMap);
 
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;

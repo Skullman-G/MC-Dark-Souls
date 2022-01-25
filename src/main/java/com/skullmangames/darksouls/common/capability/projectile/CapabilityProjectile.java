@@ -4,22 +4,15 @@ import net.minecraft.world.entity.projectile.Projectile;
 
 public class CapabilityProjectile<T extends Projectile>
 {
-	private float impact;
-	private float armorNegation;
+	private final float poiseDamage;
 	
-	public void onJoinWorld(T projectileEntity)
+	public CapabilityProjectile(float poiseDamage)
 	{
-		this.armorNegation = 0.0F;
-		this.impact = 0.0F;
+		this.poiseDamage = poiseDamage;
 	}
 	
-	public float getArmorNegation()
+	public float getPoiseDamage()
 	{
-		return this.armorNegation;
-	}
-	
-	public float getImpact()
-	{
-		return this.impact;
+		return this.poiseDamage;
 	}
 }

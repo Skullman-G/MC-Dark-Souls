@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
 import net.minecraft.ChatFormatting;
@@ -26,12 +27,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ArmorCapability extends AttributeItemCapability
+public class ArmorCap extends AttributeItemCap
 {
 	protected static final UUID[] ARMOR_MODIFIERS = new UUID[] {UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
-	
-	protected double weight;
-	protected double stunArmor;
 	
 	private final EquipmentSlot equipmentSlot;
 	
@@ -40,14 +38,15 @@ public class ArmorCapability extends AttributeItemCapability
 	protected float slashDef;
 	protected float thrustDef;
 	
-	public ArmorCapability(Item item)
+	protected float poise;
+	
+	public ArmorCap(Item item)
 	{
 		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
 		ArmorMaterial armorMaterial = armorItem.getMaterial();
 		this.equipmentSlot = armorItem.getSlot();
-		this.weight = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 2.5F;
-		this.stunArmor = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 0.375F;
+		this.poise = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 2.0F;
 	}
 	
 	@Override
@@ -66,11 +65,11 @@ public class ArmorCapability extends AttributeItemCapability
 		itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
 		
-		if(this.stunArmor > 0.0F)
+		if(this.poise > 0.0F)
 		{
 			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent(ModAttributes.MAX_STUN_ARMOR.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.stunArmor))));
+			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
 		}
 	}
 	
@@ -81,7 +80,7 @@ public class ArmorCapability extends AttributeItemCapability
 		
 		if (entitydata != null && equipmentSlot == this.equipmentSlot)
 		{
-			map.put(ModAttributes.MAX_STUN_ARMOR.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.stunArmor, Operation.ADDITION));
+			map.put(ModAttributes.POISE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.poise, Operation.ADDITION));
 			
 			map.put(ModAttributes.STANDARD_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.standardDef, Operation.ADDITION));
 			map.put(ModAttributes.STRIKE_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.strikeDef, Operation.ADDITION));

@@ -7,11 +7,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
 
-public class AxeCapability extends MaterialItemCapability
+public class AxeCap extends MeleeWeaponCap
 {
-	public AxeCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public AxeCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.AXE, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.AXE, requiredStrength, requiredDex, strengthScaling, dexScaling, 35F);
 	}
 	
 	@Override

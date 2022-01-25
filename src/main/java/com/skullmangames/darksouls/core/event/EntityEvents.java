@@ -10,17 +10,13 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import com.skullmangames.darksouls.common.capability.item.AttributeItemCapability;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -28,17 +24,14 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.InteractionHand;
@@ -48,6 +41,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -91,16 +85,6 @@ public class EntityEvents
 				unInitializedEntitiesServer.add(entitydata);
 			}	
 		}
-		
-		if (event.getEntity() instanceof Projectile)
-		{
-			Projectile projectileentity = (Projectile)event.getEntity();
-			CapabilityProjectile<Projectile> projectileData = event.getEntity().getCapability(ModCapabilities.CAPABILITY_PROJECTILE, null).orElse(null);
-			if(projectileData != null && event.getEntity().tickCount == 0)
-			{
-				projectileData.onJoinWorld(projectileentity);
-			}
-		}
 	}
 	
 	@SubscribeEvent
@@ -126,153 +110,58 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void hurtEvent(LivingHurtEvent event)
 	{
+		LivingEntity target = event.getEntityLiving();
+		LivingData<?> targetData = (LivingData<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		
+		float amount = event.getAmount();
+		boolean indirect = event.getSource() instanceof IndirectEntityDamageSource;
+		boolean headshot = false;
+		float poiseDamage = 0.0F;
+		DamageType damageType = DamageType.STANDARD;
+		StunType stunType = StunType.DEFAULT;
+		
 		IExtendedDamageSource extSource = null;
-		Entity trueSource = event.getSource().getEntity();
-		
-		if(event.getSource() instanceof IExtendedDamageSource) extSource = (IExtendedDamageSource)event.getSource();
-		
-		LivingData<?> targetData = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		
-		if(trueSource != null)
+		if(event.getSource() instanceof IExtendedDamageSource)
 		{
-			// Projectile Damage
-			if(event.getSource() instanceof IndirectEntityDamageSource)
+			extSource = (IExtendedDamageSource)event.getSource();
+			headshot = extSource.isHeadshot();
+			poiseDamage = extSource.getPoiseDamage();
+			damageType = extSource.getDamageType();
+			stunType = extSource.getStunType();
+		}
+		
+		// Damage Calculation
+		if (!indirect)
+		{
+			Attribute defAttribute = damageType.getDefenseAttribute();
+			amount -= target.getAttribute(defAttribute) != null ? target.getAttributeValue(defAttribute) : 0.0F;
+		}
+		extSource.setAmount(amount);
+		
+		if (targetData == null || targetData.blockingAttack(extSource)) return;
+		
+		// Stun Animation
+		boolean poiseBroken = targetData.decreasePoiseDef(poiseDamage);
+		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
+		StaticAnimation hitAnimation = targetData.getHitAnimation(stunType);
+		
+		if(hitAnimation != null)
+		{
+			float exTime = 0.2F;
+			targetData.getAnimator().playAnimation(hitAnimation, exTime);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation.getId(), target.getId(), exTime), target);
+			if(target instanceof ServerPlayer)
 			{
-				Entity directSource = event.getSource().getDirectEntity();
-				extSource = new IndirectDamageSourceExtended("arrow", trueSource, directSource, StunType.SHORT, DamageType.THRUST);
-			}
-			
-			if(extSource != null)
-			{
-				// Damage Calculation
-				LivingEntity hitEntity = event.getEntityLiving();
-				float damage = event.getAmount();
-				
-				if (extSource instanceof DamageSourceExtended)
-				{
-					double defense = 0.0D;
-					
-					// Physical
-					switch(extSource.getAttackType())
-					{
-						default:
-						case STANDARD:
-							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STANDARD_DEFENSE.get()))
-							{
-								defense = hitEntity.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get());
-							}
-							break;
-						
-						case STRIKE:
-							if (hitEntity.getAttributes().hasAttribute(ModAttributes.STRIKE_DEFENSE.get()))
-							{
-								defense = hitEntity.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get());
-							}
-							break;
-						
-						case SLASH:
-							if (hitEntity.getAttributes().hasAttribute(ModAttributes.SLASH_DEFENSE.get()))
-							{
-								defense = hitEntity.getAttributeValue(ModAttributes.SLASH_DEFENSE.get());
-							}
-							break;
-						
-						case THRUST:
-							if (hitEntity.getAttributes().hasAttribute(ModAttributes.THRUST_DEFENSE.get()))
-							{
-								defense = hitEntity.getAttributeValue(ModAttributes.THRUST_DEFENSE.get());
-							}
-							break;
-					}
-					
-					damage *= 1 - defense;
-				}
-				
-				event.setAmount(damage);
-				extSource.setAmount(damage);
-				
-				if (targetData != null && targetData instanceof LivingData<?>) targetData.blockingAttack(extSource);
-				
-				// Stun Animation
-				if(damage > 0.0F)
-				{
-					LivingData<?> hitEntityData = (LivingData<?>)hitEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-					
-					if(hitEntityData != null)
-					{
-						StaticAnimation hitAnimation = null;
-						float extendStunTime = 0;
-						float knockBackAmount = 0;
-						
-						float currentStunResistance = hitEntityData.getStunArmor();
-						if(currentStunResistance > 0)
-						{
-							float impact = 0;
-							hitEntityData.setStunArmor(currentStunResistance - impact);
-						}
-						
-						switch(extSource.getStunType())
-						{
-						case SHORT:
-							if(hitEntityData.getStunArmor() == 0)
-							{
-								int i = EnchantmentHelper.getKnockbackBonus((LivingEntity)trueSource);
-								float totalStunTime = (float) ((0.25F + 0.1F + 0.1F * i));
-								totalStunTime *= (1.0F - hitEntityData.getStunTimeTimeReduction());
-								
-								if(totalStunTime >= 0.1F)
-								{
-									extendStunTime = totalStunTime - 0.1F;
-									boolean flag = totalStunTime >= 0.83F;
-									StunType stunType = flag ? StunType.LONG : StunType.SHORT;
-									extendStunTime = flag ? 0 : extendStunTime;
-									hitAnimation = hitEntityData.getHitAnimation(stunType);
-									knockBackAmount = totalStunTime;
-								}
-							}
-							break;
-							
-						case HOLD:
-							hitAnimation = hitEntityData.getHitAnimation(StunType.SHORT);
-							extendStunTime = 0.1F;
-							break;
-							
-						case LONG:
-							hitAnimation = hitEntityData.getHitAnimation(StunType.LONG);
-							knockBackAmount = 0.25F;
-							break;
-							
-						case SMASH_FRONT:
-							hitAnimation = hitEntityData.getHitAnimation(StunType.SMASH_FRONT);
-							extendStunTime = 0.01F;
-							break;
-							
-						case SMASH_BACK:
-							hitAnimation = hitEntityData.getHitAnimation(StunType.SMASH_BACK);
-							extendStunTime = 0.01F;
-							break;
-						}
-						
-						if(hitAnimation != null)
-						{
-							if(!(hitEntity instanceof Player))
-							{
-								hitEntity.lookAt(Anchor.FEET, trueSource.getDeltaMovement());
-							}
-							hitEntityData.setStunTimeReduction();
-							hitEntityData.getAnimator().playAnimation(hitAnimation, extendStunTime);
-							ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), hitEntity);
-							if(hitEntity instanceof ServerPlayer)
-							{
-								ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), hitEntity.getId(), extendStunTime), (ServerPlayer)hitEntity);
-							}
-						}
-						
-						hitEntityData.knockBackEntity(trueSource, knockBackAmount);
-					}
-				}
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), target.getId(), exTime), (ServerPlayer)target);
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void damageEvent(LivingDamageEvent event)
+	{
+		if (!(event.getSource() instanceof IExtendedDamageSource)) return;
+		event.setAmount(((IExtendedDamageSource)event.getSource()).getAmount());
 	}
 	
 	@SubscribeEvent
@@ -316,8 +205,8 @@ public class EntityEvents
 		{
 			if (event.getSlot() == EquipmentSlot.MAINHAND)
 			{
-				AttributeItemCapability fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-				AttributeItemCapability toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+				AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+				AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
 				entitycap.cancelUsingItem();
 				
 				if(fromCap != null)
@@ -349,8 +238,8 @@ public class EntityEvents
 			}
 			else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
 			{
-				AttributeItemCapability fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-				AttributeItemCapability toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+				AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+				AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
 				
 				if(fromCap != null)
 				{

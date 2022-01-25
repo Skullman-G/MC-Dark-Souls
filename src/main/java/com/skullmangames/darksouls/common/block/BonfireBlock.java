@@ -196,7 +196,8 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos vertex, CollisionContext context)
 	{
-		return SHAPES.get(state.getValue(HORIZONTAL_FACING));
+		//return SHAPES.get(state.getValue(HORIZONTAL_FACING));
+		return super.getShape(state, worldIn, vertex, context);
 	}
 	
 	@Override

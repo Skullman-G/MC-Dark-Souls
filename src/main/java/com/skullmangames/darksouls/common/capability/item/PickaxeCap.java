@@ -6,11 +6,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.world.item.Item;
 import net.minecraft.sounds.SoundEvent;
 
-public class PickaxeCapability extends MaterialItemCapability
+public class PickaxeCap extends MeleeWeaponCap
 {
-	public PickaxeCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public PickaxeCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.PICKAXE, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.PICKAXE, requiredStrength, requiredDex, strengthScaling, dexScaling, 10F);
 	}
 
 	@Override

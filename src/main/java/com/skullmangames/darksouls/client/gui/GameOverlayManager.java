@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.Timer;
+import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
@@ -111,14 +111,14 @@ public class GameOverlayManager
 				flag = true;
 			}
 			minecraft.gui.blit(posestack, x, y, 0, 18, damagedHealth, 9);
-			damageCooldown.drain(1.0F);
-			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth);
+			damageCooldown.drain(1);
+			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth * 2);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
 			minecraft.gui.blit(posestack, x, y, 0, 18, damagedHealth, 9);
-			damageTimer.drain(0.5F);
+			damageTimer.drain(1);
 		}
 		
 		// Heal Animation
@@ -132,7 +132,7 @@ public class GameOverlayManager
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
 			minecraft.gui.blit(posestack, x, y, 0, 9, healcentage, 9);
-			healTimer.drain(1.0F);
+			healTimer.drain(1);
 		}
 		
 		// Default
@@ -182,10 +182,10 @@ public class GameOverlayManager
 		
 		if (stamiaDrainCooldownTimer.isTicking())
 		{
-			stamiaDrainCooldownTimer.drain(1.0F);
-			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start(drainedStamina);
+			stamiaDrainCooldownTimer.drain(1);
+			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start(drainedStamina * 2);
 		}
-		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(0.5F);
+		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(1);
 		
 		minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
 		
@@ -200,7 +200,7 @@ public class GameOverlayManager
 			}
 			int percentage = saveLastStamina2 + staminaTimer.getPastTime();
 			minecraft.gui.blit(matrixstack, x, y, 0, 35, percentage, 9);
-			staminaTimer.drain(1.0F);
+			staminaTimer.drain(1);
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,7 +17,7 @@ public class ScalingStat extends ModifyingStat
 	public double getModifyValue(Player player, int value)
 	{
 		float addition = 0F;
-		WeaponCapability weapon = ModCapabilities.getWeaponCapability(player.getMainHandItem());
+		MeleeWeaponCap weapon = ModCapabilities.getWeaponCapability(player.getMainHandItem());
 		if (weapon != null)
 		{
 			float weaponBonus = weapon.getScaling(this).getPercentage();

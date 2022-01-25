@@ -15,11 +15,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SwordCapability extends MaterialItemCapability
+public class SwordCap extends MeleeWeaponCap
 {
-	public SwordCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public SwordCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
 	}
 	
 	@Override
@@ -49,8 +49,8 @@ public class SwordCapability extends MaterialItemCapability
 	@Override
 	public WieldStyle getStyle(LivingData<?> entitydata)
 	{
-		WeaponCapability item = entitydata.getHeldWeaponCapability(InteractionHand.OFF_HAND);
-		if(item != null && item.weaponCategory == WeaponCategory.STRAIGHT_SWORD)
+		WeaponCap item = entitydata.getHeldWeaponCapability(InteractionHand.OFF_HAND);
+		if(item != null && item.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD)
 		{
 			return WieldStyle.TWO_HAND;
 		}
@@ -70,7 +70,7 @@ public class SwordCapability extends MaterialItemCapability
 	@Override
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
-		WeaponCapability cap = ModCapabilities.getWeaponCapability(item);
-		return super.canBeRenderedBoth(item) || (cap != null && cap.weaponCategory == WeaponCategory.STRAIGHT_SWORD);
+		WeaponCap cap = ModCapabilities.getWeaponCapability(item);
+		return super.canBeRenderedBoth(item) || (cap != null && cap.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD);
 	}
 }

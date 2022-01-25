@@ -176,23 +176,12 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	{
 		super.updateOnServer();
 		this.tickSinceLastAction++;
-		float stunArmor = this.getStunArmor();
-		float maxStunArmor = this.getMaxStunArmor();
 		
 		if (!this.isCreativeOrSpectator())
 		{
 			this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
 					: this.isBlocking() ? 0.05F : 0.1F);
 		}
-		
-		if (stunArmor < maxStunArmor && this.tickSinceLastAction > 60)
-		{
-			float stunArmorFactor = 1.0F + (stunArmor / maxStunArmor);
-			float healthFactor = this.orgEntity.getHealth() / this.orgEntity.getMaxHealth();
-			this.setStunArmor(stunArmor + maxStunArmor * 0.01F * healthFactor * stunArmorFactor);
-		}
-		
-		if (maxStunArmor < stunArmor) this.setStunArmor(maxStunArmor);
 	}
 	
 	@Override
@@ -250,9 +239,9 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	}
 	
 	@Override
-	public IExtendedDamageSource getDamageSource(StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
+	public IExtendedDamageSource getDamageSource(StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
-		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, id, amount, requireddeflectionlevel, damageType);
+		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage);
 	}
 	
 	public void discard()
@@ -277,13 +266,7 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		{
 			switch (stunType)
 			{
-				case LONG:
-					return Animations.BIPED_HIT_LONG;
-					
-				case SHORT:
-					return Animations.BIPED_HIT_SHORT;
-					
-				case HOLD:
+				case DEFAULT:
 					return Animations.BIPED_HIT_SHORT;
 					
 				case SMASH_FRONT:

@@ -1,9 +1,9 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.item.AttributeItemCapability;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.world.entity.projectile.Projectile;
@@ -24,15 +24,15 @@ public class ModCapabilities
 		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 	
-	public static WeaponCapability getWeaponCapability(ItemStack stack)
+	public static MeleeWeaponCap getWeaponCapability(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof WeaponCapability ? (WeaponCapability)cap : null;
+		return cap instanceof MeleeWeaponCap ? (MeleeWeaponCap)cap : null;
 	}
 	
-	public static AttributeItemCapability getAttributeItemCapability(ItemStack stack)
+	public static AttributeItemCap getAttributeItemCapability(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof AttributeItemCapability ? (AttributeItemCapability)cap : null;
+		return cap instanceof AttributeItemCap ? (AttributeItemCap)cap : null;
 	}
 }

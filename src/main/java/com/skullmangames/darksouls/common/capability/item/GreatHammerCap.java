@@ -10,11 +10,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
-public class GreatHammerCapability extends WeaponCapability
+public class GreatHammerCap extends MeleeWeaponCap
 {
-	public GreatHammerCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public GreatHammerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.GREAT_HAMMER, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.GREAT_HAMMER, requiredStrength, requiredDex, strengthScaling, dexScaling, 50F);
 	}
 	
 	@Override

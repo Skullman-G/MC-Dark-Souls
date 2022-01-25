@@ -6,11 +6,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
-public class HoeCapability extends MaterialItemCapability
+public class HoeCap extends MeleeWeaponCap
 {
-	public HoeCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public HoeCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.HOE, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.HOE, requiredStrength, requiredDex, strengthScaling, dexScaling, 10F);
 	}
 
 	@Override

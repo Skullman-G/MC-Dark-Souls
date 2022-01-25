@@ -9,11 +9,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
-public class DaggerCapability extends WeaponCapability
+public class DaggerCap extends MeleeWeaponCap
 {
-	public DaggerCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public DaggerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex, strengthScaling, dexScaling, 5F);
 	}
 	
 	@Override

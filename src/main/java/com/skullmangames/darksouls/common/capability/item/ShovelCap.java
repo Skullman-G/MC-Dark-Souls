@@ -6,11 +6,11 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.world.item.Item;
 import net.minecraft.sounds.SoundEvent;
 
-public class ShovelCapability extends MaterialItemCapability
+public class ShovelCap extends MeleeWeaponCap
 {
-	public ShovelCapability(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public ShovelCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.SHOVEL, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.SHOVEL, requiredStrength, requiredDex, strengthScaling, dexScaling, 10F);
 	}
 
 	@Override

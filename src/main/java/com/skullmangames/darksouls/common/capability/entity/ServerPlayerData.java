@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -116,7 +115,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 	@Override
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking() || damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return false;
+		if (!this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 		
 		this.increaseStamina(-4.0F);
@@ -128,7 +127,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
 		this.animator.playAnimation(disarmAnimation, 0.0F);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(disarmAnimation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
-		return false;
+		return true;
 	}
 	
 	public void modifiLivingMotions(ItemCapability itemCap)

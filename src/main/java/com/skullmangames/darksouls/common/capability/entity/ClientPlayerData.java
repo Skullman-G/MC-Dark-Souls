@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
@@ -142,7 +142,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 		}
 		else
 		{
-			WeaponCapability weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+			MeleeWeaponCap weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
 			if (weapon == null) return;
 			animation = weapon.getAttack(type, this);
 		}
@@ -178,11 +178,6 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	
 	@Override
 	public void aboutToDeath() {}
-	
-	public void initFromOldOne(ClientPlayerData old)
-	{
-		this.setStunArmor(old.getStunArmor());
-	}
 	
 	@Override
 	public LivingEntity getTarget()

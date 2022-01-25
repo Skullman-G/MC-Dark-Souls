@@ -1,17 +1,11 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -19,59 +13,43 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.physics.Collider;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class WeaponCapability extends AttributeItemCapability
+public abstract class WeaponCap extends AttributeItemCap
 {
-	protected final WeaponCategory weaponCategory;
+	private final WeaponCategory weaponCategory;
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
-	protected final Map<Stat, Pair<Integer, Scaling>> statInfo;
+	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
+	private final float poiseDamage;
 
-	public WeaponCapability(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public WeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
 	{
 		super(item);
 		this.weaponCategory = category;
 		this.statInfo = ImmutableMap.<Stat, Pair<Integer, Scaling>>builder()
 				.put(Stats.STRENGTH, new Pair<Integer, Scaling>(MathUtils.clamp(requiredStrength, 0, 99), strengthScaling))
 				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(requiredDex, 0, 99), dexScaling)).build();
+		this.poiseDamage = poiseDamage;
+		this.registerAttribute();
 	}
 	
 	@Override
-	public void onHeld(PlayerData<?> playerdata)
+	protected void registerAttribute()
 	{
-		super.onHeld(playerdata);
-		AttributeInstance instance = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-		instance.removeModifier(ModAttributes.ATTACK_DAMAGE_MODIFIER);
-		instance.addTransientModifier(ModAttributes.getAttackDamageModifier(this.getDamage()));
+		this.addAttribute(ModAttributes.POISE_DAMAGE, ModAttributes.getPoiseDamageModifier(this.poiseDamage));
 	}
 	
 	public Scaling getScaling(Stat stat)
@@ -97,26 +75,8 @@ public class WeaponCapability extends AttributeItemCapability
 	{
 		return null;
 	}
-
-	public InteractionResult onUse(Player player, InteractionHand hand)
-	{
-		player.startUsingItem(hand);
-		return InteractionResult.CONSUME;
-	}
-
-	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, LivingData<?> entitydata)
-	{
-		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(equipmentSlot, entitydata);
-		if (entitydata == null) return map;
-		
-		for (Entry<Supplier<Attribute>, AttributeModifier> entry : this.attributeMap.entrySet())
-		{
-			map.put(entry.getKey().get(), entry.getValue());
-		}
-
-		return map;
-	}
+	
+	public abstract float getDamage();
 
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
@@ -154,13 +114,6 @@ public class WeaponCapability extends AttributeItemCapability
 					+ this.statInfo.get(Stats.DEXTERITY).getSecond()));
 		}
 	}
-	
-	public float getDamage()
-	{
-		return this.orgItem instanceof SwordItem ? ((SwordItem) this.orgItem).getDamage()
-				: this.orgItem instanceof DiggerItem ? ((DiggerItem) this.orgItem).getAttackDamage()
-				: 0.0F;
-	}
 
 	private String getStatStringValue(Stat stat, PlayerData<?> playerdata)
 	{
@@ -172,90 +125,9 @@ public class WeaponCapability extends AttributeItemCapability
 		return this.meetsRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
 	}
 
-	protected AttackAnimation[] getLightAttack()
-	{
-		return null;
-	}
-
-	protected boolean repeatLightAttack()
-	{
-		return true;
-	}
-
-	protected AttackAnimation getDashAttack()
-	{
-		return null;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
-	{
-		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null)
-			return this.getWeakAttack();
-
-		switch (type)
-		{
-		case LIGHT:
-			AttackAnimation[] animations = this.getLightAttack();
-			if (animations == null)
-				return null;
-			List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
-			int combo = animationList.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
-			if (combo + 1 < animationList.size())
-				combo += 1;
-			else if (this.repeatLightAttack())
-				combo = 0;
-			return animationList.get(combo);
-
-		case HEAVY:
-			return this.getHeavyAttack();
-
-		case DASH:
-			return this.getDashAttack();
-
-		default:
-			throw new IndexOutOfBoundsException("Incorrect attack type.");
-		}
-	}
-
-	protected AttackAnimation getWeakAttack()
-	{
-		return null;
-	}
-
-	public List<StaticAnimation> getMountAttackMotion()
-	{
-		return null;
-	}
-
-	protected AttackAnimation getHeavyAttack()
-	{
-		return null;
-	}
-
 	public WeaponCategory getWeaponCategory()
 	{
 		return this.weaponCategory;
-	}
-
-	public SoundEvent getSwingSound()
-	{
-		return null;
-	}
-
-	public SoundEvent getHitSound()
-	{
-		return null;
-	}
-
-	public SoundEvent getSmashSound()
-	{
-		return null;
-	}
-
-	public Collider getWeaponCollider()
-	{
-		return Colliders.fist;
 	}
 
 	public WieldStyle getStyle(LivingData<?> entitydata)
@@ -307,7 +179,7 @@ public class WeaponCapability extends AttributeItemCapability
 	@Override
 	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerData<?> playerdata)
 	{
-		return animationSet;
+		return this.animationSet;
 	}
 
 	@OnlyIn(Dist.CLIENT)

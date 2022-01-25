@@ -137,13 +137,7 @@ public abstract class BipedMobData<T extends Mob> extends MobData<T>
 		{
 			switch (stunType)
 			{
-				case LONG:
-					return Animations.BIPED_HIT_LONG;
-					
-				case SHORT:
-					return Animations.BIPED_HIT_SHORT;
-					
-				case HOLD:
+				case DEFAULT:
 					return Animations.BIPED_HIT_SHORT;
 					
 				case SMASH_FRONT:

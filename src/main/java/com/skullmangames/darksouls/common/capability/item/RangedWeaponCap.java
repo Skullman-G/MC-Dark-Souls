@@ -4,11 +4,15 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import net.minecraft.world.item.Item;
 
-public class RangedWeaponCapability extends WeaponCapability
+public class RangedWeaponCap extends WeaponCap
 {
-	public RangedWeaponCapability(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	private final float damage;
+	
+	public RangedWeaponCap(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, float damage, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex, strengthScaling, dexScaling, 0F);
+		
+		this.damage = damage;
 		
 		if(reload != null)
 		{
@@ -29,5 +33,11 @@ public class RangedWeaponCapability extends WeaponCapability
 	public boolean canUseOnMount()
 	{
 		return true;
+	}
+
+	@Override
+	public float getDamage()
+	{
+		return this.damage;
 	}
 }

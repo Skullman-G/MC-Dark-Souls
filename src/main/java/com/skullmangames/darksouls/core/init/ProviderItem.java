@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.skullmangames.darksouls.common.capability.item.ArmorCapability;
-import com.skullmangames.darksouls.common.capability.item.AxeCapability;
+import com.skullmangames.darksouls.common.capability.item.ArmorCap;
+import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.DaggerCapability;
-import com.skullmangames.darksouls.common.capability.item.GreatHammerCapability;
-import com.skullmangames.darksouls.common.capability.item.SwordCapability;
-import com.skullmangames.darksouls.common.capability.item.VanillaArmorCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability.Scaling;
+import com.skullmangames.darksouls.common.capability.item.DaggerCap;
+import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
+import com.skullmangames.darksouls.common.capability.item.SwordCap;
+import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,55 +40,55 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 	public static void initCapabilityMap()
 	{
 		// ARMOR
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_LEGGINGS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_LEGGINGS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_LEGGINGS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_LEGGINGS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_LEGGINGS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_BOOTS, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_CHESTPLATE, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_HELMET, VanillaArmorCapability::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_LEGGINGS, VanillaArmorCapability::new);
+		CAPABILITIES.computeIfAbsent(Items.LEATHER_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.LEATHER_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.LEATHER_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.LEATHER_LEGGINGS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.GOLDEN_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.GOLDEN_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.GOLDEN_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.GOLDEN_LEGGINGS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_LEGGINGS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.IRON_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.IRON_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.IRON_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.IRON_LEGGINGS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.DIAMOND_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.DIAMOND_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.DIAMOND_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.DIAMOND_LEGGINGS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.NETHERITE_BOOTS, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.NETHERITE_CHESTPLATE, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.NETHERITE_HELMET, VanillaArmorCap::new);
+		CAPABILITIES.computeIfAbsent(Items.NETHERITE_LEGGINGS, VanillaArmorCap::new);
 		
 		// WEAPONS
-		putCap(new DaggerCapability(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
+		putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
-		putCap(new GreatHammerCapability(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
+		putCap(new GreatHammerCap(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
 		
-		putCap(new AxeCapability(Items.WOODEN_AXE, 8, 8, Scaling.C, Scaling.D));
-		putCap(new AxeCapability(Items.STONE_AXE, 8, 8, Scaling.C, Scaling.D));
-		putCap(new AxeCapability(Items.IRON_AXE, 10, 10, Scaling.C, Scaling.D));
-		putCap(new AxeCapability(Items.GOLDEN_AXE, 8, 10, Scaling.C, Scaling.D));
-		putCap(new AxeCapability(Items.DIAMOND_AXE, 15, 15, Scaling.C, Scaling.D));
-		putCap(new AxeCapability(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.WOODEN_AXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.STONE_AXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.IRON_AXE, 10, 10, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.GOLDEN_AXE, 8, 10, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.DIAMOND_AXE, 15, 15, Scaling.C, Scaling.D));
+		putCap(new AxeCap(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
 		
-		putCap(new SwordCapability(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(Items.GOLDEN_SWORD, 8, 10, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(Items.DIAMOND_SWORD, 10, 15, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(Items.NETHERITE_SWORD, 12, 15, Scaling.C, Scaling.C));
-		putCap(new SwordCapability(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
-		putCap(new SwordCapability(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
+		putCap(new SwordCap(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCap(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCap(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCap(Items.GOLDEN_SWORD, 8, 10, Scaling.C, Scaling.C));
+		putCap(new SwordCap(Items.DIAMOND_SWORD, 10, 15, Scaling.C, Scaling.C));
+		putCap(new SwordCap(Items.NETHERITE_SWORD, 12, 15, Scaling.C, Scaling.C));
+		putCap(new SwordCap(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
+		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
-		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCapability::new);
+		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCap::new);
 		/*CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
 		CAPABILITY_BY_CLASS.put(ShovelItem.class, ShovelCapability::new);
 		CAPABILITY_BY_CLASS.put(HoeItem.class, HoeCapability::new);

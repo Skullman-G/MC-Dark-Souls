@@ -17,12 +17,12 @@ import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -133,22 +133,6 @@ public class AttackAnimation extends ActionAnimation
 
 								float amount = this.getDamageAmount(entitydata, e, phase);
 								IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
-								
-								if (phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT) == StunType.SMASH_FRONT)
-								{
-									Vector3d colPos = collider.getCenter();
-									double x = colPos.x - e.getX();
-									double z = colPos.z - e.getZ();
-									double rot = MathUtils.getNearestTo(Math.abs((int)e.yRot), 90, 180, 260);
-									
-									if ((rot == 0 && x < 0)
-											|| (rot == 90 && z < 0)
-											|| (rot == 180 && x > 0)
-											|| (rot == 260 && z > 0))
-									{
-										source.setStunType(StunType.SMASH_BACK);
-									}
-								}
 								
 								if (entitydata.hurtEntity(e, phase.hand, source, amount))
 								{
@@ -278,10 +262,10 @@ public class AttackAnimation extends ActionAnimation
 
 	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
 	{
-		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT);
+		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.DEFAULT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.STANDARD);
-		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, this.getId(), amount, this.getRequiredDeflectionLevel(phase), damageType);
-
+		float poiseDamage = (float) entitydata.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
+		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 

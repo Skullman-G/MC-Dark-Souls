@@ -2,8 +2,6 @@ package com.skullmangames.darksouls.core.init;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
-
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.core.Direction;
@@ -19,14 +17,13 @@ import net.minecraftforge.common.util.NonNullSupplier;
 
 public class ProviderProjectile<P extends Projectile> implements ICapabilityProvider, NonNullSupplier<CapabilityProjectile<?>>
 {
-	private static final Map<EntityType<?>, Supplier<CapabilityProjectile<?>>> CAPABILITY_BY_TYPE
-					= new HashMap<EntityType<?>, Supplier<CapabilityProjectile<?>>> ();
+	private static final Map<EntityType<?>, CapabilityProjectile<?>> CAPABILITIES = new HashMap<> ();
 	
 	public static void makeMap()
 	{
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.ARROW, (type) -> CapabilityProjectile<Arrow>::new);
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.SNOWBALL, (type) -> CapabilityProjectile<Snowball>::new);
-		CAPABILITY_BY_TYPE.computeIfAbsent(EntityType.EGG, (type) -> CapabilityProjectile<ThrownEgg>::new);
+		CAPABILITIES.put(EntityType.ARROW, new CapabilityProjectile<Arrow>(20F));
+		CAPABILITIES.put(EntityType.SNOWBALL, new CapabilityProjectile<Snowball>(5F));
+		CAPABILITIES.put(EntityType.EGG, new CapabilityProjectile<ThrownEgg>(5F));
 	}
 	
 	private CapabilityProjectile<?> capability;
@@ -34,9 +31,9 @@ public class ProviderProjectile<P extends Projectile> implements ICapabilityProv
 	
 	public ProviderProjectile(P entity)
 	{
-		if(CAPABILITY_BY_TYPE.containsKey(entity.getType()))
+		if(CAPABILITIES.containsKey(entity.getType()))
 		{
-			this.capability = CAPABILITY_BY_TYPE.get(entity.getType()).get();
+			this.capability = CAPABILITIES.get(entity.getType());
 		}
 	}
 	

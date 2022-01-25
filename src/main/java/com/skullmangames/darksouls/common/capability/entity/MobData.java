@@ -7,12 +7,11 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.item.AttributeItemCapability;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
@@ -90,22 +89,7 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
 	public void clientInitialSettings(ByteBuf buf) {}
 	
 	@Override
-	public void onArmorSlotChanged(AttributeItemCapability fromCap, AttributeItemCapability toCap, EquipmentSlot slotType)
-	{
-		if(this.orgEntity.getAttributes().hasAttribute(ModAttributes.MAX_STUN_ARMOR.get()))
-		{
-			if(fromCap != null)
-			{
-				this.orgEntity.getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(slotType, this));
-			}
-			if(toCap != null)
-			{
-				this.orgEntity.getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(slotType, this));
-			}
-			
-			this.setStunArmor((float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STUN_ARMOR.get()));
-		}
-	}
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
 	
 	@Override
 	public boolean isTeam(Entity entityIn)

@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.item.ArmorCapability;
+import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -100,11 +100,11 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingData<E>> 
 		{
 			ClientModel model;
 			
-			ArmorCapability cap = (ArmorCapability) stack.getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
+			ArmorCap cap = (ArmorCap) stack.getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
 			
 			if (cap == null)
 			{
-				model = ArmorCapability.getBipedArmorModel(armorItem.getSlot());
+				model = ArmorCap.getBipedArmorModel(armorItem.getSlot());
 			}
 			else
 			{

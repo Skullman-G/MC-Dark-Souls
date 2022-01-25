@@ -1,15 +1,10 @@
-package com.skullmangames.darksouls.core.util;
+package com.skullmangames.darksouls.core.util.timer;
 
 public class Timer
 {
-	private float timer;
-	private float pastTime;
-	private boolean ticking;
-	
-	public Timer()
-	{
-		this.start(0);
-	}
+	protected int timer;
+	protected int pastTime;
+	protected boolean ticking;
 	
 	public void start(int value)
 	{
@@ -18,7 +13,7 @@ public class Timer
 		this.ticking = true;
 	}
 	
-	public void drain(float value)
+	public void drain(int value)
 	{
 		this.timer -= value;
 		if (this.timer > 0)
@@ -28,8 +23,7 @@ public class Timer
 		}
 		else
 		{
-			this.pastTime = 0;
-			this.ticking = false;
+			this.stop();
 		}
 	}
 	
@@ -40,14 +34,14 @@ public class Timer
 		this.ticking = false;
 	}
 	
-	public float getLeftTime()
+	public int getLeftTime()
 	{
 		return this.timer;
 	}
 	
 	public int getPastTime()
 	{
-		return Math.round(this.pastTime);
+		return this.pastTime;
 	}
 	
 	public boolean isTicking()
