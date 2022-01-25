@@ -64,7 +64,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.19'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.59'
 }
 
 jar {
