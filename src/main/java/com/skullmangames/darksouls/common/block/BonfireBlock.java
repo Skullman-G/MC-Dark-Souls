@@ -16,7 +16,6 @@ import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -55,7 +54,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
+public class BonfireBlock extends Block implements EntityBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final IntegerProperty ESTUS_VOLUME_LEVEL = IntegerProperty.create("estus_volume_level", 1, 4);
@@ -64,7 +63,7 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 	private static final ImmutableList<Vec3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vec3i(0, 0, -1), new Vec3i(-1, 0, 0), new Vec3i(0, 0, 1), new Vec3i(1, 0, 0), new Vec3i(-1, 0, -1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, 1));
 	private static final ImmutableList<Vec3i> RESPAWN_OFFSETS = (new Builder<Vec3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vec3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vec3i::above).iterator()).add(new Vec3i(0, 1, 0)).build();
 	
-	protected static final VoxelShape SHAPE = Stream.of(
+	private static final Optional<VoxelShape> SHAPE = Stream.of(
 			Block.box(2, 0, 2, 14, 1, 14),
 			Block.box(4, 0.5, 4, 12, 2.5, 12),
 			Block.box(6, 2.4, 6, 10, 3.4, 10),
@@ -78,29 +77,28 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 			Block.box(9.5, 0.10000000000000009, 11.5, 10.5, 1.3000000000000003, 14.5),
 			Block.box(12, 1, 7, 14, 1.5, 8),
 			Block.box(3, 1, 8, 6, 3, 9)
-			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
 	
 	public BonfireBlock()
 	{
 		super(BlockBehaviour.Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
-		this.runCalculation(SHAPE);
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)));
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context)
 	{
 		if (context.getLevel().isEmptyBlock(context.getClickedPos().below())) return null;
-		return this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH);
+		return this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1));
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> container) 
 	{
 	    super.createBlockStateDefinition(container);
-		container.add(LIT, ESTUS_VOLUME_LEVEL, ESTUS_HEAL_LEVEL, HORIZONTAL_FACING);
+		container.add(LIT, ESTUS_VOLUME_LEVEL, ESTUS_HEAL_LEVEL);
 	}
 	
 	@Override
@@ -192,8 +190,7 @@ public class BonfireBlock extends BaseHorizontalBlock implements EntityBlock
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos vertex, CollisionContext context)
 	{
-		//return SHAPES.get(state.getValue(HORIZONTAL_FACING));
-		return super.getShape(state, worldIn, vertex, context);
+		return SHAPE.orElse(Shapes.block());
 	}
 	
 	@Override
