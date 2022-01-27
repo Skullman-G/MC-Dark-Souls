@@ -77,7 +77,7 @@ public final class Animations
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
 	// Dagger
-	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")
+	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation[] DAGGER_LIGHT_ATTACK = new AttackAnimation[]
@@ -117,7 +117,7 @@ public final class Animations
 	// Axe
 	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 1.2F, false, null, "111213", "biped/combat/axe_light_attack_1", "biped")
+					new AttackAnimation(0.3F, 0.0F, 0.16F, 0.4F, 1.2F, false, null, "111213", "biped/combat/axe_light_attack_1", "biped")
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.4F, 1.0F, false, null, "111213", "biped/combat/axe_light_attack_2", "biped")

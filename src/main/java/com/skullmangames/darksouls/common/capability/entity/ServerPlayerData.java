@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -29,7 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ServerPlayerData extends PlayerData<ServerPlayer>
+public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquipLoaded
 {
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = Maps.<LivingMotion, StaticAnimation>newHashMap();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = Maps.<LivingMotion, StaticAnimation>newHashMap();
@@ -66,12 +67,24 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
+	public void performDodge()
+	{
+		float e = this.getEncumbrance();
+		System.out.print("\n"+e);
+		this.animator.playAnimation(Animations.BIPED_DODGE, e);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(Animations.BIPED_DODGE, this.orgEntity.getId(), e), this.orgEntity);
+		
+		if (this.isCreativeOrSpectator()) return;
+		this.increaseStamina(-4.0F);
+		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
+	}
+	
 	@Override
 	public void setHumanity(int value)
 	{
 		if (this.humanity == value) return;
 		super.setHumanity(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
+		ModNetworkManager.sendToPlayer(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
 	}
 	
 	@Override
@@ -126,7 +139,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 		
 		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
 		this.animator.playAnimation(disarmAnimation, 0.0F);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(disarmAnimation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(disarmAnimation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 		return true;
 	}
 	
@@ -215,7 +228,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 	public void reserveAnimationSynchronize(StaticAnimation animation)
 	{
 		super.reserveAnimationSynchronize(animation);
-		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
+		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
 	
 	@Override
@@ -233,8 +246,23 @@ public class ServerPlayerData extends PlayerData<ServerPlayer>
 	}
 	
 	@Override
-	public void aboutToDeath()
+	public void aboutToDeath() {}
+
+	@Override
+	public float getEncumbrance()
 	{
-		;
+		return (float)(this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get()) / this.orgEntity.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()));
+	}
+
+	@Override
+	public EquipLoadLevel getEquipLoadLevel()
+	{
+		float e = this.getEncumbrance();
+		
+		if (e <= 0.0F) return EquipLoadLevel.NONE;
+		else if (e <= 0.25F) return EquipLoadLevel.LIGHT;
+		else if (e <= 0.50F) return EquipLoadLevel.MEDIUM;
+		else if (e <= 1.00F) return EquipLoadLevel.HEAVY;
+		else return EquipLoadLevel.OVERENCUMBERED;
 	}
 }

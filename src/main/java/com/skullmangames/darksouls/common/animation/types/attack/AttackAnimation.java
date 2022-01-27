@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
-import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -186,7 +186,7 @@ public class AttackAnimation extends ActionAnimation
 
 		entitydata.currentlyAttackedEntity.clear();
 
-		if (entitydata instanceof BipedMobData && entitydata.isClientSide())
+		if (entitydata instanceof HumanoidData && entitydata.isClientSide())
 		{
 			Mob entity = (Mob) entitydata.getOriginalEntity();
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())

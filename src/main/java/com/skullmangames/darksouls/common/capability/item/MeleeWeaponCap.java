@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -37,8 +38,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 	{
 		super.onHeld(playerdata);
 		AttributeInstance instance = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-		instance.removeModifier(ModAttributes.ATTACK_DAMAGE_MODIFIER);
-		instance.addTransientModifier(ModAttributes.getAttackDamageModifier(this.getDamage()));
+		instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.getIndex()]);
+		instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
 	}
 	
 	public InteractionResult onUse(Player player, InteractionHand hand)

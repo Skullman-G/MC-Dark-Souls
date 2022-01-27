@@ -41,6 +41,14 @@ public class Stats
 					return -0.0065D * (value - 10) * (value - 188);
 				}
 			});
+	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
+			{
+				@Override
+				public double getModifyValue(Player player, int value)
+				{
+					return -0.019D * (value - 10) * (value - 188);
+				}
+			});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
 	public static final ScalingStat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2"));
 	

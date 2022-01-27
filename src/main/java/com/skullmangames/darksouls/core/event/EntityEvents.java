@@ -5,7 +5,8 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -13,6 +14,7 @@ import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -28,6 +30,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -149,10 +153,10 @@ public class EntityEvents
 		{
 			float exTime = 0.2F;
 			targetData.getAnimator().playAnimation(hitAnimation, exTime);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation.getId(), target.getId(), exTime), target);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, target.getId(), exTime), target);
 			if(target instanceof ServerPlayer)
 			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation.getId(), target.getId(), exTime), (ServerPlayer)target);
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, target.getId(), exTime), (ServerPlayer)target);
 			}
 		}
 	}
@@ -199,61 +203,64 @@ public class EntityEvents
 	{
 		if(event.getFrom().getItem() == event.getTo().getItem()) return;
 		
-		LivingData<?> entitycap = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (entitydata == null || entitydata.getOriginalEntity() == null) return;
 		
-		if (entitycap != null && entitycap.getOriginalEntity() != null)
+		if (event.getSlot() == EquipmentSlot.MAINHAND)
 		{
-			if (event.getSlot() == EquipmentSlot.MAINHAND)
+			AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+			AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+			entitydata.cancelUsingItem();
+			
+			if(fromCap != null)
 			{
-				AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-				AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
-				entitycap.cancelUsingItem();
-				
-				if(fromCap != null)
-				{
-					event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitycap));
-				}
-				
-				if(toCap != null)
-				{
-					event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitycap));
-				}
-				
-				if (entitycap instanceof ServerPlayerData)
-				{
-					ServerPlayerData playercap = (ServerPlayerData)entitycap;
-					playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.MAIN_HAND);
-				}
+				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitydata));
 			}
-			else if (event.getSlot() == EquipmentSlot.OFFHAND)
+			
+			if(toCap != null)
 			{
-				entitycap.cancelUsingItem();
-				
-				if (entitycap instanceof ServerPlayerData)
-				{
-					ServerPlayerData playercap = (ServerPlayerData)entitycap;
-					ItemCapability toCap = event.getTo().isEmpty() ? null : entitycap.getHeldItemCapability(InteractionHand.MAIN_HAND);
-					playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.OFF_HAND);
-				}
+				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitydata));
 			}
-			else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
+			
+			if (entitydata instanceof ServerPlayerData)
 			{
-				AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-				AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
-				
-				if(fromCap != null)
-				{
-					event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitycap));
-				}
-				
-				if(toCap != null)
-				{
-					event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitycap));
-				}
-				
-				LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				entitydata.onArmorSlotChanged(fromCap, toCap, event.getSlot());
+				ServerPlayerData playercap = (ServerPlayerData)entitydata;
+				playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.MAIN_HAND);
 			}
+		}
+		else if (event.getSlot() == EquipmentSlot.OFFHAND)
+		{
+			entitydata.cancelUsingItem();
+			
+			if (entitydata instanceof ServerPlayerData)
+			{
+				ServerPlayerData playercap = (ServerPlayerData)entitydata;
+				ItemCapability toCap = event.getTo().isEmpty() ? null : entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+				playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.OFF_HAND);
+			}
+		}
+		else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
+		{
+			AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+			AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+			
+			if(fromCap != null)
+			{
+				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitydata));
+			}
+			
+			if(toCap != null)
+			{
+				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitydata));
+			}
+			entitydata.onArmorSlotChanged(fromCap, toCap, event.getSlot());
+		}
+		
+		if (entitydata instanceof IEquipLoaded)
+		{
+			AttributeInstance speed = entitydata.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
+			speed.removeModifier(ModAttributes.MOVEMENT_SPEED_MODIFIER_UUID);
+			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((IEquipLoaded)entitydata).getEquipLoadLevel()));
 		}
 	}
 	
@@ -290,11 +297,11 @@ public class EntityEvents
 		EntityData<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
 		Level world = event.getWorldObj();
-		if (!world.isClientSide && mountEntity instanceof BipedMobData && mountEntity.getOriginalEntity() != null)
+		if (!world.isClientSide && mountEntity instanceof HumanoidData && mountEntity.getOriginalEntity() != null)
 		{
 			if (event.getEntityBeingMounted() instanceof Mob)
 			{
-				((BipedMobData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
+				((HumanoidData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
 			}
 		}
 	}

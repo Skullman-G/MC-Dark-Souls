@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 
-public class HollowData extends BipedMobData<HollowEntity>
+public class HollowData extends HumanoidData<HollowEntity>
 {
 	public HollowData()
 	{

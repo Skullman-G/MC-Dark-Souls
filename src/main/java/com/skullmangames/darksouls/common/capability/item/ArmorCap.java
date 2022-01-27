@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
-import java.util.UUID;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -19,7 +17,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
@@ -29,8 +26,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ArmorCap extends AttributeItemCap
 {
-	protected static final UUID[] ARMOR_MODIFIERS = new UUID[] {UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
-	
 	private final EquipmentSlot equipmentSlot;
 	
 	protected float standardDef;
@@ -39,6 +34,7 @@ public class ArmorCap extends AttributeItemCap
 	protected float thrustDef;
 	
 	protected float poise;
+	protected float weight;
 	
 	public ArmorCap(Item item)
 	{
@@ -65,12 +61,11 @@ public class ArmorCap extends AttributeItemCap
 		itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
 		
-		if(this.poise > 0.0F)
-		{
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
-		}
+		itemTooltip.add(new TextComponent(""));
+		itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
+		itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
+				.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
 	}
 	
 	@Override
@@ -80,12 +75,13 @@ public class ArmorCap extends AttributeItemCap
 		
 		if (entitydata != null && equipmentSlot == this.equipmentSlot)
 		{
-			map.put(ModAttributes.POISE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.poise, Operation.ADDITION));
+			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.poise));
+			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.weight));
 			
-			map.put(ModAttributes.STANDARD_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.standardDef, Operation.ADDITION));
-			map.put(ModAttributes.STRIKE_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.strikeDef, Operation.ADDITION));
-			map.put(ModAttributes.SLASH_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.slashDef, Operation.ADDITION));
-			map.put(ModAttributes.THRUST_DEFENSE.get(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.thrustDef, Operation.ADDITION));
+			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.standardDef));
+			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.strikeDef));
+			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.slashDef));
+			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.thrustDef));
 		}
 		
         return map;

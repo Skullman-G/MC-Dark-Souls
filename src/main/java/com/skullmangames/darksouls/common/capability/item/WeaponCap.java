@@ -19,9 +19,12 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +37,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
 	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
 	private final float poiseDamage;
+	private final float weight;
 
 	public WeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
 	{
@@ -43,13 +47,15 @@ public abstract class WeaponCap extends AttributeItemCap
 				.put(Stats.STRENGTH, new Pair<Integer, Scaling>(MathUtils.clamp(requiredStrength, 0, 99), strengthScaling))
 				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(requiredDex, 0, 99), dexScaling)).build();
 		this.poiseDamage = poiseDamage;
+		this.weight = Math.max(((float)requiredStrength - 4F) / 2F, 0F);
 		this.registerAttribute();
 	}
 	
 	@Override
 	protected void registerAttribute()
 	{
-		this.addAttribute(ModAttributes.POISE_DAMAGE, ModAttributes.getPoiseDamageModifier(this.poiseDamage));
+		this.addAttribute(ModAttributes.POISE_DAMAGE, ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.poiseDamage));
+		this.addAttribute(ModAttributes.EQUIP_LOAD, ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.weight));
 	}
 	
 	public Scaling getScaling(Stat stat)
@@ -112,6 +118,10 @@ public abstract class WeaponCap extends AttributeItemCap
 					+ this.statInfo.get(Stats.STRENGTH).getSecond()));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
 					+ this.statInfo.get(Stats.DEXTERITY).getSecond()));
+			
+			itemTooltip.add(new TextComponent(""));
+			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
 		}
 	}
 

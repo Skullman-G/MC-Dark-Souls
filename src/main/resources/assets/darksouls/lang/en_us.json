@@ -183,6 +183,7 @@
 	"stat.darksouls.endurance": "Endurance",
 	"stat.darksouls.strength": "Strength",
 	"stat.darksouls.dexterity": "Dexterity",
+	"stat.darksouls.vitality": "Vitality",
 	
 	"attribute.darksouls.max_stamina": "Max Stamina",
 	"attribute.darksouls.poise": "Poise",
@@ -190,5 +191,8 @@
 	"attribute.darksouls.standard_defense": "Standard Defense",
 	"attribute.darksouls.strike_defense": "Strike Defense",
 	"attribute.darksouls.slash_defense": "Slash Defense",
-	"attribute.darksouls.thrust_defense": "Thrust Defense"
+	"attribute.darksouls.thrust_defense": "Thrust Defense",
+	"attribute.darksouls.max_equip_load": "Max Equip Load",
+	"attribute.darksouls.equip_load": "Equip Load",
+	"attribute.darksouls.weight": "Weight"
 }

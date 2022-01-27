@@ -21,9 +21,9 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.Difficulty;
 
-public abstract class BipedMobData<T extends Mob> extends MobData<T>
+public abstract class HumanoidData<T extends Mob> extends MobData<T>
 {
-	public BipedMobData(Faction faction)
+	public HumanoidData(Faction faction)
 	{
 		super(faction);
 	}

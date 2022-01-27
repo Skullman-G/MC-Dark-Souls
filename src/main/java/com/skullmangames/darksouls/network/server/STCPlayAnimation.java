@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -24,6 +25,11 @@ public class STCPlayAnimation
 		this.entityId = 0;
 		this.modifyTime = 0;
 		this.mixLayer = false;
+	}
+	
+	public STCPlayAnimation(StaticAnimation animation, int entityId, float modifyTime)
+	{
+		this(animation.getId(), entityId, modifyTime, false);
 	}
 	
 	public STCPlayAnimation(int animation, int entityId, float modifyTime)

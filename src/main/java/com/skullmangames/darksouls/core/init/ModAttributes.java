@@ -3,11 +3,13 @@ package com.skullmangames.darksouls.core.init;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.HollowEntity;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,6 +28,8 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> POISE = registerRangedAttribute("poise", 0.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> POISE_DAMAGE = registerRangedAttribute("poise_damage", 1.0D, 1.0D, 1024.0D);
+	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 50.0D, 50.0D, 150.0D);
+	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 150.0D);
 	
 	// Defense
 	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 0.99D);
@@ -33,10 +37,16 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 0.99D);
 	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 0.99D);
 	
-	// UUID
-	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-	public static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
-	public static final UUID POISE_DAMAGE_MODIFIER = UUID.fromString("02787320-87ac-4c4f-b057-cb79a2660041");
+	public static final UUID[] EUIPMENT_MODIFIER_UUIDS = new UUID[]
+	{
+			UUID.fromString("02787320-87ac-4c4f-b057-cb79a2660041"),
+			UUID.fromString("f16541b7-8a55-4a2b-ad65-0c21a3a12028"),
+			UUID.fromString("683ac74c-a751-497e-abfe-e0af614bef46"),
+			UUID.fromString("f3d4a8bb-853c-407f-9a02-0bf11c284466"),
+			UUID.fromString("26c0477e-664b-44cd-9108-140699ad6807"),
+			UUID.fromString("868429ef-4804-4cb8-b253-c89ac4af6c73")
+	};
+	public static final UUID MOVEMENT_SPEED_MODIFIER_UUID = UUID.fromString("1cdc2c63-da86-47bb-a6ea-ff0a06dab01e");
     
 	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
 	{
@@ -92,24 +102,37 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
 	}
     
-    private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
+    public static void withEquipLoad(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
     	general(entityType, event);
+    	event.add(entityType, ModAttributes.EQUIP_LOAD.get());
+    	event.add(entityType, ModAttributes.MAX_EQUIP_LOAD.get());
+    }
+    
+    private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
+    {
+    	withEquipLoad(entityType, event);
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
-
-	public static AttributeModifier getAttackDamageModifier(double value)
+	
+	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)
 	{
-		return new AttributeModifier(ATTACK_DAMAGE_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
-	}
-
-	public static AttributeModifier getAttackSpeedModifier(double value)
-	{
-		return new AttributeModifier(ATTACK_SPEED_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.getIndex()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 	
-	public static AttributeModifier getPoiseDamageModifier(double value)
+	public static AttributeModifier getMovementSpeedModifier(EquipLoadLevel level)
 	{
-		return new AttributeModifier(POISE_DAMAGE_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		double value = 1.0F;
+		
+		switch (level)
+		{
+			default: value = 0.0F; break;
+			case LIGHT: value = -0.1F; break;
+			case MEDIUM: value = -0.2F; break;
+			case HEAVY: value = -0.35F; break;
+			case OVERENCUMBERED: value = -0.5F; break;
+		}
+		
+		return new AttributeModifier(MOVEMENT_SPEED_MODIFIER_UUID, DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	}
 }

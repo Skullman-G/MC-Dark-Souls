@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSHuman;
 import com.skullmangames.darksouls.network.client.CTSHumanity;
+import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSSouls;
 import com.skullmangames.darksouls.network.client.CTSStamina;
@@ -107,12 +108,7 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	public void performDodge()
 	{
 		if (this.isFirstPerson()) return;
-		this.animator.playAnimation(Animations.BIPED_DODGE, 0);
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(Animations.BIPED_DODGE, 0, false, false));
-		
-		if (this.isCreativeOrSpectator()) return;
-		this.increaseStamina(-4.0F);
-		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
+		ModNetworkManager.sendToServer(new CTSPerformDodge());
 	}
 	
 	public void performAttack(AttackType type)

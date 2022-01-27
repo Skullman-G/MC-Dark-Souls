@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
 {
 	private final T entity;
-	private final BipedMobData<?> entitydata;
+	private final HumanoidData<?> entitydata;
 	private LivingEntity chasingTarget;
     private final double moveSpeedAmp;
     private int attackCooldown;
@@ -28,7 +28,7 @@ public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
     private int attackTime = -1;
     private int seeTime;
 
-    public ArcherGoal(BipedMobData<?> entitydata, T p_i47515_1_, double p_i47515_2_, int p_i47515_4_, float p_i47515_5_)
+    public ArcherGoal(HumanoidData<?> entitydata, T p_i47515_1_, double p_i47515_2_, int p_i47515_4_, float p_i47515_5_)
     {
         this.entity = p_i47515_1_;
         this.entitydata = entitydata;
