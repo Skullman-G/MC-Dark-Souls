@@ -124,6 +124,8 @@
 	"item.great_hammer.smash.sub": "Great Hammer hits the ground too hard",
 	"item.fist.swing": "Fist swing",
 	"item.fist.swing.sub": "Fist swings",
+	"item.axe.swing": "Axe swing",
+	"item.axe.swing.sub": "Axe swings",
 	
 	"entity.hollow.ambient": "Hollow ambient",
 	"entity.hollow.ambient.sub": "Hollow groans",

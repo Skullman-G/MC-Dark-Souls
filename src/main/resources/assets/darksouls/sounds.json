@@ -250,5 +250,15 @@
 		[
 			{ "name": "darksouls:items/fist/swing", "stream": true }
 		]
+	},
+	
+	"item.axe.swing":
+	{
+		"category": "item",
+		"subtitle": "item.axe.swing.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/axe/swing", "stream": true }
+		]
 	}
 }

@@ -115,16 +115,25 @@ public final class Animations
 			};
 	
 	// Axe
+	public static final AttackAnimation AXE_HEAVY_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.4F, 0.72F, 1.2F, false, "111213", "biped/combat/axe_heavy_attack", "biped")
+			.registerSound(ModSoundEvents.AXE_SWING, 0.4F, true)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.3F, 0.0F, 0.16F, 0.4F, 1.2F, false, null, "111213", "biped/combat/axe_light_attack_1", "biped")
+					new AttackAnimation(0.3F, 0.0F, 0.16F, 0.4F, 1.2F, false, "111213", "biped/combat/axe_light_attack_1", "biped")
+						.registerSound(ModSoundEvents.AXE_SWING, 0.16F, true)
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
-					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.4F, 1.0F, false, null, "111213", "biped/combat/axe_light_attack_2", "biped")
+					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.4F, 1.0F, false, "111213", "biped/combat/axe_light_attack_2", "biped")
+						.registerSound(ModSoundEvents.AXE_SWING, 0.12F, true)
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 			};
-	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.25F, 0.08F, 0.4F, 0.46F, 0.9F, false, null, "111213", "biped/combat/axe_dash", "biped");
+	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.28F, 0.6F, 1.2F, false, "111213", "biped/combat/axe_dash_attack", "biped")
+			.registerSound(ModSoundEvents.AXE_SWING, 0.3F, true)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
 	// Fist
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
