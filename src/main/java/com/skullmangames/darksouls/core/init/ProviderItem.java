@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.DaggerCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
+import com.skullmangames.darksouls.common.capability.item.HammerCap;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
@@ -77,6 +78,13 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new AxeCap(Items.DIAMOND_AXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
 		
+		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, Scaling.C, Scaling.D));
+		putCap(new HammerCap(Items.IRON_PICKAXE, 10, 10, Scaling.C, Scaling.D));
+		putCap(new HammerCap(Items.GOLDEN_PICKAXE, 8, 10, Scaling.C, Scaling.D));
+		putCap(new HammerCap(Items.DIAMOND_PICKAXE, 15, 15, Scaling.C, Scaling.D));
+		putCap(new HammerCap(Items.NETHERITE_PICKAXE, 15, 15, Scaling.C, Scaling.D));
+		
 		putCap(new SwordCap(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
@@ -89,10 +97,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCap::new);
-		/*CAPABILITY_BY_CLASS.put(PickaxeItem.class, PickaxeCapability::new);
-		CAPABILITY_BY_CLASS.put(ShovelItem.class, ShovelCapability::new);
-		CAPABILITY_BY_CLASS.put(HoeItem.class, HoeCapability::new);
-		CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
+		/*CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
 		CAPABILITY_BY_CLASS.put(ShieldItem.class, ShieldCapability::new);
 		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/

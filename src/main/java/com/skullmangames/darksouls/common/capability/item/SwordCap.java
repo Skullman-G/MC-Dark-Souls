@@ -29,19 +29,19 @@ public class SwordCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation getHeavyAttack()
+	public AttackAnimation getHeavyAttack()
 	{
 		return Animations.STRAIGHT_SWORD_HEAVY_ATTACK;
 	}
 	
 	@Override
-	protected AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getLightAttack()
 	{
 		return Animations.STRAIGHT_SWORD_LIGHT_ATTACK;
 	}
 	
 	@Override
-	protected AttackAnimation getDashAttack()
+	public AttackAnimation getDashAttack()
 	{
 		return Animations.STRAIGHT_SWORD_DASH_ATTACK;
 	}

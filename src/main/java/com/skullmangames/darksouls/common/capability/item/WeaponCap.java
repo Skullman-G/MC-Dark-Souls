@@ -206,7 +206,7 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, HOE, PICKAXE, SHOVEL, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER
+		NONE_WEAON, AXE, FIST, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER, HAMMER
 	}
 
 	public enum HandProperty

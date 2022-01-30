@@ -15,19 +15,19 @@ public class AxeCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getLightAttack()
 	{
 		return Animations.AXE_LIGHT_ATTACK;
 	}
 	
 	@Override
-	protected AttackAnimation getHeavyAttack()
+	public AttackAnimation getHeavyAttack()
 	{
 		return Animations.AXE_HEAVY_ATTACK;
 	}
 	
 	@Override
-	protected AttackAnimation getDashAttack()
+	public AttackAnimation getDashAttack()
 	{
 		return Animations.AXE_DASH_ATTACK;
 	}

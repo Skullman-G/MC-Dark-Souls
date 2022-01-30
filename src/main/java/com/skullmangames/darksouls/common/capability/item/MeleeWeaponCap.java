@@ -55,7 +55,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 				: 0.0F;
 	}
 	
-	protected AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getLightAttack()
 	{
 		return null;
 	}
@@ -65,7 +65,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 		return true;
 	}
 
-	protected AttackAnimation getDashAttack()
+	public AttackAnimation getDashAttack()
 	{
 		return null;
 	}
@@ -111,7 +111,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 		return null;
 	}
 
-	protected AttackAnimation getHeavyAttack()
+	public AttackAnimation getHeavyAttack()
 	{
 		return null;
 	}

@@ -135,6 +135,23 @@ public final class Animations
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STANDARD)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
+	// Hammer
+	public static final AttackAnimation HAMMER_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.4F, false, "111213", "biped/combat/hammer_dash_attack", "biped")
+			.registerSound(ModSoundEvents.AXE_SWING, 0.32F, true)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	public static final AttackAnimation HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.52F, 1.4F, false, "111213", "biped/combat/hammer_heavy_attack", "biped")
+			.registerSound(ModSoundEvents.AXE_SWING, 0.32F, true)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	public static final AttackAnimation[] HAMMER_LIGHT_ATTACK = new AttackAnimation[]
+			{
+					new AttackAnimation(0.2F, 0.0F, 0.28F, 0.52F, 1.2F, false, "111213", "biped/combat/hammer_light_attack", "biped")
+						.registerSound(ModSoundEvents.AXE_SWING, 0.28F, true)
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			};
+	
 	// Fist
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
 			{

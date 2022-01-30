@@ -12,7 +12,7 @@ public class ShieldCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getLightAttack()
 	{
 		return Animations.SHIELD_LIGHT_ATTACK;
 	}

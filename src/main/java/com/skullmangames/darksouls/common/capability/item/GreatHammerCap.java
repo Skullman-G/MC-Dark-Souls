@@ -30,7 +30,7 @@ public class GreatHammerCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getLightAttack()
 	{
 		return Animations.GREAT_HAMMER_LIGHT_ATTACK;
 	}
@@ -42,7 +42,7 @@ public class GreatHammerCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation getHeavyAttack()
+	public AttackAnimation getHeavyAttack()
 	{
 		return Animations.GREAT_HAMMER_HEAVY_ATTACK;
 	}
