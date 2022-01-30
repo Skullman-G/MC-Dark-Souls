@@ -6,7 +6,8 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
-import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.QuestEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -56,8 +57,9 @@ public class ModAttributes
 	public static void createAttributeMap(EntityAttributeCreationEvent event)
 	{
 		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
-		event.put(ModEntities.HOLLOW.get(), HollowEntity.createAttributes().build());
+		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
 		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
+		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -88,6 +90,8 @@ public class ModAttributes
 		general(EntityType.ZOMBIE, event);
 		general(EntityType.ZOMBIE_VILLAGER, event);
 		general(EntityType.ZOMBIFIED_PIGLIN, event);
+		
+		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		
 		player(EntityType.PLAYER, event);
 	}

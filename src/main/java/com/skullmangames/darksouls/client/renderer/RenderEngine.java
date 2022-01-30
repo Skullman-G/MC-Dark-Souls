@@ -21,12 +21,14 @@ import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.SimpleTexturedBipedRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidData;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
+import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -103,7 +105,8 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
-		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleTexturedBipedRenderer<HollowEntity, HollowData>(new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png")));
+		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowData>("textures/entities/hollow/hollow.png"));
+		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidData<CrestfallenWarrior>>("textures/entities/crestfallen_warrior/crestfallen_warrior.png"));
 		this.entityRendererMap.put(ModEntities.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
 		
 		RenderBow bowRenderer = new RenderBow();

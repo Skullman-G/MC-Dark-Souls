@@ -17,10 +17,16 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 	}
 
 	@Override
-	public void handleSetTitles(Component text, int fadein, int stay, int fadeout)
+	public void setTitle(Component text, int fadein, int stay, int fadeout)
 	{
 		this.minecraft.gui.setTimes(fadein, stay, fadeout);
 		this.minecraft.gui.setTitle(text);
+	}
+	
+	@Override
+	public void setOverlayMessage(Component text)
+	{
+		this.minecraft.gui.setOverlayMessage(text, false);
 	}
 
 	@Override

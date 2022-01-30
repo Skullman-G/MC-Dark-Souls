@@ -20,6 +20,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
@@ -32,9 +33,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.npc.AbstractVillager;
 
-public class HollowEntity extends PathfinderMob implements RangedAttackMob
+public class Hollow extends PathfinderMob implements RangedAttackMob
 {
-	public HollowEntity(EntityType<? extends PathfinderMob> p_i48576_1_, Level p_i48576_2_)
+	public Hollow(EntityType<? extends PathfinderMob> p_i48576_1_, Level p_i48576_2_)
 	{
 		super(p_i48576_1_, p_i48576_2_);
 	}
@@ -49,7 +50,7 @@ public class HollowEntity extends PathfinderMob implements RangedAttackMob
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 	
-	public static boolean checkSpawnRules(EntityType<HollowEntity> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
+	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
@@ -57,15 +58,15 @@ public class HollowEntity extends PathfinderMob implements RangedAttackMob
 	@Override
 	protected void registerGoals()
 	{
-	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Hollow.class));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 	}
 	
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_)
 	{
-		if (this.getMainHandItem().getItem() != Items.AIR) return;
-		super.populateDefaultEquipmentSlots(p_180481_1_);
+		if (!this.getMainHandItem().isEmpty()) return;
 		
 		Random random = this.level.random;
 		ItemStack item;
@@ -89,9 +90,9 @@ public class HollowEntity extends PathfinderMob implements RangedAttackMob
 	}
 	
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, SpawnGroupData data, CompoundTag nbt)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData data, CompoundTag nbt)
 	{
-		data = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, data, nbt);
+		data = super.finalizeSpawn(level, difficulty, type, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
 		
 		return data;

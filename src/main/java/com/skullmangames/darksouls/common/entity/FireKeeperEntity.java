@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
@@ -10,7 +9,6 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -95,7 +93,6 @@ public class FireKeeperEntity extends QuestEntity
 		nbt.putInt("LinkedBonfireY", this.linkedBonfirePos.getY());
 		nbt.putInt("LinkedBonfireZ", this.linkedBonfirePos.getZ());
 		nbt.putBoolean("HasLinkedBonfire", this.hasLinkedBonfire);
-		nbt.putString("QuestPath", this.getCurrentQuestPath());
 	}
 
 	@Override
@@ -104,7 +101,6 @@ public class FireKeeperEntity extends QuestEntity
 		super.readAdditionalSaveData(nbt);
 		this.linkedBonfirePos = new BlockPos(nbt.getInt("LinkedBonfireX"), nbt.getInt("LinkedBonfireY"), nbt.getInt("LinkedBonfireZ"));
 		this.hasLinkedBonfire = nbt.getBoolean("HasLinkedBonfire");
-		this.setCurrentQuestPath(nbt.getString("QuestPath"));
 	}
 
 	@Override
@@ -152,24 +148,26 @@ public class FireKeeperEntity extends QuestEntity
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		if (player.level.isClientSide)
+		if (player.level.isClientSide && !this.chatTimer.isTicking())
 		{
 			switch (this.getCurrentQuestPath())
 			{
-				case "1":
-					player.sendMessage(new TranslatableComponent("dialogue.darksouls.fire_keeper.introduction"),  Util.NIL_UUID);
-					this.setCurrentQuestPath("2");
+				case "0":
+					String[] sentences = new TranslatableComponent("dialogue.darksouls.fire_keeper.0").getString().split("%");
+					this.chatTimer.start(60, (time) -> this.setCurrentQuestPath("1"), sentences);
 					break;
 		
-				case "2":
+				case "1":
 					if (player.getInventory().contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
 					{
-						player.sendMessage(new TranslatableComponent("dialogie.darksouls.fire_keeper.estus_shard"),  Util.NIL_UUID);
-					} else
-					{
-						player.sendMessage(new TranslatableComponent("dialogie.darksouls.fire_keeper.general"),  Util.NIL_UUID);
+						sentences = new TranslatableComponent("dialogue.darksouls.fire_keeper.1.estus_shard").getString().split("%");
 					}
-					if (ModNetworkManager.connection != null) ModNetworkManager.connection.openFireKeeperScreen(this.getId());
+					else
+					{
+						sentences = new TranslatableComponent("dialogue.darksouls.fire_keeper.1").getString().split("%");
+					}
+					
+					this.chatTimer.start(60, (time) -> ModNetworkManager.connection.openFireKeeperScreen(this.getId()), sentences);
 					break;
 			}
 		}
@@ -189,9 +187,8 @@ public class FireKeeperEntity extends QuestEntity
 	@Override
 	public List<String> getQuestPaths()
 	{
-		List<String> list = new ArrayList<String>();
+		List<String> list = super.getQuestPaths();
 		list.add("1");
-		list.add("2");
 		return list;
 	}
 

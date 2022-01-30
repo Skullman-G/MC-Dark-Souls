@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidData;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.player.RemotePlayer;
@@ -25,18 +26,19 @@ import net.minecraftforge.common.util.NonNullSupplier;
 
 public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<EntityData<?>>
 {
-	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>> capabilityMap = new HashMap<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>>();
+	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>> CAPABILITIES = new HashMap<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>>();
 	
 	public static void makeMap()
 	{
-		capabilityMap.put(EntityType.PLAYER, (entityIn) -> ServerPlayerData::new);
-		capabilityMap.put(ModEntities.HOLLOW.get(), (entityIn) -> HollowData::new);
-		capabilityMap.put(ModEntities.ASYLUM_DEMON.get(), (entityIn) -> AsylumDemonData::new);
+		CAPABILITIES.put(EntityType.PLAYER, (entity) -> ServerPlayerData::new);
+		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowData::new);
+		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonData::new);
+		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidData::new);
 	}
 	
 	public static void makeMapClient()
 	{
-		capabilityMap.put(EntityType.PLAYER, (entityIn) ->
+		CAPABILITIES.put(EntityType.PLAYER, (entityIn) ->
 		{
 			if(entityIn instanceof LocalPlayer)
 			{
@@ -62,9 +64,9 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	
 	public ProviderEntity(Entity entity)
 	{
-		if(capabilityMap.containsKey(entity.getType()))
+		if(CAPABILITIES.containsKey(entity.getType()))
 		{
-			capability = capabilityMap.get(entity.getType()).apply(entity).get();
+			capability = CAPABILITIES.get(entity.getType()).apply(entity).get();
 		}
 	}
 	

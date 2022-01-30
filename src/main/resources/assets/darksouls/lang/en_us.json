@@ -38,8 +38,7 @@
 	"entity.darksouls.hollow": "Hollow",
 	"entity.darksouls.soul": "Soul",
 	"entity.darksouls.asylum_demon": "Asylum Demon",
-	
-	"effect.darksouls.undead_curse": "Undead Curse",
+	"entity.darksouls.crestfallen_warrior": "Crestfallen Warrior",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -161,9 +160,10 @@
 	
 	"itemGroup.soulstab": "Souls",
 	
-	"dialogue.darksouls.fire_keeper.introduction": "Welcome to my bonfire, Accursed Undead. I am a Fire Keeper.",
-	"dialogie.darksouls.fire_keeper.estus_shard": "Is that a shard you've found? Here, let me see it. So that I may help you.",
-	"dialogie.darksouls.fire_keeper.general": "Speak thine heart's desire. So that I may help you.",
+	"dialogue.darksouls.fire_keeper.0": "Welcome to my bonfire, Accursed Undead.%I am a Fire Keeper.",
+	"dialogue.darksouls.fire_keeper.1": "Speak thine heart's desire.%So that I may help you.",
+	"dialogue.darksouls.fire_keeper.1.estus_shard": "Is that a shard you've found?%Here, let me see it.%So that I may help you.",
+	"dialogue.darksouls.crestfallen_warrior.0": "Well, what do we have here?%You must be a new arrival.%Let me guess. Fate of the Undead, right?%Well, you're not the first.%But there's no salvation here.%You'd have done better to rot in the Undead Asylum...%But, too late now.",
 	
 	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
 	

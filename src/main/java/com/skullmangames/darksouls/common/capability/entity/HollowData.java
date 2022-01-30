@@ -1,34 +1,26 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.Faction;
-import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 
-public class HollowData extends HumanoidData<HollowEntity>
+public class HollowData extends HumanoidData<Hollow>
 {
 	public HollowData()
 	{
 		super(Faction.UNDEAD);
-	}
-	
-	@Override
-	public void onEntityJoinWorld(HollowEntity entityIn)
-	{
-		super.onEntityJoinWorld(entityIn);
 	}
 	
 	@Override
@@ -103,12 +95,6 @@ public class HollowData extends HumanoidData<HollowEntity>
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
 				.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK)));
-	}
-	
-	@Override
-	public <M extends Model>M getEntityModel(Models<M> modelDB)
-	{
-		return modelDB.ENTITY_BIPED_64_32_TEX;
 	}
 
 	@Override

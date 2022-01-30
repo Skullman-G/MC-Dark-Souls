@@ -29,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedCrossbowAttackGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class MobData<T extends Mob> extends LivingData<T>
@@ -92,19 +93,20 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
 	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
 	
 	@Override
-	public boolean isTeam(Entity entityIn)
+	public boolean isTeam(Entity entity)
 	{
-		EntityData<?> cap = entityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (entity instanceof Projectile) return false;
+		EntityData<?> cap = entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		if(cap != null && cap instanceof MobData)
 		{
 			if (((MobData<?>) cap).mobFaction.equals(this.mobFaction))
 			{
 				Optional<LivingEntity> opt = Optional.ofNullable(this.getTarget());
-				return opt.map((attackTarget)->!attackTarget.equals(entityIn)).orElse(true);
+				return opt.map((attackTarget)->!attackTarget.equals(entity)).orElse(true);
 			}
 		}
 		
-		return super.isTeam(entityIn);
+		return super.isTeam(entity);
 	}
 	
 	@Override

@@ -124,6 +124,6 @@ public class AsylumDemonEntity extends PathfinderMob
 	{
 	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowEntity.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 }

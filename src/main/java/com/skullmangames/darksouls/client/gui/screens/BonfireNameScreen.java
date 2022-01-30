@@ -92,7 +92,7 @@ public class BonfireNameScreen extends Screen
 	    BlockState state = this.tileentity.getBlockState();
 	    if (!state.getValue(BonfireBlock.LIT))
 	    {
-	    	ModNetworkManager.connection.handleSetTitles(new TranslatableComponent("gui.darksouls.bonfire_lit_message"), 10, 50, 10);
+	    	ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.bonfire_lit_message"), 10, 50, 10);
 	    	BlockPos pos = this.tileentity.getBlockPos();
 	    	this.minecraft.player.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), ModSoundEvents.GENERIC_HUMAN_FORM.get(), SoundSource.AMBIENT, 1.0F, 0.8F, false);
 	    }

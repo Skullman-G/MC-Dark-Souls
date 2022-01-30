@@ -30,7 +30,7 @@ import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.HollowRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
 import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
@@ -165,7 +165,8 @@ public class DarkSouls
 		ModModelLayers.call();
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		EntityRenderers.register(ModEntities.HOLLOW.get(), HollowRenderer::new); // Should find a better solution
+		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better solution
+		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 

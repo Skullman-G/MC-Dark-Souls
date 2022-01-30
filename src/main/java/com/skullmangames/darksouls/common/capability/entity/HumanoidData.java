@@ -7,7 +7,9 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
 import net.minecraft.world.entity.Entity;
@@ -61,15 +63,12 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		animatorClient.mixLayerLeft.setJointMask("Root", "Torso");
 	}
 
-	public void setAIAsUnarmed()
-	{
-
-	}
+	public void setAIAsUnarmed() {}
 
 	public void setAIAsArmed()
 	{
-		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 				.addAttack(new AttackInstance(1, 1.0F, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)));
 	}
 	
@@ -150,5 +149,11 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 					return null;
 			}
 		}
+	}
+	
+	@Override
+	public <M extends Model>M getEntityModel(Models<M> modelDB)
+	{
+		return modelDB.ENTITY_BIPED_64_32_TEX;
 	}
 }

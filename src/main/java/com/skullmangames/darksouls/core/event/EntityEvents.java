@@ -36,6 +36,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.InteractionHand;
@@ -75,6 +76,7 @@ public class EntityEvents
 			return;
 		}
 		
+		if (event.getEntity() instanceof Projectile) return;
 		@SuppressWarnings("rawtypes")
 		EntityData entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entitydata != null && event.getEntity().tickCount == 0)
@@ -140,7 +142,7 @@ public class EntityEvents
 			Attribute defAttribute = damageType.getDefenseAttribute();
 			amount -= target.getAttribute(defAttribute) != null ? target.getAttributeValue(defAttribute) : 0.0F;
 		}
-		extSource.setAmount(amount);
+		if (extSource != null) extSource.setAmount(amount);
 		
 		if (targetData == null || targetData.blockingAttack(extSource)) return;
 		

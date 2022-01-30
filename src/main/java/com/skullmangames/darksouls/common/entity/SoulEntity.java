@@ -22,7 +22,12 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 {
 	private Player followingEntity;
 	private int value;
-
+	
+	public SoulEntity(EntityType<? extends SoulEntity> type, Level level)
+	{
+		super(type, level);
+	}
+	
 	public SoulEntity(Level level, double posX, double posY, double posZ, int value)
 	{
 		this(ModEntities.SOUL.get(), level);
@@ -36,11 +41,6 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 		this(ModEntities.SOUL.get(), level);
 		this.setPos(posX, posY, posZ);
 		this.yRot = (float) (this.random.nextDouble() * 360.0D);
-	}
-
-	public SoulEntity(EntityType<? extends SoulEntity> type, Level level)
-	{
-		super(type, level);
 	}
 
 	@Override
