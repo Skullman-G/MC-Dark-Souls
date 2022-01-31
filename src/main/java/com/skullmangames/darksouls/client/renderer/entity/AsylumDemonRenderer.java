@@ -6,14 +6,14 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
-import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.AsylumDemon;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, AsylumDemonData>
+public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemon, AsylumDemonData>
 {
 	private final ResourceLocation textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
 	
@@ -23,13 +23,13 @@ public class AsylumDemonRenderer extends ArmatureRenderer<AsylumDemonEntity, Asy
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(AsylumDemonEntity entityIn)
+	protected ResourceLocation getEntityTexture(AsylumDemon entityIn)
 	{
 		return this.textureLocation;
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, AsylumDemonEntity entityIn, AsylumDemonData entitydata, float partialTicks)
+	protected void applyRotations(PoseStack matStack, Armature armature, AsylumDemon entityIn, AsylumDemonData entitydata, float partialTicks)
 	{
 		float scale = 1.4F;
 		matStack.scale(scale, scale, scale);

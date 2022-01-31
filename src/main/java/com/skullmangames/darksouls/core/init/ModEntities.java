@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.Hollow;
@@ -36,8 +36,8 @@ public class ModEntities
 					.clientTrackingRange(6)
 					.updateInterval(20));
 
-	public static final RegistryObject<EntityType<AsylumDemonEntity>> ASYLUM_DEMON = register("asylum_demon",
-			EntityType.Builder.<AsylumDemonEntity>of(AsylumDemonEntity::new, MobCategory.MONSTER)
+	public static final RegistryObject<EntityType<AsylumDemon>> ASYLUM_DEMON = register("asylum_demon",
+			EntityType.Builder.<AsylumDemon>of(AsylumDemon::new, MobCategory.MONSTER)
 					.sized(3.5F, 7.7F)
 					.canSpawnFarFromPlayer());
 	

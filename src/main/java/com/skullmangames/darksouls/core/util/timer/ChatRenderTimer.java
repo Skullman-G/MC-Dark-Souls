@@ -36,6 +36,12 @@ public class ChatRenderTimer
 		ModNetworkManager.connection.setOverlayMessage(new TextComponent(sentences[this.sentence++]));
 	}
 	
+	public void stop()
+	{
+		this.time = 0;
+		this.ticking = false;
+	}
+	
 	public boolean isTicking()
 	{
 		return this.ticking;

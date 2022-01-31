@@ -5,7 +5,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.InteractionHand;
 
-public class AsylumDemonData extends MobData<AsylumDemonEntity>
+public class AsylumDemonData extends MobData<AsylumDemon>
 {
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)

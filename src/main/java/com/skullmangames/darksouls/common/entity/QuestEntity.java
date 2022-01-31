@@ -1,8 +1,5 @@
 package com.skullmangames.darksouls.common.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.skullmangames.darksouls.core.util.timer.ChatRenderTimer;
 
 import net.minecraft.nbt.CompoundTag;
@@ -24,33 +21,13 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class QuestEntity extends PathfinderMob
 {
-	private String questPath = this.getQuestPaths().get(0);
+	protected boolean[] questFlags;
 	protected final ChatRenderTimer chatTimer = new ChatRenderTimer();
 
-	protected QuestEntity(EntityType<? extends PathfinderMob> type, Level level)
+	public QuestEntity(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
 		MinecraftForge.EVENT_BUS.register(this.chatTimer);
-	}
-
-	public List<String> getQuestPaths()
-	{
-		List<String> list = new ArrayList<String>();
-		list.add("0");
-		return list;
-	}
-
-	public String getCurrentQuestPath()
-	{
-		return this.questPath;
-	}
-
-	public void setCurrentQuestPath(String value)
-	{
-		if (this.getQuestPaths().contains(value))
-		{
-			this.questPath = value;
-		}
 	}
 	
 	public static AttributeSupplier.Builder createAttributes()
@@ -93,13 +70,24 @@ public class QuestEntity extends PathfinderMob
 	public void addAdditionalSaveData(CompoundTag nbt)
 	{
 		super.addAdditionalSaveData(nbt);
-		nbt.putString("QuestPath", this.getCurrentQuestPath());
+		
+		byte questFlagsByte = 0;
+		for (int i = 0; i < this.questFlags.length; i++)
+		{
+			if (this.questFlags[i]) questFlagsByte |= 1 << i;
+		}
+		nbt.putByte("QuestFlags", questFlagsByte);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt)
 	{
 		super.readAdditionalSaveData(nbt);
-		this.setCurrentQuestPath(nbt.getString("QuestPath"));
+		
+		byte questFlagsByte = nbt.getByte("QuestFlags");
+		for (int i = 0; i < this.questFlags.length; i++)
+		{
+			this.questFlags[i] = (questFlagsByte & (1 << i)) != 0;
+		}
 	}
 }

@@ -25,11 +25,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class AsylumDemonEntity extends PathfinderMob
+public class AsylumDemon extends PathfinderMob
 {
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	
-	public AsylumDemonEntity(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
+	public AsylumDemon(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
 	{
 		super(p_i48575_1_, p_i48575_2_);
 	}

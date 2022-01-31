@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
-import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
+import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.QuestEntity;
@@ -58,7 +58,7 @@ public class ModAttributes
 	{
 		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
 		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
-		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
+		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
 	}
 	

@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.entity;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
 
@@ -19,6 +21,7 @@ public class CrestfallenWarrior extends QuestEntity
 	public CrestfallenWarrior(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
+		this.questFlags = new boolean[2];
 	}
 	
 	@Override
@@ -33,12 +36,23 @@ public class CrestfallenWarrior extends QuestEntity
 		IModClientPlayNetHandler handler = ModNetworkManager.connection;
 		if (player.level.isClientSide && handler != null && !this.chatTimer.isTicking())
 		{
-			switch (this.getCurrentQuestPath())
+			PlayerData<?> playerdata = (PlayerData<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (!this.questFlags[0])
 			{
-			case "0":
 				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.0").getString().split("%");
 				this.chatTimer.start(60, sentences);
-				break;
+				this.questFlags[0] = true;
+			}
+			else if (!this.questFlags[1] && !playerdata.isHuman())
+			{
+				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.1").getString().split("%");
+				this.chatTimer.start(60, sentences);
+				this.questFlags[1] = true;
+			}
+			else
+			{
+				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.2").getString().split("%");
+				this.chatTimer.start(60, sentences);
 			}
 		}
 
@@ -52,7 +66,11 @@ public class CrestfallenWarrior extends QuestEntity
 		{
 			default: return Items.AIR;
 			case MAINHAND: return Items.IRON_SWORD;
-			//case OFFHAND: return Items.SHIELD;
+			case OFFHAND: return Items.SHIELD;
+			
+			case CHEST: return Items.CHAINMAIL_CHESTPLATE;
+			case LEGS: return Items.CHAINMAIL_LEGGINGS;
+			case FEET: return Items.CHAINMAIL_BOOTS;
 		}
 	}
 }
