@@ -4,20 +4,23 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.sounds.SoundEvent;
 
 public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 {
-	public SoulContainerItem(Properties properties)
+	private final int amount;
+	
+	public SoulContainerItem(int amount, Properties properties)
 	{
 		super(properties);
+		this.amount = amount;
 	}
 	
 	@Override
@@ -35,9 +38,8 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 			PlayerData<?> playerdata = (PlayerData<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata != null)
 			{
-				playerdata.raiseHumanity(this.getAmount());
+				playerdata.raiseSouls(this.getAmount());
 			}
-			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
 		}
 		if (!(livingentity instanceof Player) || !((Player)livingentity).getAbilities().instabuild)
 		{
@@ -72,6 +74,6 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 	
 	public int getAmount()
 	{
-		return 0;
+		return this.amount;
 	}
 }

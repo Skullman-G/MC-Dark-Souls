@@ -23,6 +23,8 @@
 	"item.darksouls.iron_bar_door": "Iron Bar Door",
 	"item.darksouls.dagger": "Dagger",
 	"item.darksouls.heater_shield": "Heater Shield",
+	"item.darksouls.soul_of_a_lost_undead": "Soul of a Lost Undead",
+	"item.darksouls.large_soul_of_a_lost_undead": "Large Soul of a Lost Undead",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -74,6 +76,10 @@
 	"tooltip.darksouls.straight_sword_hilt.extended": "The hilt of this lost sword. Only slightly better than one's bare hands, and not recommended for extensive use.",
 	"tooltip.darksouls.demon_great_hammer.extended": "A Demon weapon built from the stone archtrees. Used by lesser demons at the Undead Asylum. This hammer is imbued with no special power, but will merrily beat foes to a pulp, provided you have the strength to wield it.",
 	"tooltip.darksouls.dagger.extended": "This standard small dagger has only a modest attack but can be jabbed in rapid succession, and is effective in critical hits such as after a parry or when stabbing in the back. With both slash and thrust attacks this dagger is useful in various situations.",
+	"tooltip.darksouls.soul_of_a_lost_undead": "Use to acquire 200 souls.",
+	"tooltip.darksouls.soul_of_a_lost_undead.extended": "Soul of a lost Undead who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
+	"tooltip.darksouls.large_soul_of_a_lost_undead": "Use to acquire 400 souls.",
+	"tooltip.darksouls.large_soul_of_a_lost_undead.extended": "Large soul of a lost Undead who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be registered as holding the key.",
 	"tooltip.darksouls.filter_animation": "Turns the animation invisible in non-combat mode.",

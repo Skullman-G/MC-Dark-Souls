@@ -1,15 +1,80 @@
 package com.skullmangames.darksouls.common.item;
 
-public class HumanityItem extends SoulContainerItem
+import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.sounds.SoundEvent;
+
+public class HumanityItem extends Item implements IHaveDarkSoulsUseAction
 {
-	public HumanityItem(Properties properties)
+	private final int amount;
+	
+	public HumanityItem(int amount, Properties properties)
 	{
 		super(properties);
+		this.amount = amount;
 	}
 	
 	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+	{
+		return ItemUser.startUsing(this, level, player, hand);
+	}
+	
+	@Override
+	public ItemStack finishUsingItem(ItemStack itemstack, Level level, LivingEntity livingentity)
+	{
+		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
+		if (!level.isClientSide && this.getAmount() > 0)
+		{
+			PlayerData<?> playerdata = (PlayerData<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (playerdata != null)
+			{
+				playerdata.raiseHumanity(this.getAmount());
+			}
+			livingentity.heal(livingentity.getMaxHealth() - livingentity.getHealth());
+		}
+		if (!(livingentity instanceof Player) || !((Player)livingentity).getAbilities().instabuild)
+		{
+			itemstack.shrink(1);
+        }
+		return itemstack;
+	}
+	
+	@Override
+	public void onUseTick(Level level, LivingEntity livingentity, ItemStack itemstack, int durationremaining)
+	{
+		ItemUser.triggerItemUseEffects(livingentity, itemstack, this, durationremaining);
+	}
+
+	@Override
+	public DarkSoulsUseAction getDarkSoulsUseAnimation()
+	{
+		return DarkSoulsUseAction.SOUL_CONTAINER;
+	}
+
+	@Override
+	public SoundEvent getUseSound()
+	{
+		return ModSoundEvents.SOUL_CONTAINER_USE.get();
+	}
+	
+	@Override
+	public int getUseDuration(ItemStack itemstack)
+	{
+		return 32;
+	}
+	
 	public int getAmount()
 	{
-		return 1;
+		return this.amount;
 	}
 }

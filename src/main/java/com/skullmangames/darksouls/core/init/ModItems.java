@@ -6,8 +6,8 @@ import java.util.List;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
-import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
+import com.skullmangames.darksouls.common.item.SoulContainerItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 
@@ -34,7 +34,7 @@ public class ModItems
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
 			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
-	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoulItem(new Item.Properties()
+	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new HumanityItem(5, new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
@@ -46,7 +46,7 @@ public class ModItems
 	public static final RegistryObject<Item> HOMEWARD_BONE = ITEMS.register("homeward_bone", () -> new Teleport2BonfireItem(DarkSoulsUseAction.MIRACLE, false, true, false, new Item.Properties()
 			.tab(CreativeModeTab.TAB_TOOLS)));
 	
-	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
+	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(1, new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
@@ -66,6 +66,12 @@ public class ModItems
 	
 	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ShieldItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
+			.tab(DarkSouls.TAB_SOULS)));
+	
+	public static final RegistryObject<Item> LARGE_SOUL_OF_A_LOST_UNDEAD = ITEMS.register("large_soul_of_a_lost_undead", () -> new SoulContainerItem(400, new Item.Properties()
+			.tab(DarkSouls.TAB_SOULS)));
 	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
