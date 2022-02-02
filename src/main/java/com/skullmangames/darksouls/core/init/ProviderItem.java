@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.DaggerCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
@@ -94,12 +95,14 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
 		
+		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE));
+		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCap::new);
 		/*CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
-		CAPABILITY_BY_CLASS.put(ShieldItem.class, ShieldCapability::new);
 		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/
 	}
 	

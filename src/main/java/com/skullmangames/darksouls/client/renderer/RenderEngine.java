@@ -91,12 +91,12 @@ public class RenderEngine
 		Events.renderEngine = this;
 		RenderItemBase.renderEngine = this;
 		EntityIndicator.init();
-		minecraft = Minecraft.getInstance();
-		entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
-		itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
-		itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
-		projectionMatrix = new PublicMatrix4f();
-		firstPersonRenderer = new FirstPersonRenderer();
+		this.minecraft = Minecraft.getInstance();
+		this.entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
+		this.itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
+		this.itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
+		this.projectionMatrix = new PublicMatrix4f();
+		this.firstPersonRenderer = new FirstPersonRenderer();
 		
 		this.minecraft.renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
 				new BufferBuilder(ModRenderTypes.getEnchantedArmor().bufferSize()));

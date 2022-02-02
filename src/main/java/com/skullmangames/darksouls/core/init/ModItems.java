@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
@@ -61,6 +62,9 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 3, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ShieldItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	//Block Items

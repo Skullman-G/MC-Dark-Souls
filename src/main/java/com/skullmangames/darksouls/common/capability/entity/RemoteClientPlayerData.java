@@ -160,30 +160,31 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 				}
 			}
 		}
-
-		if (this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
 		
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
-			UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
-			
-			switch (useAction)
+			if (this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+			else
 			{
-				case BOW:
-					this.currentMixMotion = LivingMotion.AIMING;
-					break;
-					
-				case CROSSBOW:
-					this.currentMixMotion = LivingMotion.RELOADING;
-					break;
-					
-				case SPEAR:
-					this.currentMixMotion = LivingMotion.AIMING;
-					break;
-					
-				default:
-					this.currentMixMotion = LivingMotion.NONE;
-					break;
+				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+				switch (useAction)
+				{
+					case BOW:
+						this.currentMixMotion = LivingMotion.AIMING;
+						break;
+						
+					case CROSSBOW:
+						this.currentMixMotion = LivingMotion.RELOADING;
+						break;
+						
+					case SPEAR:
+						this.currentMixMotion = LivingMotion.AIMING;
+						break;
+						
+					default:
+						this.currentMixMotion = LivingMotion.NONE;
+						break;
+				}
 			}
 		}
 		else if (this.orgEntity.swinging)

@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
 
@@ -66,7 +67,7 @@ public class CrestfallenWarrior extends QuestEntity
 		{
 			default: return Items.AIR;
 			case MAINHAND: return Items.IRON_SWORD;
-			case OFFHAND: return Items.SHIELD;
+			case OFFHAND: return ModItems.HEATER_SHIELD.get();
 			
 			case CHEST: return Items.CHAINMAIL_CHESTPLATE;
 			case LEGS: return Items.CHAINMAIL_LEGGINGS;

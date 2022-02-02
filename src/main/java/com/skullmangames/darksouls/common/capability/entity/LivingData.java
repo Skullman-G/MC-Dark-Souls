@@ -264,25 +264,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public boolean isBlocking()
 	{
-		if (this.orgEntity.isUsingItem() && !this.orgEntity.getUseItem().isEmpty())
-		{
-			ItemStack stack = this.orgEntity.getUseItem();
-			Item item = stack.getItem();
-			ItemCapability shield = ModCapabilities.getItemCapability(stack);
-			if (item.getUseAnimation(stack) != UseAnim.BLOCK && !(shield instanceof IShield))
-			{
-				return false;
-			}
-			else
-			{
-				return item.getUseDuration(stack)
-						- this.orgEntity.getUseItemRemainingTicks() >= 5;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
+		ItemStack stack = this.orgEntity.getUseItem();
+		Item item = stack.getItem();
+		ItemCapability shield = ModCapabilities.getItemCapability(stack);
+		if (item.getUseAnimation(stack) != UseAnim.BLOCK && !(shield instanceof IShield)) return false;
+		return item.getUseDuration(stack)
+				- this.orgEntity.getUseItemRemainingTicks() >= 5;
 	}
 
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
