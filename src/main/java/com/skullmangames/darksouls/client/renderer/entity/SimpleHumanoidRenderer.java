@@ -14,7 +14,7 @@ public class SimpleHumanoidRenderer<E extends LivingEntity, T extends LivingData
 	
 	public SimpleHumanoidRenderer(String texturePath)
 	{
-		this.textureLocation = new ResourceLocation(DarkSouls.MOD_ID, texturePath);
+		this.textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/" + texturePath + ".png");
 	}
 	
 	@Override

@@ -30,6 +30,12 @@ public class QuestEntity extends PathfinderMob
 		MinecraftForge.EVENT_BUS.register(this.chatTimer);
 	}
 	
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return true;
+	}
+	
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 1.0D);
@@ -56,6 +62,7 @@ public class QuestEntity extends PathfinderMob
 				if (item != null)
 				{
 					this.setItemSlot(slot, new ItemStack(item));
+					this.setDropChance(slot, 0);
 				}
 			}
 		}

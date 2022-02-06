@@ -26,12 +26,6 @@ public class CrestfallenWarrior extends QuestEntity
 	}
 	
 	@Override
-	public boolean canBeCollidedWith()
-	{
-		return true;
-	}
-	
-	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
 		IModClientPlayNetHandler handler = ModNetworkManager.connection;
@@ -58,6 +52,12 @@ public class CrestfallenWarrior extends QuestEntity
 		}
 
 		return InteractionResult.sidedSuccess(player.level.isClientSide);
+	}
+	
+	@Override
+	protected int getExperienceReward(Player p_21511_)
+	{
+		return 1000;
 	}
 	
 	@Override

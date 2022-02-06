@@ -1,9 +1,10 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 
@@ -21,8 +22,8 @@ public class ModEntities
 {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DarkSouls.MOD_ID);
 
-	public static final RegistryObject<EntityType<FireKeeperEntity>> FIRE_KEEPER = register("fire_keeper",
-			EntityType.Builder.<FireKeeperEntity>of(FireKeeperEntity::new, MobCategory.CREATURE)
+	public static final RegistryObject<EntityType<FireKeeper>> FIRE_KEEPER = register("fire_keeper",
+			EntityType.Builder.<FireKeeper>of(FireKeeper::new, MobCategory.CREATURE)
 					.sized(0.6F, 1.95F)
 					.canSpawnFarFromPlayer());
 
@@ -43,6 +44,11 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<CrestfallenWarrior>> CRESTFALLEN_WARRIOR = register("crestfallen_warrior",
 			EntityType.Builder.<CrestfallenWarrior>of(CrestfallenWarrior::new, MobCategory.CREATURE)
+				.sized(0.6F, 1.95F)
+				.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<AnastaciaOfAstora>> ANASTACIA_OF_ASTORA = register("anastacia_of_astora",
+			EntityType.Builder.<AnastaciaOfAstora>of(AnastaciaOfAstora::new, MobCategory.CREATURE)
 				.sized(0.6F, 1.95F)
 				.canSpawnFarFromPlayer());
 	

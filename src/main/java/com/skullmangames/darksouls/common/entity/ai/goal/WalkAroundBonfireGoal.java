@@ -2,15 +2,15 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.Random;
 
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
 
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
 public class WalkAroundBonfireGoal extends WaterAvoidingRandomStrollGoal
 {
-	private final FireKeeperEntity fireKeeper;
+	private final FireKeeper fireKeeper;
 	
-	public WalkAroundBonfireGoal(FireKeeperEntity entity, double speedmodifier)
+	public WalkAroundBonfireGoal(FireKeeper entity, double speedmodifier)
 	{
 		super(entity, speedmodifier);
 		this.fireKeeper = entity;

@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.AsylumDemon;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.QuestEntity;
 
@@ -56,10 +56,11 @@ public class ModAttributes
 	
 	public static void createAttributeMap(EntityAttributeCreationEvent event)
 	{
-		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
+		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeper.createAttributes().build());
 		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
 		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
+		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), QuestEntity.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -92,6 +93,7 @@ public class ModAttributes
 		general(EntityType.ZOMBIFIED_PIGLIN, event);
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
+		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
 		
 		player(EntityType.PLAYER, event);
 	}

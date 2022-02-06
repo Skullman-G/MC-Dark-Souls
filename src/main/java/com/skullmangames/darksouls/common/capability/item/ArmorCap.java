@@ -46,7 +46,7 @@ public class ArmorCap extends AttributeItemCap
 		this.equipmentSlot = armorItem.getSlot();
 		this.poise = armorItem.getDefense() * 2.0F;
 		
-		this.standardDef = armorItem.getDefense();
+		this.standardDef = armorItem.getDefense() * 0.5F;
 		this.slashDef = this.standardDef;
 		this.strikeDef = this.standardDef * 1.1F;
 		this.thrustDef = this.standardDef * 0.9F;

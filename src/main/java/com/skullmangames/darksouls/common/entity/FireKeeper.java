@@ -11,8 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -29,12 +27,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class FireKeeperEntity extends QuestEntity
+public class FireKeeper extends QuestEntity
 {
 	private BlockPos linkedBonfirePos;
 	private boolean hasLinkedBonfire = false;
 
-	public FireKeeperEntity(EntityType<? extends QuestEntity> entity, Level level)
+	public FireKeeper(EntityType<? extends QuestEntity> entity, Level level)
 	{
 		super(entity, level);
 		this.questFlags = new boolean[1];
@@ -180,23 +178,5 @@ public class FireKeeperEntity extends QuestEntity
 			return new ReinforceEstusFlaskContainer(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
 		}, new TranslatableComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
-	}
-
-	@Override
-	protected SoundEvent getAmbientSound()
-	{
-		return SoundEvents.VILLAGER_AMBIENT;
-	}
-
-	@Override
-	protected SoundEvent getDeathSound()
-	{
-		return SoundEvents.VILLAGER_DEATH;
-	}
-
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source)
-	{
-		return SoundEvents.VILLAGER_HURT;
 	}
 }

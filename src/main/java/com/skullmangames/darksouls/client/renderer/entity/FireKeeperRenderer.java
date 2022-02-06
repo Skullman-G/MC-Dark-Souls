@@ -2,14 +2,14 @@ package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.FireKeeperModel;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.core.init.ModModelLayers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class FireKeeperRenderer extends MobRenderer<FireKeeperEntity, FireKeeperModel>
+public class FireKeeperRenderer extends MobRenderer<FireKeeper, FireKeeperModel>
 {
 	private static final ResourceLocation FIRE_KEEPER_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/fire_keeper/fire_keeper.png");
 
@@ -19,7 +19,7 @@ public class FireKeeperRenderer extends MobRenderer<FireKeeperEntity, FireKeeper
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(final FireKeeperEntity entity)
+	public ResourceLocation getTextureLocation(final FireKeeper entity)
 	{
 		return FIRE_KEEPER_TEXTURE;
 	}
