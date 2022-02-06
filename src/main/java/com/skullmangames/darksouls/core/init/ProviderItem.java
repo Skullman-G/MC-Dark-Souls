@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
@@ -41,32 +40,6 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 
 	public static void initCapabilityMap()
 	{
-		// ARMOR
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.LEATHER_LEGGINGS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.GOLDEN_LEGGINGS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.CHAINMAIL_LEGGINGS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.IRON_LEGGINGS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.DIAMOND_LEGGINGS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_BOOTS, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_CHESTPLATE, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_HELMET, VanillaArmorCap::new);
-		CAPABILITIES.computeIfAbsent(Items.NETHERITE_LEGGINGS, VanillaArmorCap::new);
-		
 		// WEAPONS
 		putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
@@ -95,12 +68,12 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
 		
-		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE));
-		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.5F));
+		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE, 1F));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
-		CAPABILITY_BY_CLASS.put(ArmorItem.class, ArmorCap::new);
+		CAPABILITY_BY_CLASS.put(ArmorItem.class, VanillaArmorCap::new);
 		/*CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
 		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
 		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/

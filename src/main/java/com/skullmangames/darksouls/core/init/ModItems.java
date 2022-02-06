@@ -7,13 +7,17 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
+import com.skullmangames.darksouls.common.item.ModArmorItem;
 import com.skullmangames.darksouls.common.item.SoulContainerItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.SwordItem;
@@ -73,6 +77,15 @@ public class ModItems
 	public static final RegistryObject<Item> LARGE_SOUL_OF_A_LOST_UNDEAD = ITEMS.register("large_soul_of_a_lost_undead", () -> new SoulContainerItem(400, new Item.Properties()
 			.tab(DarkSouls.TAB_SOULS)));
 	
+	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> DINGY_ROBE = ITEMS.register("dingy_robe", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.CHEST, "dingy_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> BLOOD_STAINED_SKIRT = ITEMS.register("blood_stained_skirt", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.LEGS, "dingy_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -112,16 +125,26 @@ public class ModItems
 	
 	public static void registerDescriptionItems()
 	{
-		DESCRIPTION_ITEMS.add(ESTUS_FLASK.get());
-		DESCRIPTION_ITEMS.add(ESTUS_SHARD.get());
-		DESCRIPTION_ITEMS.add(FIRE_KEEPER_SOUL.get());
-		DESCRIPTION_ITEMS.add(EMERALD_FLASK.get());
-		DESCRIPTION_ITEMS.add(DARKSIGN.get());
-		DESCRIPTION_ITEMS.add(HOMEWARD_BONE.get());
-		DESCRIPTION_ITEMS.add(HUMANITY.get());
-		DESCRIPTION_ITEMS.add(BROKEN_STRAIGHT_SWORD.get());
-		DESCRIPTION_ITEMS.add(STRAIGHT_SWORD_HILT.get());
-		DESCRIPTION_ITEMS.add(UNDEAD_BONE_SHARD.get());
-		DESCRIPTION_ITEMS.add(DEMON_GREAT_HAMMER.get());
+		DESCRIPTION_ITEMS.add(ModItems.ESTUS_FLASK.get());
+		DESCRIPTION_ITEMS.add(ModItems.ESTUS_SHARD.get());
+		DESCRIPTION_ITEMS.add(ModItems.FIRE_KEEPER_SOUL.get());
+		DESCRIPTION_ITEMS.add(ModItems.EMERALD_FLASK.get());
+		DESCRIPTION_ITEMS.add(ModItems.DARKSIGN.get());
+		DESCRIPTION_ITEMS.add(ModItems.HOMEWARD_BONE.get());
+		DESCRIPTION_ITEMS.add(ModItems.HUMANITY.get());
+		DESCRIPTION_ITEMS.add(ModItems.BROKEN_STRAIGHT_SWORD.get());
+		DESCRIPTION_ITEMS.add(ModItems.STRAIGHT_SWORD_HILT.get());
+		DESCRIPTION_ITEMS.add(ModItems.UNDEAD_BONE_SHARD.get());
+		DESCRIPTION_ITEMS.add(ModItems.DEMON_GREAT_HAMMER.get());
+		DESCRIPTION_ITEMS.add(ModItems.HEATER_SHIELD.get());
+		
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_LEGGINGS);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_BOOTS);
+		
+		DESCRIPTION_ITEMS.add(ModItems.DINGY_HOOD.get());
+		DESCRIPTION_ITEMS.add(ModItems.DINGY_ROBE.get());
+		DESCRIPTION_ITEMS.add(ModItems.BLOOD_STAINED_SKIRT.get());
 	}
 }

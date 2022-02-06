@@ -6,9 +6,12 @@ import net.minecraft.world.item.Item;
 
 public class ShieldCap extends MeleeWeaponCap
 {
-	public ShieldCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	private final float physicalDefense;
+	
+	public ShieldCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float physicalDefense)
 	{
 		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
+		this.physicalDefense = Math.min(physicalDefense, 1F);
 	}
 	
 	@Override
@@ -20,7 +23,7 @@ public class ShieldCap extends MeleeWeaponCap
 	@Override
 	public float getPhysicalDefense()
 	{
-		return 0.93F;
+		return this.physicalDefense;
 	}
 
 	@Override

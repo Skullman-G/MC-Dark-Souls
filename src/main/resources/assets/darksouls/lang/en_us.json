@@ -25,6 +25,9 @@
 	"item.darksouls.heater_shield": "Heater Shield",
 	"item.darksouls.soul_of_a_lost_undead": "Soul of a Lost Undead",
 	"item.darksouls.large_soul_of_a_lost_undead": "Large Soul of a Lost Undead",
+	"item.darksouls.dingy_hood": "Dingy Hood",
+	"item.darksouls.dingy_robe": "Dingy Robe",
+	"item.darksouls.blood_stained_skirt": "Blood Stained Skirt",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -80,8 +83,16 @@
 	"tooltip.darksouls.soul_of_a_lost_undead.extended": "Soul of a lost Undead who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
 	"tooltip.darksouls.large_soul_of_a_lost_undead": "Use to acquire 400 souls.",
 	"tooltip.darksouls.large_soul_of_a_lost_undead.extended": "Large soul of a lost Undead who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
+	"tooltip.darksouls.heater_shield.extended": "Small metal shield. A standard, widely-used shield. This shield is easy to use, and is one of the smallest shields that offers 100% physical damage reduction.",
+	"tooltip.darksouls.dingy_hood.extended": "Worn by the Fire Keeper at Firelink Shrine. It is thought to have once been the white hood of a maiden, but smoke and ashes from bonfires darkened it over the years.",
+	"tooltip.darksouls.dingy_robe.extended": "Worn by the Fire Keeper at Firelink Shrine. It is thought to have once been the white robe of a maiden, but smoke and ashes from bonfires darkened it over the years.",
+	"tooltip.darksouls.blood_stained_skirt.extended": "Worn by the Fire Keeper at Firelink Shrine. It is thought to have once been the white skirt of a maiden, but its true origin is lost in patches of blood. Perhaps its former wearer was maimed to prevent escape?",
+	"tooltip.darksouls.chainmail_helmet.extended": "A chainmail helm of thin interlinking rings of steel. It is common throughout the human world since it can be easily produced, it is not too heavy, and offers good defense. Knights may favor flashy armor, but for warriors on the battlefield, anything is fine as long as it keeps them alive.",
+	"tooltip.darksouls.chainmail_chestplate.extended": "Chainmail armor of thin interlinking rings of steel. It is common throughout the human world since it can be easily produced, is not too heavy, and offers good defense. Knights may favor flashy armor, but for warriors on the battlefield, anything is fine as long as it keeps them alive.",
+	"tooltip.darksouls.chainmail_leggings.extended": "Chainmail leggings of thin interlinking rings of steel. It is common throughout the human world since it can be easily produced, it is not too heavy, and offers good defense. Knights may favor flashy armor, but for warriors on the battlefield, anything is fine as long as it keeps them alive.",
+	"tooltip.darksouls.chainmail_boots.extended": "Chainmail boots of thin interlinking rings of steel. It is common throughout the human world since it can be easily produced, it is not too heavy, and offers good defense. Knights may favor flashy armor, but for warriors on the battlefield, anything is fine as long as it keeps them alive.",
 	
-	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be registered as holding the key.",
+	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	"tooltip.darksouls.filter_animation": "Turns the animation invisible in non-combat mode.",
 	
 	

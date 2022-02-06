@@ -143,7 +143,6 @@ public class EntityEvents
 			amount -= target.getAttribute(defAttribute) != null ? target.getAttributeValue(defAttribute) : 0.0F;
 		}
 		if (extSource != null) extSource.setAmount(amount);
-		
 		if (targetData == null || targetData.blockingAttack(extSource)) return;
 		
 		// Stun Animation

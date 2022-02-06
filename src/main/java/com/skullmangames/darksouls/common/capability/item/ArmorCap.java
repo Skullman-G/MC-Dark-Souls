@@ -3,6 +3,9 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.List;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
@@ -18,20 +21,20 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ArmorCap extends AttributeItemCap
 {
 	private final EquipmentSlot equipmentSlot;
 	
-	protected float standardDef;
-	protected float strikeDef;
-	protected float slashDef;
-	protected float thrustDef;
+	protected final float standardDef;
+	protected final float strikeDef;
+	protected final float slashDef;
+	protected final float thrustDef;
 	
 	protected float poise;
 	protected float weight;
@@ -40,32 +43,58 @@ public class ArmorCap extends AttributeItemCap
 	{
 		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
-		ArmorMaterial armorMaterial = armorItem.getMaterial();
 		this.equipmentSlot = armorItem.getSlot();
-		this.poise = armorMaterial.getDefenseForSlot(this.equipmentSlot) * 2.0F;
+		this.poise = armorItem.getDefense() * 2.0F;
+		
+		this.standardDef = armorItem.getDefense();
+		this.slashDef = this.standardDef;
+		this.strikeDef = this.standardDef * 1.1F;
+		this.thrustDef = this.standardDef * 0.9F;
+	}
+	
+	@Override
+	public ArmorItem getOriginalItem()
+	{
+		return (ArmorItem)this.orgItem;
 	}
 	
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
 	{
-		itemTooltip.add(new TextComponent(""));
-		itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.standardDef*100)+"%")));
-		
-		itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.strikeDef*100)+"%")));
-		
-		itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.slashDef*100)+"%")));
-		
-		itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+(int)(this.thrustDef*100)+"%")));
-		
-		itemTooltip.add(new TextComponent(""));
-		itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
-		itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-				.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
+
+		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
+
+		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		{
+			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
+					+ ((IForgeRegistryEntry<Item>) this.orgItem).getRegistryName().getPath() + ".extended";
+			String description = new TranslatableComponent(languagePath).getString();
+
+			if (!description.contains(languagePath))
+				itemTooltip.add(new TextComponent("\u00A77\n" + description));
+		}
+		else
+		{
+			itemTooltip.add(new TextComponent(""));
+			itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.standardDef, 100))));
+			
+			itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 100))));
+			
+			itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.slashDef, 100))));
+			
+			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
+			
+			itemTooltip.add(new TextComponent(""));
+			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
+			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+		}
 	}
 	
 	@Override

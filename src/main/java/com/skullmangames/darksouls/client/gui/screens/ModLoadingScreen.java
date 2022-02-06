@@ -47,7 +47,7 @@ public class ModLoadingScreen extends Overlay
 
 		String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 				+ ((IForgeRegistryEntry<Item>) this.descriptionItem.getItem()).getRegistryName().getPath() + ".extended";
-		this.description = this.addLinebreaks(new TranslatableComponent(languagePath).getString(), 40);
+		this.description = this.addLinebreaks(new TranslatableComponent(languagePath).getString(), 50);
 	}
 
 	public String[] addLinebreaks(String input, int maxCharInLine)

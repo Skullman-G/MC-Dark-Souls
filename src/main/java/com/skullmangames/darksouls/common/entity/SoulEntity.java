@@ -30,9 +30,7 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 	
 	public SoulEntity(Level level, double posX, double posY, double posZ, int value)
 	{
-		this(ModEntities.SOUL.get(), level);
-		this.setPos(posX, posY, posZ);
-		this.yRot = (float) (this.random.nextDouble() * 360.0D);
+		this(level, posX, posY, posZ);
 		this.value = value;
 	}
 
