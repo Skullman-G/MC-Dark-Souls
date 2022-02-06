@@ -9,40 +9,40 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
-public class DaggerCap extends MeleeWeaponCap
+public class SpearCap extends MeleeWeaponCap
 {
-	public DaggerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public SpearCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex, strengthScaling, dexScaling, 5F);
+		super(item, WeaponCategory.SPEAR, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
 	}
 	
 	@Override
 	public AttackAnimation[] getLightAttack()
 	{
-		return Animations.DAGGER_LIGHT_ATTACK;
+		return Animations.SPEAR_LIGHT_ATTACK;
 	}
 	
 	@Override
 	public AttackAnimation getHeavyAttack()
 	{
-		return Animations.DAGGER_HEAVY_ATTACK;
+		return Animations.SPEAR_HEAVY_ATTACK;
 	}
 	
 	@Override
 	public AttackAnimation getDashAttack()
 	{
-		return Animations.STRAIGHT_SWORD_DASH_ATTACK;
-	}
-	
-	@Override
-	public SoundEvent getSwingSound()
-	{
-		return ModSoundEvents.SWORD_SWING.get();
+		return Animations.SPEAR_DASH_ATTACK;
 	}
 	
 	@Override
 	public Collider getWeaponCollider()
 	{
-		return Colliders.dagger;
+		return Colliders.spear;
+	}
+	
+	@Override
+	public SoundEvent getSwingSound()
+	{
+		return ModSoundEvents.SPEAR_SWING.get();
 	}
 }

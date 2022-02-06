@@ -50,7 +50,7 @@ public class GreatHammerCap extends MeleeWeaponCap
 	@Override
 	public SoundEvent getSmashSound()
 	{
-		return ModSoundEvents.GREAT_HAMMER_SMASH;
+		return ModSoundEvents.GREAT_HAMMER_SMASH.get();
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExt
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.registries.RegistryObject;
 
 public class StaticAnimation extends DynamicAnimation
 {
@@ -117,7 +118,7 @@ public class StaticAnimation extends DynamicAnimation
 				{
 					if(entitydata.isClientSide() == key.isClientSide)
 					{
-						entitydata.playSound(key.sound, 0.0F, 0.0F);
+						entitydata.playSound(key.sound.get(), 0.0F, 0.0F);
 					}
 				}
 			}
@@ -129,7 +130,7 @@ public class StaticAnimation extends DynamicAnimation
 		return id;
 	}
 	
-	public StaticAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
+	public StaticAnimation registerSound(RegistryObject<SoundEvent> sound, float time, boolean isRemote)
 	{
 		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
 		this.soundStream.add(new SoundKey(sound, time, isRemote));
@@ -144,11 +145,11 @@ public class StaticAnimation extends DynamicAnimation
 	
 	protected static class SoundKey implements Comparable<SoundKey>
 	{
-		SoundEvent sound;
+		RegistryObject<SoundEvent> sound;
 		float time;
 		boolean isClientSide;
 		
-		protected SoundKey(SoundEvent sound, float time, boolean isClientSide)
+		protected SoundKey(RegistryObject<SoundEvent> sound, float time, boolean isClientSide)
 		{
 			this.sound = sound;
 			this.time = time;

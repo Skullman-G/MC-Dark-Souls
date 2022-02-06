@@ -25,7 +25,7 @@ public class SwordCap extends MeleeWeaponCap
 	@Override
 	public SoundEvent getSwingSound()
 	{
-		return ModSoundEvents.SWORD_SWING;
+		return ModSoundEvents.SWORD_SWING.get();
 	}
 	
 	@Override

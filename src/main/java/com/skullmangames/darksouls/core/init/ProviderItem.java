@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
+import com.skullmangames.darksouls.common.capability.item.SpearCap;
 import com.skullmangames.darksouls.common.capability.item.DaggerCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
@@ -67,6 +68,8 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(Items.NETHERITE_SWORD, 12, 15, Scaling.C, Scaling.C));
 		putCap(new SwordCap(ModItems.BROKEN_STRAIGHT_SWORD.get(), 8, 8, Scaling.D, Scaling.D));
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
+		
+		putCap(new SpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
 		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.5F));
 		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE, 1F));

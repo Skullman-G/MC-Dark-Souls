@@ -260,5 +260,16 @@
 		[
 			{ "name": "darksouls:items/axe/swing", "stream": true }
 		]
+	},
+	
+	"item.spear.swing":
+	{
+		"category": "item",
+		"subtitle": "item.spear.swing.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/spear/swing_1", "stream": true },
+			{ "name": "darksouls:items/spear/swing_2", "stream": true }
+		]
 	}
 }

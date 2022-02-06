@@ -615,7 +615,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap == null)
-			return ModSoundEvents.FIST_SWING;
+			return ModSoundEvents.FIST_SWING.get();
 		return cap.getSwingSound();
 	}
 

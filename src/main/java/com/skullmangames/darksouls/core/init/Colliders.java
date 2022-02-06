@@ -14,6 +14,7 @@ public class Colliders
 	public static final Collider tools = new Collider(0.4F, 0.4F, 0.55F, 0F, 0.0F, 0F);
 	public static final Collider great_hammer = new Collider(0.6F, 0.6F, 0.7F, 0.0F, 0.3F, -1.9F);
 	public static final Collider dagger = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
+	public static final Collider spear = new Collider(0.4F, 0.4F, 0.9F, 0F, 0F, -1.35F);
 	
 	
 	//Asylum Demon

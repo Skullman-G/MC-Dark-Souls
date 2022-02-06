@@ -38,6 +38,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.registries.RegistryObject;
 
 public class AttackAnimation extends ActionAnimation
 {
@@ -224,7 +225,7 @@ public class AttackAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public AttackAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
+	public AttackAnimation registerSound(RegistryObject<SoundEvent> sound, float time, boolean isRemote)
 	{
 		super.registerSound(sound, time, isRemote);
 		return this;

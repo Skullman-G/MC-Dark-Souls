@@ -76,6 +76,20 @@ public final class Animations
 	
 	public static final HoldingWeaponAnimation BIPED_HOLDING_GREAT_HAMMER = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_great_hammer_r", "biped/living/holding_great_hammer_l", "biped/living/holding_great_hammer_both", "biped", true);
 	
+	// Spear
+	public static final AttackAnimation SPEAR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.12F, 0.36F, 0.8F, false, "111213", "biped/combat/spear_dash_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation SPEAR_HEAVY_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.4F, false, "111213", "biped/combat/spear_heavy_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	public static final AttackAnimation SPEAR_LIGHT_ATTACK[] = new AttackAnimation[]
+			{
+					new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.2F, false, "111213", "biped/combat/spear_light_attack", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			};
+	
 	// Dagger
 	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
