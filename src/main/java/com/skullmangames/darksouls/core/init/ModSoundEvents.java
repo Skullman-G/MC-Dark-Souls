@@ -24,6 +24,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> AXE_SWING = registerSound("item.axe.swing");
 	public static final RegistryObject<SoundEvent> SPEAR_SWING = registerSound("item.spear.swing");
 	public static final RegistryObject<SoundEvent> GREAT_HAMMER_SMASH = registerSound("item.great_hammer.smash");
+	public static final RegistryObject<SoundEvent> ULTRA_GREATSWORD_SMASH = registerSound("item.ultra_greatsword.smash");
 	
 	public static final RegistryObject<SoundEvent> HOLLOW_AMBIENT = registerSound("entity.hollow.ambient");
 	public static final RegistryObject<SoundEvent> HOLLOW_DEATH = registerSound("entity.hollow.death");

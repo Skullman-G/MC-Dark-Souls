@@ -8,10 +8,10 @@ import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
-import com.skullmangames.darksouls.common.capability.item.DaggerCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
+import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 
@@ -42,7 +42,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 	public static void initCapabilityMap()
 	{
 		// WEAPONS
-		putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
+		//putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
 		putCap(new GreatHammerCap(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
 		
@@ -73,6 +73,8 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.5F));
 		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE, 1F));
+		
+		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, Scaling.C, Scaling.D));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);

@@ -62,11 +62,11 @@ public class ModItems
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 10, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 11, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
-	public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 2, -2.4F, new Item.Properties()
-			.tab(CreativeModeTab.TAB_COMBAT)));
+	/*public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 2, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));*/
 	
 	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ShieldItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
@@ -87,6 +87,9 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(Tiers.IRON, 2, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 10, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	//Block Items

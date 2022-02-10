@@ -123,7 +123,7 @@ public class EntityEvents
 		boolean indirect = event.getSource() instanceof IndirectEntityDamageSource;
 		boolean headshot = false;
 		float poiseDamage = 0.0F;
-		DamageType damageType = DamageType.STANDARD;
+		DamageType damageType = DamageType.REGULAR;
 		StunType stunType = StunType.DEFAULT;
 		
 		IExtendedDamageSource extSource = null;

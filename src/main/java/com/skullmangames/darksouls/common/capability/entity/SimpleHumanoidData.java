@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -46,9 +47,9 @@ public class SimpleHumanoidData<T extends Mob> extends HumanoidData<T>
 		this.orgEntity.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this.orgEntity, Hollow.class, true));
 		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
 		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
-				.addAttack(new AttackInstance(1, 1.0F, weapon.getLightAttack()))
-				.addAttack(new AttackInstance(1, 1.0F, weapon.getHeavyAttack()))
-				.addAttack(new AttackInstance(1, 1.0F, weapon.getDashAttack())));
+				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.LIGHT)))
+				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.HEAVY)))
+				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.DASH))));
 	}
 
 	@Override

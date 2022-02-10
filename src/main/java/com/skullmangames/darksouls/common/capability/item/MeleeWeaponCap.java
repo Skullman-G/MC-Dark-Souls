@@ -3,7 +3,10 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
@@ -27,10 +30,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class MeleeWeaponCap extends WeaponCap implements IShield
 {
+	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
+	
 	public MeleeWeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex,
 			Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
 	{
 		super(item, category, requiredStrength, requiredDex, strengthScaling, dexScaling, poiseDamage);
+		this.moveset = this.initMoveset().build();
+	}
+	
+	protected ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
+	{
+		return ImmutableMap.builder();
+	}
+	
+	protected void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
+	{
+		builder.put(type, new Pair<Boolean, AttackAnimation[]>(repeat, animations));
 	}
 	
 	@Override
@@ -55,50 +71,25 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 				: 0.0F;
 	}
 	
-	public AttackAnimation[] getLightAttack()
+	public AttackAnimation[] getAttacks(AttackType type)
 	{
-		return null;
-	}
-
-	protected boolean repeatLightAttack()
-	{
-		return true;
-	}
-
-	public AttackAnimation getDashAttack()
-	{
-		return null;
+		return this.moveset.get(type).getSecond();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
 	{
-		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null)
-			return this.getWeakAttack();
+		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
 
-		switch (type)
-		{
-		case LIGHT:
-			AttackAnimation[] animations = this.getLightAttack();
-			if (animations == null)
-				return null;
-			List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
-			int combo = animationList.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
-			if (combo + 1 < animationList.size())
-				combo += 1;
-			else if (this.repeatLightAttack())
-				combo = 0;
-			return animationList.get(combo);
-
-		case HEAVY:
-			return this.getHeavyAttack();
-
-		case DASH:
-			return this.getDashAttack();
-
-		default:
-			throw new IndexOutOfBoundsException("Incorrect attack type.");
-		}
+		Pair<Boolean, AttackAnimation[]> move = this.moveset.get(type);
+		if (move == null) return null;
+		AttackAnimation[] animations = move.getSecond();
+		if (animations == null) return null;
+		List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
+		int combo = animationList.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
+		if (combo + 1 < animations.length) combo += 1;
+		else if (move.getFirst()) combo = 0;
+		return animations[combo];
 	}
 
 	protected AttackAnimation getWeakAttack()
@@ -107,11 +98,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 
 	public List<StaticAnimation> getMountAttackMotion()
-	{
-		return null;
-	}
-
-	public AttackAnimation getHeavyAttack()
 	{
 		return null;
 	}
@@ -133,7 +119,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 
 	public Collider getWeaponCollider()
 	{
-		return Colliders.fist;
+		return Colliders.FIST;
 	}
 
 	@Override
@@ -146,5 +132,10 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 	public ShieldType getShieldType()
 	{
 		return ShieldType.NONE;
+	}
+	
+	public enum AttackType
+	{
+		LIGHT, HEAVY, DASH
 	}
 }

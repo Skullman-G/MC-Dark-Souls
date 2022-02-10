@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import com.google.common.collect.ImmutableMap.Builder;
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import net.minecraft.world.item.Item;
@@ -15,9 +17,11 @@ public class ShieldCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public AttackAnimation[] getLightAttack()
+	protected Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
 	{
-		return Animations.SHIELD_LIGHT_ATTACK;
+		Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder = super.initMoveset();
+		this.putMove(builder, AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK);
+		return builder;
 	}
 	
 	@Override

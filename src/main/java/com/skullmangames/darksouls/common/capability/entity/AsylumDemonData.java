@@ -45,8 +45,8 @@ public class AsylumDemonData extends MobData<AsylumDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
-		if (cap instanceof GreatHammerCap) return Colliders.asylum_demon_great_hammer;
-		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
+		if (cap instanceof GreatHammerCap) return Colliders.ASYLUM_DEMON_GREAT_HAMMER;
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 	
 	@Override

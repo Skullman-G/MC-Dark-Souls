@@ -264,7 +264,7 @@ public class AttackAnimation extends ActionAnimation
 	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.DEFAULT);
-		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.STANDARD);
+		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
 		float poiseDamage = (float) entitydata.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
 		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;

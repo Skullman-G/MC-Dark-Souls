@@ -271,5 +271,15 @@
 			{ "name": "darksouls:items/spear/swing_1", "stream": true },
 			{ "name": "darksouls:items/spear/swing_2", "stream": true }
 		]
+	},
+	
+	"item.ultra_greatsword.smash":
+	{
+		"category": "item",
+		"subtitle": "item.ultra_greatsword.smash.sub",
+		"sounds":
+		[
+			{ "name": "darksouls:items/ultra_greatsword/smash", "stream": true }
+		]
 	}
 }

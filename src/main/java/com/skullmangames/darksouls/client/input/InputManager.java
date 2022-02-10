@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.AttackType;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;

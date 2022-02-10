@@ -2,21 +2,21 @@
 	"credit": "Made with Blockbench",
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "darksouls:items/winged_spear"
+		"layer0": "darksouls:items/zweihander"
 	},
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [0, 90, 45],
-			"translation": [0, 9, 2.5],
+			"translation": [0, 15, 0.5],
 			"scale": [2, 2, 1]
 		},
 		"thirdperson_lefthand": {
 			"rotation": [0, 90, -45],
-			"translation": [0, 9, 2.5],
+			"translation": [0, 15, 2.5],
 			"scale": [2, 2, 1]
 		},
 		"ground": {
-			"translation": [0, 4.5, 0]
+			"translation": [0, 4.25, 0]
 		}
 	}
 }

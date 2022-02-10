@@ -60,7 +60,7 @@ public interface IExtendedDamageSource
 	
 	public enum DamageType
 	{
-		STANDARD, STRIKE, SLASH, THRUST;
+		REGULAR, STRIKE, SLASH, THRUST;
 		
 		public Attribute getDefenseAttribute()
 		{

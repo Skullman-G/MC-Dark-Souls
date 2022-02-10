@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import com.google.common.collect.ImmutableMap.Builder;
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -15,26 +17,18 @@ public class AxeCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public AttackAnimation[] getLightAttack()
+	protected Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
 	{
-		return Animations.AXE_LIGHT_ATTACK;
-	}
-	
-	@Override
-	public AttackAnimation getHeavyAttack()
-	{
-		return Animations.AXE_HEAVY_ATTACK;
-	}
-	
-	@Override
-	public AttackAnimation getDashAttack()
-	{
-		return Animations.AXE_DASH_ATTACK;
+		Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder = super.initMoveset();
+		this.putMove(builder, AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK);
+		this.putMove(builder, AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK);
+		this.putMove(builder, AttackType.DASH, true, Animations.AXE_DASH_ATTACK);
+		return builder;
 	}
 
 	@Override
 	public Collider getWeaponCollider()
 	{
-		return Colliders.tools;
+		return Colliders.TOOL;
 	}
 }

@@ -199,14 +199,9 @@ public abstract class WeaponCap extends AttributeItemCap
 		return !isTwoHanded() && !item.isEmpty();
 	}
 
-	public enum AttackType
-	{
-		LIGHT, HEAVY, DASH
-	}
-
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER, HAMMER, SPEAR
+		NONE_WEAON, AXE, FIST, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER, HAMMER, SPEAR, ULTRA_GREATSWORD
 	}
 
 	public enum HandProperty

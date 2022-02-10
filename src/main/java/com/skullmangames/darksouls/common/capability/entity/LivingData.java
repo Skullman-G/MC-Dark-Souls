@@ -32,8 +32,6 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
-import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -113,18 +111,9 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	@Nullable
 	public StaticAnimation getHoldingWeaponAnimation()
 	{
-		StaticAnimation animation = null;
-		if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
-		{
-			animation = this.getHeldWeaponCapability(InteractionHand.OFF_HAND).getHoldingAnimation();
-			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
-				animation = ((HoldingWeaponAnimation) animation).getAnimation(2);
-			else
-				animation = ((HoldingWeaponAnimation) animation).getAnimation(1);
-		} else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
-		{
-			animation = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation().getAnimation(0);
-		}
+		StaticAnimation animation = this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND) ?
+				this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation()
+				: null;
 
 		return animation;
 	}
@@ -622,7 +611,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
-		return cap != null ? cap.getWeaponCollider() : Colliders.fist;
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 
 	public boolean isTeam(Entity entityIn)
