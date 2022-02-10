@@ -215,12 +215,12 @@ public class EntityEvents
 			
 			if(fromCap != null)
 			{
-				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitydata));
+				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot()));
 			}
 			
 			if(toCap != null)
 			{
-				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitydata));
+				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
 			}
 			
 			if (entitydata instanceof ServerPlayerData)
@@ -247,12 +247,12 @@ public class EntityEvents
 			
 			if(fromCap != null)
 			{
-				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot(), entitydata));
+				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot()));
 			}
 			
 			if(toCap != null)
 			{
-				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot(), entitydata));
+				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
 			}
 			entitydata.onArmorSlotChanged(fromCap, toCap, event.getSlot());
 		}

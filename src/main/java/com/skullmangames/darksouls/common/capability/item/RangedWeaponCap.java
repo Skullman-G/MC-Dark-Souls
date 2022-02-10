@@ -26,7 +26,6 @@ public class RangedWeaponCap extends WeaponCap
 		{
 			this.animationSet.put(LivingMotion.SHOTING, shot);
 		}
-		this.registerAttribute();
 	}
 
 	@Override

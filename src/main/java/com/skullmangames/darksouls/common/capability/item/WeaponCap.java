@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -25,6 +26,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,14 +51,17 @@ public abstract class WeaponCap extends AttributeItemCap
 				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(requiredDex, 0, 99), dexScaling)).build();
 		this.poiseDamage = poiseDamage;
 		this.weight = Math.max(((float)requiredStrength - 4F) / 2F, 0F);
-		this.registerAttribute();
 	}
 	
 	@Override
-	protected void registerAttribute()
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
 	{
-		this.addAttribute(ModAttributes.POISE_DAMAGE, ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.poiseDamage));
-		this.addAttribute(ModAttributes.EQUIP_LOAD, ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.weight));
+		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
+		
+		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
+		if (slot == EquipmentSlot.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
+		
+		return map;
 	}
 	
 	public Scaling getScaling(Stat stat)

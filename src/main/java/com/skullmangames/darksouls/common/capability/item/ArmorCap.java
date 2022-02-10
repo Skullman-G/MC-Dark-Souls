@@ -1,13 +1,11 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -98,11 +96,11 @@ public class ArmorCap extends AttributeItemCap
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, LivingData<?> entitydata)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
 	{
-		Multimap<Attribute, AttributeModifier> map = HashMultimap.<Attribute, AttributeModifier>create();
+		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		
-		if (entitydata != null && equipmentSlot == this.equipmentSlot)
+		if (slot == this.equipmentSlot)
 		{
 			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.poise));
 			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.weight));
