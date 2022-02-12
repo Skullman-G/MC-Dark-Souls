@@ -24,8 +24,9 @@ public abstract class RenderItemMirror extends RenderItemBase
 	@Override
 	public void renderItemInHand(ItemStack stack, LivingData<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
 	{
-		PublicMatrix4f modelMatrix = new PublicMatrix4f(hand == InteractionHand.OFF_HAND ? leftHandCorrectionMatrix : correctionMatrix);
-		String heldingHand = hand == InteractionHand.MAIN_HAND ? "Tool_R" : "Tool_L";
+		boolean isMainHand = hand == InteractionHand.MAIN_HAND;
+		PublicMatrix4f modelMatrix = new PublicMatrix4f(isMainHand ? this.correctionMatrix : this.leftHandCorrectionMatrix);
+		String heldingHand = isMainHand ? "Tool_R" : "Tool_L";
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
