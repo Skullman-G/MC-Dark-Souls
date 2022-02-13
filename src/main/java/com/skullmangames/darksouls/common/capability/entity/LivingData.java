@@ -134,7 +134,8 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		if (this.inaction)
 		{
 			this.currentMotion = LivingMotion.IDLE;
-		} else
+		}
+		else
 		{
 			this.updateMotion();
 			if (!animator.compareMotion(currentMotion))
@@ -257,9 +258,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();
 		ItemCapability shield = ModCapabilities.getItemCapability(stack);
-		if (item.getUseAnimation(stack) != UseAnim.BLOCK && !(shield instanceof IShield)) return false;
-		return item.getUseDuration(stack)
-				- this.orgEntity.getUseItemRemainingTicks() >= 5;
+		return item.getUseAnimation(stack) == UseAnim.BLOCK || shield instanceof IShield;
 	}
 
 	public boolean blockingAttack(IExtendedDamageSource damageSource)

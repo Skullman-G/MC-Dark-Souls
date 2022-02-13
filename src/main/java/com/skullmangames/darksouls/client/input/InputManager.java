@@ -13,9 +13,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -37,7 +35,6 @@ import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -308,19 +305,6 @@ public class InputManager
 		}
 		
 		@SubscribeEvent
-		public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
-		{
-			MeleeWeaponCap weaponCap = ModCapabilities.getWeaponCapability(event.getItemStack());
-			if (weaponCap == null) return;
-			if (event.getHand() == InteractionHand.MAIN_HAND)
-			{
-				if (ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem()) == null) return;
-				event.setCanceled(true);
-			}
-			event.setCancellationResult(weaponCap.onUse(event.getPlayer(), event.getHand()));
-		}
-		
-		@SubscribeEvent
 		public static void onMouseInput(RawMouseEvent event)
 		{
 			if (minecraft.player != null && minecraft.getOverlay() == null && minecraft.screen == null)
@@ -446,6 +430,12 @@ public class InputManager
 					inputManager.player.yRot = rot;
 					event.getInput().forwardImpulse = forward;
 					event.getInput().leftImpulse = left;
+					
+					if (inputManager.playerdata.isBlocking())
+					{
+						event.getInput().leftImpulse *= 20F;
+						event.getInput().forwardImpulse *= 20F;
+					}
 				}
 			}
 		}

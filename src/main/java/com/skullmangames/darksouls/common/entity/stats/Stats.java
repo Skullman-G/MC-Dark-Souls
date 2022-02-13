@@ -68,7 +68,7 @@ public class Stats
 	
 	public int getStatValue(Stat stat)
 	{
-		return statValues.getOrDefault(stat.toString(), 11);
+		return statValues.getOrDefault(stat.toString(), 10);
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)

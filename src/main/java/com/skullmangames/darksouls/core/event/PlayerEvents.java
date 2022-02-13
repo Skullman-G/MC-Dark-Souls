@@ -6,7 +6,9 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
@@ -67,6 +69,15 @@ public class PlayerEvents
 	public static void playerLogOutEvent(PlayerLoggedOutEvent event)
 	{
 		PlayerData<?> playerdata = (PlayerData<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerdata == null) return;
+		playerdata.onSave();
+	}
+	
+	@SubscribeEvent
+	public static void playerDeathEvent(LivingDeathEvent event)
+	{
+		if (!(event.getEntityLiving() instanceof ServerPlayer)) return;
+		PlayerData<?> playerdata = (PlayerData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerdata == null) return;
 		playerdata.onSave();
 	}

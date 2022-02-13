@@ -11,8 +11,6 @@ import net.minecraft.world.InteractionResultHolder;
 
 public class ItemUser
 {
-	//private static final Random random = new Random();
-	
 	public static InteractionResultHolder<ItemStack> startUsing(IHaveDarkSoulsUseAction item, Level level, Player playerentity, InteractionHand hand)
 	{
 	    playerentity.startUsingItem(hand);

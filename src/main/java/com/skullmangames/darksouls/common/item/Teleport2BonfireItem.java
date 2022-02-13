@@ -59,7 +59,7 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
 	{
 		AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
-		AttributeModifier speedmodifier = new AttributeModifier(SPEED_MODIFIER_CASTING_UUID, "item use speed reduction", -speed.getValue(), Operation.ADDITION);
+		AttributeModifier speedmodifier = new AttributeModifier(SPEED_MODIFIER_CASTING_UUID, "item use speed reduction", 0, Operation.MULTIPLY_TOTAL);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) == null) speed.addTransientModifier(speedmodifier);
 		return ItemUser.startUsing(this, level, player, hand);
 	}
@@ -76,11 +76,8 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	{
 		AttributeInstance speed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) != null) speed.removeModifier(SPEED_MODIFIER_CASTING_UUID);
-		
 		Player playerentity = livingentity instanceof Player ? (Player)livingentity : null;
-	      
-	    // SERVER SIDE
-	    if (livingentity instanceof ServerPlayer)
+	    if (!livingentity.level.isClientSide)
 	    {
 	    	ServerPlayer serverplayerentity = (ServerPlayer)livingentity;
 	    	PlayerData<?> playerdata = (PlayerData<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);

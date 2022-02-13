@@ -55,7 +55,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 		{
 			currentMotion = LivingMotion.DEATH;
 		}
-		else if (this.orgEntity.isUsingItem())
+		else if (this.orgEntity.isUsingItem() && this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof IHaveDarkSoulsUseAction)
 		{
 			ItemStack useitem = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand());
 			if (useitem.getItem() instanceof IHaveDarkSoulsUseAction)
@@ -74,24 +74,6 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 						
 					case SOUL_CONTAINER:
 						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					default:
-						break;
-				}
-			}
-			else
-			{
-				UseAnim useaction = useitem.getUseAnimation();
-				
-				switch (useaction)
-				{
-					case DRINK:
-						this.currentMotion = LivingMotion.DRINKING;
-						break;
-						
-					case EAT:
-						this.currentMotion = LivingMotion.EATING;
 						break;
 						
 					default:
@@ -179,6 +161,14 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 						
 					case SPEAR:
 						this.currentMixMotion = LivingMotion.AIMING;
+						break;
+						
+					case DRINK:
+						this.currentMixMotion = LivingMotion.DRINKING;
+						break;
+						
+					case EAT:
+						this.currentMixMotion = LivingMotion.EATING;
 						break;
 						
 					default:

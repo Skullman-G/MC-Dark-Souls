@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
@@ -48,6 +49,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -57,6 +59,7 @@ import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -91,6 +94,25 @@ public class EntityEvents
 				unInitializedEntitiesServer.add(entitydata);
 			}	
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
+	{
+		MeleeWeaponCap weaponCap = ModCapabilities.getWeaponCapability(event.getItemStack());
+		if (weaponCap == null) return;
+		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem()) != null)
+		{
+			event.setCanceled(true);
+			return;
+		}
+		event.setCancellationResult(weaponCap.onUse(event.getPlayer(), event.getHand()));
+	}
+	
+	@SubscribeEvent
+	public static void onStartUsingItem(LivingEntityUseItemEvent.Start event)
+	{
+		if (ModCapabilities.getWeaponCapability(event.getItem()) != null) event.setDuration(72000);
 	}
 	
 	@SubscribeEvent
@@ -317,6 +339,7 @@ public class EntityEvents
 			PlayerData<?> playerdata = (PlayerData<?>)entitydata;
 			playerdata.setHumanity(0);
 			playerdata.setHuman(false);
+			playerdata.onSave();
 		}
 		
 		if (entitydata.isClientSide()) entitydata.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);

@@ -70,7 +70,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	public void performDodge()
 	{
 		float e = this.getEncumbrance();
-		System.out.print("\n"+e);
 		this.animator.playAnimation(Animations.BIPED_DODGE, e);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(Animations.BIPED_DODGE, this.orgEntity.getId(), e), this.orgEntity);
 		
@@ -242,7 +241,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	@Override
 	public ServerPlayer getOriginalEntity()
 	{
-		return orgEntity;
+		return this.orgEntity;
 	}
 	
 	@Override
