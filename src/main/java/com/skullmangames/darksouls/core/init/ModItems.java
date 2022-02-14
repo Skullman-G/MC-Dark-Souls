@@ -92,6 +92,18 @@ public class ModItems
 	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 10, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_HELM = ITEMS.register("lordran_warrior_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "lordran_warrior_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_ARMOR = ITEMS.register("lordran_warrior_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "lordran_warrior_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_WAISTCLOTH = ITEMS.register("lordran_warrior_waistcloth", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "lordran_warrior_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_BOOTS = ITEMS.register("lordran_warrior_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "lordran_warrior_set", new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -143,6 +155,8 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.UNDEAD_BONE_SHARD.get());
 		DESCRIPTION_ITEMS.add(ModItems.DEMON_GREAT_HAMMER.get());
 		DESCRIPTION_ITEMS.add(ModItems.HEATER_SHIELD.get());
+		DESCRIPTION_ITEMS.add(ModItems.WINGED_SPEAR.get());
+		DESCRIPTION_ITEMS.add(ModItems.ZWEIHANDER.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
@@ -152,5 +166,10 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.DINGY_HOOD.get());
 		DESCRIPTION_ITEMS.add(ModItems.DINGY_ROBE.get());
 		DESCRIPTION_ITEMS.add(ModItems.BLOOD_STAINED_SKIRT.get());
+		
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_HELM.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_ARMOR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_BOOTS.get());
 	}
 }

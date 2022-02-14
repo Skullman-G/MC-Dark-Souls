@@ -30,6 +30,10 @@
 	"item.darksouls.blood_stained_skirt": "Blood Stained Skirt",
 	"item.darksouls.winged_spear": "Winged Spear",
 	"item.darksouls.zweihander": "Zweihander",
+	"item.darksouls.lordran_warrior_helm": "Lordran Warrior Helm",
+	"item.darksouls.lordran_warrior_armor": "Lordran Warrior Armor",
+	"item.darksouls.lordran_warrior_waistcloth": "Lordran Warrior Waistcloth",
+	"item.darksouls.lordran_warrior_boots": "Lordran Warrior Boots",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -96,6 +100,10 @@
 	"tooltip.darksouls.chainmail_boots.extended": "Chainmail boots of thin interlinking rings of steel. It is common throughout the human world since it can be easily produced, it is not too heavy, and offers good defense. Knights may favor flashy armor, but for warriors on the battlefield, anything is fine as long as it keeps them alive.",
 	"tooltip.darksouls.winged_spear.extended": "A long-hilted spear with a barbed point. Long reach, and can be used with shield up. Effective against hard exteriors, and hits for high damage at the right moment of an enemy's swing. But the hit radius is small, and it is easily blocked by shields.",
 	"tooltip.darksouls.zweihander.extended": "One of the gigantic straight greatswords. As the name suggests, the Zweihander is held with two hands, but its wielder must still be inhumanly strong. It is this great weight that sends foes flying when hit solidly.",
+	"tooltip.darksouls.lordran_warrior_helm.extended": "Helm worn by the warriors of Lordran. Although it is made of iron, it is old, battered and worn out. It is wise to wear a sturdy form of head protection against arrows and other physical threats.",
+	"tooltip.darksouls.lordran_warrior_armor.extended": "Armor worn by the warriors of Lordran. It is made of thick leather that is tattered with age.",
+	"tooltip.darksouls.lordran_warrior_waistcloth.extended": "Waistcloth worn by the warriors of Lordran. It is so tattered that it barely serves its purpose anymore.",
+	"tooltip.darksouls.lordran_warrior_boots.extended": "Boots worn by the warriors of Lordran. Although only one of them is left.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	
