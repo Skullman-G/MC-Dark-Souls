@@ -34,6 +34,7 @@
 	"item.darksouls.lordran_warrior_armor": "Lordran Warrior Armor",
 	"item.darksouls.lordran_warrior_waistcloth": "Lordran Warrior Waistcloth",
 	"item.darksouls.lordran_warrior_boots": "Lordran Warrior Boots",
+	"item.darksouls.longsword": "Longsword",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -104,6 +105,7 @@
 	"tooltip.darksouls.lordran_warrior_armor.extended": "Armor worn by the warriors of Lordran. It is made of thick leather that is tattered with age.",
 	"tooltip.darksouls.lordran_warrior_waistcloth.extended": "Waistcloth worn by the warriors of Lordran. It is so tattered that it barely serves its purpose anymore.",
 	"tooltip.darksouls.lordran_warrior_boots.extended": "Boots worn by the warriors of Lordran. Although only one of them is left.",
+	"tooltip.darksouls.longsword.extended": "Widely-used standard straight sword, only matched in ubiquity by the shortsword. An accessible sword which inflicts consistent regular damage and high slash damage, making it applicable to a variety of situations.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

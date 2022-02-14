@@ -8,7 +8,8 @@ public class Colliders
 	public static final Collider BODY = new Collider(0.5F, 0.7F, 0.7F, 0F, 1.0F, -0.6F);
 	public static final Collider BODY_SHOCKWAVE = new Collider(2.0F, 0.7F, 2.8F, 0F, 1.0F, -0.6F);
 	public static final Collider FIST = new Collider(0.4F, 0.4F, 0.4F, 0F, 0F, 0F);
-	public static final Collider SWORD = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
+	public static final Collider SHORTSWORD = new Collider(0.75F, 0.55F, 0.85F, 0F, 0F, -0.25F);
+	public static final Collider LONGSWORD = new Collider(0.75F, 0.65F, 0.85F, 0F, 0F, -0.25F);
 	public static final Collider BROKEN_SWORD = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
 	public static final Collider TOOL = new Collider(0.4F, 0.4F, 0.55F, 0F, 0.0F, 0F);
 	public static final Collider GREAT_HAMMER = new Collider(0.6F, 0.6F, 0.7F, 0.0F, 0.3F, -1.9F);

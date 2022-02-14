@@ -104,6 +104,9 @@ public class ModItems
 	public static final RegistryObject<Item> LORDRAN_WARRIOR_BOOTS = ITEMS.register("lordran_warrior_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "lordran_warrior_set", new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
+	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -157,6 +160,7 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.HEATER_SHIELD.get());
 		DESCRIPTION_ITEMS.add(ModItems.WINGED_SPEAR.get());
 		DESCRIPTION_ITEMS.add(ModItems.ZWEIHANDER.get());
+		DESCRIPTION_ITEMS.add(ModItems.LONGSWORD.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);

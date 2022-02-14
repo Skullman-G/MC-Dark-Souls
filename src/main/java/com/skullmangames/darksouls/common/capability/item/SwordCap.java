@@ -57,7 +57,7 @@ public class SwordCap extends MeleeWeaponCap
 	@Override
 	public Collider getWeaponCollider()
 	{
-		return Colliders.SWORD;
+		return Colliders.SHORTSWORD;
 	}
 	
 	@OnlyIn(Dist.CLIENT)

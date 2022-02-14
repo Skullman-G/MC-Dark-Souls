@@ -66,7 +66,7 @@ public class CrestfallenWarrior extends QuestEntity
 		switch (slot)
 		{
 			default: return Items.AIR;
-			case MAINHAND: return Items.IRON_SWORD;
+			case MAINHAND: return ModItems.LONGSWORD.get();
 			case OFFHAND: return ModItems.HEATER_SHIELD.get();
 			
 			case CHEST: return Items.CHAINMAIL_CHESTPLATE;
