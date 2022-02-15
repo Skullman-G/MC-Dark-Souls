@@ -111,6 +111,9 @@ public class ModItems
 	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 6.5F, -3.1F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_TOOLS)));
 	
+	public static final RegistryObject<Item> SPEAR = ITEMS.register("spear", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -166,6 +169,7 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.ZWEIHANDER.get());
 		DESCRIPTION_ITEMS.add(ModItems.LONGSWORD.get());
 		DESCRIPTION_ITEMS.add(ModItems.BATTLE_AXE.get());
+		DESCRIPTION_ITEMS.add(ModItems.SPEAR.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);

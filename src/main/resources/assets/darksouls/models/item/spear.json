@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "darksouls:items/winged_spear"
+		"layer0": "darksouls:items/spear"
 	},
 	"display": {
 		"thirdperson_righthand": {
