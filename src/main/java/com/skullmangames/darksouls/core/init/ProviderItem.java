@@ -53,6 +53,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new AxeCap(Items.GOLDEN_AXE, 8, 10, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.DIAMOND_AXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
+		putCap(new AxeCap(ModItems.BATTLE_AXE.get(), 12, 8, Scaling.C, Scaling.D));
 		
 		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, Scaling.C, Scaling.D));

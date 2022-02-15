@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -107,6 +108,9 @@ public class ModItems
 	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
+	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 6.5F, -3.1F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_TOOLS)));
+	
 	//Block Items
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -161,6 +165,7 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.WINGED_SPEAR.get());
 		DESCRIPTION_ITEMS.add(ModItems.ZWEIHANDER.get());
 		DESCRIPTION_ITEMS.add(ModItems.LONGSWORD.get());
+		DESCRIPTION_ITEMS.add(ModItems.BATTLE_AXE.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
