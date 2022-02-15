@@ -40,7 +40,7 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_MATERIALS)));
 	
 	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new HumanityItem(5, new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
+			.tab(ModTabs.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
 			.tab(CreativeModeTab.TAB_BREWING)));
@@ -52,7 +52,7 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_TOOLS)));
 	
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(1, new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
+			.tab(ModTabs.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
@@ -73,10 +73,10 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
+			.tab(ModTabs.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> LARGE_SOUL_OF_A_LOST_UNDEAD = ITEMS.register("large_soul_of_a_lost_undead", () -> new SoulContainerItem(400, new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
+			.tab(ModTabs.TAB_SOULS)));
 	
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set", new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
@@ -112,6 +112,9 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_TOOLS)));
 	
 	public static final RegistryObject<Item> SPEAR = ITEMS.register("spear", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
+			.tab(CreativeModeTab.TAB_COMBAT)));
+	
+	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new ShieldItem(new Item.Properties()
 			.tab(CreativeModeTab.TAB_COMBAT)));
 	
 	//Block Items

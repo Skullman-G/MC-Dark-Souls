@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
+import com.skullmangames.darksouls.common.capability.item.BowCap;
+import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.LongswordCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
@@ -12,6 +14,7 @@ import com.skullmangames.darksouls.common.capability.item.SpearCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
+import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
@@ -75,17 +78,21 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, Scaling.D, Scaling.C));
 		putCap(new SpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
-		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.5F));
+		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.7F));
 		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE, 1F));
+		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), 6, 0, Scaling.D, Scaling.NONE, 0.65F));
 		
 		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, Scaling.C, Scaling.D));
+		
+		putCap(new BowCap(Items.BOW, 3, 7, 12, Scaling.D, Scaling.A));
+		
+		putCap(new CrossbowCap(Items.CROSSBOW, 4, 10, 8, Scaling.NONE, Scaling.NONE));
+		
+		putCap(new TridentCap(Items.TRIDENT, 5, 11, 15, Scaling.NONE, Scaling.NONE));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, VanillaArmorCap::new);
-		/*CAPABILITY_BY_CLASS.put(BowItem.class, BowCapability::new);
-		CAPABILITY_BY_CLASS.put(CrossbowItem.class, CrossbowCapability::new);
-		CAPABILITY_BY_CLASS.put(TridentItem.class, TridentCapability::new);*/
 	}
 	
 	private static void putCap(ItemCapability cap)

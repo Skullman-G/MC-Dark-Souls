@@ -3,7 +3,6 @@ package com.skullmangames.darksouls;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,7 +30,6 @@ import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
-import com.skullmangames.darksouls.common.item.SoulsGroup;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
@@ -65,7 +63,6 @@ public class DarkSouls
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
 	public static IngameConfig CLIENT_INGAME_CONFIG;
-	public static final CreativeModeTab TAB_SOULS = new SoulsGroup("soulstab");
 
 	public DarkSouls()
 	{
