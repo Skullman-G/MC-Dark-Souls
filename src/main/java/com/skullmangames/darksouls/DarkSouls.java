@@ -3,6 +3,8 @@ package com.skullmangames.darksouls;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,6 +65,14 @@ public class DarkSouls
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
 	public static IngameConfig CLIENT_INGAME_CONFIG;
+	public static final CreativeModeTab TAB = new CreativeModeTab("darksouls")
+	{
+		@Override
+		public ItemStack makeIcon()
+		{
+			return ModItems.DARKSIGN.get().getDefaultInstance();
+		}
+	};
 
 	public DarkSouls()
 	{
