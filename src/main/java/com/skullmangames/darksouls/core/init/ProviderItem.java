@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
+import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
 import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
@@ -48,8 +49,10 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		// WEAPONS
 		//putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
+		// Great Hammers
 		putCap(new GreatHammerCap(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
 		
+		// Axes
 		putCap(new AxeCap(Items.WOODEN_AXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.STONE_AXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.IRON_AXE, 10, 10, Scaling.C, Scaling.D));
@@ -58,6 +61,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new AxeCap(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new AxeCap(ModItems.BATTLE_AXE.get(), 12, 8, Scaling.C, Scaling.D));
 		
+		// Hammers
 		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.IRON_PICKAXE, 10, 10, Scaling.C, Scaling.D));
@@ -65,6 +69,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new HammerCap(Items.DIAMOND_PICKAXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.NETHERITE_PICKAXE, 15, 15, Scaling.C, Scaling.D));
 		
+		// Straight Swords
 		putCap(new SwordCap(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
@@ -75,19 +80,26 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
 		putCap(new LongswordCap(ModItems.LONGSWORD.get(), 10, 10, Scaling.C, Scaling.C));
 		
+		// Spears
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, Scaling.D, Scaling.C));
 		putCap(new SpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
-		putCap(new ShieldCap(Items.SHIELD, 8, 0, Scaling.D, Scaling.NONE, 0.7F));
-		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), 8, 0, Scaling.D, Scaling.NONE, 1F));
-		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), 6, 0, Scaling.D, Scaling.NONE, 0.65F));
+		// Shields
+		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, 0.7F, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.NORMAL, 1F, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, 0.65F, 6, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, 1F, 11, 0, Scaling.D, Scaling.NONE));
 		
+		// Ultra Greatswords
 		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, Scaling.C, Scaling.D));
 		
+		// Bows
 		putCap(new BowCap(Items.BOW, 3, 7, 12, Scaling.D, Scaling.A));
 		
+		// Crossbows
 		putCap(new CrossbowCap(Items.CROSSBOW, 4, 10, 8, Scaling.NONE, Scaling.NONE));
 		
+		// Tridents
 		putCap(new TridentCap(Items.TRIDENT, 5, 11, 15, Scaling.NONE, Scaling.NONE));
 		
 		// CLASS

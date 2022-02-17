@@ -79,6 +79,9 @@ public class ModItems
 	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new ShieldItem(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new ShieldItem(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	// Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set", new Item.Properties()
@@ -193,6 +196,7 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.LONGSWORD.get());
 		DESCRIPTION_ITEMS.add(ModItems.BATTLE_AXE.get());
 		DESCRIPTION_ITEMS.add(ModItems.SPEAR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_SHIELD.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);

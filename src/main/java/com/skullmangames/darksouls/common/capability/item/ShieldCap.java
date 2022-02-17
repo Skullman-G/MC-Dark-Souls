@@ -9,11 +9,13 @@ import net.minecraft.world.item.Item;
 public class ShieldCap extends MeleeWeaponCap
 {
 	private final float physicalDefense;
+	private final ShieldType shieldType;
 	
-	public ShieldCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float physicalDefense)
+	public ShieldCap(Item item, ShieldType shieldType, float physicalDefense, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
 		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
 		this.physicalDefense = Math.min(physicalDefense, 1F);
+		this.shieldType = shieldType;
 	}
 	
 	@Override
@@ -33,6 +35,6 @@ public class ShieldCap extends MeleeWeaponCap
 	@Override
 	public ShieldType getShieldType()
 	{
-		return ShieldType.NORMAL;
+		return this.shieldType;
 	}
 }
