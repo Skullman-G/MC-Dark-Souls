@@ -86,23 +86,27 @@ public class ModItems
 	// Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
-	
 	public static final RegistryObject<Item> DINGY_ROBE = ITEMS.register("dingy_robe", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.CHEST, "dingy_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
-	
 	public static final RegistryObject<Item> BLOOD_STAINED_SKIRT = ITEMS.register("blood_stained_skirt", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.LEGS, "dingy_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> LORDRAN_WARRIOR_HELM = ITEMS.register("lordran_warrior_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "lordran_warrior_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
-	
-	public static final RegistryObject<Item> LORDRAN_WARRIOR_ARMOR = ITEMS.register("lordran_warrior_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "lordran_warrior_set", new Item.Properties()
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_ARMOR = ITEMS.register("lordran_warrior_armor", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.CHEST, "lordran_warrior_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_WAISTCLOTH = ITEMS.register("lordran_warrior_waistcloth", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.LEGS, "lordran_warrior_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_BOOTS = ITEMS.register("lordran_warrior_boots", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.FEET, "lordran_warrior_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> LORDRAN_WARRIOR_WAISTCLOTH = ITEMS.register("lordran_warrior_waistcloth", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "lordran_warrior_set", new Item.Properties()
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_HELM = ITEMS.register("lordran_soldier_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "lordran_soldier_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
-	
-	public static final RegistryObject<Item> LORDRAN_WARRIOR_BOOTS = ITEMS.register("lordran_warrior_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "lordran_warrior_set", new Item.Properties()
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_ARMOR = ITEMS.register("lordran_soldier_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "lordran_soldier_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_WAISTCLOTH = ITEMS.register("lordran_soldier_waistcloth", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.LEGS, "lordran_soldier_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_BOOTS = ITEMS.register("lordran_soldier_boots", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.FEET, "lordran_soldier_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
@@ -214,5 +218,10 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_ARMOR.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_BOOTS.get());
+		
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_HELM.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_ARMOR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_BOOTS.get());
 	}
 }
