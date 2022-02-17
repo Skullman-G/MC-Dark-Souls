@@ -6,6 +6,7 @@
 	"item.darksouls.estus_shard": "Estus Shard",
 	"item.darksouls.humanity": "Humanity",
 	"item.darksouls.hollow_spawn_egg": "Hollow Spawn Egg",
+	"item.darksouls.hollow_lordran_warrior_spawn_egg": "Hollow Warrior of Lordran Spawn Egg",
 	"item.darksouls.broken_straight_sword": "Broken Straight Sword",
 	"item.darksouls.homeward_bone": "Homeward Bone",
 	"item.darksouls.undead_bone_shard": "Undead Bone Shard",
@@ -57,6 +58,7 @@
 	"entity.darksouls.asylum_demon": "Asylum Demon",
 	"entity.darksouls.crestfallen_warrior": "Crestfallen Warrior",
 	"entity.darksouls.anastacia_of_astora": "Anastacia of Astora",
+	"entity.darksouls.hollow_lordran_warrior": "Hollow Warrior of Lordran",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",

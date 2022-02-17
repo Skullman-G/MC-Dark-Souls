@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 
 import net.minecraft.resources.ResourceLocation;
@@ -24,23 +25,27 @@ public class ModEntities
 
 	public static final RegistryObject<EntityType<FireKeeper>> FIRE_KEEPER = register("fire_keeper",
 			EntityType.Builder.<FireKeeper>of(FireKeeper::new, MobCategory.CREATURE)
-					.sized(0.6F, 1.95F)
-					.canSpawnFarFromPlayer());
+				.sized(0.6F, 1.95F)
+				.canSpawnFarFromPlayer());
 
 	public static final RegistryObject<EntityType<Hollow>> HOLLOW = register("hollow",
 			EntityType.Builder.<Hollow>of(Hollow::new, MobCategory.MONSTER)
-					.sized(0.6F, 1.95F));
+				.sized(0.6F, 1.95F));
+	
+	public static final RegistryObject<EntityType<HollowLordranWarrior>> HOLLOW_LORDRAN_WARRIOR = register("hollow_lordran_warrior",
+			EntityType.Builder.<HollowLordranWarrior>of(HollowLordranWarrior::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F));
 
 	public static final RegistryObject<EntityType<SoulEntity>> SOUL = register("soul",
 			EntityType.Builder.<SoulEntity>of(SoulEntity::new, MobCategory.MISC)
-					.sized(0.5F, 0.5F)
-					.clientTrackingRange(6)
-					.updateInterval(20));
+				.sized(0.5F, 0.5F)
+				.clientTrackingRange(6)
+				.updateInterval(20));
 
 	public static final RegistryObject<EntityType<AsylumDemon>> ASYLUM_DEMON = register("asylum_demon",
 			EntityType.Builder.<AsylumDemon>of(AsylumDemon::new, MobCategory.MONSTER)
-					.sized(3.5F, 7.7F)
-					.canSpawnFarFromPlayer());
+				.sized(3.5F, 7.7F)
+				.canSpawnFarFromPlayer());
 	
 	public static final RegistryObject<EntityType<CrestfallenWarrior>> CRESTFALLEN_WARRIOR = register("crestfallen_warrior",
 			EntityType.Builder.<CrestfallenWarrior>of(CrestfallenWarrior::new, MobCategory.CREATURE)
