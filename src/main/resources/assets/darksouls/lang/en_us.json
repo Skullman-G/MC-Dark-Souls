@@ -44,6 +44,7 @@
 	"item.darksouls.lordran_soldier_armor": "Lordran Soldier Armor",
 	"item.darksouls.lordran_soldier_waistcloth": "Lordran Soldier Waistcloth",
 	"item.darksouls.lordran_soldier_boots": "Lordran Soldier Boots",
+	"item.darksouls.hollow_lordran_soldier_spawn_egg": "Hollow Soldier of Lordran Spawn Egg",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -63,6 +64,7 @@
 	"entity.darksouls.crestfallen_warrior": "Crestfallen Warrior",
 	"entity.darksouls.anastacia_of_astora": "Anastacia of Astora",
 	"entity.darksouls.hollow_lordran_warrior": "Hollow Warrior of Lordran",
+	"entity.darksouls.hollow_lordran_soldier": "Hollow Soldier of Lordran",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",

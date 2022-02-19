@@ -6,18 +6,14 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -27,17 +23,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.npc.AbstractVillager;
 
-public class Hollow extends PathfinderMob implements RangedAttackMob
+public class Hollow extends ArmoredMob implements RangedAttackMob
 {
-	public Hollow(EntityType<? extends PathfinderMob> p_i48576_1_, Level p_i48576_2_)
+	public Hollow(EntityType<? extends Hollow> entitytype, Level level)
 	{
-		super(p_i48576_1_, p_i48576_2_);
+		super(entitytype, level);
 	}
 	
 	public static AttributeSupplier.Builder createAttributes()
@@ -58,44 +55,29 @@ public class Hollow extends PathfinderMob implements RangedAttackMob
 	@Override
 	protected void registerGoals()
 	{
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Hollow.class));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowLordranWarrior.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowLordranSoldier.class, true));
 	}
 	
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_)
+	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
-		if (!this.getMainHandItem().isEmpty()) return;
-		
-		Random random = this.level.random;
-		ItemStack item;
-		int weaponid = random.nextInt(4);
-		
-		if (weaponid <= 1)
+		if (slot != EquipmentSlot.MAINHAND) return null;
+		if (percentage <= 75)
 		{
-			item = new ItemStack(ModItems.BROKEN_STRAIGHT_SWORD.get());
+			return ModItems.BROKEN_STRAIGHT_SWORD.get();
 		}
-		else if (weaponid <= 2)
+		else if (percentage <= 90)
 		{
-			item = new ItemStack(ModItems.STRAIGHT_SWORD_HILT.get());
+			return Items.BOW;
 		}
 		else
 		{
-			item = new ItemStack(Items.BOW);
+			return ModItems.STRAIGHT_SWORD_HILT.get();
 		}
-		
-		this.setItemSlot(EquipmentSlot.MAINHAND, item);
-		this.setDropChance(EquipmentSlot.MAINHAND, 0.04F);
-	}
-	
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData data, CompoundTag nbt)
-	{
-		data = super.finalizeSpawn(level, difficulty, type, data, nbt);
-		this.populateDefaultEquipmentSlots(difficulty);
-		
-		return data;
 	}
 	
 	@Override
@@ -108,12 +90,6 @@ public class Hollow extends PathfinderMob implements RangedAttackMob
 	protected SoundEvent getDeathSound()
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
-	}
-	
-	@Override
-	public boolean canBeCollidedWith()
-	{
-		return true;
 	}
 
 	@Override
@@ -140,6 +116,6 @@ public class Hollow extends PathfinderMob implements RangedAttackMob
 	@Override
 	protected int getExperienceReward(Player player)
 	{
-		return 10;
+		return 20;
 	}
 }

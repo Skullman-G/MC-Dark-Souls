@@ -33,6 +33,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(EntityType.PLAYER, (entity) -> ServerPlayerData::new);
 		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowData::new);
 		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), (entity) -> SimpleHumanoidData::new);
+		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> SimpleHumanoidData::new);
 		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonData::new);
 		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidData::new);
 		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidData::new);

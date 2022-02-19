@@ -7,6 +7,8 @@ import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLo
 import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
+import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.QuestEntity;
 
 import net.minecraft.world.entity.EntityType;
@@ -58,7 +60,8 @@ public class ModAttributes
 	{
 		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeper.createAttributes().build());
 		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
-		event.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), Hollow.createAttributes().build());
+		event.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), HollowLordranWarrior.createAttributes().build());
+		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
 		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), QuestEntity.createAttributes().build());
@@ -66,6 +69,7 @@ public class ModAttributes
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
 	{
+		general(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), event);
 		general(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), event);
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.ASYLUM_DEMON.get(), event);

@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.entity.AsylumDemon;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 
@@ -34,6 +35,10 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<HollowLordranWarrior>> HOLLOW_LORDRAN_WARRIOR = register("hollow_lordran_warrior",
 			EntityType.Builder.<HollowLordranWarrior>of(HollowLordranWarrior::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F));
+	
+	public static final RegistryObject<EntityType<HollowLordranSoldier>> HOLLOW_LORDRAN_SOLDIER = register("hollow_lordran_soldier",
+			EntityType.Builder.<HollowLordranSoldier>of(HollowLordranSoldier::new, MobCategory.MONSTER)
 			.sized(0.6F, 1.95F));
 
 	public static final RegistryObject<EntityType<SoulEntity>> SOUL = register("soul",

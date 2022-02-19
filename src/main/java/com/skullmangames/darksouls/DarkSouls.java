@@ -174,6 +174,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution

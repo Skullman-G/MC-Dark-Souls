@@ -20,9 +20,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class HollowLordranWarrior extends ArmoredMob
+public class HollowLordranSoldier extends ArmoredMob
 {
-	public HollowLordranWarrior(EntityType<? extends HollowLordranWarrior> entitytype, Level level)
+	public HollowLordranSoldier(EntityType<? extends HollowLordranSoldier> entitytype, Level level)
 	{
 		super(entitytype, level);
 	}
@@ -57,21 +57,26 @@ public class HollowLordranWarrior extends ArmoredMob
 	{
 		if (percentage <= 75)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return Items.IRON_SWORD;
-			else if (slot == EquipmentSlot.OFFHAND) return ModItems.CRACKED_ROUND_SHIELD.get();
+			if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
+			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
+		}
+		else if (percentage <= 90)
+		{
+			if (slot == EquipmentSlot.MAINHAND) return ModItems.SPEAR.get();
+			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
 		}
 		else
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.BATTLE_AXE.get();
+			if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
 		}
 		
 		switch (slot)
 		{
 			default: return null;
-			case HEAD: return ModItems.LORDRAN_WARRIOR_HELM.get();
-			case CHEST: return ModItems.LORDRAN_WARRIOR_ARMOR.get();
-			case LEGS: return ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get();
-			case FEET: return ModItems.LORDRAN_WARRIOR_BOOTS.get();
+			case HEAD: return ModItems.LORDRAN_SOLDIER_HELM.get();
+			case CHEST: return ModItems.LORDRAN_SOLDIER_ARMOR.get();
+			case LEGS: return ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get();
+			case FEET: return ModItems.LORDRAN_SOLDIER_BOOTS.get();
 		}
 	}
 }

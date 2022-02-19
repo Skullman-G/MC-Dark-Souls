@@ -180,7 +180,10 @@ public class ModItems
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_WARRIOR_SPAWN_EGG = ITEMS.register("hollow_lordran_warrior_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_WARRIOR, 0x4f4b40, 0x8f8771, new Item.Properties()
+	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_WARRIOR_SPAWN_EGG = ITEMS.register("hollow_lordran_warrior_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_WARRIOR, 0x2e2103, 0xbd6d1c, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_SOLDIER_SPAWN_EGG = ITEMS.register("hollow_lordran_soldier_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_SOLDIER, 0x7d7d7d, 0xbd6d1c, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

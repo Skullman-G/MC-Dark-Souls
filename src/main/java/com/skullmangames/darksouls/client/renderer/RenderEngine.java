@@ -108,7 +108,8 @@ public class RenderEngine
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
 		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowData>("hollow/hollow"));
-		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, SimpleHumanoidData<HollowLordranWarrior>>("hollow/hollow_lordran_warrior"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, SimpleHumanoidData<HollowLordranWarrior>>("hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, SimpleHumanoidData<HollowLordranWarrior>>("hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidData<CrestfallenWarrior>>("quest_entity/crestfallen_warrior"));
 		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, SimpleHumanoidData<AnastaciaOfAstora>>("quest_entity/anastacia_of_astora"));
 		this.entityRendererMap.put(ModEntities.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
