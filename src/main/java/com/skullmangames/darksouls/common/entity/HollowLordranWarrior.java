@@ -45,6 +45,7 @@ public class HollowLordranWarrior extends ArmoredMob
 	{
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 	
 	@Override

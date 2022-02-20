@@ -47,7 +47,7 @@ public class HollowData extends HumanoidData<Hollow>
 		
 		if (!this.isClientSide())
 		{
-			if (!this.orgEntity.canPickUpLoot()) this.orgEntity.setCanPickUpLoot(this.isArmed());
+			if (!this.orgEntity.canPickUpLoot()) this.orgEntity.setCanPickUpLoot(false);
 		}
 		else ModNetworkManager.sendToServer(new CTSReqSpawnInfo(this.orgEntity.getId()));
 	}

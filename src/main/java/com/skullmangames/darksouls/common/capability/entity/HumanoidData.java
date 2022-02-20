@@ -46,7 +46,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 			{
 				this.setAIAsMounted(this.orgEntity.getControllingPassenger());
 			}
-			else if (isArmed())
+			else if (this.isArmed())
 			{
 				this.setAIAsArmed();
 			}

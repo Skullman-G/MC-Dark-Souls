@@ -278,6 +278,23 @@ public final class Animations
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.72F, 1.2F, 1.8F, true, Colliders.BROKEN_SWORD, "111213", "hollow/jump_attack", "biped")
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	
+	// Hollow Lordran Warrior
+	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/move", "biped", true);
+	
+	public static final AttackAnimation[] HOLLOW_LORDRAN_WARRIOR_TH_LA = new AttackAnimation[]
+			{
+				new AttackAnimation(0.2F, 0.0F, 0.68F, 1.08F, 1.6F, false, "111213", "hollow_lordran_warrior/sword_th_la_1", "biped")
+					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+				new AttackAnimation(0.2F, 0.0F, 0.68F, 1.08F, 1.6F, false, "111213", "hollow_lordran_warrior/sword_th_la_2", "biped")
+					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+			};
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.44F, 0.88F, 1.8F, true, "111213", "hollow_lordran_warrior/dash_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	
 	// Asylum Demon
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
 	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)
