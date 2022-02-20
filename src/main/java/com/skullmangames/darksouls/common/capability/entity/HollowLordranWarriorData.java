@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
@@ -62,6 +63,13 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA))
+					.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
+		}
+		else if (this.orgEntity.getMainHandItem().getItem() == ModItems.BATTLE_AXE.get())
+		{
+			this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA))
 					.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
 		}
 	}

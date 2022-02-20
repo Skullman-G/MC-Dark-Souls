@@ -295,6 +295,14 @@ public final class Animations
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
+	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_LA = new AttackAnimation(0.2F, 0.0F, 0.6F, 1.0F, 2.4F, false, "111213", "hollow_lordran_warrior/axe_la", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA = new AttackAnimation(0.2F, 0.0F, 0.56F, 1.0F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_th_la", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	
 	// Asylum Demon
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
 	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)
