@@ -67,6 +67,27 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
+	@Override
+	public void updateOnServer()
+	{
+		super.updateOnServer();
+		
+		EntityState state = this.getEntityState();
+		if (!this.isCreativeOrSpectator() && (state.canAct() || state.getContactLevel() == 3))
+		{
+			float staminaIncr = 0.3F;
+			if (this.orgEntity.isSprinting()) staminaIncr = -0.1F;
+			else
+			{
+				if (this.getEncumbrance() > 1F) staminaIncr *= 0.7F;
+				else if (this.getEncumbrance() > 0.5F) staminaIncr *= 0.8F;
+				if (this.isBlocking() || this.orgEntity.onClimbable()) staminaIncr *= 0.2F;
+			}
+			
+			this.increaseStamina(staminaIncr);
+		}
+	}
+	
 	public void performDodge()
 	{
 		float e = this.getEncumbrance();
@@ -75,6 +96,13 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		
 		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);
+	}
+	
+	@Override
+	public void setStamina(float value)
+	{
+		if (value == this.stamina) return;
+		super.setStamina(value);
 		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 	}
 	
@@ -107,13 +135,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	}
 	
 	@Override
-	public void updateOnServer()
-	{
-		super.updateOnServer();
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
-	}
-	
-	@Override
 	public void updateMotion() {}
 	
 	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
@@ -131,7 +152,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 		
 		this.increaseStamina(-4.0F);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get(), 1.0F, 1.0F);

@@ -1,10 +1,7 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCStat;
@@ -16,7 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class Stats
 {
-	public static List<Stat> STATS = new ArrayList<>();
+	public static final int STANDARD_LEVEL = 10;
+	public static final List<Stat> STATS = new ArrayList<>();
 	
 	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
 			{
@@ -58,54 +56,63 @@ public class Stats
 		return stat;
 	}
 	
+	public static int getCost(int level)
+	{
+		return level * (10 + level);
+	}
+	
 	public static double getTotalDamageAmount(Player player, int strength, int dex)
 	{
 		return STRENGTH.getModifyValue(player, strength)
 				+ DEXTERITY.getModifyValue(player, dex);
 	}
 	
-	private final Map<String, Integer> statValues = new HashMap<>();
+	private final int[] statValues = new int[STATS.size()];
 	
 	public int getStatValue(Stat stat)
 	{
-		return statValues.getOrDefault(stat.toString(), 10);
+		return this.getStatValue(STATS.indexOf(stat));
+	}
+	
+	public int getStatValue(int index)
+	{
+		return this.statValues[index];
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)
 	{
-		this.statValues.put(stat.toString(), value);
-		stat.onChange(player, value);
+		this.setStatValue(player, STATS.indexOf(stat), value);
 	}
 	
-	public void setStatValue(Player player, String statname, int value)
+	public void setStatValue(Player player, int index, int value)
 	{
-		this.statValues.put(statname, value);
-		for (Stat stat : STATS) if (stat.toString().equals(statname)) stat.onChange(player, value);
+		this.statValues[index] = value;
+		STATS.get(index).onChange(player, value);
 	}
 	
 	public void loadStats(ServerPlayer player, CompoundTag nbt)
 	{
-		for (Stat stat : STATS)
+		for (int i = 0; i < STATS.size(); i++)
 		{
-			int value = nbt.getInt(stat.toString());
-			if (value <= 0) value = 10;
-			this.initStatValue(player, stat.toString(), value);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCStat(player.getId(), stat.toString(), value), player);
+			int value = Math.min(nbt.getInt(STATS.get(i).toString()), 99);
+			if (!player.isCreative()) value = Math.max(value, STANDARD_LEVEL);
+			this.initStatValue(player, i, value);
+			ModNetworkManager.sendToPlayer(new STCStat(player.getId(), i, value), player);
 		}
 	}
 	
-	public void initStatValue(Player player, String statname, int value)
+	public void initStatValue(Player player, int index, int value)
 	{
-		this.statValues.put(statname, value);
-		STATS.forEach((stat) -> { if (stat.toString() == statname) stat.init(player, value); });
+		this.statValues[index] = value;
+		STATS.get(index).init(player, value);
 	}
 	
 	public void saveStats(CompoundTag nbt)
 	{
-		this.statValues.forEach((name, value) ->
+		for (int i = 0; i < STATS.size(); i++)
 		{
-			nbt.putInt(name, value);
-		});
+			nbt.putInt(STATS.get(i).toString(), this.statValues[i]);
+		}
 	}
 	
 	public int getLevel()

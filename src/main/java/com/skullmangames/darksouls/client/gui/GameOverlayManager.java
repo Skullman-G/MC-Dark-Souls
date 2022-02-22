@@ -40,6 +40,10 @@ public class GameOverlayManager
 	
 	public static void registerOverlayElements()
 	{
+		OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
+		OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
+		OverlayRegistry.enableOverlay(ForgeIngameGui.FOOD_LEVEL_ELEMENT, false);
+		
 		OverlayRegistry.registerOverlayTop("Mod Player Health", (gui, pStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())

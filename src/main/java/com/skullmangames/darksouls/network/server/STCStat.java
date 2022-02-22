@@ -13,25 +13,25 @@ import net.minecraftforge.network.NetworkEvent;
 public class STCStat
 {
 	private int entityId;
-	private String name;
+	private int stat;
 	private int value;
 	
-	public STCStat(int entityid, String name, int value)
+	public STCStat(int entityid, int stat, int value)
 	{
 		this.entityId = entityid;
-		this.name = name;
+		this.stat = stat;
 		this.value = value;
 	}
 	
 	public static STCStat fromBytes(FriendlyByteBuf buf)
 	{
-		return new STCStat(buf.readInt(), buf.readUtf(), buf.readInt());
+		return new STCStat(buf.readInt(), buf.readInt(), buf.readInt());
 	}
 	
 	public static void toBytes(STCStat msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
-		buf.writeUtf(msg.name);
+		buf.writeInt(msg.stat);
 		buf.writeInt(msg.value);
 	}
 	
@@ -46,7 +46,7 @@ public class STCStat
 			PlayerData<?> entitydata = (PlayerData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (entitydata == null) return;
 			
-			entitydata.getStats().initStatValue(entitydata.getOriginalEntity(), msg.name, msg.value);
+			entitydata.getStats().initStatValue(entitydata.getOriginalEntity(), msg.stat, msg.value);
 		});
 		
 		ctx.get().setPacketHandled(true);

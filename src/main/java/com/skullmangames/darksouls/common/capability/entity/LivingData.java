@@ -656,8 +656,8 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		FREE(false, false, false, false, true, 0), FREE_CAMERA(true, false, false, false, false, 1),
 		FREE_INPUT(false, false, false, false, true, 3), PRE_DELAY(true, true, false, false, false, 1),
 		CONTACT(true, true, true, false, false, 2), POST_DELAY(true, true, false, false, true, 3),
-		HIT(true, true, false, false, false, 3), DISARMED(true, true, true, false, false, 3),
-		INVINCIBLE(true, true, false, true, false, 3);
+		HIT(true, true, false, false, false, 2), DISARMED(true, true, true, false, false, 2),
+		INVINCIBLE(true, true, false, true, false, 2);
 
 		boolean movementLock;
 		boolean rotationLock;

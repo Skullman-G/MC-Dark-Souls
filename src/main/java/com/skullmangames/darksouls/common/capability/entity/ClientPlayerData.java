@@ -18,8 +18,6 @@ import com.skullmangames.darksouls.network.client.CTSHuman;
 import com.skullmangames.darksouls.network.client.CTSHumanity;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
-import com.skullmangames.darksouls.network.client.CTSSouls;
-import com.skullmangames.darksouls.network.client.CTSStamina;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
 
 import net.minecraft.client.CameraType;
@@ -146,10 +144,6 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 		if (animation == null) return;
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
-		
-		if (this.isCreativeOrSpectator()) return;
-		this.increaseStamina(-4.0F);
-		ModNetworkManager.sendToServer(new CTSStamina(this.stamina));
 	}
 	
 	@Override
@@ -209,6 +203,5 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	{
 		if (this.souls == value) return;
 		super.setSouls(value);
-		ModNetworkManager.sendToServer(new CTSSouls(this.souls));
 	}
 }

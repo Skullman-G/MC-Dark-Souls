@@ -87,7 +87,7 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(matrixstack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
 		this.font.draw(matrixstack, "Souls: " + (this.playerdata.isCreativeOrSpectator() ? "INFINITE" : this.playerdata.getSouls()), firstX, y + 60,
 				this.color);
-		this.font.draw(matrixstack, "Cost: " + this.getCost(), firstX, y + 72, this.color);
+		this.font.draw(matrixstack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);
 		this.font.draw(matrixstack, "Attributes", firstX, y + 128, this.color);
 
 		int textheight = y + 143;
@@ -137,11 +137,6 @@ public class PlayerStatsScreen extends Screen
 		matrixstack.popPose();
 
 		super.render(matrixstack, mouseX, mouseY, partialticks);
-	}
-	
-	protected int getCost()
-	{
-		return this.displayedLevel * (10 + this.displayedLevel);
 	}
 
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)

@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
 import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.MobData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -103,6 +104,10 @@ public class AttackAnimation extends ActionAnimation
 			if (!prevState.shouldDetectCollision())
 			{
 				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F, 0.5F);
+				if (entitydata instanceof ServerPlayerData && !((ServerPlayerData) entitydata).isCreativeOrSpectator())
+				{
+					((ServerPlayerData)entitydata).increaseStamina(-4F);
+				}
 				entitydata.currentlyAttackedEntity.clear();
 			}
 

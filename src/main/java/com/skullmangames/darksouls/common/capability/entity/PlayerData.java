@@ -174,9 +174,9 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		this.stats.setStatValue(this.orgEntity, stat, value);
 	}
 	
-	public void setStatValue(String statname, int value)
+	public void setStatValue(int index, int value)
 	{
-		this.stats.setStatValue(this.orgEntity, statname, value);
+		this.stats.setStatValue(this.orgEntity, index, value);
 	}
 	
 	@Override
@@ -184,12 +184,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	{
 		super.updateOnServer();
 		this.tickSinceLastAction++;
-		
-		if (!this.isCreativeOrSpectator())
-		{
-			this.increaseStamina(this.orgEntity.isSprinting() ? -0.1F
-					: this.isBlocking() ? 0.05F : 0.1F);
-		}
 	}
 	
 	@Override
@@ -227,8 +221,7 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	
 	public void increaseStamina(float increment)
 	{
-		this.stamina = MathUtils.clamp(stamina + increment, 0.0F, this.getMaxStamina());
-		if (increment < 0.0F && this.stamina == 0.0F) this.stamina = -5.0F;
+		this.setStamina(MathUtils.clamp(this.stamina + increment, -5F, this.getMaxStamina()));
 	}
 	
 	public float getStamina()

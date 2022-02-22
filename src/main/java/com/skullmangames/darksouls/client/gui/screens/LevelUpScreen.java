@@ -8,8 +8,7 @@ import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSStat;
-
+import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -51,7 +50,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 				this.levelUp(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(this.getCost());
+			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 10;
@@ -70,7 +69,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 			int statvalue = this.playerdata.getStats().getStatValue(down.getStat());
 			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
 			down.active = this.playerdata.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
-			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(this.getCost());
+			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 		});
 	}
 	
@@ -88,18 +87,14 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	private void accept()
 	{
-		if (this.displayedLevel != this.playerdata.getSoulLevel())
+		int[] additions = new int[Stats.STATS.size()];
+		for (int i = 0; i < additions.length; i++)
 		{
-			this.displayedLevel -= 1;
-			if (!this.playerdata.isCreativeOrSpectator()) this.playerdata.raiseSouls(-this.getCost());
+			int statvalue = this.playerdata.getStats().getStatValue(i);
+			int addition = this.displayedStats.getOrDefault(Stats.STATS.get(i), statvalue) - statvalue;
+			additions[i] = addition;
 		}
-		for (Stat stat : Stats.STATS)
-		{
-			int statvalue = this.playerdata.getStats().getStatValue(stat);
-			int value = this.displayedStats.getOrDefault(stat, statvalue).intValue();
-			this.playerdata.setStatValue(stat, value);
-			ModNetworkManager.sendToServer(new CTSStat(stat.toString(), value));
-		}
+		ModNetworkManager.sendToServer(new CTSLevelUp(additions));
 		super.onClose();
 	}
 	
