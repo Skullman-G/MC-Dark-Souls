@@ -74,7 +74,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 
 			if (ridingEntity instanceof AbstractHorse)
 			{
-				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
+				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
 			}
 		}
 	}

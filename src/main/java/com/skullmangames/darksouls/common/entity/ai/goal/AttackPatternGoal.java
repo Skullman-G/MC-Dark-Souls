@@ -14,7 +14,6 @@ public class AttackPatternGoal extends Goal
 	protected final Mob attacker;
 	protected final MobData<?> mobdata;
 	protected final float minDist;
-	protected float maxDist;
 	protected final int yDist;
 	protected final boolean affectHorizon;
 	
@@ -33,7 +32,6 @@ public class AttackPatternGoal extends Goal
 		this.mobdata = mobdata;
 		this.attacker = this.mobdata.getOriginalEntity();
 		this.minDist = minDist * minDist;
-		this.maxDist = this.minDist;
 		this.yDist = yDist;
 		this.affectHorizon = affectHorizon;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -42,8 +40,18 @@ public class AttackPatternGoal extends Goal
 	public AttackPatternGoal addAttack(AttackInstance attack)
 	{
 		this.attacks.add(attack);
-		if (attack.range > this.maxDist) this.maxDist = attack.range;
 		return this;
+	}
+	
+	private float getMaxDist()
+	{
+		float maxDist = this.minDist;
+		for (int i = 0; i < this.attacks.size(); i++)
+		{
+			AttackInstance a = this.attacks.get(i);
+			if (a.range > maxDist && i != this.currentAttack) maxDist = a.range;
+		}
+		return maxDist;
 	}
 	
 	@Override
@@ -116,7 +124,7 @@ public class AttackPatternGoal extends Goal
     protected boolean isTargetInRange(LivingEntity target)
     {
     	double targetRange = this.getTargetRange(target);
-    	return targetRange <= this.maxDist && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
+    	return targetRange <= this.getMaxDist() && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
     }
     
     protected boolean isValidTarget(LivingEntity attackTarget)

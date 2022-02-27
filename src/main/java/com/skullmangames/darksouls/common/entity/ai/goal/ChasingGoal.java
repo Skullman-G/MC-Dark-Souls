@@ -9,24 +9,22 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.phys.Vec3;
 
 public class ChasingGoal extends Goal
 {
 	protected MobData<?> mobdata;
 	protected final Mob attacker;
 	private final double speedTowardsTarget;
-	private final boolean longMemory;
 	private Path path;
-	private Vec3 targetPos = new Vec3(0D, 0D, 0D);
-	protected final int attackInterval = 20;
+	private double targetX;
+	private double targetY;
+	private double targetZ;
 
-	public ChasingGoal(MobData<?> mobdata, double speedIn, boolean hasLongMemory)
+	public ChasingGoal(MobData<?> mobdata, double speedIn)
 	{
 		this.mobdata = mobdata;
 		this.attacker = mobdata.getOriginalEntity();
 		this.speedTowardsTarget = speedIn;
-		this.longMemory = hasLongMemory;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
@@ -68,6 +66,8 @@ public class ChasingGoal extends Goal
 			this.attacker.setTarget((LivingEntity) null);
 		}
 		
+		this.attacker.setSprinting(false);
+		
 		this.attacker.setAggressive(false);
 		this.attacker.getNavigation().stop();
 	}
@@ -77,6 +77,7 @@ public class ChasingGoal extends Goal
 	{
 		if(this.mobdata.isInaction())
 		{
+			this.attacker.setSprinting(false);
 			this.attacker.getNavigation().stop();
 			return;
 		}
@@ -84,10 +85,10 @@ public class ChasingGoal extends Goal
 		LivingEntity target = this.attacker.getTarget();
 		this.attacker.getLookControl().setLookAt(target, 30F, 30F);
 		
-		if ((this.longMemory || this.attacker.getSensing().hasLineOfSight(target))
-				&& (this.targetPos == new Vec3(0D, 0D, 0D) || target.distanceToSqr(this.targetPos) >= 1D))
+		if (target.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1D)
 		{
-			this.targetPos = new Vec3(target.getX(), target.getBoundingBox().minY, target.getZ());
+			if (this.attacker.distanceToSqr(target) > 50D) this.attacker.setSprinting(true);
+			this.attacker.getNavigation().moveTo(target, 1.0F);
 		}
 	}
 

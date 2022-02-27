@@ -40,8 +40,8 @@ public class HollowLordranSoldierData extends HumanoidData<HollowLordranSoldier>
 	{
 		super.initAnimator(animatorClient);
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_LORDRAN_SOLDIER_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
+		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_SOLDIER_WALK);
+		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_SOLDIER_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
@@ -53,7 +53,7 @@ public class HollowLordranSoldierData extends HumanoidData<HollowLordranSoldier>
 	{
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
-			this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
+			this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
 			
 			this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))

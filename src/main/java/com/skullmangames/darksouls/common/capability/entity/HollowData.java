@@ -92,7 +92,7 @@ public class HollowData extends HumanoidData<Hollow>
 	public void setAIAsArmed(WeaponCategory category)
 	{
 		if (category != WeaponCategory.STRAIGHT_SWORD) return;
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
 		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))

@@ -54,7 +54,7 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 	@Override
 	public void setAIAsArmed(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{

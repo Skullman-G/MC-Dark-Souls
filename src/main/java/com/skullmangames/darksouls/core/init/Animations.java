@@ -305,6 +305,8 @@ public final class Animations
 	
 	// Hollow Lordran Soldier
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_IDLE = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/idle", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/walking", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/run", "biped", true);
 	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]
 			{
