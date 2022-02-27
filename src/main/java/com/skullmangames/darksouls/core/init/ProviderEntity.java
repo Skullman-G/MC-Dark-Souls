@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.EntityData;
 import com.skullmangames.darksouls.common.capability.entity.HollowData;
+import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierData;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorData;
 import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
@@ -34,7 +35,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(EntityType.PLAYER, (entity) -> ServerPlayerData::new);
 		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowData::new);
 		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), (entity) -> HollowLordranWarriorData::new);
-		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> SimpleHumanoidData::new);
+		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> HollowLordranSoldierData::new);
 		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonData::new);
 		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidData::new);
 		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidData::new);

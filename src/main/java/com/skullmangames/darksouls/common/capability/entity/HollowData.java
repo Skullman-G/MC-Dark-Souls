@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -58,6 +59,7 @@ public class HollowData extends HumanoidData<Hollow>
 		super.initAnimator(animatorClient);
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
+		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
@@ -87,9 +89,10 @@ public class HollowData extends HumanoidData<Hollow>
 	}
 	
 	@Override
-	public void setAIAsArmed()
+	public void setAIAsArmed(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+		if (category != WeaponCategory.STRAIGHT_SWORD) return;
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
 		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))

@@ -14,13 +14,12 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
-public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
+public class ArcherGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<T>> extends Goal
 {
 	private final T entity;
-	private final HumanoidData<?> entitydata;
+	private final D entitydata;
 	private LivingEntity chasingTarget;
     private final double moveSpeedAmp;
     private int attackCooldown;
@@ -28,19 +27,19 @@ public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
     private int attackTime = -1;
     private int seeTime;
 
-    public ArcherGoal(HumanoidData<?> entitydata, T p_i47515_1_, double p_i47515_2_, int p_i47515_4_, float p_i47515_5_)
+    public ArcherGoal(D entitydata, double moveSpeedAmp, int attackCooldown, float maxAttackDist)
     {
-        this.entity = p_i47515_1_;
         this.entitydata = entitydata;
-        this.moveSpeedAmp = p_i47515_2_;
-        this.attackCooldown = p_i47515_4_;
-        this.maxAttackDistance = p_i47515_5_ * p_i47515_5_;
+        this.entity = entitydata.getOriginalEntity();
+        this.moveSpeedAmp = moveSpeedAmp;
+        this.attackCooldown = attackCooldown;
+        this.maxAttackDistance = maxAttackDist * maxAttackDist;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
     
-    public void setAttackCooldown(int p_189428_1_)
+    public void setAttackCooldown(int value)
     {
-        this.attackCooldown = p_189428_1_;
+        this.attackCooldown = value;
     }
     
     @Override
@@ -84,7 +83,6 @@ public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
         }
     }
     
-    @SuppressWarnings("deprecation")
 	@Override
     public void tick()
     {
@@ -151,7 +149,7 @@ public class ArcherGoal<T extends Mob & RangedAttackMob> extends Goal
             else if (--this.attackTime <= 0 && this.seeTime >= -60)
             {
             	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_AIM.getId(), entity.getId(), 0.0F, true), entity);
-                this.entity.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.entity, Items.BOW));
+                this.entity.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.entity, item -> item instanceof BowItem));
             }
         }
         else if(this.chasingTarget != null)

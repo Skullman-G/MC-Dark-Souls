@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -9,6 +11,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 
@@ -16,11 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.Difficulty;
 
 public abstract class HumanoidData<T extends Mob> extends MobData<T>
@@ -36,9 +34,9 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		if (!this.isClientSide() && !this.orgEntity.isNoAi())
 		{
 			super.resetCombatAI();
-			Item heldItem = this.orgEntity.getMainHandItem().getItem();
+			WeaponCap heldItem = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
 			
-			if (heldItem instanceof ProjectileWeaponItem && this.orgEntity instanceof RangedAttackMob)
+			if (heldItem.getWeaponCategory() == WeaponCategory.RANGED_WEAPON && this.orgEntity instanceof RangedAttackMob)
 			{
 				this.setAIAsRange();
 			}
@@ -48,7 +46,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 			}
 			else if (this.isArmed())
 			{
-				this.setAIAsArmed();
+				this.setAIAsArmed(heldItem.getWeaponCategory());
 			}
 			else
 			{
@@ -65,12 +63,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 
 	public void setAIAsUnarmed() {}
 
-	public void setAIAsArmed()
-	{
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
-		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
-				.addAttack(new AttackInstance(1, 1.0F, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)));
-	}
+	public void setAIAsArmed(WeaponCategory category) {}
 	
 	public void setAIAsMounted(Entity ridingEntity)
 	{
@@ -81,7 +74,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 
 			if (ridingEntity instanceof AbstractHorse)
 			{
-				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
 			}
 		}
 	}
@@ -90,13 +83,12 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 	public void setAIAsRange()
 	{
 		int cooldown = this.orgEntity.level.getDifficulty() != Difficulty.HARD ? 40 : 20;
-		orgEntity.goalSelector.addGoal(1, new ArcherGoal(this, this.orgEntity, 1.0D, cooldown, 15.0F));
+		orgEntity.goalSelector.addGoal(1, new ArcherGoal(this, 1.0D, cooldown, 15.0F));
 	}
 	
 	public boolean isArmed()
 	{
-		Item heldItem = this.orgEntity.getMainHandItem().getItem();
-		return heldItem instanceof SwordItem || heldItem instanceof DiggerItem || heldItem instanceof TridentItem;
+		return ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()) != null;
 	}
 	
 	public void onMount(boolean isMount, Entity ridingEntity)
@@ -116,7 +108,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		{
 			if(this.isArmed())
 			{
-				this.setAIAsArmed();
+				this.setAIAsArmed(ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()).getWeaponCategory());
 			}
 			else
 			{

@@ -10,7 +10,7 @@ public class RangedWeaponCap extends WeaponCap
 	
 	public RangedWeaponCap(Item item, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, float damage, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, WeaponCategory.NONE_WEAON, requiredStrength, requiredDex, strengthScaling, dexScaling, 0F);
+		super(item, WeaponCategory.RANGED_WEAPON, requiredStrength, requiredDex, strengthScaling, dexScaling, 0F);
 		
 		this.damage = damage;
 		

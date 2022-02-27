@@ -303,6 +303,36 @@ public final class Animations
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
+	// Hollow Lordran Soldier
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_IDLE = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/idle", "biped", true);
+	
+	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]
+			{
+				new AttackAnimation(0.2F, 0.0F, 0.44F, 0.8F, 1.6F, false, "111213", "hollow_lordran_soldier/sword_la_1", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.16F, 0.56F, 1.0F, false, "111213", "hollow_lordran_soldier/sword_la_2", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.44F, 0.6F, 1.6F, false, "111213", "hollow_lordran_soldier/sword_la_3", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+			};
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_DA = new AttackAnimation(0.2F, 0.0F, 0.64F, 0.84F, 2.4F, false, "111213", "hollow_lordran_soldier/sword_da", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST = new AttackAnimation(0.2F, 0.0F, 1.0F, 1.16F, 2.0F, false, "111213", "hollow_lordran_soldier/sword_heavy_thrust", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO = new AttackAnimation(0.2F, false, "hollow_lordran_soldier/sword_thrust_combo", "biped",
+			new Phase(0.0F, 0.52F, 0.72F, 0.72F, "111213", null),
+			new Phase(0.72F, 1.2F, 1.4F, 2.0F, "111213", null))
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	
 	// Asylum Demon
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
 	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)

@@ -99,9 +99,9 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
 	{
-		MeleeWeaponCap weaponCap = ModCapabilities.getWeaponCapability(event.getItemStack());
+		MeleeWeaponCap weaponCap = ModCapabilities.getMeleeWeaponCapability(event.getItemStack());
 		if (weaponCap == null) return;
-		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem()) != null)
+		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getMeleeWeaponCapability(event.getEntityLiving().getOffhandItem()) != null)
 		{
 			event.setCanceled(true);
 			return;
@@ -112,7 +112,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onStartUsingItem(LivingEntityUseItemEvent.Start event)
 	{
-		if (ModCapabilities.getWeaponCapability(event.getItem()) != null) event.setDuration(72000);
+		if (ModCapabilities.getMeleeWeaponCapability(event.getItem()) != null) event.setDuration(72000);
 	}
 	
 	@SubscribeEvent

@@ -17,7 +17,7 @@ public class ScalingStat extends ModifyingStat
 	public double getModifyValue(Player player, int value)
 	{
 		float addition = 0F;
-		MeleeWeaponCap weapon = ModCapabilities.getWeaponCapability(player.getMainHandItem());
+		MeleeWeaponCap weapon = ModCapabilities.getMeleeWeaponCapability(player.getMainHandItem());
 		if (weapon != null)
 		{
 			float weaponBonus = weapon.getScaling(this).getPercentage();

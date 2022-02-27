@@ -36,7 +36,7 @@ public class AttackPatternGoal extends Goal
 		this.maxDist = this.minDist;
 		this.yDist = yDist;
 		this.affectHorizon = affectHorizon;
-		this.setFlags(EnumSet.noneOf(Flag.class));
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
 	public AttackPatternGoal addAttack(AttackInstance attack)
@@ -63,7 +63,7 @@ public class AttackPatternGoal extends Goal
     
     protected boolean canExecuteAttack()
     {
-    	return !mobdata.isInaction() && this.mobdata.getEntityState().getContactLevel() != 3;
+    	return !this.mobdata.isInaction() && this.mobdata.getEntityState().getContactLevel() != 3;
     }
     
     protected boolean canExecuteComboAttack()

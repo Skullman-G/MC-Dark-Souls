@@ -189,6 +189,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
@@ -207,10 +208,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 			if (orgEntity.getDeltaMovement().y < -0.55F)
 			{
 				currentMotion = LivingMotion.FALL;
-			} else if (orgEntity.animationSpeed > 0.01F)
+			}
+			else if (orgEntity.animationSpeed > 0.01F)
 			{
-				currentMotion = LivingMotion.WALKING;
-			} else
+				if (this.orgEntity.isSprinting()) this.currentMotion = LivingMotion.RUNNING;
+				else this.currentMotion = LivingMotion.WALKING;
+			}
+			else
 			{
 				currentMotion = LivingMotion.IDLE;
 			}
@@ -231,7 +235,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public MeleeWeaponCap getHeldWeaponCapability(InteractionHand hand)
 	{
-		return ModCapabilities.getWeaponCapability(this.orgEntity.getItemInHand(hand));
+		return ModCapabilities.getMeleeWeaponCapability(this.orgEntity.getItemInHand(hand));
 	}
 
 	public boolean isInaction()

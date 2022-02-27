@@ -76,7 +76,7 @@ public class AsylumDemonData extends MobData<AsylumDemon>
 	protected void initAI()
 	{
 		super.initAI();
-		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, this.orgEntity, 1.0D, false));
+		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D, false));
 		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 1.0F, 1, true)
 				.addAttack(new AttackInstance(4, 5.0F, Animations.ASYLUM_DEMON_LIGHT_ATTACK))
 				.addAttack(new AttackInstance(4, 5.0F, Animations.ASYLUM_DEMON_HAMMER_DRIVE))
