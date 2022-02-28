@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
@@ -307,10 +308,11 @@ public final class Animations
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_IDLE = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/idle", "biped", true);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/walking", "biped", true);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/run", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_BLOCK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/block", "biped", true, MixPart.LEFT);
 	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]
 			{
-				new AttackAnimation(0.2F, 0.0F, 0.44F, 0.8F, 1.6F, false, "111213", "hollow_lordran_soldier/sword_la_1", "biped")
+				new AttackAnimation(0.2F, 0.0F, 0.44F, 0.76F, 1.6F, false, "111213", "hollow_lordran_soldier/sword_la_1", "biped")
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
 				new AttackAnimation(0.2F, 0.0F, 0.16F, 0.56F, 1.0F, false, "111213", "hollow_lordran_soldier/sword_la_2", "biped")
@@ -334,6 +336,39 @@ public final class Animations
 			new Phase(0.72F, 1.2F, 1.4F, 2.0F, "111213", null))
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	
+	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS = new AttackAnimation[]
+			{
+				new AttackAnimation(0.2F, 0.0F, 0.48F, 0.76F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_swing_1", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.16F, 0.56F, 1.0F, false, "111213", "hollow_lordran_soldier/spear_swing_2", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.6F, 0.72F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_swing_3", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+				new AttackAnimation(0.2F, 0.0F, 0.44F, 0.6F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_swing_4", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			};
+	
+	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS = new AttackAnimation[]
+			{
+				new AttackAnimation(0.2F, 0.0F, 0.64F, 0.8F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_thrust_1", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.72F, 0.88F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_thrust_2", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+				new AttackAnimation(0.2F, 0.0F, 0.88F, 1.04F, 1.6F, false, "111213", "hollow_lordran_soldier/spear_thrust_3", "biped")
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+			};
+	
+	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH = new AttackAnimation(0.2F, 0.0F, 0.6F, 0.8F, 1.6F, false, "111313", "hollow_lordran_soldier/shield_bash", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
 	
 	// Asylum Demon
 	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);

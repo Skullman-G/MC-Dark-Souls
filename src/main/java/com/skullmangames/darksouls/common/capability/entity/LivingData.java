@@ -219,6 +219,9 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 				currentMotion = LivingMotion.IDLE;
 			}
 		}
+		
+		if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+		else this.currentMixMotion = LivingMotion.NONE;
 	}
 
 	public void cancelUsingItem()

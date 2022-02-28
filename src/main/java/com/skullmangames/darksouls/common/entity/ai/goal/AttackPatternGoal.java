@@ -49,7 +49,7 @@ public class AttackPatternGoal extends Goal
 		for (int i = 0; i < this.attacks.size(); i++)
 		{
 			AttackInstance a = this.attacks.get(i);
-			if (a.range > maxDist && i != this.currentAttack) maxDist = a.range;
+			if (a.range > maxDist && (i == 0 || i != this.currentAttack)) maxDist = a.range;
 		}
 		return maxDist;
 	}
