@@ -45,7 +45,7 @@ public class SimpleHumanoidData<T extends Mob> extends HumanoidData<T>
 		MeleeWeaponCap weapon = (MeleeWeaponCap)cap;
 		
 		this.orgEntity.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this.orgEntity, Hollow.class, true));
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
+		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, false));
 		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
 				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.LIGHT)))
 				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.HEAVY)))

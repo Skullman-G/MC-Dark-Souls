@@ -101,9 +101,9 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	@Override
 	public void setStamina(float value)
 	{
-		if (value == this.stamina) return;
+		if (value == this.getStamina()) return;
 		super.setStamina(value);
-		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.stamina), this.orgEntity);
+		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.getStamina()), this.orgEntity);
 	}
 	
 	@Override

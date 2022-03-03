@@ -3,7 +3,11 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.EnumSet;
 
 import com.skullmangames.darksouls.common.capability.entity.MobData;
+import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -12,19 +16,19 @@ import net.minecraft.world.level.pathfinder.Path;
 
 public class ChasingGoal extends Goal
 {
-	protected MobData<?> mobdata;
+	protected final MobData<?> mobdata;
 	protected final Mob attacker;
-	private final double speedTowardsTarget;
+	private final boolean defensive;
 	private Path path;
 	private double targetX;
 	private double targetY;
 	private double targetZ;
 
-	public ChasingGoal(MobData<?> mobdata, double speedIn)
+	public ChasingGoal(MobData<?> mobdata, boolean defensive)
 	{
 		this.mobdata = mobdata;
 		this.attacker = mobdata.getOriginalEntity();
-		this.speedTowardsTarget = speedIn;
+		this.defensive = defensive;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
@@ -53,8 +57,10 @@ public class ChasingGoal extends Goal
 	@Override
 	public void start()
 	{
-		this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
+		this.attacker.getNavigation().moveTo(this.path, 1D);
 		this.attacker.setAggressive(true);
+		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
+			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
 	}
 
 	@Override
@@ -87,7 +93,7 @@ public class ChasingGoal extends Goal
 		
 		if (target.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1D)
 		{
-			if (this.attacker.distanceToSqr(target) > 50D) this.attacker.setSprinting(true);
+			if (!this.defensive && this.attacker.distanceToSqr(target) > 50D) this.attacker.setSprinting(true);
 			this.attacker.getNavigation().moveTo(target, 1.0F);
 		}
 	}

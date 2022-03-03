@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
@@ -18,12 +18,6 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 	public HollowLordranWarriorData()
 	{
 		super(Faction.UNDEAD);
-	}
-	
-	@Override
-	public StaticAnimation getDeflectAnimation()
-	{
-		return Animations.HOLLOW_DEFLECTED;
 	}
 	
 	@Override
@@ -54,11 +48,11 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 	@Override
 	public void setAIAsArmed(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
+		this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA))
@@ -66,11 +60,12 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 		}
 		else if (category == WeaponCategory.AXE)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA))
 					.addAttack(new AttackInstance(4, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
 		}
+		this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
 	}
 
 	@Override

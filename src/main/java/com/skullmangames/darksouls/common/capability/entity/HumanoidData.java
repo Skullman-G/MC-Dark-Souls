@@ -56,6 +56,12 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 	}
 	
 	@Override
+	public StaticAnimation getDeflectAnimation()
+	{
+		return Animations.HOLLOW_DEFLECTED;
+	}
+	
+	@Override
 	protected void initAnimator(AnimatorClient animatorClient)
 	{
 		animatorClient.mixLayerLeft.setJointMask("Root", "Torso");
@@ -74,7 +80,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 
 			if (ridingEntity instanceof AbstractHorse)
 			{
-				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
+				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, false));
 			}
 		}
 	}

@@ -53,6 +53,21 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
 		initAI();
 	}
 	
+	@Override
+	protected void updateOnServer()
+	{
+		super.updateOnServer();
+		
+		EntityState state = this.getEntityState();
+		if (state.canAct() || state.getContactLevel() == 3)
+		{
+			float staminaIncr = 0.2F;
+			if (this.isBlocking() || this.orgEntity.onClimbable()) staminaIncr *= 0.2F;
+			
+			this.increaseStamina(staminaIncr);
+		}
+	}
+	
 	protected void initAI()
 	{
 		resetCombatAI();

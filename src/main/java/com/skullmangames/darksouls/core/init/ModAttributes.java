@@ -73,7 +73,7 @@ public class ModAttributes
 		general(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), event);
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.ASYLUM_DEMON.get(), event);
-		general(EntityType.CAVE_SPIDER, event);
+		/*general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);
 		general(EntityType.EVOKER, event);
 		general(EntityType.IRON_GOLEM, event);
@@ -96,7 +96,7 @@ public class ModAttributes
 		general(EntityType.WITHER_SKELETON, event);
 		general(EntityType.ZOMBIE, event);
 		general(EntityType.ZOMBIE_VILLAGER, event);
-		general(EntityType.ZOMBIFIED_PIGLIN, event);
+		general(EntityType.ZOMBIFIED_PIGLIN, event);*/
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
@@ -112,6 +112,7 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
 		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
 		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
+		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
     
     public static void withEquipLoad(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
@@ -124,7 +125,6 @@ public class ModAttributes
     private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
     {
     	withEquipLoad(entityType, event);
-		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
 	
 	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)

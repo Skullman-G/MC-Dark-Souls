@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -33,12 +33,6 @@ public class HollowData extends HumanoidData<Hollow>
 		this.orgEntity.getAttribute(ModAttributes.STRIKE_DEFENSE.get()).setBaseValue(0.1D);
 		this.orgEntity.getAttribute(ModAttributes.SLASH_DEFENSE.get()).setBaseValue(0.1D);
 		this.orgEntity.getAttribute(ModAttributes.THRUST_DEFENSE.get()).setBaseValue(0.1D);
-	}
-	
-	@Override
-	public StaticAnimation getDeflectAnimation()
-	{
-		return Animations.HOLLOW_DEFLECTED;
 	}
 	
 	@Override
@@ -92,12 +86,13 @@ public class HollowData extends HumanoidData<Hollow>
 	public void setAIAsArmed(WeaponCategory category)
 	{
 		if (category != WeaponCategory.STRAIGHT_SWORD) return;
-		this.orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, 1.0D));
-		this.orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 0.0F, true)
+		this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
+		this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
 				.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK)));
+		this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
 	}
 
 	@Override

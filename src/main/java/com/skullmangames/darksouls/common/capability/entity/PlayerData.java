@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.core.event.EntityEventListener;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
@@ -35,7 +34,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	
 	protected Stats stats = new Stats();
 	
-	protected float stamina;
 	protected int humanity;
 	protected boolean human;
 	protected int souls;
@@ -56,8 +54,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		{
 			this.orgEntity.getInventory().add(new ItemStack(ModItems.DARKSIGN.get()));
 		}
-		
-		this.stamina = this.getMaxStamina();
 	}
 	
 	public void onLoad(CompoundTag nbt)
@@ -204,6 +200,12 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	}
 	
 	@Override
+	public StaticAnimation getDeflectAnimation()
+	{
+		return Animations.HOLLOW_DEFLECTED;
+	}
+	
+	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float amount)
 	{
 		if(super.attackEntityFrom(damageSource, amount))
@@ -212,26 +214,6 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 			return true;
 		}
 		else return false;
-	}
-	
-	public void setStamina(float value)
-	{
-		this.stamina = value;
-	}
-	
-	public void increaseStamina(float increment)
-	{
-		this.setStamina(MathUtils.clamp(this.stamina + increment, -5F, this.getMaxStamina()));
-	}
-	
-	public float getStamina()
-	{
-		return this.stamina;
-	}
-	
-	public float getMaxStamina()
-	{
-		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
 	}
 	
 	public boolean isCreativeOrSpectator()

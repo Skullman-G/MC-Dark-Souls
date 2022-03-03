@@ -108,6 +108,10 @@ public class AttackAnimation extends ActionAnimation
 				{
 					((ServerPlayerData)entitydata).increaseStamina(-4F);
 				}
+				else if (entitydata instanceof MobData)
+				{
+					((MobData<?>)entitydata).increaseStamina(-2.5F);
+				}
 				entitydata.currentlyAttackedEntity.clear();
 			}
 

@@ -60,6 +60,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public List<Entity> currentlyAttackedEntity;
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
+	private float stamina;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -84,6 +85,27 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		super.onEntityJoinWorld(entityIn);
 		this.initAttributes();
 		this.poiseDef = this.getPoise();
+		this.stamina = this.getMaxStamina();
+	}
+	
+	public void setStamina(float value)
+	{
+		this.stamina = value;
+	}
+	
+	public void increaseStamina(float increment)
+	{
+		this.setStamina(MathUtils.clamp(this.stamina + increment, -5F, this.getMaxStamina()));
+	}
+	
+	public float getStamina()
+	{
+		return this.stamina;
+	}
+	
+	public float getMaxStamina()
+	{
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
 	}
 	
 	public float getPoiseDef()
@@ -181,8 +203,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public void updateInactionState()
 	{
-		EntityState state = this.getEntityState();
-		this.inaction = state.isMovementLocked();
+		this.inaction = this.getEntityState().isMovementLocked();
 	}
 
 	protected final void commonBipedCreatureAnimatorInit(AnimatorClient animatorClient)
