@@ -9,9 +9,9 @@ import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.entity.Faction;
-import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
@@ -84,7 +84,7 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
         	WrappedGoal goal = iterator.next();
             Goal inner = goal.getGoal();
             
-            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof ArcherGoal || inner instanceof ChasingGoal
+            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
             		|| inner instanceof RangedAttackGoal || inner instanceof AttackPatternGoal || inner instanceof RangedCrossbowAttackGoal)
             {
             	toRemove.add(inner);

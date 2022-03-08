@@ -86,10 +86,14 @@ public class BonfireBlockEntity extends BlockEntity
 	public void kindle()
 	{
 		int volumelevel = this.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL);
-		if (volumelevel >= 4)
-			return;
+		if (volumelevel >= 4) return;
 		this.playKindleSound();
 		level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.ESTUS_VOLUME_LEVEL, volumelevel + 1), 3);
+	}
+	
+	public boolean canKindle()
+	{
+		return this.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
 	}
 
 	private void playKindleSound()

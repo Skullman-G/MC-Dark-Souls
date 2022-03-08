@@ -10,8 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
 import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
-
+import com.skullmangames.darksouls.network.client.CTSBonfireTask;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -115,7 +114,7 @@ public class BonfireScreen extends Screen
 			String warning = "";
 			if (!this.playerData.hasEnoughHumanity(1)) warning = new TranslatableComponent("gui.darksouls.not_enough_humanity").getString();
 			if (!this.playerData.isHuman()) warning = new TranslatableComponent("gui.darksouls.not_human").getString();
-			if (this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) >= 2) warning = new TranslatableComponent("gui.darksouls.cannot_kindle_further").getString();
+			if (this.bonfiretileentity.canKindle()) warning = new TranslatableComponent("gui.darksouls.cannot_kindle_further").getString();
 			TextComponent textcomponent = warning == "" ? new TextComponent(description) : new TextComponent(description + "\n\n" + "\u00A74" + warning);
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
@@ -124,7 +123,7 @@ public class BonfireScreen extends Screen
 		{
 	         this.kindle();
 	    }, tooltip));
-		this.kindleButton.active = this.playerData.isHuman() && this.playerData.getHumanity() > 0 && this.bonfiretileentity.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
+		this.kindleButton.active = this.playerData.isHuman() && this.playerData.hasEnoughHumanity(1) && this.bonfiretileentity.canKindle();
 		this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
 		{
 	         super.onClose();
@@ -159,15 +158,13 @@ public class BonfireScreen extends Screen
 	
 	protected void reverseHollowing()
 	{
-		this.playerData.raiseHumanity(-1);
-		this.playerData.setHuman(true);
+		ModNetworkManager.sendToServer(new CTSBonfireTask(CTSBonfireTask.Task.REVERSE_HOLLOWING, this.bonfiretileentity.getBlockPos(), ""));
 		super.onClose();
 	}
 	
 	protected void kindle()
 	{
-		this.playerData.raiseHumanity(-1);
-		ModNetworkManager.sendToServer(new CTSUpdateBonfireBlock("", false, true, this.bonfiretileentity.getBlockPos()));
+		ModNetworkManager.sendToServer(new CTSBonfireTask(CTSBonfireTask.Task.KINDLE, this.bonfiretileentity.getBlockPos(), ""));
 		super.onClose();
 	}
 	

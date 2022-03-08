@@ -4,10 +4,10 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Faction;
-import com.skullmangames.darksouls.common.entity.ai.goal.ArcherGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -89,7 +89,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 	public void setAIAsRange()
 	{
 		int cooldown = this.orgEntity.level.getDifficulty() != Difficulty.HARD ? 40 : 20;
-		orgEntity.goalSelector.addGoal(1, new ArcherGoal(this, 1.0D, cooldown, 15.0F));
+		orgEntity.goalSelector.addGoal(1, new RangeAttackGoal(this, cooldown, 15.0F));
 	}
 	
 	public boolean isArmed()

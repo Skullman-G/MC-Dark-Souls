@@ -1,8 +1,7 @@
 package com.skullmangames.darksouls.network;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.network.client.CTSHuman;
-import com.skullmangames.darksouls.network.client.CTSHumanity;
+import com.skullmangames.darksouls.network.client.CTSBonfireTask;
 import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
@@ -10,7 +9,6 @@ import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
-import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
 import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -75,9 +73,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSReqSpawnInfo.class, CTSReqSpawnInfo::toBytes, CTSReqSpawnInfo::fromBytes, CTSReqSpawnInfo::handle);
 		INSTANCE.registerMessage(id++, CTSRotatePlayerYaw.class, CTSRotatePlayerYaw::toBytes, CTSRotatePlayerYaw::fromBytes, CTSRotatePlayerYaw::handle);
 		INSTANCE.registerMessage(id++, CTSReqPlayerInfo.class, CTSReqPlayerInfo::toBytes, CTSReqPlayerInfo::fromBytes, CTSReqPlayerInfo::handle);
-		INSTANCE.registerMessage(id++, CTSHumanity.class, CTSHumanity::toBytes, CTSHumanity::fromBytes, CTSHumanity::handle);
-		INSTANCE.registerMessage(id++, CTSHuman.class, CTSHuman::toBytes, CTSHuman::fromBytes, CTSHuman::handle);
-		INSTANCE.registerMessage(id++, CTSUpdateBonfireBlock.class, CTSUpdateBonfireBlock::toBytes, CTSUpdateBonfireBlock::fromBytes, CTSUpdateBonfireBlock::handle);
+		INSTANCE.registerMessage(id++, CTSBonfireTask.class, CTSBonfireTask::toBytes, CTSBonfireTask::fromBytes, CTSBonfireTask::handle);
 		INSTANCE.registerMessage(id++, CTSOpenFireKeeperContainer.class, CTSOpenFireKeeperContainer::toBytes, CTSOpenFireKeeperContainer::fromBytes, CTSOpenFireKeeperContainer::handle);
 		INSTANCE.registerMessage(id++, CTSPerformDodge.class, CTSPerformDodge::toBytes, CTSPerformDodge::fromBytes, CTSPerformDodge::handle);
 		INSTANCE.registerMessage(id++, CTSLevelUp.class, CTSLevelUp::toBytes, CTSLevelUp::fromBytes, CTSLevelUp::handle);

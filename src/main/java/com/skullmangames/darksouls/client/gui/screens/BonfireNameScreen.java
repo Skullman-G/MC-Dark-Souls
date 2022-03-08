@@ -5,8 +5,7 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSUpdateBonfireBlock;
-
+import com.skullmangames.darksouls.network.client.CTSBonfireTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
@@ -96,7 +95,7 @@ public class BonfireNameScreen extends Screen
 	    	BlockPos pos = this.tileentity.getBlockPos();
 	    	this.minecraft.player.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), ModSoundEvents.GENERIC_HUMAN_FORM.get(), SoundSource.AMBIENT, 1.0F, 0.8F, false);
 	    }
-	    ModNetworkManager.sendToServer(new CTSUpdateBonfireBlock(this.titleEdit.getValue(), true, false, this.tileentity.getBlockPos()));
+	    ModNetworkManager.sendToServer(new CTSBonfireTask(CTSBonfireTask.Task.NAME, this.tileentity.getBlockPos(), this.titleEdit.getValue()));
 	    
 	    super.onClose();
 	}

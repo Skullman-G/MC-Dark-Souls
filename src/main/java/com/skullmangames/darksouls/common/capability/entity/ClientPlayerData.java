@@ -14,8 +14,6 @@ import java.util.List;
 
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSHuman;
-import com.skullmangames.darksouls.network.client.CTSHumanity;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
@@ -182,20 +180,11 @@ public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
 	}
 	
 	@Override
-	public void setHumanity(int value)
-	{
-		if (this.humanity == value) return;
-		super.setHumanity(value);
-		ModNetworkManager.sendToServer(new CTSHumanity(this.humanity));
-	}
-	
-	@Override
 	public void setHuman(boolean value)
 	{
 		if (this.human == value) return;
 		super.setHuman(value);
 		if (value) ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
-		ModNetworkManager.sendToServer(new CTSHuman(this.human));
 	}
 	
 	@Override

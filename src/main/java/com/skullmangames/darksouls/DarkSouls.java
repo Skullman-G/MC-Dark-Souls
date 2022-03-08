@@ -102,7 +102,6 @@ public class DarkSouls
 
 		ModAttributes.ATTRIBUTES.register(modBus);
 		ModSoundEvents.SOUND_EVENTS.register(modBus);
-		ModSoundEvents.VANILLA_SOUND_EVENTS.register(modBus);
 		ModBlocks.BLOCKS.register(modBus);
 		ModBlockEntities.BLOCK_ENTITIES.register(modBus);
 		ModStructures.STRUCTURES.register(modBus);

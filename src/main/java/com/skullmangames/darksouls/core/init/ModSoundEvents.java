@@ -40,6 +40,7 @@ public class ModSoundEvents
 	
 	public static final RegistryObject<SoundEvent> GENERIC_KILL = registerSound("entity.generic.kill");
 	public static final RegistryObject<SoundEvent> GENERIC_HUMAN_FORM = registerSound("entity.generic.human_form");
+	public static final RegistryObject<SoundEvent> GENERIC_HIT = registerSound("entity.generic.hit");
 	
 	public static final RegistryObject<SoundEvent> PLAYER_SHIELD_DISARMED = registerSound("entity.player.shield_disarmed");
 
@@ -47,18 +48,5 @@ public class ModSoundEvents
 	private static RegistryObject<SoundEvent> registerSound(String name)
 	{
 		return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, name)));
-	}
-	
-	// Override Vanilla Sound Events
-	public static final DeferredRegister<SoundEvent> VANILLA_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "minecraft");
-	
-	public static final RegistryObject<SoundEvent> GENERIC_HURT = overrideVanillaSound("entity.generic.hurt");
-	public static final RegistryObject<SoundEvent> PLAYER_HURT = overrideVanillaSound("entity.player.hurt");
-	public static final RegistryObject<SoundEvent> HOSTILE_HURT = overrideVanillaSound("entity.hostile.hurt");
-	
-
-	private static RegistryObject<SoundEvent> overrideVanillaSound(String name)
-	{
-		return VANILLA_SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(DarkSouls.MOD_ID, name)));
 	}
 }

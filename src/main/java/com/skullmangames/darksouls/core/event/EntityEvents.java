@@ -167,6 +167,8 @@ public class EntityEvents
 		if (extSource != null) extSource.setAmount(amount);
 		if (targetData == null || targetData.blockingAttack(extSource)) return;
 		
+		target.level.playSound(null, target.blockPosition(), ModSoundEvents.GENERIC_HIT.get(), target.getSoundSource(), 1.0F, 1.0F);
+		
 		// Stun Animation
 		boolean poiseBroken = targetData.decreasePoiseDef(poiseDamage);
 		if (!poiseBroken && !headshot) stunType = stunType.downgrade();

@@ -16,22 +16,20 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
-public class ArcherGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<T>> extends Goal
+public class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<T>> extends Goal
 {
 	private final T entity;
 	private final D entitydata;
 	private LivingEntity chasingTarget;
-    private final double moveSpeedAmp;
     private int attackCooldown;
     private final float maxAttackDistance;
     private int attackTime = -1;
     private int seeTime;
 
-    public ArcherGoal(D entitydata, double moveSpeedAmp, int attackCooldown, float maxAttackDist)
+    public RangeAttackGoal(D entitydata, int attackCooldown, float maxAttackDist)
     {
         this.entitydata = entitydata;
         this.entity = entitydata.getOriginalEntity();
-        this.moveSpeedAmp = moveSpeedAmp;
         this.attackCooldown = attackCooldown;
         this.maxAttackDistance = maxAttackDist * maxAttackDist;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -115,7 +113,7 @@ public class ArcherGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<
                 	Vec3 apos = this.entity.position();
                 	double x = apos.x + (apos.x - tpos.x);
                 	double z = apos.z + (apos.z - tpos.z);
-                	this.entity.getNavigation().moveTo(x, apos.y, z, this.moveSpeedAmp);
+                	this.entity.getNavigation().moveTo(x, apos.y, z, 1.0D);
             	}
             	else if (targetDistance <= (double)this.maxAttackDistance * 1.5F)
             	{
@@ -124,7 +122,7 @@ public class ArcherGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<
             }
             else
             {
-                this.entity.getNavigation().moveTo(target, this.moveSpeedAmp);
+                this.entity.getNavigation().moveTo(target, 1.0D);
             }
 
             this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
@@ -163,7 +161,7 @@ public class ArcherGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<
         		else
         		{
         			this.entity.stopUsingItem();
-            		this.entity.getNavigation().moveTo(chasingTarget, this.moveSpeedAmp);
+            		this.entity.getNavigation().moveTo(chasingTarget, 1.0D);
         		}
         		return;
         	}
