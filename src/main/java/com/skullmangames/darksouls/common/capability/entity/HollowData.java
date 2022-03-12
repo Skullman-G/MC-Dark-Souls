@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -16,6 +17,7 @@ import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class HollowData extends HumanoidData<Hollow>
 {
@@ -82,17 +84,25 @@ public class HollowData extends HumanoidData<Hollow>
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void setAIAsArmed(WeaponCategory category)
+	public void setAttackGoals(WeaponCategory category)
 	{
-		if (category != WeaponCategory.STRAIGHT_SWORD) return;
-		this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
-		this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
-				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
-				.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
-				.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK)));
-		this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
+		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
+		{
+			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal(this, 40, 15.0F));
+		}
+		else
+		{
+			if (category != WeaponCategory.STRAIGHT_SWORD) return;
+			this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
+			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
+					.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK)));
+			this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
+		}
 	}
 
 	@Override

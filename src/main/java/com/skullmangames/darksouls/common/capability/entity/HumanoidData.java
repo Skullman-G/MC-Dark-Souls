@@ -6,8 +6,9 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCatego
 import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
-import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -18,8 +19,8 @@ import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.Difficulty;
 
 public abstract class HumanoidData<T extends Mob> extends MobData<T>
 {
@@ -36,21 +37,13 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 			super.resetCombatAI();
 			WeaponCap heldItem = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
 			
-			if (heldItem.getWeaponCategory() == WeaponCategory.RANGED_WEAPON && this.orgEntity instanceof RangedAttackMob)
-			{
-				this.setAIAsRange();
-			}
-			else if(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob)
+			if(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob)
 			{
 				this.setAIAsMounted(this.orgEntity.getControllingPassenger());
 			}
 			else if (this.isArmed())
 			{
-				this.setAIAsArmed(heldItem.getWeaponCategory());
-			}
-			else
-			{
-				this.setAIAsUnarmed();
+				this.setAttackGoals(heldItem.getWeaponCategory());
 			}
 		}
 	}
@@ -67,9 +60,18 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		animatorClient.mixLayerLeft.setJointMask("Root", "Torso");
 	}
 
-	public void setAIAsUnarmed() {}
-
-	public void setAIAsArmed(WeaponCategory category) {}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setAttackGoals(WeaponCategory category)
+	{
+		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
+		{
+			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal(this, 40, 15.0F));
+		}
+		else if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
+		{
+			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));
+		}
+	}
 	
 	public void setAIAsMounted(Entity ridingEntity)
 	{
@@ -83,13 +85,6 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 				orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, false));
 			}
 		}
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setAIAsRange()
-	{
-		int cooldown = this.orgEntity.level.getDifficulty() != Difficulty.HARD ? 40 : 20;
-		orgEntity.goalSelector.addGoal(1, new RangeAttackGoal(this, cooldown, 15.0F));
 	}
 	
 	public boolean isArmed()
@@ -114,11 +109,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		{
 			if(this.isArmed())
 			{
-				this.setAIAsArmed(ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()).getWeaponCategory());
-			}
-			else
-			{
-				this.setAIAsUnarmed();
+				this.setAttackGoals(ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()).getWeaponCategory());
 			}
 		}
 	}

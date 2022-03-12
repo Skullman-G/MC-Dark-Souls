@@ -30,6 +30,6 @@ public class ReboundAnimation extends AimingAnimation
 	@Override
 	public LivingData.EntityState getState(float time)
 	{
-		return LivingData.EntityState.POST_DELAY;
+		return LivingData.EntityState.CONTACT;
 	}
 }

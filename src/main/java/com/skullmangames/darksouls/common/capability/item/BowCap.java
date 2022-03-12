@@ -8,7 +8,7 @@ public class BowCap extends RangedWeaponCap
 {
 	public BowCap(Item item, float damage, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
-		super(item, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND, damage, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, WeaponCategory.BOW, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND, damage, requiredStrength, requiredDex, strengthScaling, dexScaling);
 	}
 	
 	@Override
