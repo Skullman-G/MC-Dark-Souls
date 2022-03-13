@@ -16,4 +16,10 @@ public class BowCap extends RangedWeaponCap
 	{
 		return HandProperty.TWO_HANDED;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 4.0F;
+	}
 }

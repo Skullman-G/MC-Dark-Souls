@@ -9,19 +9,19 @@ import net.minecraft.world.entity.player.Player;
 
 public interface IExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
-        return new DamageSourceExtended("player", player, stunType, amount, requireddeflectionlevel, damageType, poiseDamage);
+        return new DamageSourceExtended("player", player, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDamage);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
-        return new DamageSourceExtended("mob", mob, stunType, amount, requireddeflectionlevel, damageType, poiseDamage);
+        return new DamageSourceExtended("mob", mob, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDamage);
     }
 	
 	public static DamageSourceExtended getFrom(IExtendedDamageSource original)
 	{
-		return new DamageSourceExtended(original.getType(), original.getOwner(), original.getStunType(), original.getAmount(), original.getRequiredDeflectionLevel(), original.getDamageType(), original.getPoiseDamage());
+		return new DamageSourceExtended(original.getType(), original.getOwner(), original.getStunType(), original.getAmount(), original.getRequiredDeflectionLevel(), original.getDamageType(), original.getPoiseDamage(), original.getStaminaDamage());
 	}
 	
 	public float getAmount();
@@ -34,6 +34,7 @@ public interface IExtendedDamageSource
 	public float getPoiseDamage();
 	public boolean isHeadshot();
 	public void setHeadshot(boolean value);
+	public float getStaminaDamage();
 	
 	public enum StunType
 	{

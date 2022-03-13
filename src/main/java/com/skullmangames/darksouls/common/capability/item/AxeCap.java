@@ -31,4 +31,10 @@ public class AxeCap extends MeleeWeaponCap
 	{
 		return Colliders.TOOL;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 6.0F;
+	}
 }

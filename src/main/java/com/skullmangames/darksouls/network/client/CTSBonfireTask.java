@@ -45,7 +45,7 @@ public class CTSBonfireTask
 		{
 			ServerPlayer serverplayer = ctx.get().getSender();
 			ServerPlayerData playerdata = (ServerPlayerData) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (playerdata == null || playerdata.hasEnoughHumanity(1)) return;
+			if (playerdata == null) return;
 			
 			BonfireBlockEntity bonfire = serverplayer.level.getBlockEntity(msg.bonfirePos, ModBlockEntities.BONFIRE.get()).orElse(null);
 			if (bonfire == null) return;
@@ -53,13 +53,13 @@ public class CTSBonfireTask
 			switch(msg.task)
 			{
 				case REVERSE_HOLLOWING:
-					if (playerdata.isHuman() || !bonfire.getBlockState().getValue(BonfireBlock.LIT)) return;
+					if (playerdata.isHuman() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerdata.hasEnoughHumanity(1)) return;
 					playerdata.raiseHumanity(-1);
 					playerdata.setHuman(true);
 					break;
 					
 				case KINDLE:
-					if (!playerdata.isHuman() || !bonfire.canKindle() || !bonfire.getBlockState().getValue(BonfireBlock.LIT)) return;
+					if (!playerdata.isHuman() || !bonfire.canKindle() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerdata.hasEnoughHumanity(1)) return;
 					playerdata.raiseHumanity(-1);
 					bonfire.kindle();
 					break;

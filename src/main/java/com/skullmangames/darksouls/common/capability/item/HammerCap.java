@@ -24,4 +24,10 @@ public class HammerCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK);
 		return builder;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 8.0F;
+	}
 }

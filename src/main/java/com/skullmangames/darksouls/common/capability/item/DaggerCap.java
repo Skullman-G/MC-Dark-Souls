@@ -39,4 +39,10 @@ public class DaggerCap extends MeleeWeaponCap
 	{
 		return Colliders.DAGGER;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 4.0F;
+	}
 }

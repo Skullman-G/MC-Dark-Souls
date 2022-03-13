@@ -44,4 +44,10 @@ public class UltraGreatswordCap extends MeleeWeaponCap
 	{
 		return Animations.BIG_WEAPON_WEAK_ATTACK;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 9.0F;
+	}
 }

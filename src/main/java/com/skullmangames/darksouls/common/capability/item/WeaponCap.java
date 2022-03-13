@@ -40,7 +40,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
 	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
 	private final float poiseDamage;
-	private final float weight;
+	public final float weight;
 
 	public WeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
 	{
@@ -61,6 +61,8 @@ public abstract class WeaponCap extends AttributeItemCap
 		if (slot == EquipmentSlot.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
 		return map;
 	}
+	
+	public abstract float getStaminaDamage();
 	
 	public Scaling getScaling(Stat stat)
 	{

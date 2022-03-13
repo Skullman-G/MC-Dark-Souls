@@ -67,4 +67,10 @@ public class SwordCap extends MeleeWeaponCap
 		WeaponCap cap = ModCapabilities.getMeleeWeaponCapability(item);
 		return super.canBeRenderedBoth(item) || (cap != null && cap.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD);
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 4.0F;
+	}
 }

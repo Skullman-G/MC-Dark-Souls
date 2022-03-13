@@ -6,18 +6,20 @@ import net.minecraft.world.entity.Entity;
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements IExtendedDamageSource
 {
 	private float amount;
+	private final float staminaDamage;
 	private final float poiseDamage;
 	private boolean headshot;
 	private final StunType stunType;
 	private final DamageType damageType;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
 		this.damageType = damageType;
 		this.poiseDamage = poiseDamage;
 		this.amount = amount;
+		this.staminaDamage = staminaDamage;
 	}
 
 	@Override
@@ -78,5 +80,11 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	public void setHeadshot(boolean value)
 	{
 		this.headshot = value;
+	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return this.staminaDamage;
 	}
 }

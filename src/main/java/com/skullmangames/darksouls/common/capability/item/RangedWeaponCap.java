@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import net.minecraft.world.item.Item;
 
-public class RangedWeaponCap extends WeaponCap
+public abstract class RangedWeaponCap extends WeaponCap
 {
 	private final float damage;
 	

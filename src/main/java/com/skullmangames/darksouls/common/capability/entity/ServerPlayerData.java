@@ -92,7 +92,6 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	{
 		float e = this.getEncumbrance();
 		StaticAnimation animation = e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
-		System.out.print("\n"+this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get()));
 		
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
@@ -145,7 +144,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange : this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if(mainHandCap != null) mainHandCap.onHeld(this);
 		
-		this.modifiLivingMotions(mainHandCap);
+		this.modifyLivingMotions(mainHandCap);
 	}
 	
 	@Override
@@ -154,7 +153,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		if (!this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 		
-		this.increaseStamina(-4.0F);
+		this.increaseStamina(-damageSource.getStaminaDamage());
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get(), 1.0F, 1.0F);
@@ -165,7 +164,7 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		return true;
 	}
 	
-	public void modifiLivingMotions(ItemCapability itemCap)
+	public void modifyLivingMotions(ItemCapability itemCap)
 	{
 		this.resetModifiedLivingMotions();
 

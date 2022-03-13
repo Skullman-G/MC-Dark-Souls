@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.DarkSouls;
@@ -13,6 +14,7 @@ import com.skullmangames.darksouls.core.event.EntityEventListener;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
@@ -222,9 +224,11 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	}
 	
 	@Override
-	public IExtendedDamageSource getDamageSource(StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
-		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage);
+		WeaponCap weapon = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
+		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
+		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
 	}
 	
 	public void discard()

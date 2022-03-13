@@ -52,4 +52,10 @@ public class GreatHammerCap extends MeleeWeaponCap
 	{
 		return Colliders.GREAT_HAMMER;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 9.0F;
+	}
 }

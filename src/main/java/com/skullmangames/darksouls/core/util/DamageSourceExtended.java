@@ -8,10 +8,11 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	private float amount;
 	private final int requiredDeflectionLevel;
 	private final float poiseDamage;
+	private final float staminaDamage;
 	private final StunType stunType;
 	private final DamageType damageType;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
@@ -20,6 +21,7 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 		this.damageType = damageType;
 		this.poiseDamage = poiseDamage;
 		this.requiredDeflectionLevel = requireddeflectionlevel;
+		this.staminaDamage = staminaDamage;
 	}
 	
 	@Override
@@ -78,4 +80,10 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 
 	@Override
 	public void setHeadshot(boolean value) {}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return this.staminaDamage;
+	}
 }

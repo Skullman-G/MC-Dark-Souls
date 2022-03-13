@@ -39,4 +39,10 @@ public class SpearCap extends MeleeWeaponCap
 	{
 		return ModSoundEvents.SPEAR_SWING.get();
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 4.0F;
+	}
 }

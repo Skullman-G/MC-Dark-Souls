@@ -345,7 +345,7 @@ public class EntityEvents
 	{
 		Player player = event.getPlayer();
 		ServerPlayerData playerData = (ServerPlayerData) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		playerData.modifiLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
+		playerData.modifyLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
 	}
 	
 	@SubscribeEvent

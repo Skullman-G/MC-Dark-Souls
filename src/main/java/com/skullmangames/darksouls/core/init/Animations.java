@@ -101,6 +101,7 @@ public final class Animations
 			{
 					new AttackAnimation(0.5F, 0.0F, 1.08F, 1.48F, 2.76F, false, "111213", "biped/combat/ultra_greatsword_heavy_attack_1", "biped")
 						.registerSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH, 1.28F, true)
+						.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
@@ -114,6 +115,7 @@ public final class Animations
 			};
 	public static final AttackAnimation ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.08F, 1.48F, 2.76F, false, "111213", "biped/combat/ultra_greatsword_heavy_attack_1", "biped")
 			.registerSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH, 1.28F, true)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
@@ -122,9 +124,11 @@ public final class Animations
 	// Spear
 	public static final AttackAnimation SPEAR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.12F, 0.36F, 0.8F, false, "111213", "biped/combat/spear_dash_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation SPEAR_HEAVY_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.4F, false, "111213", "biped/combat/spear_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.2F, false, "111213", "biped/combat/spear_light_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
@@ -133,6 +137,7 @@ public final class Animations
 	// Dagger
 	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation[] DAGGER_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -148,6 +153,7 @@ public final class Animations
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 1.36F, 1.72F, 3.0F, false, "111213", "biped/combat/great_hammer_heavy_attack", "biped")
 			.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.52F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
@@ -169,6 +175,7 @@ public final class Animations
 	public static final AttackAnimation GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.12F, 1.48F, 2.76F, false, "111213", "biped/combat/great_hammer_light_attack_1", "biped")
 			.registerSound(ModSoundEvents.GREAT_HAMMER_SMASH, 1.24F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
@@ -177,6 +184,7 @@ public final class Animations
 	public static final AttackAnimation AXE_HEAVY_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.4F, 0.72F, 1.2F, false, "111213", "biped/combat/axe_heavy_attack", "biped")
 			.registerSound(ModSoundEvents.AXE_SWING, 0.4F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -192,16 +200,19 @@ public final class Animations
 	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.28F, 0.6F, 1.2F, false, "111213", "biped/combat/axe_dash_attack", "biped")
 			.registerSound(ModSoundEvents.AXE_SWING, 0.3F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
 	// Hammer
 	public static final AttackAnimation HAMMER_DASH_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.4F, false, "111213", "biped/combat/hammer_dash_attack", "biped")
 			.registerSound(ModSoundEvents.AXE_SWING, 0.32F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.52F, 1.4F, false, "111213", "biped/combat/hammer_heavy_attack", "biped")
 			.registerSound(ModSoundEvents.AXE_SWING, 0.32F, true)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation[] HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 			{
@@ -221,9 +232,11 @@ public final class Animations
 			};
 	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/fist_dash_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F, false, "111213", "biped/combat/fist_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	
 	// Shield
@@ -232,6 +245,7 @@ public final class Animations
 					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, "111213", "biped/combat/shield_strike", "biped")
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+						.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			};
 	
 	// Straight Sword
@@ -246,9 +260,11 @@ public final class Animations
 			};
 	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, false, "111213", "biped/combat/straight_sword_dash_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	public static final AttackAnimation SWORD_MOUNT_ATTACK = new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, "111213", "biped/combat/sword_mount_attack", "biped");
 	
@@ -277,9 +293,11 @@ public final class Animations
 																.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 																.registerSound(ModSoundEvents.HOLLOW_PREPARE, 0.04F, true);
 	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.BROKEN_SWORD, "111213", "hollow/overhead_swing", "biped")
-																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+																.addProperty(AttackProperty.STAMINA_DMG_MUL, 2);
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.72F, 1.2F, 1.8F, true, Colliders.BROKEN_SWORD, "111213", "hollow/jump_attack", "biped")
-																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+																.addProperty(AttackProperty.STAMINA_DMG_MUL, 2);
 	
 	// Hollow Lordran Warrior
 	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/move", "biped", true);
@@ -296,6 +314,7 @@ public final class Animations
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.44F, 0.88F, 1.8F, true, "111213", "hollow_lordran_warrior/dash_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_LA = new AttackAnimation(0.2F, 0.0F, 0.6F, 1.0F, 2.4F, false, "111213", "hollow_lordran_warrior/axe_la", "biped")
@@ -304,6 +323,7 @@ public final class Animations
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA = new AttackAnimation(0.2F, 0.0F, 0.56F, 1.0F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_th_la", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
 	// Hollow Lordran Soldier
@@ -327,10 +347,12 @@ public final class Animations
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_DA = new AttackAnimation(0.2F, 0.0F, 0.64F, 0.84F, 2.4F, false, "111213", "hollow_lordran_soldier/sword_da", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST = new AttackAnimation(0.2F, 0.0F, 1.0F, 1.16F, 2.0F, false, "111213", "hollow_lordran_soldier/sword_heavy_thrust", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO = new AttackAnimation(0.2F, false, "hollow_lordran_soldier/sword_thrust_combo", "biped",
@@ -370,6 +392,7 @@ public final class Animations
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH = new AttackAnimation(0.2F, 0.0F, 0.6F, 0.8F, 1.6F, false, "111313", "hollow_lordran_soldier/shield_bash", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
 	
 	// Asylum Demon

@@ -22,4 +22,10 @@ public class TridentCap extends RangedWeaponCap
 	{
 		return HandProperty.MAINHAND_ONLY;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 4.0F;
+	}
 }

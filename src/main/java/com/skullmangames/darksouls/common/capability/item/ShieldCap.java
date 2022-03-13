@@ -37,4 +37,10 @@ public class ShieldCap extends MeleeWeaponCap
 	{
 		return this.shieldType;
 	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return 6.0F;
+	}
 }

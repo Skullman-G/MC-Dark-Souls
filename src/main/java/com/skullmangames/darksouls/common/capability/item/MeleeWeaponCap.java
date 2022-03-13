@@ -28,7 +28,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class MeleeWeaponCap extends WeaponCap implements IShield
+public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 {
 	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
 	
@@ -54,7 +54,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 	{
 		super.onHeld(playerdata);
 		AttributeInstance instance = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-		instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.getIndex()]);
+		instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
 		instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
 	}
 	

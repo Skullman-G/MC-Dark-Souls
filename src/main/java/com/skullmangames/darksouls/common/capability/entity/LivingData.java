@@ -320,11 +320,13 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		return true;
 	}
 
-	public IExtendedDamageSource getDamageSource(StunType stunType, float amount,
+	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
+		WeaponCap weapon = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
+		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
 		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount,
-				requireddeflectionlevel, damageType, poiseDamage);
+				requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
 	}
 
 	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)
