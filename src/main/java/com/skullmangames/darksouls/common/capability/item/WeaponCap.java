@@ -57,10 +57,8 @@ public abstract class WeaponCap extends AttributeItemCap
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
-		
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
 		if (slot == EquipmentSlot.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
-		
 		return map;
 	}
 	

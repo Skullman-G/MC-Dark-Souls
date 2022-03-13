@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.common.capability.entity.LivingData;
 import com.skullmangames.darksouls.common.capability.entity.PlayerData;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
-import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -231,54 +230,31 @@ public class EntityEvents
 		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (entitydata == null || entitydata.getOriginalEntity() == null) return;
 		
-		if (event.getSlot() == EquipmentSlot.MAINHAND)
+		AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
+		AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+		
+		if(fromCap != null)
 		{
-			AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-			AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
-			entitydata.cancelUsingItem();
-			
-			if(fromCap != null)
-			{
-				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot()));
-			}
-			
-			if(toCap != null)
-			{
-				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
-			}
-			
-			if (entitydata instanceof ServerPlayerData)
-			{
-				ServerPlayerData playercap = (ServerPlayerData)entitydata;
-				playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.MAIN_HAND);
-			}
+			event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot()));
 		}
-		else if (event.getSlot() == EquipmentSlot.OFFHAND)
+		
+		if(toCap != null)
 		{
-			entitydata.cancelUsingItem();
-			
-			if (entitydata instanceof ServerPlayerData)
-			{
-				ServerPlayerData playercap = (ServerPlayerData)entitydata;
-				ItemCapability toCap = event.getTo().isEmpty() ? null : entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
-				playercap.onHeldItemChange(toCap, event.getTo(), InteractionHand.OFF_HAND);
-			}
+			event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
 		}
-		else if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
+		
+		if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
 		{
-			AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-			AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
-			
-			if(fromCap != null)
-			{
-				event.getEntityLiving().getAttributes().removeAttributeModifiers(fromCap.getAttributeModifiers(event.getSlot()));
-			}
-			
-			if(toCap != null)
-			{
-				event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
-			}
 			entitydata.onArmorSlotChanged(fromCap, toCap, event.getSlot());
+		}
+		else
+		{
+			entitydata.cancelUsingItem();
+			if (entitydata instanceof ServerPlayerData)
+			{
+				((ServerPlayerData)entitydata).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
+						: InteractionHand.OFF_HAND);
+			}
 		}
 		
 		if (entitydata instanceof IEquipLoaded)

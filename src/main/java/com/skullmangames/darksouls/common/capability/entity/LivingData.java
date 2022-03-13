@@ -574,9 +574,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 		this.playAnimationSynchronize(animation.getId(), modifyTime);
 	}
 
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType)
-	{
-	}
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
 
 	@SuppressWarnings("unchecked")
 	public <A extends Animator> A getAnimator()

@@ -129,7 +129,7 @@ public class ModAttributes
 	
 	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)
 	{
-		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.getIndex()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 	
 	public static AttributeModifier getMovementSpeedModifier(EquipLoadLevel level)

@@ -1,4 +1,13 @@
 {
+	"entity.generic.roll":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			{ "name": "darksouls:entities/generic/roll", "stream": true }
+		]
+	},
+	
 	"block.bonfire.lit":
 	{
 		"category": "block",

@@ -32,7 +32,6 @@ public final class Animations
 {
 	public static final List<StaticAnimation> ANIMATIONS = new ArrayList<>();
 	
-	
 	public static final StaticAnimation DUMMY_ANIMATION = new StaticAnimation();
 	
 	public static final StaticAnimation BIPED_IDLE = new StaticAnimation(true, 0.2F, true, "biped/living/idle", "biped", true);
@@ -70,7 +69,10 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_DOWN_BACK = new InvincibleAnimation(0.08F, "biped/combat/hit_down_back", "biped");
 	public static final StaticAnimation BIPED_HIT_DOWN_FRONT = new InvincibleAnimation(0.08F, "biped/combat/hit_down_front", "biped");
 	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.08F, "biped/living/land_damage", "biped");
-	public static final StaticAnimation BIPED_DODGE = new DodgingAnimation(0.09F, false, "biped/combat/dodge", 0.6F, 0.5F, "biped");
+	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.08F, false, "biped/combat/roll", "biped")
+			.registerSound(ModSoundEvents.GENERIC_ROLL, 0.28F, true);
+	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.08F, false, "biped/combat/fat_roll", "biped")
+			.registerSound(ModSoundEvents.GENERIC_ROLL, 0.28F, true);
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", "biped");
 			
 	public static final StaticAnimation BIPED_MOB_THROW = new AttackAnimation(0.11F, 1.0F, 0, 0, 0, false, null, "", "biped/combat/javelin_throw_mid", "biped");

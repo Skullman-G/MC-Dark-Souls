@@ -91,8 +91,11 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 	public void performDodge()
 	{
 		float e = this.getEncumbrance();
-		this.animator.playAnimation(Animations.BIPED_DODGE, e);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(Animations.BIPED_DODGE, this.orgEntity.getId(), e), this.orgEntity);
+		StaticAnimation animation = e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+		System.out.print("\n"+this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get()));
+		
+		this.animator.playAnimation(animation, 0.0F);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 		
 		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);

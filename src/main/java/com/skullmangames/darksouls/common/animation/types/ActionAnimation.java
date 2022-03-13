@@ -143,6 +143,9 @@ public class ActionAnimation extends ImmovableAnimation
 			elb.setDeltaMovement(motion.x, motion.y + 0.08D, motion.z);
 		}
 		
-		return new Vector3f(dx, dy, dz);
+		Vector3f vec = new Vector3f(dx, dy, dz);
+		vec.mul(2F);
+		
+		return vec;
 	}
 }
