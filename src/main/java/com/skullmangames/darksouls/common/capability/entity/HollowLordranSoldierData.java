@@ -36,7 +36,7 @@ public class HollowLordranSoldierData extends HumanoidData<HollowLordranSoldier>
 	protected void initAnimator(AnimatorClient animatorClient)
 	{
 		super.initAnimator(animatorClient);
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_LORDRAN_SOLDIER_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_SOLDIER_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_SOLDIER_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);

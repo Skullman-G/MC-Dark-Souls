@@ -301,6 +301,7 @@ public final class Animations
 	
 	// Hollow Lordran Warrior
 	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/move", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/run", "biped", true);
 	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_WARRIOR_TH_LA = new AttackAnimation[]
 			{
@@ -327,7 +328,6 @@ public final class Animations
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
 	// Hollow Lordran Soldier
-	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_IDLE = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/idle", "biped", true);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/walking", "biped", true);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/run", "biped", true);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_BLOCK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/block", "biped", true, MixPart.LEFT);
