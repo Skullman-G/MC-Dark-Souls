@@ -318,9 +318,15 @@ public final class Animations
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	
-	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_LA = new AttackAnimation(0.2F, 0.0F, 0.6F, 1.0F, 2.4F, false, "111213", "hollow_lordran_warrior/axe_la", "biped")
-			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	public static final AttackAnimation[] HOLLOW_LORDRAN_WARRIOR_AXE_LA = new AttackAnimation[]
+			{
+					new AttackAnimation(0.2F, 0.0F, 0.6F, 1.0F, 2.4F, false, "111213", "hollow_lordran_warrior/axe_la_1", "biped")
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+					new AttackAnimation(0.2F, 0.0F, 1.12F, 1.36F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_la_2", "biped")
+					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+			};
 	
 	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA = new AttackAnimation(0.2F, 0.0F, 0.56F, 1.0F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_th_la", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)

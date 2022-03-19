@@ -38,6 +38,7 @@ public class PlayerStatsScreen extends Screen
 	
 	protected final int maxHealthBase;
 	protected final int maxStaminaBase;
+	protected final float maxEquipLoadBase;
 	protected final double attackDamageMods;
 
 	protected final int color;
@@ -63,6 +64,7 @@ public class PlayerStatsScreen extends Screen
 		
 		this.maxHealthBase = (int)this.player.getAttributeBaseValue(Attributes.MAX_HEALTH);
 		this.maxStaminaBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_STAMINA.get());
+		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.attackDamageMods = Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY));
 	}
 
@@ -105,15 +107,19 @@ public class PlayerStatsScreen extends Screen
 
 		int secondX = x + 195;
 		
-		this.font.draw(matrixstack, "Base power", secondX, y + 36, this.color);
+		this.font.draw(matrixstack, "Base Power", secondX, y + 36, this.color);
 		
-		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(null, this.displayedStats.get(Stats.VIGOR).intValue());
+		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, this.displayedStats.get(Stats.VIGOR).intValue());
 		int maxhealthcolor = (int) this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
-		this.font.draw(matrixstack, "Max health: " + maxhealth, secondX, y + 52, maxhealthcolor);
+		this.font.draw(matrixstack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
 
-		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(null, this.displayedStats.get(Stats.ENDURANCE).intValue());
+		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, this.displayedStats.get(Stats.ENDURANCE).intValue());
 		int maxstaminacolor = (int) this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
-		this.font.draw(matrixstack, "Max stamina: " + maxstamina, secondX, y + 64, maxstaminacolor);
+		this.font.draw(matrixstack, "Max Stamina: " + maxstamina, secondX, y + 64, maxstaminacolor);
+		
+		float maxEquipLoad = this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, this.displayedStats.get(Stats.VITALITY).intValue());
+		int maxEquipLoadColor = (int) this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
+		this.font.draw(matrixstack, "Max Equip Load: " + MathUtils.round(maxEquipLoad, 100), secondX, y + 76, maxEquipLoadColor);
 
 		this.font.draw(matrixstack, "Attack power", secondX, y + 144, this.color);
 		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
@@ -127,11 +133,11 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(matrixstack, "Defense", thirdX, y + 36, this.color);
 		this.font.draw(matrixstack, "Physical: " + (int) (this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()) * 100) + "%",
 				thirdX, y + 52, this.color);
-		this.font.draw(matrixstack, "VS strike: " + (int) (this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Strike: " + (int) (this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 64, this.color);
-		this.font.draw(matrixstack, "VS slash: " + (int) (this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Slash: " + (int) (this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 76, this.color);
-		this.font.draw(matrixstack, "VS thrust: " + (int) (this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Thrust: " + (int) (this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 88, this.color);
 
 		matrixstack.popPose();

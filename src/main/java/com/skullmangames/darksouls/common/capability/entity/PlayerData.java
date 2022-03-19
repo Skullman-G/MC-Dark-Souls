@@ -226,7 +226,7 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	@Override
 	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
-		WeaponCap weapon = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
+		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
 		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
 	}

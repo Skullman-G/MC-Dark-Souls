@@ -98,9 +98,9 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
 	{
-		MeleeWeaponCap weaponCap = ModCapabilities.getMeleeWeaponCapability(event.getItemStack());
+		MeleeWeaponCap weaponCap = ModCapabilities.getMeleeWeaponCap(event.getItemStack());
 		if (weaponCap == null) return;
-		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getMeleeWeaponCapability(event.getEntityLiving().getOffhandItem()) != null)
+		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getMeleeWeaponCap(event.getEntityLiving().getOffhandItem()) != null)
 		{
 			event.setCanceled(true);
 			return;
@@ -111,7 +111,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onStartUsingItem(LivingEntityUseItemEvent.Start event)
 	{
-		if (ModCapabilities.getMeleeWeaponCapability(event.getItem()) != null) event.setDuration(72000);
+		if (ModCapabilities.getMeleeWeaponCap(event.getItem()) != null) event.setDuration(72000);
 	}
 	
 	@SubscribeEvent
@@ -230,8 +230,8 @@ public class EntityEvents
 		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (entitydata == null || entitydata.getOriginalEntity() == null) return;
 		
-		AttributeItemCap fromCap = ModCapabilities.getAttributeItemCapability(event.getFrom());
-		AttributeItemCap toCap = ModCapabilities.getAttributeItemCapability(event.getTo());
+		AttributeItemCap fromCap = ModCapabilities.getAttributeItemCap(event.getFrom());
+		AttributeItemCap toCap = ModCapabilities.getAttributeItemCap(event.getTo());
 		
 		if(fromCap != null)
 		{

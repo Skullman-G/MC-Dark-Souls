@@ -259,7 +259,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 	public MeleeWeaponCap getHeldWeaponCapability(InteractionHand hand)
 	{
-		return ModCapabilities.getMeleeWeaponCapability(this.orgEntity.getItemInHand(hand));
+		return ModCapabilities.getMeleeWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
 
 	public boolean isInaction()
@@ -323,7 +323,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
-		WeaponCap weapon = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
+		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
 		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount,
 				requireddeflectionlevel, damageType, poiseDamage, staminaDmg);

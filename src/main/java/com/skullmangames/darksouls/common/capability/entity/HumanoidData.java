@@ -35,7 +35,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		if (!this.isClientSide() && !this.orgEntity.isNoAi())
 		{
 			super.resetCombatAI();
-			WeaponCap heldItem = ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem());
+			WeaponCap heldItem = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 			
 			if(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob)
 			{
@@ -89,7 +89,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 	
 	public boolean isArmed()
 	{
-		return ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()) != null;
+		return ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem()) != null;
 	}
 	
 	public void onMount(boolean isMount, Entity ridingEntity)
@@ -109,7 +109,7 @@ public abstract class HumanoidData<T extends Mob> extends MobData<T>
 		{
 			if(this.isArmed())
 			{
-				this.setAttackGoals(ModCapabilities.getWeaponCapability(this.orgEntity.getMainHandItem()).getWeaponCategory());
+				this.setAttackGoals(ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem()).getWeaponCategory());
 			}
 		}
 	}

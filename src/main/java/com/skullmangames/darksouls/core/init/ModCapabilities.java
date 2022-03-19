@@ -25,19 +25,19 @@ public class ModCapabilities
 		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 	
-	public static WeaponCap getWeaponCapability(ItemStack stack)
+	public static WeaponCap getWeaponCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
 		return cap instanceof WeaponCap ? (WeaponCap)cap : null;
 	}
 	
-	public static MeleeWeaponCap getMeleeWeaponCapability(ItemStack stack)
+	public static MeleeWeaponCap getMeleeWeaponCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
 		return cap instanceof MeleeWeaponCap ? (MeleeWeaponCap)cap : null;
 	}
 	
-	public static AttributeItemCap getAttributeItemCapability(ItemStack stack)
+	public static AttributeItemCap getAttributeItemCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
 		return cap instanceof AttributeItemCap ? (AttributeItemCap)cap : null;

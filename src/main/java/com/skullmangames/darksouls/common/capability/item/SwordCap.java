@@ -64,7 +64,7 @@ public class SwordCap extends MeleeWeaponCap
 	@Override
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
-		WeaponCap cap = ModCapabilities.getMeleeWeaponCapability(item);
+		WeaponCap cap = ModCapabilities.getMeleeWeaponCap(item);
 		return super.canBeRenderedBoth(item) || (cap != null && cap.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD);
 	}
 

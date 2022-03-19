@@ -56,14 +56,14 @@ public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA))
-					.addAttack(new AttackInstance(4, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
+					.addAttack(new AttackInstance(4, 9.0F, 10.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
 		}
 		else if (category == WeaponCategory.AXE)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA))
-					.addAttack(new AttackInstance(4, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
+					.addAttack(new AttackInstance(4, 9.0F, 10.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));
 		}
 		this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
 	}

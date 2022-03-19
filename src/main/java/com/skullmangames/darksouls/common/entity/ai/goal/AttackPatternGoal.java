@@ -43,13 +43,13 @@ public class AttackPatternGoal extends Goal
 		return this;
 	}
 	
-	private float getMaxDist()
+	private float getMaxDist(double range)
 	{
 		float maxDist = this.minDist;
 		for (int i = 0; i < this.attacks.size(); i++)
 		{
 			AttackInstance a = this.attacks.get(i);
-			if (a.range > maxDist && (i == 0 || i != this.currentAttack)) maxDist = a.range;
+			if (a.range > maxDist && (i == 0 || i != this.currentAttack) && a.offset < range) maxDist = a.range;
 		}
 		return maxDist;
 	}
@@ -124,7 +124,7 @@ public class AttackPatternGoal extends Goal
     protected boolean isTargetInRange(LivingEntity target)
     {
     	double targetRange = this.getTargetRange(target);
-    	return targetRange <= this.getMaxDist() && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
+    	return targetRange <= this.getMaxDist(targetRange) && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
     }
     
     protected boolean isValidTarget(LivingEntity attackTarget)

@@ -108,7 +108,7 @@ public class AttackAnimation extends ActionAnimation
 				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F, 0.5F);
 				if (entitydata instanceof ServerPlayerData && !((ServerPlayerData) entitydata).isCreativeOrSpectator())
 				{
-					WeaponCap weapon = ModCapabilities.getWeaponCapability(entitydata.getOriginalEntity().getMainHandItem());
+					WeaponCap weapon = ModCapabilities.getWeaponCap(entitydata.getOriginalEntity().getMainHandItem());
 					float incr = weapon == null ? -4.0F : Math.min(-weapon.weight / 3, -4.0F);
 					((ServerPlayerData)entitydata).increaseStamina(incr);
 				}
