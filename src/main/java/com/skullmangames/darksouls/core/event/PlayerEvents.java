@@ -47,6 +47,8 @@ public class PlayerEvents
 		{
 			playerdata.discard();
 		}
+		
+		event.getPlayer().getPersistentData().put(DarkSouls.MOD_ID, event.getOriginal().getPersistentData().getCompound(DarkSouls.MOD_ID));
 	}
 	
 	@SubscribeEvent

@@ -3,13 +3,9 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.ArrayList;
 import java.util.List;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCStat;
-
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 
 public class Stats
 {
@@ -28,7 +24,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, int value)
 				{
-					return -0.0065D * (value - 10) * (value - 188);
+					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
 				}
 			});
 	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
@@ -36,7 +32,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, int value)
 				{
-					return -0.0065D * (value - 10) * (value - 188);
+					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
 				}
 			});
 	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
@@ -44,7 +40,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, int value)
 				{
-					return -0.019D * (value - 10) * (value - 188);
+					return -0.019D * (value - STANDARD_LEVEL) * (value - 188);
 				}
 			});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
@@ -90,14 +86,12 @@ public class Stats
 		STATS.get(index).onChange(player, value);
 	}
 	
-	public void loadStats(ServerPlayer player, CompoundTag nbt)
+	public void loadStats(Player player, CompoundTag nbt)
 	{
 		for (int i = 0; i < STATS.size(); i++)
 		{
-			int value = Math.min(nbt.getInt(STATS.get(i).toString()), 99);
-			if (!player.isCreative()) value = Math.max(value, STANDARD_LEVEL);
+			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(STATS.get(i).toString()), 99));
 			this.initStatValue(player, i, value);
-			ModNetworkManager.sendToPlayer(new STCStat(player.getId(), i, value), player);
 		}
 	}
 	

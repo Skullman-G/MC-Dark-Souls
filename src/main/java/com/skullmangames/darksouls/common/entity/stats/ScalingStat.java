@@ -21,7 +21,7 @@ public class ScalingStat extends ModifyingStat
 		if (weapon != null)
 		{
 			float weaponBonus = weapon.getScaling(this).getPercentage();
-			float scale = -0.000127F * (value - 10F) * (value - 188F);
+			float scale = -0.000127F * (value - Stats.STANDARD_LEVEL) * (value - 188F);
 			addition = weapon.getDamage() * weaponBonus * scale;
 		}
 		return addition;

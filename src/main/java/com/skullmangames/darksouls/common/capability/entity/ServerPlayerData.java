@@ -59,12 +59,8 @@ public class ServerPlayerData extends PlayerData<ServerPlayer> implements IEquip
 		}
 		
 		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
-		this.humanity = nbt.getInt("Humanity");
-		this.souls = nbt.getInt("Souls");
-		this.human = nbt.getBoolean("IsHuman");
+		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
-		
-		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
 	@Override

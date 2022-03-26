@@ -317,6 +317,7 @@ public class EntityEvents
 			PlayerData<?> playerdata = (PlayerData<?>)entitydata;
 			playerdata.setHumanity(0);
 			playerdata.setHuman(false);
+			playerdata.setSouls(0);
 			playerdata.onSave();
 		}
 		

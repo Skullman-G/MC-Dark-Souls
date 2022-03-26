@@ -63,12 +63,15 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
+		
+		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
 	public void onSave()
 	{
 		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundTag());
 		CompoundTag nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
+		
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
