@@ -117,7 +117,7 @@ public class ActionAnimation extends ImmovableAnimation
 		super.bind(dist);
 		if (this.clientOnly && dist != Dist.CLIENT) return;
 		if(this.delayTime >= 0.0F) return;
-		this.delayTime = this.totalTime;
+		this.delayTime = 0.0F;
 	}
 	
 	protected Vector3f getCoordVector(LivingData<?> entitydata)

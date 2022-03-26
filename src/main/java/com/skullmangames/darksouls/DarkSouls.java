@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -41,7 +40,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.init.ConfiguredStructureInit;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModEntities;
@@ -49,6 +47,7 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModModelLayers;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.ModParticles;
+import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
@@ -97,8 +96,6 @@ public class DarkSouls
 		modBus.addListener(ModAttributes::modifyAttributeMap);
 
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-		forgeBus.addListener(EventPriority.NORMAL, ModStructures::setupStructureSpawns);
-		forgeBus.addListener(EventPriority.NORMAL, ConfiguredStructureInit::addDimensionalSpacing);
 
 		ModAttributes.ATTRIBUTES.register(modBus);
 		ModSoundEvents.SOUND_EVENTS.register(modBus);
@@ -128,6 +125,8 @@ public class DarkSouls
 
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
+		ModRecipeTypes.call();
+		
 		ModNetworkManager.registerPackets();
 
 		ProviderItem.initCapabilityMap();
@@ -135,12 +134,6 @@ public class DarkSouls
 
 		ProviderEntity.makeMap();
 		ProviderProjectile.makeMap();
-
-		event.enqueueWork(() ->
-		{
-			ModStructures.setupStructures();
-			ConfiguredStructureInit.registerAll();
-		});
 
 		ModEntities.registerEntitySpawnPlacement();
 		CriteriaTriggerInit.register();

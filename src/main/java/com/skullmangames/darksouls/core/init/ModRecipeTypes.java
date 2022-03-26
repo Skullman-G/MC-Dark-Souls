@@ -10,16 +10,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class ModRecipeTypes
 {
-	public static final RecipeType<ReinforceEstusFlaskRecipe> REINFORCE_ESTUS_FLASK = registerType("reinforce_estus_flask");
+	public static final RecipeType<ReinforceEstusFlaskRecipe> REINFORCE_ESTUS_FLASK = register("reinforce_estus_flask");
 	
-	private static <T extends Recipe<?>> RecipeType<T> registerType(String name)
+	private static <T extends Recipe<?>> RecipeType<T> register(String name)
 	{
 		return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(DarkSouls.MOD_ID, name), new RecipeType<T>()
 		{
-			public String toString()
-			{
-				return name;
-			}
+			public String toString() { return name; }
 		});
 	}
+	
+	public static void call() {}
 }

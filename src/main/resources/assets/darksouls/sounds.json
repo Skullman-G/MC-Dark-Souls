@@ -4,7 +4,7 @@
 		"category": "entity",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/generic/roll", "stream": true }
+			"darksouls:entities/generic/roll"
 		]
 	},
 	
@@ -14,7 +14,7 @@
 		"subtitle": "block.bonfire.lit.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:blocks/bonfire/lit", "stream": true }
+			"darksouls:blocks/bonfire/lit"
 		]
 	},
 	
@@ -24,7 +24,7 @@
 		"subtitle": "block.bonfire.ambient.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:blocks/bonfire/ambient", "stream": true }
+			"darksouls:blocks/bonfire/ambient"
 		]
 	},
 	
@@ -34,7 +34,7 @@
 		"subtitle": "item.darksign.use.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/darksign/use", "stream": true }
+			"darksouls:items/darksign/use"
 		]
 	},
 	
@@ -44,7 +44,7 @@
 		"subtitle": "item.soul_container.use.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/soul_container/use", "stream": true }
+			"darksouls:items/soul_container/use"
 		]
 	},
 	
@@ -54,7 +54,7 @@
 		"subtitle": "item.soul_container.finish.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/soul_container/finish", "stream": true }
+			"darksouls:items/soul_container/finish"
 		]
 	},
 	
@@ -64,9 +64,9 @@
 		"subtitle": "entity.hollow.ambient.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/hollow/ambient_01", "stream": true },
-			{ "name": "darksouls:entities/hollow/ambient_02", "stream": true },
-			{ "name": "darksouls:entities/hollow/ambient_03", "stream": true }
+			"darksouls:entities/hollow/ambient_01",
+			"darksouls:entities/hollow/ambient_02",
+			"darksouls:entities/hollow/ambient_03"
 		]
 	},
 	
@@ -76,10 +76,10 @@
 		"subtitle": "entity.hollow.death.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/hollow/death_01", "stream": true },
-			{ "name": "darksouls:entities/hollow/death_02", "stream": true },
-			{ "name": "darksouls:entities/hollow/death_03", "stream": true },
-			{ "name": "darksouls:entities/hollow/death_04", "stream": true }
+			"darksouls:entities/hollow/death_01",
+			"darksouls:entities/hollow/death_02",
+			"darksouls:entities/hollow/death_03",
+			"darksouls:entities/hollow/death_04"
 		]
 	},
 	
@@ -89,7 +89,7 @@
 		"subtitle": "entity.hollow.prepare.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/hollow/prepare", "stream": true }
+			"darksouls:entities/hollow/prepare"
 		]
 	},
 	
@@ -98,8 +98,8 @@
 		"category": "entity",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/generic/kill_1", "stream": true },
-			{ "name": "darksouls:entities/generic/kill_2", "stream": true }
+			"darksouls:entities/generic/kill_1",
+			"darksouls:entities/generic/kill_2"
 		]
 	},
 	
@@ -108,7 +108,7 @@
 		"category": "entity",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/generic/shield_disarmed", "stream": true }
+			"darksouls:entities/generic/shield_disarmed"
 		]
 	},
 	
@@ -118,8 +118,8 @@
 		"subtitle": "item.sword.swing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/sword/swing_1", "stream": true },
-			{ "name": "darksouls:items/sword/swing_2", "stream": true }
+			"darksouls:items/sword/swing_1",
+			"darksouls:items/sword/swing_2"
 		]
 	},
 	
@@ -129,7 +129,7 @@
 		"subtitle": "item.great_hammer.smash.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/great_hammer/smash", "stream": true }
+			"darksouls:items/great_hammer/smash"
 		]
 	},
 	
@@ -139,8 +139,8 @@
 		"subtitle": "entity.asylum_demon.ambient.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/ambient_1", "stream": true },
-			{ "name": "darksouls:entities/asylum_demon/ambient_2", "stream": true }
+			"darksouls:entities/asylum_demon/ambient_1",
+			"darksouls:entities/asylum_demon/ambient_2"
 		]
 	},
 	
@@ -150,7 +150,7 @@
 		"subtitle": "entity.asylum_demon.land.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/land", "stream": true }
+			"darksouls:entities/asylum_demon/land"
 		]
 	},
 	
@@ -160,7 +160,7 @@
 		"subtitle": "entity.asylum_demon.wing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/wing", "stream": true }
+			"darksouls:entities/asylum_demon/wing"
 		]
 	},
 	
@@ -170,7 +170,7 @@
 		"subtitle": "entity.asylum_demon.foot.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/foot", "stream": true }
+			"darksouls:entities/asylum_demon/foot"
 		]
 	},
 	
@@ -180,7 +180,7 @@
 		"subtitle": "entity.asylum_demon.death.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/death", "stream": true }
+			"darksouls:entities/asylum_demon/death"
 		]
 	},
 	
@@ -190,8 +190,8 @@
 		"subtitle": "entity.asylum_demon.swing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/swing_1", "stream": true },
-			{ "name": "darksouls:entities/asylum_demon/swing_2", "stream": true }
+			"darksouls:entities/asylum_demon/swing_1",
+			"darksouls:entities/asylum_demon/swing_2"
 		]
 	},
 	
@@ -201,7 +201,7 @@
 		"subtitle": "entity.asylum_demon.smash.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/asylum_demon/smash", "stream": true }
+			"darksouls:entities/asylum_demon/smash"
 		]
 	},
 	
@@ -211,7 +211,7 @@
 		"subtitle": "entity.generic.human_form.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/generic/human_form", "stream": true }
+			"darksouls:entities/generic/human_form"
 		]
 	},
 	
@@ -221,7 +221,7 @@
 		"subtitle": "item.fist.swing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/fist/swing", "stream": true }
+			"darksouls:items/fist/swing"
 		]
 	},
 	
@@ -231,7 +231,7 @@
 		"subtitle": "item.axe.swing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/axe/swing", "stream": true }
+			"darksouls:items/axe/swing"
 		]
 	},
 	
@@ -241,8 +241,8 @@
 		"subtitle": "item.spear.swing.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/spear/swing_1", "stream": true },
-			{ "name": "darksouls:items/spear/swing_2", "stream": true }
+			"darksouls:items/spear/swing_1",
+			"darksouls:items/spear/swing_2"
 		]
 	},
 	
@@ -252,7 +252,7 @@
 		"subtitle": "item.ultra_greatsword.smash.sub",
 		"sounds":
 		[
-			{ "name": "darksouls:items/ultra_greatsword/smash", "stream": true }
+			"darksouls:items/ultra_greatsword/smash"
 		]
 	},
 	
@@ -261,9 +261,9 @@
 		"category": "entity",
 		"sounds":
 		[
-			{ "name": "darksouls:entities/generic/hit_1", "stream": true },
-			{ "name": "darksouls:entities/generic/hit_2", "stream": true },
-			{ "name": "darksouls:entities/generic/hit_3", "stream": true }
+			"darksouls:entities/generic/hit_1",
+			"darksouls:entities/generic/hit_2",
+			"darksouls:entities/generic/hit_3"
 		]
 	}
 }

@@ -37,6 +37,7 @@ import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
 public class InputManager
@@ -70,7 +71,16 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
 		
-		this.keyHash = KeyMapping.MAP;
+		try
+		{
+			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyMapping.class, "f_90810_").get(null);
+		} catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void setGamePlayer(ClientPlayerData playerdata)

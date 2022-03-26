@@ -476,8 +476,8 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 					orgEntity.getSoundSource(), volume, 1.0F + randPitch);
 		} else
 		{
-			this.orgEntity.level.playLocalSound(orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F + randPitch, false);
+			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
+					orgEntity.getSoundSource(), volume, 1.0F + randPitch);
 		}
 	}
 

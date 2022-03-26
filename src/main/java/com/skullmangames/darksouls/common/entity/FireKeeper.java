@@ -112,7 +112,7 @@ public class FireKeeper extends QuestEntity
 				BonfireBlockEntity t = this.level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
 				if (t != null
 						&& !t.hasFireKeeper()
-						&& t.getBlockPos().distSqr(this.getX(), this.getY(), this.getZ(), false) <= 1000)
+						&& t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
 				{
 					this.linkBonfire(t.getBlockPos());
 					break;

@@ -72,7 +72,7 @@ public class ModWorldSelectionScreen extends Screen
 		this.addRenderableWidget(new Button(this.width / 2 + 4, this.height - 52, 150, 20,
 				new TranslatableComponent("selectWorld.create"), (p_214326_1_) ->
 				{
-					this.minecraft.setScreen(CreateWorldScreen.create(this));
+					this.minecraft.setScreen(CreateWorldScreen.createFresh(this));
 				}));
 		this.renameButton = this.addRenderableWidget(new Button(this.width / 2 - 154, this.height - 28, 72, 20,
 				new TranslatableComponent("selectWorld.edit"), (p_214323_1_) ->

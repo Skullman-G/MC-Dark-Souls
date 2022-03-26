@@ -44,7 +44,7 @@ import net.minecraft.world.level.storage.LevelSummary;
 import net.minecraftforge.client.gui.NotificationModUpdateScreen;
 import net.minecraftforge.internal.BrandingControl;
 
-public class ModMainMenuScreen extends Screen
+public class ModTitleScreen extends Screen
 {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final ResourceLocation DS_ACCESSIBILITY_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID,
@@ -61,7 +61,7 @@ public class ModMainMenuScreen extends Screen
 	private Screen realmsNotificationsScreen;
 	private Button resetDemoButton;
 
-	public ModMainMenuScreen(boolean fading)
+	public ModTitleScreen(boolean fading)
 	{
 		super(new TranslatableComponent("narrator.screen.title"));
 		this.fading = fading;
@@ -137,8 +137,8 @@ public class ModMainMenuScreen extends Screen
 			{
 				if (!p_169458_.active)
 				{
-					ModMainMenuScreen.this.renderTooltip(p_169459_, ModMainMenuScreen.this.minecraft.font.split(
-							this.text, Math.max(ModMainMenuScreen.this.width / 2 - 43, 170)), p_169460_, p_169461_);
+					ModTitleScreen.this.renderTooltip(p_169459_, ModTitleScreen.this.minecraft.font.split(
+							this.text, Math.max(ModTitleScreen.this.width / 2 - 43, 170)), p_169460_, p_169461_);
 				}
 
 			}
@@ -222,10 +222,10 @@ public class ModMainMenuScreen extends Screen
 						this.minecraft.loadLevel("Demo_World");
 					} else
 					{
-						RegistryAccess.RegistryHolder registryaccess$registryholder = RegistryAccess.builtin();
+						RegistryAccess registryaccess = RegistryAccess.BUILTIN.get();
 						this.minecraft.createLevel("Demo_World", MinecraftServer.DEMO_SETTINGS,
-								registryaccess$registryholder,
-								WorldGenSettings.demoSettings(registryaccess$registryholder));
+								registryaccess,
+								WorldGenSettings.demoSettings(registryaccess));
 					}
 
 				}));

@@ -4,8 +4,10 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -130,5 +132,17 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 		{
 			return ItemStack.EMPTY;
 		}
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return ModSoundEvents.HOLLOW_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
 }
