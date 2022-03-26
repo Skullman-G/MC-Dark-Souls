@@ -27,7 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
-public abstract class PlayerData<T extends Player> extends LivingData<T>
+public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 {
 	private static final UUID ACTION_EVENT_UUID = UUID.fromString("e6beeac4-77d2-11eb-9439-0242ac130002");
 	protected float yaw;
@@ -230,7 +230,7 @@ public abstract class PlayerData<T extends Player> extends LivingData<T>
 	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
-		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
+		float staminaDmg = weapon != null ? Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul : 4;
 		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
 	}
 	

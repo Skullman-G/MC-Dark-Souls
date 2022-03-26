@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import io.netty.buffer.Unpooled;
@@ -63,7 +63,7 @@ public class STCMobInitialSetting
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if(entity != null)
 			{
-				HumanoidData<?> entitydata = (HumanoidData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				HumanoidCap<?> entitydata = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				entitydata.clientInitialSettings(msg.getBuffer());
 			}
 		});

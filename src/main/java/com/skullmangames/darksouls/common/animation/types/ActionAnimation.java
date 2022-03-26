@@ -4,8 +4,8 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -42,7 +42,7 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entity)
+	public void onActivate(LivingCap<?> entity)
 	{
 		super.onActivate(entity);
 		Entity orgEntity = entity.getOriginalEntity();
@@ -52,14 +52,14 @@ public class ActionAnimation extends ImmovableAnimation
 		orgEntity.setYHeadRot(yaw);
 		orgEntity.setYBodyRot(yaw);
 		
-		if(entity instanceof PlayerData)
+		if(entity instanceof PlayerCap)
 		{
-			((PlayerData<?>)entity).getEventListener().activateEvents(EventType.ON_ACTION_EVENT);
+			((PlayerCap<?>)entity).getEventListener().activateEvents(EventType.ON_ACTION_EVENT);
 		}
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entity)
+	public void onUpdate(LivingCap<?> entity)
 	{
 		super.onUpdate(entity);
 
@@ -82,14 +82,14 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
-		if(time < this.delayTime) return LivingData.EntityState.PRE_DELAY;
-		else return LivingData.EntityState.FREE;
+		if(time < this.delayTime) return LivingCap.EntityState.PRE_DELAY;
+		else return LivingCap.EntityState.FREE;
 	}
 	
 	@Override
-	public Pose getPoseByTime(LivingData<?> entity, float time)
+	public Pose getPoseByTime(LivingCap<?> entity, float time)
 	{
 		Pose pose = new Pose();
 
@@ -120,7 +120,7 @@ public class ActionAnimation extends ImmovableAnimation
 		this.delayTime = 0.0F;
 	}
 	
-	protected Vector3f getCoordVector(LivingData<?> entitydata)
+	protected Vector3f getCoordVector(LivingCap<?> entitydata)
 	{
 		LivingEntity elb = entitydata.getOriginalEntity();
 		JointTransform jt = jointTransforms.get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getElapsedTime());

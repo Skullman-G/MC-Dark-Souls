@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -16,13 +15,8 @@ import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 
-public class HollowLordranSoldierData extends HumanoidData<HollowLordranSoldier>
+public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 {
-	public HollowLordranSoldierData()
-	{
-		super(Faction.UNDEAD);
-	}
-	
 	@Override
 	public void postInit()
 	{

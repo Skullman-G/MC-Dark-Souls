@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -13,7 +13,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 public class ModCapabilities
 {
-	public static final Capability<EntityData<?>> CAPABILITY_ENTITY = null;
+	public static final Capability<EntityCapability<?>> CAPABILITY_ENTITY = null;
 	
     public static final Capability<ItemCapability> CAPABILITY_ITEM = null;
 	

@@ -3,14 +3,14 @@ package com.skullmangames.darksouls.core.event;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 
 public class PlayerEvent implements Comparable<UUID>
 {
 	private UUID uuid;
-	private BiFunction<PlayerData<?>, Object[], Boolean> function;
+	private BiFunction<PlayerCap<?>, Object[], Boolean> function;
 
-	public PlayerEvent(UUID uuid, BiFunction<PlayerData<?>, Object[], Boolean> function)
+	public PlayerEvent(UUID uuid, BiFunction<PlayerCap<?>, Object[], Boolean> function)
 	{
 		this.uuid = uuid;
 		this.function = function;
@@ -21,7 +21,7 @@ public class PlayerEvent implements Comparable<UUID>
 		return this.uuid.equals(uuid);
 	}
 
-	public boolean doIt(PlayerData<?> player, Object... args)
+	public boolean doIt(PlayerCap<?> player, Object... args)
 	{
 		return this.function.apply(player, args);
 	}
@@ -39,7 +39,7 @@ public class PlayerEvent implements Comparable<UUID>
 		}
 	}
 	
-	public static PlayerEvent makeEvent(UUID uuid, BiFunction<PlayerData<?>, Object[], Boolean> function)
+	public static PlayerEvent makeEvent(UUID uuid, BiFunction<PlayerCap<?>, Object[], Boolean> function)
 	{
 		return new PlayerEvent(uuid, function);
 	}

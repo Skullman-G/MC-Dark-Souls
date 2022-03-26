@@ -10,8 +10,8 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -44,7 +44,7 @@ public class InputManager
 {
 	private final Map<KeyMapping, BiConsumer<Integer, Integer>> keyFunctionMap;
 	private LocalPlayer player;
-	private ClientPlayerData playerdata;
+	private ClientPlayerCap playerdata;
 	private KeyBindingMap keyHash;
 	private int rightHandPressCounter;
 	private boolean rightHandToggle;
@@ -83,7 +83,7 @@ public class InputManager
 		}
 	}
 	
-	public void setGamePlayer(ClientPlayerData playerdata)
+	public void setGamePlayer(ClientPlayerCap playerdata)
 	{
 		this.rightHandPressCounter = 0;
 		this.rightHandToggle = false;

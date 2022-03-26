@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.UUID;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
@@ -80,7 +80,7 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	    if (!livingentity.level.isClientSide)
 	    {
 	    	ServerPlayer serverplayerentity = (ServerPlayer)livingentity;
-	    	PlayerData<?> playerdata = (PlayerData<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+	    	PlayerCap<?> playerdata = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
 	    	
 	    	if (serverplayerentity.getRespawnPosition() != null)

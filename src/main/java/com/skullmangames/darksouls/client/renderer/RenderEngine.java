@@ -22,14 +22,16 @@ import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.HollowData;
-import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
+import com.skullmangames.darksouls.common.capability.entity.HollowCap;
+import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
@@ -109,12 +111,13 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
-		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowData>("hollow/hollow"));
-		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, HollowLordranWarriorData>("hollow/lordran_hollow"));
-		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, SimpleHumanoidData<HollowLordranSoldier>>("hollow/lordran_hollow"));
-		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidData<CrestfallenWarrior>>("quest_entity/crestfallen_warrior"));
-		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, SimpleHumanoidData<AnastaciaOfAstora>>("quest_entity/anastacia_of_astora"));
+		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowCap>("hollow/hollow"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, HollowLordranWarriorCap>("hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, SimpleHumanoidCap<HollowLordranSoldier>>("hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidCap<CrestfallenWarrior>>("quest_entity/crestfallen_warrior"));
+		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, SimpleHumanoidCap<AnastaciaOfAstora>>("quest_entity/anastacia_of_astora"));
 		this.entityRendererMap.put(ModEntities.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
+		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<FireKeeper, FireKeeperCap>("fire_keeper"));
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();
@@ -171,7 +174,7 @@ public class RenderEngine
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingData<?> entitydata, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entitydata, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
 	{
 		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entitydata, renderer, buffer, matStack, packedLightIn, partialTicks);
 	}
@@ -261,7 +264,7 @@ public class RenderEngine
 			{
 				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F) return;
 				
-				LivingData<?> entitydata = (LivingData<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				LivingCap<?> entitydata = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entitydata != null)
 				{
 					event.setCanceled(true);
@@ -287,7 +290,7 @@ public class RenderEngine
 			if (event.getPlayer() != null)
 			{
 				ItemCapability cap = ModCapabilities.getItemCapability(event.getItemStack());
-				ClientPlayerData playerCap = (ClientPlayerData) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				ClientPlayerCap playerCap = (ClientPlayerCap) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
 			}

@@ -28,7 +28,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends PlayerData<T>
+public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends PlayerCap<T>
 {
 	protected float prevYaw;
 	protected float bodyYaw;
@@ -42,7 +42,7 @@ public class RemoteClientPlayerData<T extends AbstractClientPlayer> extends Play
 		super.onEntityJoinWorld(entityIn);
 		this.prevHeldItem = ItemStack.EMPTY;
 		this.prevHeldItemOffHand = ItemStack.EMPTY;
-		if(!(this instanceof ClientPlayerData))
+		if(!(this instanceof ClientPlayerCap))
 		{
 			ModNetworkManager.sendToServer(new CTSReqPlayerInfo(this.orgEntity.getId()));
 		}

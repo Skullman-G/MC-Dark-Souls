@@ -5,12 +5,12 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded;
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
-import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -65,8 +65,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = DarkSouls.MOD_ID)
 public class EntityEvents
 {
-	private static List<EntityData<?>> unInitializedEntitiesClient = Lists.<EntityData<?>>newArrayList();
-	private static List<EntityData<?>> unInitializedEntitiesServer = Lists.<EntityData<?>>newArrayList();
+	private static List<EntityCapability<?>> unInitializedEntitiesClient = Lists.<EntityCapability<?>>newArrayList();
+	private static List<EntityCapability<?>> unInitializedEntitiesServer = Lists.<EntityCapability<?>>newArrayList();
 	
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
@@ -80,7 +80,7 @@ public class EntityEvents
 		
 		if (event.getEntity() instanceof Projectile) return;
 		@SuppressWarnings("rawtypes")
-		EntityData entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		EntityCapability entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entitydata != null && event.getEntity().tickCount == 0)
 		{
 			entitydata.onEntityJoinWorld(event.getEntity());
@@ -117,7 +117,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void updateEvent(LivingUpdateEvent event)
 	{
-		LivingData<?> entitydata = (LivingData<?>) event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>) event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entitydata != null && entitydata.getOriginalEntity() != null)
 		{
 			entitydata.update();
@@ -127,7 +127,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void knockBackEvent(LivingKnockBackEvent event)
 	{
-		EntityData<?> cap = event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		EntityCapability<?> cap = event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		if (cap != null)
 		{
 			event.setCanceled(true);
@@ -138,7 +138,7 @@ public class EntityEvents
 	public static void hurtEvent(LivingHurtEvent event)
 	{
 		LivingEntity target = event.getEntityLiving();
-		LivingData<?> targetData = (LivingData<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		LivingCap<?> targetData = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		
 		float amount = event.getAmount();
 		boolean indirect = event.getSource() instanceof IndirectEntityDamageSource;
@@ -195,7 +195,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void attackEvent(LivingAttackEvent event)
 	{
-		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
 		if (entitydata != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
 		{
@@ -227,7 +227,7 @@ public class EntityEvents
 	{
 		if(event.getFrom().getItem() == event.getTo().getItem()) return;
 		
-		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (entitydata == null || entitydata.getOriginalEntity() == null) return;
 		
 		AttributeItemCap fromCap = ModCapabilities.getAttributeItemCap(event.getFrom());
@@ -250,9 +250,9 @@ public class EntityEvents
 		else
 		{
 			entitydata.cancelUsingItem();
-			if (entitydata instanceof ServerPlayerData)
+			if (entitydata instanceof ServerPlayerCap)
 			{
-				((ServerPlayerData)entitydata).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
+				((ServerPlayerCap)entitydata).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
 						: InteractionHand.OFF_HAND);
 			}
 		}
@@ -295,14 +295,14 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void mountEvent(EntityMountEvent event)
 	{
-		EntityData<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		EntityCapability<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
 		Level world = event.getWorldObj();
-		if (!world.isClientSide && mountEntity instanceof HumanoidData && mountEntity.getOriginalEntity() != null)
+		if (!world.isClientSide && mountEntity instanceof HumanoidCap && mountEntity.getOriginalEntity() != null)
 		{
 			if (event.getEntityBeingMounted() instanceof Mob)
 			{
-				((HumanoidData<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
+				((HumanoidCap<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
 			}
 		}
 	}
@@ -310,11 +310,11 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void deathEvent(LivingDeathEvent event)
 	{
-		LivingData<?> entitydata = (LivingData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entitydata == null) return;
-		if (entitydata instanceof PlayerData<?> && !entitydata.isClientSide())
+		if (entitydata instanceof PlayerCap<?> && !entitydata.isClientSide())
 		{
-			PlayerData<?> playerdata = (PlayerData<?>)entitydata;
+			PlayerCap<?> playerdata = (PlayerCap<?>)entitydata;
 			playerdata.setHumanity(0);
 			playerdata.setHuman(false);
 			playerdata.setSouls(0);
@@ -328,7 +328,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void fallEvent(LivingFallEvent event)
 	{
-		LivingData<?> entitydata = (LivingData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
 		if (entitydata != null && !entitydata.isInaction())
 		{
@@ -345,7 +345,7 @@ public class EntityEvents
 	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event)
 	{
 		Player player = event.getPlayer();
-		ServerPlayerData playerData = (ServerPlayerData) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		ServerPlayerCap playerData = (ServerPlayerCap) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		playerData.modifyLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
 	}
 	
@@ -354,7 +354,7 @@ public class EntityEvents
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			for (EntityData<?> cap : unInitializedEntitiesClient)
+			for (EntityCapability<?> cap : unInitializedEntitiesClient)
 			{
 				cap.postInit();
 			}
@@ -367,7 +367,7 @@ public class EntityEvents
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			for (EntityData<?> cap : unInitializedEntitiesServer)
+			for (EntityCapability<?> cap : unInitializedEntitiesServer)
 			{
 				cap.postInit();
 			}

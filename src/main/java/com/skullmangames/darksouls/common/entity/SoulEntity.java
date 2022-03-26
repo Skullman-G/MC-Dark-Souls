@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.entity;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
@@ -84,7 +84,7 @@ public class SoulEntity extends Entity implements IEntityAdditionalSpawnData
 		{
 			if (this.value > 0)
 			{
-				PlayerData<?> playerdata = (PlayerData<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
+				PlayerCap<?> playerdata = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
 						.orElse(null);
 				if (playerdata != null)
 					playerdata.raiseSouls(this.value);

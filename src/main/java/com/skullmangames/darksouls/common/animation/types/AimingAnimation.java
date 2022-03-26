@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
@@ -30,7 +30,7 @@ public class AimingAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entitydata)
+	public void onUpdate(LivingCap<?> entitydata)
 	{
 		super.onUpdate(entitydata);
 		
@@ -47,7 +47,7 @@ public class AimingAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
 	{
 		if (entitydata.isFirstPerson())
 		{

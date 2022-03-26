@@ -14,8 +14,8 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -69,7 +69,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		return this.statInfo.get(stat).getSecond();
 	}
 
-	public boolean meetRequirements(PlayerData<?> playerdata)
+	public boolean meetRequirements(PlayerCap<?> playerdata)
 	{
 		for (Stat stat : this.statInfo.keySet())
 			if (!this.meetsRequirement(stat, playerdata))
@@ -77,7 +77,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		return true;
 	}
 
-	public boolean meetsRequirement(Stat stat, PlayerData<?> playerdata)
+	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerdata)
 	{
 		return this.statInfo.get(stat).getFirst() <= playerdata.getStats().getStatValue(stat);
 	}
@@ -91,7 +91,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	public abstract float getDamage();
 
 	@Override
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry))
 			return;
@@ -131,12 +131,12 @@ public abstract class WeaponCap extends AttributeItemCap
 		}
 	}
 
-	private String getStatStringValue(Stat stat, PlayerData<?> playerdata)
+	private String getStatStringValue(Stat stat, PlayerCap<?> playerdata)
 	{
 		return this.getStatColor(stat, playerdata) + this.statInfo.get(stat).getFirst();
 	}
 
-	private String getStatColor(Stat stat, PlayerData<?> playerdata)
+	private String getStatColor(Stat stat, PlayerCap<?> playerdata)
 	{
 		return this.meetsRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
 	}
@@ -146,7 +146,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		return this.weaponCategory;
 	}
 
-	public WieldStyle getStyle(LivingData<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entitydata)
 	{
 		if (this.isTwoHanded())
 		{
@@ -193,7 +193,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	}
 
 	@Override
-	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerData<?> playerdata)
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> playerdata)
 	{
 		return this.animationSet;
 	}

@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.client;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -57,7 +57,7 @@ public class CTSPlayAnimation
 		ctx.get().enqueueWork(()->
 		{
 			ServerPlayer serverPlayer = ctx.get().getSender();
-			ServerPlayerData playerdata = (ServerPlayerData) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if(!msg.isClientSideAnimation)
 				playerdata.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
 			

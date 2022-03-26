@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.entity.ai.goal;
 
-import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
 
-public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<T>> extends RangeAttackGoal<T, D>
+public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCap<T>> extends RangeAttackGoal<T, D>
 {
 	public BowAttackGoal(D entitydata, int attackCooldown, float maxAttackDist)
 	{

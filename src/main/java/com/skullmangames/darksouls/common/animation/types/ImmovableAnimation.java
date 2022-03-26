@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
 
@@ -19,7 +19,7 @@ public class ImmovableAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entitydata)
+	public void onActivate(LivingCap<?> entitydata)
 	{
 		super.onActivate(entitydata);
 		
@@ -37,20 +37,20 @@ public class ImmovableAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entitydata, boolean isEnd)
 	{
 		super.onFinish(entitydata, isEnd);
 		
-		if (entitydata.isClientSide() && entitydata instanceof ClientPlayerData)
+		if (entitydata.isClientSide() && entitydata instanceof ClientPlayerCap)
 	    {
-			((ClientPlayerData)entitydata).changeYaw(0);
+			((ClientPlayerCap)entitydata).changeYaw(0);
 			ModNetworkManager.sendToServer(new CTSRotatePlayerYaw(0));
 	    }
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
-		return LivingData.EntityState.PRE_DELAY;
+		return LivingCap.EntityState.PRE_DELAY;
 	}
 }

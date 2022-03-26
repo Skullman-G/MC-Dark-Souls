@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -32,7 +32,7 @@ public class BonfireScreen extends Screen
 	private Button reverseHollowingButton;
 	private Button kindleButton;
 	private BonfireBlockEntity bonfiretileentity;
-	private ClientPlayerData playerData;
+	private ClientPlayerCap playerData;
 	private int buttonWidth = 100;
 	private int buttonHeight = 20;
 	private String estusVolumeLevel;

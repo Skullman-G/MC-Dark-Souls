@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> extends Layer<E, T>
+public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> extends Layer<E, T>
 {
 	private final float scale;
 	private final Vector3d translation;

@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.animation.JointKeyFrame;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class VariableHitAnimation extends HitAnimation
 {
@@ -16,7 +16,7 @@ public class VariableHitAnimation extends HitAnimation
 	}
 	
 	@Override
-	public void getLinkAnimation(Pose pose1, float timeModifier, LivingData<?> entitydata, LinkAnimation dest)
+	public void getLinkAnimation(Pose pose1, float timeModifier, LivingCap<?> entitydata, LinkAnimation dest)
 	{
 		dest.getTransfroms().clear();
 		dest.setTotalTime(timeModifier + convertTime);
@@ -38,7 +38,7 @@ public class VariableHitAnimation extends HitAnimation
 	}
 	
 	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
 	{
 		return super.getPoseByTime(entitydata, this.getTotalTime() - 0.000001F);
 	}

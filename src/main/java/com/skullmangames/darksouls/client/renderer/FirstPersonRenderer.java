@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -25,7 +25,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
 
-public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPlayerData>
+public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPlayerCap>
 {
 	private Minecraft minecraft = Minecraft.getInstance();
 	
@@ -39,7 +39,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPla
 	}
 	
 	@Override
-	public void render(LocalPlayer entityIn, ClientPlayerData entitydata, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
+	public void render(LocalPlayer entityIn, ClientPlayerCap entitydata, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
 	{
 		Camera camera = minecraft.gameRenderer.getMainCamera();
 		Vec3 projView = camera.getPosition();

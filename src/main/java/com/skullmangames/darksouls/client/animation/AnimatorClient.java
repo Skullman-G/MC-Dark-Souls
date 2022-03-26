@@ -15,8 +15,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -33,7 +33,7 @@ public class AnimatorClient extends Animator
 	private LivingMotion currentMixMotion;
 	private boolean reversePlay = false;
 	
-	public AnimatorClient(LivingData<?> entitydata)
+	public AnimatorClient(LivingCap<?> entitydata)
 	{
 		this.entitydata = entitydata;
 		this.baseLayer = new BaseLayer(Animations.DUMMY_ANIMATION);

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -42,7 +42,7 @@ public class RenderItemBase
 		PublicMatrix4f.translate(new Vector3f(0,0.1F,0), correctionMatrix, correctionMatrix);
 	}
 	
-	public void renderItemInHand(ItemStack stack, LivingData<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
+	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
 	{
 		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
 		String heldingHand = hand == InteractionHand.MAIN_HAND ? "Tool_R" : "Tool_L";
@@ -60,7 +60,7 @@ public class RenderItemBase
 		GlStateManager._enableDepthTest();
 	}
 	
-	public void renderItemBack(ItemStack stack, LivingData<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
+	public void renderItemBack(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
@@ -72,7 +72,7 @@ public class RenderItemBase
         Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, viewMatrixStack, buffer, 0);
 	}
 	
-	public void renderItemOnHead(ItemStack stack, LivingData<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
+	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		PublicMatrix4f.translate(new Vector3f(0F, 0.2F, 0F), modelMatrix, modelMatrix);
@@ -85,7 +85,7 @@ public class RenderItemBase
 		Minecraft.getInstance().getItemInHandRenderer().renderItem(itemHolder.getOriginalEntity(), stack, TransformType.HEAD, false, viewMatrixStack, buffer, packedLight);
 	}
 	
-	public PublicMatrix4f getCorrectionMatrix(ItemStack stack, LivingData<?> itemHolder, InteractionHand hand)
+	public PublicMatrix4f getCorrectionMatrix(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand)
 	{
 		return new PublicMatrix4f(correctionMatrix);
 	}

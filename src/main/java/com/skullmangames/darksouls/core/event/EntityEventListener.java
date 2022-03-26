@@ -5,14 +5,14 @@ import java.util.UUID;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 
 public class EntityEventListener
 {
 	private Multimap<EventType, PlayerEvent> map;
-	private final PlayerData<?> player;
+	private final PlayerCap<?> player;
 	
-	public EntityEventListener(PlayerData<?> player)
+	public EntityEventListener(PlayerCap<?> player)
 	{
 		this.player = player;
 		this.map = HashMultimap.create();

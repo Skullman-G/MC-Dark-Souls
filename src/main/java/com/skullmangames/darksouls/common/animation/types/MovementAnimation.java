@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 
 public class MovementAnimation extends StaticAnimation
@@ -17,7 +17,7 @@ public class MovementAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
 	{
 		if (entitydata.getAnimator().isReverse())
 		{
@@ -27,7 +27,7 @@ public class MovementAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public float getPlaySpeed(LivingData<?> entitydata)
+	public float getPlaySpeed(LivingCap<?> entitydata)
 	{
 		float movementSpeed = 1.0F;
 

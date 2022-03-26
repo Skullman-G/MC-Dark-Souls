@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.animation;
 
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.MixLinkAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ public class MixLayer extends BaseLayer
 		return !this.animationPlayer.isEmpty();
 	}
 	
-	public void setMixLinkAnimation(LivingData<?> entitydata, float timeModifier)
+	public void setMixLinkAnimation(LivingCap<?> entitydata, float timeModifier)
 	{
 		AnimationDataExtractor.getMixLinkAnimation(timeModifier + entitydata.getClientAnimator().baseLayer.animationPlayer.getPlay().getConvertTime(),
 				this.animationPlayer.getCurrentPose(entitydata, Minecraft.getInstance().getFrameTime()), this.mixLinkAnimation);

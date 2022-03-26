@@ -51,7 +51,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
+public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
 	protected boolean inaction;
 	public LivingMotion currentMotion = LivingMotion.IDLE;
@@ -303,7 +303,7 @@ public abstract class LivingData<T extends LivingEntity> extends EntityData<T>
 
 		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel()) return true;
 
-		LivingData<?> attackerData = (LivingData<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> attackerData = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (attackerData == null) return true;
 
 		StaticAnimation deflectAnimation = attackerData.getDeflectAnimation();

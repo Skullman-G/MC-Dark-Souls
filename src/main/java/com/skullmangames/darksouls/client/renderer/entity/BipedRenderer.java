@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BipedRenderer<E extends LivingEntity, T extends LivingData<E>> extends ArmatureRenderer<E, T>
+public abstract class BipedRenderer<E extends LivingEntity, T extends LivingCap<E>> extends ArmatureRenderer<E, T>
 {
 	public BipedRenderer()
 	{

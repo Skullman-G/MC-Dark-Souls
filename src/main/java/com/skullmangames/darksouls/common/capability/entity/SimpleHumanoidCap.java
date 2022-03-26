@@ -5,7 +5,6 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
-import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -16,13 +15,8 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-public class SimpleHumanoidData<T extends Mob> extends HumanoidData<T>
+public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 {
-	public SimpleHumanoidData()
-	{
-		super(Faction.NATURAL);
-	}
-	
 	@Override
 	protected void initAnimator(AnimatorClient animatorClient)
 	{

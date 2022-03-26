@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -24,7 +24,7 @@ public class CapabilityEvents
 	@SubscribeEvent
 	public void registerCaps(RegisterCapabilitiesEvent event)
 	{
-	    event.register(EntityData.class);
+	    event.register(EntityCapability.class);
 	    event.register(ItemCapability.class);
 	    event.register(CapabilityProjectile.class);
 	}
@@ -49,7 +49,7 @@ public class CapabilityEvents
 			ProviderEntity prov = new ProviderEntity(event.getObject());
 			if (prov.hasCapability())
 			{
-				EntityData entityCap = prov.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+				EntityCapability entityCap = prov.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				entityCap.onEntityConstructed(event.getObject());
 				event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "entity_cap"), prov);
 			}

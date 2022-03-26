@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -19,13 +18,8 @@ import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
-public class HollowData extends HumanoidData<Hollow>
+public class HollowCap extends HumanoidCap<Hollow>
 {
-	public HollowData()
-	{
-		super(Faction.UNDEAD);
-	}
-	
 	@Override
 	protected void initAttributes()
 	{

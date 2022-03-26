@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import com.skullmangames.darksouls.common.capability.entity.MobData;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 public class AttackPatternGoal extends Goal
 {
 	protected final Mob attacker;
-	protected final MobData<?> mobdata;
+	protected final MobCap<?> mobdata;
 	protected final float minDist;
 	protected final int yDist;
 	protected final boolean affectHorizon;
@@ -22,12 +22,12 @@ public class AttackPatternGoal extends Goal
 	
 	protected final List<AttackInstance> attacks = new ArrayList<>();
 	
-	public AttackPatternGoal(MobData<?> mobdata, float minDist, boolean affectHorizon)
+	public AttackPatternGoal(MobCap<?> mobdata, float minDist, boolean affectHorizon)
 	{
 		this(mobdata, minDist, 0, affectHorizon);
 	}
 	
-	public AttackPatternGoal(MobData<?> mobdata, float minDist, int yDist, boolean affectHorizon)
+	public AttackPatternGoal(MobCap<?> mobdata, float minDist, int yDist, boolean affectHorizon)
 	{
 		this.mobdata = mobdata;
 		this.attacker = this.mobdata.getOriginalEntity();

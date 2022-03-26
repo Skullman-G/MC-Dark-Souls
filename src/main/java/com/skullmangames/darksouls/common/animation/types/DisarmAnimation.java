@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class DisarmAnimation extends ActionAnimation
 {
@@ -10,8 +10,8 @@ public class DisarmAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
-		return LivingData.EntityState.DISARMED;
+		return LivingCap.EntityState.DISARMED;
 	}
 }

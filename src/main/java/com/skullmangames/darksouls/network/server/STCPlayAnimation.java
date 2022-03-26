@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import io.netty.buffer.ByteBuf;
@@ -51,7 +51,7 @@ public class STCPlayAnimation
 		Entity entity = minecraft.player.level.getEntity(this.entityId);
 		if(entity == null) return;
 		
-		LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entitydata = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
 		if (entitydata == null) return;
 		

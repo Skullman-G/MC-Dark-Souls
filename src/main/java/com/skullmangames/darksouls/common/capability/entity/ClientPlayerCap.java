@@ -32,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.world.phys.EntityHitResult;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientPlayerData extends RemoteClientPlayerData<LocalPlayer>
+public class ClientPlayerCap extends RemoteClientPlayerCap<LocalPlayer>
 {
 	private LivingEntity rayTarget;
 	private Minecraft minecraft = Minecraft.getInstance();

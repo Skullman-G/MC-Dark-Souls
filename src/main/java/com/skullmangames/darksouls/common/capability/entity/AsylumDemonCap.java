@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.InteractionHand;
 
-public class AsylumDemonData extends MobData<AsylumDemon>
+public class AsylumDemonCap extends MobCap<AsylumDemon>
 {
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)

@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -27,7 +27,7 @@ public class PlayerStatsScreen extends Screen
 {
 	protected final Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
 	protected int displayedLevel;
-	protected final ClientPlayerData playerdata;
+	protected final ClientPlayerCap playerdata;
 	protected final LocalPlayer player;
 
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");

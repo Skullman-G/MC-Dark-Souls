@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.MobData;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
 
@@ -33,7 +33,7 @@ public class AttackInstance
 		return offset <= targetRange && targetRange <= range;
 	}
 	
-	public void performAttack(MobData<?> mobdata, int combo)
+	public void performAttack(MobCap<?> mobdata, int combo)
 	{
 		Mob attacker = mobdata.getOriginalEntity();
 		mobdata.getServerAnimator().playAnimation(this.animation[combo], 0);

@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -41,7 +41,7 @@ public class SwordCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public WieldStyle getStyle(LivingData<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entitydata)
 	{
 		WeaponCap item = entitydata.getHeldWeaponCapability(InteractionHand.OFF_HAND);
 		if(item != null && item.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD)

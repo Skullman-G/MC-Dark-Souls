@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 import net.minecraftforge.api.distmarker.Dist;
 
@@ -23,7 +23,7 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entity)
+	public void onActivate(LivingCap<?> entity)
 	{
 		super.onActivate(entity);
 		if (entity instanceof IEquipLoaded)
@@ -33,20 +33,20 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entitydata, boolean isEnd)
 	{
 		super.onFinish(entitydata, isEnd);
 		this.encumbrance = 0.0F;
 	}
 	
 	@Override
-	public float getPlaySpeed(LivingData<?> entitydata)
+	public float getPlaySpeed(LivingCap<?> entitydata)
 	{
 		return 1.3F - this.encumbrance / 2;
 	}
 	
 	@Override
-	protected Vector3f getCoordVector(LivingData<?> entitydata)
+	protected Vector3f getCoordVector(LivingCap<?> entitydata)
 	{
 		Vector3f vec = super.getCoordVector(entitydata);
 		vec.mul(1.5F);
@@ -54,19 +54,19 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
 		if(time < this.delayTime)
 		{
-			return LivingData.EntityState.PRE_DELAY;
+			return LivingCap.EntityState.PRE_DELAY;
 		}
 		else if (time < this.recovery)
 		{
-			return LivingData.EntityState.INVINCIBLE;
+			return LivingCap.EntityState.INVINCIBLE;
 		}
 		else
 		{
-			return LivingData.EntityState.FREE;
+			return LivingCap.EntityState.FREE;
 		}
 	}
 	

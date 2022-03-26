@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -36,7 +36,7 @@ public class ItemCapability
 		return false;
 	}
 	
-	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerData<?> player)
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> player)
 	{
 		return null;
 	}
@@ -57,7 +57,7 @@ public class ItemCapability
 		return true;
 	}
 	
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerData<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
@@ -75,5 +75,5 @@ public class ItemCapability
 		if (!description.contains(languagePath)) itemTooltip.add(2, new TextComponent("\u00A77\n" + description));
 	}
 	
-	public void onHeld(PlayerData<?> playerdata) {}
+	public void onHeld(PlayerCap<?> playerdata) {}
 }

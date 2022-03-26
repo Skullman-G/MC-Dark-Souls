@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.animation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
@@ -16,7 +16,7 @@ public class AnimatorServer extends Animator
 	private LinkAnimation linkAnimation;
 	public boolean pause = false;
 
-	public AnimatorServer(LivingData<?> modEntity)
+	public AnimatorServer(LivingCap<?> modEntity)
 	{
 		this.entitydata = modEntity;
 		this.linkAnimation = new LinkAnimation();

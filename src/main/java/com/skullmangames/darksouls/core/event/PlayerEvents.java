@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ public class PlayerEvents
 		if (event.getEntity() instanceof Player)
 		{
 			Player player = (Player)event.getEntity();
-			PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			PlayerCap<?> playerdata = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			ItemCapability itemCap = playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			
 			if (playerdata.isInaction())
@@ -41,7 +41,7 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void cloneEvent(PlayerEvent.Clone event)
 	{
-		PlayerData<?> playerdata = (PlayerData<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		PlayerCap<?> playerdata = (PlayerCap<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
 		if (playerdata != null && playerdata.getOriginalEntity() != null)
 		{
@@ -58,7 +58,7 @@ public class PlayerEvents
 		{
 			if (event.getItem().getItem() instanceof BowItem)
 			{
-				PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				PlayerCap<?> playerdata = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (playerdata.isInaction())
 				{
 					event.setCanceled(true);
@@ -70,7 +70,7 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void playerLogOutEvent(PlayerLoggedOutEvent event)
 	{
-		PlayerData<?> playerdata = (PlayerData<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		PlayerCap<?> playerdata = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerdata == null) return;
 		playerdata.onSave();
 	}
@@ -79,7 +79,7 @@ public class PlayerEvents
 	public static void playerDeathEvent(LivingDeathEvent event)
 	{
 		if (!(event.getEntityLiving() instanceof ServerPlayer)) return;
-		PlayerData<?> playerdata = (PlayerData<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		PlayerCap<?> playerdata = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerdata == null) return;
 		playerdata.onSave();
 	}

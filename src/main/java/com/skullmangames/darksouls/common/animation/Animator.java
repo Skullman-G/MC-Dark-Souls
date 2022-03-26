@@ -1,12 +1,12 @@
 package com.skullmangames.darksouls.common.animation;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 
 public abstract class Animator
 {
-	protected LivingData<?> entitydata;
+	protected LivingCap<?> entitydata;
 	
 	public abstract void playAnimation(int id, float modifyTime);
 	public abstract void playAnimation(StaticAnimation nextAnimation, float modifyTime);

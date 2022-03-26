@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import com.skullmangames.darksouls.common.capability.entity.MobData;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -16,7 +16,7 @@ import net.minecraft.world.level.pathfinder.Path;
 
 public class ChasingGoal extends Goal
 {
-	protected final MobData<?> mobdata;
+	protected final MobCap<?> mobdata;
 	protected final Mob attacker;
 	private final boolean defensive;
 	private Path path;
@@ -24,7 +24,7 @@ public class ChasingGoal extends Goal
 	private double targetY;
 	private double targetZ;
 
-	public ChasingGoal(MobData<?> mobdata, boolean defensive)
+	public ChasingGoal(MobCap<?> mobdata, boolean defensive)
 	{
 		this.mobdata = mobdata;
 		this.attacker = mobdata.getOriginalEntity();

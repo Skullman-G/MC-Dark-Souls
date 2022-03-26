@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
-public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends HumanoidData<T>> extends Goal
+public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends HumanoidCap<T>> extends Goal
 {
 	private final T mob;
 	private final D mobdata;

@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import com.skullmangames.darksouls.common.capability.entity.HumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidData<T>> extends Goal
+public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCap<T>> extends Goal
 {
 	protected final T mob;
 	protected final D entitydata;

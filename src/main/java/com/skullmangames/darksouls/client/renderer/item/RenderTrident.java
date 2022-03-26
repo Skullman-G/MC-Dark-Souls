@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public class RenderTrident extends RenderItemBase
 	}
 	
 	@Override
-	public PublicMatrix4f getCorrectionMatrix(ItemStack stack, LivingData<?> itemHolder, InteractionHand hand)
+	public PublicMatrix4f getCorrectionMatrix(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand)
 	{
 		if(itemHolder.getOriginalEntity().getUseItemRemainingTicks() > 0)
 		{

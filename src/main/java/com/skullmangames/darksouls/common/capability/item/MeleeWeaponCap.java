@@ -9,8 +9,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -50,7 +50,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 	
 	@Override
-	public void onHeld(PlayerData<?> playerdata)
+	public void onHeld(PlayerCap<?> playerdata)
 	{
 		super.onHeld(playerdata);
 		AttributeInstance instance = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
@@ -77,7 +77,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public AttackAnimation getAttack(AttackType type, ClientPlayerData playerdata)
+	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
 	{
 		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
 

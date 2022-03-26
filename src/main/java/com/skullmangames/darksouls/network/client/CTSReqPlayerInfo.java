@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
@@ -49,7 +49,7 @@ public class CTSReqPlayerInfo
 			
 			if(entity != null && entity instanceof ServerPlayer)
 			{
-				ServerPlayerData playerdata = (ServerPlayerData) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				ServerPlayerCap playerdata = (ServerPlayerCap) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if(playerdata != null)
 				{

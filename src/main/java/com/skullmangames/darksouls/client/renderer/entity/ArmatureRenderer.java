@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.client.renderer.layer.Layer;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -38,7 +38,7 @@ import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingData<E>>
+public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingCap<E>>
 {
 	protected Minecraft minecraft = Minecraft.getInstance();
 	protected List<Layer<E, T>> layers;
@@ -86,7 +86,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingD
 					boolean flag3 = entitydata.getEntityState().shouldDetectCollision();
 					float elapsedTime = player.getElapsedTime();
 					int index = attackAnimation.getIndexer(elapsedTime);
-					Collider collider = attackAnimation.getCollider((LivingData<?>) entitydata, elapsedTime);
+					Collider collider = attackAnimation.getCollider((LivingCap<?>) entitydata, elapsedTime);
 					PublicMatrix4f mat = null;
 					
 					if (index > 0)

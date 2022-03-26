@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.item;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
@@ -35,7 +35,7 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
 		if (!level.isClientSide && this.getAmount() > 0)
 		{
-			PlayerData<?> playerdata = (PlayerData<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			PlayerCap<?> playerdata = (PlayerCap<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata != null)
 			{
 				playerdata.raiseSouls(this.getAmount());

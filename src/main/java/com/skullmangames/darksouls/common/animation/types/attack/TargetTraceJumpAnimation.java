@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +29,7 @@ public class TargetTraceJumpAnimation extends AttackAnimation
 	}
 	
 	@Override
-	protected Vector3f getCoordVector(LivingData<?> entitydata)
+	protected Vector3f getCoordVector(LivingCap<?> entitydata)
 	{
 		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
 		EntityState state = this.getState(elapsedTime);

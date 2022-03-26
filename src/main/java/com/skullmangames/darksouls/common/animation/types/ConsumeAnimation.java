@@ -1,21 +1,21 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
 
 public class ConsumeAnimation extends MirrorAnimation
 {
-	private LivingData<?> entitydata;
+	private LivingCap<?> entitydata;
 	
 	public ConsumeAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
 	{
 		super(convertTime, repeatPlay, path1, path2, armature, clientOnly);
 		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly)
 		{
-			private LivingData<?> entitydata;
+			private LivingCap<?> entitydata;
 			
 			@Override
-			public void onActivate(LivingData<?> entitydata)
+			public void onActivate(LivingCap<?> entitydata)
 			{
 				this.entitydata = entitydata;
 				entitydata.getOriginalEntity().xRot = 0.0F;
@@ -36,7 +36,7 @@ public class ConsumeAnimation extends MirrorAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entitydata)
+	public void onActivate(LivingCap<?> entitydata)
 	{
 		this.entitydata = entitydata;
 		entitydata.getOriginalEntity().xRot = 0.0F;

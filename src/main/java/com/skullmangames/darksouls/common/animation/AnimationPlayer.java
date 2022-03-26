@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.animation;
 
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class AnimationPlayer
 {
@@ -88,7 +88,7 @@ public class AnimationPlayer
 		this.play = null;
 	}
 
-	public Pose getCurrentPose(LivingData<?> entitydata, float partialTicks)
+	public Pose getCurrentPose(LivingCap<?> entitydata, float partialTicks)
 	{
 		return play.getPoseByTime(entitydata, prevElapsedTime + (elapsedTime - prevElapsedTime) * partialTicks);
 	}

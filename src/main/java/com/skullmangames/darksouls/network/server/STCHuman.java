@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -39,7 +39,7 @@ public class STCHuman
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if (entity == null) return;
 			
-			PlayerData<?> entitydata = (PlayerData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			PlayerCap<?> entitydata = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (entitydata == null) return;
 			
 			entitydata.setHuman(msg.human);

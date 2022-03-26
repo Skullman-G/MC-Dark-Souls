@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import com.skullmangames.darksouls.common.capability.entity.MobData;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -13,10 +13,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 public class StrafingGoal extends Goal
 {
-	protected final MobData<?> mobdata;
+	protected final MobCap<?> mobdata;
 	protected final Mob mob;
 	
-	public StrafingGoal(MobData<?> mobdata)
+	public StrafingGoal(MobCap<?> mobdata)
 	{
 		this.mobdata = mobdata;
 		this.mob = mobdata.getOriginalEntity();

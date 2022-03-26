@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -30,7 +30,7 @@ public class RenderElytra extends RenderItemBase
 	private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
 
 	@Override
-	public void renderItemOnHead(ItemStack stack, LivingData<?> itemHolder, MultiBufferSource buffer,
+	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer,
 			PoseStack viewMatrixStack, int packedLight, float partialTicks)
 	{
 		if (this.modelElytra == null)

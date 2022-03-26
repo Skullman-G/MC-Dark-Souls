@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class ReboundAnimation extends AimingAnimation
 {
@@ -11,7 +11,7 @@ public class ReboundAnimation extends AimingAnimation
 	}
 	
 	@Override
-	public void onActivate(LivingData<?> entity)
+	public void onActivate(LivingCap<?> entity)
 	{
 		if (entity.isClientSide())
 		{
@@ -25,11 +25,11 @@ public class ReboundAnimation extends AimingAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entity) {}
+	public void onUpdate(LivingCap<?> entity) {}
 
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
-		return LivingData.EntityState.CONTACT;
+		return LivingCap.EntityState.CONTACT;
 	}
 }

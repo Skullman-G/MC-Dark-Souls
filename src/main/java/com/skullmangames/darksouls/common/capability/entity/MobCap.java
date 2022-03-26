@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
-import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
@@ -32,20 +31,8 @@ import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class MobData<T extends Mob> extends LivingData<T>
+public abstract class MobCap<T extends Mob> extends LivingCap<T>
 {
-	protected final Faction mobFaction;
-	
-	public MobData()
-	{
-		this.mobFaction = Faction.NATURAL;
-	}
-	
-	public MobData(Faction faction)
-	{
-		this.mobFaction = faction;
-	}
-	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
@@ -111,14 +98,11 @@ public abstract class MobData<T extends Mob> extends LivingData<T>
 	public boolean isTeam(Entity entity)
 	{
 		if (entity instanceof Projectile) return false;
-		EntityData<?> cap = entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if(cap != null && cap instanceof MobData)
+		EntityCapability<?> cap = entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if(cap != null && cap instanceof MobCap)
 		{
-			if (((MobData<?>) cap).mobFaction.equals(this.mobFaction))
-			{
-				Optional<LivingEntity> opt = Optional.ofNullable(this.getTarget());
-				return opt.map((attackTarget)->!attackTarget.equals(entity)).orElse(true);
-			}
+			Optional<LivingEntity> opt = Optional.ofNullable(this.getTarget());
+			return opt.map((attackTarget)->!attackTarget.equals(entity)).orElse(true);
 		}
 		
 		return super.isTeam(entity);

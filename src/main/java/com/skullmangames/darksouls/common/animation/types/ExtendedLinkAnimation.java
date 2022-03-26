@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class ExtendedLinkAnimation extends ActionAnimation
 {
@@ -21,7 +21,7 @@ public class ExtendedLinkAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entitydata, boolean isEnd)
 	{
 		super.onFinish(entitydata, isEnd);
 		entitydata.reserveAnimationSynchronize(this.loopAnimation);

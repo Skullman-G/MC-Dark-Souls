@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.world.entity.Entity;
 
-public abstract class EntityData<T extends Entity>
+public abstract class EntityCapability<T extends Entity>
 {
 	protected T orgEntity;
 

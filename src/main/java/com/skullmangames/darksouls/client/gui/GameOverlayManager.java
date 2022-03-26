@@ -6,9 +6,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
@@ -151,7 +151,7 @@ public class GameOverlayManager
 	
 	private static void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
 	{
-		RemoteClientPlayerData<?> player = getCameraPlayerData();
+		RemoteClientPlayerCap<?> player = getCameraPlayerData();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -217,7 +217,7 @@ public class GameOverlayManager
 	
 	private static void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
 	{
-		ClientPlayerData playerdata = ClientManager.INSTANCE.getPlayerData();
+		ClientPlayerCap playerdata = ClientManager.INSTANCE.getPlayerData();
 		int x = width / 2;
 		int y = height - 45;
 		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
@@ -250,12 +250,12 @@ public class GameOverlayManager
 	    return minecraft.player;
 	}
 	
-	private static ClientPlayerData getCameraPlayerData()
+	private static ClientPlayerCap getCameraPlayerData()
 	{
 		LocalPlayer player = getCameraPlayer();
 		if (player == null) return null;
-		EntityData<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (!(entitydata instanceof ClientPlayerData)) return null;
-		return (ClientPlayerData)entitydata;
+		EntityCapability<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (!(entitydata instanceof ClientPlayerCap)) return null;
+		return (ClientPlayerCap)entitydata;
 	}
 }

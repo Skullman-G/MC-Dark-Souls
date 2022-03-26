@@ -5,7 +5,7 @@ import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,7 +26,7 @@ public class BaseLayer
 		this.nextPlaying = new StaticAnimation();
 	}
 
-	public void playAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata, float modifyTime)
+	public void playAnimation(DynamicAnimation nextAnimation, LivingCap<?> entitydata, float modifyTime)
 	{
 		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
@@ -35,7 +35,7 @@ public class BaseLayer
 		this.nextPlaying = nextAnimation;
 	}
 	
-	public void playAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata)
+	public void playAnimation(DynamicAnimation nextAnimation, LivingCap<?> entitydata)
 	{
 		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
@@ -43,14 +43,14 @@ public class BaseLayer
 		this.nextPlaying = null;
 	}
 	
-	public void setLinkAnimation(DynamicAnimation nextAnimation, LivingData<?> entitydata, float timeModifier)
+	public void setLinkAnimation(DynamicAnimation nextAnimation, LivingCap<?> entitydata, float timeModifier)
 	{
 		if (this.animationPlayer.isEmpty()) return;
 		Pose currentPose = this.animationPlayer.getCurrentPose(entitydata, Minecraft.getInstance().getFrameTime());
 		nextAnimation.getLinkAnimation(currentPose, timeModifier, entitydata, this.linkAnimation);
 	}
 	
-	public void update(LivingData<?> entitydata)
+	public void update(LivingCap<?> entitydata)
 	{
 		if (pause || this.animationPlayer.isEmpty())
 		{
@@ -77,7 +77,7 @@ public class BaseLayer
 		}
 	}
 	
-	public void clear(LivingData<?> entitydata)
+	public void clear(LivingCap<?> entitydata)
 	{
 		DynamicAnimation play = this.animationPlayer.getPlay();
 		if (play != null)

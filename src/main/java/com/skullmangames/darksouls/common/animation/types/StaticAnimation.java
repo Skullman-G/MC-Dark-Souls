@@ -1,13 +1,13 @@
 package com.skullmangames.darksouls.common.animation.types;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -103,7 +103,7 @@ public class StaticAnimation extends DynamicAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entitydata)
+	public void onUpdate(LivingCap<?> entitydata)
 	{
 		if(this.soundStream != null)
 		{
@@ -113,13 +113,9 @@ public class StaticAnimation extends DynamicAnimation
 			
 			for(SoundKey key : this.soundStream)
 			{
-				if(key.time < prevElapsed || key.time >= elapsed) continue;
-				else
+				if((key.time >= prevElapsed && key.time < elapsed) && !entitydata.isClientSide())
 				{
-					if(entitydata.isClientSide() == key.isClientSide)
-					{
-						entitydata.playSound(key.sound.get(), 0.0F, 0.0F);
-					}
+					entitydata.playSound(key.sound.get(), 0.0F, 0.0F);
 				}
 			}
 		}
@@ -132,7 +128,7 @@ public class StaticAnimation extends DynamicAnimation
 	
 	public StaticAnimation registerSound(RegistryObject<SoundEvent> sound, float time, boolean isRemote)
 	{
-		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
+		if(this.soundStream == null) this.soundStream = new ArrayList<SoundKey>();
 		this.soundStream.add(new SoundKey(sound, time, isRemote));
 		return this;
 	}

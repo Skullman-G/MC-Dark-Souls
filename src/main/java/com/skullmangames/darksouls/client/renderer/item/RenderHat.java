@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -25,7 +25,7 @@ public class RenderHat extends RenderItemBase
 {
 	@SuppressWarnings("unchecked")
 	@Override
-	public void renderItemOnHead(ItemStack stack, LivingData<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
+	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
 	{
 		EntityRenderer<?> render = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(itemHolder.getOriginalEntity());
 		if(render instanceof LivingEntityRenderer && ((LivingEntityRenderer<?, ?>)render).getModel() instanceof HumanoidModel)

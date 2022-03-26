@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import net.minecraft.world.item.Item;
 
@@ -12,7 +12,7 @@ public class TridentCap extends RangedWeaponCap
 	}
 	
 	@Override
-	public WieldStyle getStyle(LivingData<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entitydata)
 	{
 		return WieldStyle.ONE_HAND;
 	}

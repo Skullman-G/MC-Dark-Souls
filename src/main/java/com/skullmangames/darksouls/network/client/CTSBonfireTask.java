@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.client;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
@@ -44,7 +44,7 @@ public class CTSBonfireTask
 		ctx.get().enqueueWork(()->
 		{
 			ServerPlayer serverplayer = ctx.get().getSender();
-			ServerPlayerData playerdata = (ServerPlayerData) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			ServerPlayerCap playerdata = (ServerPlayerCap) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			
 			BonfireBlockEntity bonfire = serverplayer.level.getBlockEntity(msg.bonfirePos, ModBlockEntities.BONFIRE.get()).orElse(null);

@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-import com.skullmangames.darksouls.common.entity.Faction;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
@@ -13,13 +12,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
-public class HollowLordranWarriorData extends HumanoidData<HollowLordranWarrior>
+public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 {
-	public HollowLordranWarriorData()
-	{
-		super(Faction.UNDEAD);
-	}
-	
 	@Override
 	public void postInit()
 	{

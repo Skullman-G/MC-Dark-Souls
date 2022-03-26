@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.client.animation.AnimatorClient;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -98,7 +98,7 @@ public class STCLivingMotionChange
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if(entity != null)
 			{
-				LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				LivingCap<?> entitydata = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				AnimatorClient animator = entitydata.getClientAnimator();
 				if (entitydata.currentMixMotion != LivingMotion.HOLDING_WEAPON)
 				{

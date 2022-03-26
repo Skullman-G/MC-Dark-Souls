@@ -73,6 +73,7 @@ public class ModAttributes
 		general(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), event);
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.ASYLUM_DEMON.get(), event);
+		general(ModEntities.FIRE_KEEPER.get(), event);
 		/*general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);
 		general(EntityType.EVOKER, event);

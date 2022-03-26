@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
 import com.skullmangames.darksouls.client.renderer.ModCamera;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModItems;
@@ -31,7 +31,7 @@ public class ClientManager
 	public final ModCamera mainCamera;
 	private Options options;
 	
-	private ClientPlayerData playerdata;
+	private ClientPlayerCap playerdata;
 	
 	public ClientManager()
 	{
@@ -73,13 +73,13 @@ public class ClientManager
 		this.playerdata.rotateTo(x, 180.0F, true);
 	}
 	
-	public void setPlayerData(ClientPlayerData playerdata)
+	public void setPlayerData(ClientPlayerCap playerdata)
 	{
 		if(this.playerdata != null && this.playerdata != playerdata) this.playerdata.discard();
 		this.playerdata = playerdata;
 	}
 	
-	public ClientPlayerData getPlayerData()
+	public ClientPlayerCap getPlayerData()
 	{
 		return this.playerdata;
 	}

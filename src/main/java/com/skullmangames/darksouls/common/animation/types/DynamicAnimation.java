@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.animation.JointKeyFrame;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 
 public class DynamicAnimation
@@ -45,7 +45,7 @@ public class DynamicAnimation
 		jointTransforms.put(jointName, sheet);
 	}
 	
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
 	{
 		Pose pose = new Pose();
 
@@ -57,7 +57,7 @@ public class DynamicAnimation
 		return pose;
 	}
 
-	public void getLinkAnimation(Pose pose1, float timeModifier, LivingData<?> entitydata, LinkAnimation dest)
+	public void getLinkAnimation(Pose pose1, float timeModifier, LivingCap<?> entitydata, LinkAnimation dest)
 	{
 		float totalTime = timeModifier >= 0 ? timeModifier + convertTime : convertTime;
 		boolean isNeg = timeModifier < 0;
@@ -87,13 +87,13 @@ public class DynamicAnimation
 		player.setPlayAnimation(this);
 	}
 	
-	public void onActivate(LivingData<?> entitydata) {}
-	public void onUpdate(LivingData<?> entitydata) {}
-	public void onFinish(LivingData<?> entitydata, boolean isEnd) {}
+	public void onActivate(LivingCap<?> entitydata) {}
+	public void onUpdate(LivingCap<?> entitydata) {}
+	public void onFinish(LivingCap<?> entitydata, boolean isEnd) {}
 	
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
-		return LivingData.EntityState.FREE;
+		return LivingCap.EntityState.FREE;
 	}
 
 	public Map<String, TransformSheet> getTransfroms()
@@ -101,7 +101,7 @@ public class DynamicAnimation
 		return jointTransforms;
 	}
 
-	public float getPlaySpeed(LivingData<?> entitydata)
+	public float getPlaySpeed(LivingCap<?> entitydata)
 	{
 		return 1.0F;
 	}

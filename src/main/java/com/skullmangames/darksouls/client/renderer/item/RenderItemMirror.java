@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3d;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -22,7 +22,7 @@ public abstract class RenderItemMirror extends RenderItemBase
 	protected PublicMatrix4f leftHandCorrectionMatrix;
 	
 	@Override
-	public void renderItemInHand(ItemStack stack, LivingData<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
+	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
 	{
 		boolean isMainHand = hand == InteractionHand.MAIN_HAND;
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(isMainHand ? this.correctionMatrix : this.leftHandCorrectionMatrix);

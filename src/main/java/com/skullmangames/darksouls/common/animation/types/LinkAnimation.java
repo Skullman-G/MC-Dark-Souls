@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 public class LinkAnimation extends DynamicAnimation
 {
@@ -8,7 +8,7 @@ public class LinkAnimation extends DynamicAnimation
 	protected float startsAt;
 
 	@Override
-	public void onFinish(LivingData<?> entity, boolean isEnd)
+	public void onFinish(LivingCap<?> entity, boolean isEnd)
 	{
 		if(!isEnd)
 		{
@@ -26,13 +26,13 @@ public class LinkAnimation extends DynamicAnimation
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public LivingCap.EntityState getState(float time)
 	{
 		return this.nextAnimation.getState(0.0F);
 	}
 
 	@Override
-	public float getPlaySpeed(LivingData<?> entitydata)
+	public float getPlaySpeed(LivingCap<?> entitydata)
 	{
 		return this.nextAnimation.getPlaySpeed(entitydata);
 	}

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.entity;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -31,7 +31,7 @@ public class CrestfallenWarrior extends QuestEntity
 		IModClientPlayNetHandler handler = ModNetworkManager.connection;
 		if (player.level.isClientSide && handler != null && !this.chatTimer.isTicking())
 		{
-			PlayerData<?> playerdata = (PlayerData<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			PlayerCap<?> playerdata = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 			if (!this.questFlags[0])
 			{
 				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.0").getString().split("%");

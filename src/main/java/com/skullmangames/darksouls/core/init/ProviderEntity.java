@@ -5,15 +5,16 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.HollowData;
-import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierData;
-import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorData;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.ServerPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidData;
+import com.skullmangames.darksouls.common.capability.entity.AsylumDemonCap;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
+import com.skullmangames.darksouls.common.capability.entity.HollowCap;
+import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierCap;
+import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorCap;
+import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.player.RemotePlayer;
@@ -26,19 +27,20 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
 
-public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<EntityData<?>>
+public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<EntityCapability<?>>
 {
-	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>> CAPABILITIES = new HashMap<EntityType<?>, Function<Entity, Supplier<EntityData<?>>>>();
+	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityCapability<?>>>> CAPABILITIES = new HashMap<EntityType<?>, Function<Entity, Supplier<EntityCapability<?>>>>();
 	
 	public static void makeMap()
 	{
-		CAPABILITIES.put(EntityType.PLAYER, (entity) -> ServerPlayerData::new);
-		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowData::new);
-		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), (entity) -> HollowLordranWarriorData::new);
-		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> HollowLordranSoldierData::new);
-		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonData::new);
-		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidData::new);
-		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidData::new);
+		CAPABILITIES.put(EntityType.PLAYER, (entity) -> ServerPlayerCap::new);
+		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowCap::new);
+		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), (entity) -> HollowLordranWarriorCap::new);
+		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> HollowLordranSoldierCap::new);
+		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonCap::new);
+		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidCap::new);
+		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidCap::new);
+		CAPABILITIES.put(ModEntities.FIRE_KEEPER.get(), (entity) -> FireKeeperCap::new);
 	}
 	
 	public static void makeMapClient()
@@ -47,15 +49,15 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		{
 			if(entityIn instanceof LocalPlayer)
 			{
-				return ClientPlayerData::new;
+				return ClientPlayerCap::new;
 			}
 			else if (entityIn instanceof RemotePlayer)
 			{
-				return RemoteClientPlayerData<RemotePlayer>::new;
+				return RemoteClientPlayerCap<RemotePlayer>::new;
 			}
 			else if (entityIn instanceof ServerPlayer)
 			{
-				return ServerPlayerData::new;
+				return ServerPlayerCap::new;
 			}
 			else
 			{
@@ -64,8 +66,8 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		});
 	}
 	
-	private EntityData<?> capability;
-	private LazyOptional<EntityData<?>> optional = LazyOptional.of(this);
+	private EntityCapability<?> capability;
+	private LazyOptional<EntityCapability<?>> optional = LazyOptional.of(this);
 	
 	public ProviderEntity(Entity entity)
 	{
@@ -81,7 +83,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	}
 	
 	@Override
-	public EntityData<?> get()
+	public EntityCapability<?> get()
 	{
 		return this.capability;
 	}

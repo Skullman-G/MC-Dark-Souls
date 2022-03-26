@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.client.animation.MixLayer;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 import net.minecraft.client.Minecraft;
 
@@ -23,7 +23,7 @@ public class MixLinkAnimation extends DynamicAnimation
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entitydata, boolean isEnd)
 	{
 		if(isEnd)
 		{
@@ -33,7 +33,7 @@ public class MixLinkAnimation extends DynamicAnimation
 	}
 	
 	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
 	{
 		Pose basePose = entitydata.getClientAnimator().getCurrentPose(entitydata.getClientAnimator().baseLayer, Minecraft.getInstance().getFrameTime());
 		return Pose.interpolatePose(lastPose, basePose, time / totalTime);
