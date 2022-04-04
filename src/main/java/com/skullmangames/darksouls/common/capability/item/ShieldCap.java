@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
 public class ShieldCap extends MeleeWeaponCap
@@ -42,5 +45,11 @@ public class ShieldCap extends MeleeWeaponCap
 	public float getStaminaDamage()
 	{
 		return 6.0F;
+	}
+	
+	@Override
+	public SoundEvent getSwingSound()
+	{
+		return ModSoundEvents.FIST_SWING.get();
 	}
 }

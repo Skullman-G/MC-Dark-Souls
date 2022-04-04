@@ -242,7 +242,7 @@ public final class Animations
 	// Shield
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.44F, 0.6F, false, "111213", "biped/combat/shield_strike", "biped")
+					new AttackAnimation(0.3F, 0.0F, 0.12F, 0.32F, 0.8F, false, "111213", "biped/combat/shield_attack", "biped")
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 						.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
