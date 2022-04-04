@@ -49,7 +49,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 		super.initAnimator(animatorClient);
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
+		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
@@ -91,10 +91,10 @@ public class HollowCap extends HumanoidCap<Hollow>
 			if (category != WeaponCategory.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
 			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
-					.addAttack(new AttackInstance(4, 2.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK)));
+					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_LIGHT_ATTACKS))
+					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_BARRAGE))
+					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_OVERHEAD_SWING))
+					.addAttack(new AttackInstance(4, 5.0F, 6.0F, Animations.HOLLOW_JUMP_ATTACK)));
 			this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
 		}
 	}

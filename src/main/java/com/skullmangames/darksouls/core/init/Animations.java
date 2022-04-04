@@ -270,7 +270,8 @@ public final class Animations
 	
 	// Hollow
 	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(true, 0.2F, true, "hollow/idle", "biped", true);
-	public static final StaticAnimation HOLLOW_WALK = new StaticAnimation(true, 0.2F, true, "hollow/move", "biped", true);
+	public static final StaticAnimation HOLLOW_WALK = new MovementAnimation(0.2F, true, "hollow/move", "biped");
+	public static final StaticAnimation HOLLOW_RUN = new MovementAnimation(0.2F, true, "hollow/run", "biped");
 	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(0.2F, "hollow/deflected", "biped");
 	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(true, 0.2F, true, "hollow/breakdown", "biped", true);
 	
@@ -292,16 +293,16 @@ public final class Animations
 																new Phase(3.24F, 3.4F, 3.56F, 4.4F, "111213", Colliders.BROKEN_SWORD))
 																.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 																.registerSound(ModSoundEvents.HOLLOW_PREPARE, 0.04F, true);
-	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.64F, 0.88F, 1.6F, false, Colliders.BROKEN_SWORD, "111213", "hollow/overhead_swing", "biped")
+	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.4F, 0.6F, 1.2F, false, Colliders.BROKEN_SWORD, "111213", "hollow/overhead_swing", "biped")
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 																.addProperty(AttackProperty.STAMINA_DMG_MUL, 2);
-	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.72F, 1.2F, 1.8F, true, Colliders.BROKEN_SWORD, "111213", "hollow/jump_attack", "biped")
+	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.52F, 0.72F, 1.6F, true, Colliders.BROKEN_SWORD, "111213", "hollow/jump_attack", "biped")
 																.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 																.addProperty(AttackProperty.STAMINA_DMG_MUL, 2);
 	
 	// Hollow Lordran Warrior
-	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/move", "biped", true);
-	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_warrior/run", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_WALK = new MovementAnimation(0.2F, true, "hollow_lordran_warrior/move", "biped");
+	public static final StaticAnimation HOLLOW_LORDRAN_WARRIOR_RUN = new MovementAnimation(0.2F, true, "hollow_lordran_warrior/run", "biped");
 	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_WARRIOR_TH_LA = new AttackAnimation[]
 			{
@@ -328,14 +329,21 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 			};
 	
-	public static final AttackAnimation HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA = new AttackAnimation(0.2F, 0.0F, 0.56F, 1.0F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_th_la", "biped")
-			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
-			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	public static final AttackAnimation[] HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA = new AttackAnimation[]
+			{
+					new AttackAnimation(0.2F, 0.0F, 0.56F, 1.0F, 2.8F, false, "111213", "hollow_lordran_warrior/axe_th_la_1", "biped")
+					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY),
+					new AttackAnimation(0.2F, 0.0F, 0.68F, 1.0F, 2.0F, false, "111213", "hollow_lordran_warrior/axe_th_la_2", "biped")
+					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			};
 	
 	// Hollow Lordran Soldier
-	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/walking", "biped", true);
-	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/run", "biped", true);
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new MovementAnimation(0.2F, true, "hollow_lordran_soldier/walking", "biped");
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new MovementAnimation(0.2F, true, "hollow_lordran_soldier/run", "biped");
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_BLOCK = new StaticAnimation(true, 0.2F, true, "hollow_lordran_soldier/block", "biped", true, MixPart.LEFT);
 	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]

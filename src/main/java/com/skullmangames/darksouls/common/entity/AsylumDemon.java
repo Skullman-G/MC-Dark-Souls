@@ -86,7 +86,7 @@ public class AsylumDemon extends PathfinderMob
 		super.populateDefaultEquipmentSlots(difficulty);
 		
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
-		this.setDropChance(EquipmentSlot.MAINHAND, 0.04F);
+		this.setDropChance(EquipmentSlot.MAINHAND, 1.00F);
 	}
 	
 	@Override

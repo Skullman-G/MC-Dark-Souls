@@ -44,7 +44,7 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+				.add(Attributes.MOVEMENT_SPEED, 1.0D);
 	}
 	
 	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
