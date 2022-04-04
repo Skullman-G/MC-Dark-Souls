@@ -1,0 +1,12 @@
+{
+  "structures" : [ {
+    "structure" : "darksouls:fire_keeper_ruins",
+    "weight" : 1
+  } ],
+  "placement" : {
+    "salt" : 1694767081,
+    "spacing" : 1000,
+    "separation" : 500,
+    "type" : "minecraft:random_spread"
+  }
+}
