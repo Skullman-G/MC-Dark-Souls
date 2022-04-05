@@ -1,0 +1,29 @@
+{
+  "type" : "darksouls:lordran_camp",
+  "config" :
+  {
+    "start_pool" : "darksouls:lordran_camp/center",
+    "size" : 2
+  },
+  "biomes" : "#darksouls:has_structure/lordran_camp",
+  "adapt_noise" : true,
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "piece",
+      "spawns": [
+        {
+          "type": "darksouls:hollow_lordran_warrior",
+          "weight": 1,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "darksouls:hollow_lordran_soldier",
+          "weight": 1,
+          "minCount": 1,
+          "maxCount": 1
+        }
+      ]
+    }
+  }
+}

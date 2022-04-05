@@ -1,0 +1,37 @@
+{
+	"name": "darksouls:lordran_camp/corner",
+	"fallback": "minecraft:empty",
+	"elements":
+	[
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:lordran_camp/corner",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		},
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:lordran_camp/broken_corner",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		},
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:lordran_camp/tent_corner",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		}
+	]
+}

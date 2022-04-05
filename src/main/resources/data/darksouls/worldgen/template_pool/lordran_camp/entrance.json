@@ -1,5 +1,5 @@
 {
-	"name": "darksouls:checkpoint_plains/fire_keeper",
+	"name": "darksouls:lordran_camp/entrance",
 	"fallback": "minecraft:empty",
 	"elements":
 	[
@@ -7,7 +7,7 @@
 			"weight": 1,
 			"element":
 			{
-				"location": "darksouls:checkpoint_plains/entities/fire_keeper",
+				"location": "darksouls:lordran_camp/entrance",
 				"processors": "minecraft:empty",
 				"projection": "rigid",
 				"element_type": "minecraft:single_pool_element"

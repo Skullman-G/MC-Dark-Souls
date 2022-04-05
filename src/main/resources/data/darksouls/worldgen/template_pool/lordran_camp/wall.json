@@ -1,0 +1,27 @@
+{
+	"name": "darksouls:lordran_camp/wall",
+	"fallback": "minecraft:empty",
+	"elements":
+	[
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:lordran_camp/wall",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		},
+		{
+			"weight": 1,
+			"element":
+			{
+				"location": "darksouls:lordran_camp/broken_wall",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		}
+	]
+}
