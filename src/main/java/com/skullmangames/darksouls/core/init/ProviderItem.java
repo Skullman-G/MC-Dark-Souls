@@ -19,12 +19,20 @@ import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
+import com.skullmangames.darksouls.config.CapabilityConfig;
+import com.skullmangames.darksouls.config.CapabilityConfig.ShieldConfig;
+import com.skullmangames.darksouls.config.CapabilityConfig.WeaponConfig;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -101,6 +109,71 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		// Tridents
 		putCap(new TridentCap(Items.TRIDENT, 5, 11, 15, Scaling.NONE, Scaling.NONE));
+		
+		for (WeaponConfig configWeapon : CapabilityConfig.WEAPON_CONFIGS)
+		{
+			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());
+			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
+			Item item = ForgeRegistries.ITEMS.getValue(name);
+			if (!(item instanceof SwordItem || item instanceof DiggerItem || item instanceof ProjectileWeaponItem)) continue;
+			switch (configWeapon.category.get())
+			{
+			default: break;
+			case GREAT_HAMMER:
+				putCap(new GreatHammerCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case AXE:
+				putCap(new AxeCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case HAMMER:
+				putCap(new HammerCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case STRAIGHT_SWORD:
+				putCap(new SwordCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case SPEAR:
+				putCap(new SpearCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case ULTRA_GREATSWORD:
+				putCap(new UltraGreatswordCap(item,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			
+			case BOW:
+				putCap(new BowCap(item, 3,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			case CROSSBOW:
+				putCap(new CrossbowCap(item, 4,
+						configWeapon.requiredStrength.get(), configWeapon.requiredDex.get(),
+						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get()));
+				break;
+			}
+		}
+		
+		for (ShieldConfig configShield : CapabilityConfig.SHIELD_CONFIGS)
+		{
+			ResourceLocation name = new ResourceLocation(configShield.registryName.get());
+			if (!ForgeRegistries.ITEMS.containsKey(name)
+					|| configShield.category.get() != WeaponCategory.SHIELD
+					|| configShield.shieldType.get() == ShieldType.NONE) continue;
+			Item item = ForgeRegistries.ITEMS.getValue(name);
+			putCap(new ShieldCap(item, configShield.shieldType.get(), (float)((double)configShield.physicalDefense.get()),
+					configShield.requiredStrength.get(), configShield.requiredDex.get(),
+					configShield.strengthScaling.get(), configShield.dexScaling.get()));
+		}
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
