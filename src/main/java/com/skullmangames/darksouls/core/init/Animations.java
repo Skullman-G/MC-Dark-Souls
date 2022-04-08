@@ -49,7 +49,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", "biped", true);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", "biped", true);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", "biped", true);
-	public static final StaticAnimation BIPED_BLOCK = new MirrorAnimation(0.2F, true, "biped/combat/block", "biped/combat/block_mirror", "biped", true);
+	public static final StaticAnimation BIPED_BLOCK = new MirrorAnimation(0.2F, true, "biped/combat/block_mirror", "biped/combat/block", "biped", true);
 	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(true, 0.2F, true, "biped/living/idle_crossbow", "biped", true);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", "biped");
@@ -133,6 +133,10 @@ public final class Animations
 	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.2F, false, "111213", "biped/combat/spear_light_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation SPEAR_LIGHT_BLOCKING_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.28F, 0.48F, 1.0F, false, "111213", "biped/combat/spear_light_blocking_attack", "biped")
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			.addProperty(AttackProperty.BLOCKING, true);
 	
 	// Dagger
 	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F, false, "111213", "biped/combat/dagger_heavy_attack", "biped")

@@ -157,11 +157,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.addLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
 		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
-		animatorClient.addLivingMixAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
-		animatorClient.addLivingMixAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
-		animatorClient.addLivingMixAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
-		animatorClient.addLivingMixAnimation(LivingMotion.SHOTING, Animations.BIPED_BOW_REBOUND);
-		animatorClient.addLivingMixAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
+		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
+		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
+		animatorClient.addLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
+		animatorClient.addLivingAnimation(LivingMotion.SHOTING, Animations.BIPED_BOW_REBOUND);
+		animatorClient.addLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
 		animatorClient.setCurrentLivingMotionsToDefault();
 	}
 	

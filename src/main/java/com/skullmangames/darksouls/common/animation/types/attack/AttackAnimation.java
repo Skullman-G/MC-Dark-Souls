@@ -380,7 +380,7 @@ public class AttackAnimation extends ActionAnimation
 		}
 
 		@SuppressWarnings("unchecked")
-		protected <V> Optional<V> getProperty(AttackProperty<V> propertyType)
+		public <V> Optional<V> getProperty(AttackProperty<V> propertyType)
 		{
 			return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
 		}

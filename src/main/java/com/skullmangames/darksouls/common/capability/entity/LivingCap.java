@@ -10,7 +10,10 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.AnimatorServer;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
@@ -235,14 +238,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				if (this.orgEntity.isSprinting()) this.currentMotion = LivingMotion.RUNNING;
 				else this.currentMotion = LivingMotion.WALKING;
 			}
+			else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+			{
+				this.currentMotion = LivingMotion.BLOCKING;
+			}
 			else
 			{
 				currentMotion = LivingMotion.IDLE;
 			}
 		}
 		
-		if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
-		else this.currentMixMotion = LivingMotion.NONE;
+		if (this.currentMotion == LivingMotion.BLOCKING) this.currentMixMotion = LivingMotion.NONE;
+		else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
 	}
 
 	public void cancelUsingItem()
@@ -282,6 +289,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isBlocking()
 	{
+		DynamicAnimation animation = this.animator.getPlayer().getPlay();
+		if (animation instanceof AttackAnimation && ((AttackAnimation)animation).getPhaseByTime(this.animator.getPlayer().getElapsedTime()).getProperty(AttackProperty.BLOCKING).orElse(false)) return true;
 		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();

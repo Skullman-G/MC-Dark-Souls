@@ -103,14 +103,14 @@ public class InputManager
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
 	}
 
-	public boolean playerCanExecuteSkill(EntityState playerState)
+	public boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isInWater()
 				&& this.player.isOnGround()
-				&& !this.player.isUsingItem()
+				&& (!this.player.isUsingItem() || this.playerdata.isBlocking())
 				&& this.minecraft.screen == null;
 	}
 	
@@ -142,7 +142,7 @@ public class InputManager
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
 
-			if (player.getTicksUsingItem() == 0 && !rightHandToggle) this.rightHandToggle = true;
+			if (!rightHandToggle) this.rightHandToggle = true;
 		}
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
@@ -197,7 +197,6 @@ public class InputManager
 		{
 			this.sprintToggle = true;
 		}
-
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
 		
@@ -227,7 +226,7 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
+			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerdata.performDodge();
 			this.sprintPressCounter = 0;
 		}
 	}
@@ -246,7 +245,7 @@ public class InputManager
 		{
 			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
 			{
-				if (this.playerCanExecuteSkill(playerState)) this.playerdata.performAttack(AttackType.HEAVY);
+				if (this.playerCanAttack(playerState)) this.playerdata.performAttack(AttackType.HEAVY);
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -261,7 +260,7 @@ public class InputManager
 	
 	private void rightHandLightPress(EntityState playerState)
 	{
-		if (this.playerCanExecuteSkill(playerState))
+		if (this.playerCanAttack(playerState))
 		{
 			if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
 			else this.playerdata.performAttack(AttackType.LIGHT);

@@ -81,34 +81,6 @@ public class AnimatorClient extends Animator
 	public void addLivingAnimation(LivingMotion motion, StaticAnimation animation)
 	{
 		this.livingAnimations.put(motion, animation);
-		
-		if (motion == this.currentMotion)
-		{
-			if (!this.entitydata.isInaction())
-			{
-				playAnimationLiving(animation, 0);
-			}
-		}
-	}
-	
-	public void addLivingMixAnimation(LivingMotion motion, StaticAnimation animation)
-	{
-		this.livingAnimations.put(motion, animation);
-
-		if (motion == this.currentMotion)
-		{
-			if (!this.entitydata.isInaction())
-			{
-				if (animation instanceof MirrorAnimation)
-				{
-					playMixLayerAnimation(((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand()));
-				}
-				else
-				{
-					playMixLayerAnimation(animation);
-				}
-			}
-		}
 	}
 	
 	public void addModifiedLivingMotion(LivingMotion motion, StaticAnimation animation)

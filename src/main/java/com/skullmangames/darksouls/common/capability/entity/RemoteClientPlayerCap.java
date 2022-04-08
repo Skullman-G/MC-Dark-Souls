@@ -136,6 +136,10 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 				{
 					this.currentMotion = LivingMotion.KNEELING;
 				}
+				else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+				{
+					this.currentMotion = LivingMotion.BLOCKING;
+				}
 				else
 				{
 					this.currentMotion = LivingMotion.IDLE;
@@ -145,7 +149,7 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
-			if (this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();

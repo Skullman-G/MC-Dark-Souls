@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -10,6 +11,8 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SpearCap extends MeleeWeaponCap
 {
@@ -26,6 +29,15 @@ public class SpearCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK);
 		return builder;
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
+	{
+		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
+		if (type == AttackType.LIGHT && playerdata.isBlocking()) return Animations.SPEAR_LIGHT_BLOCKING_ATTACK;
+		return super.getAttack(type, playerdata);
 	}
 	
 	@Override

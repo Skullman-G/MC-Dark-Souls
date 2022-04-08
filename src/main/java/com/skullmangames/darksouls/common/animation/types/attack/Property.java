@@ -18,5 +18,7 @@ public abstract class Property<T>
 		public static final AttackProperty<SoundEvent> HIT_SOUND = new AttackProperty<SoundEvent>();
 		
 		public static final AttackProperty<ParticleSpawner> PARTICLE = new AttackProperty<ParticleSpawner>();
+		
+		public static final AttackProperty<Boolean> BLOCKING = new AttackProperty<Boolean>();
 	}
 }
