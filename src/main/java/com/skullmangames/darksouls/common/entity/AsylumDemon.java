@@ -1,13 +1,17 @@
 package com.skullmangames.darksouls.common.entity;
 
+import java.util.Random;
+
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -45,6 +49,11 @@ public class AsylumDemon extends PathfinderMob
 	protected int getExperienceReward(Player p_70693_1_)
 	{
 		return 100;
+	}
+	
+	public static boolean checkSpawnRules(EntityType<AsylumDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
+	{
+		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
 	
 	@Override

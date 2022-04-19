@@ -54,7 +54,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.5D));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));

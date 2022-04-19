@@ -71,5 +71,7 @@ public class ModEntities
 	{
 		SpawnPlacements.register(HOLLOW.get(), SpawnPlacements.Type.ON_GROUND,
 				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Hollow::checkSpawnRules);
+		SpawnPlacements.register(ASYLUM_DEMON.get(), SpawnPlacements.Type.ON_GROUND,
+				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AsylumDemon::checkSpawnRules);
 	}
 }
