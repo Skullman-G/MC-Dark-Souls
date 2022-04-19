@@ -97,4 +97,10 @@ public class QuestEntity extends PathfinderMob
 			this.questFlags[i] = (questFlagsByte & (1 << i)) != 0;
 		}
 	}
+	
+	@Override
+	public boolean removeWhenFarAway(double p_21542_)
+	{
+		return false;
+	}
 }

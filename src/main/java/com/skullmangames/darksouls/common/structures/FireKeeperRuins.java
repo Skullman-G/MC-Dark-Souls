@@ -31,7 +31,7 @@ public class FireKeeperRuins extends StructureFeature<JigsawConfiguration>
 		return true;
 	}
 
-	public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
+	private static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
 	{
 		if (!FireKeeperRuins.isFeatureChunk(context)) return Optional.empty();
 		

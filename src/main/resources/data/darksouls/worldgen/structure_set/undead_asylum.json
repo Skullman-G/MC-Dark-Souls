@@ -1,0 +1,12 @@
+{
+  "structures" : [ {
+    "structure" : "darksouls:undead_asylum",
+    "weight" : 1
+  } ],
+  "placement" : {
+    "salt" : 1694767083,
+    "spacing" : 1000,
+    "separation" : 500,
+    "type" : "minecraft:random_spread"
+  }
+}

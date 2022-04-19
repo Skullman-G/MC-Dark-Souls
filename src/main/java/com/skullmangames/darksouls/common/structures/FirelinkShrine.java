@@ -1,23 +1,21 @@
 package com.skullmangames.darksouls.common.structures;
 
 import java.util.Optional;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
-import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 
-public class LordranCamp extends StructureFeature<JigsawConfiguration>
+public class FirelinkShrine extends StructureFeature<JigsawConfiguration>
 {
-	public LordranCamp()
+	public FirelinkShrine()
 	{
-		super(JigsawConfiguration.CODEC, LordranCamp::createPiecesGenerator, PostPlacementProcessor.NONE);
+		super(JigsawConfiguration.CODEC, FirelinkShrine::createPiecesGenerator);
 	}
 
 	@Override
@@ -26,26 +24,27 @@ public class LordranCamp extends StructureFeature<JigsawConfiguration>
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}
 
-	private static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
+	private static boolean checkLocation(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
 	{
-		return true;
+		return context.getLowestY(12, 15) >= context.chunkGenerator().getSeaLevel();
 	}
 
 	private static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context)
 	{
-		if (!LordranCamp.isFeatureChunk(context)) return Optional.empty();
+		if (!FirelinkShrine.checkLocation(context)) return Optional.empty();
 		
 		BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
 		int topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(),
 				Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
 		blockpos = blockpos.above(topLandY);
 
-		Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator = JigsawPlacement.addPieces(context,
+		Optional<PieceGenerator<JigsawConfiguration>> generator = JigsawPlacement.addPieces(context,
 				PoolElementStructurePiece::new,
 				blockpos,
 				false,
 				false
 		);
-		return structurePiecesGenerator;
+		
+		return generator;
 	}
 }
