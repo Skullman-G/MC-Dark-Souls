@@ -133,7 +133,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.ambient":
+	"entity.stray_demon.ambient":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.ambient.sub",
@@ -144,7 +144,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.land":
+	"entity.stray_demon.land":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.land.sub",
@@ -154,7 +154,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.wing":
+	"entity.stray_demon.wing":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.wing.sub",
@@ -164,7 +164,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.foot":
+	"entity.stray_demon.foot":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.foot.sub",
@@ -174,7 +174,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.death":
+	"entity.stray_demon.death":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.death.sub",
@@ -184,7 +184,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.swing":
+	"entity.stray_demon.swing":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.swing.sub",
@@ -195,7 +195,7 @@
 		]
 	},
 	
-	"entity.asylum_demon.smash":
+	"entity.stray_demon.smash":
 	{
 		"category": "entity",
 		"subtitle": "entity.asylum_demon.smash.sub",

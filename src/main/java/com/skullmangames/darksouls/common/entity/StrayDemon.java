@@ -29,11 +29,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class AsylumDemon extends PathfinderMob
+public class StrayDemon extends PathfinderMob
 {
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	
-	public AsylumDemon(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
+	public StrayDemon(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
 	{
 		super(p_i48575_1_, p_i48575_2_);
 	}
@@ -51,7 +51,7 @@ public class AsylumDemon extends PathfinderMob
 		return 100;
 	}
 	
-	public static boolean checkSpawnRules(EntityType<AsylumDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
+	public static boolean checkSpawnRules(EntityType<StrayDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
@@ -59,13 +59,13 @@ public class AsylumDemon extends PathfinderMob
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return ModSoundEvents.ASYLUM_DEMON_AMBIENT.get();
+		return ModSoundEvents.STRAY_DEMON_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return ModSoundEvents.ASYLUM_DEMON_DEATH.get();
+		return ModSoundEvents.STRAY_DEMON_DEATH.get();
 	}
 	
 	@Override

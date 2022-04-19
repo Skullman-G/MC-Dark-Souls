@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
-import com.skullmangames.darksouls.common.entity.AsylumDemon;
+import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
@@ -62,7 +62,7 @@ public class ModAttributes
 		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
 		event.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), HollowLordranWarrior.createAttributes().build());
 		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
-		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemon.createAttributes().build());
+		event.put(ModEntities.STRAY_DEMON.get(), StrayDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), QuestEntity.createAttributes().build());
 	}
@@ -72,7 +72,7 @@ public class ModAttributes
 		general(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), event);
 		general(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), event);
 		general(ModEntities.HOLLOW.get(), event);
-		general(ModEntities.ASYLUM_DEMON.get(), event);
+		general(ModEntities.STRAY_DEMON.get(), event);
 		general(ModEntities.FIRE_KEEPER.get(), event);
 		/*general(EntityType.CAVE_SPIDER, event);
 		general(EntityType.CREEPER, event);

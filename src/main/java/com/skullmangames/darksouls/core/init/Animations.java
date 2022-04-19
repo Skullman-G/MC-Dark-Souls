@@ -414,13 +414,13 @@ public final class Animations
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
 	
 	// Asylum Demon
-	public static final StaticAnimation ASYLUM_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
-	public static final StaticAnimation ASYLUM_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)
+	public static final StaticAnimation STRAY_DEMON_IDLE = new StaticAnimation(true, 1.0F, true, "asylum_demon/idle", "asylum_demon", true);
+	public static final StaticAnimation STRAY_DEMON_MOVE = new StaticAnimation(true, 0.5F, true, "asylum_demon/move", "asylum_demon", true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_FOOT, 0.4F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_FOOT, 1.2F, true);
-	public static final StaticAnimation ASYLUM_DEMON_DEATH = new DeathAnimation(0.5F, "asylum_demon/death", "asylum_demon");
+	public static final StaticAnimation STRAY_DEMON_DEATH = new DeathAnimation(0.5F, "asylum_demon/death", "asylum_demon");
 			
-	public static final AttackAnimation[] ASYLUM_DEMON_LIGHT_ATTACK = new AttackAnimation[]
+	public static final AttackAnimation[] STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
 			{
 					new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, false, "11131", "asylum_demon/light_attack_1", "asylum_demon")
 						.registerSound(ModSoundEvents.ASYLUM_DEMON_SWING, 0.52F, true)
@@ -438,19 +438,19 @@ public final class Animations
 						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 			};
-	public static final AttackAnimation ASYLUM_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
+	public static final AttackAnimation STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, false, "11131", "asylum_demon/heavy_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.92F, true)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
-	public static final AttackAnimation ASYLUM_DEMON_JUMP_ATTACK = new AttackAnimation(1.0F, 0.0F, 0.6F, 1.2F, 2.0F, true, "11131", "asylum_demon/dash_attack", "asylum_demon")
+	public static final AttackAnimation STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(1.0F, 0.0F, 0.6F, 1.2F, 2.0F, true, "11131", "asylum_demon/dash_attack", "asylum_demon")
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 0.04F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_LAND, 0.8F, true)
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_SMASH, 0.8F, true)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
-	public static final AttackAnimation ASYLUM_DEMON_GROUND_POUND = new AttackAnimation(1.0F, true, "asylum_demon/ground_pound", "asylum_demon",
+	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, true, "asylum_demon/ground_pound", "asylum_demon",
 			new Phase(0.0F, 2.32F, 2.6F, 2.6F, "", Colliders.ASYLUM_DEMON_BODY),
 			new Phase(0.0F, 2.6F, 2.96F, 4.0F, "", Colliders.ASYLUM_DEMON_BODY))
 			.registerSound(ModSoundEvents.ASYLUM_DEMON_WING, 0.4F, true)

@@ -30,8 +30,8 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> HOLLOW_DEATH = registerSound("entity.hollow.death");
 	public static final RegistryObject<SoundEvent> HOLLOW_PREPARE = registerSound("entity.hollow.prepare");
 	
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_DEATH = registerSound("entity.asylum_demon.death");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_DEATH = registerSound("entity.asylum_demon.death");
 	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_FOOT = registerSound("entity.asylum_demon.foot");
 	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_SWING = registerSound("entity.asylum_demon.swing");
 	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_SMASH = registerSound("entity.asylum_demon.smash");

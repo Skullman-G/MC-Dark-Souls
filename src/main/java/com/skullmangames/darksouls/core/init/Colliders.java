@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.common.capability.entity.AsylumDemonCap;
+import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 public class Colliders
@@ -19,6 +19,6 @@ public class Colliders
 	
 	
 	//Asylum Demon
-	public static final Collider ASYLUM_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(AsylumDemonCap.getWeaponScale());
+	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.getWeaponScale());
 	public static final Collider ASYLUM_DEMON_BODY = new Collider(3F, 1F, 3F, 0F, 0F, 0F);
 }

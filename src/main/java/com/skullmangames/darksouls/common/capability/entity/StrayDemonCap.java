@@ -5,7 +5,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.common.entity.AsylumDemon;
+import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.InteractionHand;
 
-public class AsylumDemonCap extends MobCap<AsylumDemon>
+public class StrayDemonCap extends MobCap<StrayDemon>
 {
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
@@ -30,9 +30,9 @@ public class AsylumDemonCap extends MobCap<AsylumDemon>
 	{
 		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
 		animatorClient.mixLayerRight.setJointMask("Shoulder_R", "Arm_R", "Hand_R");
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.ASYLUM_DEMON_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.ASYLUM_DEMON_MOVE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.ASYLUM_DEMON_DEATH);
+		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
+		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.STRAY_DEMON_DEATH);
 		animatorClient.setCurrentLivingMotionsToDefault();
 	}
 	
@@ -45,7 +45,7 @@ public class AsylumDemonCap extends MobCap<AsylumDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
-		if (cap instanceof GreatHammerCap) return Colliders.ASYLUM_DEMON_GREAT_HAMMER;
+		if (cap instanceof GreatHammerCap) return Colliders.STRAY_DEMON_GREAT_HAMMER;
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 	
@@ -78,10 +78,10 @@ public class AsylumDemonCap extends MobCap<AsylumDemon>
 		super.initAI();
 		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, false));
 		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 1.0F, 1, true)
-				.addAttack(new AttackInstance(4, 5.0F, Animations.ASYLUM_DEMON_LIGHT_ATTACK))
-				.addAttack(new AttackInstance(4, 5.0F, Animations.ASYLUM_DEMON_HAMMER_DRIVE))
-				.addAttack(new AttackInstance(1, 10.0F, 15.0F, Animations.ASYLUM_DEMON_JUMP_ATTACK))
-				.addAttack(new AttackInstance(2, 5.0F, Animations.ASYLUM_DEMON_GROUND_POUND)));
+				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_LIGHT_ATTACK))
+				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_HAMMER_DRIVE))
+				.addAttack(new AttackInstance(1, 10.0F, 15.0F, Animations.STRAY_DEMON_JUMP_ATTACK))
+				.addAttack(new AttackInstance(2, 5.0F, Animations.STRAY_DEMON_GROUND_POUND)));
 	}
 	
 	@Override

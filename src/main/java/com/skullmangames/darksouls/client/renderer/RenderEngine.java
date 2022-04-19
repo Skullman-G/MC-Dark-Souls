@@ -116,7 +116,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, SimpleHumanoidCap<HollowLordranSoldier>>("hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidCap<CrestfallenWarrior>>("quest_entity/crestfallen_warrior"));
 		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, SimpleHumanoidCap<AnastaciaOfAstora>>("quest_entity/anastacia_of_astora"));
-		this.entityRendererMap.put(ModEntities.ASYLUM_DEMON.get(), new AsylumDemonRenderer());
+		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new AsylumDemonRenderer());
 		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<FireKeeper, FireKeeperCap>("fire_keeper"));
 		
 		RenderBow bowRenderer = new RenderBow();

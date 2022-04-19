@@ -2,23 +2,25 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
-import com.skullmangames.darksouls.common.entity.AsylumDemon;
+import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 
 public class ModEntities
 {
@@ -47,8 +49,8 @@ public class ModEntities
 				.clientTrackingRange(6)
 				.updateInterval(20));
 
-	public static final RegistryObject<EntityType<AsylumDemon>> ASYLUM_DEMON = register("asylum_demon",
-			EntityType.Builder.<AsylumDemon>of(AsylumDemon::new, MobCategory.MONSTER)
+	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
+			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)
 				.sized(3.5F, 7.7F)
 				.canSpawnFarFromPlayer());
 	
@@ -71,7 +73,18 @@ public class ModEntities
 	{
 		SpawnPlacements.register(HOLLOW.get(), SpawnPlacements.Type.ON_GROUND,
 				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Hollow::checkSpawnRules);
-		SpawnPlacements.register(ASYLUM_DEMON.get(), SpawnPlacements.Type.ON_GROUND,
-				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AsylumDemon::checkSpawnRules);
+		SpawnPlacements.register(STRAY_DEMON.get(), SpawnPlacements.Type.ON_GROUND,
+				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StrayDemon::checkSpawnRules);
+	}
+	
+	public static void addEntitySpawns(final BiomeLoadingEvent event)
+	{
+		MobSpawnSettingsBuilder s = event.getSpawns();
+		
+		if (event.getClimate().temperature > 0.5F)
+		{
+			s.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.HOLLOW.get(), 10, 1, 2));
+			s.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.STRAY_DEMON.get(), 5, 1, 1));
+		}
 	}
 }

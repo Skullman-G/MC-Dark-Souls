@@ -112,6 +112,7 @@ public class DarkSouls
 		forgeBus.register(EntityEvents.class);
 		forgeBus.register(CapabilityEvents.class);
 		forgeBus.register(PlayerEvents.class);
+		forgeBus.addListener(ModEntities::addEntitySpawns);
 
 		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
@@ -169,7 +170,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.ASYLUM_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
+		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 
 		ModItems.registerDescriptionItems();

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.AsylumDemonCap;
+import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
@@ -37,7 +37,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(ModEntities.HOLLOW.get(), (entity) -> HollowCap::new);
 		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), (entity) -> HollowLordranWarriorCap::new);
 		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> HollowLordranSoldierCap::new);
-		CAPABILITIES.put(ModEntities.ASYLUM_DEMON.get(), (entity) -> AsylumDemonCap::new);
+		CAPABILITIES.put(ModEntities.STRAY_DEMON.get(), (entity) -> StrayDemonCap::new);
 		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidCap::new);
 		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidCap::new);
 		CAPABILITIES.put(ModEntities.FIRE_KEEPER.get(), (entity) -> FireKeeperCap::new);
