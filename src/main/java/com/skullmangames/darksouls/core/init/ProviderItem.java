@@ -94,7 +94,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		// Shields
 		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, 0.7F, 8, 0, Scaling.D, Scaling.NONE));
-		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.NORMAL, 1F, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.SMALL, 1F, 8, 0, Scaling.D, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, 0.65F, 6, 0, Scaling.D, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, 1F, 11, 0, Scaling.D, Scaling.NONE));
 		

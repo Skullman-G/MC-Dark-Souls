@@ -36,6 +36,7 @@ import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
@@ -128,7 +129,6 @@ public class RenderEngine
 		
 		itemRendererMapByInstance.put(Items.AIR, new RenderItemBase());
 		itemRendererMapByInstance.put(Items.BOW, bowRenderer);
-		itemRendererMapByInstance.put(Items.SHIELD, shieldRenderer);
 		itemRendererMapByInstance.put(Items.ELYTRA, elytraRenderer);
 		itemRendererMapByInstance.put(Items.CREEPER_HEAD, hatRenderer);
 		itemRendererMapByInstance.put(Items.DRAGON_HEAD, hatRenderer);
@@ -139,6 +139,12 @@ public class RenderEngine
 		itemRendererMapByInstance.put(Items.CARVED_PUMPKIN, hatRenderer);
 		itemRendererMapByInstance.put(Items.CROSSBOW, crossbowRenderer);
 		itemRendererMapByInstance.put(Items.TRIDENT, tridentRenderer);
+		
+		itemRendererMapByInstance.put(Items.SHIELD, shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.HEATER_SHIELD.get(), shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.CRACKED_ROUND_SHIELD.get(), shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.LORDRAN_SOLDIER_SHIELD.get(), shieldRenderer);
+		
 		itemRendererMapByClass.put(BlockItem.class, hatRenderer);
 		itemRendererMapByClass.put(BowItem.class, bowRenderer);
 		itemRendererMapByClass.put(CrossbowItem.class, crossbowRenderer);

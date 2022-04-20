@@ -306,9 +306,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		IShield shield = (IShield) this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 
-		float health = this.orgEntity.getHealth() - (damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
-		if (health < 0) health = 0;
-		this.orgEntity.setHealth(health);
+		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
 
 		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel()) return true;
 

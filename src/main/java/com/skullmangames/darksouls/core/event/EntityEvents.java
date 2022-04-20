@@ -57,6 +57,7 @@ import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
+import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -339,6 +340,12 @@ public class EntityEvents
 				entitydata.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onVanillaShieldBlock(ShieldBlockEvent event)
+	{
+		event.setCanceled(true);
 	}
 	
 	@SubscribeEvent

@@ -18,7 +18,6 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
@@ -73,13 +72,13 @@ public class ModItems
 	
 	
 	// Shields
-	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ShieldItem(new Item.Properties()
+	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new ShieldItem(new Item.Properties()
+	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new ShieldItem(new Item.Properties()
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
