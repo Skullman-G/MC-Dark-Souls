@@ -5,10 +5,10 @@
       "item": "darksouls:demon_great_hammer"
     },
     "title": {
-      "translate": "advancements.darksouls.prison_break.title"
+      "translate": "advancements.darksouls.demon_slayer.title"
     },
     "description": {
-      "translate": "advancements.darksouls.prison_break.description"
+      "translate": "advancements.darksouls.demon_slayer.description"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -17,18 +17,18 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
   },
   "criteria": {
-    "player_killed_asylum_demon": {
+    "player_killed_stray_demon": {
       "trigger": "minecraft:player_killed_entity",
             "conditions": {
                 "entity": {
-                    "type": "darksouls:asylum_demon"
+                    "type": "darksouls:stray_demon"
                 }
             }
     }
   },
   "requirements": [
     [
-      "player_killed_asylum_demon"
+      "player_killed_stray_demon"
     ]
   ]
 }
