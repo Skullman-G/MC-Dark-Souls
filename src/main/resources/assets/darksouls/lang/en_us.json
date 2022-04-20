@@ -216,8 +216,8 @@
 	"dialogue.darksouls.fire_keeper.0": "Welcome to my bonfire, Accursed Undead.%I am a Fire Keeper.",
 	"dialogue.darksouls.fire_keeper.1": "Speak thine heart's desire.%So that I may help you.",
 	"dialogue.darksouls.fire_keeper.1.estus_shard": "Is that an Estus shard you've found?%Here, let me see it.%So that I may help you.",
-	"dialogue.darksouls.crestfallen_warrior.0": "Well, what do we have here?%You must be a new arrival.%Let me guess. Fate of the Undead, right?%Well, you're not the first.%But there's no salvation here.%You'd have done better to rot in the Undead Asylum...%But, too late now.",
-	"dialogue.darksouls.crestfallen_warrior.1": "Oh, your face!%You're practically Hollow.%But who knows, going Hollow could solve quite a bit!%Hah hah hah hah...%Hm, what?%Restoring your humanity?%Well, there are a few ways to go about it...%You could collect it bit by bit from corpses.%But the quickest way, although I'd never do it, is to kill a healthy Undead, and pillage its humanity.%Coveting thy neighbour is only human, after all!%Hah hah hah hah...%What are you looking at?%Don't try anything clever.%You might regret it.",
+	"dialogue.darksouls.crestfallen_warrior.0": "Well, what do we have here?%You must be a new arrival.%Have a seat and get comfortable.%We'll both be Hollow before you know it.%Hah hah hah hah...",
+	"dialogue.darksouls.crestfallen_warrior.1": "Oh, your face!%You're practically Hollow.%But who knows, going Hollow could solve quite a bit!%Hah hah hah hah...%Hm, what?%Restoring your humanity?%Well, there are a few ways to go about it...%You could collect it bit by bit from corpses.%But the quickest way, although I'd never do it,%is to kill a healthy Undead, and pillage its humanity.%Coveting thy neighbour is only human, after all!%Hah hah hah hah...%What are you looking at?%Don't try anything clever.%You might regret it.",
 	"dialogue.darksouls.crestfallen_warrior.2": "Bloody hell, what is it now?%You ask too many questions.%I'm not up for chatting.%Leave me alone.",
 	
 	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
