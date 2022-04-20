@@ -5,17 +5,17 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 1,
-                    "name": "darksouls:humanity"
+                    "weight": 20,
+                    "name": "darksouls:soul_of_a_lost_undead"
                 },
                 {
                     "type": "item",
-                    "weight": 40,
+                    "weight": 20,
                     "name": "minecraft:rotten_flesh"
                 },
                 {
                     "type": "item",
-                    "weight": 58,
+                    "weight": 60,
                     "name": "minecraft:air"
                 }
             ]

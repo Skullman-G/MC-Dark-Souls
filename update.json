@@ -15,10 +15,17 @@
     	"0.2.4": "-Added new stun animation when hit by a greathammer\n-Fixed crash when loading a world while in forge version 36.2.15 and above (#6)",
     	"0.2.5": "-Works on server now\n-Added Soul particles\n-Added Fire Keeper spawns (which I forgor in the previous version)\n-You have now infinite humanity in creative\n-Fixed a bug where Hollows where able to rotate when stunned by Asylum Demon"
     },
+    "1.18.2":
+    { 
+    	"0.3.0": "-Updated Minecraft version to 1.18.2\n-Boss bar only shows when the boss is aggroed by the player\n-Added weapon damage scaling with strength and dexterity stats\n-Added poise mechanic\n-Added weight mechanic\n-Improved roll animation\n-Updated Fire Keeper model\n-Updated shield attack animation\n-Custom weapons from other mods can now be configured in the .toml files\n-Added Heater Shield\n-Added Soul of a lost Undead\n-Added Dingy Armor Set\n-Added Winged Spear\n-Added Zweihander\n-Added Lordran Warrior Armor Set\n-Added Longsword\n-Added Battle Axe\n-Added Spear\n-Added Cracked Round Shield\n-Added Lordran Soldier Shield\n-Added Lordran Soldier Armor Set\n-Added Anastacia of Astora\n-Added Crestfallen Warrior\n-Added Hollow Lordran Warrior\n-Added Hollow Lordran Soldier\n-Added Lordran Camps\n-Added Firelink Shrine\n-Removed Undead Asylum\n"
+    },
     
     "promos":
     {
       "1.16.5-latest": "0.2.5",
-      "1.16.5-recommended": "0.2.5"
+      "1.16.5-recommended": "0.2.5",
+      
+      "1.18.2-latest": "0.3.0",
+      "1.18.2-recommended": "0.3.0"
     }
   }
