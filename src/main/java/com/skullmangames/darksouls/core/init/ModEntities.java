@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
+import com.skullmangames.darksouls.common.entity.HumanityEntity;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -48,6 +49,12 @@ public class ModEntities
 				.sized(0.5F, 0.5F)
 				.clientTrackingRange(6)
 				.updateInterval(20));
+	
+	public static final RegistryObject<EntityType<HumanityEntity>> HUMANITY = register("humanity",
+			EntityType.Builder.<HumanityEntity>of(HumanityEntity::new, MobCategory.MISC)
+				.sized(0.5F, 0.5F)
+				.clientTrackingRange(6)
+				.updateInterval(20));
 
 	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
 			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)
@@ -84,7 +91,7 @@ public class ModEntities
 		if (event.getClimate().temperature > 0.5F)
 		{
 			s.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.HOLLOW.get(), 10, 1, 2));
-			s.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.STRAY_DEMON.get(), 5, 1, 1));
+			s.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.STRAY_DEMON.get(), 1, 1, 1));
 		}
 	}
 }

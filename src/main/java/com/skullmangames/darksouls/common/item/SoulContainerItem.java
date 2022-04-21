@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.common.item;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.sounds.SoundEvent;
@@ -35,11 +34,26 @@ public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
 		livingentity.playSound(ModSoundEvents.SOUL_CONTAINER_FINISH.get(), 0.5F, 1.0F);
 		if (!level.isClientSide && this.getAmount() > 0)
 		{
-			PlayerCap<?> playerdata = (PlayerCap<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (playerdata != null)
+			float rot = Math.abs(livingentity.yRot);
+			double x;
+			double z;
+			if (rot <= 90.0F)
 			{
-				playerdata.raiseSouls(this.getAmount());
+				x = 0.5D * ((45 - rot) / 45);
+				if (rot <= 45.0F) z = 0.5D * (rot / 45);
+				else z = 0.5D * ((90 - rot) / 45);
 			}
+			else
+			{
+				x = 0.5D * ((rot - 180) / 45);
+				if (rot <= 180.0F) z = 0.5D * ((90 - rot) / 45);
+				else z = 0.5D * ((360 - rot) / 45);
+			}
+			level.addFreshEntity(new SoulEntity(livingentity.level,
+					livingentity.getX() + x,
+					livingentity.getY() + livingentity.getEyeHeight(),
+					livingentity.getZ() + z,
+					this.getAmount()));
 		}
 		if (!(livingentity instanceof Player) || !((Player)livingentity).getAbilities().instabuild)
 		{
