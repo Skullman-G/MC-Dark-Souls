@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.network.client;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;

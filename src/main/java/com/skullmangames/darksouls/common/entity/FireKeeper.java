@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.common.entity;
 
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;

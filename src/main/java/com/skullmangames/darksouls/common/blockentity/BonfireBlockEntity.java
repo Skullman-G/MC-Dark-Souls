@@ -1,7 +1,9 @@
-package com.skullmangames.darksouls.common.tileentity;
+package com.skullmangames.darksouls.common.blockentity;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -76,6 +78,18 @@ public class BonfireBlockEntity extends BlockEntity
 		if (this.getBlockState().getValue(BonfireBlock.LIT) == value) return;
 		if (value) this.playKindleSound();
 		this.level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.LIT, value), 3);
+	}
+	
+	public boolean isLit()
+	{
+		return this.getBlockState().getValue(BonfireBlock.LIT);
+	}
+	
+	@Override
+	public void onLoad()
+	{
+		super.onLoad();
+		ModNetworkManager.sendToAll(new STCPlayBonfireAmbientSound(this.getBlockPos()));
 	}
 
 	public String getName()

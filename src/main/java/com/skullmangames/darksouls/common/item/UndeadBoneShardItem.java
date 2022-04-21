@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.item;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 
 import net.minecraft.core.BlockPos;

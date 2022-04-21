@@ -6,10 +6,9 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
@@ -21,7 +20,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -209,46 +207,41 @@ public class BonfireBlock extends Block implements EntityBlock
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level worldIn, BlockPos vertex, Random random)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
 	{
 		if (state.getValue(LIT))
 		{
-			if (random.nextInt(8) == 0)
-			{
-				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, ModSoundEvents.BONFIRE_AMBIENT.get(), SoundSource.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
-			}
-			
 			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
 			{
-				worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.4D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.6D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
 		        
 		        if (i >= 2)
 		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.35D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.65D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
 		        }
 		        if (i >= 3)
 		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.3D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.7D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
 		        }
 		        if (i == 4)
 		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.25D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.75D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
 		        }
 			}
 		}

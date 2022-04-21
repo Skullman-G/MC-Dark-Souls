@@ -41,7 +41,7 @@ public class StrayDemon extends PathfinderMob
 	@Override
 	protected int calculateFallDamage(float distance, float p_225508_2_)
 	{
-		if (distance < 10.0F) return 0;
+		if (distance <= 30.0F) return 0;
 		return super.calculateFallDamage(distance, p_225508_2_);
 	}
 	

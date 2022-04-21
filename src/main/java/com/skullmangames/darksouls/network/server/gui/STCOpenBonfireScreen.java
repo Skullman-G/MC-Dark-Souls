@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.server.gui;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
-import com.skullmangames.darksouls.common.tileentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.client.Minecraft;
