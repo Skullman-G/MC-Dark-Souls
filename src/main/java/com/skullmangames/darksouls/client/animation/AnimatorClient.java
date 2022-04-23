@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Pose;
+import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -118,14 +119,15 @@ public class AnimatorClient extends Animator
 		if(this.livingAnimations.containsKey(this.entitydata.currentMotion))
 		{
 			StaticAnimation animation = this.livingAnimations.get(this.entitydata.currentMotion);
-			if(animation instanceof MirrorAnimation)
+			if (animation instanceof AdaptableAnimation)
 			{
-				this.playAnimationLiving(((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand()), 0.0F);
+				animation = ((AdaptableAnimation)animation).getAnimation(this.currentMotion, this.entitydata.getOriginalEntity().getUsedItemHand());
 			}
-			else
+			else if(animation instanceof MirrorAnimation)
 			{
-				this.playAnimationLiving(animation, 0.0F);
+				animation = ((MirrorAnimation)animation).getAnimation(this.entitydata.getOriginalEntity().getUsedItemHand());
 			}
+			if (animation != null) this.playAnimationLiving(animation, 0.0F);
 		}
 	}
 	
@@ -143,14 +145,15 @@ public class AnimatorClient extends Animator
 			{
 				animation = this.entitydata.getHoldingWeaponAnimation();
 			}
-			else if(animation instanceof MirrorAnimation)
+			else if (animation instanceof AdaptableAnimation)
 			{
-				if (this.entitydata.getOriginalEntity().isUsingItem()) animation = ((MirrorAnimation)animation).checkHandAndReturnAnimation(this.entitydata.getOriginalEntity().getUsedItemHand());
+				animation = ((AdaptableAnimation)animation).getAnimation(this.currentMotion, this.entitydata.getOriginalEntity().getUsedItemHand());
 			}
-			if (animation != null)
+			else if(animation instanceof MirrorAnimation && this.entitydata.getOriginalEntity().isUsingItem())
 			{
-				this.playMixLayerAnimation(animation);
+				animation = ((MirrorAnimation)animation).getAnimation(this.entitydata.getOriginalEntity().getUsedItemHand());
 			}
+			if (animation != null) this.playMixLayerAnimation(animation);
 		}
 		this.mixLayerLeft.pause = false;
 		this.mixLayerRight.pause = false;

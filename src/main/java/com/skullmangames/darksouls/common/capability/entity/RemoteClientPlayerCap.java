@@ -96,16 +96,17 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		else
 		{
 			AnimatorClient animator = getClientAnimator();
+			Vec3 mov = this.orgEntity.getDeltaMovement();
 
-			if (this.orgEntity.isSwimming() && this.orgEntity.getDeltaMovement().y < -0.005)
+			if (this.orgEntity.isSwimming() && mov.y < -0.005)
 			{
 				this.currentMotion = LivingMotion.FLOATING;
 			}
-			else if(this.orgEntity.getDeltaMovement().y < -0.55F)
+			else if(mov.y < -0.55F)
 			{
 				this.currentMotion = LivingMotion.FALL;
 			}
-			else if (this.orgEntity.animationSpeed > 0.01F)
+			else if (mov.x != 0 || mov.z != 0)
 			{
 				if(this.orgEntity.isCrouching())
 				{

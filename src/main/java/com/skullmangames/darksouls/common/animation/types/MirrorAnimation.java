@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
@@ -16,11 +17,16 @@ public class MirrorAnimation extends StaticAnimation
 	
 	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
 	{
-		super(true, convertTime, repeatPlay, path1, armature, clientOnly);
-		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly);
+		this(convertTime, repeatPlay, path1, path2, armature, clientOnly, false);
 	}
 	
-	public StaticAnimation checkHandAndReturnAnimation(InteractionHand hand)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly, boolean mixPart)
+	{
+		super(true, convertTime, repeatPlay, path1, armature, clientOnly, mixPart ? MixPart.RIGHT : MixPart.FULL);
+		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly, mixPart ? MixPart.LEFT : MixPart.FULL);
+	}
+	
+	public StaticAnimation getAnimation(InteractionHand hand)
 	{
 		switch(hand)
 		{
