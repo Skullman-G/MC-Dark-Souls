@@ -210,7 +210,7 @@ public class InputManager
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
-				&& !this.player.isUsingItem()
+				&& (!this.player.isUsingItem() || this.playerdata.isBlocking())
 				&& !this.player.hasEffect(MobEffects.BLINDNESS)
 				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
 	}

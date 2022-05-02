@@ -206,11 +206,12 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		else
 		{
 			this.updateMotion();
-			if(!animator.compareMotion(currentMotion))
+			boolean compareMotion = !animator.compareMotion(currentMotion);
+			if(compareMotion)
 			{
 				animator.playLoopMotion();
 			}
-			if(!animator.compareMixMotion(currentMixMotion) || this.currentMixMotion == LivingMotion.HOLDING_WEAPON)
+			if (compareMotion || !animator.compareMixMotion(currentMixMotion) || this.currentMixMotion == LivingMotion.HOLDING_WEAPON)
 			{
 				animator.playMixLoopMotion();
 			}

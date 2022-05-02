@@ -163,11 +163,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		else
 		{
 			this.updateMotion();
-			if (!animator.compareMotion(currentMotion))
+			boolean compareMotion = !animator.compareMotion(currentMotion);
+			if (compareMotion)
 			{
 				animator.playLoopMotion();
 			}
-			if (!animator.compareMixMotion(currentMixMotion))
+			if (compareMotion || !animator.compareMixMotion(currentMixMotion))
 			{
 				animator.playMixLoopMotion();
 			}
