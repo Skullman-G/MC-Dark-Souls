@@ -20,7 +20,7 @@ public class AdaptableAnimation extends StaticAnimation
 		Builder<LivingMotion, MirrorAnimation> builder = ImmutableMap.builder();
 		paths.forEach((motion, config) ->
 		{
-			builder.put(motion, new MirrorAnimation(convertTime, repeatPlay, config.path1, config.path2, armature, true, false, config.sync));
+			builder.put(motion, new MirrorAnimation(convertTime, repeatPlay, config.path1, config.path2, armature, true, config.mixPart, config.sync));
 		});
 		this.animations = builder.build();
 	}
@@ -37,12 +37,14 @@ public class AdaptableAnimation extends StaticAnimation
 		private String path1;
 		private String path2;
 		private boolean sync;
+		private boolean mixPart;
 		
-		public AnimConfig(String path1, String path2, boolean sync)
+		public AnimConfig(String path1, String path2, boolean sync, boolean mixPart)
 		{
 			this.path1 = path1;
 			this.path2 = path2;
 			this.sync = sync;
+			this.mixPart = mixPart;
 		}
 	}
 }

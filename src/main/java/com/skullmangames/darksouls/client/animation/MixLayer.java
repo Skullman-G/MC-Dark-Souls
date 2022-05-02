@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.client.animation;
 
+import java.util.Map;
+
+import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.MixLinkAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -48,6 +51,15 @@ public class MixLayer extends BaseLayer
 		}
 		else
 		{
+			if (this.nextPlaying != null && this.nextPlaying.shouldSynchronize())
+			{
+				Map<String, JointTransform> transforms = this.nextPlaying.getPoseByTime(entitydata, entitydata.getClientAnimator().getPlayer().getElapsedTime()).getJointTransformData();
+				animation.getTransfroms().forEach((name, sheet) ->
+				{
+					sheet.setEndKeyFrame(transforms.get(name));
+				});
+			}
+			
 			this.animationPlayer.update(frameTime);
 			animation.onUpdate(entitydata);
 		}

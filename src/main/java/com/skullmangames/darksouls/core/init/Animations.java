@@ -53,9 +53,9 @@ public final class Animations
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", "biped", true);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", "biped", true);
 	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, "biped", ImmutableMap.<LivingMotion, AnimConfig>builder()
-			.put(LivingMotion.BLOCKING, new AnimConfig("biped/combat/block_mirror", "biped/combat/block", false))
-			.put(LivingMotion.WALKING, new AnimConfig("biped/combat/block_walk_mirror", "biped/combat/block_walk", true))
-			.put(LivingMotion.RUNNING, new AnimConfig("biped/combat/block_run_mirror", "biped/combat/block_run", true)).build());
+			.put(LivingMotion.BLOCKING, new AnimConfig("biped/combat/block_mirror", "biped/combat/block", false, false))
+			.put(LivingMotion.WALKING, new AnimConfig("biped/combat/block_walk_mirror", "biped/combat/block_walk", true, true))
+			.put(LivingMotion.RUNNING, new AnimConfig("biped/combat/block_run_mirror", "biped/combat/block_run", true, true)).build());
 	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(true, 0.2F, true, "biped/living/idle_crossbow", "biped", true);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", "biped");
