@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.animation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.MixLinkAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,45 @@ public class MixLayer extends BaseLayer
 	public boolean isActive()
 	{
 		return !this.animationPlayer.isEmpty();
+	}
+	
+	@Override
+	public void update(LivingCap<?> entitydata)
+	{
+		if (pause || this.animationPlayer.isEmpty())
+		{
+			this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime());
+			return;
+		}
+		
+		float frameTime = IngameConfig.A_TICK * this.animationPlayer.getPlay().getPlaySpeed(entitydata);
+		
+		DynamicAnimation animation = this.animationPlayer.getPlay();
+		if (animation.shouldSynchronize())
+		{
+			this.animationPlayer.synchronizeTime(entitydata.getClientAnimator().getPlayer());
+		}
+		else
+		{
+			this.animationPlayer.update(frameTime);
+			animation.onUpdate(entitydata);
+		}
+		
+		if (this.animationPlayer.isEnd())
+		{
+			if (nextPlaying != null)
+			{
+				float exceedTime = this.animationPlayer.getExceedTime();
+				animation.onFinish(entitydata, true);
+				this.nextPlaying.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime);
+				if (animation.shouldSynchronize())
+				{
+					this.animationPlayer.synchronizeTime(entitydata.getClientAnimator().getPlayer());
+				}
+				this.nextPlaying = null;
+			}
+		}
 	}
 	
 	public void setMixLinkAnimation(LivingCap<?> entitydata, float timeModifier)

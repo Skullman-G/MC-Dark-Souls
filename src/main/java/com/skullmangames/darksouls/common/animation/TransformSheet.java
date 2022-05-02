@@ -26,7 +26,12 @@ public class TransformSheet
 	
 	public JointTransform getStartTransform()
 	{
-		return keyframes[0].getTransform();
+		return this.keyframes[0].getTransform();
+	}
+	
+	public void setEndKeyFrame(JointTransform transform)
+	{
+		this.keyframes[this.keyframes.length - 1] = this.keyframes[this.keyframes.length - 1].setTransform(transform);
 	}
 
 	public JointTransform getInterpolatedTransform(float currentTime)

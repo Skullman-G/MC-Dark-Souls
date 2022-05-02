@@ -17,13 +17,19 @@ public class MirrorAnimation extends StaticAnimation
 	
 	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
 	{
-		this(convertTime, repeatPlay, path1, path2, armature, clientOnly, false);
+		this(convertTime, repeatPlay, path1, path2, armature, clientOnly, false, false);
 	}
 	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly, boolean mixPart)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly, boolean mixPart, boolean sync)
 	{
 		super(true, convertTime, repeatPlay, path1, armature, clientOnly, mixPart ? MixPart.RIGHT : MixPart.FULL);
 		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly, mixPart ? MixPart.LEFT : MixPart.FULL);
+		
+		if (sync)
+		{
+			this.sync = true;
+			this.mirrorAnimation.sync = true;
+		}
 	}
 	
 	public StaticAnimation getAnimation(InteractionHand hand)
@@ -49,7 +55,6 @@ public class MirrorAnimation extends StaticAnimation
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, mirrorAnimation.path), mirrorAnimation, armature);
-			mirrorAnimation.path = null;
 		}
 		
 		super.bind(dist);

@@ -33,7 +33,7 @@ public class VariableHitAnimation extends HitAnimation
 			keyframes[2] = new JointKeyFrame(convertTime + 0.033F, data3.get(jointName));
 			keyframes[3] = new JointKeyFrame(timeModifier + convertTime, data3.get(jointName));
 			TransformSheet sheet = new TransformSheet(keyframes);
-			dest.addSheet(jointName, sheet);
+			dest.putSheet(jointName, sheet);
 		}
 	}
 	

@@ -93,9 +93,9 @@ public class ActionAnimation extends ImmovableAnimation
 	{
 		Pose pose = new Pose();
 
-		for (String jointName : jointTransforms.keySet())
+		for (String jointName : this.getTransfroms().keySet())
 		{
-			JointTransform jt = jointTransforms.get(jointName).getInterpolatedTransform(time);
+			JointTransform jt = this.getTransfroms().get(jointName).getInterpolatedTransform(time);
 
 			if (jointName.equals("Root"))
 			{
@@ -123,8 +123,8 @@ public class ActionAnimation extends ImmovableAnimation
 	protected Vector3f getCoordVector(LivingCap<?> entitydata)
 	{
 		LivingEntity elb = entitydata.getOriginalEntity();
-		JointTransform jt = jointTransforms.get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getElapsedTime());
-		JointTransform prevJt = jointTransforms.get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getPrevElapsedTime());	
+		JointTransform jt = this.getTransfroms().get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getElapsedTime());
+		JointTransform prevJt = this.getTransfroms().get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getPrevElapsedTime());	
 		Vector4f currentPos = new Vector4f(jt.getPosition().x(), jt.getPosition().y(), jt.getPosition().z(), 1.0F);
 		Vector4f prevPos = new Vector4f(prevJt.getPosition().x(), prevJt.getPosition().y(), prevJt.getPosition().z(), 1.0F);
 		PublicMatrix4f mat = entitydata.getModelMatrix(1.0F);

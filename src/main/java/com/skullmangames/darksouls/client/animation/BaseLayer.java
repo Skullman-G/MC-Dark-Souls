@@ -30,7 +30,8 @@ public class BaseLayer
 	{
 		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
-		setLinkAnimation(nextAnimation, entitydata, modifyTime);
+		
+		this.setLinkAnimation(nextAnimation, entitydata, modifyTime);
 		this.linkAnimation.putOnPlayer(this.animationPlayer);
 		this.nextPlaying = nextAnimation;
 	}
@@ -39,6 +40,7 @@ public class BaseLayer
 	{
 		if (!this.animationPlayer.isEmpty()) this.animationPlayer.getPlay().onFinish(entitydata, this.animationPlayer.isEnd());
 		nextAnimation.onActivate(entitydata);
+		
 		nextAnimation.putOnPlayer(this.animationPlayer);
 		this.nextPlaying = null;
 	}

@@ -13,11 +13,12 @@ import com.skullmangames.darksouls.config.IngameConfig;
 
 public class DynamicAnimation
 {
-	protected final Map<String, TransformSheet> jointTransforms;
+	private final Map<String, TransformSheet> jointTransforms;
 	protected final boolean isRepeat;
 	protected final float convertTime;
 	protected float totalTime;
-	protected float startingTime = 0.0F;
+	private float startingTime = 0.0F;
+	protected boolean sync;
 
 	public DynamicAnimation()
 	{
@@ -39,8 +40,13 @@ public class DynamicAnimation
 		this.isRepeat = isRepeat;
 		this.convertTime = convertTime;
 	}
+	
+	public boolean shouldSynchronize()
+	{
+		return this.sync;
+	}
 
-	public void addSheet(String jointName, TransformSheet sheet)
+	public void putSheet(String jointName, TransformSheet sheet)
 	{
 		jointTransforms.put(jointName, sheet);
 	}
@@ -69,7 +75,7 @@ public class DynamicAnimation
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
 		Map<String, JointTransform> data1 = pose1.getJointTransformData();
-		Map<String, JointTransform> data2 = getPoseByTime(entitydata, nextStart).getJointTransformData();
+		Map<String, JointTransform> data2 = this.getPoseByTime(entitydata, nextStart).getJointTransformData();
 
 		for (String jointName : data1.keySet())
 		{
@@ -78,7 +84,7 @@ public class DynamicAnimation
 			keyframes[1] = new JointKeyFrame(totalTime, data2.get(jointName));
 
 			TransformSheet sheet = new TransformSheet(keyframes);
-			dest.addSheet(jointName, sheet);
+			dest.putSheet(jointName, sheet);
 		}
 	}
 

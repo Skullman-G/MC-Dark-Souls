@@ -65,6 +65,14 @@ public class AnimationPlayer
 		this.exceedTime = animationPlayer.exceedTime;
 		this.isEnd = animationPlayer.isEnd;
 	}
+	
+	public void synchronizeTime(AnimationPlayer animationPlayer)
+	{
+		this.elapsedTime = animationPlayer.elapsedTime;
+		this.prevElapsedTime = animationPlayer.prevElapsedTime;
+		this.exceedTime = animationPlayer.exceedTime;
+		this.isEnd = animationPlayer.isEnd;
+	}
 
 	public void resetPlayer()
 	{

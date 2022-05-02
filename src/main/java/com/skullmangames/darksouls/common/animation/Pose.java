@@ -33,13 +33,13 @@ public class Pose
 		return jt;
 	}
 	
-	public static Pose interpolatePose(Pose pose1, Pose pose2, float pregression)
+	public static Pose interpolatePose(Pose pose1, Pose pose2, float progression)
 	{
 		Pose pose = new Pose();
 		
 		for (String jointName : pose1.jointTransformData.keySet())
 		{
-			pose.putJointData(jointName, JointTransform.interpolate(pose1.jointTransformData.get(jointName), pose2.jointTransformData.get(jointName), pregression));
+			pose.putJointData(jointName, JointTransform.interpolate(pose1.jointTransformData.get(jointName), pose2.jointTransformData.get(jointName), progression));
 		}
 		
 		return pose;

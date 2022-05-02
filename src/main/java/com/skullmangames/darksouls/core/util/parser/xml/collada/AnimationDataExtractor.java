@@ -137,7 +137,7 @@ public class AnimationDataExtractor
 
 			TransformSheet sheet = getTransformSheet(timeValue, matrixArray,
 					PublicMatrix4f.invert(joint.getLocalTrasnform(), null), root);
-			data.addSheet(sec, sheet);
+			data.putSheet(sec, sheet);
 			data.setTotalTime(Float.parseFloat(timeValue[timeValue.length - 1]));
 			root = false;
 		}

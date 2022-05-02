@@ -76,6 +76,12 @@ public class StaticAnimation extends DynamicAnimation
 		this(register, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
 	}
 	
+	@Override
+	public void onActivate(LivingCap<?> entitydata)
+	{
+		super.onActivate(entitydata); //remove
+	}
+	
 	public MixPart getMixPart()
 	{
 		return this.mixPart;
@@ -95,7 +101,6 @@ public class StaticAnimation extends DynamicAnimation
 			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 			Armature armature = modeldata.findArmature(this.armature);
 			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, path), this, armature);
-			path = null;
 		}
 		
 		if(this.soundStream != null) this.soundStream.sort(null);

@@ -20,4 +20,9 @@ public class JointKeyFrame
 	{
 		return transform;
 	}
+	
+	public JointKeyFrame setTransform(JointTransform transform)
+	{
+		return new JointKeyFrame(this.timeStamp, transform);
+	}
 }

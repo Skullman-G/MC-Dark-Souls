@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.animation.MixPart;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
+import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation.AnimConfig;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
@@ -52,10 +52,10 @@ public final class Animations
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", "biped", true);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", "biped", true);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", "biped", true);
-	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, "biped", ImmutableMap.<LivingMotion, Pair<String, String>>builder()
-			.put(LivingMotion.BLOCKING, new Pair<String, String>("biped/combat/block_mirror", "biped/combat/block"))
-			.put(LivingMotion.WALKING, new Pair<String, String>("biped/combat/block_walk_mirror", "biped/combat/block_walk"))
-			.put(LivingMotion.RUNNING, new Pair<String, String>("biped/combat/block_run_mirror", "biped/combat/block_run")).build());
+	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, "biped", ImmutableMap.<LivingMotion, AnimConfig>builder()
+			.put(LivingMotion.BLOCKING, new AnimConfig("biped/combat/block_mirror", "biped/combat/block", false))
+			.put(LivingMotion.WALKING, new AnimConfig("biped/combat/block_walk_mirror", "biped/combat/block_walk", true))
+			.put(LivingMotion.RUNNING, new AnimConfig("biped/combat/block_run_mirror", "biped/combat/block_run", true)).build());
 	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(true, 0.2F, true, "biped/living/idle_crossbow", "biped", true);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", "biped");

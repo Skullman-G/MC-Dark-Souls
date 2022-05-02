@@ -77,9 +77,9 @@ public class AimingAnimation extends StaticAnimation
 	private Pose getPoseByTime(float time)
 	{
 		Pose pose = new Pose();
-		for (String jointName : jointTransforms.keySet())
+		for (String jointName : this.getTransfroms().keySet())
 		{
-			pose.putJointData(jointName, jointTransforms.get(jointName).getInterpolatedTransform(time));
+			pose.putJointData(jointName, this.getTransfroms().get(jointName).getInterpolatedTransform(time));
 		}
 		
 		return pose;
