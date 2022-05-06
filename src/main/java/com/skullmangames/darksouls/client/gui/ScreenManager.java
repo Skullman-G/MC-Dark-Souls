@@ -75,7 +75,7 @@ public class ScreenManager
 
 			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
 			{
-				if (gui == null && minecraft.level != null)
+				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{
 					Overlay overlay = minecraft.getOverlay();
 					if (overlay instanceof ModLoadingScreen)

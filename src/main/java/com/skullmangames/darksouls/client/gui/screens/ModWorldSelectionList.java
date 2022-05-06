@@ -218,10 +218,7 @@ public class ModWorldSelectionList extends ObjectSelectionList<ModWorldSelection
 					"worlds/" + Util.sanitizeName(s, ResourceLocation::validPathChar) + "/"
 							+ Hashing.sha1().hashUnencodedChars(s) + "/icon");
 			this.iconFile = summary.getIcon();
-			if (!this.iconFile.isFile())
-			{
-				this.iconFile = null;
-			}
+			if (!this.iconFile.isFile()) this.iconFile = null;
 
 			this.icon = this.loadServerIcon();
 		}
