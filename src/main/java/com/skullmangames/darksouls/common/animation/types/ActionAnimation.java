@@ -144,7 +144,7 @@ public class ActionAnimation extends ImmovableAnimation
 		}
 		
 		Vector3f vec = new Vector3f(dx, dy, dz);
-		vec.mul(2F);
+		vec.mul(1.5F);
 		
 		return vec;
 	}

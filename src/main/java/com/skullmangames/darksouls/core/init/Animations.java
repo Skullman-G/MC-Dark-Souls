@@ -261,14 +261,14 @@ public final class Animations
 	// Straight Sword
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 			{
-					new AttackAnimation(0.2F, 0.0F, 0.32F, 0.6F, 1.2F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped")
+					new AttackAnimation(0.2F, 0.0F, 0.24F, 0.44F, 1.0F, false, "111213", "biped/combat/straight_sword_light_attack_1", "biped")
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-					new AttackAnimation(0.2F, 0.0F, 0.12F, 0.52F, 1.0F, false, "111213", "biped/combat/straight_sword_light_attack_2", "biped")
+					new AttackAnimation(0.2F, 0.0F, 0.2F, 0.36F, 1.0F, false, "111213", "biped/combat/straight_sword_light_attack_2", "biped")
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 			};
-	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.92F, 1.6F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped")
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.64F, 1.2F, false, "111213", "biped/combat/straight_sword_heavy_attack", "biped")
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
