@@ -10,12 +10,22 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class CTSPerformDodge
 {
-	public static CTSPerformDodge fromBytes(FriendlyByteBuf buf)
+	private boolean moving;
+	
+	public CTSPerformDodge(boolean moving)
 	{
-		return new CTSPerformDodge();
+		this.moving = moving;
 	}
 	
-	public static void toBytes(CTSPerformDodge msg, FriendlyByteBuf buf) {}
+	public static CTSPerformDodge fromBytes(FriendlyByteBuf buf)
+	{
+		return new CTSPerformDodge(buf.readBoolean());
+	}
+	
+	public static void toBytes(CTSPerformDodge msg, FriendlyByteBuf buf)
+	{
+		buf.writeBoolean(msg.moving);
+	}
 	
 	public static void handle(CTSPerformDodge msg, Supplier<NetworkEvent.Context> ctx)
 	{
@@ -24,7 +34,7 @@ public class CTSPerformDodge
 			ServerPlayer serverPlayer = ctx.get().getSender();
 			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
-			playerdata.performDodge();
+			playerdata.performDodge(msg.moving);
 		});
 		
 		ctx.get().setPacketHandled(true);

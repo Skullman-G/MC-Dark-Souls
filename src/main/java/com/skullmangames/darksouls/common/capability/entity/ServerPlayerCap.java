@@ -84,10 +84,10 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements IEquipLo
 		}
 	}
 	
-	public void performDodge()
+	public void performDodge(boolean moving)
 	{
 		float e = this.getEncumbrance();
-		StaticAnimation animation = e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+		StaticAnimation animation = !moving ? Animations.BIPED_JUMP_BACK : e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
 		
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);

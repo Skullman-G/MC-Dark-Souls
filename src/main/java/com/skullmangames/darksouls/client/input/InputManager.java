@@ -102,6 +102,11 @@ public class InputManager
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
 	}
+	
+	public boolean movingKeysDown()
+	{
+		return this.isKeyDown(this.options.keyUp) || this.isKeyDown(this.options.keyDown) || this.isKeyDown(this.options.keyLeft) || this.isKeyDown(this.options.keyRight);
+	}
 
 	public boolean playerCanAttack(EntityState playerState)
 	{
@@ -226,7 +231,7 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerdata.performDodge();
+			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerdata.performDodge(this.movingKeysDown());
 			this.sprintPressCounter = 0;
 		}
 	}

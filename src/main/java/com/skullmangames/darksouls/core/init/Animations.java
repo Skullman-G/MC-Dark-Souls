@@ -79,6 +79,7 @@ public final class Animations
 			.registerSound(ModSoundEvents.GENERIC_ROLL, 0.28F, true);
 	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.08F, false, "biped/combat/fat_roll", "biped")
 			.registerSound(ModSoundEvents.GENERIC_ROLL, 0.28F, true);
+	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, false, "biped/combat/jump_back", "biped");
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", "biped");
 			
 	public static final StaticAnimation BIPED_MOB_THROW = new AttackAnimation(0.11F, 1.0F, 0, 0, 0, false, null, "", "biped/combat/javelin_throw_mid", "biped");

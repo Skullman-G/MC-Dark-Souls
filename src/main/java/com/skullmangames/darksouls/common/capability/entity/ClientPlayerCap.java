@@ -101,10 +101,10 @@ public class ClientPlayerCap extends RemoteClientPlayerCap<LocalPlayer>
 		}
 	}
 	
-	public void performDodge()
+	public void performDodge(boolean moving)
 	{
 		if (this.isFirstPerson()) return;
-		ModNetworkManager.sendToServer(new CTSPerformDodge());
+		ModNetworkManager.sendToServer(new CTSPerformDodge(moving));
 	}
 	
 	public void performAttack(AttackType type)
