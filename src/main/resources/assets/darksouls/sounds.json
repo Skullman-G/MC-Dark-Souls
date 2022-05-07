@@ -136,72 +136,72 @@
 	"entity.stray_demon.ambient":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.ambient.sub",
+		"subtitle": "entity.stray_demon.ambient.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/ambient_1",
-			"darksouls:entities/asylum_demon/ambient_2"
+			"darksouls:entities/stray_demon/ambient_1",
+			"darksouls:entities/stray_demon/ambient_2"
 		]
 	},
 	
 	"entity.stray_demon.land":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.land.sub",
+		"subtitle": "entity.stray_demon.land.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/land"
+			"darksouls:entities/stray_demon/land"
 		]
 	},
 	
 	"entity.stray_demon.wing":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.wing.sub",
+		"subtitle": "entity.stray_demon.wing.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/wing"
+			"darksouls:entities/stray_demon/wing"
 		]
 	},
 	
 	"entity.stray_demon.foot":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.foot.sub",
+		"subtitle": "entity.stray_demon.foot.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/foot"
+			"darksouls:entities/stray_demon/foot"
 		]
 	},
 	
 	"entity.stray_demon.death":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.death.sub",
+		"subtitle": "entity.stray_demon.death.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/death"
+			"darksouls:entities/stray_demon/death"
 		]
 	},
 	
 	"entity.stray_demon.swing":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.swing.sub",
+		"subtitle": "entity.stray_demon.swing.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/swing_1",
-			"darksouls:entities/asylum_demon/swing_2"
+			"darksouls:entities/stray_demon/swing_1",
+			"darksouls:entities/stray_demon/swing_2"
 		]
 	},
 	
 	"entity.stray_demon.smash":
 	{
 		"category": "entity",
-		"subtitle": "entity.asylum_demon.smash.sub",
+		"subtitle": "entity.stray_demon.smash.sub",
 		"sounds":
 		[
-			"darksouls:entities/asylum_demon/smash"
+			"darksouls:entities/stray_demon/smash"
 		]
 	},
 	
