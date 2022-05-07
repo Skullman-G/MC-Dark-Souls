@@ -36,12 +36,6 @@ public class GreatHammerCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	protected AttackAnimation getWeakAttack()
-	{
-		return Animations.BIG_WEAPON_WEAK_ATTACK;
-	}
-	
-	@Override
 	public SoundEvent getSmashSound()
 	{
 		return ModSoundEvents.GREAT_HAMMER_SMASH.get();

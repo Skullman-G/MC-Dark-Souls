@@ -85,7 +85,6 @@ public final class Animations
 	
 	// Big Weapon
 	public static final HoldingWeaponAnimation BIPED_HOLDING_BIG_WEAPON = new HoldingWeaponAnimation(0.2F, true, "biped/living/holding_big_weapon_r", "biped/living/holding_big_weapon_l", "biped/living/holding_big_weapon_both", "biped", true);
-	public static final AttackAnimation BIG_WEAPON_WEAK_ATTACK = new AttackAnimation(0.9F, 0.0F, 1.0F, 1.72F, 3.6F, false, "111213", "biped/combat/big_weapon_weak_attack", "biped");
 	
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]

@@ -38,12 +38,6 @@ public class UltraGreatswordCap extends MeleeWeaponCap
 	{
 		return Animations.BIPED_HOLDING_BIG_WEAPON;
 	}
-	
-	@Override
-	protected AttackAnimation getWeakAttack()
-	{
-		return Animations.BIG_WEAPON_WEAK_ATTACK;
-	}
 
 	@Override
 	public float getStaminaDamage()

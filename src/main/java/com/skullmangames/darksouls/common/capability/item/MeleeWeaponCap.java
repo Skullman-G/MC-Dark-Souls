@@ -79,8 +79,6 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
 	{
-		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
-
 		Pair<Boolean, AttackAnimation[]> move = this.moveset.get(type);
 		if (move == null) return null;
 		AttackAnimation[] animations = move.getSecond();
@@ -90,11 +88,6 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		if (combo + 1 < animations.length) combo += 1;
 		else if (move.getFirst()) combo = 0;
 		return animations[combo];
-	}
-
-	protected AttackAnimation getWeakAttack()
-	{
-		return null;
 	}
 
 	public List<StaticAnimation> getMountAttackMotion()

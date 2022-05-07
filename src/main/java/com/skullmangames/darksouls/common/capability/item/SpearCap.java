@@ -35,7 +35,6 @@ public class SpearCap extends MeleeWeaponCap
 	@Override
 	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
 	{
-		if (!this.meetRequirements(playerdata) && this.getWeakAttack() != null) return this.getWeakAttack();
 		if (type == AttackType.LIGHT && playerdata.isBlocking()) return Animations.SPEAR_LIGHT_BLOCKING_ATTACK;
 		return super.getAttack(type, playerdata);
 	}
