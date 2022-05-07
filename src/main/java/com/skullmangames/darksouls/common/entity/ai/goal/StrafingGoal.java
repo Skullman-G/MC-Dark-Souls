@@ -26,7 +26,7 @@ public class StrafingGoal extends Goal
 	@Override
 	public boolean canUse()
 	{
-		return this.mob.getTarget() != null && this.mobdata.getStamina() <= 5F;
+		return this.mob.getTarget() != null && !this.mobdata.isInaction() && this.mobdata.getStamina() <= 5F;
 	}
 	
 	@Override

@@ -46,7 +46,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
-			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA))
@@ -54,7 +54,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 		}
 		else if (category == WeaponCategory.AXE)
 		{
-			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA))
 					.addAttack(new AttackInstance(4, 9.0F, 10.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK)));

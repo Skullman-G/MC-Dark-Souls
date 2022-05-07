@@ -54,7 +54,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			{
 				this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
 				
-				this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
+				this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
 						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))
 						.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_DA))
 						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST))
@@ -65,7 +65,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			{
 				this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, true));
 				
-				this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true)
+				this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
 						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS))
 						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS))
 						.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH)));

@@ -3,7 +3,12 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -17,6 +22,9 @@ public class AttackPatternGoal extends Goal
 	protected final int yDist;
 	protected final boolean affectHorizon;
 	
+	protected final StaticAnimation dodge;
+	private int dodgeTime;
+	
 	protected int combo = 0;
 	protected int currentAttack = -1;
 	
@@ -24,16 +32,27 @@ public class AttackPatternGoal extends Goal
 	
 	public AttackPatternGoal(MobCap<?> mobdata, float minDist, boolean affectHorizon)
 	{
-		this(mobdata, minDist, 0, affectHorizon);
+		this(mobdata, minDist, 0, affectHorizon, null);
 	}
 	
 	public AttackPatternGoal(MobCap<?> mobdata, float minDist, int yDist, boolean affectHorizon)
+	{
+		this(mobdata, minDist, yDist, affectHorizon, null);
+	}
+	
+	public AttackPatternGoal(MobCap<?> mobdata, float minDist, boolean affectHorizon, StaticAnimation dodge)
+	{
+		this(mobdata, minDist, 0, affectHorizon, dodge);
+	}
+	
+	public AttackPatternGoal(MobCap<?> mobdata, float minDist, int yDist, boolean affectHorizon, StaticAnimation dodge)
 	{
 		this.mobdata = mobdata;
 		this.attacker = this.mobdata.getOriginalEntity();
 		this.minDist = minDist * minDist;
 		this.yDist = yDist;
 		this.affectHorizon = affectHorizon;
+		this.dodge = dodge;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
@@ -98,6 +117,14 @@ public class AttackPatternGoal extends Goal
     	else
     	{
     		double targetRange = this.getTargetRange(this.attacker.getTarget());
+    		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean())
+    		{
+    			Mob attacker = mobdata.getOriginalEntity();
+    			mobdata.getServerAnimator().playAnimation(this.dodge, 0);
+    	    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(this.dodge.getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);
+    	    	this.dodgeTime = 3;
+    	    	return;
+    		}
     		for (AttackInstance a : this.attacks)
         	{
     			if (a.isValidRange(targetRange) && (attack == null
@@ -111,6 +138,7 @@ public class AttackPatternGoal extends Goal
         attack.performAttack(this.mobdata, this.combo);
         this.currentAttack = this.attacks.indexOf(attack);
         if (attack.animation.length > 1) this.combo = this.combo + 1 >= attack.animation.length ? 0 : this.combo + 1;
+        this.dodgeTime--;
         
     }
     

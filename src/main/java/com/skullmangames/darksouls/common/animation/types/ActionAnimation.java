@@ -138,7 +138,8 @@ public class ActionAnimation extends ImmovableAnimation
 		float dy = (this.affectYCoord && currentPos.y() > 0.0F) || hasNoGravity ? currentPos.y() - prevPos.y() : 0.0F;
 		float dz = prevPos.z() - currentPos.z();
 		
-		if (this.affectYCoord && currentPos.y() > 0.0F && !hasNoGravity) {
+		if (this.affectYCoord && currentPos.y() > 0.0F && !hasNoGravity)
+		{
 			Vec3 motion = elb.getDeltaMovement();
 			elb.setDeltaMovement(motion.x, motion.y + 0.08D, motion.z);
 		}
