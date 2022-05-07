@@ -30,13 +30,13 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> HOLLOW_DEATH = registerSound("entity.hollow.death");
 	public static final RegistryObject<SoundEvent> HOLLOW_PREPARE = registerSound("entity.hollow.prepare");
 	
-	public static final RegistryObject<SoundEvent> STRAY_DEMON_AMBIENT = registerSound("entity.asylum_demon.ambient");
-	public static final RegistryObject<SoundEvent> STRAY_DEMON_DEATH = registerSound("entity.asylum_demon.death");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_FOOT = registerSound("entity.asylum_demon.foot");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_SWING = registerSound("entity.asylum_demon.swing");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_SMASH = registerSound("entity.asylum_demon.smash");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_LAND = registerSound("entity.asylum_demon.land");
-	public static final RegistryObject<SoundEvent> ASYLUM_DEMON_WING = registerSound("entity.asylum_demon.wing");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_AMBIENT = registerSound("entity.stray_demon.ambient");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_DEATH = registerSound("entity.stray_demon.death");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_FOOT = registerSound("entity.stray_demon.foot");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_SWING = registerSound("entity.stray_demon.swing");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_SMASH = registerSound("entity.stray_demon.smash");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_LAND = registerSound("entity.stray_demon.land");
+	public static final RegistryObject<SoundEvent> STRAY_DEMON_WING = registerSound("entity.stray_demon.wing");
 	
 	public static final RegistryObject<SoundEvent> GENERIC_KILL = registerSound("entity.generic.kill");
 	public static final RegistryObject<SoundEvent> GENERIC_HUMAN_FORM = registerSound("entity.generic.human_form");
