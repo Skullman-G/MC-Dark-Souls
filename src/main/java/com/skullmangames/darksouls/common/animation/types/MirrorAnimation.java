@@ -1,35 +1,21 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.animation.MixPart;
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
-import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
+import java.util.function.Function;
 
-import net.minecraft.resources.ResourceLocation;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.core.init.Models;
+
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.api.distmarker.Dist;
 
 public class MirrorAnimation extends StaticAnimation
 {
-	public StaticAnimation mirrorAnimation;
+	public StaticAnimation mirror;
 	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		this(convertTime, repeatPlay, path1, path2, armature, clientOnly, false, false);
-	}
-	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly, boolean mixPart, boolean sync)
-	{
-		super(true, convertTime, repeatPlay, path1, armature, clientOnly, mixPart ? MixPart.RIGHT : MixPart.FULL);
-		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly, mixPart ? MixPart.LEFT : MixPart.FULL);
-		
-		if (sync)
-		{
-			this.sync = true;
-			this.mirrorAnimation.sync = true;
-		}
+		super(convertTime, repeatPlay, path1, model);
+		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
 	}
 	
 	public StaticAnimation getAnimation(InteractionHand hand)
@@ -39,26 +25,16 @@ public class MirrorAnimation extends StaticAnimation
 			case MAIN_HAND:
 				return this;
 			case OFF_HAND:
-				return mirrorAnimation;
+				return mirror;
 		}
 		
 		return null;
 	}
 	
 	@Override
-	public void bind(Dist dist)
+	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
 	{
-		if (this.clientOnly && dist != Dist.CLIENT) return;
-		
-		if(mirrorAnimation.path != null)
-		{
-			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, mirrorAnimation.path), mirrorAnimation, armature);
-		}
-		
-		super.bind(dist);
-		
-		return;
+		load(resourceManager, models, this);
+		load(resourceManager, models, this.mirror);
 	}
 }

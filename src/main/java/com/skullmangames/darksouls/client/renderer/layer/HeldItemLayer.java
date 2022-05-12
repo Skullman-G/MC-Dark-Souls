@@ -34,43 +34,43 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 	}
 	
 	@Override
-	public void renderLayer(T entitydata, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
-		ItemStack mainHandStack = entitydata.getOriginalEntity().getMainHandItem();
+		ItemStack mainHandStack = entityCap.getOriginalEntity().getMainHandItem();
 		RenderEngine renderEngine = ClientManager.INSTANCE.renderEngine;
 		matrixStackIn.pushPose();
 		
 		if (mainHandStack.getItem() != Items.AIR)
 		{
-			if (entitydata.getOriginalEntity().getControllingPassenger() != null)
+			if (entityCap.getOriginalEntity().getControllingPassenger() != null)
 			{
-				ItemCapability itemCap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+				ItemCapability itemCap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 				if (itemCap != null && !itemCap.canUseOnMount())
 				{
-					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entitydata, buffer, matrixStackIn, packedLightIn);
+					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entityCap, buffer, matrixStackIn, packedLightIn);
 					matrixStackIn.popPose();
 					return;
 				}
 			}
-			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entitydata, InteractionHand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entityCap, InteractionHand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 		}
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
-		ItemStack offHandStack = entitydata.getOriginalEntity().getOffhandItem();
+		ItemStack offHandStack = entityCap.getOriginalEntity().getOffhandItem();
 		
 		if (offHandStack.getItem() != Items.AIR)
 		{
-			ItemCapability cap = entitydata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			ItemCapability cap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			if (cap != null)
 			{
 				if (cap.canBeRenderedBoth(offHandStack))
 				{
-					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entitydata, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 				}
 			}
 			else
 			{
-				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entitydata, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 			}
 		}
 		matrixStackIn.popPose();

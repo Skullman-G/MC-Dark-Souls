@@ -146,7 +146,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		return this.weaponCategory;
 	}
 
-	public WieldStyle getStyle(LivingCap<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entityCap)
 	{
 		if (this.isTwoHanded())
 		{
@@ -155,7 +155,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		{
 			if (this.isMainhandOnly())
 			{
-				return entitydata.getOriginalEntity().getMainHandItem().isEmpty() ? WieldStyle.TWO_HAND
+				return entityCap.getOriginalEntity().getMainHandItem().isEmpty() ? WieldStyle.TWO_HAND
 						: WieldStyle.ONE_HAND;
 			} else
 			{

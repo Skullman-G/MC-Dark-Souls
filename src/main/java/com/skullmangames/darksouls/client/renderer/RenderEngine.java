@@ -180,9 +180,9 @@ public class RenderEngine
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entitydata, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
 	{
-		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entitydata, renderer, buffer, matStack, packedLightIn, partialTicks);
+		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
 	}
 	
 	public boolean isEntityContained(Entity entity)
@@ -270,11 +270,11 @@ public class RenderEngine
 			{
 				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F) return;
 				
-				LivingCap<?> entitydata = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if (entitydata != null)
+				LivingCap<?> entityCap = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				if (entityCap != null)
 				{
 					event.setCanceled(true);
-					renderEngine.renderEntityArmatureModel(livingentity, entitydata, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+					renderEngine.renderEntityArmatureModel(livingentity, entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
 				}
 			}
 			

@@ -254,8 +254,8 @@ public class GameOverlayManager
 	{
 		LocalPlayer player = getCameraPlayer();
 		if (player == null) return null;
-		EntityCapability<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (!(entitydata instanceof ClientPlayerCap)) return null;
-		return (ClientPlayerCap)entitydata;
+		EntityCapability<?> entityCap = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (!(entityCap instanceof ClientPlayerCap)) return null;
+		return (ClientPlayerCap)entityCap;
 	}
 }

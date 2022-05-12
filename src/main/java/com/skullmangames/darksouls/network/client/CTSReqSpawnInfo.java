@@ -43,11 +43,11 @@ public class CTSReqSpawnInfo
 			
 			if(entity != null)
 			{
-				HumanoidCap<?> entitydata = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				HumanoidCap<?> entityCap = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if(entitydata != null)
+				if(entityCap != null)
 				{
-					STCMobInitialSetting mobSet = entitydata.sendInitialInformationToClient();
+					STCMobInitialSetting mobSet = entityCap.sendInitialInformationToClient();
 					
 					if(mobSet != null)
 						ModNetworkManager.sendToPlayer(mobSet, ctx.get().getSender());

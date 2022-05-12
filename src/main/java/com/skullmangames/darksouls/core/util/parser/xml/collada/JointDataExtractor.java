@@ -18,7 +18,7 @@ public class JointDataExtractor
 	
 	private XmlNode skeleton;
 	private Map<String, Integer> rawJointMap;
-	private Map<Integer, Joint> joints = new HashMap<Integer, Joint> ();
+	private Map<String, Joint> joints = new HashMap<>();
 	
 	public JointDataExtractor(XmlNode skeleton, Map<String, Integer> rawJointMap)
 	{
@@ -51,8 +51,8 @@ public class JointDataExtractor
 		String[] matrixData = node.getChild("matrix").getData().split(" ");
 		PublicMatrix4f jointTransform = convertStringToMatrix(matrixData);
 		PublicMatrix4f.mul(CORRECTION, jointTransform, jointTransform);
-		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);//new Joint(name, index++, jointTransform);
-		joints.put(joint.getId(), joint);
+		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);
+		joints.put(joint.getName(), joint);
 		
 		return joint;
 	}
@@ -64,8 +64,8 @@ public class JointDataExtractor
 		String name = node.getAttributeValue("sid");
 		String[] matrixData = node.getChild("matrix").getData().split(" ");
 		PublicMatrix4f jointTransform = convertStringToMatrix(matrixData);
-		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);//new Joint(name, index++, jointTransform);
-		joints.put(joint.getId(), joint);
+		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);
+		joints.put(joint.getName(), joint);
 		
 		return joint;
 	}
@@ -86,7 +86,7 @@ public class JointDataExtractor
 		return transform;
 	}
 
-	public Map<Integer, Joint> getJointTable()
+	public Map<String, Joint> getJointTable()
 	{
 		return this.joints;
 	}

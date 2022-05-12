@@ -41,9 +41,9 @@ public class SwordCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public WieldStyle getStyle(LivingCap<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entityCap)
 	{
-		WeaponCap item = entitydata.getHeldWeaponCapability(InteractionHand.OFF_HAND);
+		WeaponCap item = entityCap.getHeldWeaponCapability(InteractionHand.OFF_HAND);
 		if(item != null && item.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD)
 		{
 			return WieldStyle.TWO_HAND;

@@ -1,8 +1,11 @@
 package com.skullmangames.darksouls;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,15 +16,19 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.config.ModConfig;
 
+import java.util.function.Function;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.event.ClientEvents;
 import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.input.InputManager;
@@ -32,6 +39,10 @@ import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
+import com.skullmangames.darksouls.common.animation.Animator;
+import com.skullmangames.darksouls.common.animation.ServerAnimator;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
@@ -74,8 +85,20 @@ public class DarkSouls
 		}
 	};
 
+	private static DarkSouls instance;
+	public final AnimationManager animationManager;
+	private Function<LivingCap<?>, Animator> animatorProvider;
+
+	public static DarkSouls getInstance()
+	{
+		return instance;
+	}
+
 	public DarkSouls()
 	{
+		this.animationManager = new AnimationManager();
+		instance = this;
+
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_CONFIG, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
 
@@ -83,16 +106,13 @@ public class DarkSouls
 		{
 			ClientModels.CLIENT.buildArmatureData();
 			Models.SERVER.buildArmatureData();
-		} else
-		{
-			Models.SERVER.buildArmatureData();
 		}
-
-		Animations.registerAnimations(FMLEnvironment.dist);
+		else Models.SERVER.buildArmatureData();
 
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addListener(this::doCommonStuff);
 		modBus.addListener(this::doClientStuff);
+		modBus.addListener(this::doServerStuff);
 		modBus.addListener(ModAttributes::createAttributeMap);
 		modBus.addListener(ModAttributes::modifyAttributeMap);
 
@@ -125,10 +145,16 @@ public class DarkSouls
 				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));
 	}
 
+	private void doServerStuff(final FMLDedicatedServerSetupEvent event)
+	{
+		this.animationManager.loadAnimationsInit(null);
+		this.animatorProvider = ServerAnimator::getAnimator;
+	}
+
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
 		ModRecipeTypes.call();
-		
+
 		ModNetworkManager.registerPackets();
 
 		ProviderItem.initCapabilityMap();
@@ -148,7 +174,10 @@ public class DarkSouls
 
 		new ClientManager();
 
+		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		ClientModels.CLIENT.buildMeshData();
+		this.animationManager.loadAnimationsInit(resourceManager);
+		Animations.buildClient();
 		ClientManager.INSTANCE.renderEngine.buildRenderer();
 
 		ProviderEntity.makeMapClient();
@@ -158,20 +187,32 @@ public class DarkSouls
 		MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
 
+		((ReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
+
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
-		
+
 		ModModelLayers.call();
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a better solution
-		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better solution
+		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
+																							// solution
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
+																											// a better
+																											// solution
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
+																											// a better
+																											// solution
+		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
+																										// better
+																										// solution
+		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
+																										// better
+																										// solution
+		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better
+																							// solution
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 
@@ -181,6 +222,13 @@ public class DarkSouls
 
 		com.skullmangames.darksouls.client.gui.ScreenManager
 				.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
+		
+		this.animatorProvider = ClientAnimator::getAnimator;
+	}
+	
+	public static Animator getAnimator(LivingCap<?> entityCap)
+	{
+		return DarkSouls.getInstance().animatorProvider.apply(entityCap);
 	}
 
 	public static boolean isPhysicalClient()

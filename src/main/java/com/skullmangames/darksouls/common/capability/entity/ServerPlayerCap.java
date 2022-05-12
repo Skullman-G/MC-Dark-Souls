@@ -1,12 +1,13 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -32,12 +33,12 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements IEquipLoaded
 {
-	private Map<LivingMotion, StaticAnimation> livingMotionMap = Maps.<LivingMotion, StaticAnimation>newHashMap();
-	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = Maps.<LivingMotion, StaticAnimation>newHashMap();
-	private List<LivingMotion> modifiedLivingMotions = Lists.<LivingMotion>newArrayList();
-	
+	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
+	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
+	private List<LivingMotion> modifiedLivingMotions = new ArrayList<>();
+
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-	
+
 	@Override
 	public void onEntityJoinWorld(ServerPlayer entityIn)
 	{
@@ -52,114 +53,135 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements IEquipLo
 		livingMotionMap.put(LivingMotion.FALL, Animations.BIPED_FALL);
 		livingMotionMap.put(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		livingMotionMap.put(LivingMotion.DEATH, Animations.BIPED_DEATH);
-		
+
 		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())
 		{
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
-		
+
 		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
 	}
-	
+
 	@Override
 	public void updateOnServer()
 	{
 		super.updateOnServer();
-		
+
 		EntityState state = this.getEntityState();
 		if (!this.isCreativeOrSpectator() && (state.canAct() || state.getContactLevel() == 3))
 		{
 			float staminaIncr = 0.3F;
-			if (this.orgEntity.isSprinting()) staminaIncr = -0.1F;
+			if (this.orgEntity.isSprinting())
+				staminaIncr = -0.1F;
 			else
 			{
-				if (this.getEncumbrance() > 1F) staminaIncr *= 0.7F;
-				else if (this.getEncumbrance() > 0.5F) staminaIncr *= 0.8F;
-				if (this.isBlocking() || this.orgEntity.onClimbable()) staminaIncr *= 0.2F;
+				if (this.getEncumbrance() > 1F)
+					staminaIncr *= 0.7F;
+				else if (this.getEncumbrance() > 0.5F)
+					staminaIncr *= 0.8F;
+				if (this.isBlocking() || this.orgEntity.onClimbable())
+					staminaIncr *= 0.2F;
 			}
-			
+
 			this.increaseStamina(staminaIncr);
 		}
 	}
-	
+
 	public void performDodge(boolean moving)
 	{
 		float e = this.getEncumbrance();
-		StaticAnimation animation = !moving ? Animations.BIPED_JUMP_BACK : e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
-		
+		StaticAnimation animation = !moving ? Animations.BIPED_JUMP_BACK
+				: e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+
 		this.animator.playAnimation(animation, 0.0F);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
-		
-		if (this.isCreativeOrSpectator()) return;
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(
+				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
+
+		if (this.isCreativeOrSpectator())
+			return;
 		this.increaseStamina(-4.0F);
 	}
-	
+
 	@Override
 	public void setStamina(float value)
 	{
-		if (value == this.getStamina()) return;
+		if (value == this.getStamina())
+			return;
 		super.setStamina(value);
 		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.getStamina()), this.orgEntity);
 	}
-	
+
 	@Override
 	public void setHumanity(int value)
 	{
-		if (this.humanity == value) return;
+		if (this.humanity == value)
+			return;
 		super.setHumanity(value);
 		ModNetworkManager.sendToPlayer(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
 	}
-	
+
 	@Override
 	public void setHuman(boolean value)
 	{
-		if (this.human == value) return;
+		if (this.human == value)
+			return;
 		if (value)
 		{
 			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get(), -0.2F, -0.2F);
 		}
 		super.setHuman(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human),
+				this.orgEntity);
 	}
-	
+
 	@Override
 	public void setSouls(int value)
 	{
-		if (this.souls == value) return;
+		if (this.souls == value)
+			return;
 		super.setSouls(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls),
+				this.orgEntity);
 	}
-	
+
 	@Override
-	public void updateMotion() {}
-	
+	public void updateMotion()
+	{
+	}
+
 	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
-		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange : this.getHeldItemCapability(InteractionHand.MAIN_HAND);
-		if(mainHandCap != null) mainHandCap.onHeld(this);
-		
+		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
+				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		if (mainHandCap != null)
+			mainHandCap.onHeld(this);
+
 		this.modifyLivingMotions(mainHandCap);
 	}
-	
+
 	@Override
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking()) return false;
-		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
-		
+		if (!this.isBlocking())
+			return false;
+		else if (this.isCreativeOrSpectator())
+			return super.blockingAttack(damageSource);
+
 		this.increaseStamina(-damageSource.getStaminaDamage());
-		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
-		
+		if (this.getStamina() > 0.0F)
+			return super.blockingAttack(damageSource);
+
 		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get(), 1.0F, 1.0F);
-		
+
 		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
 		this.animator.playAnimation(disarmAnimation, 0.0F);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(disarmAnimation, this.orgEntity.getId(), 0.0F), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(
+				new STCPlayAnimation(disarmAnimation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 		return true;
 	}
-	
+
 	public void modifyLivingMotions(ItemCapability itemCap)
 	{
 		this.resetModifiedLivingMotions();
@@ -169,117 +191,109 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements IEquipLo
 			Map<LivingMotion, StaticAnimation> motionChanger = itemCap.getLivingMotionChanges(this);
 			if (motionChanger != null)
 			{
-				List<LivingMotion> motions = Lists.<LivingMotion>newArrayList();
-				List<StaticAnimation> animations = Lists.<StaticAnimation>newArrayList();
-				
+				Set<Map.Entry<LivingMotion, StaticAnimation>> map = Sets.newHashSet();
+
 				for (Map.Entry<LivingMotion, StaticAnimation> entry : motionChanger.entrySet())
 				{
 					this.addModifiedLivingMotion(entry.getKey(), entry.getValue());
-					motions.add(entry.getKey());
-					animations.add(entry.getValue());
+					map.add(entry);
 				}
 				
-				LivingMotion[] motionarr = motions.toArray(new LivingMotion[0]);
-				StaticAnimation[] animationarr = animations.toArray(new StaticAnimation[0]);
-				STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), motionChanger.size());
-				msg.setMotions(motionarr);
-				msg.setAnimations(animationarr);
+				STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), false);
+				msg.putEntries(map);
 				ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, orgEntity);
 				return;
 			}
 		}
-		
-		STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), 0);
+
+		STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), false);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, orgEntity);
 	}
-	
+
 	private void addModifiedLivingMotion(LivingMotion motion, StaticAnimation animation)
 	{
-		if(animation != null)
+		if (animation != null)
 		{
 			if (!this.modifiedLivingMotions.contains(motion))
 			{
 				this.modifiedLivingMotions.add(motion);
 			}
-			
+
 			this.livingMotionMap.put(motion, animation);
 		}
 	}
-	
+
 	private void resetModifiedLivingMotions()
 	{
-		for(LivingMotion livingMotion : modifiedLivingMotions)
+		for (LivingMotion livingMotion : modifiedLivingMotions)
 		{
 			this.livingMotionMap.put(livingMotion, defaultLivingAnimations.get(livingMotion));
 		}
-		
+
 		modifiedLivingMotions.clear();
 	}
 
-	public void modifiLivingMotionToAll(STCLivingMotionChange packet)
-	{
-		LivingMotion[] motions = packet.getMotions();
-		StaticAnimation[] animations = packet.getAnimations();
-		
-		for(int i = 0; i < motions.length; i++)
-		{
-			this.addModifiedLivingMotion(motions[i], animations[i]);
-		}
-		
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(packet, this.orgEntity);
-	}
-	
 	public Set<Map.Entry<LivingMotion, StaticAnimation>> getLivingMotionEntrySet()
 	{
 		return this.livingMotionMap.entrySet();
 	}
-	
+
 	@Override
-	public void playAnimationSynchronize(int id, float modifyTime)
+	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier,
+			AnimationPacketProvider packetProvider)
 	{
-		super.playAnimationSynchronize(id, modifyTime);
-		ModNetworkManager.sendToPlayer(new STCPlayAnimation(id, this.orgEntity.getId(), modifyTime), this.orgEntity);
+		super.playAnimationSynchronized(animation, convertTimeModifier, packetProvider);
+		ModNetworkManager.sendToPlayer(packetProvider.get(animation, convertTimeModifier, this), this.orgEntity);
 	}
-	
+
 	@Override
-	public void reserveAnimationSynchronize(StaticAnimation animation)
+	public void reserveAnimation(StaticAnimation animation)
 	{
-		super.reserveAnimationSynchronize(animation);
+		super.reserveAnimation(animation);
 		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
-	
+
 	@Override
 	public void changeYaw(float amount)
 	{
 		super.changeYaw(amount);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCNotifyPlayerYawChanged(this.orgEntity.getId(), yaw), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCNotifyPlayerYawChanged(this.orgEntity.getId(), yaw),
+				this.orgEntity);
 		ModNetworkManager.sendToPlayer(new STCNotifyPlayerYawChanged(this.orgEntity.getId(), yaw), this.orgEntity);
 	}
-	
+
 	@Override
 	public ServerPlayer getOriginalEntity()
 	{
 		return this.orgEntity;
 	}
-	
+
 	@Override
-	public void aboutToDeath() {}
+	public void onDeath()
+	{
+	}
 
 	@Override
 	public float getEncumbrance()
 	{
-		return (float)(this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get()) / this.orgEntity.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()));
+		return (float) (this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get())
+				/ this.orgEntity.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()));
 	}
 
 	@Override
 	public EquipLoadLevel getEquipLoadLevel()
 	{
 		float e = this.getEncumbrance();
-		
-		if (e <= 0.0F) return EquipLoadLevel.NONE;
-		else if (e <= 0.25F) return EquipLoadLevel.LIGHT;
-		else if (e <= 0.50F) return EquipLoadLevel.MEDIUM;
-		else if (e <= 1.00F) return EquipLoadLevel.HEAVY;
-		else return EquipLoadLevel.OVERENCUMBERED;
+
+		if (e <= 0.0F)
+			return EquipLoadLevel.NONE;
+		else if (e <= 0.25F)
+			return EquipLoadLevel.LIGHT;
+		else if (e <= 0.50F)
+			return EquipLoadLevel.MEDIUM;
+		else if (e <= 1.00F)
+			return EquipLoadLevel.HEAVY;
+		else
+			return EquipLoadLevel.OVERENCUMBERED;
 	}
 }

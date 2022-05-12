@@ -44,7 +44,7 @@ public class RenderElytra extends RenderItemBase
 		PublicMatrix4f.scale(-0.9F, -0.9F, 0.9F, modelMatrix, modelMatrix);
 		PublicMatrix4f.translate(new Vector3f(0F, -0.5F, 0.125F), modelMatrix, modelMatrix);
 		PublicMatrix4f.mul(
-				itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(8).getAnimatedTransform(),
+				itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(8).getAnimatedTransform(),
 				modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);

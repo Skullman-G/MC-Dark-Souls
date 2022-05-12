@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
-import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -400,7 +400,7 @@ public class InputManager
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
 				if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON
-						&& !ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+						&& !ClientManager.INSTANCE.getPlayerData().getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;

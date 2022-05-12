@@ -1,18 +1,13 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import java.util.UUID;
-
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
-import com.skullmangames.darksouls.core.event.EntityEventListener;
-import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
-import com.skullmangames.darksouls.core.event.PlayerEvent;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
@@ -29,9 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 
 public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 {
-	private static final UUID ACTION_EVENT_UUID = UUID.fromString("e6beeac4-77d2-11eb-9439-0242ac130002");
 	protected float yaw;
-	protected EntityEventListener eventListeners;
 	protected int tickSinceLastAction;
 	
 	protected Stats stats = new Stats();
@@ -44,13 +37,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.eventListeners = new EntityEventListener(this);
 		this.tickSinceLastAction = 40;
-		this.eventListeners.addEventListener(EventType.ON_ACTION_EVENT, PlayerEvent.makeEvent(ACTION_EVENT_UUID, (player, args) ->
-		{
-			player.tickSinceLastAction = 0;
-			return false;
-		}));
 		
 		if (!this.orgEntity.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
 		{
@@ -140,10 +127,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public void initAnimator(AnimatorClient animatorClient)
+	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
-		animatorClient.mixLayerRight.setJointMask("Shoulder_R", "Arm_R", "Hand_R");
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
@@ -160,9 +145,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
 		animatorClient.addLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
-		animatorClient.addLivingAnimation(LivingMotion.SHOTING, Animations.BIPED_BOW_REBOUND);
+		animatorClient.addLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
 		animatorClient.addLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
-		animatorClient.setCurrentLivingMotionsToDefault();
+		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	public void changeYaw(float amount)
@@ -199,11 +184,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		return (float)this.orgEntity.getAttributeValue(Attributes.ATTACK_SPEED);
 	}
 	
-	public EntityEventListener getEventListener()
-	{
-		return this.eventListeners;
-	}
-	
 	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
@@ -236,7 +216,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	
 	public void discard()
 	{
-		super.aboutToDeath();
+		super.onDeath();
 	}
 	
 	@Override

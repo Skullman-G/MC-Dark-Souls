@@ -5,15 +5,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
-import com.skullmangames.darksouls.common.animation.AnimatorServer;
+import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
@@ -56,7 +53,6 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
-	protected boolean inaction;
 	public LivingMotion currentMotion = LivingMotion.IDLE;
 	public LivingMotion currentMixMotion = LivingMotion.NONE;
 	protected Animator animator;
@@ -69,16 +65,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-		if (this.orgEntity.level.isClientSide)
-		{
-			this.animator = new AnimatorClient(this);
-			this.initAnimator(this.getClientAnimator());
-		} else
-		{
-			this.animator = new AnimatorServer(this);
-		}
 
-		this.inaction = false;
+		this.animator = DarkSouls.getAnimator(this);
+		this.animator.init();
+		
 		this.currentlyAttackedEntity = new ArrayList<Entity>();
 	}
 
@@ -90,44 +80,44 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.poiseDef = this.getPoise();
 		this.stamina = this.getMaxStamina();
 	}
-	
+
 	public void setStamina(float value)
 	{
 		this.stamina = value;
 	}
-	
+
 	public void increaseStamina(float increment)
 	{
 		this.setStamina(MathUtils.clamp(this.stamina + increment, -5F, this.getMaxStamina()));
 	}
-	
+
 	public float getStamina()
 	{
 		return this.stamina;
 	}
-	
+
 	public float getMaxStamina()
 	{
-		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
+		return (float) this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
 	}
-	
+
 	public float getPoiseDef()
 	{
 		return this.poiseDef;
 	}
-	
+
 	public boolean decreasePoiseDef(float decr)
 	{
 		this.poiseDef -= decr;
 		this.poiseTimer.start(5);
 		return this.poiseDef <= 0.0F;
 	}
-	
+
 	public float getPoise()
 	{
 		return (float) this.orgEntity.getAttributeValue(ModAttributes.POISE.get());
 	}
-	
+
 	public float getPoiseDamage()
 	{
 		return (float) this.orgEntity.getAttributeValue(ModAttributes.POISE_DAMAGE.get());
@@ -136,43 +126,29 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	@Nullable
 	public StaticAnimation getHoldingWeaponAnimation()
 	{
-		StaticAnimation animation = this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND) ?
-				this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation()
+		StaticAnimation animation = this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND)
+				? this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation()
 				: null;
 
 		return animation;
 	}
 
-	protected abstract void initAnimator(AnimatorClient animatorClient);
+	public abstract void initAnimator(ClientAnimator animatorClient);
 
 	public abstract void updateMotion();
 
 	public abstract <M extends Model> M getEntityModel(Models<M> modelDB);
 
-	protected void initAttributes() {}
+	protected void initAttributes()
+	{
+	}
 
 	@Override
 	protected void updateOnClient()
 	{
-		AnimatorClient animator = getClientAnimator();
-
-		if (this.inaction)
-		{
-			this.currentMotion = LivingMotion.IDLE;
-		}
-		else
-		{
-			this.updateMotion();
-			boolean compareMotion = !animator.compareMotion(currentMotion);
-			if (compareMotion)
-			{
-				animator.playLoopMotion();
-			}
-			if (compareMotion || !animator.compareMixMotion(currentMixMotion))
-			{
-				animator.playMixLoopMotion();
-			}
-		}
+		ClientAnimator animator = this.getClientAnimator();
+		this.updateMotion();
+		animator.update();
 	}
 
 	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)
@@ -184,8 +160,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	@Override
 	public void update()
 	{
-		this.updateInactionState();
-
 		if (this.isClientSide())
 		{
 			this.updateOnClient();
@@ -194,23 +168,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			this.updateOnServer();
 		}
 
-		this.animator.update();
 		if (this.orgEntity.deathTime == 19)
-			this.aboutToDeath();
+			this.onDeath();
 	}
-	
+
 	@Override
 	protected void updateOnServer()
 	{
 		this.poiseTimer.drain(1);
+		this.animator.update();
 	}
 
-	public void updateInactionState()
-	{
-		this.inaction = this.getEntityState().isMovementLocked();
-	}
-
-	protected final void commonBipedCreatureAnimatorInit(AnimatorClient animatorClient)
+	protected final void commonBipedCreatureAnimatorInit(ClientAnimator animatorClient)
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
@@ -233,24 +202,25 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			if (orgEntity.getDeltaMovement().y < -0.55F)
 			{
 				currentMotion = LivingMotion.FALL;
-			}
-			else if (orgEntity.animationSpeed > 0.01F)
+			} else if (orgEntity.animationSpeed > 0.01F)
 			{
-				if (this.orgEntity.isSprinting()) this.currentMotion = LivingMotion.RUNNING;
-				else this.currentMotion = LivingMotion.WALKING;
-			}
-			else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+				if (this.orgEntity.isSprinting())
+					this.currentMotion = LivingMotion.RUNNING;
+				else
+					this.currentMotion = LivingMotion.WALKING;
+			} else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
 			{
 				this.currentMotion = LivingMotion.BLOCKING;
-			}
-			else
+			} else
 			{
 				currentMotion = LivingMotion.IDLE;
 			}
 		}
-		
-		if (this.currentMotion == LivingMotion.BLOCKING) this.currentMixMotion = LivingMotion.NONE;
-		else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+
+		if (this.currentMotion == LivingMotion.BLOCKING)
+			this.currentMixMotion = LivingMotion.NONE;
+		else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+			this.currentMixMotion = LivingMotion.BLOCKING;
 	}
 
 	public void cancelUsingItem()
@@ -272,7 +242,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isInaction()
 	{
-		return this.inaction;
+		return this.getEntityState().isMovementLocked();
 	}
 
 	public boolean attackEntityFrom(DamageSource damageSource, float amount)
@@ -290,9 +260,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isBlocking()
 	{
-		DynamicAnimation animation = this.animator.getPlayer().getPlay();
-		if (animation instanceof AttackAnimation && ((AttackAnimation)animation).getPhaseByTime(this.animator.getPlayer().getElapsedTime()).getProperty(AttackProperty.BLOCKING).orElse(false)) return true;
-		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
+		EntityState entitystate = this.getEntityState();
+		if (entitystate.isBlocking())
+			return true;
+		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty())
+			return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();
 		ItemCapability shield = ModCapabilities.getItemCapability(stack);
@@ -301,28 +273,36 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean blockingAttack(IExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking()) return false;
-		if (damageSource == null || damageSource instanceof IndirectDamageSourceExtended) return true;
+		if (!this.isBlocking())
+			return false;
+		if (damageSource == null || damageSource instanceof IndirectDamageSourceExtended)
+			return true;
 
 		IShield shield = (IShield) this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 
 		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
 
-		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel()) return true;
+		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel())
+			return true;
 
-		LivingCap<?> attackerData = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if (attackerData == null) return true;
+		LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
+				.orElse(null);
+		if (attackerCap == null)
+			return true;
 
-		StaticAnimation deflectAnimation = attackerData.getDeflectAnimation();
-		if (deflectAnimation == null) return true;
+		StaticAnimation deflectAnimation = attackerCap.getDeflectAnimation();
+		if (deflectAnimation == null)
+			return true;
 
 		float stuntime = 0.0F;
-		attackerData.getAnimator().playAnimation(deflectAnimation, stuntime);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), attacker);
+		attackerCap.getAnimator().playAnimation(deflectAnimation, stuntime);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
+				new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), attacker);
 		if (attacker instanceof ServerPlayer)
 		{
-			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation.getId(), attacker.getId(), stuntime), (ServerPlayer) attacker);
+			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap),
+					(ServerPlayer) attacker);
 		}
 
 		return true;
@@ -333,13 +313,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
-		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount,
-				requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
+		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount, requireddeflectionlevel,
+				damageType, poiseDamage, staminaDmg);
 	}
 
 	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)
 	{
-		float damage = (float)this.orgEntity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float damage = (float) this.orgEntity.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		if (targetEntity instanceof LivingEntity)
 		{
 			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand),
@@ -468,6 +448,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		float degree = (float) (Math.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
 		this.rotateTo(degree, limit, partialSync);
 	}
+	
+	public void playSound(SoundEvent sound)
+	{
+		this.playSound(sound, 1.0F, 1.0F);
+	}
 
 	public void playSound(SoundEvent sound, float minPitch, float maxPitch)
 	{
@@ -509,7 +494,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		float headRot;
 		float headRotDest;
 
-		if (inaction)
+		if (this.isInaction())
 			headRotDest = 0;
 		else
 		{
@@ -543,8 +528,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			rotyaw = ridingEntity.yBodyRot;
 		} else
 		{
-			prevRotYaw = (inaction ? orgEntity.yRot : orgEntity.yBodyRotO);
-			rotyaw = (inaction ? orgEntity.yRot : orgEntity.yBodyRot);
+			prevRotYaw = (this.isInaction() ? orgEntity.yRot : orgEntity.yBodyRotO);
+			rotyaw = (this.isInaction() ? orgEntity.yRot : orgEntity.yBodyRot);
 		}
 
 		if (this.orgEntity.isBaby())
@@ -559,32 +544,40 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				0, prevRotYaw, rotyaw, partialTicks, scaleX, scaleY, scaleZ);
 	}
 
-	public void resetLivingMixLoop()
-	{
-		this.currentMixMotion = LivingMotion.NONE;
-		this.getClientAnimator().resetMixMotion();
-	}
-
-	public void reserveAnimationSynchronize(StaticAnimation animation)
+	public void reserveAnimation(StaticAnimation animation)
 	{
 		this.animator.reserveAnimation(animation);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
-				new STCPlayAnimation(animation.getId(), this.orgEntity.getId(), 0.0F), this.orgEntity);
+				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
 
-	public void playAnimationSynchronize(int id, float modifyTime)
+	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier)
 	{
-		this.animator.playAnimation(id, modifyTime);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
-				new STCPlayAnimation(id, this.orgEntity.getId(), modifyTime), this.orgEntity);
+		this.playAnimationSynchronized(animation, convertTimeModifier, STCPlayAnimation::new);
 	}
 
-	public void playAnimationSynchronize(StaticAnimation animation, float modifyTime)
+	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier,
+			AnimationPacketProvider packetProvider)
 	{
-		this.playAnimationSynchronize(animation.getId(), modifyTime);
+		this.animator.playAnimation(animation, convertTimeModifier);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(packetProvider.get(animation, convertTimeModifier, this),
+				this.orgEntity);
 	}
 
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
+	@FunctionalInterface
+	public static interface AnimationPacketProvider
+	{
+		public STCPlayAnimation get(StaticAnimation animation, float convertTimeModifier, LivingCap<?> entityCap);
+	}
+
+	protected void playReboundAnimation()
+	{
+		this.getClientAnimator().playReboundAnimation();
+	}
+
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType)
+	{
+	}
 
 	@SuppressWarnings("unchecked")
 	public <A extends Animator> A getAnimator()
@@ -592,14 +585,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return (A) this.animator;
 	}
 
-	public AnimatorClient getClientAnimator()
+	public ClientAnimator getClientAnimator()
 	{
-		return this.<AnimatorClient>getAnimator();
+		return this.<ClientAnimator>getAnimator();
 	}
 
-	public AnimatorServer getServerAnimator()
+	public ServerAnimator getServerAnimator()
 	{
-		return this.<AnimatorServer>getAnimator();
+		return this.<ServerAnimator>getAnimator();
 	}
 
 	public StaticAnimation getHitAnimation(StunType stunType)
@@ -607,10 +600,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return null;
 	}
 
-	@Override
-	public void aboutToDeath()
+	public void onDeath()
 	{
-		this.animator.onEntityDeath();
+		this.getAnimator().playDeathAnimation();
 	}
 
 	@Override
@@ -684,64 +676,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public EntityState getEntityState()
 	{
-		return this.animator.getPlayer().getPlay().getState(animator.getPlayer().getElapsedTime());
-	}
-
-	public static enum EntityState
-	{
-		FREE(false, false, false, false, true, 0), FREE_CAMERA(true, false, false, false, false, 1),
-		FREE_INPUT(false, false, false, false, true, 3), PRE_DELAY(true, true, false, false, false, 1),
-		CONTACT(true, true, true, false, false, 2), POST_DELAY(true, true, false, false, true, 3),
-		HIT(true, true, false, false, false, 2), DISARMED(true, true, true, false, false, 2),
-		INVINCIBLE(true, true, false, true, false, 2);
-
-		boolean movementLock;
-		boolean rotationLock;
-		boolean collisionDetection;
-		boolean invincible;
-		boolean canAct;
-		// none : 0, beforeContact : 1, contact : 2, afterContact : 3
-		int contactLevel;
-
-		EntityState(boolean movementLock, boolean rotationLock, boolean collisionDetection, boolean invincible,
-				boolean canAct, int level)
-		{
-			this.movementLock = movementLock;
-			this.rotationLock = rotationLock;
-			this.collisionDetection = collisionDetection;
-			this.invincible = invincible;
-			this.canAct = canAct;
-			this.contactLevel = level;
-		}
-
-		public boolean isMovementLocked()
-		{
-			return this.movementLock;
-		}
-
-		public boolean isRotationLocked()
-		{
-			return this.rotationLock;
-		}
-
-		public boolean shouldDetectCollision()
-		{
-			return this.collisionDetection;
-		}
-
-		public boolean isInvincible()
-		{
-			return this.invincible;
-		}
-
-		public boolean canAct()
-		{
-			return this.canAct;
-		}
-
-		public int getContactLevel()
-		{
-			return this.contactLevel;
-		}
+		return this.animator.getEntityState();
 	}
 }

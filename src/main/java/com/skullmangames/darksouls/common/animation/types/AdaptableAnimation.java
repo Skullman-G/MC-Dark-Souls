@@ -1,12 +1,16 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.core.init.Models;
+
 import net.minecraft.world.InteractionHand;
 
 // This should only be used by a mix layer
@@ -14,13 +18,13 @@ public class AdaptableAnimation extends StaticAnimation
 {
 	private final Map<LivingMotion, MirrorAnimation> animations;
 	
-	public AdaptableAnimation(float convertTime, boolean repeatPlay, String armature, Map<LivingMotion, AnimConfig> paths)
+	public AdaptableAnimation(float convertTime, boolean repeatPlay, Function<Models<?>, Model> model, Map<LivingMotion, AnimConfig> paths)
 	{
 		super();
 		Builder<LivingMotion, MirrorAnimation> builder = ImmutableMap.builder();
 		paths.forEach((motion, config) ->
 		{
-			builder.put(motion, new MirrorAnimation(convertTime, repeatPlay, config.path1, config.path2, armature, true, config.mixPart, config.sync));
+			builder.put(motion, new MirrorAnimation(convertTime, repeatPlay, config.path1, config.path2, model));
 		});
 		this.animations = builder.build();
 	}
@@ -36,15 +40,11 @@ public class AdaptableAnimation extends StaticAnimation
 	{
 		private String path1;
 		private String path2;
-		private boolean sync;
-		private boolean mixPart;
 		
-		public AnimConfig(String path1, String path2, boolean sync, boolean mixPart)
+		public AnimConfig(String path1, String path2)
 		{
 			this.path1 = path1;
 			this.path2 = path2;
-			this.sync = sync;
-			this.mixPart = mixPart;
 		}
 	}
 }

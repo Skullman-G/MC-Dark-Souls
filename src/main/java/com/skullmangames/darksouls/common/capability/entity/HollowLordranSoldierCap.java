@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
@@ -27,9 +27,8 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	}
 	
 	@Override
-	protected void initAnimator(AnimatorClient animatorClient)
+	public void initAnimator(ClientAnimator animatorClient)
 	{
-		super.initAnimator(animatorClient);
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_SOLDIER_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_SOLDIER_RUN);
@@ -37,7 +36,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
-		animatorClient.setCurrentLivingMotionsToDefault();
+		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

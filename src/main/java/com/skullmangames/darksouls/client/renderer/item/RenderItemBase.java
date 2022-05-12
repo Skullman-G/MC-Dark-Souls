@@ -46,7 +46,7 @@ public class RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
 		String heldingHand = hand == InteractionHand.MAIN_HAND ? "Tool_R" : "Tool_L";
-		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform();
+		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(heldingHand).getAnimatedTransform();
 		PublicMatrix4f.mul(jointTransform, modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
@@ -63,7 +63,7 @@ public class RenderItemBase
 	public void renderItemBack(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
@@ -76,7 +76,7 @@ public class RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		PublicMatrix4f.translate(new Vector3f(0F, 0.2F, 0F), modelMatrix, modelMatrix);
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f.scale(0.6F, 0.6F, 0.6F, modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);

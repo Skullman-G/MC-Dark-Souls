@@ -47,7 +47,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 	}
 	
 	@Override
-	public void renderLayer(T entitydata, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
 		ItemStack stack = entityliving.getItemBySlot(this.slot);
 		Item item = stack.getItem();
@@ -82,7 +82,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		{
 			if (item != Items.AIR)
 			{
-				ClientManager.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entitydata, buffer, matrixStackIn, packedLightIn, partialTicks);
+				ClientManager.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entityCap, buffer, matrixStackIn, packedLightIn, partialTicks);
 			}
 		}
 		

@@ -12,7 +12,7 @@ public class TridentCap extends RangedWeaponCap
 	}
 	
 	@Override
-	public WieldStyle getStyle(LivingCap<?> entitydata)
+	public WieldStyle getStyle(LivingCap<?> entityCap)
 	{
 		return WieldStyle.ONE_HAND;
 	}

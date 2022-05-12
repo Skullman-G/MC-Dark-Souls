@@ -12,6 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class Layer<E extends LivingEntity, T extends LivingCap<E>>
 {
-	public abstract void renderLayer(T entitydata, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer,
+	public abstract void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer,
 			int packedLightIn, PublicMatrix4f[] poses, float partialTicks);
 }

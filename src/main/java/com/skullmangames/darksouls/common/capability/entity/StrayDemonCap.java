@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
@@ -26,14 +26,12 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	}
 
 	@Override
-	protected void initAnimator(AnimatorClient animatorClient)
+	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.mixLayerLeft.setJointMask("Shoulder_L", "Arm_L", "Hand_L");
-		animatorClient.mixLayerRight.setJointMask("Shoulder_R", "Arm_R", "Hand_R");
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.STRAY_DEMON_DEATH);
-		animatorClient.setCurrentLivingMotionsToDefault();
+		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	public static float getWeaponScale()
@@ -47,29 +45,6 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap instanceof GreatHammerCap) return Colliders.STRAY_DEMON_GREAT_HAMMER;
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
-	}
-	
-	@Override
-	protected void updateOnClient()
-	{
-		AnimatorClient animator = getClientAnimator();
-		
-		if(this.inaction)
-		{
-			this.currentMotion = LivingMotion.IDLE;
-		}
-		else
-		{
-			this.updateMotion();
-			if(!animator.compareMotion(currentMotion))
-			{
-				animator.playLoopMotion();
-			}
-			if(!animator.compareMixMotion(currentMixMotion))
-			{
-				animator.playMixLoopMotion();
-			}
-		}
 	}
 	
 	@Override

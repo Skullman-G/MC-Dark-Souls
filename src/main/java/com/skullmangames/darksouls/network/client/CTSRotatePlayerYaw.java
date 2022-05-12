@@ -42,9 +42,9 @@ public class CTSRotatePlayerYaw
 			
 			if(player != null)
 			{
-				PlayerCap<?> entitydata = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				PlayerCap<?> entityCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if(entitydata != null)
+				if(entityCap != null)
 				{
 					ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCNotifyPlayerYawChanged(player.getId(), msg.yaw), player);
 				}

@@ -1,56 +1,61 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.capability.entity.LivingCap.EntityState;
+import com.skullmangames.darksouls.core.init.Models;
+
+import java.util.function.Function;
+
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ConsumeAnimation extends MirrorAnimation
 {
-	private LivingCap<?> entitydata;
+	private LivingCap<?> entityCap;
 	
-	public ConsumeAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
+	public ConsumeAnimation(float convertTime, boolean repeatPlay, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		super(convertTime, repeatPlay, path1, path2, armature, clientOnly);
-		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly)
+		super(convertTime, repeatPlay, path1, path2, model);
+		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model)
 		{
-			private LivingCap<?> entitydata;
+			private LivingCap<?> entityCap;
 			
 			@Override
-			public void onActivate(LivingCap<?> entitydata)
+			public void onStart(LivingCap<?> entityCap)
 			{
-				this.entitydata = entitydata;
-				entitydata.getOriginalEntity().xRot = 0.0F;
-				entitydata.getOriginalEntity().xRotO = 0.0F;
-				float x = entitydata.getOriginalEntity().yRot;
-				entitydata.rotateTo(x, 180.0F, true);
+				this.entityCap = entityCap;
+				entityCap.getOriginalEntity().xRot = 0.0F;
+				entityCap.getOriginalEntity().xRotO = 0.0F;
+				float x = entityCap.getOriginalEntity().yRot;
+				entityCap.rotateTo(x, 180.0F, true);
 				
-				super.onActivate(entitydata);
+				super.onStart(entityCap);
 			}
 			
 			@Override
 			public EntityState getState(float time)
 			{
-				if (this.entitydata.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
+				if (this.entityCap.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
 				else return super.getState(time);
 			}
 		};
 	}
 	
 	@Override
-	public void onActivate(LivingCap<?> entitydata)
+	public void onStart(LivingCap<?> entityCap)
 	{
-		this.entitydata = entitydata;
-		entitydata.getOriginalEntity().xRot = 0.0F;
-		entitydata.getOriginalEntity().xRotO = 0.0F;
-		float x = entitydata.getOriginalEntity().yRot;
-		entitydata.rotateTo(x, 180.0F, true);
+		this.entityCap = entityCap;
+		entityCap.getOriginalEntity().xRot = 0.0F;
+		entityCap.getOriginalEntity().xRotO = 0.0F;
+		float x = entityCap.getOriginalEntity().yRot;
+		entityCap.rotateTo(x, 180.0F, true);
 		
-		super.onActivate(entitydata);
+		super.onStart(entityCap);
 	}
 	
 	@Override
 	public EntityState getState(float time)
 	{
-		if (this.entitydata.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
+		if (this.entityCap.getOriginalEntity().getUseItemRemainingTicks() > 0) return EntityState.FREE_CAMERA;
 		else return super.getState(time);
 	}
 }

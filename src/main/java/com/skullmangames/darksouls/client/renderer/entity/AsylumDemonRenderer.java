@@ -29,11 +29,11 @@ public class AsylumDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemon
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemon entityIn, StrayDemonCap entitydata, float partialTicks)
+	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemon entityIn, StrayDemonCap entityCap, float partialTicks)
 	{
 		float scale = 1.4F;
 		matStack.scale(scale, scale, scale);
-		super.applyRotations(matStack, armature, entityIn, entitydata, partialTicks);
-		this.transformJoint(2, armature, entitydata.getHeadMatrix(partialTicks));
+		super.applyRotations(matStack, armature, entityIn, entityCap, partialTicks);
+		this.transformJoint(2, armature, entityCap.getHeadMatrix(partialTicks));
 	}
 }

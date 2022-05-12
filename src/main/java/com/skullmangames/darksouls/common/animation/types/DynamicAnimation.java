@@ -2,89 +2,112 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.skullmangames.darksouls.client.animation.JointMask.BindModifier;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
-import com.skullmangames.darksouls.common.animation.JointKeyFrame;
+import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
+import com.skullmangames.darksouls.common.animation.types.attack.Property;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.core.init.Animations;
+
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DynamicAnimation
 {
-	private final Map<String, TransformSheet> jointTransforms;
+	protected Map<String, TransformSheet> jointTransforms;
 	protected final boolean isRepeat;
 	protected final float convertTime;
-	protected float totalTime;
-	private float startingTime = 0.0F;
-	protected boolean sync;
+	protected float totalTime = 0.0F;
 
 	public DynamicAnimation()
 	{
-		jointTransforms = new HashMap<String, TransformSheet>();
-		this.totalTime = 0;
-		this.isRepeat = false;
-		this.convertTime = IngameConfig.GENERAL_ANIMATION_CONVERT_TIME;
+		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, false);
 	}
 
 	public DynamicAnimation(float convertTime, boolean isRepeat)
 	{
-		this(0, convertTime, isRepeat);
-	}
-
-	public DynamicAnimation(float totalTime, float convertTime, boolean isRepeat)
-	{
-		jointTransforms = new HashMap<String, TransformSheet>();
-		this.totalTime = totalTime;
+		this.jointTransforms = new HashMap<String, TransformSheet>();
 		this.isRepeat = isRepeat;
 		this.convertTime = convertTime;
 	}
-	
-	public boolean shouldSynchronize()
+
+	public void addSheet(String jointName, TransformSheet sheet)
 	{
-		return this.sync;
+		this.jointTransforms.put(jointName, sheet);
 	}
 
-	public void putSheet(String jointName, TransformSheet sheet)
-	{
-		jointTransforms.put(jointName, sheet);
-	}
-	
-	public Pose getPoseByTime(LivingCap<?> entitydata, float time)
+	public final Pose getPoseByTimeRaw(LivingCap<?> entityCap, float time, float partialTicks)
 	{
 		Pose pose = new Pose();
-
-		for (String jointName : jointTransforms.keySet())
+		for (String jointName : this.jointTransforms.keySet())
 		{
-			pose.putJointData(jointName, jointTransforms.get(jointName).getInterpolatedTransform(time));
+			if (!entityCap.isClientSide() || this.isJointEnabled(entityCap, jointName))
+			{
+				pose.putJointData(jointName, this.jointTransforms.get(jointName).getInterpolatedTransform(time));
+			}
 		}
-
 		return pose;
 	}
 
-	public void getLinkAnimation(Pose pose1, float timeModifier, LivingCap<?> entitydata, LinkAnimation dest)
+	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
-		float totalTime = timeModifier >= 0 ? timeModifier + convertTime : convertTime;
-		boolean isNeg = timeModifier < 0;
-		float nextStart = isNeg ? -timeModifier : 0;
-		
-		if(isNeg) dest.startsAt = nextStart;
-		
+		Pose pose = new Pose();
+
+		for (String jointName : this.jointTransforms.keySet())
+		{
+			if (!entityCap.isClientSide() || this.isJointEnabled(entityCap, jointName))
+			{
+				pose.putJointData(jointName, this.jointTransforms.get(jointName).getInterpolatedTransform(time));
+			}
+		}
+
+		this.modifyPose(pose, entityCap, time);
+
+		return pose;
+	}
+	
+	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time) {}
+
+	public void setLinkAnimation(Pose pose1, float convertTimeModifier, LivingCap<?> entityCap,
+			LinkAnimation dest)
+	{
+		if (!entityCap.isClientSide())
+		{
+			pose1 = Animations.DUMMY_ANIMATION.getPoseByTime(entityCap, 0.0F, 1.0F);
+		}
+
+		float totalTime = convertTimeModifier >= 0.0F ? convertTimeModifier + this.convertTime : this.convertTime;
+		boolean isNeg = convertTimeModifier < 0.0F;
+		float nextStart = isNeg ? -convertTimeModifier : 0.0F;
+
+		if (isNeg) dest.startsAt = nextStart;
+
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
+
 		Map<String, JointTransform> data1 = pose1.getJointTransformData();
-		Map<String, JointTransform> data2 = this.getPoseByTime(entitydata, nextStart).getJointTransformData();
+		Map<String, JointTransform> data2 = this.getPoseByTime(entityCap, nextStart, 1.0F).getJointTransformData();
 
 		for (String jointName : data1.keySet())
 		{
-			JointKeyFrame[] keyframes = new JointKeyFrame[2];
-			keyframes[0] = new JointKeyFrame(0, data1.get(jointName));
-			keyframes[1] = new JointKeyFrame(totalTime, data2.get(jointName));
-
-			TransformSheet sheet = new TransformSheet(keyframes);
-			dest.putSheet(jointName, sheet);
+			if (data1.containsKey(jointName) && data2.containsKey(jointName))
+			{
+				Keyframe[] keyframes = new Keyframe[2];
+				keyframes[0] = new Keyframe(0.0F, data1.get(jointName));
+				keyframes[1] = new Keyframe(totalTime, data2.get(jointName));
+				TransformSheet sheet = new TransformSheet(keyframes);
+				dest.addSheet(jointName, sheet);
+			}
 		}
 	}
 
@@ -92,29 +115,54 @@ public class DynamicAnimation
 	{
 		player.setPlayAnimation(this);
 	}
-	
-	public void onActivate(LivingCap<?> entitydata) {}
-	public void onUpdate(LivingCap<?> entitydata) {}
-	public void onFinish(LivingCap<?> entitydata, boolean isEnd) {}
-	
-	public LivingCap.EntityState getState(float time)
+
+	public void onStart(LivingCap<?> entityCap)
 	{
-		return LivingCap.EntityState.FREE;
+	}
+
+	public void onUpdate(LivingCap<?> entityCap)
+	{
+	}
+
+	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	{
+	}
+
+	public void linkTick(LivingCap<?> entityCap, LinkAnimation linkAnimation) {}
+
+	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
+	{
+		return this.jointTransforms.containsKey(joint);
+	}
+
+	public BindModifier getBindModifier(LivingCap<?> entityCap, String joint)
+	{
+		return null;
+	}
+
+	public EntityState getState(float time)
+	{
+		return EntityState.FREE;
 	}
 
 	public Map<String, TransformSheet> getTransfroms()
 	{
-		return jointTransforms;
+		return this.jointTransforms;
 	}
 
-	public float getPlaySpeed(LivingCap<?> entitydata)
+	public float getPlaySpeed(LivingCap<?> entityCap)
 	{
 		return 1.0F;
 	}
 
-	public void setTotalTime(float value)
+	public DynamicAnimation getRealAnimation()
 	{
-		this.totalTime = value;
+		return this;
+	}
+
+	public void setTotalTime(float totalTime)
+	{
+		this.totalTime = totalTime;
 	}
 
 	public float getTotalTime()
@@ -131,14 +179,33 @@ public class DynamicAnimation
 	{
 		return this.isRepeat;
 	}
-	
-	public void setStartingTime(float value)
+
+	public int getId()
 	{
-		this.startingTime = value;
+		return -1;
 	}
-	
-	public float getStartingTime()
+
+	public <V> Optional<V> getProperty(Property<V> propertyType)
 	{
-		return this.startingTime;
+		return Optional.empty();
 	}
+
+	public boolean isMainFrameAnimation()
+	{
+		return false;
+	}
+
+	public boolean isReboundAnimation()
+	{
+		return false;
+	}
+
+	public boolean isMetaAnimation()
+	{
+		return false;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap,
+			float playTime, float partialTicks) {}
 }

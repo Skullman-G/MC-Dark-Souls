@@ -24,7 +24,7 @@ public abstract class RangedWeaponCap extends WeaponCap
 		}
 		if(shot != null)
 		{
-			this.animationSet.put(LivingMotion.SHOTING, shot);
+			this.animationSet.put(LivingMotion.SHOOTING, shot);
 		}
 	}
 

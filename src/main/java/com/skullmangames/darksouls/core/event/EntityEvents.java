@@ -81,17 +81,17 @@ public class EntityEvents
 		
 		if (event.getEntity() instanceof Projectile) return;
 		@SuppressWarnings("rawtypes")
-		EntityCapability entitydata = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entitydata != null && event.getEntity().tickCount == 0)
+		EntityCapability entityCap = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if(entityCap != null && event.getEntity().tickCount == 0)
 		{
-			entitydata.onEntityJoinWorld(event.getEntity());
-			if(entitydata.isClientSide())
+			entityCap.onEntityJoinWorld(event.getEntity());
+			if(entityCap.isClientSide())
 			{
-				unInitializedEntitiesClient.add(entitydata);
+				unInitializedEntitiesClient.add(entityCap);
 			}
 			else
 			{
-				unInitializedEntitiesServer.add(entitydata);
+				unInitializedEntitiesServer.add(entityCap);
 			}	
 		}
 	}
@@ -118,10 +118,10 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void updateEvent(LivingUpdateEvent event)
 	{
-		LivingCap<?> entitydata = (LivingCap<?>) event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entitydata != null && entitydata.getOriginalEntity() != null)
+		LivingCap<?> entityCap = (LivingCap<?>) event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if(entityCap != null && entityCap.getOriginalEntity() != null)
 		{
-			entitydata.update();
+			entityCap.update();
 		}
 	}
 	
@@ -196,11 +196,11 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void attackEvent(LivingAttackEvent event)
 	{
-		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (entitydata != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
+		if (entityCap != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
 		{
-			if (!entitydata.attackEntityFrom(event.getSource(), event.getAmount()))
+			if (!entityCap.attackEntityFrom(event.getSource(), event.getAmount()))
 			{
 				event.setCanceled(true);
 			}
@@ -228,8 +228,8 @@ public class EntityEvents
 	{
 		if(event.getFrom().getItem() == event.getTo().getItem()) return;
 		
-		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if (entitydata == null || entitydata.getOriginalEntity() == null) return;
+		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (entityCap == null || entityCap.getOriginalEntity() == null) return;
 		
 		AttributeItemCap fromCap = ModCapabilities.getAttributeItemCap(event.getFrom());
 		AttributeItemCap toCap = ModCapabilities.getAttributeItemCap(event.getTo());
@@ -246,23 +246,23 @@ public class EntityEvents
 		
 		if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
 		{
-			entitydata.onArmorSlotChanged(fromCap, toCap, event.getSlot());
+			entityCap.onArmorSlotChanged(fromCap, toCap, event.getSlot());
 		}
 		else
 		{
-			entitydata.cancelUsingItem();
-			if (entitydata instanceof ServerPlayerCap)
+			entityCap.cancelUsingItem();
+			if (entityCap instanceof ServerPlayerCap)
 			{
-				((ServerPlayerCap)entitydata).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
+				((ServerPlayerCap)entityCap).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
 						: InteractionHand.OFF_HAND);
 			}
 		}
 		
-		if (entitydata instanceof IEquipLoaded)
+		if (entityCap instanceof IEquipLoaded)
 		{
-			AttributeInstance speed = entitydata.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
+			AttributeInstance speed = entityCap.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
 			speed.removeModifier(ModAttributes.MOVEMENT_SPEED_MODIFIER_UUID);
-			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((IEquipLoaded)entitydata).getEquipLoadLevel()));
+			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((IEquipLoaded)entityCap).getEquipLoadLevel()));
 		}
 	}
 	
@@ -311,33 +311,33 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void deathEvent(LivingDeathEvent event)
 	{
-		LivingCap<?> entitydata = (LivingCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entitydata == null) return;
-		if (entitydata instanceof PlayerCap<?> && !entitydata.isClientSide())
+		LivingCap<?> entityCap = (LivingCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if(entityCap == null) return;
+		if (entityCap instanceof PlayerCap<?> && !entityCap.isClientSide())
 		{
-			PlayerCap<?> playerdata = (PlayerCap<?>)entitydata;
+			PlayerCap<?> playerdata = (PlayerCap<?>)entityCap;
 			playerdata.setHumanity(0);
 			playerdata.setHuman(false);
 			playerdata.setSouls(0);
 			playerdata.onSave();
 		}
 		
-		if (entitydata.isClientSide()) entitydata.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);
-		entitydata.getAnimator().playDeathAnimation();
+		if (entityCap.isClientSide()) entityCap.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);
+		entityCap.getAnimator().playDeathAnimation();
 	}
 	
 	@SubscribeEvent
 	public static void fallEvent(LivingFallEvent event)
 	{
-		LivingCap<?> entitydata = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		
-		if (entitydata != null && !entitydata.isInaction())
+		if (entityCap != null && !entityCap.isInaction())
 		{
 			float distance = event.getDistance();
 
 			if (distance > 5.0F)
 			{
-				entitydata.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
+				entityCap.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
 			}
 		}
 	}

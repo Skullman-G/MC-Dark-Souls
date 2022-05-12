@@ -1,19 +1,27 @@
 package com.skullmangames.darksouls.common.animation.types;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
+import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.Pose;
+import com.skullmangames.darksouls.common.animation.TransformSheet;
+import com.skullmangames.darksouls.common.animation.types.attack.Property.ActionAnimationProperty;
+import com.skullmangames.darksouls.common.animation.types.attack.Property.MovementAnimationSet;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -22,131 +30,260 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
 
 public class ActionAnimation extends ImmovableAnimation
 {
-	protected final boolean affectYCoord;
 	protected float delayTime;
-	
-	public ActionAnimation(float convertTime, boolean affectY, String path, String armature)
+
+	public ActionAnimation(float convertTime, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, -1.0F, affectY, path, armature);
+		this(convertTime, Float.MAX_VALUE, path, model);
 	}
 
-	public ActionAnimation(float convertTime, float postDelay, boolean affectY, String path, String armature)
+	public ActionAnimation(float convertTime, float postDelay, String path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, path, armature, false);
-		this.affectYCoord = affectY;
+		super(convertTime, path, model);
 		this.delayTime = postDelay;
 	}
-	
-	@Override
-	public void onActivate(LivingCap<?> entity)
+
+	public <V> ActionAnimation addProperty(ActionAnimationProperty<V> propertyType, V value)
 	{
-		super.onActivate(entity);
-		Entity orgEntity = entity.getOriginalEntity();
-		
-		float yaw = orgEntity.yRot;
-		
-		orgEntity.setYHeadRot(yaw);
-		orgEntity.setYBodyRot(yaw);
-		
-		if(entity instanceof PlayerCap)
+		this.properties.put(propertyType, value);
+		return this;
+	}
+
+	@Override
+	public void onStart(LivingCap<?> entityCap)
+	{
+		super.onStart(entityCap);
+		entityCap.cancelUsingItem();
+
+		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(false))
 		{
-			((PlayerCap<?>)entity).getEventListener().activateEvents(EventType.ON_ACTION_EVENT);
+			entityCap.getOriginalEntity().setDeltaMovement(0.0D, entityCap.getOriginalEntity().getDeltaMovement().y,
+					0.0D);
 		}
+
+		MovementAnimationSet movementAnimationSetter = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse((self, entityCap$2, transformSheet) ->
+				{
+					transformSheet.readFrom(self.jointTransforms.get("Root"));
+				});
+
+		entityCap.getAnimator().getPlayerFor(this).setMovementAnimation(this, entityCap, movementAnimationSetter);
 	}
-	
+
 	@Override
-	public void onUpdate(LivingCap<?> entity)
+	public void onUpdate(LivingCap<?> entityCap)
 	{
-		super.onUpdate(entity);
+		super.onUpdate(entityCap);
+		this.move(entityCap, this);
+	}
 
-		LivingEntity livingentity = entity.getOriginalEntity();
+	@Override
+	public void linkTick(LivingCap<?> entityCap, LinkAnimation linkAnimation)
+	{
+		this.move(entityCap, linkAnimation);
+	};
 
-		if (entity.isClientSide()) if (!(livingentity instanceof LocalPlayer)) return;
-		else if ((livingentity instanceof ServerPlayer)) return;
-		
-		if (entity.isInaction())
+	private void move(LivingCap<?> entityCap, DynamicAnimation animation)
+	{
+		LivingEntity livingentity = entityCap.getOriginalEntity();
+
+		if (entityCap.isClientSide())
 		{
-			Vector3f vec3 = this.getCoordVector(entity);
-			BlockPos blockpos = new BlockPos(livingentity.getX(), livingentity.getBoundingBox().minY - 1.0D, livingentity.getZ());
-			BlockState blockState = livingentity.level.getBlockState(blockpos);
-			AttributeInstance attribute = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
-			boolean soulboost = blockState.is(BlockTags.SOUL_SPEED_BLOCKS) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SOUL_SPEED, livingentity) > 0;
-			double speedFactor = soulboost ? 1.0D : livingentity.level.getBlockState(blockpos).getBlock().getSpeedFactor();
-			double moveMultiplier = attribute.getValue() / attribute.getBaseValue() * speedFactor;
-			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier));
-		}
-	}
-	
-	@Override
-	public LivingCap.EntityState getState(float time)
-	{
-		if(time < this.delayTime) return LivingCap.EntityState.PRE_DELAY;
-		else return LivingCap.EntityState.FREE;
-	}
-	
-	@Override
-	public Pose getPoseByTime(LivingCap<?> entity, float time)
-	{
-		Pose pose = new Pose();
-
-		for (String jointName : this.getTransfroms().keySet())
-		{
-			JointTransform jt = this.getTransfroms().get(jointName).getInterpolatedTransform(time);
-
-			if (jointName.equals("Root"))
+			if (!(livingentity instanceof LocalPlayer))
 			{
-				Vector3f vec = jt.getPosition();
-				vec.setX(0.0F);
-				vec.setY(this.affectYCoord && vec.y() > 0.0F ? 0.0F : vec.y());
-				vec.setZ(0.0F);
+				return;
 			}
-			
-			pose.putJointData(jointName, jt);
-		}
-		
-		return pose;
-	}
-	
-	@Override
-	public void bind(Dist dist)
-	{
-		super.bind(dist);
-		if (this.clientOnly && dist != Dist.CLIENT) return;
-		if(this.delayTime >= 0.0F) return;
-		this.delayTime = 0.0F;
-	}
-	
-	protected Vector3f getCoordVector(LivingCap<?> entitydata)
-	{
-		LivingEntity elb = entitydata.getOriginalEntity();
-		JointTransform jt = this.getTransfroms().get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getElapsedTime());
-		JointTransform prevJt = this.getTransfroms().get("Root").getInterpolatedTransform(entitydata.getAnimator().getPlayer().getPrevElapsedTime());	
-		Vector4f currentPos = new Vector4f(jt.getPosition().x(), jt.getPosition().y(), jt.getPosition().z(), 1.0F);
-		Vector4f prevPos = new Vector4f(prevJt.getPosition().x(), prevJt.getPosition().y(), prevJt.getPosition().z(), 1.0F);
-		PublicMatrix4f mat = entitydata.getModelMatrix(1.0F);
-		mat.m30 = 0;
-		mat.m31 = 0;
-		mat.m32 = 0;
-		PublicMatrix4f.transform(mat, currentPos, currentPos);
-		PublicMatrix4f.transform(mat, prevPos, prevPos);
-		boolean hasNoGravity = entitydata.getOriginalEntity().isNoGravity();
-		float dx = prevPos.x() - currentPos.x();
-		float dy = (this.affectYCoord && currentPos.y() > 0.0F) || hasNoGravity ? currentPos.y() - prevPos.y() : 0.0F;
-		float dz = prevPos.z() - currentPos.z();
-		
-		if (this.affectYCoord && currentPos.y() > 0.0F && !hasNoGravity)
+		} else
 		{
-			Vec3 motion = elb.getDeltaMovement();
-			elb.setDeltaMovement(motion.x, motion.y + 0.08D, motion.z);
+			if ((livingentity instanceof ServerPlayer))
+			{
+				return;
+			}
 		}
-		
-		Vector3f vec = new Vector3f(dx, dy, dz);
-		vec.mul(1.5F);
-		
-		return vec;
+
+		if (!this.validateMovement(entityCap, animation))
+		{
+			return;
+		}
+
+		if (entityCap.isInaction())
+		{
+			Vector3f vec3 = this.getCoordVector(entityCap, animation);
+			BlockPos blockpos = new BlockPos(livingentity.getX(), livingentity.getBoundingBox().minY - 1.0D,
+					livingentity.getZ());
+			BlockState blockState = livingentity.level.getBlockState(blockpos);
+			AttributeInstance movementSpeed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
+			boolean soulboost = blockState.is(BlockTags.SOUL_SPEED_BLOCKS)
+					&& EnchantmentHelper.getEnchantmentLevel(Enchantments.SOUL_SPEED, livingentity) > 0;
+			double speedFactor = soulboost ? 1.0D
+					: livingentity.level.getBlockState(blockpos).getBlock().getSpeedFactor();
+			double moveMultiplier = this.getProperty(ActionAnimationProperty.AFFECT_SPEED).orElse(false)
+					? (movementSpeed.getValue() / movementSpeed.getBaseValue())
+					: 1.0F;
+			livingentity.move(MoverType.SELF,
+					new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+		}
+	}
+
+	private boolean validateMovement(LivingCap<?> entityCap, DynamicAnimation animation)
+	{
+		if (animation instanceof LinkAnimation)
+		{
+			if (!this.getProperty(ActionAnimationProperty.MOVE_ON_LINK).orElse(true))
+			{
+				return false;
+			} else
+			{
+				return this.checkMovementTime(0.0F);
+			}
+		} else
+		{
+			return this.checkMovementTime(entityCap.getAnimator().getPlayerFor(animation).getElapsedTime());
+		}
+	}
+
+	private boolean checkMovementTime(float currentTime)
+	{
+		if (this.properties.containsKey(ActionAnimationProperty.ACTION_TIME))
+		{
+			ActionTime[] actionTimes = this.getProperty(ActionAnimationProperty.ACTION_TIME).get();
+			for (ActionTime actionTime : actionTimes)
+			{
+				if (currentTime <= actionTime.end && actionTime.onStart <= currentTime) return true;
+			}
+			return false;
+		}
+		else return true;
+	}
+
+	@Override
+	public EntityState getState(float time)
+	{
+		if (time <= this.delayTime)
+		{
+			return EntityState.PRE_CONTACT;
+		} else
+		{
+			return EntityState.FREE;
+		}
+	}
+
+	@Override
+	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
+	{
+		JointTransform jt = pose.getTransformByName("Root");
+		Vector3f jointPosition = jt.translation();
+		PublicMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
+				.searchJointByName("Root").getLocalTrasnform().removeTranslation();
+		PublicMatrix4f toOrigin = PublicMatrix4f.invert(toRootTransformApplied, null);
+		Vector3f worldPosition = PublicMatrix4f.transform3v(toRootTransformApplied, jointPosition, null);
+		worldPosition.setX(0.0F);
+		worldPosition.setY(
+				(this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false) && worldPosition.y() > 0.0F)
+						? 0.0F
+						: worldPosition.y());
+		worldPosition.setZ(0.0F);
+		PublicMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
+		jointPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
+	}
+
+	@Override
+	public void setLinkAnimation(Pose pose1, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
+	{
+		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : 0.0F + this.convertTime;
+		float nextStart = 0.0F;
+
+		if (convertTimeModifier < 0.0F)
+		{
+			nextStart -= convertTimeModifier;
+			dest.startsAt = nextStart;
+		}
+
+		dest.getTransfroms().clear();
+		dest.setTotalTime(totalTime);
+		dest.setNextAnimation(this);
+		Map<String, JointTransform> data1 = pose1.getJointTransformData();
+		Pose pose = this.getPoseByTime(entityCap, nextStart, 1.0F);
+		JointTransform jt = pose.getTransformByName("Root");
+		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation()
+				.getInterpolatedTranslation(nextStart);
+
+		jt.translation().set(withPosition.x(), withPosition.y(), withPosition.z());
+		Map<String, JointTransform> data2 = pose.getJointTransformData();
+
+		for (String jointName : data1.keySet())
+		{
+			if (data1.containsKey(jointName) && data2.containsKey(jointName))
+			{
+				Keyframe[] keyframes = new Keyframe[2];
+				keyframes[0] = new Keyframe(0, data1.get(jointName));
+				keyframes[1] = new Keyframe(totalTime, data2.get(jointName));
+				TransformSheet sheet = new TransformSheet(keyframes);
+				dest.addSheet(jointName, sheet);
+			}
+		}
+	}
+
+	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
+	{
+		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER)
+				.orElse(null);
+		TransformSheet rootTransforms = (coordFunction == null || animation instanceof LinkAnimation)
+				? animation.jointTransforms.get("Root")
+				: entityCap.getAnimator().getPlayerFor(this).getMovementAnimation();
+
+		if (rootTransforms != null)
+		{
+			LivingEntity livingentity = entityCap.getOriginalEntity();
+			AnimationPlayer player = entityCap.getAnimator().getPlayerFor(animation);
+			JointTransform jt = rootTransforms.getInterpolatedTransform(player.getElapsedTime());
+			JointTransform prevJt = rootTransforms.getInterpolatedTransform(player.getPrevElapsedTime());
+			Vector4f currentpos = new Vector4f(jt.translation().x(), jt.translation().y(), jt.translation().z(), 1.0F);
+			Vector4f prevpos = new Vector4f(prevJt.translation().x(), prevJt.translation().y(),
+					prevJt.translation().z(), 1.0F);
+			PublicMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
+			PublicMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature()
+					.searchJointByName("Root").getLocalTrasnform().removeTranslation();
+			rotationTransform.mulBack(localTransform);
+			currentpos = rotationTransform.transform(currentpos);
+			prevpos = rotationTransform.transform(prevpos);
+			boolean hasNoGravity = entityCap.getOriginalEntity().isNoGravity();
+			boolean moveVertical = this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false);
+			float dx = prevpos.x() - currentpos.x();
+			float dy = (moveVertical || hasNoGravity) ? currentpos.y() - prevpos.y() : 0.0F;
+			float dz = prevpos.z() - currentpos.z();
+			dx = Math.abs(dx) > 0.0000001F ? dx : 0.0F;
+			dz = Math.abs(dz) > 0.0000001F ? dz : 0.0F;
+
+			if (moveVertical && currentpos.y() > 0.0F && !hasNoGravity)
+			{
+				Vec3 motion = livingentity.getDeltaMovement();
+				livingentity.setDeltaMovement(motion.x, motion.y <= 0 ? (motion.y + 0.08D) : motion.y, motion.z);
+			}
+
+			return new Vector3f(dx, dy, dz);
+		} else
+		{
+			return new Vector3f(0, 0, 0);
+		}
+	}
+
+	public static class ActionTime
+	{
+		private float onStart;
+		private float end;
+
+		private ActionTime(float onStart, float end)
+		{
+			this.onStart = onStart;
+			this.end = end;
+		}
+
+		public static ActionTime crate(float onStart, float end)
+		{
+			return new ActionTime(onStart, end);
+		}
 	}
 }

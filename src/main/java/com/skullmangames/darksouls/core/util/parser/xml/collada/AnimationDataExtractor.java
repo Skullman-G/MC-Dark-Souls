@@ -11,14 +11,11 @@ import java.util.List;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.Joint;
-import com.skullmangames.darksouls.common.animation.JointKeyFrame;
+import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
-import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
-import com.skullmangames.darksouls.common.animation.types.MixLinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 
@@ -35,16 +32,13 @@ public class AnimationDataExtractor
 	private static TransformSheet getTransformSheet(String[] times, String[] trasnformMatrix,
 			PublicMatrix4f invLocalTransform, boolean correct)
 	{
-		List<JointKeyFrame> keyframeList = new ArrayList<JointKeyFrame>();
+		List<Keyframe> keyframeList = new ArrayList<Keyframe>();
 
 		for (int i = 0; i < times.length; i++)
 		{
 			float timeStamp = Float.parseFloat(times[i]);
 
-			if (timeStamp < 0)
-			{
-				continue;
-			}
+			if (timeStamp < 0) continue;
 
 			float[] matrixValue = new float[16];
 			for (int j = 0; j < 16; j++)
@@ -68,11 +62,11 @@ public class AnimationDataExtractor
 			PublicMatrix4f.mul(invLocalTransform, matrix, matrix);
 
 			JointTransform transform = new JointTransform(new Vector3f(matrix.m30, matrix.m31, matrix.m32),
-					ModQuaternion.fromMatrix(matrix),
+					matrix.toQuaternion(),
 					new Vector3f((float) new Vec3(matrix.m00, matrix.m01, matrix.m02).length(),
 							(float) new Vec3(matrix.m10, matrix.m11, matrix.m12).length(),
 							(float) new Vec3(matrix.m20, matrix.m21, matrix.m22).length()));
-			keyframeList.add(new JointKeyFrame(timeStamp, transform));
+			keyframeList.add(new Keyframe(timeStamp, transform));
 		}
 
 		TransformSheet sheet = new TransformSheet(keyframeList);
@@ -125,27 +119,21 @@ public class AnimationDataExtractor
 			}
 			String sec = fir.substring(0, fir.length() - 12);
 
-			Joint joint = armature.findJointByName(sec);
+			Joint joint = armature.searchJointByName(sec);
 
 			if (joint == null)
 			{
 				IllegalArgumentException exception = new IllegalArgumentException();
-				System.err.println("Cant find joint " + sec + ". Did use wrong armature?");
+				System.err.println("Can't find joint " + sec + ". Did you use the wrong armature?");
 				exception.printStackTrace();
 				throw exception;
 			}
 
 			TransformSheet sheet = getTransformSheet(timeValue, matrixArray,
 					PublicMatrix4f.invert(joint.getLocalTrasnform(), null), root);
-			data.putSheet(sec, sheet);
+			data.addSheet(sec, sheet);
 			data.setTotalTime(Float.parseFloat(timeValue[timeValue.length - 1]));
 			root = false;
 		}
-	}
-
-	public static void getMixLinkAnimation(float convertTime, Pose currentPose, MixLinkAnimation player)
-	{
-		player.setLastPose(currentPose);
-		player.setTotalTime(convertTime);
 	}
 }

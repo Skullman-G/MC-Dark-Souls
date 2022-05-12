@@ -26,7 +26,7 @@ public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, RemoteCl
 	}
 	
 	@Override
-	protected void renderNameTag(RemoteClientPlayerCap<AbstractClientPlayer> entitydata, AbstractClientPlayer entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
+	protected void renderNameTag(RemoteClientPlayerCap<AbstractClientPlayer> entityCap, AbstractClientPlayer entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
 	{
 		EntityRenderDispatcher renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
 		
@@ -38,14 +38,14 @@ public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, RemoteCl
 			if (scoreobjective != null)
 			{
 				Score score = scoreboard.getOrCreatePlayerScore(entityIn.getScoreboardName(), scoreobjective);
-				super.renderNameTag(entitydata, entityIn, (
+				super.renderNameTag(entityCap, entityIn, (
 						new TextComponent(Integer.toString(score.getScore()))).append(" ").append(scoreobjective.getDisplayName()),
 						matrixStackIn, bufferIn, packedLightIn);
 				matrixStackIn.translate(0.0D, (double) (9.0F * 1.15F * 0.025F), 0.0D);
 			}
 		}
 
-		super.renderNameTag(entitydata, entityIn, displayNameIn, matrixStackIn, bufferIn, packedLightIn);
+		super.renderNameTag(entityCap, entityIn, displayNameIn, matrixStackIn, bufferIn, packedLightIn);
 		matrixStackIn.popPose();
 	}
 }

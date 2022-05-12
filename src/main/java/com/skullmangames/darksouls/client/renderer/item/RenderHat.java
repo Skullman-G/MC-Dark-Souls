@@ -44,7 +44,7 @@ public class RenderHat extends RenderItemBase
 			{
 				PublicMatrix4f.translate(new Vector3f(0.0F, -0.65F, 0.0F), modelMatrix, modelMatrix);
 			}
-			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
+			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 			model.xRot = 0.0F;
 			model.yRot = 0.0F;
 			model.zRot = 0.0F;

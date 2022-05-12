@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -17,7 +18,6 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
-
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -60,7 +60,7 @@ public class ClientPlayerCap extends RemoteClientPlayerCap<LocalPlayer>
 	{
 		super.updateMotion();
 
-		if (!this.getClientAnimator().prevAiming())
+		if (!this.getClientAnimator().isAiming())
 		{
 			if (this.currentMixMotion == LivingMotion.AIMING)
 			{
@@ -152,9 +152,9 @@ public class ClientPlayerCap extends RemoteClientPlayerCap<LocalPlayer>
 	}
 	
 	@Override
-	public void playAnimationSynchronize(int id, float modifyTime)
+	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier, AnimationPacketProvider packetProvider)
 	{
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(id, modifyTime, false, true));
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation.getId(), convertTimeModifier, false, true));
 	}
 	
 	@Override
@@ -165,7 +165,7 @@ public class ClientPlayerCap extends RemoteClientPlayerCap<LocalPlayer>
 	}
 	
 	@Override
-	public void aboutToDeath() {}
+	public void onDeath() {}
 	
 	@Override
 	public LivingEntity getTarget()

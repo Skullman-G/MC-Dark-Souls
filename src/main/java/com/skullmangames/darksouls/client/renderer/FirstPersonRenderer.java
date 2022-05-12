@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.Priority;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -10,7 +11,6 @@ import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
-import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -39,17 +39,17 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPla
 	}
 	
 	@Override
-	public void render(LocalPlayer entityIn, ClientPlayerCap entitydata, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
+	public void render(LocalPlayer entityIn, ClientPlayerCap entityCap, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
 	{
 		Camera camera = minecraft.gameRenderer.getMainCamera();
 		Vec3 projView = camera.getPosition();
 		double x = Mth.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
 		double y = Mth.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
 		double z = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z() - 0.1F;
-		ClientModel model = entitydata.getEntityModel(ClientModels.CLIENT);
+		ClientModel model = entityCap.getEntityModel(ClientModels.CLIENT);
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
-		entitydata.getClientAnimator().setPoseToModel(partialTicks);
+		entityCap.getClientAnimator().setPoseToModel(partialTicks);
 		PublicMatrix4f[] poses = armature.getJointTransforms();
 		
 		matStackIn.pushPose();
@@ -57,13 +57,8 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPla
 		PublicMatrix4f.transform(poses[9], headPos, headPos);
 		float pitch = camera.getXRot();
 		
-		DynamicAnimation base = entitydata.getClientAnimator().getPlayer().getPlay();
-		DynamicAnimation mixLeft = entitydata.getClientAnimator().mixLayerLeft.animationPlayer.getPlay();
-		DynamicAnimation mixRight = entitydata.getClientAnimator().mixLayerRight.animationPlayer.getPlay();
-		
-		boolean flag1 = base instanceof ActionAnimation;
-		boolean flag2 = mixLeft instanceof AimingAnimation;
-		boolean flag3 = mixRight instanceof AimingAnimation;
+		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
+		boolean flag2 = entityCap.getClientAnimator().getCompositeLayer(Priority.MIDDLE).animationPlayer.getPlay() instanceof AimingAnimation;
 		
 		float zCoord = flag1 ? 0 : poses[0].m32;
 		float posZ = Math.min(headPos.z() - zCoord, 0);
@@ -73,7 +68,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPla
 			posZ += (poses[0].m32 - headPos.z());
 		}
 		
-		if (!flag2 || !flag3)
+		if (!flag2)
 		{
 			matStackIn.mulPose(Vector3f.XP.rotationDegrees(pitch));
 		}
@@ -81,12 +76,12 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, ClientPla
 		float interpolation = pitch > 0.0F ? pitch / 90.0F : 0.0F;
 		matStackIn.translate(x, y - 0.1D - (0.2D * (flag2 ? 0.8D : interpolation)), z + 0.1D + (0.7D * (flag2 ? 0.0D : interpolation)) - posZ);
 		
-		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entitydata.getOriginalEntity().getSkinTextureLocation())),
+		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
 				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses);
 		
 		if(!entityIn.isSpectator())
 		{
-			renderLayer(entitydata, entityIn, poses, buffer, matStackIn, packedLightIn, partialTicks);
+			renderLayer(entityCap, entityIn, poses, buffer, matStackIn, packedLightIn, partialTicks);
 		}
 		
 		matStackIn.popPose();

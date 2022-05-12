@@ -5,15 +5,11 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.client.animation.MixLayer;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSReqPlayerInfo;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.util.Mth;
@@ -42,10 +38,6 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		super.onEntityJoinWorld(entityIn);
 		this.prevHeldItem = ItemStack.EMPTY;
 		this.prevHeldItemOffHand = ItemStack.EMPTY;
-		if(!(this instanceof ClientPlayerCap))
-		{
-			ModNetworkManager.sendToServer(new CTSReqPlayerInfo(this.orgEntity.getId()));
-		}
 	}
 	
 	@Override
@@ -95,7 +87,7 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		}
 		else
 		{
-			AnimatorClient animator = getClientAnimator();
+			ClientAnimator animator = getClientAnimator();
 			Vec3 mov = this.orgEntity.getDeltaMovement();
 
 			if (this.orgEntity.isSwimming() && mov.y < -0.005)
@@ -123,16 +115,16 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 
 				if (this.orgEntity.moveDist > 0)
 				{
-					animator.setReverse(false, this.currentMotion);
+					animator.baseLayer.animationPlayer.setReversed(false);
 				}
 				else if (this.orgEntity.moveDist < 0)
 				{
-					animator.setReverse(true, this.currentMotion);
+					animator.baseLayer.animationPlayer.setReversed(true);
 				}
 			}
 			else
 			{
-				animator.setReverse(false, this.currentMotion);
+				animator.baseLayer.animationPlayer.setReversed(false);
 				if (this.orgEntity.isCrouching())
 				{
 					this.currentMotion = LivingMotion.KNEELING;
@@ -189,32 +181,9 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 		else
 		{
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) this.currentMixMotion = LivingMotion.AIMING;
-			else if (this.getClientAnimator().prevAiming())	this.playReboundAnimation();
+			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
 			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
 			else this.currentMixMotion = LivingMotion.NONE;
-		}
-	}
-	
-	private void updateClientAnimator()
-	{
-		AnimatorClient animator = getClientAnimator();
-		
-		if(this.inaction)
-		{
-			this.currentMotion = LivingMotion.IDLE;
-		}
-		else
-		{
-			this.updateMotion();
-			boolean compareMotion = !animator.compareMotion(currentMotion);
-			if(compareMotion)
-			{
-				animator.playLoopMotion();
-			}
-			if (compareMotion || !animator.compareMixMotion(currentMixMotion) || this.currentMixMotion == LivingMotion.HOLDING_WEAPON)
-			{
-				animator.playMixLoopMotion();
-			}
 		}
 	}
 	
@@ -225,30 +194,16 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 	{
 		this.prevYaw = this.yaw;
 		this.prevBodyYaw = this.bodyYaw;
-		this.bodyYaw = this.inaction ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
+		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
 		boolean isMainHandChanged = prevHeldItem != this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
 		boolean isOffHandChanged = prevHeldItemOffHand != this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
-			this.getClientAnimator().resetMixMotion();
-			if(isMainHandChanged)
-			{
-				prevHeldItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
-				MixLayer right = this.getClientAnimator().mixLayerRight;
-				if (right.isActive() && !this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND)) this.getClientAnimator().offMixLayer(right, false);
-			}
-			if(isOffHandChanged)
-			{
-				prevHeldItemOffHand = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
-				MixLayer left = this.getClientAnimator().mixLayerLeft;
-				if (left.isActive() && !this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND)) this.getClientAnimator().offMixLayer(left, false);
-			}
 			this.onHeldItemChange(this.getHeldItemCapability(InteractionHand.MAIN_HAND), this.getHeldItemCapability(InteractionHand.OFF_HAND));
-			this.updateClientAnimator();
 		}
-		else super.updateOnClient();
+		super.updateOnClient();
 		
 		if(this.orgEntity.deathTime == 1)
 		{
@@ -267,12 +222,6 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 	}
 
 	@Override
-	public void playAnimationSynchronize(int id, float modifyTime)
-	{
-		
-	}
-
-	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
 		return this.orgEntity.getModelName().equals("slim") ? modelDB.ENTITY_BIPED_SLIM_ARM : modelDB.ENTITY_BIPED;
@@ -287,7 +236,7 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
         float pitch = 0;
         float prvePitch = 0;
         
-		if (inaction || entity.getControllingPassenger() != null)
+		if (this.isInaction() || entity.getControllingPassenger() != null)
 		{
 	        yaw = 0;
 		}
@@ -367,7 +316,7 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 			}
 			else
 			{
-				yaw = inaction ? MathUtils.interpolateRotation(this.prevYaw, this.yaw, partialTick) : 0;
+				yaw = this.isInaction() ? MathUtils.interpolateRotation(this.prevYaw, this.yaw, partialTick) : 0;
 				prevRotYaw = this.prevBodyYaw + yaw;
 				rotyaw = this.bodyYaw + yaw;
 			}

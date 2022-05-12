@@ -12,9 +12,9 @@ import net.minecraft.world.item.BowItem;
 
 public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCap<T>> extends RangeAttackGoal<T, D>
 {
-	public BowAttackGoal(D entitydata, int attackCooldown, float maxAttackDist)
+	public BowAttackGoal(D entityCap, int attackCooldown, float maxAttackDist)
 	{
-		super(entitydata, attackCooldown, maxAttackDist);
+		super(entityCap, attackCooldown, maxAttackDist);
 	}
 	
 	protected boolean isHoldingRightWeapon()
@@ -30,7 +30,7 @@ public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCa
         {
             this.mob.stopUsingItem();
             ((RangedAttackMob)this.mob).performRangedAttack(this.chasingTarget, BowItem.getPowerForTime(i));
-            ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND.getId(), mob.getId(), 0.0F, true), mob);
+            ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND, mob.getId(), 0.0F), mob);
             this.attackTime = this.attackCooldown;
         }
 	}
@@ -38,7 +38,7 @@ public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCa
 	@Override
 	protected void aim()
 	{
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_AIM.getId(), mob.getId(), 0.0F, true), mob);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_AIM, mob.getId(), 0.0F), mob);
         this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof BowItem));
 	}
 }

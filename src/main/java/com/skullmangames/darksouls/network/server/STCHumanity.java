@@ -40,10 +40,10 @@ public class STCHumanity
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if (entity == null) return;
 			
-			PlayerCap<?> entitydata = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (entitydata == null) return;
+			PlayerCap<?> entityCap = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (entityCap == null) return;
 			
-			entitydata.setHumanity(msg.humanity);
+			entityCap.setHumanity(msg.humanity);
 		});
 		
 		ctx.get().setPacketHandled(true);

@@ -3,9 +3,8 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimationTarget;
+import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 
-import net.minecraft.world.entity.Mob;
 import net.minecraft.util.Mth;
 
 public class AttackInstance
@@ -33,11 +32,9 @@ public class AttackInstance
 		return offset <= targetRange && targetRange <= range;
 	}
 	
-	public void performAttack(MobCap<?> mobdata, int combo)
+	public void performAttack(MobCap<?> attackerCap, int combo)
 	{
-		Mob attacker = mobdata.getOriginalEntity();
-		mobdata.getServerAnimator().playAnimation(this.animation[combo], 0);
-    	mobdata.updateInactionState();
-    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationTarget(this.animation[combo].getId(), attacker.getId(), 0, attacker.getTarget().getId()), attacker);
+		attackerCap.getServerAnimator().playAnimation(this.animation[combo], 0);
+    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationAndSetTarget(this.animation[combo], 0, attackerCap), attackerCap.getOriginalEntity());
 	}
 }

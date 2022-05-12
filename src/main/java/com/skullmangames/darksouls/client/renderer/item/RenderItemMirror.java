@@ -27,7 +27,7 @@ public abstract class RenderItemMirror extends RenderItemBase
 		boolean isMainHand = hand == InteractionHand.MAIN_HAND;
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(isMainHand ? this.correctionMatrix : this.leftHandCorrectionMatrix);
 		String heldingHand = isMainHand ? "Tool_R" : "Tool_L";
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().findJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
 		matrixStackIn.pushPose();

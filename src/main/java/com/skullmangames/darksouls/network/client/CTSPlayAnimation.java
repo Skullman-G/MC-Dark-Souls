@@ -18,30 +18,32 @@ public class CTSPlayAnimation
 	private float modifyTime;
 	private boolean isClientSideAnimation;
 	private boolean resendToSender;
-	
+
 	public CTSPlayAnimation()
 	{
 		this.animationId = 0;
 		this.modifyTime = 0;
 		this.resendToSender = false;
 	}
-	
+
 	public CTSPlayAnimation(StaticAnimation animation, float modifyTime, boolean clientOnly, boolean resendToSender)
 	{
 		this(animation.getId(), modifyTime, clientOnly, resendToSender);
 	}
-	
-	public CTSPlayAnimation(int animation, float modifyTime, boolean clientOnly, boolean resendToSender)
+
+	public CTSPlayAnimation(int animationId, float modifyTime, boolean clientOnly,
+			boolean resendToSender)
 	{
-		this.animationId = animation;
+		this.animationId = animationId;
 		this.modifyTime = modifyTime;
 		this.isClientSideAnimation = clientOnly;
 		this.resendToSender = resendToSender;
 	}
-	
+
 	public static CTSPlayAnimation fromBytes(FriendlyByteBuf buf)
 	{
-		return new CTSPlayAnimation(buf.readInt(), buf.readFloat(), buf.readBoolean(), buf.readBoolean());
+		return new CTSPlayAnimation(buf.readInt(), buf.readFloat(), buf.readBoolean(),
+				buf.readBoolean());
 	}
 
 	public static void toBytes(CTSPlayAnimation msg, FriendlyByteBuf buf)
@@ -51,20 +53,29 @@ public class CTSPlayAnimation
 		buf.writeBoolean(msg.isClientSideAnimation);
 		buf.writeBoolean(msg.resendToSender);
 	}
-	
+
 	public static void handle(CTSPlayAnimation msg, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(()->
+		ctx.get().enqueueWork(() ->
 		{
 			ServerPlayer serverPlayer = ctx.get().getSender();
-			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if(!msg.isClientSideAnimation)
-				playerdata.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
-			
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(msg.animationId, serverPlayer.getId(), msg.modifyTime), serverPlayer);
-			
-			if(msg.resendToSender)
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(msg.animationId, serverPlayer.getId(), msg.modifyTime), serverPlayer);
+			ServerPlayerCap playerpatch = (ServerPlayerCap) serverPlayer
+					.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (!msg.isClientSideAnimation)
+			{
+				playerpatch.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
+			}
+
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(
+					new STCPlayAnimation(msg.animationId, serverPlayer.getId(), msg.modifyTime),
+					serverPlayer);
+
+			if (msg.resendToSender)
+			{
+				ModNetworkManager.sendToPlayer(
+						new STCPlayAnimation(msg.animationId, serverPlayer.getId(), msg.modifyTime),
+						serverPlayer);
+			}
 		});
 		ctx.get().setPacketHandled(true);
 	}

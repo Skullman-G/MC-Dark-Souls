@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Hollow;
@@ -44,16 +44,15 @@ public class HollowCap extends HumanoidCap<Hollow>
 	}
 	
 	@Override
-	protected void initAnimator(AnimatorClient animatorClient)
+	public void initAnimator(ClientAnimator animatorClient)
 	{
-		super.initAnimator(animatorClient);
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
-		animatorClient.setCurrentLivingMotionsToDefault();
+		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	@Override
@@ -69,7 +68,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 	@Override
 	public void clientInitialSettings(ByteBuf buf)
 	{
-		AnimatorClient animator = this.getClientAnimator();
+		ClientAnimator animator = this.getClientAnimator();
 		
 		if (buf.readBoolean())
 		{

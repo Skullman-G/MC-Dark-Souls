@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.EnumSet;
 
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
@@ -15,17 +16,17 @@ import net.minecraft.world.phys.Vec3;
 public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCap<T>> extends Goal
 {
 	protected final T mob;
-	protected final D entitydata;
+	protected final D entityCap;
 	protected LivingEntity chasingTarget;
 	protected int attackCooldown;
 	protected final float maxAttackDistance;
 	protected int attackTime = -1;
 	protected int seeTime;
 
-    public RangeAttackGoal(D entitydata, int attackCooldown, float maxAttackDist)
+    public RangeAttackGoal(D entityCap, int attackCooldown, float maxAttackDist)
     {
-        this.entitydata = entitydata;
-        this.mob = entitydata.getOriginalEntity();
+        this.entityCap = entityCap;
+        this.mob = entityCap.getOriginalEntity();
         this.attackCooldown = attackCooldown;
         this.maxAttackDistance = maxAttackDist * maxAttackDist;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -39,7 +40,7 @@ public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends
     @Override
     public boolean canUse()
     {
-        return (this.mob.getTarget() == null && this.chasingTarget == null) ? false : this.isHoldingRightWeapon() && !this.entitydata.isInaction();
+        return (this.mob.getTarget() == null && this.chasingTarget == null) ? false : this.isHoldingRightWeapon() && !this.entityCap.isInaction();
     }
     
     protected abstract boolean isHoldingRightWeapon();
@@ -47,7 +48,7 @@ public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends
     @Override
     public boolean canContinueToUse()
     {
-        return (this.canUse() || (!this.mob.getNavigation().isStuck())) && this.isHoldingRightWeapon() && !entitydata.isInaction();
+        return (this.canUse() || (!this.mob.getNavigation().isStuck())) && this.isHoldingRightWeapon() && !entityCap.isInaction();
     }
 
     @Override
@@ -67,9 +68,9 @@ public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends
         this.mob.getMoveControl().strafe(0, 0);
     	this.mob.getNavigation().stop();
     	this.mob.setAggressive(false);
-        if(!entitydata.isInaction())
+        if(!entityCap.isInaction())
         {
-        	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(-1, mob.getId(), 0.0F), mob);
+        	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.DUMMY_ANIMATION, mob.getId(), 0.0F), mob);
         }
     }
     
@@ -93,7 +94,7 @@ public abstract class RangeAttackGoal<T extends Mob & RangedAttackMob, D extends
             else
                 --this.seeTime;
 
-            if (this.mob.isUsingItem() || this.entitydata.isInaction())
+            if (this.mob.isUsingItem() || this.entityCap.isInaction())
             {
                 this.mob.getNavigation().stop();
             }

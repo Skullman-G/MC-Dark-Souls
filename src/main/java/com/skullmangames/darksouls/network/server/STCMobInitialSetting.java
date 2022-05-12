@@ -63,8 +63,8 @@ public class STCMobInitialSetting
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if(entity != null)
 			{
-				HumanoidCap<?> entitydata = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				entitydata.clientInitialSettings(msg.getBuffer());
+				HumanoidCap<?> entityCap = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				entityCap.clientInitialSettings(msg.getBuffer());
 			}
 		});
 		
