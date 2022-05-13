@@ -147,7 +147,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	protected void updateOnClient()
 	{
 		ClientAnimator animator = this.getClientAnimator();
-		this.updateMotion();
+		if (!this.isInaction()) this.updateMotion();
 		animator.update();
 	}
 

@@ -185,7 +185,7 @@ public class ClientAnimator extends Animator
 	{
 		this.baseLayer.update(this.entityCap);
 		this.updatePose();
-
+		
 		if (this.baseLayer.animationPlayer.isEnd() && this.baseLayer.nextAnimation == null
 				&& this.currentMotion != LivingMotion.DEATH)
 		{
