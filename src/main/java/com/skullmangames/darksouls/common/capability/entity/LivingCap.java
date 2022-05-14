@@ -54,7 +54,7 @@ import net.minecraft.world.phys.Vec3;
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
 	public LivingMotion currentMotion = LivingMotion.IDLE;
-	public LivingMotion currentMixMotion = LivingMotion.NONE;
+	public LivingMotion currentMixMotion = LivingMotion.IDLE;
 	protected Animator animator;
 	public List<Entity> currentlyAttackedEntity;
 	private float poiseDef;
@@ -65,10 +65,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
-		
 		this.currentlyAttackedEntity = new ArrayList<Entity>();
 	}
 
@@ -146,9 +144,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	@Override
 	protected void updateOnClient()
 	{
-		ClientAnimator animator = this.getClientAnimator();
 		if (!this.isInaction()) this.updateMotion();
-		animator.update();
+		this.animator.update();
 	}
 
 	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)

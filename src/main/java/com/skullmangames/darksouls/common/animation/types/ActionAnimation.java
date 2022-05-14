@@ -10,9 +10,10 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.Pose;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.ActionAnimationProperty;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.MovementAnimationSet;
+import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
+import com.skullmangames.darksouls.common.animation.Property.MovementAnimationSet;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
@@ -46,7 +47,7 @@ public class ActionAnimation extends ImmovableAnimation
 		this.delayTime = postDelay;
 	}
 
-	public <V> ActionAnimation addProperty(ActionAnimationProperty<V> propertyType, V value)
+	public <V> ActionAnimation addProperty(Property<V> propertyType, V value)
 	{
 		this.properties.put(propertyType, value);
 		return this;
@@ -58,7 +59,7 @@ public class ActionAnimation extends ImmovableAnimation
 		super.onStart(entityCap);
 		entityCap.cancelUsingItem();
 
-		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(false))
+		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(true))
 		{
 			entityCap.getOriginalEntity().setDeltaMovement(0.0D, entityCap.getOriginalEntity().getDeltaMovement().y,
 					0.0D);
@@ -190,36 +191,36 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 
 	@Override
-	public void setLinkAnimation(Pose pose1, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
+	public void setLinkAnimation(Pose lastPose, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
 	{
-		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : 0.0F + this.convertTime;
+		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : this.convertTime;
 		float nextStart = 0.0F;
-
+		
 		if (convertTimeModifier < 0.0F)
 		{
 			nextStart -= convertTimeModifier;
 			dest.startsAt = nextStart;
 		}
-
+		
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
-		Map<String, JointTransform> data1 = pose1.getJointTransformData();
+		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
 		Pose pose = this.getPoseByTime(entityCap, nextStart, 1.0F);
-		JointTransform jt = pose.getTransformByName("Root");
+		JointTransform rootTransform = pose.getTransformByName("Root");
 		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation()
 				.getInterpolatedTranslation(nextStart);
+		
+		rootTransform.translation().set(withPosition.x(), rootTransform.translation().y(), withPosition.z());
+		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
 
-		jt.translation().set(withPosition.x(), withPosition.y(), withPosition.z());
-		Map<String, JointTransform> data2 = pose.getJointTransformData();
-
-		for (String jointName : data1.keySet())
+		for (String jointName : lastTransforms.keySet())
 		{
-			if (data1.containsKey(jointName) && data2.containsKey(jointName))
+			if (lastTransforms.containsKey(jointName) && nextTransforms.containsKey(jointName))
 			{
 				Keyframe[] keyframes = new Keyframe[2];
-				keyframes[0] = new Keyframe(0, data1.get(jointName));
-				keyframes[1] = new Keyframe(totalTime, data2.get(jointName));
+				keyframes[0] = new Keyframe(0, lastTransforms.get(jointName));
+				keyframes[1] = new Keyframe(totalTime, nextTransforms.get(jointName));
 				TransformSheet sheet = new TransformSheet(keyframes);
 				dest.addSheet(jointName, sheet);
 			}

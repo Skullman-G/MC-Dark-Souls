@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
@@ -89,7 +89,7 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public <V> StaticAnimation addProperty(StaticAnimationProperty<V> propertyType, V value)
+	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
 	{
 		super.addProperty(propertyType, value);
 		this.lookDown.addProperty(propertyType, value);

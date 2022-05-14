@@ -1,10 +1,8 @@
 package com.skullmangames.darksouls.common.animation;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -51,7 +49,6 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 		this.animationById.values().forEach((animation) ->
 		{
 			animation.loadAnimation(resourceManager, models);
-			this.setAnimationMetadata(resourceManager, animation);
 		});
 	}
 
@@ -59,15 +56,7 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 	protected Map<Integer, StaticAnimation> prepare(ResourceManager resourceManager,
 			ProfilerFiller profilerIn)
 	{
-		if (DarkSouls.isPhysicalClient())
-		{
-			this.animationById.values().forEach((animation) ->
-			{
-				this.setAnimationMetadata(resourceManager, animation);
-			});
-		}
 		Animations.buildClient();
-
 		return this.animationById;
 	}
 
@@ -80,29 +69,6 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 		{
 			animation.loadAnimation(resourceManager, models);
 		});
-	}
-
-	private void setAnimationMetadata(ResourceManager resourceManager, StaticAnimation animation)
-	{
-		if (resourceManager == null) return;
-		ResourceLocation location = animation.getLocation();
-		String path = location.getPath();
-		int last = location.getPath().lastIndexOf('/');
-		if (last > 0)
-		{
-			ResourceLocation dataLocation = new ResourceLocation(location.getNamespace(),
-					String.format("%s/data%s.json", path.substring(0, last), path.substring(last)));
-			if (resourceManager.hasResource(dataLocation))
-			{
-				try
-				{
-					AnimationDataReader.readAndApply(animation, resourceManager.getResource(dataLocation));
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	public int getIdCounter()

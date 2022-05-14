@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, RemoteClientPlayerCap<AbstractClientPlayer>>
+public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, AbstractClientPlayerCap<AbstractClientPlayer>>
 {
 	@Override
 	protected ResourceLocation getEntityTexture(AbstractClientPlayer entityIn)
@@ -26,7 +26,7 @@ public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, RemoteCl
 	}
 	
 	@Override
-	protected void renderNameTag(RemoteClientPlayerCap<AbstractClientPlayer> entityCap, AbstractClientPlayer entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
+	protected void renderNameTag(AbstractClientPlayerCap<AbstractClientPlayer> entityCap, AbstractClientPlayer entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
 	{
 		EntityRenderDispatcher renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
 		

@@ -341,6 +341,11 @@ public class PublicMatrix4f
 		dest.m13 = t13;
 		return dest;
 	}
+	
+	public static PublicMatrix4f mul(PublicMatrix4f left, PublicMatrix4f right)
+	{
+		return mul(left, right, null);
+	}
 
 	public static PublicMatrix4f mul(PublicMatrix4f left, PublicMatrix4f right, PublicMatrix4f dest)
 	{

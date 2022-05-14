@@ -5,7 +5,7 @@ import java.util.Optional;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.Priority;
 import com.skullmangames.darksouls.client.animation.JointMask.BindModifier;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.animation.types.attack.Property;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 

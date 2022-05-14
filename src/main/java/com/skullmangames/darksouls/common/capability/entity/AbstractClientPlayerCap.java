@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends PlayerCap<T>
+public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends PlayerCap<T>
 {
 	protected float prevYaw;
 	protected float bodyYaw;
@@ -45,7 +45,7 @@ public class RemoteClientPlayerCap<T extends AbstractClientPlayer> extends Playe
 	{
 		if (this.orgEntity.getHealth() <= 0.0F)
 		{
-			currentMotion = LivingMotion.DEATH;
+			this.currentMotion = LivingMotion.DEATH;
 		}
 		else if (this.orgEntity.isUsingItem() && this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof IHaveDarkSoulsUseAction)
 		{

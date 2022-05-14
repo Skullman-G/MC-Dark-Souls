@@ -2,6 +2,9 @@ package com.skullmangames.darksouls.core.init;
 
 import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation.AnimConfig;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
@@ -19,8 +22,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
 import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleSpawner;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
@@ -33,14 +34,14 @@ public final class Animations
 	public static final StaticAnimation DUMMY_ANIMATION = new StaticAnimation();
 
 	public static final StaticAnimation BIPED_IDLE = new StaticAnimation(0.2F, true, "biped/living/idle", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_WALK = new MovementAnimation(0.2F, true, "biped/living/walk", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_RUN = new MovementAnimation(true, "biped/living/run", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_SNEAK = new MovementAnimation(true, "biped/living/sneak", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_SWIM = new MovementAnimation(true, "biped/living/swim", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(true, "biped/living/float", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_FALL = new StaticAnimation(false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(true, "biped/living/mount", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_WALK = new MovementAnimation(0.08F, true, "biped/living/walk", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_RUN = new MovementAnimation(0.08F, true, "biped/living/run", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_SNEAK = new MovementAnimation(0.08F, true, "biped/living/sneak", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_SWIM = new MovementAnimation(0.08F, true, "biped/living/swim", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(0.08F, true, "biped/living/float", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(0.08F, true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(0.08F, true, "biped/living/mount", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DEATH = new StaticAnimation(0.16F, false, "biped/living/death", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED);
 
@@ -77,10 +78,12 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_DOWN_BACK = new InvincibleAnimation(0.08F, "biped/combat/hit_down_back", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_DOWN_FRONT = new InvincibleAnimation(0.08F, "biped/combat/hit_down_front", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.08F, "biped/living/land_damage", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.08F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
-	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.08F, "biped/combat/fat_roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.2F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
+			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.2F, "biped/combat/fat_roll", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
+			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
 	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, "biped/combat/jump_back", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED);
 	
@@ -250,11 +253,12 @@ public final class Animations
 			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE),
 			new AttackAnimation(0.2F, 0.0F, 0.08F, 0.24F, 0.8F, "Tool_R", "biped/combat/fist_light_attack_2",
 					(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE) };
-	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F,
+	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.08F, 0.34F, 0.8F,
 			"Tool_R", "biped/combat/fist_dash_attack", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
 	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F,
 			"Tool_R", "biped/combat/fist_heavy_attack", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
@@ -282,7 +286,7 @@ public final class Animations
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.06F, 0.0F, 0.48F, 0.8F, 1.2F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.08F, 0.34F, 0.8F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);

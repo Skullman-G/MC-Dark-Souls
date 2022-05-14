@@ -22,7 +22,7 @@ import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorCap;
@@ -296,7 +296,7 @@ public class RenderEngine
 			if (event.getPlayer() != null)
 			{
 				ItemCapability cap = ModCapabilities.getItemCapability(event.getItemStack());
-				ClientPlayerCap playerCap = (ClientPlayerCap) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				LocalPlayerCap playerCap = (LocalPlayerCap) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
 				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
 			}

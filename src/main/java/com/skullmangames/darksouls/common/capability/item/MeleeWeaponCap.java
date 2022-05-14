@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -77,7 +77,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
+	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerdata)
 	{
 		Pair<Boolean, AttackAnimation[]> move = this.moveset.get(type);
 		if (move == null) return null;

@@ -1,9 +1,9 @@
-package com.skullmangames.darksouls.common.animation.types.attack;
+package com.skullmangames.darksouls.common.animation;
 
-import com.skullmangames.darksouls.common.animation.TransformSheet;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.ParticleSpawner;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;

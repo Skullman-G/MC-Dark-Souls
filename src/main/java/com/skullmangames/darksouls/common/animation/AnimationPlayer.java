@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.animation;
 
+import com.skullmangames.darksouls.common.animation.Property.MovementAnimationSet;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.MovementAnimationSet;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;

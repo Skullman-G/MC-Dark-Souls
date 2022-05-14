@@ -13,8 +13,8 @@ import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
-import com.skullmangames.darksouls.common.animation.types.attack.Property;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
@@ -78,7 +78,7 @@ public class StaticAnimation extends DynamicAnimation
 		return this.getProperty(ClientAnimationProperties.LAYER_TYPE).orElse(AnimationLayer.LayerType.BASE_LAYER);
 	}
 
-	public <V> StaticAnimation addProperty(StaticAnimationProperty<V> propertyType, V value)
+	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
 	{
 		this.properties.put(propertyType, value);
 		return this;

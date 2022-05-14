@@ -12,9 +12,9 @@ import javax.annotation.Nullable;
 import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -270,23 +270,21 @@ public class AttackAnimation extends ActionAnimation
 		IExtendedDamageSource extDmgSource = entityCap.getDamageSource(staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
-	
-	@Override
-	public <V> AttackAnimation addProperty(StaticAnimationProperty<V> propertyType, V value)
-	{
-		return (AttackAnimation)super.addProperty(propertyType, value);
-	}
 
-	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value)
+	public <V> AttackAnimation addProperty(Property<V> propertyType, V value)
 	{
-		for (int i = 0; i < this.phases.length; i++)
+		if (propertyType instanceof AttackProperty)
 		{
-			this.addProperty(propertyType, value, i);
+			for (int i = 0; i < this.phases.length; i++)
+			{
+				this.addProperty(propertyType, value, i);
+			}
 		}
+		else super.addProperty(propertyType, value);
 		return this;
 	}
 
-	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value, int index)
+	public <V> AttackAnimation addProperty(Property<V> propertyType, V value, int index)
 	{
 		this.phases[index].addProperty(propertyType, value);
 		return this;
@@ -308,7 +306,7 @@ public class AttackAnimation extends ActionAnimation
 
 	public static class Phase
 	{
-		protected final Map<AttackProperty<?>, Object> properties = new HashMap<AttackProperty<?>, Object>();;
+		protected final Map<Property<?>, Object> properties = new HashMap<Property<?>, Object>();
 		protected final float begin;
 		protected final float contactStart;
 		protected final float contactEnd;
@@ -339,7 +337,7 @@ public class AttackAnimation extends ActionAnimation
 			this.jointName = jointName;
 		}
 
-		public <V> Phase addProperty(AttackProperty<V> propertyType, V value)
+		public <V> Phase addProperty(Property<V> propertyType, V value)
 		{
 			this.properties.put(propertyType, value);
 			return this;

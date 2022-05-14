@@ -112,7 +112,7 @@ public class ClientAnimator extends Animator
 		{
 			this.compositeLivingAnimations.put(livingMotion, animation);
 
-			if (livingMotion == this.currentMixMotion)
+			if (this.currentMixMotion == livingMotion)
 			{
 				if (!this.entityCap.isInaction())
 				{

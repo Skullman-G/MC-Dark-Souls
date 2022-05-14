@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -33,7 +33,7 @@ public class SpearCap extends MeleeWeaponCap
 	
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public AttackAnimation getAttack(AttackType type, ClientPlayerCap playerdata)
+	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerdata)
 	{
 		if (type == AttackType.LIGHT && playerdata.isBlocking()) return Animations.SPEAR_LIGHT_BLOCKING_ATTACK;
 		return super.getAttack(type, playerdata);

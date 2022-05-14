@@ -6,13 +6,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorCap;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 
@@ -49,11 +49,11 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		{
 			if(entityIn instanceof LocalPlayer)
 			{
-				return ClientPlayerCap::new;
+				return LocalPlayerCap::new;
 			}
 			else if (entityIn instanceof RemotePlayer)
 			{
-				return RemoteClientPlayerCap<RemotePlayer>::new;
+				return AbstractClientPlayerCap<RemotePlayer>::new;
 			}
 			else if (entityIn instanceof ServerPlayer)
 			{
