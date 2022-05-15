@@ -51,11 +51,11 @@ public class LinkAnimation extends DynamicAnimation
 		{
 			if (this.jointTransforms.containsKey(entry.getKey()))
 			{
-				Keyframe[] keyframe = this.jointTransforms.get(entry.getKey()).getKeyframes();
-				JointTransform jt = keyframe[keyframe.length - 1].transform();
-				JointTransform newJt = nextStartingPose.getJointTransformData().get(entry.getKey());
-				newJt.translation().set(jt.translation().x(), jt.translation().y(), jt.translation().z());
-				jt.copyFrom(newJt);
+				Keyframe[] keyframes = this.jointTransforms.get(entry.getKey()).getKeyframes();
+				JointTransform endTransform = keyframes[keyframes.length - 1].transform();
+				JointTransform newEndTransform = nextStartingPose.getJointTransformData().get(entry.getKey());
+				newEndTransform.translation().set(endTransform.translation().x(), endTransform.translation().y(), endTransform.translation().z());
+				endTransform.copyFrom(newEndTransform);
 			}
 		}
 

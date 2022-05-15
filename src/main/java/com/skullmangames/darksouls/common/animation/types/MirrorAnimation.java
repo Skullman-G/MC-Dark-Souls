@@ -2,7 +2,11 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,21 +18,31 @@ public class MirrorAnimation extends StaticAnimation
 	
 	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		super(convertTime, repeatPlay, path1, model);
-		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
+		this(convertTime, repeatPlay, true, path1, path2, model);
 	}
 	
-	public StaticAnimation getAnimation(InteractionHand hand)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, boolean applyLayerParts, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		switch(hand)
-		{
-			case MAIN_HAND:
-				return this;
-			case OFF_HAND:
-				return mirror;
-		}
+		super(convertTime, repeatPlay, path1, model);
+		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
 		
-		return null;
+		if (applyLayerParts)
+		{
+			this.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.RIGHT);
+			this.mirror.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.LEFT);
+		}
+	}
+	
+	@Override
+	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap)
+	{
+		InteractionHand hand = entityCap.getOriginalEntity().getUsedItemHand();
+		switch (hand)
+		{
+			case MAIN_HAND: return this;
+			case OFF_HAND: return this.mirror;
+			default: return Animations.DUMMY_ANIMATION;
+		}
 	}
 	
 	@Override

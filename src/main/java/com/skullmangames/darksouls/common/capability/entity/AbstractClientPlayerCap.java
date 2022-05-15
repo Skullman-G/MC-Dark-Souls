@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Models;
@@ -142,48 +143,66 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
-			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotion = LivingMotion.BLOCKING;
+			InteractionHand hand = this.orgEntity.getUsedItemHand();
+			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
+			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 				switch (useAction)
 				{
 					case BOW:
-						this.currentMixMotion = LivingMotion.AIMING;
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
 						break;
 						
 					case CROSSBOW:
-						this.currentMixMotion = LivingMotion.RELOADING;
+						this.currentMixMotions.put(layerPart, LivingMotion.RELOADING);
 						break;
 						
 					case SPEAR:
-						this.currentMixMotion = LivingMotion.AIMING;
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
 						break;
 						
 					case DRINK:
-						this.currentMixMotion = LivingMotion.DRINKING;
+						this.currentMixMotions.put(layerPart, LivingMotion.DRINKING);
 						break;
 						
 					case EAT:
-						this.currentMixMotion = LivingMotion.EATING;
+						this.currentMixMotions.put(layerPart, LivingMotion.EATING);
 						break;
 						
 					default:
-						this.currentMixMotion = LivingMotion.NONE;
+						this.currentMixMotions.put(layerPart, LivingMotion.NONE);
 						break;
 				}
 			}
 		}
 		else if (this.orgEntity.swinging)
 		{
-			this.currentMixMotion = LivingMotion.DIGGING;
+			this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.DIGGING);
 		}
 		else
 		{
-			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem())) this.currentMixMotion = LivingMotion.AIMING;
+			boolean changedLeft = false;
+			boolean changedRight = false;
+			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
+			{
+				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.AIMING);
+				changedRight = true;
+			}
 			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
-			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND) || this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND)) this.currentMixMotion = LivingMotion.HOLDING_WEAPON;
-			else this.currentMixMotion = LivingMotion.NONE;
+			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
+			{
+				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
+				changedRight = true;
+			}
+			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
+			{
+				this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
+				changedLeft = true;
+			}
+			if (!changedLeft) this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
+			if (!changedRight) this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
 		}
 	}
 	
@@ -196,12 +215,16 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		boolean isMainHandChanged = prevHeldItem != this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
-		boolean isOffHandChanged = prevHeldItemOffHand != this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
+		ItemStack mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
+		ItemStack offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
+		boolean isMainHandChanged = this.prevHeldItem != mainHandItem;
+		boolean isOffHandChanged = this.prevHeldItemOffHand != offHandItem;
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
 			this.onHeldItemChange(this.getHeldItemCapability(InteractionHand.MAIN_HAND), this.getHeldItemCapability(InteractionHand.OFF_HAND));
+			this.prevHeldItem = mainHandItem;
+			this.prevHeldItemOffHand = offHandItem;
 		}
 		super.updateOnClient();
 		

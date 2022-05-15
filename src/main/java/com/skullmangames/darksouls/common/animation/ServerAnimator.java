@@ -70,10 +70,7 @@ public class ServerAnimator extends Animator
 	@Override
 	public void update()
 	{
-		if (this.pause)
-		{
-			return;
-		}
+		if (this.pause) return;
 
 		this.animationPlayer.update(this.entityCap);
 		this.updatePose();

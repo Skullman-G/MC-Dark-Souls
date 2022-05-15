@@ -8,7 +8,5 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ClientAnimationProperties
 {
-	public static final StaticAnimationProperty<AnimationLayer.LayerType> LAYER_TYPE = new StaticAnimationProperty<AnimationLayer.LayerType>();
-	public static final StaticAnimationProperty<AnimationLayer.Priority> PRIORITY = new StaticAnimationProperty<AnimationLayer.Priority>();
-	public static final StaticAnimationProperty<JointMaskEntry> POSE_MODIFIER = new StaticAnimationProperty<JointMaskEntry>();
+	public static final StaticAnimationProperty<AnimationLayer.LayerPart> LAYER_PART = new StaticAnimationProperty<AnimationLayer.LayerPart>();
 }

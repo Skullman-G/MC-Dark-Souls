@@ -79,10 +79,9 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 
 			if (this.minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes())
 			{
-				for (AnimationLayer.Priority priority : AnimationLayer.Priority.values())
+				for (AnimationLayer.LayerPart priority : AnimationLayer.LayerPart.values())
 				{
-					AnimationPlayer animPlayer = entityCap.getClientAnimator()
-							.getCompositeLayer(priority).animationPlayer;
+					AnimationPlayer animPlayer = entityCap.getClientAnimator().getCompositeLayer(priority).animationPlayer;
 					float playTime = animPlayer.getPrevElapsedTime()
 							+ (animPlayer.getElapsedTime() - animPlayer.getPrevElapsedTime()) * partialTicks;
 					animPlayer.getPlay().renderDebugging(poseStack, buffer, entityCap, playTime, partialTicks);

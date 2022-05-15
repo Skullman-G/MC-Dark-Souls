@@ -65,17 +65,16 @@ public class StaticAnimation extends DynamicAnimation
 				"animations/" + path);
 		this.model = model;
 	}
-
-	@OnlyIn(Dist.CLIENT)
-	public AnimationLayer.Priority getPriority()
+	
+	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap)
 	{
-		return this.getProperty(ClientAnimationProperties.PRIORITY).orElse(AnimationLayer.Priority.LOWEST);
+		return this;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public AnimationLayer.LayerType getLayerType()
+	public AnimationLayer.LayerPart getLayerPart()
 	{
-		return this.getProperty(ClientAnimationProperties.LAYER_TYPE).orElse(AnimationLayer.LayerType.BASE_LAYER);
+		return this.getProperty(ClientAnimationProperties.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
 	}
 
 	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)

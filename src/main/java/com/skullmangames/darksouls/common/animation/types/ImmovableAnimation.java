@@ -2,14 +2,10 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
-import com.skullmangames.darksouls.client.animation.AnimationLayer;
-import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ImmovableAnimation extends StaticAnimation
 {
@@ -53,12 +49,5 @@ public class ImmovableAnimation extends StaticAnimation
 	public EntityState getState(float time)
 	{
 		return EntityState.PRE_CONTACT;
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public AnimationLayer.Priority getPriority()
-	{
-		return this.getProperty(ClientAnimationProperties.PRIORITY).orElse(AnimationLayer.Priority.HIGHEST);
 	}
 }

@@ -41,7 +41,7 @@ public class AimingAnimation extends StaticAnimation
 		super.onUpdate(entityCap);
 
 		ClientAnimator animator = entityCap.getClientAnimator();
-		AnimationLayer layer = animator.getCompositeLayer(this.getPriority());
+		AnimationLayer layer = animator.getCompositeLayer(this.getLayerPart());
 		AnimationPlayer player = layer.animationPlayer;
 
 		if (player.getElapsedTime() >= this.totalTime - 0.06F)

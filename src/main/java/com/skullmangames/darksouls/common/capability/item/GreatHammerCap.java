@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -30,9 +29,9 @@ public class GreatHammerCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public HoldingWeaponAnimation getHoldingAnimation()
+	public boolean hasHoldingAnimation()
 	{
-		return Animations.BIPED_HOLDING_BIG_WEAPON;
+		return true;
 	}
 	
 	@Override

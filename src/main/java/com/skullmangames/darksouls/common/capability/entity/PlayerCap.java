@@ -147,6 +147,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
 		animatorClient.addLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
 		animatorClient.addLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
+		animatorClient.addLivingAnimation(LivingMotion.HOLDING_WEAPON, Animations.BIPED_HOLDING_BIG_WEAPON);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

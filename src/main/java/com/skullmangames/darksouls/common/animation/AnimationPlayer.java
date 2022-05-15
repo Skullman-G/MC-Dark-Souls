@@ -60,13 +60,8 @@ public class AnimationPlayer
 
 	public void setPlayAnimation(DynamicAnimation animation)
 	{
-		if (this.doNotResetNext)
-		{
-			this.doNotResetNext = false;
-		} else
-		{
-			this.resetPlayer();
-		}
+		if (this.doNotResetNext) this.doNotResetNext = false;
+		else this.resetPlayer();
 
 		this.play = animation;
 	}

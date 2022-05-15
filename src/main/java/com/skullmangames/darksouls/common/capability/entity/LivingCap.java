@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import javax.annotation.Nullable;
+import java.util.Map;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
@@ -54,7 +56,7 @@ import net.minecraft.world.phys.Vec3;
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
 	public LivingMotion currentMotion = LivingMotion.IDLE;
-	public LivingMotion currentMixMotion = LivingMotion.IDLE;
+	public Map<LayerPart, LivingMotion> currentMixMotions = new HashMap<>();
 	protected Animator animator;
 	public List<Entity> currentlyAttackedEntity;
 	private float poiseDef;
@@ -65,6 +67,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
+		for (LayerPart part : LayerPart.compositeLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
 		this.currentlyAttackedEntity = new ArrayList<Entity>();
@@ -121,16 +124,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return (float) this.orgEntity.getAttributeValue(ModAttributes.POISE_DAMAGE.get());
 	}
 
-	@Nullable
-	public StaticAnimation getHoldingWeaponAnimation()
-	{
-		StaticAnimation animation = this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND)
-				? this.getHeldWeaponCapability(InteractionHand.MAIN_HAND).getHoldingAnimation()
-				: null;
-
-		return animation;
-	}
-
 	public abstract void initAnimator(ClientAnimator animatorClient);
 
 	public abstract void updateMotion();
@@ -151,7 +144,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)
 	{
 		WeaponCap cap = this.getHeldWeaponCapability(hand);
-		return cap != null && cap.getHoldingAnimation() != null;
+		return cap != null && cap.hasHoldingAnimation();
 	}
 
 	@Override
@@ -213,11 +206,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				currentMotion = LivingMotion.IDLE;
 			}
 		}
-
-		if (this.currentMotion == LivingMotion.BLOCKING)
-			this.currentMixMotion = LivingMotion.NONE;
-		else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
-			this.currentMixMotion = LivingMotion.BLOCKING;
+		
+		if (this.currentMotion != LivingMotion.BLOCKING && this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+		{
+			InteractionHand hand = this.orgEntity.getUsedItemHand();
+			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
+			this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+		}
+		else for (LayerPart layerPart : LayerPart.compositeLayers()) this.currentMixMotions.put(layerPart, LivingMotion.NONE);
 	}
 
 	public void cancelUsingItem()
@@ -258,10 +254,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean isBlocking()
 	{
 		EntityState entitystate = this.getEntityState();
-		if (entitystate.isBlocking())
-			return true;
-		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty())
-			return false;
+		if (entitystate.isBlocking()) return true;
+		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();
 		ItemCapability shield = ModCapabilities.getItemCapability(stack);

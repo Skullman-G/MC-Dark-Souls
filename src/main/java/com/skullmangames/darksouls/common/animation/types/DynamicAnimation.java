@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skullmangames.darksouls.client.animation.JointMask.BindModifier;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -133,11 +132,6 @@ public class DynamicAnimation
 	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
 	{
 		return this.jointTransforms.containsKey(joint);
-	}
-
-	public BindModifier getBindModifier(LivingCap<?> entityCap, String joint)
-	{
-		return null;
 	}
 
 	public EntityState getState(float time)

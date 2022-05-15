@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
@@ -12,8 +11,8 @@ import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.DisarmAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
-import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
+import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.ReboundAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -50,13 +49,9 @@ public final class Animations
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true,
 			(models) -> models.ENTITY_BIPED,
-			ImmutableMap.<LivingMotion, AnimConfig>builder()
-					.put(LivingMotion.BLOCKING, new AnimConfig("biped/combat/block_mirror", "biped/combat/block"))
-					.put(LivingMotion.WALKING,
-							new AnimConfig("biped/combat/block_walk_mirror", "biped/combat/block_walk"))
-					.put(LivingMotion.RUNNING,
-							new AnimConfig("biped/combat/block_run_mirror", "biped/combat/block_run"))
-					.build());
+			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
+			new AnimConfig(LivingMotion.WALKING, "biped/combat/block_walk_mirror", "biped/combat/block_walk", true),
+			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true));
 
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
@@ -88,9 +83,8 @@ public final class Animations
 	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED);
 	
 	// Big Weapon
-	public static final HoldingWeaponAnimation BIPED_HOLDING_BIG_WEAPON = new HoldingWeaponAnimation(0.2F, true,
-			"biped/living/holding_big_weapon_r", "biped/living/holding_big_weapon_l",
-			"biped/living/holding_big_weapon_both", (models) -> models.ENTITY_BIPED);
+	public static final MirrorAnimation BIPED_HOLDING_BIG_WEAPON = new MirrorAnimation(0.2F, true, true,
+			"biped/living/holding_big_weapon_r", "biped/living/holding_big_weapon_l", (models) -> models.ENTITY_BIPED);
 
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]

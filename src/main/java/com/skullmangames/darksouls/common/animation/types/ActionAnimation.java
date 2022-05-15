@@ -174,12 +174,12 @@ public class ActionAnimation extends ImmovableAnimation
 	@Override
 	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
 	{
-		JointTransform jt = pose.getTransformByName("Root");
-		Vector3f jointPosition = jt.translation();
+		JointTransform rootTransform = pose.getTransformByName("Root");
+		Vector3f rootPosition = rootTransform.translation();
 		PublicMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
 				.searchJointByName("Root").getLocalTrasnform().removeTranslation();
 		PublicMatrix4f toOrigin = PublicMatrix4f.invert(toRootTransformApplied, null);
-		Vector3f worldPosition = PublicMatrix4f.transform3v(toRootTransformApplied, jointPosition, null);
+		Vector3f worldPosition = PublicMatrix4f.transform3v(toRootTransformApplied, rootPosition, null);
 		worldPosition.setX(0.0F);
 		worldPosition.setY(
 				(this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false) && worldPosition.y() > 0.0F)
@@ -187,7 +187,7 @@ public class ActionAnimation extends ImmovableAnimation
 						: worldPosition.y());
 		worldPosition.setZ(0.0F);
 		PublicMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
-		jointPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
+		rootPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
 	}
 
 	@Override
@@ -199,8 +199,8 @@ public class ActionAnimation extends ImmovableAnimation
 		if (convertTimeModifier < 0.0F)
 		{
 			nextStart -= convertTimeModifier;
-			dest.startsAt = nextStart;
 		}
+		dest.startsAt = nextStart;
 		
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);

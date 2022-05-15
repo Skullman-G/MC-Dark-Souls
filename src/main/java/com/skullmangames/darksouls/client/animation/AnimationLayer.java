@@ -1,7 +1,9 @@
 package com.skullmangames.darksouls.client.animation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
@@ -25,13 +27,21 @@ public class AnimationLayer
 	protected LayerOffAnimation layerOffAnimation;
 	protected boolean disabled;
 	protected boolean paused;
+	private List<String> jointMask;
 
-	public AnimationLayer(Priority priority)
+	public AnimationLayer(LayerPart part)
 	{
 		this.animationPlayer = new AnimationPlayer();
 		this.linkAnimationStorage = new LinkAnimation();
-		this.layerOffAnimation = new LayerOffAnimation(priority);
+		this.layerOffAnimation = new LayerOffAnimation(part);
 		this.disabled = true;
+		if (part == LayerPart.RIGHT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R"));
+		else if (part == LayerPart.LEFT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L"));
+	}
+	
+	public boolean isJointEnabled(String joint)
+	{
+		return this.jointMask.contains(joint);
 	}
 
 	public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float convertTimeModifier)
@@ -72,10 +82,7 @@ public class AnimationLayer
 			return;
 		}
 
-		if (this.animationPlayer.isEmpty())
-		{
-			return;
-		}
+		if (this.animationPlayer.isEmpty()) return;
 
 		this.animationPlayer.update(entityCap);
 		this.animationPlayer.getPlay().onUpdate(entityCap);
@@ -94,7 +101,8 @@ public class AnimationLayer
 
 				this.nextAnimation.putOnPlayer(this.animationPlayer);
 				this.nextAnimation = null;
-			} else
+			}
+			else
 			{
 				if (this.animationPlayer.getPlay() instanceof LayerOffAnimation)
 				{
@@ -144,25 +152,20 @@ public class AnimationLayer
 
 	public static class BaseLayer extends AnimationLayer
 	{
-		protected Map<AnimationLayer.Priority, AnimationLayer> compositeLayers = new HashMap<>();
-		protected AnimationLayer.Priority baserLayerPriority;
+		protected Map<LayerPart, AnimationLayer> compositeLayers = new HashMap<>();
 
-		public BaseLayer(Priority priority)
+		public BaseLayer()
 		{
-			super(priority);
-			this.compositeLayers.computeIfAbsent(Priority.HIGHEST, AnimationLayer::new);
-			this.compositeLayers.computeIfAbsent(Priority.MIDDLE, AnimationLayer::new);
-			this.compositeLayers.put(Priority.LOWEST, this);
-			this.baserLayerPriority = Priority.LOWEST;
+			super(LayerPart.FULL);
+			this.compositeLayers.computeIfAbsent(LayerPart.LEFT, AnimationLayer::new);
+			this.compositeLayers.computeIfAbsent(LayerPart.RIGHT, AnimationLayer::new);
+			this.compositeLayers.put(LayerPart.FULL, this);
 		}
-
+		
 		@Override
-		public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float convertTimeModifier)
+		public boolean isJointEnabled(String joint)
 		{
-			Priority priority = nextAnimation.getPriority();
-			this.baserLayerPriority = priority;
-			this.offCompositeLayerLowerThan(entityCap, priority);
-			super.playAnimation(nextAnimation, entityCap, convertTimeModifier);
+			return true;
 		}
 
 		@Override
@@ -179,26 +182,15 @@ public class AnimationLayer
 			}
 		}
 
-		public void offCompositeLayerLowerThan(LivingCap<?> entityCap, Priority priority)
+		public void disableLayer(LayerPart part)
 		{
-			for (Priority p : priority.notUpperThan())
-			{
-				this.compositeLayers.get(p).off(entityCap);
-			}
-		}
-
-		public void disableLayer(Priority priority)
-		{
-			AnimationLayer layer = this.compositeLayers.get(priority);
+			AnimationLayer layer = this.compositeLayers.get(part);
 			layer.disabled = true;
 			Animations.DUMMY_ANIMATION.putOnPlayer(layer.animationPlayer);
 		}
 
 		@Override
-		public void off(LivingCap<?> entityCap)
-		{
-
-		}
+		public void off(LivingCap<?> entityCap) {}
 
 		@Override
 		protected boolean isDisabled()
@@ -206,29 +198,21 @@ public class AnimationLayer
 			return false;
 		}
 	}
-
-	public static enum LayerType
+	
+	public static enum LayerPart
 	{
-		BASE_LAYER, COMPOSITE_LAYER;
-	}
-
-	public static enum Priority
-	{
-		LOWEST, MIDDLE, HIGHEST;
-
-		public Priority[] lowers()
+		FULL, LEFT, RIGHT;
+		
+		public static LayerPart[] compositeLayers()
 		{
-			return Arrays.copyOfRange(Priority.values(), 0, this.ordinal());
+			return new LayerPart[] { LEFT, RIGHT };
 		}
-
-		public Priority[] uppers()
+		
+		public LayerPart[] otherCompositeLayers()
 		{
-			return Arrays.copyOfRange(Priority.values(), this.ordinal() + 1, 3);
-		}
-
-		public Priority[] notUpperThan()
-		{
-			return Arrays.copyOfRange(Priority.values(), 0, this.ordinal() + 1);
+			List<LayerPart> values = new ArrayList<>(Arrays.asList(compositeLayers()));
+			values.remove(this);
+			return values.toArray(new LayerPart[values.size()]);
 		}
 	}
 }

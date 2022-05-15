@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import com.skullmangames.darksouls.client.animation.AnimationLayer.Priority;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -58,7 +58,16 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		float pitch = camera.getXRot();
 		
 		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
-		boolean flag2 = entityCap.getClientAnimator().getCompositeLayer(Priority.MIDDLE).animationPlayer.getPlay() instanceof AimingAnimation;
+		boolean flag2 = false;
+		
+		for (LayerPart layerPart : LayerPart.compositeLayers())
+		{
+			if (entityCap.getClientAnimator().getCompositeLayer(layerPart).animationPlayer.getPlay() instanceof AimingAnimation)
+			{
+				flag2 = true;
+				break;
+			}
+		}
 		
 		float zCoord = flag1 ? 0 : poses[0].m32;
 		float posZ = Math.min(headPos.z() - zCoord, 0);

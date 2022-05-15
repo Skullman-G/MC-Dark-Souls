@@ -62,7 +62,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 
 		if (!this.getClientAnimator().isAiming())
 		{
-			if (this.currentMixMotion == LivingMotion.AIMING)
+			if (this.currentMixMotions.containsValue(LivingMotion.AIMING))
 			{
 				this.orgEntity.getUseItemRemainingTicks();
 				ClientManager.INSTANCE.renderEngine.zoomIn();

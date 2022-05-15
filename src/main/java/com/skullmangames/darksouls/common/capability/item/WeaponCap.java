@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.types.HoldingWeaponAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
@@ -83,9 +82,9 @@ public abstract class WeaponCap extends AttributeItemCap
 	}
 
 	@Nullable
-	public HoldingWeaponAnimation getHoldingAnimation()
+	public boolean hasHoldingAnimation()
 	{
-		return null;
+		return false;
 	}
 	
 	public abstract float getDamage();
