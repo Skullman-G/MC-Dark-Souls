@@ -37,6 +37,9 @@ public class AnimationLayer
 		this.disabled = true;
 		if (part == LayerPart.RIGHT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R"));
 		else if (part == LayerPart.LEFT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L"));
+		else if (part == LayerPart.UP) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R",
+				"Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L",
+				"Head", "Chest"));
 	}
 	
 	public boolean isJointEnabled(String joint)
@@ -159,6 +162,7 @@ public class AnimationLayer
 			super(LayerPart.FULL);
 			this.compositeLayers.computeIfAbsent(LayerPart.LEFT, AnimationLayer::new);
 			this.compositeLayers.computeIfAbsent(LayerPart.RIGHT, AnimationLayer::new);
+			this.compositeLayers.computeIfAbsent(LayerPart.UP, AnimationLayer::new);
 			this.compositeLayers.put(LayerPart.FULL, this);
 		}
 		
@@ -201,11 +205,11 @@ public class AnimationLayer
 	
 	public static enum LayerPart
 	{
-		FULL, LEFT, RIGHT;
+		FULL, UP, LEFT, RIGHT;
 		
 		public static LayerPart[] compositeLayers()
 		{
-			return new LayerPart[] { LEFT, RIGHT };
+			return new LayerPart[] { UP, LEFT, RIGHT };
 		}
 		
 		public LayerPart[] otherCompositeLayers()

@@ -132,7 +132,7 @@ public class ClientAnimator extends Animator
 			this.entityCap.updateMotion();
 			this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion), this.entityCap, 0.0F);
 		}
-
+		
 		for (AnimationLayer.LayerPart layerPart : AnimationLayer.LayerPart.compositeLayers())
 		{
 			LivingMotion motion = this.entityCap.currentMixMotions.get(layerPart);

@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
@@ -27,6 +29,7 @@ public class AimingAnimation extends StaticAnimation
 		super(convertTime, repeatPlay, path1, model);
 		this.lookUp = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
 		this.lookDown = new StaticAnimation(convertTime, repeatPlay, path3, model, true);
+		this.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.UP);
 	}
 
 	public AimingAnimation(boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
@@ -38,13 +41,15 @@ public class AimingAnimation extends StaticAnimation
 	public void onUpdate(LivingCap<?> entityCap)
 	{
 		super.onUpdate(entityCap);
+		if (!this.isReboundAnimation())
+		{
+			ClientAnimator animator = entityCap.getClientAnimator();
+			AnimationLayer layer = animator.getCompositeLayer(this.getLayerPart());
+			AnimationPlayer player = layer.animationPlayer;
 
-		ClientAnimator animator = entityCap.getClientAnimator();
-		AnimationLayer layer = animator.getCompositeLayer(this.getLayerPart());
-		AnimationPlayer player = layer.animationPlayer;
-
-		if (player.getElapsedTime() >= this.totalTime - 0.06F)
-			layer.pause();
+			if (player.getElapsedTime() >= this.totalTime - 0.06F)
+				layer.pause();
+		}
 	}
 
 	@Override

@@ -335,7 +335,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderWorldLast(RenderLevelLastEvent event)
 		{
-			if (renderEngine.zoomCount > 0 && minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && renderEngine.aiming)
+			if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerData().getClientAnimator().isAiming())
 			{
 				renderEngine.aimHelper.doRender(event.getPoseStack(), event.getPartialTick());
 			}

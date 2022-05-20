@@ -188,22 +188,27 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			}
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
 			{
-				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.AIMING);
-				changedRight = true;
-			}
-			if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
-			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
-			{
-				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
-				changedRight = true;
-			}
-			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
-			{
-				this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
+				this.currentMixMotions.put(LayerPart.UP, LivingMotion.AIMING);
 				changedLeft = true;
+				changedRight = true;
+			}
+			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
+			else 
+			{
+				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
+				{
+					this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
+					changedRight = true;
+				}
+				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
+				{
+					this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
+					changedLeft = true;
+				}
 			}
 			if (!changedLeft) this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
 			if (!changedRight) this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
+			if (!changedLeft && !changedRight) this.currentMixMotions.put(LayerPart.UP, LivingMotion.NONE);
 		}
 	}
 	
