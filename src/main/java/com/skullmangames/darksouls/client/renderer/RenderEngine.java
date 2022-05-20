@@ -323,10 +323,11 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
-			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue()) return;
+			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerData();
+			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) == null) return;
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
-				renderEngine.firstPersonRenderer.render(minecraft.player, ClientManager.INSTANCE.getPlayerData(), null, event.getMultiBufferSource(),
+				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),
 						event.getPoseStack(), event.getPackedLight(), event.getPartialTicks());
 			}
 			event.setCanceled(true);
