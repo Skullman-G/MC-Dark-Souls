@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.client.renderer;
 
+import java.util.OptionalDouble;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -29,6 +31,22 @@ public class ModRenderTypes extends RenderType
 					.setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST)
 					.setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING)
 					.setLayeringState(VIEW_OFFSET_Z_LAYERING).setShaderState(RENDERTYPE_ARMOR_GLINT_SHADER).createCompositeState(false));
+	
+	private static final RenderType DEBUG_COLLIDER = create(DarkSouls.MOD_ID + ":debug_collider", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINE_STRIP, 256, false, false,
+			RenderType.CompositeState.builder()
+				.setShaderState(RENDERTYPE_LINES_SHADER)
+				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
+				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+				.setTransparencyState(NO_TRANSPARENCY)
+				.setWriteMaskState(COLOR_DEPTH_WRITE)
+				.setCullState(NO_CULL)
+				.createCompositeState(false)
+	);
+	
+	public static RenderType debugCollider()
+	{
+		return DEBUG_COLLIDER;
+	}
 
 	public static RenderType getAnimatedModel(ResourceLocation locationIn)
 	{

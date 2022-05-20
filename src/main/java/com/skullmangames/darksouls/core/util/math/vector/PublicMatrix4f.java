@@ -1,64 +1,17 @@
 package com.skullmangames.darksouls.core.util.math.vector;
 
 import java.nio.FloatBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.lwjgl.BufferUtils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import com.skullmangames.darksouls.common.animation.JointTransform;
-import com.skullmangames.darksouls.core.util.math.MatrixOperation;
+import net.minecraft.world.phys.Vec3;
 
 public class PublicMatrix4f
 {
-	public static class AnimationTransformEntry
-	{
-		private static final String[] BINDING_PRIORITY =
-		{ JointTransform.PARENT, JointTransform.JOINT_LOCAL_TRANSFORM, JointTransform.ANIMATION_TRANSFROM,
-				JointTransform.RESULT1, JointTransform.RESULT2 };
-		private Map<String, Pair<PublicMatrix4f, MatrixOperation>> matrices = new HashMap<>();
-
-		public void put(String entryPosition, PublicMatrix4f matrix)
-		{
-			this.put(entryPosition, matrix, PublicMatrix4f::mul);
-		}
-
-		public void put(String entryPosition, PublicMatrix4f matrix, MatrixOperation operation)
-		{
-			if (this.matrices.containsKey(entryPosition))
-			{
-				Pair<PublicMatrix4f, MatrixOperation> entryValue = this.matrices.get(entryPosition);
-				PublicMatrix4f result = entryValue.getSecond().mul(entryValue.getFirst(), matrix, null);
-				this.matrices.put(entryPosition, Pair.of(result, operation));
-			} else
-			{
-				this.matrices.put(entryPosition, Pair.of(new PublicMatrix4f(matrix), operation));
-			}
-		}
-
-		public PublicMatrix4f getResult()
-		{
-			PublicMatrix4f result = new PublicMatrix4f();
-
-			for (String entryName : BINDING_PRIORITY)
-			{
-				if (this.matrices.containsKey(entryName))
-				{
-					Pair<PublicMatrix4f, MatrixOperation> pair = this.matrices.get(entryName);
-					pair.getSecond().mul(result, pair.getFirst(), result);
-				}
-			}
-
-			return result;
-		}
-	}
-
 	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
 
 	public PublicMatrix4f()
@@ -221,6 +174,15 @@ public class PublicMatrix4f
 	{
 		return transform(left, right, new Vector4f());
 	}
+	
+	public static Vec3 transform(PublicMatrix4f matrix, Vec3 src)
+	{
+		double x = matrix.m00 * src.x + matrix.m10 * src.y + matrix.m20 * src.z + matrix.m30 * 1.0F;
+		double y = matrix.m01 * src.x + matrix.m11 * src.y + matrix.m21 * src.z + matrix.m31 * 1.0F;
+		double z = matrix.m02 * src.x + matrix.m12 * src.y + matrix.m22 * src.z + matrix.m32 * 1.0F;
+		
+		return new Vec3(x, y ,z);
+	}
 
 	public static Vector4f transform(PublicMatrix4f left, Vector4f right, Vector4f dest)
 	{
@@ -340,6 +302,16 @@ public class PublicMatrix4f
 		dest.m12 = t12;
 		dest.m13 = t13;
 		return dest;
+	}
+	
+	public PublicMatrix4f mulFront(PublicMatrix4f left)
+	{
+		return PublicMatrix4f.mul(left, this, this);
+	}
+	
+	public PublicMatrix4f mulBack(PublicMatrix4f right)
+	{
+		return mul(this, right, this);
 	}
 	
 	public static PublicMatrix4f mul(PublicMatrix4f left, PublicMatrix4f right)
@@ -566,11 +538,6 @@ public class PublicMatrix4f
 		return rotate((float) Math.toRadians(angle), axis, new PublicMatrix4f(), null);
 	}
 
-	public PublicMatrix4f mulFront(PublicMatrix4f mulTransform)
-	{
-		return PublicMatrix4f.mul(mulTransform, this, this);
-	}
-
 	public static Vector3f transform3v(PublicMatrix4f matrix, Vector3f src, Vector3f dest)
 	{
 		if (dest == null)
@@ -657,11 +624,6 @@ public class PublicMatrix4f
 		matrix.m21 = 2.0F * (yz + xw);
 		matrix.m22 = 1.0F - xSquared - ySquared;
 		return matrix;
-	}
-
-	public PublicMatrix4f mulBack(PublicMatrix4f mulTransform)
-	{
-		return PublicMatrix4f.mul(this, mulTransform, this);
 	}
 
 	public Vector3f toTranslationVector()

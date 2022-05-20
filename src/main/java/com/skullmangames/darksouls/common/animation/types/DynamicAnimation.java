@@ -127,7 +127,7 @@ public class DynamicAnimation
 	{
 	}
 
-	public void linkTick(LivingCap<?> entityCap, LinkAnimation linkAnimation) {}
+	public void onUpdateLink(LivingCap<?> entityCap, LinkAnimation linkAnimation) {}
 
 	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
 	{

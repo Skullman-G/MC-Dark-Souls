@@ -76,13 +76,11 @@ public class AnimationLayer
 
 	public void update(LivingCap<?> entityCap)
 	{
-		if (this.paused)
+		if (this.paused || this.animationPlayer.isEmpty())
 		{
 			this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime());
 			return;
 		}
-
-		if (this.animationPlayer.isEmpty()) return;
 
 		this.animationPlayer.update(entityCap);
 		this.animationPlayer.getPlay().onUpdate(entityCap);
@@ -91,6 +89,7 @@ public class AnimationLayer
 		{
 			if (this.nextAnimation != null)
 			{
+				float exceedTime = this.animationPlayer.getExceedTime();
 				this.animationPlayer.getPlay().onFinish(entityCap, true);
 
 				if (!(this.animationPlayer.getPlay() instanceof LinkAnimation)
@@ -98,8 +97,9 @@ public class AnimationLayer
 				{
 					this.nextAnimation.onStart(entityCap);
 				}
-
+				
 				this.nextAnimation.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
 				this.nextAnimation = null;
 			}
 			else

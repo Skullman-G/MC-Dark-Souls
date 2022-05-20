@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Vector3d;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -22,6 +22,7 @@ import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -40,6 +41,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -185,9 +187,23 @@ public class AttackAnimation extends ActionAnimation
 		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		Collider collider = this.getCollider(entityCap, elapsedTime);
-		Vector3d pos = collider.getCenter();
-		pos = new Vector3d(-pos.x, pos.y, -pos.z);
-		if (elapsedTime >= phase.contactEnd && prevElapsedTime - 0.4F < phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+		Vec3 pos = collider.getWorldCenter();
+		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entitypatch, float playTime, float partialTicks)
+	{
+		AnimationPlayer animPlayer = entitypatch.getAnimator().getPlayerFor(this);
+		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		float elapsedTime = animPlayer.getElapsedTime();
+		this.getCollider(entitypatch, elapsedTime).draw(poseStack, buffer, entitypatch, this, prevElapsedTime, elapsedTime, partialTicks, this.getPlaySpeed(entitypatch));
+	}
+	
+	public String getPathIndexByTime(float elapsedTime)
+	{
+		return this.getPhaseByTime(elapsedTime).jointName;
 	}
 
 	@Override

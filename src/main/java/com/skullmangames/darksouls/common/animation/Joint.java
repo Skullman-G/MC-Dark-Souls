@@ -54,7 +54,7 @@ public class Joint
 		}
 	}
 
-	public PublicMatrix4f getLocalTrasnform()
+	public PublicMatrix4f getLocalTransform()
 	{
 		return this.localTransform;
 	}

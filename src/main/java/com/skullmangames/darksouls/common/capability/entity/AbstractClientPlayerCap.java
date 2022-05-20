@@ -177,26 +177,27 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 				}
 			}
 		}
-		else if (this.orgEntity.swinging)
-		{
-			this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.DIGGING);
-		}
 		else
 		{
 			boolean changedLeft = false;
 			boolean changedRight = false;
+			if (this.orgEntity.swinging)
+			{
+				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.DIGGING);
+				changedRight = true;
+			}
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
 			{
 				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.AIMING);
 				changedRight = true;
 			}
-			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
-			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
+			if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
+			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
 			{
 				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
 				changedRight = true;
 			}
-			else if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
+			if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
 			{
 				this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
 				changedLeft = true;

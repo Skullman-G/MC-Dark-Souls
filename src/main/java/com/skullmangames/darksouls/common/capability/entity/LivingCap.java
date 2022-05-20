@@ -452,16 +452,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void playSound(SoundEvent sound, float minPitch, float maxPitch, float volume)
 	{
-		float randPitch = this.orgEntity.getRandom().nextFloat() * 2.0F - 1.0F;
-		randPitch = Math.min(Math.max(randPitch, minPitch), maxPitch);
 		if (!this.isClientSide())
 		{
 			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F + randPitch);
+					orgEntity.getSoundSource(), volume, 1.0F);
 		} else
 		{
 			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F + randPitch);
+					orgEntity.getSoundSource(), volume, 1.0F);
 		}
 	}
 

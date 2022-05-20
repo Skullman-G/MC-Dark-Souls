@@ -117,7 +117,7 @@ public class AttackPatternGoal extends Goal
     	else
     	{
     		double targetRange = this.getTargetRange(this.attacker.getTarget());
-    		if (this.dodge != null /*&& this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean()*/)
+    		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean())
     		{
     			mobdata.getServerAnimator().playAnimation(this.dodge, 0);
     	    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationAndSetTarget(this.dodge, 0, mobdata), mobdata.getOriginalEntity());

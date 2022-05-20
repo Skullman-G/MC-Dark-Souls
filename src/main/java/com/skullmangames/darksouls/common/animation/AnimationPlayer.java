@@ -10,6 +10,7 @@ public class AnimationPlayer
 {
 	private float elapsedTime;
 	private float prevElapsedTime;
+	private float exceedTime;
 	private boolean isEnd;
 	private boolean doNotResetNext;
 	private boolean reversed;
@@ -31,9 +32,10 @@ public class AnimationPlayer
 			if (this.play.isRepeat())
 			{
 				this.prevElapsedTime = 0;
-				this.elapsedTime -= this.play.getTotalTime();
+				this.elapsedTime %= this.play.getTotalTime();
 			} else
 			{
+				this.exceedTime = this.elapsedTime % this.play.getTotalTime();
 				this.elapsedTime = this.play.getTotalTime();
 				this.isEnd = true;
 			}
@@ -55,6 +57,7 @@ public class AnimationPlayer
 	{
 		this.elapsedTime = 0;
 		this.prevElapsedTime = 0;
+		this.exceedTime = 0;
 		this.isEnd = false;
 	}
 
@@ -103,7 +106,13 @@ public class AnimationPlayer
 	{
 		this.elapsedTime = elapsedTime;
 		this.prevElapsedTime = elapsedTime;
+		this.exceedTime = 0;
 		this.isEnd = false;
+	}
+	
+	public float getExceedTime()
+	{
+		return this.exceedTime;
 	}
 
 	public DynamicAnimation getPlay()

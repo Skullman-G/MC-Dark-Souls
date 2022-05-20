@@ -14,7 +14,6 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -71,7 +70,6 @@ public class AimingAnimation extends StaticAnimation
 	{
 		if (!entityCap.isFirstPerson())
 		{
-			JointTransform chest = pose.getTransformByName("Chest");
 			JointTransform head = pose.getTransformByName("Head");
 			float f = 90.0F;
 			float ratio = (f - Math.abs(entityCap.getOriginalEntity().getXRot())) / f;
@@ -81,10 +79,6 @@ public class AimingAnimation extends StaticAnimation
 			MathUtils.mulQuaternion(
 					Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().getYRot()) * ratio),
 					head.rotation(), head.rotation());
-			chest.frontResult(
-					JointTransform.getRotation(
-							Vector3f.YP.rotationDegrees((entityCap.getOriginalEntity().getYRot() - yawOffset) * ratio)),
-					PublicMatrix4f::mulAsOriginFront);
 		}
 	}
 

@@ -78,27 +78,17 @@ public abstract class Animator
 		this.livingAnimations.clear();
 	}
 
-	public static PublicMatrix4f getBindedJointTransformByName(Pose pose, Armature armature, String jointName)
-	{
-		return getBindedJointTransformByIndex(pose, armature, armature.searchPathIndex(jointName));
-	}
-
-	public static PublicMatrix4f getBindedJointTransformByIndex(Pose pose, Armature armature, int pathIndex)
+	public static PublicMatrix4f getParentboundTransform(Pose pose, Armature armature, int pathIndex)
 	{
 		armature.initializeTransform();
-		return getBindedJointTransformByIndexInternal(pose, armature.getJointHierarcy(), new PublicMatrix4f(),
-				pathIndex);
+		return getParentboundTransformInternal(pose, armature.getJointHierarcy(), new PublicMatrix4f(), pathIndex);
 	}
 
-	private static PublicMatrix4f getBindedJointTransformByIndexInternal(Pose pose, Joint joint,
-			PublicMatrix4f parentTransform, int pathIndex)
+	private static PublicMatrix4f getParentboundTransformInternal(Pose pose, Joint joint, PublicMatrix4f parentTransform, int pathIndex)
 	{
 		JointTransform jt = pose.getTransformByName(joint.getName());
-		PublicMatrix4f result = jt.getAnimationBindedMatrix(joint, parentTransform);
+		PublicMatrix4f result = jt.getParentboundMatrix(joint, parentTransform);
 		int nextIndex = pathIndex % 10;
-		return nextIndex > 0
-				? getBindedJointTransformByIndexInternal(pose, joint.getSubJoints().get(nextIndex - 1), result,
-						pathIndex / 10)
-				: result;
+		return nextIndex > 0 ? getParentboundTransformInternal(pose, joint.getSubJoints().get(nextIndex - 1), result, pathIndex / 10) : result;
 	}
 }

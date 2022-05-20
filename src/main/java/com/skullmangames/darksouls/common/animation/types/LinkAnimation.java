@@ -16,7 +16,7 @@ public class LinkAnimation extends DynamicAnimation
 	@Override
 	public void onUpdate(LivingCap<?> entityCap)
 	{
-		this.nextAnimation.linkTick(entityCap, this);
+		this.nextAnimation.onUpdateLink(entityCap, this);
 	}
 
 	@Override
@@ -49,14 +49,14 @@ public class LinkAnimation extends DynamicAnimation
 
 		for (Map.Entry<String, JointTransform> entry : nextStartingPose.getJointTransformData().entrySet())
 		{
-			if (this.jointTransforms.containsKey(entry.getKey()))
-			{
-				Keyframe[] keyframes = this.jointTransforms.get(entry.getKey()).getKeyframes();
-				JointTransform endTransform = keyframes[keyframes.length - 1].transform();
-				JointTransform newEndTransform = nextStartingPose.getJointTransformData().get(entry.getKey());
-				newEndTransform.translation().set(endTransform.translation().x(), endTransform.translation().y(), endTransform.translation().z());
-				endTransform.copyFrom(newEndTransform);
-			}
+			if (!this.jointTransforms.containsKey(entry.getKey())) continue;
+			
+			Keyframe[] keyframes = this.jointTransforms.get(entry.getKey()).getKeyframes();
+			JointTransform endTransform = keyframes[keyframes.length - 1].transform();
+			JointTransform newEndTransform = nextStartingPose.getJointTransformData().get(entry.getKey());
+			
+			newEndTransform.translation().set(endTransform.translation().x(), endTransform.translation().y(), endTransform.translation().z());
+			endTransform.copyFrom(newEndTransform);
 		}
 
 		return super.getPoseByTime(entityCap, time, partialTicks);

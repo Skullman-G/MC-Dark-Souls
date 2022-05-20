@@ -61,8 +61,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(true))
 		{
-			entityCap.getOriginalEntity().setDeltaMovement(0.0D, entityCap.getOriginalEntity().getDeltaMovement().y,
-					0.0D);
+			entityCap.getOriginalEntity().setDeltaMovement(0.0D, entityCap.getOriginalEntity().getDeltaMovement().y, 0.0D);
 		}
 
 		MovementAnimationSet movementAnimationSetter = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse((self, entityCap$2, transformSheet) ->
@@ -81,7 +80,7 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 
 	@Override
-	public void linkTick(LivingCap<?> entityCap, LinkAnimation linkAnimation)
+	public void onUpdateLink(LivingCap<?> entityCap, LinkAnimation linkAnimation)
 	{
 		this.move(entityCap, linkAnimation);
 	};
@@ -92,22 +91,13 @@ public class ActionAnimation extends ImmovableAnimation
 
 		if (entityCap.isClientSide())
 		{
-			if (!(livingentity instanceof LocalPlayer))
-			{
-				return;
-			}
+			if (!(livingentity instanceof LocalPlayer)) return;
 		} else
 		{
-			if ((livingentity instanceof ServerPlayer))
-			{
-				return;
-			}
+			if ((livingentity instanceof ServerPlayer)) return;
 		}
 
-		if (!this.validateMovement(entityCap, animation))
-		{
-			return;
-		}
+		if (!this.validateMovement(entityCap, animation)) return;
 
 		if (entityCap.isInaction())
 		{
@@ -123,8 +113,7 @@ public class ActionAnimation extends ImmovableAnimation
 			double moveMultiplier = this.getProperty(ActionAnimationProperty.AFFECT_SPEED).orElse(false)
 					? (movementSpeed.getValue() / movementSpeed.getBaseValue())
 					: 1.0F;
-			livingentity.move(MoverType.SELF,
-					new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
 		}
 	}
 
@@ -177,7 +166,7 @@ public class ActionAnimation extends ImmovableAnimation
 		JointTransform rootTransform = pose.getTransformByName("Root");
 		Vector3f rootPosition = rootTransform.translation();
 		PublicMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
-				.searchJointByName("Root").getLocalTrasnform().removeTranslation();
+				.searchJointByName("Root").getLocalTransform().removeTranslation();
 		PublicMatrix4f toOrigin = PublicMatrix4f.invert(toRootTransformApplied, null);
 		Vector3f worldPosition = PublicMatrix4f.transform3v(toRootTransformApplied, rootPosition, null);
 		worldPosition.setX(0.0F);
@@ -205,14 +194,14 @@ public class ActionAnimation extends ImmovableAnimation
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
-		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
+		
 		Pose pose = this.getPoseByTime(entityCap, nextStart, 1.0F);
+		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
+		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
 		JointTransform rootTransform = pose.getTransformByName("Root");
-		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation()
-				.getInterpolatedTranslation(nextStart);
+		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation().getInterpolatedTranslation(nextStart);
 		
 		rootTransform.translation().set(withPosition.x(), rootTransform.translation().y(), withPosition.z());
-		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
 
 		for (String jointName : lastTransforms.keySet())
 		{
@@ -246,7 +235,7 @@ public class ActionAnimation extends ImmovableAnimation
 					prevJt.translation().z(), 1.0F);
 			PublicMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
 			PublicMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature()
-					.searchJointByName("Root").getLocalTrasnform().removeTranslation();
+					.searchJointByName("Root").getLocalTransform().removeTranslation();
 			rotationTransform.mulBack(localTransform);
 			currentpos = rotationTransform.transform(currentpos);
 			prevpos = rotationTransform.transform(prevpos);

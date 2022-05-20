@@ -28,7 +28,7 @@ public class Pose
 		return jt;
 	}
 
-	public static Pose interpolatePose(Pose pose1, Pose pose2, float pregression)
+	public static Pose interpolatePose(Pose pose1, Pose pose2, float progression)
 	{
 		Pose pose = new Pose();
 
@@ -37,7 +37,7 @@ public class Pose
 			if (pose2.jointTransformData.containsKey(jointName))
 			{
 				pose.putJointData(jointName, JointTransform.interpolate(pose1.jointTransformData.get(jointName),
-						pose2.jointTransformData.get(jointName), pregression));
+						pose2.jointTransformData.get(jointName), progression));
 			}
 		}
 

@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
@@ -23,6 +24,7 @@ public class ImmovableAnimation extends StaticAnimation
 		{
 			entityCap.getClientAnimator().startInaction();
 			entityCap.getClientAnimator().resetCompositeMotion();
+			for (LayerPart part : LayerPart.compositeLayers()) entityCap.getClientAnimator().baseLayer.disableLayer(part);
 		}
 	}
 

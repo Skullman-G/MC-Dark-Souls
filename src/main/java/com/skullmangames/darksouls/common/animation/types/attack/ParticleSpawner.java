@@ -1,9 +1,8 @@
 package com.skullmangames.darksouls.common.animation.types.attack;
 
-import com.mojang.math.Vector3d;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 public abstract class ParticleSpawner
@@ -17,5 +16,5 @@ public abstract class ParticleSpawner
 		this.contactLevel = contactLevel;
 	}
 	
-	public abstract void spawnParticles(ClientLevel world, Vector3d pos);
+	public abstract void spawnParticles(ClientLevel world, Vec3 pos);
 }

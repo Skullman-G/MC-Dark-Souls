@@ -14,6 +14,61 @@ public class MathUtils
 	{
 		return (double) Math.round(value * multiply) / multiply;
 	}
+	
+	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
+	{
+		mStack.mulPose(getQuaternionFromMatrix(mat));
+	}
+	
+	private static Quaternion getQuaternionFromMatrix(PublicMatrix4f mat)
+	{
+		float w, x, y, z;
+		float diagonal = mat.m00 + mat.m11 + mat.m22;
+
+		if (diagonal > 0)
+		{
+			float w4 = (float) (Math.sqrt(diagonal + 1.0F) * 2.0F);
+			w = w4 * 0.25F;
+			x = (mat.m21 - mat.m12) / w4;
+			y = (mat.m02 - mat.m20) / w4;
+			z = (mat.m10 - mat.m01) / w4;
+		}
+		else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
+		{
+			float x4 = (float) (Math.sqrt(1.0F + mat.m00 - mat.m11 - mat.m22) * 2F);
+			w = (mat.m21 - mat.m12) / x4;
+			x = x4 * 0.25F;
+			y = (mat.m01 + mat.m10) / x4;
+			z = (mat.m02 + mat.m20) / x4;
+		}
+		else if (mat.m11 > mat.m22)
+		{
+			float y4 = (float) (Math.sqrt(1.0F + mat.m11 - mat.m00 - mat.m22) * 2F);
+			w = (mat.m02 - mat.m20) / y4;
+			x = (mat.m01 + mat.m10) / y4;
+			y = y4 * 0.25F;
+			z = (mat.m12 + mat.m21) / y4;
+		}
+		else
+		{
+			float z4 = (float) (Math.sqrt(1.0F + mat.m22 - mat.m00 - mat.m11) * 2F);
+			w = (mat.m10 - mat.m01) / z4;
+			x = (mat.m02 + mat.m20) / z4;
+			y = (mat.m12 + mat.m21) / z4;
+			z = z4 * 0.25F;
+		}
+		
+		Quaternion quat = new Quaternion(x, y, z, w);
+		quat.normalize();
+		return quat;
+	}
+	
+	public static Vec3 projectVector(Vec3 from, Vec3 to)
+	{
+		double dot = to.dot(from);
+		double normalScale = 1.0D / ((to.x * to.x) + (to.y * to.y) + (to.z * to.z));
+		return new Vec3(dot * to.x * normalScale, dot * to.y * normalScale, dot * to.z * normalScale);
+	}
 
 	public static double getAngleBetween(Entity e1, Entity e2)
 	{

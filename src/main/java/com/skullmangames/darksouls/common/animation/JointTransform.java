@@ -1,8 +1,5 @@
 package com.skullmangames.darksouls.common.animation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -10,29 +7,9 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.util.Mth;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.MatrixOperation;
 
 public class JointTransform
 {
-	public static final String ANIMATION_TRANSFROM = "animation_transform";
-	public static final String JOINT_LOCAL_TRANSFORM = "joint_local_transform";
-	public static final String PARENT = "parent";
-	public static final String RESULT1 = "front_result";
-	public static final String RESULT2 = "overwrite_rotation";
-
-	public static class TransformEntry
-	{
-		public final MatrixOperation multiplyFunction;
-		public final JointTransform transform;
-
-		public TransformEntry(MatrixOperation multiplyFunction, JointTransform transform)
-		{
-			this.multiplyFunction = multiplyFunction;
-			this.transform = transform;
-		}
-	}
-
-	private Map<String, TransformEntry> entries = new HashMap<>();
 	private Vector3f translation;
 	private Vector3f scale;
 	private Quaternion rotation;
@@ -73,63 +50,25 @@ public class JointTransform
 		this.rotation.set(newQ.i(), newQ.j(), newQ.k(), newQ.r());
 		this.scale.set(newS.x(), newS.y(), newS.z());
 
-		for (Map.Entry<String, TransformEntry> entry : jt.entries.entrySet())
-		{
-			this.entries.put(entry.getKey(), entry.getValue());
-		}
-
 		return this;
 	}
-
-	public void jointLocal(JointTransform transform, MatrixOperation multiplyFunction)
+	
+	public PublicMatrix4f getParentboundMatrix(Joint joint, PublicMatrix4f parentTransform)
 	{
-		this.entries.put(JOINT_LOCAL_TRANSFORM, new TransformEntry(multiplyFunction, transform));
-	}
-
-	public void parent(JointTransform transform, MatrixOperation multiplyFunction)
-	{
-		this.entries.put(PARENT, new TransformEntry(multiplyFunction, transform));
-	}
-
-	public void frontResult(JointTransform transform, MatrixOperation multiplyFunction)
-	{
-		this.entries.put(RESULT1, new TransformEntry(multiplyFunction, transform));
-	}
-
-	public void overwriteRotation(JointTransform transform)
-	{
-		this.entries.put(RESULT2, new TransformEntry(PublicMatrix4f::mul, transform));
-	}
-
-	public PublicMatrix4f getAnimationBindedMatrix(Joint joint, PublicMatrix4f parentTransform)
-	{
-		PublicMatrix4f.AnimationTransformEntry animationTransformEntry = new PublicMatrix4f.AnimationTransformEntry();
-
-		for (Map.Entry<String, TransformEntry> entry : this.entries.entrySet())
-		{
-			animationTransformEntry.put(entry.getKey(), entry.getValue().transform.toMatrix(),
-					entry.getValue().multiplyFunction);
-		}
-
-		animationTransformEntry.put(ANIMATION_TRANSFROM, this.toMatrix(), PublicMatrix4f::mul);
-		animationTransformEntry.put(JOINT_LOCAL_TRANSFORM, joint.getLocalTrasnform());
-		animationTransformEntry.put(PARENT, parentTransform);
-		animationTransformEntry.put(ANIMATION_TRANSFROM, joint.getAnimatedTransform());
-
-		return animationTransformEntry.getResult();
+		return this.toMatrix().mulFront(joint.getLocalTransform()).mulFront(parentTransform).mulBack(joint.getAnimatedTransform());
 	}
 
 	public PublicMatrix4f toMatrix()
 	{
-		PublicMatrix4f matrix = new PublicMatrix4f().translate(this.translation)
-				.mulBack(PublicMatrix4f.fromQuaternion(this.rotation)).scale(this.scale);
+		PublicMatrix4f matrix = new PublicMatrix4f()
+				.translate(this.translation).mulBack(PublicMatrix4f.fromQuaternion(this.rotation)).scale(this.scale);
 		return matrix;
 	}
 
 	@Override
 	public String toString()
 	{
-		return String.format("%s %s entry number : %d", this.translation, this.rotation, this.entries.size());
+		return String.format("%s %s", this.translation, this.rotation);
 	}
 
 	private static JointTransform interpolateSimple(JointTransform prev, JointTransform next, float progression)
@@ -141,31 +80,10 @@ public class JointTransform
 
 	public static JointTransform interpolate(JointTransform prev, JointTransform next, float progression)
 	{
-		if (prev == null || next == null)
-		{
-			return JointTransform.empty();
-		}
+		if (prev == null || next == null) return JointTransform.empty();
 
 		progression = Mth.clamp(progression, 0.0F, 1.0F);
 		JointTransform interpolated = interpolateSimple(prev, next, progression);
-
-		for (Map.Entry<String, TransformEntry> entry : prev.entries.entrySet())
-		{
-			JointTransform transform = next.entries.containsKey(entry.getKey())
-					? next.entries.get(entry.getKey()).transform
-					: JointTransform.empty();
-			interpolated.entries.put(entry.getKey(), new TransformEntry(entry.getValue().multiplyFunction,
-					interpolateSimple(entry.getValue().transform, transform, progression)));
-		}
-
-		for (Map.Entry<String, TransformEntry> entry : next.entries.entrySet())
-		{
-			if (!interpolated.entries.containsKey(entry.getKey()))
-			{
-				interpolated.entries.put(entry.getKey(), new TransformEntry(entry.getValue().multiplyFunction,
-						interpolateSimple(JointTransform.empty(), entry.getValue().transform, progression)));
-			}
-		}
 
 		return interpolated;
 	}
