@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.skullmangames.darksouls.common.capability.item.ArmorCap;
+import com.skullmangames.darksouls.common.capability.item.ArmorCap.ArmorPart;
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
@@ -109,6 +111,12 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		// Tridents
 		putCap(new TridentCap(Items.TRIDENT, 5, 11, 15, Scaling.NONE, Scaling.NONE));
+		
+		//Armor
+		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), ArmorPart.SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), ArmorPart.SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), ArmorPart.SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), ArmorPart.ONE_SHOE));
 		
 		for (WeaponConfig configWeapon : CapabilityConfig.WEAPON_CONFIGS)
 		{

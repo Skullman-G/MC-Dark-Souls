@@ -18,7 +18,9 @@ public class ClientModels extends Models<ClientModel>
 	public final ClientModel ITEM_CHESTPLATE;
 	public final ClientModel ITEM_LEGGINS;
 	public final ClientModel ITEM_LEGGINS_CLOTH;
+	public final ClientModel ITEM_SKIRT;
 	public final ClientModel ITEM_BOOTS;
+	public final ClientModel ITEM_ONE_SHOE;
 	
 	public ClientModels()
 	{
@@ -33,7 +35,9 @@ public class ClientModels extends Models<ClientModel>
 		this.ITEM_CHESTPLATE = this.registerMeshOnly("armor_chestplate");
 		this.ITEM_LEGGINS = this.registerMeshOnly("armor_leggins");
 		this.ITEM_LEGGINS_CLOTH = this.registerMeshOnly("armor_leggins_cloth");
+		this.ITEM_SKIRT = this.registerMeshOnly("armor_skirt");
 		this.ITEM_BOOTS = this.registerMeshOnly("armor_boots");
+		this.ITEM_ONE_SHOE = this.registerMeshOnly("armor_one_shoe");
 	}
 	
 	@Override

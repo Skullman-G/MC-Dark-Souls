@@ -6,7 +6,7 @@ public class VanillaArmorCap extends ArmorCap
 {
 	public VanillaArmorCap(Item item)
 	{
-		super(item);
+		super(item, ArmorPart.getFrom(item));
 
 		this.poise = 1.0F;
 		this.weight = this.getOriginalItem().getMaterial().getDefenseForSlot(this.getOriginalItem().getSlot()) * 1.5F;

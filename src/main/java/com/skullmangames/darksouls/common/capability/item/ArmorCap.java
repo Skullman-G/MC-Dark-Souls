@@ -27,7 +27,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ArmorCap extends AttributeItemCap
 {
-	private final EquipmentSlot equipmentSlot;
+	private final ArmorPart armorPart;
 	
 	protected final float standardDef;
 	protected final float strikeDef;
@@ -37,11 +37,11 @@ public class ArmorCap extends AttributeItemCap
 	protected float poise;
 	protected float weight;
 	
-	public ArmorCap(Item item)
+	public ArmorCap(Item item, ArmorPart armorPart)
 	{
 		super(item);
 		ArmorItem armorItem = (ArmorItem) item;
-		this.equipmentSlot = armorItem.getSlot();
+		this.armorPart = armorPart.slot == armorItem.getSlot() ? armorPart : ArmorPart.getFrom(armorItem.getSlot());
 		this.poise = armorItem.getDefense() * 2.0F;
 		
 		this.standardDef = armorItem.getDefense() * 0.5F;
@@ -100,47 +100,94 @@ public class ArmorCap extends AttributeItemCap
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		
-		if (slot == this.equipmentSlot)
+		if (slot == this.armorPart.slot)
 		{
-			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.poise));
-			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.weight));
+			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.poise));
+			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.weight));
 			
-			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.standardDef));
-			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.strikeDef));
-			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.slashDef));
-			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipmentSlot, this.thrustDef));
+			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.standardDef));
+			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.strikeDef));
+			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.slashDef));
+			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.thrustDef));
 		}
 		
         return map;
     }
 	
 	@OnlyIn(Dist.CLIENT)
-	public ClientModel getArmorModel(EquipmentSlot slot)
+	public ClientModel getArmorModel()
 	{
-		return getBipedArmorModel(slot);
+		return getDefaultArmorModel(this.armorPart);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static ClientModel getBipedArmorModel(EquipmentSlot slot)
+	public static ClientModel getDefaultArmorModel(ArmorPart armorPart)
 	{
-		ClientModels modelDB = ClientModels.CLIENT;
+		ClientModels models = ClientModels.CLIENT;
 		
-		switch (slot)
+		switch (armorPart)
 		{
-				case HEAD:
-					return modelDB.ITEM_HELMET;
+				case HELMET:
+					return models.ITEM_HELMET;
 					
-				case CHEST:
-					return modelDB.ITEM_CHESTPLATE;
+				case CHESTPLATE:
+					return models.ITEM_CHESTPLATE;
 					
-				case LEGS:
-					return modelDB.ITEM_LEGGINS;
+				case LEGGINS:
+					return models.ITEM_LEGGINS;
 					
-				case FEET:
-					return modelDB.ITEM_BOOTS;
+				case SKIRT:
+					return models.ITEM_SKIRT;
+					
+				case BOOTS:
+					return models.ITEM_BOOTS;
+					
+				case ONE_SHOE:
+					return models.ITEM_ONE_SHOE;
 					
 				default:
 					return null;
+		}
+	}
+	
+	public enum ArmorPart
+	{
+		HELMET(EquipmentSlot.HEAD), CHESTPLATE(EquipmentSlot.CHEST),
+		LEGGINS(EquipmentSlot.LEGS), SKIRT(EquipmentSlot.LEGS),
+		BOOTS(EquipmentSlot.FEET), ONE_SHOE(EquipmentSlot.FEET);
+		
+		private final EquipmentSlot slot;
+		
+		private ArmorPart(EquipmentSlot slot)
+		{
+			this.slot = slot;
+		}
+		
+		public static ArmorPart getFrom(EquipmentSlot slot)
+		{
+			switch (slot)
+			{
+				case HEAD:
+					return HELMET;
+					
+				case CHEST:
+					return CHESTPLATE;
+					
+				case LEGS:
+					return LEGGINS;
+					
+				case FEET:
+					return BOOTS;
+					
+				default:
+					return null;
+			}
+		}
+		
+		public static ArmorPart getFrom(Item item)
+		{
+			if (item instanceof ArmorItem) return getFrom(((ArmorItem)item).getSlot());
+			else return null;
 		}
 	}
 }
