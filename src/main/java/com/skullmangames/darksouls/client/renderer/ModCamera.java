@@ -28,7 +28,7 @@ public class ModCamera extends Camera
 	    
 	    if (detached)
 	    {
-	    	if (ClientManager.INSTANCE.getPlayerData().getClientAnimator().isAiming())
+	    	if (ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 	    	{
 	    		this.move(-this.getMaxZoom(4.0D), 0.0D, -1.25D);
 	    		

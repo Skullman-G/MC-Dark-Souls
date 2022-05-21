@@ -217,7 +217,7 @@ public class GameOverlayManager
 	
 	private static void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack matrixstack)
 	{
-		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerData();
+		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
 		int x = width / 2;
 		int y = height - 45;
 		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
@@ -241,7 +241,7 @@ public class GameOverlayManager
 		PoseStack ms = new PoseStack();
 		float scale = 0.8F;
 		ms.scale(scale, scale, scale);
-		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerData().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
+		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerCap().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
 		RenderSystem.disableBlend();
 	}
 	

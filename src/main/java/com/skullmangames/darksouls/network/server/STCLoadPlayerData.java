@@ -30,7 +30,7 @@ public class STCLoadPlayerData
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ClientManager.INSTANCE.getPlayerData().onLoad(msg.nbt);
+			ClientManager.INSTANCE.getPlayerCap().onLoad(msg.nbt);
 		});
 		
 		ctx.get().setPacketHandled(true);

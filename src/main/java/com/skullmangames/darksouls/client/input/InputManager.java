@@ -44,7 +44,7 @@ public class InputManager
 {
 	private final Map<KeyMapping, BiConsumer<Integer, Integer>> keyFunctionMap;
 	private LocalPlayer player;
-	private LocalPlayerCap playerdata;
+	private LocalPlayerCap playerCap;
 	private KeyBindingMap keyHash;
 	private int rightHandPressCounter;
 	private boolean rightHandToggle;
@@ -83,14 +83,14 @@ public class InputManager
 		}
 	}
 	
-	public void setGamePlayer(LocalPlayerCap playerdata)
+	public void setGamePlayer(LocalPlayerCap playerCap)
 	{
 		this.rightHandPressCounter = 0;
 		this.rightHandToggle = false;
 		this.sprintToggle = false;
 		this.sprintPressCounter = 0;
-		this.player = playerdata.getOriginalEntity();
-		this.playerdata = playerdata;
+		this.player = playerCap.getOriginalEntity();
+		this.playerCap = playerCap;
 	}
 	
 	public boolean playerCanMove(EntityState playerState)
@@ -100,7 +100,7 @@ public class InputManager
 
 	public boolean playerCanAct(EntityState playerState)
 	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
+		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
 	}
 	
 	public boolean movingKeysDown()
@@ -111,11 +111,11 @@ public class InputManager
 	public boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
-				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
-				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
+				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isUnderWater()
 				&& this.player.isOnGround()
-				&& (!this.player.isUsingItem() || this.playerdata.isBlocking())
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
 	}
 	
@@ -158,9 +158,9 @@ public class InputManager
 	
 	private void onSwapHandKeyPressed(int key, int action)
 	{
-		ItemCapability cap = this.playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability cap = this.playerCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 
-		if (this.playerdata.isInaction() || (cap != null && !cap.canUsedInOffhand()))
+		if (this.playerCap.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
 			while (options.keySwapOffhand.consumeClick()) {}
 			this.setKeyBind(options.keySwapOffhand, false);
@@ -186,24 +186,35 @@ public class InputManager
 	
 	public void tick()
 	{
-		if (this.playerdata == null) return;
+		if (this.playerCap == null) return;
 
-		EntityState playerState = this.playerdata.getEntityState();
+		EntityState playerState = this.playerCap.getEntityState();
 		
 		if (this.sprintToggle)
 		{
-			if (!this.player.isCreative() && this.playerdata.getStamina() <= 0.0F)
+			if (!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F)
 			{
 				this.player.setSprinting(false);
 				this.sprintToggle = false;
 			}
 		}
-		else if (this.isKeyDown(this.options.keySprint) && (this.playerdata.getStamina() / this.playerdata.getMaxStamina()) >= 0.7F)
+		else if (this.isKeyDown(this.options.keySprint) && (this.playerCap.getStamina() / this.playerCap.getMaxStamina()) >= 0.7F)
 		{
 			this.sprintToggle = true;
 		}
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
+		
+		for (int i = 0; i < 9; ++i)
+		{
+			if (isKeyDown(this.options.keyHotbarSlots[i]))
+			{
+				if (this.playerCap.isInaction())
+				{
+					this.options.keyHotbarSlots[i].consumeClick();
+				}
+			}
+		}
 		
 		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
@@ -215,7 +226,7 @@ public class InputManager
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
-				&& (!this.player.isUsingItem() || this.playerdata.isBlocking())
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& !this.player.hasEffect(MobEffects.BLINDNESS)
 				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
 	}
@@ -231,7 +242,7 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerdata.performDodge(this.movingKeysDown());
+			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerCap.performDodge(this.movingKeysDown());
 			this.sprintPressCounter = 0;
 		}
 	}
@@ -250,7 +261,7 @@ public class InputManager
 		{
 			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
 			{
-				if (this.playerCanAttack(playerState)) this.playerdata.performAttack(AttackType.HEAVY);
+				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -267,8 +278,8 @@ public class InputManager
 	{
 		if (this.playerCanAttack(playerState))
 		{
-			if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
-			else this.playerdata.performAttack(AttackType.LIGHT);
+			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
+			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
 		
 		this.rightHandToggle = false;
@@ -312,7 +323,7 @@ public class InputManager
 			
 			if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
 					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK
-					&& (!minecraft.options.getCameraType().isFirstPerson() || inputManager.playerdata.getHeldWeaponCapability(InteractionHand.MAIN_HAND) != null)))
+					&& (!minecraft.options.getCameraType().isFirstPerson() || inputManager.playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) != null)))
 			{
 				event.setCanceled(true);
 			}
@@ -337,7 +348,7 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMouseScroll(MouseScrollEvent event)
 		{
-			if (minecraft.player != null && inputManager.playerdata != null && inputManager.playerdata.isInaction())
+			if (minecraft.player != null && inputManager.playerCap != null && inputManager.playerCap.isInaction())
 			{
 				if(minecraft.screen == null)
 				{
@@ -365,8 +376,8 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMoveInput(MovementInputUpdateEvent event)
 		{
-			if(inputManager.playerdata == null) return;
-			EntityState playerState = inputManager.playerdata.getEntityState();
+			if(inputManager.playerCap == null) return;
+			EntityState playerState = inputManager.playerCap.getEntityState();
 			
 			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
 			{
@@ -400,7 +411,7 @@ public class InputManager
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
 				if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON
-						&& !ClientManager.INSTANCE.getPlayerData().getClientAnimator().isAiming())
+						&& !ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -445,7 +456,7 @@ public class InputManager
 					event.getInput().forwardImpulse = forward;
 					event.getInput().leftImpulse = left;
 					
-					if (inputManager.playerdata.isBlocking())
+					if (inputManager.playerCap.isBlocking())
 					{
 						event.getInput().leftImpulse *= 20F;
 						event.getInput().forwardImpulse *= 20F;

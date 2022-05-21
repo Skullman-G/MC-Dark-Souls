@@ -222,7 +222,7 @@ public class RenderEngine
 			
 			float interpolation = (float)zoomCount / (float)zoomMaxCount;
 			Vector3f interpolatedCorrection = Vector3fHelper.scale(AIMING_CORRECTION, interpolation);
-			PublicMatrix4f rotationMatrix = ClientManager.INSTANCE.getPlayerData().getMatrix((float)partialTicks);
+			PublicMatrix4f rotationMatrix = ClientManager.INSTANCE.getPlayerCap().getMatrix((float)partialTicks);
 			Vector4f scaleVec = new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F);
 			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, scaleVec);
 			
@@ -298,7 +298,7 @@ public class RenderEngine
 				ItemCapability cap = ModCapabilities.getItemCapability(event.getItemStack());
 				LocalPlayerCap playerCap = (LocalPlayerCap) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if (cap != null && ClientManager.INSTANCE.getPlayerData() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
+				if (cap != null && ClientManager.INSTANCE.getPlayerCap() != null) cap.modifyItemTooltip(event.getToolTip(), playerCap, event.getItemStack());
 			}
 		}
 		
@@ -323,7 +323,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
-			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerData();
+			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
 			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) == null) return;
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
@@ -336,7 +336,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderWorldLast(RenderLevelLastEvent event)
 		{
-			if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerData().getClientAnimator().isAiming())
+			if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 			{
 				renderEngine.aimHelper.doRender(event.getPoseStack(), event.getPartialTick());
 			}

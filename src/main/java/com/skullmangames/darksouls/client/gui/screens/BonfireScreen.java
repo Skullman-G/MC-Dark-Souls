@@ -45,7 +45,7 @@ public class BonfireScreen extends Screen
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.bonfiretileentity = tileentity;
-		this.playerData = ClientManager.INSTANCE.getPlayerData();
+		this.playerData = ClientManager.INSTANCE.getPlayerCap();
 	}
 	
 	@Override

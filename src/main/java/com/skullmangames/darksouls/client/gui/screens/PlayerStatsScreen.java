@@ -51,7 +51,7 @@ public class PlayerStatsScreen extends Screen
 	public PlayerStatsScreen(TextComponent title)
 	{
 		super(title);
-		this.playerdata = ClientManager.INSTANCE.getPlayerData();
+		this.playerdata = ClientManager.INSTANCE.getPlayerCap();
 		this.player = this.playerdata.getOriginalEntity();
 		this.displayedLevel = this.playerdata.getSoulLevel();
 		for (Stat stat : Stats.STATS)

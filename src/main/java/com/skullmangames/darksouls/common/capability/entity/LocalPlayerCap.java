@@ -41,7 +41,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void onEntityConstructed(LocalPlayer entity)
 	{
 		super.onEntityConstructed(entity);
-		ClientManager.INSTANCE.setPlayerData(this);
+		ClientManager.INSTANCE.setPlayerCap(this);
 		ClientManager.INSTANCE.inputManager.setGamePlayer(this);
 		ModNetworkManager.connection = new ModClientPlayNetHandler();
 	}

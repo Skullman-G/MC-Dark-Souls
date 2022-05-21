@@ -31,7 +31,7 @@ public class ClientManager
 	public final ModCamera mainCamera;
 	private Options options;
 	
-	private LocalPlayerCap playerdata;
+	private LocalPlayerCap playerCap;
 	
 	public ClientManager()
 	{
@@ -59,28 +59,28 @@ public class ClientManager
 	public void switchToFirstPerson()
 	{
 		this.options.setCameraType(CameraType.FIRST_PERSON);
-		this.playerdata.getOriginalEntity().getAbilities().mayBuild = true;
+		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
 	}
 	
 	public void switchToThirdPerson()
 	{
 		this.options.setCameraType(CameraType.THIRD_PERSON_BACK);
-		this.playerdata.getOriginalEntity().getAbilities().mayBuild = false;
+		this.playerCap.getOriginalEntity().getAbilities().mayBuild = false;
 
-		this.playerdata.getOriginalEntity().xRot = 0.0F;
-		this.playerdata.getOriginalEntity().xRotO = 0.0F;
-		float x = this.playerdata.getOriginalEntity().yRot;
-		this.playerdata.rotateTo(x, 180.0F, true);
+		this.playerCap.getOriginalEntity().xRot = 0.0F;
+		this.playerCap.getOriginalEntity().xRotO = 0.0F;
+		float x = this.playerCap.getOriginalEntity().yRot;
+		this.playerCap.rotateTo(x, 180.0F, true);
 	}
 	
-	public void setPlayerData(LocalPlayerCap playerdata)
+	public void setPlayerCap(LocalPlayerCap playerCap)
 	{
-		if(this.playerdata != null && this.playerdata != playerdata) this.playerdata.discard();
-		this.playerdata = playerdata;
+		if(this.playerCap != null && this.playerCap != playerCap) this.playerCap.discard();
+		this.playerCap = playerCap;
 	}
 	
-	public LocalPlayerCap getPlayerData()
+	public LocalPlayerCap getPlayerCap()
 	{
-		return this.playerdata;
+		return this.playerCap;
 	}
 }
