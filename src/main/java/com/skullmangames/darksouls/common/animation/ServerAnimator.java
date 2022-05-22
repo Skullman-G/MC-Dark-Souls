@@ -101,6 +101,12 @@ public class ServerAnimator extends Animator
 	@Override
 	public AnimationPlayer getPlayerFor(DynamicAnimation playingAnimation)
 	{
+		return this.getMainPlayer();
+	}
+	
+	@Override
+	public AnimationPlayer getMainPlayer()
+	{
 		return this.animationPlayer;
 	}
 

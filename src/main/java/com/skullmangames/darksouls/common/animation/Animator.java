@@ -32,6 +32,8 @@ public abstract class Animator
 	public abstract EntityState getEntityState();
 
 	public abstract AnimationPlayer getPlayerFor(DynamicAnimation playingAnimation);
+	
+	public abstract AnimationPlayer getMainPlayer();
 
 	public abstract void init();
 

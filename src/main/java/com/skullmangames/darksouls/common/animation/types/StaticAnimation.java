@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
@@ -66,7 +67,7 @@ public class StaticAnimation extends DynamicAnimation
 		this.model = model;
 	}
 	
-	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap)
+	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
 	{
 		return this;
 	}
@@ -105,6 +106,12 @@ public class StaticAnimation extends DynamicAnimation
 		ResourceLocation extenderPath = new ResourceLocation(animation.resourceLocation.getNamespace(),
 				animation.resourceLocation.getPath() + ".dae");
 		AnimationDataExtractor.extractAnimation(extenderPath, animation, animation.model.apply(models).getArmature());
+	}
+	
+	@Override
+	public boolean shouldSync()
+	{
+		return this.getProperty(StaticAnimationProperty.SHOULD_SYNC).orElse(false) && this.getLayerPart() != LayerPart.FULL;
 	}
 
 	@Override
@@ -164,6 +171,12 @@ public class StaticAnimation extends DynamicAnimation
 				}
 			}
 		});
+	}
+	
+	@Override
+	public float getPlaySpeed(LivingCap<?> entityCap)
+	{
+		return super.getPlaySpeed(entityCap);
 	}
 
 	public int getId()

@@ -83,9 +83,9 @@ public class ClientAnimator extends Animator
 		this.defaultLivingAnimations.forEach(this.livingAnimations::put);
 	}
 
-	public StaticAnimation getLivingMotion(LivingMotion motion)
+	public StaticAnimation getLivingMotion(LivingMotion motion, LayerPart part)
 	{
-		return this.livingAnimations.getOrDefault(motion, Animations.DUMMY_ANIMATION).checkAndReturnAnimation(this.entityCap);
+		return this.livingAnimations.getOrDefault(motion, Animations.DUMMY_ANIMATION).checkAndReturnAnimation(this.entityCap, part);
 	}
 
 	public void setPoseToModel(float partialTicks)
@@ -130,17 +130,19 @@ public class ClientAnimator extends Animator
 				&& this.currentMotion != LivingMotion.DEATH)
 		{
 			this.entityCap.updateMotion();
-			this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion), this.entityCap, 0.0F);
+			this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion, LayerPart.FULL), this.entityCap, 0.0F);
 		}
+		
+		boolean currentMotionChanged = !this.compareMotion(this.entityCap.currentMotion);
 		
 		for (AnimationLayer.LayerPart layerPart : AnimationLayer.LayerPart.compositeLayers())
 		{
 			LivingMotion motion = this.entityCap.currentMixMotions.get(layerPart);
-			if (!this.compareCompositeMotion(layerPart, motion))
+			if (!this.compareCompositeMotion(layerPart, motion) || currentMotionChanged)
 			{
 				if (this.livingAnimations.containsKey(motion))
 				{
-					this.playAnimation(this.getLivingMotion(motion), 0.0F);
+					this.playAnimation(this.getLivingMotion(motion, layerPart), 0.0F);
 				}
 				else
 				{
@@ -149,11 +151,11 @@ public class ClientAnimator extends Animator
 			}
 		}
 
-		if (!this.compareMotion(this.entityCap.currentMotion))
+		if (currentMotionChanged)
 		{
 			if (this.livingAnimations.containsKey(this.entityCap.currentMotion))
 			{
-				this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion), this.entityCap, 0.0F);
+				this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion, LayerPart.FULL), this.entityCap, 0.0F);
 			}
 		}
 
@@ -282,6 +284,12 @@ public class ClientAnimator extends Animator
 			}
 		}
 
+		return this.getMainPlayer();
+	}
+	
+	@Override
+	public AnimationPlayer getMainPlayer()
+	{
 		return this.baseLayer.animationPlayer;
 	}
 

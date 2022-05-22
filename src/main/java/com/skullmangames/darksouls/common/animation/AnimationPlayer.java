@@ -24,6 +24,12 @@ public class AnimationPlayer
 
 	public void update(LivingCap<?> entityCap)
 	{
+		if (this.play.shouldSync())
+		{
+			this.synchronize(entityCap.getAnimator().getMainPlayer());
+			return;
+		}
+		
 		this.prevElapsedTime = this.elapsedTime;
 		this.elapsedTime += IngameConfig.A_TICK * this.getPlay().getPlaySpeed(entityCap);
 
@@ -108,6 +114,14 @@ public class AnimationPlayer
 		this.prevElapsedTime = elapsedTime;
 		this.exceedTime = 0;
 		this.isEnd = false;
+	}
+	
+	public void synchronize(AnimationPlayer player)
+	{
+		this.elapsedTime = player.elapsedTime;
+		this.prevElapsedTime = player.prevElapsedTime;
+		this.exceedTime = player.exceedTime;
+		this.isEnd = player.isEnd;
 	}
 	
 	public float getExceedTime()

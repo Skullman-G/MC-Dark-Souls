@@ -142,7 +142,7 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1)
+		if (action == 1 && this.playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) != null)
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}

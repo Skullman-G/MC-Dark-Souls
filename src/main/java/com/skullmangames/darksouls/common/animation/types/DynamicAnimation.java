@@ -56,6 +56,11 @@ public class DynamicAnimation
 		}
 		return pose;
 	}
+	
+	public boolean shouldSync()
+	{
+		return false;
+	}
 
 	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
@@ -127,7 +132,10 @@ public class DynamicAnimation
 	{
 	}
 
-	public void onUpdateLink(LivingCap<?> entityCap, LinkAnimation linkAnimation) {}
+	public void onUpdateLink(LivingCap<?> entityCap, LinkAnimation linkAnimation)
+	{
+		if (this.shouldSync()) linkAnimation.startsAt = entityCap.getAnimator().getMainPlayer().getElapsedTime();
+	}
 
 	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
 	{
