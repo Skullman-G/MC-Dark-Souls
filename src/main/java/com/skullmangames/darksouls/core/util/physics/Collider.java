@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;

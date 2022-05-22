@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -49,7 +50,7 @@ public class AnimationLayer
 
 	public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float convertTimeModifier)
 	{
-		Pose lastPose = entityCap.getAnimator().getPose(1.0F);
+		Pose lastPose = entityCap.getAnimator().getPose(Minecraft.getInstance().getFrameTime());
 		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer.isEnd());
 		this.resume();
 		nextAnimation.onStart(entityCap);
