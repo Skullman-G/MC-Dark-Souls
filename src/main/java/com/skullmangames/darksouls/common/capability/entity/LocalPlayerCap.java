@@ -110,7 +110,12 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void performAttack(AttackType type)
 	{
 		AttackAnimation animation = null;
-		if (!this.minecraft.options.getCameraType().isFirstPerson() && this.orgEntity.getMainHandItem().getItem() == Items.AIR)
+		MeleeWeaponCap weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+		if (weapon != null)
+		{
+			animation = weapon.getAttack(type, this);
+		}
+		else
 		{
 			switch (type)
 			{
@@ -131,12 +136,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 					animation = Animations.FIST_HEAVY_ATTACK;
 					break;
 			}
-		}
-		else
-		{
-			MeleeWeaponCap weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
-			if (weapon == null) return;
-			animation = weapon.getAttack(type, this);
 		}
 		
 		if (animation == null) return;

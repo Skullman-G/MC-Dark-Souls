@@ -324,7 +324,7 @@ public class RenderEngine
 		public static void renderHand(RenderHandEvent event)
 		{
 			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
-			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) == null) return;
+			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && !ClientManager.INSTANCE.isCombatModeActive()) return;
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
 				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),

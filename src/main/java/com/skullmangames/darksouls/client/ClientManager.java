@@ -30,6 +30,7 @@ public class ClientManager
 	public final ScreenManager screenManager;
 	public final ModCamera mainCamera;
 	private Options options;
+	private boolean combatModeActive;
 	
 	private LocalPlayerCap playerCap;
 	
@@ -54,6 +55,16 @@ public class ClientManager
 	    {
 	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
 	    });
+	}
+	
+	public void toggleCombatMode()
+	{
+		this.combatModeActive = !this.combatModeActive;
+	}
+	
+	public boolean isCombatModeActive()
+	{
+		return this.combatModeActive;
 	}
 	
 	public void switchToFirstPerson()

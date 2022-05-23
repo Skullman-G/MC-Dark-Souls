@@ -229,7 +229,7 @@
 	
 	"key.darksouls.show_tooltip": "Show Special Attack Tooltip",
 	"key.darksouls.gui": "Mod Gui",
-	"key.darksouls.swap_action_mode": "Swap Action Mode",
+	"key.darksouls.toggle_combat_mode": "Toggle Combat Mode",
 	"key.darksouls.combat": "Combat",
 	"key.darksouls.show_item_info": "Show Item Info",
 	"key.darksouls.open_stat_screen": "Open Status Screen",

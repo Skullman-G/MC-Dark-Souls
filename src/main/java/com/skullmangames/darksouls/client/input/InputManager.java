@@ -66,10 +66,11 @@ public class InputManager
 		
 		this.keyFunctionMap.put(this.options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
-		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
+		this.keyFunctionMap.put(ModKeys.TOGGLE_COMBAT_MODE, this::onToggleCombatModeKeyPressed);
 		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
+		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
 		
 		try
 		{
@@ -142,7 +143,7 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1 && this.playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) != null)
+		if (action == 1 && (ClientManager.INSTANCE.isCombatModeActive() || !this.options.getCameraType().isFirstPerson()))
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
@@ -167,7 +168,7 @@ public class InputManager
 		}
 	}
 	
-	private void onSwapActionModeKeyPressed(int key, int action)
+	private void onTogglePerspectiveKeyPressed(int key, int action)
 	{
 		if (action == 1)
 		{
@@ -181,6 +182,14 @@ public class InputManager
 			{
 				ClientManager.INSTANCE.switchToThirdPerson();
 			}
+		}
+	}
+	
+	private void onToggleCombatModeKeyPressed(int key, int action)
+	{
+		if (action == 1)
+		{
+			ClientManager.INSTANCE.toggleCombatMode();
 		}
 	}
 	
@@ -316,14 +325,14 @@ public class InputManager
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
 			if (!event.isAttack()) return;
-			if (!minecraft.options.getCameraType().isFirstPerson())
+			if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
 			{
 				event.setSwingHand(false);
 			}
 			
 			if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
 					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK
-					&& (!minecraft.options.getCameraType().isFirstPerson() || inputManager.playerCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND) != null)))
+					&& (ClientManager.INSTANCE.isCombatModeActive())))
 			{
 				event.setCanceled(true);
 			}
