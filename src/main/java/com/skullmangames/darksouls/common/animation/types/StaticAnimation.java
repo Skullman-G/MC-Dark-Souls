@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
-import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
@@ -75,7 +74,7 @@ public class StaticAnimation extends DynamicAnimation
 	@OnlyIn(Dist.CLIENT)
 	public AnimationLayer.LayerPart getLayerPart()
 	{
-		return this.getProperty(ClientAnimationProperties.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
+		return this.getProperty(StaticAnimationProperty.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
 	}
 
 	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)

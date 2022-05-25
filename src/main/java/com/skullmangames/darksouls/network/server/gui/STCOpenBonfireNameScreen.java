@@ -2,11 +2,8 @@ package com.skullmangames.darksouls.network.server.gui;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
-import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -34,9 +31,7 @@ public class STCOpenBonfireNameScreen
 	{
 		ctx.get().enqueueWork(()->
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			BonfireBlockEntity bonfire = minecraft.level.getBlockEntity(msg.blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
-			if (bonfire != null) minecraft.setScreen(new BonfireNameScreen(bonfire));
+			ModNetworkManager.connection.openBonfireNameScreen(msg.blockPos);
 		});
 		
 		ctx.get().setPacketHandled(true);

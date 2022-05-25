@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.network.play;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
 public interface IModClientPlayNetHandler
@@ -9,4 +10,12 @@ public interface IModClientPlayNetHandler
 	void setOverlayMessage(Component text);
 	
 	void openFireKeeperScreen(int firekeeperid);
+	
+	void openBonfireNameScreen(BlockPos blockPos);
+	
+	void openBonfireScreen(BlockPos blockPos);
+	
+	void tryPlayBonfireAmbientSound(BlockPos blockPos);
+	
+	void removeBonfireAmbientSound(BlockPos blockPos);
 }

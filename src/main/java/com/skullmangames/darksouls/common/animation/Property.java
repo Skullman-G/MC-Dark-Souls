@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.animation;
 
+import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -16,6 +17,7 @@ public abstract class Property<T>
 	{
 		public static final StaticAnimationProperty<StaticAnimation.Event[]> EVENTS = new StaticAnimationProperty<StaticAnimation.Event[]>();
 		public static final StaticAnimationProperty<Boolean> SHOULD_SYNC = new StaticAnimationProperty<Boolean>();
+		public static final StaticAnimationProperty<AnimationLayer.LayerPart> LAYER_PART = new StaticAnimationProperty<AnimationLayer.LayerPart>();
 	}
 
 	public static class ActionAnimationProperty<T> extends Property<T>

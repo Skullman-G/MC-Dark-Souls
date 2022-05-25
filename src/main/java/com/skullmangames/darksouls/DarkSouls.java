@@ -9,7 +9,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -30,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.event.ClientEvents;
-import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
@@ -140,9 +138,6 @@ public class DarkSouls
 		ConfigManager.INGAME_CONFIG.populateDefaultValues();
 		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
-
-		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
-				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));
 	}
 
 	private void doServerStuff(final FMLDedicatedServerSetupEvent event)
@@ -221,8 +216,7 @@ public class DarkSouls
 
 		CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
 
-		com.skullmangames.darksouls.client.gui.ScreenManager
-				.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
+		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
 		
 		this.animatorProvider = ClientAnimator::getAnimator;
 	}

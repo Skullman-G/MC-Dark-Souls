@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.client.sound;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -35,6 +36,7 @@ public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 	{
 		if (this.bonfire.isRemoved())
 		{
+			ModNetworkManager.connection.removeBonfireAmbientSound(this.bonfire.getBlockPos());
 			this.stop();
 			return;
 		}

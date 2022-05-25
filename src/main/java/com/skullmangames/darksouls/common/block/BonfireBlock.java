@@ -211,6 +211,8 @@ public class BonfireBlock extends Block implements EntityBlock
 	{
 		if (state.getValue(LIT))
 		{
+			ModNetworkManager.connection.tryPlayBonfireAmbientSound(pos);
+			
 			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
 			{
 				level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);

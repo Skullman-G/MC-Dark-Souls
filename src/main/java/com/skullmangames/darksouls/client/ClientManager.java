@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
-import com.skullmangames.darksouls.client.gui.ScreenManager;
+import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
 import com.skullmangames.darksouls.client.renderer.ModCamera;
@@ -19,6 +19,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
+import net.minecraftforge.fml.ModLoadingContext;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientManager
@@ -27,7 +29,6 @@ public class ClientManager
 	public final Minecraft minecraft;
 	public final RenderEngine renderEngine;
 	public final InputManager inputManager;
-	public final ScreenManager screenManager;
 	public final ModCamera mainCamera;
 	private Options options;
 	private boolean combatModeActive;
@@ -40,13 +41,15 @@ public class ClientManager
 		this.minecraft = Minecraft.getInstance();
 		this.renderEngine = new RenderEngine();
 		this.inputManager = new InputManager();
-		this.screenManager = new ScreenManager();
 		this.options = this.minecraft.options;
 		
 		this.minecraft.gameRenderer.mainCamera = new ModCamera();
 		this.mainCamera = (ModCamera)this.minecraft.gameRenderer.mainCamera;
 		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
 		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
+		
+		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
+				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));
 		
 		GameOverlayManager.registerOverlayElements();
 		ModContainers.registerScreens();

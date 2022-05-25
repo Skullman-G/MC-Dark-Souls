@@ -2,11 +2,8 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
-import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -35,11 +32,7 @@ public class STCPlayBonfireAmbientSound
 		ctx.get().enqueueWork(()->
 		{
 			if (ctx.get().getSender() != null) return;
-			Minecraft minecraft = Minecraft.getInstance();
-			BonfireBlockEntity bonfire = minecraft.player.level.getBlockEntity(msg.pos, ModBlockEntities.BONFIRE.get()).orElse(null);
-			if (bonfire == null) return;
-			BonfireAmbientSoundInstance soundInstance = new BonfireAmbientSoundInstance(bonfire);
-			minecraft.getSoundManager().queueTickingSound(soundInstance);
+			ModNetworkManager.connection.tryPlayBonfireAmbientSound(msg.pos);
 		});
 		
 		ctx.get().setPacketHandled(true);

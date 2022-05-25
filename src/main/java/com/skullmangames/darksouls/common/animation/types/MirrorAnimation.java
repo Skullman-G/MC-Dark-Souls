@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
-import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
@@ -28,8 +28,8 @@ public class MirrorAnimation extends StaticAnimation
 		
 		if (applyLayerParts)
 		{
-			this.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.RIGHT);
-			this.mirror.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.LEFT);
+			this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
+			this.mirror.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT);
 		}
 	}
 	

@@ -5,13 +5,13 @@ import java.util.function.Function;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
-import com.skullmangames.darksouls.client.animation.ClientAnimationProperties;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
@@ -29,7 +29,7 @@ public class AimingAnimation extends StaticAnimation
 		super(convertTime, repeatPlay, path1, model);
 		this.lookUp = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
 		this.lookDown = new StaticAnimation(convertTime, repeatPlay, path3, model, true);
-		this.addProperty(ClientAnimationProperties.LAYER_PART, LayerPart.UP);
+		this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
 	}
 
 	public AimingAnimation(boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
