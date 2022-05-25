@@ -79,7 +79,7 @@ public abstract class Collider
 	{
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
 		int pathIndex = armature.searchPathIndex(animation.getPathIndexByTime(elapsedTime));
-		boolean red = entityCap.getEntityState() == EntityState.PRE_CONTACT;
+		boolean red = entityCap.getEntityState() == EntityState.CONTACT;
 		PublicMatrix4f mat = null;
 
 		if (pathIndex == -1)

@@ -104,6 +104,7 @@ public class AnimationLayer
 				
 				this.nextAnimation.putOnPlayer(this.animationPlayer);
 				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
+				
 				this.nextAnimation = null;
 			}
 			else

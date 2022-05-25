@@ -18,6 +18,8 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCSetPos;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -88,7 +90,7 @@ public class ActionAnimation extends ImmovableAnimation
 	private void move(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
 		LivingEntity livingentity = entityCap.getOriginalEntity();
-
+		
 		if (entityCap.isClientSide())
 		{
 			if (!(livingentity instanceof LocalPlayer)) return;
@@ -113,7 +115,8 @@ public class ActionAnimation extends ImmovableAnimation
 			double moveMultiplier = this.getProperty(ActionAnimationProperty.AFFECT_SPEED).orElse(false)
 					? (movementSpeed.getValue() / movementSpeed.getBaseValue())
 					: 1.0F;
-			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+			if (!entityCap.isClientSide()) ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(livingentity.position(), livingentity.getYRot(), livingentity.getXRot(), livingentity.getId()), livingentity);
 		}
 	}
 
@@ -228,14 +231,14 @@ public class ActionAnimation extends ImmovableAnimation
 		{
 			LivingEntity livingentity = entityCap.getOriginalEntity();
 			AnimationPlayer player = entityCap.getAnimator().getPlayerFor(animation);
+			
 			JointTransform jt = rootTransforms.getInterpolatedTransform(player.getElapsedTime());
 			JointTransform prevJt = rootTransforms.getInterpolatedTransform(player.getPrevElapsedTime());
+			
 			Vector4f currentpos = new Vector4f(jt.translation().x(), jt.translation().y(), jt.translation().z(), 1.0F);
-			Vector4f prevpos = new Vector4f(prevJt.translation().x(), prevJt.translation().y(),
-					prevJt.translation().z(), 1.0F);
+			Vector4f prevpos = new Vector4f(prevJt.translation().x(), prevJt.translation().y(), prevJt.translation().z(), 1.0F);
 			PublicMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
-			PublicMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature()
-					.searchJointByName("Root").getLocalTransform().removeTranslation();
+			PublicMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature().searchJointByName("Root").getLocalTransform().removeTranslation();
 			rotationTransform.mulBack(localTransform);
 			currentpos = rotationTransform.transform(currentpos);
 			prevpos = rotationTransform.transform(prevpos);

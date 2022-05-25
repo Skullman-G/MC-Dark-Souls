@@ -78,6 +78,7 @@ public class ServerAnimator extends Animator
 
 		if (this.animationPlayer.isEnd())
 		{
+			float exceedTime = this.animationPlayer.getExceedTime();
 			this.animationPlayer.getPlay().onFinish(this.entityCap, true);
 
 			if (this.nextPlaying == null)
@@ -93,6 +94,7 @@ public class ServerAnimator extends Animator
 				}
 
 				this.nextPlaying.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
 				this.nextPlaying = null;
 			}
 		}

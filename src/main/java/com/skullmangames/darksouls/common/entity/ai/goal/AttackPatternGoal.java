@@ -6,9 +6,6 @@ import java.util.List;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
-
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -119,8 +116,7 @@ public class AttackPatternGoal extends Goal
     		double targetRange = this.getTargetRange(this.attacker.getTarget());
     		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean())
     		{
-    			mobdata.getServerAnimator().playAnimation(this.dodge, 0);
-    	    	ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimationAndSetTarget(this.dodge, 0, mobdata), mobdata.getOriginalEntity());
+    			this.mobdata.playAnimationSynchronized(this.dodge, 0);
     	    	this.dodgeTime = 3;
     	    	return;
     		}

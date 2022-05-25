@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
@@ -147,11 +146,6 @@ public class TransformSheet
 			{
 				prev++;
 				next++;
-			} else
-			{
-				DarkSouls.LOGGER.error("time exceeded keyframe length. current : " + currentTime + " max : "
-						+ this.keyframes[this.keyframes.length - 1].time());
-				(new IllegalArgumentException()).printStackTrace();
 			}
 		}
 

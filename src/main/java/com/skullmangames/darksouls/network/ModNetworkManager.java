@@ -19,6 +19,7 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
 import com.skullmangames.darksouls.network.server.STCPotion;
+import com.skullmangames.darksouls.network.server.STCSetPos;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
@@ -91,5 +92,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCOpenBonfireScreen.class, STCOpenBonfireScreen::toBytes, STCOpenBonfireScreen::fromBytes, STCOpenBonfireScreen::handle);
 		INSTANCE.registerMessage(id++, STCLoadPlayerData.class, STCLoadPlayerData::toBytes, STCLoadPlayerData::fromBytes, STCLoadPlayerData::handle);
 		INSTANCE.registerMessage(id++, STCPlayBonfireAmbientSound.class, STCPlayBonfireAmbientSound::toBytes, STCPlayBonfireAmbientSound::fromBytes, STCPlayBonfireAmbientSound::handle);
+		INSTANCE.registerMessage(id++, STCSetPos.class, STCSetPos::toBytes, STCSetPos::fromBytes, STCSetPos::handle);
 	}
 }
