@@ -187,6 +187,7 @@ public class DarkSouls
 		MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
 
+		// Register ReloadListeners
 		((ReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
 
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());

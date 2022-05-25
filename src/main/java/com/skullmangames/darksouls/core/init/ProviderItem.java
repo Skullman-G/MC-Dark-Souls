@@ -22,6 +22,7 @@ import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
+import com.skullmangames.darksouls.common.capability.item.WingedSpearCap;
 import com.skullmangames.darksouls.config.CapabilityConfig;
 import com.skullmangames.darksouls.config.CapabilityConfig.ShieldConfig;
 import com.skullmangames.darksouls.config.CapabilityConfig.WeaponConfig;
@@ -92,7 +93,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		// Spears
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, Scaling.D, Scaling.C));
-		putCap(new SpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
+		putCap(new WingedSpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
 		// Shields
 		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, 0.7F, 8, 0, Scaling.D, Scaling.NONE));

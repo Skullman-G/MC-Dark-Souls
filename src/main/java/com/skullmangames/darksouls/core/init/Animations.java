@@ -51,7 +51,9 @@ public final class Animations
 			(models) -> models.ENTITY_BIPED,
 			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
 			new AnimConfig(LivingMotion.WALKING, "biped/combat/block_walk_mirror", "biped/combat/block_walk", true),
-			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true));
+			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true),
+			new AnimConfig(LivingMotion.KNEELING, "biped/combat/block_mirror", "biped/combat/block", true),
+			new AnimConfig(LivingMotion.SNEAKING, "biped/combat/block_mirror", "biped/combat/block", true));
 
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
@@ -471,9 +473,7 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
-	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, "asylum_demon/ground_pound", (models) -> models.ENTITY_ASYLUM_DEMON,
-			new Phase(0.0F, 2.32F, 2.6F, 2.6F, "Root", Colliders.ASYLUM_DEMON_BODY),
-			new Phase(0.0F, 2.6F, 2.96F, 4.0F, "Root", Colliders.ASYLUM_DEMON_BODY))
+	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root", "asylum_demon/ground_pound", (models) -> models.ENTITY_ASYLUM_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
@@ -483,7 +483,5 @@ public final class Animations
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
 
 	@OnlyIn(Dist.CLIENT)
-	public static void buildClient()
-	{
-	}
+	public static void buildClient() {}
 }
