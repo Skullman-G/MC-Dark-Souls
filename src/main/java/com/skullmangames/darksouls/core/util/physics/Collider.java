@@ -42,9 +42,8 @@ public abstract class Collider
 	{
 		this.worldCenter = PublicMatrix4f.transform(mat, this.modelCenter);
 	}
-
-	public List<Entity> updateAndFilterCollideEntity(LivingCap<?> entityCap, AttackAnimation attackAnimation,
-			float prevElapsedTime, float elapsedTime, String jointName, float attackSpeed)
+	
+	public void update(LivingCap<?> entityCap, String jointName)
 	{
 		PublicMatrix4f transformMatrix;
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
@@ -54,7 +53,12 @@ public abstract class Collider
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(1.0F), armature, pathIndex);
 		transformMatrix.mulFront(entityCap.getModelMatrix(1.0F));
 		this.transform(transformMatrix);
+	}
 
+	public List<Entity> updateAndFilterCollideEntity(LivingCap<?> entityCap, AttackAnimation attackAnimation,
+			float prevElapsedTime, float elapsedTime, String jointName, float attackSpeed)
+	{
+		this.update(entityCap, jointName);
 		List<Entity> list = entityCap.getOriginalEntity().level.getEntities(entityCap.getOriginalEntity(), this.getHitboxAABB());
 		this.filterHitEntities(list);
 

@@ -80,13 +80,13 @@ public class AttackAnimation extends ActionAnimation
 	{
 		super.onUpdate(entityCap);
 		
-		LivingEntity entity = entityCap.getOriginalEntity();
-		
 		if (entityCap.isClientSide())
 		{
 			this.onClientUpdate(entityCap);
 			return;
 		}
+		
+		LivingEntity entity = entityCap.getOriginalEntity();
 
 		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
@@ -187,6 +187,7 @@ public class AttackAnimation extends ActionAnimation
 		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		Collider collider = this.getCollider(entityCap, elapsedTime);
+		collider.update(entityCap, phase.getColliderJointName());
 		Vec3 pos = collider.getWorldCenter();
 		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
 	}
