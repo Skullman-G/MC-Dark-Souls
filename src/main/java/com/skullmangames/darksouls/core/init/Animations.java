@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.core.init;
 
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
@@ -42,7 +43,8 @@ public final class Animations
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(0.08F, true, "biped/living/mount", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DEATH = new StaticAnimation(0.16F, false, "biped/living/death", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
 
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
