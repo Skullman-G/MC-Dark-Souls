@@ -17,11 +17,25 @@ public class DustCloudParticle extends TextureSheetParticle
 	{
 		super(world, posX, posY, posZ, speedX, speedY, speedZ);
 
-		this.scale(10.0F);
-
-		this.xd = speedX;
-		this.yd = speedY;
-		this.zd = speedZ;
+		this.xd = speedX / 2;
+		this.yd = speedY / 2;
+		this.zd = speedZ / 2;
+		this.lifetime = 40;
+	}
+	
+	@Override
+	public void tick()
+	{
+		if (this.age < 5)
+		{
+			this.quadSize += 0.2F;
+		}
+		if (this.age >= this.lifetime - 30 && this.alpha >= 0.03F)
+		{
+			this.alpha -= 0.03F;
+        }
+	    
+		super.tick();
 	}
 
 	@Override
