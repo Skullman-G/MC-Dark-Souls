@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;

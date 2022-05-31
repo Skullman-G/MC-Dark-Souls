@@ -229,7 +229,7 @@ public class AttackAnimation extends ActionAnimation
 
 		if (time <= phase.begin || (phase.begin < time && time < phase.contactStart))
 		{
-			return EntityState.FREE_CAMERA;
+			return EntityState.PRE_CONTACT;
 		} else if (phase.contactStart <= time && time <= phase.contactEnd)
 		{
 			return EntityState.CONTACT;

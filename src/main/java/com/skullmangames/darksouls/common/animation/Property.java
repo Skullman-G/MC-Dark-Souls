@@ -28,6 +28,7 @@ public abstract class Property<T>
 		public static final ActionAnimationProperty<ActionAnimation.ActionTime[]> ACTION_TIME = new ActionAnimationProperty<ActionAnimation.ActionTime[]>();
 		public static final ActionAnimationProperty<MovementAnimationSet> MOVEMENT_ANIMATION_SETTER = new ActionAnimationProperty<MovementAnimationSet>();
 		public static final ActionAnimationProperty<Boolean> AFFECT_SPEED = new ActionAnimationProperty<Boolean>();
+		public static final ActionAnimationProperty<Boolean> ROTATE_TO_TARGET = new ActionAnimationProperty<Boolean>();
 	}
 	
 	@FunctionalInterface

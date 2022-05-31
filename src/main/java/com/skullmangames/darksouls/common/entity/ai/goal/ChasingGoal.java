@@ -49,9 +49,8 @@ public class ChasingGoal extends Goal
 	public boolean canContinueToUse()
 	{
 		LivingEntity target = this.attacker.getTarget();
-		if(target == null || !target.isAlive() || !this.attacker.isWithinRestriction(new BlockPos(target.position()))) return false;
-		else return !(target instanceof Player)
-					|| !target.isSpectator() && !((Player) target).isCreative();
+		if (target == null || !target.isAlive() || !this.attacker.isWithinRestriction(new BlockPos(target.position()))) return false;
+		else return !(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative();
 	}
 
 	@Override

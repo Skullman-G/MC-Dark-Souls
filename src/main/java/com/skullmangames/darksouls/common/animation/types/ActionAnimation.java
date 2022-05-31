@@ -26,6 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -116,6 +117,17 @@ public class ActionAnimation extends ImmovableAnimation
 					? (movementSpeed.getValue() / movementSpeed.getBaseValue())
 					: 1.0F;
 			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+			
+			if (animation instanceof LinkAnimation && this.getProperty(ActionAnimationProperty.ROTATE_TO_TARGET).orElse(true) && livingentity instanceof Mob)
+			{
+				Mob mob = (Mob)livingentity;
+				LivingEntity target = mob.getTarget();
+				if (target != null)
+				{
+					entityCap.rotateTo(target, 90F, true);
+				}
+			}
+			
 			if (!entityCap.isClientSide()) ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(livingentity.position(), livingentity.getYRot(), livingentity.getXRot(), livingentity.getId()), livingentity);
 		}
 	}
@@ -127,7 +139,8 @@ public class ActionAnimation extends ImmovableAnimation
 			if (!this.getProperty(ActionAnimationProperty.MOVE_ON_LINK).orElse(true))
 			{
 				return false;
-			} else
+			}
+			else
 			{
 				return this.checkMovementTime(0.0F);
 			}

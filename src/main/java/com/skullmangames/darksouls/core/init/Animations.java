@@ -49,8 +49,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true,
-			(models) -> models.ENTITY_BIPED,
+	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, (models) -> models.ENTITY_BIPED,
 			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
 			new AnimConfig(LivingMotion.WALKING, "biped/combat/block_walk_mirror", "biped/combat/block_walk", true),
 			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true),
@@ -108,208 +107,192 @@ public final class Animations
 	};
 	
 	public static final AttackAnimation[] ULTRA_GREATSWORD_HEAVY_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.5F, 0.0F, 1.08F, 1.48F, 2.76F, "Tool_R",
-			"biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
-		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
-			new AttackAnimation(0.5F, 0.0F, 1.12F, 1.48F, 2.76F, "Tool_R",
-					"biped/combat/ultra_greatsword_heavy_attack_2", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
-							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-							.addProperty(AttackProperty.PARTICLE,
-									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)) };
-	
-	public static final AttackAnimation ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.08F, 1.48F,
-			2.76F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
+	{
+			new AttackAnimation(0.5F, 0.0F, 1.45F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
+			new AttackAnimation(0.5F, 0.0F, 1.5F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+	};
+	public static final AttackAnimation ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.45F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 
 	// Spear
-	public static final AttackAnimation SPEAR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.12F, 0.36F, 0.8F,
-			"Tool_R", "biped/combat/spear_dash_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
-	public static final AttackAnimation SPEAR_HEAVY_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.4F,
-			"Tool_R", "biped/combat/spear_heavy_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.52F, 0.8F, 1.2F,
-			"Tool_R", "biped/combat/spear_light_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
-	public static final AttackAnimation SPEAR_LIGHT_BLOCKING_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.28F, 0.48F,
-			1.0F, "Tool_R", "biped/combat/spear_light_blocking_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
-					.addProperty(AttackProperty.BLOCKING, true);
+	public static final AttackAnimation SPEAR_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.15F, 0.3F, 1.0F, "Tool_R", "biped/combat/spear_dash_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation SPEAR_HEAVY_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.65F, 0.8F, 1.75F, "Tool_R", "biped/combat/spear_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/spear_light_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation SPEAR_LIGHT_BLOCKING_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R", "biped/combat/spear_light_blocking_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			.addProperty(AttackProperty.BLOCKING, true);
 
 	// Dagger
-	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F,
-			"Tool_R", "biped/combat/dagger_heavy_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	public static final AttackAnimation DAGGER_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.68F, 0.96F, 1.6F, "Tool_R", "biped/combat/dagger_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation[] DAGGER_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 1.0F, "Tool_R", "biped/combat/dagger_light_attack_1",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.2F, 0.0F, 0.04F, 0.32F, 1.0F, "Tool_R", "biped/combat/dagger_light_attack_2",
-					(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT) };
+	{
+			new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 1.0F, "Tool_R", "biped/combat/dagger_light_attack_1", (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+			new AttackAnimation(0.2F, 0.0F, 0.04F, 0.32F, 1.0F, "Tool_R", "biped/combat/dagger_light_attack_2", (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+	};
 
 	// Great Hammer
-	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 1.36F, 1.72F, 3.0F, "Tool_R", "biped/combat/great_hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.25F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
+	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 1.57F, 1.9F, 3.75F, "Tool_R", "biped/combat/great_hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.5F, 0.0F, 1.12F, 1.48F, 2.76F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
-		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.24F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
-			new AttackAnimation(0.5F, 0.0F, 1.12F, 1.48F, 2.76F, "Tool_R",
-					"biped/combat/great_hammer_light_attack_2", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.25F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
-							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-							.addProperty(AttackProperty.PARTICLE,
-									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)) };
-	public static final AttackAnimation GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.12F, 1.48F, 2.76F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.25F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
+	{
+			new AttackAnimation(0.5F, 0.0F, 1.45F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
+			new AttackAnimation(0.5F, 0.0F, 1.5F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+	};
+	public static final AttackAnimation GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.45F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 
 	// Axe
-	public static final AttackAnimation AXE_HEAVY_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.4F, 0.72F, 1.2F,
-			"Tool_R", "biped/combat/axe_heavy_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation AXE_HEAVY_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.55F, 0.7F, 1.5F, "Tool_R", "biped/combat/axe_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.3F, 0.0F, 0.16F, 0.4F, 1.2F, "Tool_R", "biped/combat/axe_light_attack_1",
-			(models) -> models.ENTITY_BIPED)
-		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.16F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
-			new AttackAnimation(0.2F, 0.0F, 0.12F, 0.4F, 1.0F, "Tool_R", "biped/combat/axe_light_attack_2",
-					(models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.12F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM) };
-	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.28F, 0.6F, 1.2F,
-			"Tool_R", "biped/combat/axe_dash_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.3F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	{
+			new AttackAnimation(0.3F, 0.0F, 0.2F, 0.35F, 1.5F, "Tool_R", "biped/combat/axe_light_attack_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.16F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+			new AttackAnimation(0.2F, 0.0F, 0.15F, 0.4F, 1.25F, "Tool_R", "biped/combat/axe_light_attack_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.12F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM) };
+	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.4F, 0.5F, 1.5F, "Tool_R", "biped/combat/axe_dash_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.35F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 
 	// Hammer
-	public static final AttackAnimation HAMMER_DASH_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.4F,
-			"Tool_R", "biped/combat/hammer_dash_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation HAMMER_DASH_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.4F, "Tool_R", "biped/combat/hammer_dash_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
-	public static final AttackAnimation HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.52F, 1.4F,
-			"Tool_R", "biped/combat/hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+	public static final AttackAnimation HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R", "biped/combat/hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation[] HAMMER_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.5F, 0.0F, 0.28F, 0.52F, 1.2F, "Tool_R", "biped/combat/hammer_light_attack",
-			(models) -> models.ENTITY_BIPED)
-		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY) };
+	{
+			new AttackAnimation(0.5F, 0.0F, 0.28F, 0.52F, 1.2F, "Tool_R", "biped/combat/hammer_light_attack", (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+	};
 
 	// Fist
 	public static final AttackAnimation[] FIST_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.2F, 0.0F, 0.28F, 0.4F, 1.0F, "Tool_R", "biped/combat/fist_light_attack_1",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE),
-			new AttackAnimation(0.2F, 0.0F, 0.08F, 0.24F, 0.8F, "Tool_R", "biped/combat/fist_light_attack_2",
-					(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE) };
-	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.08F, 0.34F, 0.8F,
-			"Tool_R", "biped/combat/fist_dash_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
-					.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
-	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.0F,
-			"Tool_R", "biped/combat/fist_heavy_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
+	{
+			new AttackAnimation(0.2F, 0.0F, 0.3F, 0.4F, 1.25F, "Tool_R", "biped/combat/fist_light_attack_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE),
+			new AttackAnimation(0.2F, 0.0F, 0.15F, 0.3F, 1.25F, "Tool_R", "biped/combat/fist_light_attack_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+	};
+	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.15F, 0.3F, 1.0F, "Tool_R", "biped/combat/fist_dash_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R", "biped/combat/fist_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 
 	// Shield
 	public static final AttackAnimation[] SHIELD_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.3F, 0.0F, 0.12F, 0.32F, 0.8F, "Tool_R", "biped/combat/shield_attack",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2) };
+	{
+			new AttackAnimation(0.3F, 0.0F, 0.12F, 0.32F, 0.8F, "Tool_R", "biped/combat/shield_attack", (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
+				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+	};
 
 	// Straight Sword
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(0.2F, 0.0F, 0.24F, 0.44F, 1.0F, "Tool_R", "biped/combat/straight_sword_light_attack_1",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.2F, 0.0F, 0.2F, 0.36F, 1.0F, "Tool_R",
-					"biped/combat/straight_sword_light_attack_2", (models) -> models.ENTITY_BIPED)
-							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT) };
-	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.52F, 0.64F,
-			1.2F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.08F, 0.34F, 0.8F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
-					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
-					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	{ 		
+			new AttackAnimation(0.2F, 0.0F, 0.35F, 0.45F, 1.25F, "Tool_R", "biped/combat/straight_sword_light_attack_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+			new AttackAnimation(0.2F, 0.0F, 0.15F, 0.3F, 1.25F, "Tool_R", "biped/combat/straight_sword_light_attack_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+	};
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
+	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.05F, 0.25F, 1.0F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
+			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 
 	// Hollow
-	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(0.2F, true, "hollow/idle",
-			(models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation HOLLOW_WALK = new MovementAnimation(0.2F, true, "hollow/move",
-			(models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation HOLLOW_RUN = new MovementAnimation(0.2F, true, "hollow/run",
-			(models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(0.2F, "hollow/deflected",
-			(models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(0.2F, true, "hollow/breakdown",
-			(models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation HOLLOW_IDLE = new StaticAnimation(0.2F, true, "hollow/idle", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation HOLLOW_WALK = new MovementAnimation(0.2F, true, "hollow/move", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation HOLLOW_RUN = new MovementAnimation(0.2F, true, "hollow/run", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation HOLLOW_DEFLECTED = new HitAnimation(0.2F, "hollow/deflected", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation HOLLOW_BREAKDOWN = new StaticAnimation(0.2F, true, "hollow/breakdown", (models) -> models.ENTITY_BIPED);
 
 	public static final AttackAnimation[] HOLLOW_LIGHT_ATTACKS = new AttackAnimation[]
-	{ new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_1",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, Colliders.BROKEN_SWORD, "Tool_R",
-					"hollow/swing_2", (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION,
-							Deflection.LIGHT),
-			new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R",
-					"hollow/swing_3", (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION,
-							Deflection.LIGHT) };
+	{
+			new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+			new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
+			new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_3", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+	};
 	public static final AttackAnimation HOLLOW_BARRAGE = new AttackAnimation(0.05F, "hollow/fury_attack",
 			(models) -> models.ENTITY_BIPED, new Phase(0.0F, 1.76F, 2.08F, 2.08F, "Tool_R", Colliders.BROKEN_SWORD),
 			new Phase(2.08F, 2.12F, 2.28F, 2.28F, "Tool_R", Colliders.BROKEN_SWORD),
