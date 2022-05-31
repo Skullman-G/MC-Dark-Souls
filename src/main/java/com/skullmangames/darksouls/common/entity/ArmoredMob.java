@@ -37,17 +37,25 @@ public abstract class ArmoredMob extends PathfinderMob
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty)
 	{
-		int persentage = this.random.nextInt(1, 101);
+		int percentage = this.random.nextInt(1, 101);
+		boolean drop = false;
+		
 		for (EquipmentSlot slot : EquipmentSlot.values())
 		{
 			ItemStack itemstack = this.getItemBySlot(slot);
 			if (itemstack.isEmpty())
 			{
-				Item item = this.getEquipmentForSlot(persentage, slot);
+				Item item = this.getEquipmentForSlot(percentage, slot);
 				if (item != null)
 				{
 					this.setItemSlot(slot, new ItemStack(item));
-					this.setDropChance(slot, 0.4F);
+					
+					if (this.random.nextBoolean() && !drop)
+					{
+						this.setDropChance(slot, 0.5F);
+						drop = true;
+					}
+					else this.setDropChance(slot, 0F);
 				}
 			}
 		}
