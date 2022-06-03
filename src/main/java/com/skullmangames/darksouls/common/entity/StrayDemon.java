@@ -39,6 +39,12 @@ public class StrayDemon extends PathfinderMob
 	}
 	
 	@Override
+	public boolean canSpawnSprintParticle()
+	{
+		return false;
+	}
+	
+	@Override
 	protected int calculateFallDamage(float distance, float p_225508_2_)
 	{
 		if (distance <= 30.0F) return 0;

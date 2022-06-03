@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.common.entity;
 
 import java.util.Random;
-
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
@@ -45,7 +44,13 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
+				.add(Attributes.MOVEMENT_SPEED, 0.25D);
+	}
+	
+	@Override
+	public boolean canSpawnSprintParticle()
+	{
+		return super.canSpawnSprintParticle() && this.getAttributeValue(Attributes.MOVEMENT_SPEED) >= 0.3F;
 	}
 	
 	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)

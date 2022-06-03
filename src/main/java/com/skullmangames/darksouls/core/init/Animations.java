@@ -139,7 +139,7 @@ public final class Animations
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.35F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/spear_light_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation SPEAR_LIGHT_ATTACK = new AttackAnimation(0.15F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/spear_light_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation SPEAR_LIGHT_BLOCKING_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R", "biped/combat/spear_light_blocking_attack", (models) -> models.ENTITY_BIPED)
@@ -268,7 +268,7 @@ public final class Animations
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 	};
-	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
@@ -286,23 +286,23 @@ public final class Animations
 
 	public static final AttackAnimation[] HOLLOW_LIGHT_ATTACKS = new AttackAnimation[]
 	{
-			new AttackAnimation(0.05F, 0.0F, 1.4F, 1.6F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_1", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.56F, 1.05F, 2.5F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_1", (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.05F, 0.0F, 1.0F, 1.2F, 1.6F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_2", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.48F, 1.0F, 2.0F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_2", (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.05F, 0.0F, 1.08F, 1.24F, 2.4F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_3", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.16F, 0.4F, 2.0F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/swing_3", (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 	};
-	public static final AttackAnimation HOLLOW_BARRAGE = new AttackAnimation(0.05F, "hollow/fury_attack",
-			(models) -> models.ENTITY_BIPED, new Phase(0.0F, 1.76F, 2.08F, 2.08F, "Tool_R", Colliders.BROKEN_SWORD),
-			new Phase(2.08F, 2.12F, 2.28F, 2.28F, "Tool_R", Colliders.BROKEN_SWORD),
-			new Phase(2.28F, 2.44F, 2.6F, 2.6F, "Tool_R", Colliders.BROKEN_SWORD),
-			new Phase(2.6F, 2.76F, 2.92F, 2.92F, "Tool_R", Colliders.BROKEN_SWORD),
-			new Phase(2.92F, 3.08F, 3.24F, 3.24F, "Tool_R", Colliders.BROKEN_SWORD),
-			new Phase(3.24F, 3.4F, 3.56F, 4.4F, "Tool_R", Colliders.BROKEN_SWORD))
+	public static final AttackAnimation HOLLOW_BARRAGE = new AttackAnimation(0.2F, "hollow/fury_attack", (models) -> models.ENTITY_BIPED,
+			new Phase(0.0F, 1.48F, 1.72F, 1.72F, "Tool_R", Colliders.BROKEN_SWORD),
+			new Phase(1.72F, 1.8F, 1.92F, 1.92F, "Tool_R", Colliders.BROKEN_SWORD),
+			new Phase(1.92F, 2.12F, 2.24F, 2.24F, "Tool_R", Colliders.BROKEN_SWORD),
+			new Phase(2.24F, 2.4F, 2.56F, 2.56F, "Tool_R", Colliders.BROKEN_SWORD),
+			new Phase(2.56F, 2.76F, 2.88F, 2.88F, "Tool_R", Colliders.BROKEN_SWORD),
+			new Phase(2.88F, 3.08F, 3.2F, 4.2F, "Tool_R", Colliders.BROKEN_SWORD))
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) });
-	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.05F, 0.0F, 0.4F, 0.6F, 1.2F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/overhead_swing", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.2F, 0.0F, 0.4F, 0.6F, 1.2F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/overhead_swing", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2);
 	public static final AttackAnimation HOLLOW_JUMP_ATTACK = new AttackAnimation(0.05F, 0.0F, 0.52F, 0.72F, 1.6F,
