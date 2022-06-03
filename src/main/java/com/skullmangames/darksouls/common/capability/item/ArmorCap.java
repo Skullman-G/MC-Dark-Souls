@@ -167,6 +167,7 @@ public class ArmorCap extends AttributeItemCap
 		{
 			switch (slot)
 			{
+				default:	
 				case HEAD:
 					return HELMET;
 					
@@ -178,16 +179,13 @@ public class ArmorCap extends AttributeItemCap
 					
 				case FEET:
 					return BOOTS;
-					
-				default:
-					return null;
 			}
 		}
 		
 		public static ArmorPart getFrom(Item item)
 		{
 			if (item instanceof ArmorItem) return getFrom(((ArmorItem)item).getSlot());
-			else return null;
+			else return ArmorPart.HELMET;
 		}
 	}
 }
