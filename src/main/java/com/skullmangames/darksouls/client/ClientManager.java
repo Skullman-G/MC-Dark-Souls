@@ -74,6 +74,7 @@ public class ClientManager
 	{
 		this.options.setCameraType(CameraType.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
+		this.combatModeActive = false;
 	}
 	
 	public void switchToThirdPerson()
@@ -85,6 +86,7 @@ public class ClientManager
 		this.playerCap.getOriginalEntity().xRotO = 0.0F;
 		float x = this.playerCap.getOriginalEntity().yRot;
 		this.playerCap.rotateTo(x, 180.0F, true);
+		this.combatModeActive = true;
 	}
 	
 	public void setPlayerCap(LocalPlayerCap playerCap)

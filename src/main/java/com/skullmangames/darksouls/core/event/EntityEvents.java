@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
-import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
@@ -258,11 +258,11 @@ public class EntityEvents
 			}
 		}
 		
-		if (entityCap instanceof IEquipLoaded)
+		if (entityCap instanceof EquipLoaded)
 		{
 			AttributeInstance speed = entityCap.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
 			speed.removeModifier(ModAttributes.MOVEMENT_SPEED_MODIFIER_UUID);
-			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((IEquipLoaded)entityCap).getEquipLoadLevel()));
+			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((EquipLoaded)entityCap).getEquipLoadLevel()));
 		}
 	}
 	

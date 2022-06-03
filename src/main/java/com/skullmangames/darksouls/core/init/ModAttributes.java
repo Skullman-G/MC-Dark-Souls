@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded.EquipLoadLevel;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;

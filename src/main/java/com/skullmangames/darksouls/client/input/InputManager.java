@@ -331,8 +331,7 @@ public class InputManager
 			}
 			
 			if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
-					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK
-					&& (ClientManager.INSTANCE.isCombatModeActive())))
+					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
 			{
 				event.setCanceled(true);
 			}

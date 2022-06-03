@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import com.skullmangames.darksouls.common.capability.entity.IEquipLoaded;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 
@@ -27,9 +27,9 @@ public class DodgingAnimation extends ActionAnimation
 	public void onStart(LivingCap<?> entity)
 	{
 		super.onStart(entity);
-		if (entity instanceof IEquipLoaded)
+		if (entity instanceof EquipLoaded)
 		{
-			this.encumbrance = ((IEquipLoaded)entity).getEncumbrance();
+			this.encumbrance = ((EquipLoaded)entity).getEncumbrance();
 		}
 	}
 	

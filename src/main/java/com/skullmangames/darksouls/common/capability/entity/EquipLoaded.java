@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-public interface IEquipLoaded
+public interface EquipLoaded
 {
 	float getEncumbrance();
 	
