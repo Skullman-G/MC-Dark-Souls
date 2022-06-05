@@ -22,6 +22,7 @@ import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -53,7 +54,15 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		
 		if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
 		else ClientManager.INSTANCE.switchToFirstPerson();
+	}
+	
+	@Override
+	public void onLoad(CompoundTag nbt)
+	{
+		super.onLoad(nbt);
+		GameOverlayManager.canAnimateSouls = true;
 		GameOverlayManager.lastSouls = this.getSouls();
+		GameOverlayManager.lerpSouls = this.getSouls();
 	}
 	
 	@Override

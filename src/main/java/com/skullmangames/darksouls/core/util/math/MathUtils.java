@@ -12,7 +12,9 @@ public class MathUtils
 {
 	public static int lerp(int incr, int from, int to)
 	{
-		return from == to ? from : from < to ? from + incr : from - incr;
+		if (from == to) return from;
+		if (incr > Math.abs(to - from)) incr = Math.abs(to - from);
+		return from < to ? from + incr : from - incr;
 	}
 	
 	public static double round(double value, int multiply)

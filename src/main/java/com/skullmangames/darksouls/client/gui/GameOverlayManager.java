@@ -50,8 +50,9 @@ public class GameOverlayManager
 	
 	public static int lastSouls;
 	private static int soulIncr;
-	private static int lerpSouls;
+	public static int lerpSouls;
 	private static final Timer soulGetTimer = new Timer();
+	public static boolean canAnimateSouls = false;
 	
 	private static final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
 	
@@ -374,42 +375,51 @@ public class GameOverlayManager
 		int y = height - 21;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 44, 65, 16);
+		minecraft.gui.blit(poseStack, x, y, 0, 46, 65, 16);
 		
 		x = width - (76 / 2);
-		y = height - 14;
+		y = height - 15;
 		
 		PoseStack ps = new PoseStack();
 		float scale = 0.8F;
 		ps.scale(scale, scale, scale);
 		
 		int currentSouls = ClientManager.INSTANCE.getPlayerCap().getSouls();
-		int displaySouls = MathUtils.lerp(1, lerpSouls, currentSouls);
-		if (!soulGetTimer.isTicking() && currentSouls != lastSouls)
-		{
-			soulIncr = currentSouls - lastSouls;
-			soulGetTimer.start(200);
-		}
-		if (soulGetTimer.isTicking())
-		{
-			int alpha = 255;
-			if (soulGetTimer.getLeftTime() <= 10)
-			{
-				alpha = (int)((soulGetTimer.getLeftTime() / 10.0F) * 255);
-			}
-			
-			ForgeIngameGui.drawCenteredString(ps, minecraft.font, soulIncr > 0 ? "+" + String.valueOf(soulIncr) : String.valueOf(soulIncr),
-					Math.round(x / scale), Math.round((y - 11) / scale), new Color(255, 255, 255, alpha).getRGB());
-		}
-		ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(displaySouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
-		RenderSystem.disableBlend();
 		
-		if (!minecraft.isPaused())
+		if (canAnimateSouls)
 		{
-			soulGetTimer.drain(1);
-			lastSouls = currentSouls;
-			lerpSouls = displaySouls;
+			int displaySouls = MathUtils.lerp(5, lerpSouls, currentSouls);
+			if (!soulGetTimer.isTicking() && currentSouls != lastSouls)
+			{
+				soulIncr = currentSouls - lastSouls;
+				soulGetTimer.start(200);
+			}
+			if (soulGetTimer.isTicking())
+			{
+				int alpha = 255;
+				if (soulGetTimer.getLeftTime() <= 10)
+				{
+					alpha = (int)((soulGetTimer.getLeftTime() / 10.0F) * 255);
+				}
+				
+				ForgeIngameGui.drawCenteredString(ps, minecraft.font, soulIncr > 0 ? "+" + String.valueOf(soulIncr) : String.valueOf(soulIncr),
+						Math.round(x / scale), Math.round((y - 12) / scale), new Color(255, 255, 255, alpha).getRGB());
+			}
+			ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(displaySouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
+			
+			if (!minecraft.isPaused())
+			{
+				soulGetTimer.drain(1);
+				lastSouls = currentSouls;
+				lerpSouls = displaySouls;
+			}
 		}
+		else
+		{
+			ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(currentSouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
+		}
+		
+		RenderSystem.disableBlend();
 	}
 	
 	private static LocalPlayer getCameraPlayer()
