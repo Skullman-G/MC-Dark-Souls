@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.common.entity;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -17,6 +20,7 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 {
 	private Player followingEntity;
 	protected int value;
+	private int discardTime = 25;
 	
 	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, Level level)
 	{
@@ -68,6 +72,22 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 		this.move(MoverType.SELF, this.getDeltaMovement());
 	}
 	
+	@Override
+	public void playerTouch(Player player)
+	{
+		if (!this.level.isClientSide)
+		{
+			if (this.value > 0)
+			{
+				PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				if (playerCap != null) this.realPlayerTouch(playerCap);
+			}
+			else if (--discardTime <= 0) this.discard();
+		}
+	}
+	
+	protected abstract void realPlayerTouch(PlayerCap<?> playerCap);
+	
 	protected abstract void makeParticles();
 
 	@Override
@@ -77,26 +97,16 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 	}
 
 	@Override
-	protected void defineSynchedData()
-	{
-	}
+	protected void defineSynchedData() {}
 
 	@Override
-	protected void doWaterSplashEffect()
-	{
-	}
+	protected void doWaterSplashEffect() {}
 
 	@Override
-	public boolean hurt(DamageSource p_70097_1_, float p_70097_2_)
-	{
-		return false;
-	}
+	public boolean hurt(DamageSource source, float damage) { return false; }
 
 	@Override
-	public boolean isAttackable()
-	{
-		return false;
-	}
+	public boolean isAttackable() { return false; }
 
 	@Override
 	public Packet<?> getAddEntityPacket()
