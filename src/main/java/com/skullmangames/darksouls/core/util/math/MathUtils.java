@@ -10,6 +10,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class MathUtils
 {
+	public static int lerp(int incr, int from, int to)
+	{
+		return from == to ? from : from < to ? from + incr : from - incr;
+	}
+	
 	public static double round(double value, int multiply)
 	{
 		return (double) Math.round(value * multiply) / multiply;

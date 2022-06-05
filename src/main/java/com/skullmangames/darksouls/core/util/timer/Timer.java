@@ -15,11 +15,12 @@ public class Timer
 	
 	public void drain(int value)
 	{
+		if (!this.isTicking()) return;
+		
 		this.timer -= value;
 		if (this.timer > 0)
 		{
 			this.pastTime += value;
-			this.ticking = true;
 		}
 		else
 		{

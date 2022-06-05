@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.player.LocalPlayer;
@@ -46,6 +47,11 @@ public class GameOverlayManager
 	private static float lastStamina;
 	private static float saveLastStamina;
 	private static float saveLastStamina2;
+	
+	private static int lastSouls;
+	private static int soulIncr;
+	private static int lerpSouls;
+	private static final Timer soulGetTimer = new Timer();
 	
 	private static final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
 	
@@ -99,7 +105,7 @@ public class GameOverlayManager
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
 	            gui.setupOverlayRenderState(true, false);
-	            renderSouls(gui, screenWidth, screenHeight, poseStack);
+	            renderSouls(screenWidth, screenHeight, poseStack);
 	        }
 	    });
 	}
@@ -361,7 +367,7 @@ public class GameOverlayManager
 		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
 	}
 
-	private static void renderSouls(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	private static void renderSouls(int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
 		int x = width - 76;
@@ -371,14 +377,39 @@ public class GameOverlayManager
 		minecraft.gui.blit(poseStack, x, y, 0, 44, 65, 16);
 		
 		x = width - (76 / 2);
-		y = height - 15;
-		int color = Color.WHITE.getRGB();
+		y = height - 14;
 		
-		PoseStack ms = new PoseStack();
+		PoseStack ps = new PoseStack();
 		float scale = 0.8F;
-		ms.scale(scale, scale, scale);
-		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerCap().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
+		ps.scale(scale, scale, scale);
+		
+		int currentSouls = ClientManager.INSTANCE.getPlayerCap().getSouls();
+		int displaySouls = MathUtils.lerp(1, lerpSouls, currentSouls);
+		if (!soulGetTimer.isTicking() && currentSouls != lastSouls)
+		{
+			soulIncr = currentSouls - lastSouls;
+			soulGetTimer.start(200);
+		}
+		if (soulGetTimer.isTicking())
+		{
+			int alpha = 255;
+			if (soulGetTimer.getLeftTime() <= 10)
+			{
+				alpha = (int)((soulGetTimer.getLeftTime() / 10.0F) * 255);
+			}
+			
+			ForgeIngameGui.drawCenteredString(ps, minecraft.font, soulIncr > 0 ? "+" + String.valueOf(soulIncr) : String.valueOf(soulIncr),
+					Math.round(x / scale), Math.round((y - 11) / scale), new Color(255, 255, 255, alpha).getRGB());
+		}
+		ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(displaySouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
 		RenderSystem.disableBlend();
+		
+		if (!minecraft.isPaused())
+		{
+			soulGetTimer.drain(1);
+			lastSouls = currentSouls;
+			lerpSouls = displaySouls;
+		}
 	}
 	
 	private static LocalPlayer getCameraPlayer()
