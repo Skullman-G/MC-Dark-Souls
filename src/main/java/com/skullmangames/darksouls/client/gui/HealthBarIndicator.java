@@ -111,7 +111,7 @@ public class HealthBarIndicator extends EntityIndicator
 			if (!info.healTimer.isTicking())
 			{
 				info.saveLastHealth = info.lastHealth;
-				info.healTimer.start((int)((healthpercentage - info.saveLastHealth) * 10));
+				info.healTimer.start((int)((healthpercentage - info.saveLastHealth) * 100));
 			}
 			redStop = saveLastHealthPercentage + info.healTimer.getPastTime();
 			info.healTimer.drain(1);
