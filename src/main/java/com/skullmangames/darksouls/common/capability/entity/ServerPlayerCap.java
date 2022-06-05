@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-
 import com.google.common.collect.Sets;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -36,8 +34,6 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
 	private List<LivingMotion> modifiedLivingMotions = new ArrayList<>();
-
-	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 
 	@Override
 	public void onEntityJoinWorld(ServerPlayer entityIn)
@@ -147,9 +143,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	}
 
 	@Override
-	public void updateMotion()
-	{
-	}
+	public void updateMotion() {}
 
 	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
@@ -269,9 +263,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	}
 
 	@Override
-	public void onDeath()
-	{
-	}
+	public void onDeath() {}
 
 	@Override
 	public float getEncumbrance()

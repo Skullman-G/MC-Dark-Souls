@@ -33,7 +33,7 @@ public class HollowLordranWarrior extends ArmoredMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.5D)
+				.add(Attributes.MAX_HEALTH, 15.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}

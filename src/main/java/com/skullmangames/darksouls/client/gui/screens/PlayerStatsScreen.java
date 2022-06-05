@@ -110,15 +110,15 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(matrixstack, "Base Power", secondX, y + 36, this.color);
 		
 		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, this.displayedStats.get(Stats.VIGOR).intValue());
-		int maxhealthcolor = (int) this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
+		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
 		this.font.draw(matrixstack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
 
 		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, this.displayedStats.get(Stats.ENDURANCE).intValue());
-		int maxstaminacolor = (int) this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
+		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
 		this.font.draw(matrixstack, "Max Stamina: " + maxstamina, secondX, y + 64, maxstaminacolor);
 		
 		float maxEquipLoad = this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, this.displayedStats.get(Stats.VITALITY).intValue());
-		int maxEquipLoadColor = (int) this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
+		int maxEquipLoadColor = (float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
 		this.font.draw(matrixstack, "Max Equip Load: " + MathUtils.round(maxEquipLoad, 100), secondX, y + 76, maxEquipLoadColor);
 
 		this.font.draw(matrixstack, "Attack power", secondX, y + 144, this.color);

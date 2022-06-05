@@ -130,9 +130,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public abstract <M extends Model> M getEntityModel(Models<M> modelDB);
 
-	protected void initAttributes()
-	{
-	}
+	protected void initAttributes() {}
 
 	@Override
 	protected void updateOnClient()

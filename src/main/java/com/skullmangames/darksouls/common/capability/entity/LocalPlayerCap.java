@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -52,6 +53,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		
 		if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
 		else ClientManager.INSTANCE.switchToFirstPerson();
+		GameOverlayManager.lastSouls = this.getSouls();
 	}
 	
 	@Override

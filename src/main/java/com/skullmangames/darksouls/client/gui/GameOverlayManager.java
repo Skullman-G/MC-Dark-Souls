@@ -48,7 +48,7 @@ public class GameOverlayManager
 	private static float saveLastStamina;
 	private static float saveLastStamina2;
 	
-	private static int lastSouls;
+	public static int lastSouls;
 	private static int soulIncr;
 	private static int lerpSouls;
 	private static final Timer soulGetTimer = new Timer();

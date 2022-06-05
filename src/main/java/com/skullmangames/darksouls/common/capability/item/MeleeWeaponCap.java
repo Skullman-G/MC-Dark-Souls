@@ -50,12 +50,15 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 	
 	@Override
-	public void onHeld(PlayerCap<?> playerdata)
+	public void onHeld(PlayerCap<?> playerCap)
 	{
-		super.onHeld(playerdata);
-		AttributeInstance instance = playerdata.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-		instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-		instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
+		super.onHeld(playerCap);
+		if (playerCap.isClientSide())
+		{
+			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
+			instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
+			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
+		}
 	}
 	
 	public InteractionResult onUse(Player player, InteractionHand hand)
