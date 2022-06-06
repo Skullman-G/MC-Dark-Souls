@@ -6,9 +6,9 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Models;
 
-public class DisarmAnimation extends ActionAnimation
+public class BlockAnimation extends ActionAnimation
 {
-	public DisarmAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public BlockAnimation(float convertTime, String path, Function<Models<?>, Model> model)
 	{
 		super(convertTime, path, model);
 	}
@@ -16,6 +16,6 @@ public class DisarmAnimation extends ActionAnimation
 	@Override
 	public EntityState getState(float time)
 	{
-		return EntityState.DISARMED;
+		return EntityState.BLOCK;
 	}
 }

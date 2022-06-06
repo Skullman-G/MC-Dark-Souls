@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation.AnimConfig;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
-import com.skullmangames.darksouls.common.animation.types.DisarmAnimation;
+import com.skullmangames.darksouls.common.animation.types.BlockAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
@@ -49,13 +49,20 @@ public final class Animations
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
+	
 	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, (models) -> models.ENTITY_BIPED,
 			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
 			new AnimConfig(LivingMotion.WALKING, "biped/combat/block_walk_mirror", "biped/combat/block_walk", true),
 			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true),
 			new AnimConfig(LivingMotion.KNEELING, "biped/combat/block_mirror", "biped/combat/block", true),
 			new AnimConfig(LivingMotion.SNEAKING, "biped/combat/block_mirror", "biped/combat/block", true));
-
+	public static final StaticAnimation BIPED_BLOCK_HIT = new BlockAnimation(0.05F, "biped/combat/block_hit_mirror", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_BLOCK_HIT_MIRROR = new BlockAnimation(0.05F, "biped/combat/block_hit", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_DISARM_SHIELD_LEFT = new BlockAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
+	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new BlockAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
+	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
 
@@ -83,8 +90,6 @@ public final class Animations
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
 			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
 	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, "biped/combat/jump_back", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
 	// Big Weapon
 	public static final MirrorAnimation BIPED_HOLDING_BIG_WEAPON = new MirrorAnimation(0.2F, true, true,

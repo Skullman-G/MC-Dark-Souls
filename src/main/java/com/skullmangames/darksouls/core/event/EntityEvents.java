@@ -91,14 +91,15 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
 	{
+		PlayerCap<?> playerCap = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		MeleeWeaponCap weaponCap = ModCapabilities.getMeleeWeaponCap(event.getItemStack());
-		if (weaponCap == null) return;
+		if (weaponCap == null || playerCap == null) return;
 		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getMeleeWeaponCap(event.getEntityLiving().getOffhandItem()) != null)
 		{
 			event.setCanceled(true);
 			return;
 		}
-		event.setCancellationResult(weaponCap.onUse(event.getPlayer(), event.getHand()));
+		event.setCancellationResult(weaponCap.onUse(playerCap, event.getHand()));
 	}
 	
 	@SubscribeEvent

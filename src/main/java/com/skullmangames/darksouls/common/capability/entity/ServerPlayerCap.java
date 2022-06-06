@@ -167,6 +167,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		damageSource.setStunType(StunType.DISARMED);
+		this.cancelUsingItem();
 		return true;
 	}
 

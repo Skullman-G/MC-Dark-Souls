@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -63,6 +64,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
 	private float stamina;
+	protected boolean canUseShield = true;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -152,13 +154,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (this.isClientSide())
 		{
 			this.updateOnClient();
-		} else
+		}
+		else
 		{
 			this.updateOnServer();
 		}
 
-		if (this.orgEntity.deathTime == 19)
-			this.onDeath();
+		if (this.canUseShield && this.getStamina() <= 0.0F) this.canUseShield = false;
+		else if (this.getStamina() >= this.getMaxStamina()) this.canUseShield = true;
+		
+		if (this.orgEntity.deathTime == 19) this.onDeath();
 	}
 
 	@Override
@@ -236,6 +241,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return this.getEntityState().isMovementLocked();
 	}
+	
+	public boolean canBlock()
+	{
+		return this.canUseShield;
+	}
 
 	public boolean hurt(DamageSource damageSource, float amount)
 	{
@@ -304,7 +314,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		if(hitAnimation != null)
 		{
-			float exTime = 0.2F;
+			float exTime = hitAnimation instanceof HitAnimation ? 0.1F : 0.0F;
 			this.getAnimator().playAnimation(hitAnimation, exTime);
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), this.orgEntity);
 			if(this.orgEntity instanceof ServerPlayer)

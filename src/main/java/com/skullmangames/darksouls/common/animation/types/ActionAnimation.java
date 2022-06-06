@@ -60,7 +60,7 @@ public class ActionAnimation extends ImmovableAnimation
 	public void onStart(LivingCap<?> entityCap)
 	{
 		super.onStart(entityCap);
-		entityCap.cancelUsingItem();
+		if (!(this instanceof BlockAnimation)) entityCap.cancelUsingItem();
 
 		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(true))
 		{

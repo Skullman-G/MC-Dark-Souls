@@ -22,7 +22,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
@@ -62,9 +61,10 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		}
 	}
 	
-	public InteractionResult onUse(Player player, InteractionHand hand)
+	public InteractionResult onUse(PlayerCap<?> playerCap, InteractionHand hand)
 	{
-		player.startUsingItem(hand);
+		if (!playerCap.canBlock()) return InteractionResult.PASS;
+		playerCap.getOriginalEntity().startUsingItem(hand);
 		return InteractionResult.CONSUME;
 	}
 	

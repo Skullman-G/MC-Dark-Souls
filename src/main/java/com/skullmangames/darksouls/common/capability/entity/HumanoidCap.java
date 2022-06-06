@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
@@ -83,6 +84,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		damageSource.setStunType(StunType.DISARMED);
+		this.cancelUsingItem();
 		return true;
 	}
 	
@@ -100,7 +102,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		}
 		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
 		{
-			return null; // TODO: Add block hit animation
+			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
+			return Animations.BIPED_BLOCK_HIT_MIRROR;
 		}
 		else
 		{
@@ -110,7 +113,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					return Animations.BIPED_HIT_SHORT;
 					
 				case DISARMED:
-					return Animations.BIPED_DISARM_SHIELD;
+					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
+					return Animations.BIPED_DISARM_SHIELD_LEFT;
 					
 				case SMASH_FRONT:
 					return Animations.BIPED_HIT_DOWN_FRONT;

@@ -54,7 +54,7 @@ public class CapabilityConfig
 				ConfigValue<Scaling> dexScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".dexScaling", Scaling.NONE);
 				
 				ConfigValue<ShieldType> shieldType = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_type", ShieldType.NONE);
-				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+"shield_material", ShieldMat.WOOD);
+				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_material", ShieldMat.WOOD);
 				ConfigValue<Double> physicalDefense = config.defineInRange(shieldKey+"."+entry.getKey()+".physicalDefense", 0.0F, 0.0F, 1.0F);
 				if (!entry.getKey().equals("sample_shield")) SHIELD_CONFIGS.add(new ShieldConfig(registryName, category,
 						requiredStrength, requiredDex, strengthScaling, dexScaling, shieldType, shieldMat, physicalDefense));
