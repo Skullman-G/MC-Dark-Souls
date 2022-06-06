@@ -3,13 +3,13 @@ package com.skullmangames.darksouls.core.util;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 
-public class DamageSourceExtended extends EntityDamageSource implements IExtendedDamageSource
+public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
 {
 	private float amount;
 	private final int requiredDeflectionLevel;
 	private final float poiseDamage;
 	private final float staminaDamage;
-	private final StunType stunType;
+	private StunType stunType;
 	private final DamageType damageType;
 	
 	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
@@ -85,5 +85,17 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	public float getStaminaDamage()
 	{
 		return this.staminaDamage;
+	}
+
+	@Override
+	public void setStunType(StunType value)
+	{
+		this.stunType = value;
+	}
+
+	@Override
+	public Entity getSource()
+	{
+		return this.getDirectEntity();
 	}
 }

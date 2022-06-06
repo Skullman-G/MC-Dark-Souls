@@ -24,10 +24,9 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -41,10 +40,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -236,7 +237,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return this.getEntityState().isMovementLocked();
 	}
 
-	public boolean attackEntityFrom(DamageSource damageSource, float amount)
+	public boolean hurt(DamageSource damageSource, float amount)
 	{
 		if (this.getEntityState().isInvincible())
 		{
@@ -245,8 +246,72 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				return false;
 			}
 		}
+		
+		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
+		DamageType damageType = DamageType.REGULAR;
+		
+		ExtendedDamageSource extSource = null;
+		if(damageSource instanceof ExtendedDamageSource)
+		{
+			extSource = (ExtendedDamageSource)damageSource;
+			damageType = extSource.getDamageType();
+		}
+		else if (indirect)
+		{
+			extSource = ExtendedDamageSource.getIndirectFrom((IndirectEntityDamageSource)damageSource, amount);
+		}
+		
+		// Damage Calculation
+		if (!indirect)
+		{
+			Attribute defAttribute = damageType.getDefenseAttribute();
+			amount -= this.orgEntity.getAttribute(defAttribute) != null ? this.orgEntity.getAttributeValue(defAttribute) : 0.0F;
+		}
+		if (extSource != null)
+		{
+			extSource.setAmount(amount);
+			if (this.blockingAttack(extSource))
+			{
+				this.orgEntity.actuallyHurt(damageSource, extSource.getAmount());
+				return false;
+			}
+		}
+
+		this.orgEntity.playSound(ModSoundEvents.GENERIC_HIT.get(), 1.0F, 1.0F);
 
 		return true;
+	}
+	
+	public void actuallyHurt(DamageSource damageSource)
+	{
+		boolean headshot = false;
+		float poiseDamage = 0.0F;
+		StunType stunType = StunType.DEFAULT;
+		
+		ExtendedDamageSource extSource = null;
+		if(damageSource instanceof ExtendedDamageSource)
+		{
+			extSource = (ExtendedDamageSource)damageSource;
+			headshot = extSource.isHeadshot();
+			poiseDamage = extSource.getPoiseDamage();
+			stunType = extSource.getStunType();
+		}
+		
+		// Stun Animation
+		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
+		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
+		StaticAnimation hitAnimation = this.getHitAnimation(stunType);
+		
+		if(hitAnimation != null)
+		{
+			float exTime = 0.2F;
+			this.getAnimator().playAnimation(hitAnimation, exTime);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), this.orgEntity);
+			if(this.orgEntity instanceof ServerPlayer)
+			{
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), (ServerPlayer)this.orgEntity);
+			}
+		}
 	}
 
 	public boolean isBlocking()
@@ -260,49 +325,43 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return item.getUseAnimation(stack) == UseAnim.BLOCK || shield instanceof IShield;
 	}
 
-	public boolean blockingAttack(IExtendedDamageSource damageSource)
+	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking())
-			return false;
-		if (damageSource == null || damageSource instanceof IndirectDamageSourceExtended)
-			return true;
+		if (!this.isBlocking()) return false;
+		if (damageSource == null) return true;
 
-		IShield shield = (IShield) this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
-
+		
 		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		this.playSound(shield.getBlockSound(), 0.8F, 1.0F);
 
-		if (damageSource.getRequiredDeflectionLevel() > shield.getDeflectionLevel())
-			return true;
-
-		LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
-				.orElse(null);
-		if (attackerCap == null)
-			return true;
-
-		StaticAnimation deflectAnimation = attackerCap.getDeflectAnimation();
-		if (deflectAnimation == null)
-			return true;
-
-		float stuntime = 0.0F;
-		attackerCap.getAnimator().playAnimation(deflectAnimation, stuntime);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
-				new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), attacker);
-		if (attacker instanceof ServerPlayer)
+		if (damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
 		{
-			ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap),
-					(ServerPlayer) attacker);
+			LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (attackerCap == null) return true;
+
+			StaticAnimation deflectAnimation = attackerCap.getDeflectAnimation();
+			if (deflectAnimation == null) return true;
+
+			float stuntime = 0.0F;
+			attackerCap.getAnimator().playAnimation(deflectAnimation, stuntime);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), attacker);
+			if (attacker instanceof ServerPlayer)
+			{
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), (ServerPlayer) attacker);
+			}
 		}
 
 		return true;
 	}
 
-	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
+	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
-		return IExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount, requireddeflectionlevel,
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount, requireddeflectionlevel,
 				damageType, poiseDamage, staminaDmg);
 	}
 
@@ -321,7 +380,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return damage;
 	}
 
-	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, IExtendedDamageSource source, float amount)
+	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source, float amount)
 	{
 		boolean succed = hitTarget.hurt((DamageSource) source, amount);
 
@@ -344,7 +403,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return null;
 	}
 
-	public void gatherDamageDealt(IExtendedDamageSource source, float amount)
+	public void gatherDamageDealt(ExtendedDamageSource source, float amount)
 	{
 	}
 

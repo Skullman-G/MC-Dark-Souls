@@ -22,8 +22,8 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
 import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleSpawner;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -83,7 +83,8 @@ public final class Animations
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
 			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
 	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, "biped/combat/jump_back", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_DISARM_SHIELD = new DisarmAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
 	// Big Weapon
 	public static final MirrorAnimation BIPED_HOLDING_BIG_WEAPON = new MirrorAnimation(0.2F, true, true,

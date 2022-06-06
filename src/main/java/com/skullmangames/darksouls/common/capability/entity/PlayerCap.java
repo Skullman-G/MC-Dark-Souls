@@ -12,9 +12,9 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -192,9 +192,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource damageSource, float amount)
+	public boolean hurt(DamageSource damageSource, float amount)
 	{
-		if(super.attackEntityFrom(damageSource, amount))
+		if(super.hurt(damageSource, amount))
 		{
 			this.tickSinceLastAction = 0;
 			return true;
@@ -208,11 +208,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public IExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = weapon != null ? Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul : 4;
-		return IExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
+		return ExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
 	}
 	
 	public void discard()
@@ -229,26 +229,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	@Override
 	public StaticAnimation getHitAnimation(StunType stunType)
 	{
-		if (orgEntity.getControllingPassenger() != null)
-		{
-			return Animations.BIPED_HIT_ON_MOUNT;
-		}
-		else
-		{
-			switch (stunType)
-			{
-				case DEFAULT:
-					return Animations.BIPED_HIT_SHORT;
-					
-				case SMASH_FRONT:
-					return Animations.BIPED_HIT_DOWN_FRONT;
-					
-				case SMASH_BACK:
-					return Animations.BIPED_HIT_DOWN_BACK;
-					
-				default:
-					return null;
-			}
-		}
+		return HumanoidCap.getHumanoidHitAnimation(this, stunType);
 	}
 }

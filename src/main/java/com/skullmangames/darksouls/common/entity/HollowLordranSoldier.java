@@ -41,7 +41,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 17.5D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
+				.add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
 	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level,

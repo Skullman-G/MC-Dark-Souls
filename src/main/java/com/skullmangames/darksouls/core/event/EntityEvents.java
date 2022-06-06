@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
@@ -18,29 +17,22 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -138,73 +130,32 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void hurtEvent(LivingHurtEvent event)
 	{
-		LivingEntity target = event.getEntityLiving();
-		LivingCap<?> targetData = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		
-		float amount = event.getAmount();
-		boolean indirect = event.getSource() instanceof IndirectEntityDamageSource;
-		boolean headshot = false;
-		float poiseDamage = 0.0F;
-		DamageType damageType = DamageType.REGULAR;
-		StunType stunType = StunType.DEFAULT;
-		
-		IExtendedDamageSource extSource = null;
-		if(event.getSource() instanceof IExtendedDamageSource)
+		event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).ifPresent((targetCap) ->
 		{
-			extSource = (IExtendedDamageSource)event.getSource();
-			headshot = extSource.isHeadshot();
-			poiseDamage = extSource.getPoiseDamage();
-			damageType = extSource.getDamageType();
-			stunType = extSource.getStunType();
-		}
-		
-		// Damage Calculation
-		if (!indirect)
-		{
-			Attribute defAttribute = damageType.getDefenseAttribute();
-			amount -= target.getAttribute(defAttribute) != null ? target.getAttributeValue(defAttribute) : 0.0F;
-		}
-		if (extSource != null) extSource.setAmount(amount);
-		if (targetData == null || targetData.blockingAttack(extSource)) return;
-		
-		target.level.playSound(null, target.blockPosition(), ModSoundEvents.GENERIC_HIT.get(), target.getSoundSource(), 1.0F, 1.0F);
-		
-		// Stun Animation
-		boolean poiseBroken = targetData.decreasePoiseDef(poiseDamage);
-		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
-		StaticAnimation hitAnimation = targetData.getHitAnimation(stunType);
-		
-		if(hitAnimation != null)
-		{
-			float exTime = 0.2F;
-			targetData.getAnimator().playAnimation(hitAnimation, exTime);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, target.getId(), exTime), target);
-			if(target instanceof ServerPlayer)
-			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, target.getId(), exTime), (ServerPlayer)target);
-			}
-		}
+			((LivingCap<?>)targetCap).actuallyHurt(event.getSource());
+		});
 	}
 	
 	@SubscribeEvent
 	public static void damageEvent(LivingDamageEvent event)
 	{
-		if (!(event.getSource() instanceof IExtendedDamageSource)) return;
-		event.setAmount(((IExtendedDamageSource)event.getSource()).getAmount());
+		if (!(event.getSource() instanceof ExtendedDamageSource)) return;
+		event.setAmount(((ExtendedDamageSource)event.getSource()).getAmount());
 	}
 	
 	@SubscribeEvent
 	public static void attackEvent(LivingAttackEvent event)
 	{
-		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-
-		if (entityCap != null && !event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
+		event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).ifPresent((targetCap) ->
 		{
-			if (!entityCap.attackEntityFrom(event.getSource(), event.getAmount()))
+			if (!event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
 			{
-				event.setCanceled(true);
+				if (!((LivingCap<?>)targetCap).hurt(event.getSource(), event.getAmount()))
+				{
+					event.setCanceled(true);
+				}
 			}
-		}
+		});
 	}
 	
 	@SubscribeEvent

@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.LongswordCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
+import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
@@ -96,10 +97,10 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new WingedSpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
 		// Shields
-		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, 0.7F, 8, 0, Scaling.D, Scaling.NONE));
-		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.SMALL, 1F, 8, 0, Scaling.D, Scaling.NONE));
-		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, 0.65F, 6, 0, Scaling.D, Scaling.NONE));
-		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, 1F, 11, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, ShieldMat.WOOD, 0.7F, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.SMALL, ShieldMat.METAL, 1F, 8, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, ShieldMat.WOOD, 0.65F, 6, 0, Scaling.D, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, ShieldMat.METAL, 1F, 11, 0, Scaling.D, Scaling.NONE));
 		
 		// Ultra Greatswords
 		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, Scaling.C, Scaling.D));
@@ -179,7 +180,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 					|| configShield.category.get() != WeaponCategory.SHIELD
 					|| configShield.shieldType.get() == ShieldType.NONE) continue;
 			Item item = ForgeRegistries.ITEMS.getValue(name);
-			putCap(new ShieldCap(item, configShield.shieldType.get(), (float)((double)configShield.physicalDefense.get()),
+			putCap(new ShieldCap(item, configShield.shieldType.get(), configShield.shieldMat.get(), (float)((double)configShield.physicalDefense.get()),
 					configShield.requiredStrength.get(), configShield.requiredDex.get(),
 					configShield.strengthScaling.get(), configShield.dexScaling.get()));
 		}

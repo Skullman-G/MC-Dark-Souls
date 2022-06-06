@@ -58,6 +58,27 @@
 		]
 	},
 	
+	"item.shield.wood.block":
+	{
+		"category": "item",
+		"subtitle": "item.shield.block.sub",
+		"sounds":
+		[
+			"darksouls:items/shield/wood/block"
+		]
+	},
+	
+	"item.shield.iron.block":
+	{
+		"category": "item",
+		"subtitle": "item.shield.block.sub",
+		"sounds":
+		[
+			"darksouls:items/shield/iron/block_1",
+			"darksouls:items/shield/iron/block_2"
+		]
+	},
+	
 	"entity.hollow.ambient":
 	{
 		"category": "entity",

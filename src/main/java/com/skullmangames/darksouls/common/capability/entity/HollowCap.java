@@ -90,9 +90,9 @@ public class HollowCap extends HumanoidCap<Hollow>
 			if (category != WeaponCategory.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
 			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
-					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_BARRAGE))
-					.addAttack(new AttackInstance(4, 3.0F, Animations.HOLLOW_OVERHEAD_SWING))
+					.addAttack(new AttackInstance(2, 3.0F, Animations.HOLLOW_LIGHT_ATTACKS))
+					.addAttack(new AttackInstance(2, 3.0F, Animations.HOLLOW_BARRAGE))
+					.addAttack(new AttackInstance(2, 3.0F, Animations.HOLLOW_OVERHEAD_SWING))
 					.addAttack(new AttackInstance(5, 4.0F, 5.0F, Animations.HOLLOW_JUMP_ATTACK)));
 			this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
 		}

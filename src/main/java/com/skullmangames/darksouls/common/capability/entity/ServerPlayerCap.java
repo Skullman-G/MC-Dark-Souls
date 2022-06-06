@@ -13,7 +13,9 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -156,23 +158,16 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	}
 
 	@Override
-	public boolean blockingAttack(IExtendedDamageSource damageSource)
+	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking())
-			return false;
-		else if (this.isCreativeOrSpectator())
-			return super.blockingAttack(damageSource);
+		if (!this.isBlocking()) return false;
+		if (damageSource == null) return true;
+		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
-		if (this.getStamina() > 0.0F)
-			return super.blockingAttack(damageSource);
-
-		this.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get(), 1.0F, 1.0F);
-
-		StaticAnimation disarmAnimation = Animations.BIPED_DISARM_SHIELD;
-		this.animator.playAnimation(disarmAnimation, 0.0F);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(
-				new STCPlayAnimation(disarmAnimation, this.orgEntity.getId(), 0.0F), this.orgEntity);
+		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
+		
+		damageSource.setStunType(StunType.DISARMED);
 		return true;
 	}
 

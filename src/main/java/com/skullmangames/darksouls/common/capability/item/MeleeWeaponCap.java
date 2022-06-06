@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.sounds.SoundEvent;
@@ -116,6 +117,12 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	public Collider getWeaponCollider()
 	{
 		return Colliders.FIST;
+	}
+	
+	@Override
+	public SoundEvent getBlockSound()
+	{
+		return ModSoundEvents.IRON_SHIELD_BLOCK.get(); // TODO: Add weapon block sound
 	}
 
 	@Override

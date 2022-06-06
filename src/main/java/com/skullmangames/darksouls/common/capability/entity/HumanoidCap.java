@@ -9,7 +9,9 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -73,11 +75,33 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 	
 	@Override
+	public boolean blockingAttack(ExtendedDamageSource damageSource)
+	{
+		if (!this.isBlocking()) return false;
+		if (damageSource == null) return true;
+
+		this.increaseStamina(-damageSource.getStaminaDamage());
+		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
+		
+		damageSource.setStunType(StunType.DISARMED);
+		return true;
+	}
+	
+	@Override
 	public StaticAnimation getHitAnimation(StunType stunType)
 	{
-		if (orgEntity.getControllingPassenger() != null)
+		return getHumanoidHitAnimation(this, stunType);
+	}
+	
+	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, StunType stunType)
+	{
+		if (entityCap.getOriginalEntity().getControllingPassenger() != null)
 		{
 			return Animations.BIPED_HIT_ON_MOUNT;
+		}
+		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
+		{
+			return null; // TODO: Add block hit animation
 		}
 		else
 		{
@@ -85,6 +109,9 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			{
 				case DEFAULT:
 					return Animations.BIPED_HIT_SHORT;
+					
+				case DISARMED:
+					return Animations.BIPED_DISARM_SHIELD;
 					
 				case SMASH_FRONT:
 					return Animations.BIPED_HIT_DOWN_FRONT;

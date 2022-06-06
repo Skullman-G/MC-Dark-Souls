@@ -28,9 +28,9 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.entity.Entity;
@@ -150,7 +150,7 @@ public class AttackAnimation extends ActionAnimation
 							{
 
 								float amount = this.getDamageAmount(entityCap, e, phase);
-								IExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
+								ExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
 								
 								if (entityCap.hurtEntity(e, phase.hand, source, amount))
 								{
@@ -278,13 +278,13 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(entityCap.getWeaponHitSound(phase.hand));
 	}
 
-	protected IExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Entity target, Phase phase, float amount)
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Entity target, Phase phase, float amount)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.DEFAULT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
 		float poiseDamage = (float) entityCap.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
 		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
-		IExtendedDamageSource extDmgSource = entityCap.getDamageSource(staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 

@@ -13,12 +13,14 @@ public class ShieldCap extends MeleeWeaponCap
 {
 	private final float physicalDefense;
 	private final ShieldType shieldType;
+	private final ShieldMat shieldMat;
 	
-	public ShieldCap(Item item, ShieldType shieldType, float physicalDefense, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDefense, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
 	{
 		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
 		this.physicalDefense = Math.min(physicalDefense, 1F);
 		this.shieldType = shieldType;
+		this.shieldMat = shieldMat;
 	}
 	
 	@Override
@@ -51,5 +53,21 @@ public class ShieldCap extends MeleeWeaponCap
 	public SoundEvent getSwingSound()
 	{
 		return ModSoundEvents.FIST_SWING.get();
+	}
+
+	@Override
+	public SoundEvent getBlockSound()
+	{
+		switch(this.shieldMat)
+		{
+			default:
+			case WOOD: return ModSoundEvents.WOODEN_SHIELD_BLOCK.get();
+			case METAL: return ModSoundEvents.IRON_SHIELD_BLOCK.get();
+		}
+	}
+	
+	public enum ShieldMat
+	{
+		WOOD, METAL
 	}
 }

@@ -44,6 +44,9 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> GENERIC_ROLL = registerSound("entity.generic.roll");
 	
 	public static final RegistryObject<SoundEvent> PLAYER_SHIELD_DISARMED = registerSound("entity.player.shield_disarmed");
+	
+	public static final RegistryObject<SoundEvent> WOODEN_SHIELD_BLOCK = registerSound("item.shield.wood.block");
+	public static final RegistryObject<SoundEvent> IRON_SHIELD_BLOCK = registerSound("item.shield.iron.block");
 
 	
 	private static RegistryObject<SoundEvent> registerSound(String name)

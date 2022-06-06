@@ -6,6 +6,7 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 
@@ -48,6 +49,7 @@ public class ConfigManager
 			server.defineEnum(shieldKey+".sample_shield.strengthScaling", Scaling.NONE);
 			server.defineEnum(shieldKey+".sample_shield.dexScaling", Scaling.NONE);
 			server.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
+			server.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
 			server.defineInRange(shieldKey+".sample_shield.physicalDefense", 0.0F, 0.0F, 1.0F);
 		}
 		
