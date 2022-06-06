@@ -42,6 +42,11 @@ public class ClientAnimator extends Animator
 		this.defaultLivingAnimations = new HashMap<>();
 		this.baseLayer = new AnimationLayer.BaseLayer();
 	}
+	
+	public boolean isMotionActive(LivingMotion motion)
+	{
+		return this.currentMotion == motion || this.currentMixMotions.containsValue(motion);
+	}
 
 	@Override
 	public void playAnimation(StaticAnimation nextAnimation, float convertTimeModifier)
@@ -80,7 +85,11 @@ public class ClientAnimator extends Animator
 	public void resetMotions()
 	{
 		super.resetMotions();
-		this.defaultLivingAnimations.forEach(this.livingAnimations::put);
+		this.defaultLivingAnimations.forEach((motion, animation) ->
+		{
+			this.livingAnimations.put(motion, animation);
+			if (this.isMotionActive(motion)) this.playAnimation(animation, 0.0F);
+		});
 	}
 
 	public StaticAnimation getLivingMotion(LivingMotion motion, LayerPart part)

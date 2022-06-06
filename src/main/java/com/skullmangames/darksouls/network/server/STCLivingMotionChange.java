@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -49,15 +48,10 @@ public class STCLivingMotionChange
 		this.setChangesAsDefault = setChangesAsDefault;
 	}
 
-	public STCLivingMotionChange putPair(LivingMotion motion, StaticAnimation animation)
+	public STCLivingMotionChange put(LivingMotion motion, StaticAnimation animation)
 	{
-		return this.putPair(Pair.of(motion, animation));
-	}
-
-	public STCLivingMotionChange putPair(Pair<LivingMotion, StaticAnimation> pair)
-	{
-		this.motionList.add(pair.getFirst());
-		this.animationList.add(pair.getSecond());
+		this.motionList.add(motion);
+		this.animationList.add(animation);
 		this.count++;
 		return this;
 	}
@@ -121,15 +115,17 @@ public class STCLivingMotionChange
 
 			if (entity != null)
 			{
-				LivingCap<?> entitypatch = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
-						.orElse(null);
-				ClientAnimator animator = entitypatch.getClientAnimator();
+				LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+				ClientAnimator animator = entityCap.getClientAnimator();
 				animator.resetMotions();
 				animator.resetCompositeMotion();
 
 				for (int i = 0; i < msg.count; i++)
 				{
-					entitypatch.getClientAnimator().addLivingAnimation(msg.motionList.get(i), msg.animationList.get(i));
+					LivingMotion motion = msg.motionList.get(i);
+					StaticAnimation animation = msg.animationList.get(i);
+					animator.addLivingAnimation(motion, animation);
+					if (animator.isMotionActive(motion)) animator.playAnimation(animation, 0.0F);
 				}
 
 				if (msg.setChangesAsDefault)
