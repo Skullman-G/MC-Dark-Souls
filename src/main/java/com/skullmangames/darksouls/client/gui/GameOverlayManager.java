@@ -228,7 +228,7 @@ public class GameOverlayManager
 	private static void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
-		int x = width / 2 - 91;
+		int x = width / 2 - 96;
 		int y = height - 39;
 		gui.left_height += 10;
 		
@@ -300,7 +300,7 @@ public class GameOverlayManager
 		
 		RenderSystem.enableBlend();
 		int y = height - 39;
-		int x = width / 2 + 3;
+		int x = width / 2 + 7;
 		gui.right_height += 10;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);

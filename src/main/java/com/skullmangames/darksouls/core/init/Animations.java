@@ -66,12 +66,13 @@ public final class Animations
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
 
-	public static final StaticAnimation BIPED_CROSSBOW_AIM = new AimingAnimation(0.16F, false, "biped/combat/crossbow_aim_mid", "biped/combat/crossbow_aim_up", "biped/combat/crossbow_aim_down", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_CROSSBOW_AIM = new AimingAnimation(0.16F, true, "biped/combat/crossbow_aim_mid", "biped/combat/crossbow_aim_up", "biped/combat/crossbow_aim_down", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_CROSSBOW_SHOT = new ReboundAnimation(0.16F, false, "biped/combat/crossbow_shot_mid", "biped/combat/crossbow_shot_up", "biped/combat/crossbow_shot_down", (models) -> models.ENTITY_BIPED);
 
-	public static final StaticAnimation BIPED_CROSSBOW_RELOAD = new StaticAnimation(0.16F, false, "biped/combat/crossbow_reload", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_CROSSBOW_RELOAD = new StaticAnimation(0.16F, false, "biped/combat/crossbow_reload", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
 
-	public static final StaticAnimation BIPED_BOW_AIM = new AimingAnimation(0.16F, false, "biped/combat/bow_aim_mid", "biped/combat/bow_aim_up", "biped/combat/bow_aim_down", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_BOW_AIM = new AimingAnimation(0.16F, true, "biped/combat/bow_aim_mid", "biped/combat/bow_aim_up", "biped/combat/bow_aim_down", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_BOW_REBOUND = new ReboundAnimation(0.04F, false, "biped/combat/bow_shot_mid", "biped/combat/bow_shot_up", "biped/combat/bow_shot_down", (models) -> models.ENTITY_BIPED);
 
 	public static final StaticAnimation BIPED_SPEER_AIM = new AimingAnimation(0.16F, false, "biped/combat/javelin_aim_mid", "biped/combat/javelin_aim_up", "biped/combat/javelin_aim_down", (models) -> models.ENTITY_BIPED);

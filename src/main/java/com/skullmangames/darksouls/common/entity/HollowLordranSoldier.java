@@ -68,6 +68,8 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
+		percentage = 91;
+		
 		if (percentage <= 75)
 		{
 			if (slot == EquipmentSlot.MAINHAND)

@@ -61,6 +61,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 	private void move(LivingEntity target)
 	{
 		if (this.mobdata.isInaction() || (this.targetPos != Vec3.ZERO && target.distanceToSqr(this.targetPos) <= 1.0D)) return;
+		this.mob.getLookControl().setLookAt(target);
 		this.targetPos = target.position();
 		Path path = this.mob.getNavigation().createPath(target, 8);
 		this.mob.getNavigation().moveTo(path, 1.0D);
@@ -72,11 +73,11 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 		if (this.crossbowState == CrossbowState.UNCHARGED)
 		{
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_RELOAD, mob.getId(), 0.0F), mob);
-			this.mob.startUsingItem(
-					ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
+			this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
 			this.crossbowState = CrossbowState.CHARGING;
 			this.mob.setChargingCrossbow(true);
-		} else if (this.crossbowState == CrossbowState.CHARGING)
+		}
+		else if (this.crossbowState == CrossbowState.CHARGING)
 		{
 			if (!this.mob.isUsingItem())
 			{
@@ -89,12 +90,12 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 			{
 				this.mob.releaseUsingItem();
 				this.crossbowState = CrossbowState.CHARGED;
-				this.attackCooldown = 10;
+				this.attackCooldown = 20;
 				this.mob.setChargingCrossbow(false);
 			}
-		} else if (this.crossbowState == CrossbowState.CHARGED)
+		}
+		else if (this.crossbowState == CrossbowState.CHARGED)
 		{
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_AIM, mob.getId(), 0.0F), mob);
 			--this.attackCooldown;
 			if (this.attackCooldown == 0)
 			{

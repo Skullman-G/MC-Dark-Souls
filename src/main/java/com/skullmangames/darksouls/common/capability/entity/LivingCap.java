@@ -48,6 +48,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
@@ -191,33 +192,52 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		} else if (orgEntity.getVehicle() != null)
 		{
 			currentMotion = LivingMotion.MOUNT;
-		} else
+		}
+		else
 		{
 			if (orgEntity.getDeltaMovement().y < -0.55F)
 			{
 				currentMotion = LivingMotion.FALL;
-			} else if (orgEntity.animationSpeed > 0.01F)
+			}
+			else if (orgEntity.animationSpeed > 0.01F)
 			{
 				if (this.orgEntity.isSprinting())
 					this.currentMotion = LivingMotion.RUNNING;
 				else
 					this.currentMotion = LivingMotion.WALKING;
-			} else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+			}
+			else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
 			{
 				this.currentMotion = LivingMotion.BLOCKING;
-			} else
+			}
+			else
 			{
 				currentMotion = LivingMotion.IDLE;
 			}
 		}
+		
+		boolean leftChanged = false;
+		boolean rightChanged = false;
 		
 		if (this.currentMotion != LivingMotion.BLOCKING && this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
 			this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (layerPart == LayerPart.LEFT) leftChanged = true;
+			else rightChanged = true;
 		}
-		else for (LayerPart layerPart : LayerPart.compositeLayers()) this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+		
+		if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
+		{
+			this.currentMixMotions.put(LayerPart.UP, LivingMotion.AIMING);
+			leftChanged = true;
+			rightChanged = true;
+		}
+		
+		if (!leftChanged) this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
+		if (!rightChanged) this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
+		if (!leftChanged && !rightChanged) this.currentMixMotions.put(LayerPart.UP, LivingMotion.NONE);
 	}
 
 	public void cancelUsingItem()
