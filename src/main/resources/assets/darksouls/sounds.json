@@ -79,6 +79,16 @@
 		]
 	},
 	
+	"item.sword.block":
+	{
+		"category": "item",
+		"subtitle": "item.sword.block.sub",
+		"sounds":
+		[
+			"darksouls:items/sword/block"
+		]
+	},
+	
 	"entity.hollow.ambient":
 	{
 		"category": "entity",

@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.world.entity.Entity;

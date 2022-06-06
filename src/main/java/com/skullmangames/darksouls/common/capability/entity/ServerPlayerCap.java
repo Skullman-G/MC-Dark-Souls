@@ -15,7 +15,6 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;

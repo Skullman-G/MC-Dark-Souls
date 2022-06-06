@@ -47,6 +47,7 @@ public class ModSoundEvents
 	
 	public static final RegistryObject<SoundEvent> WOODEN_SHIELD_BLOCK = registerSound("item.shield.wood.block");
 	public static final RegistryObject<SoundEvent> IRON_SHIELD_BLOCK = registerSound("item.shield.iron.block");
+	public static final RegistryObject<SoundEvent> WEAPON_BLOCK = registerSound("item.sword.block");
 
 	
 	private static RegistryObject<SoundEvent> registerSound(String name)

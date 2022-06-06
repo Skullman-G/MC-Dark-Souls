@@ -122,7 +122,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	@Override
 	public SoundEvent getBlockSound()
 	{
-		return ModSoundEvents.IRON_SHIELD_BLOCK.get(); // TODO: Add weapon block sound
+		return ModSoundEvents.WEAPON_BLOCK.get();
 	}
 
 	@Override

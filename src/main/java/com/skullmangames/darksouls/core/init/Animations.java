@@ -262,14 +262,14 @@ public final class Animations
 	// Straight Sword
 	public static final AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK = new AttackAnimation[]
 	{ 		
-			new AttackAnimation(0.2F, 0.0F, 0.35F, 0.45F, 1.25F, "Tool_R", "biped/combat/straight_sword_light_attack_1", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.24F, 0.45F, 1.0F, "Tool_R", "biped/combat/straight_sword_light_attack_1", (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
-			new AttackAnimation(0.2F, 0.0F, 0.15F, 0.3F, 1.25F, "Tool_R", "biped/combat/straight_sword_light_attack_2", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.08F, 0.3F, 1.25F, "Tool_R", "biped/combat/straight_sword_light_attack_2", (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 	};
-	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.56F, 0.8F, 1.5F, "Tool_R", "biped/combat/straight_sword_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.SLASH)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
