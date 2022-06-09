@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -37,6 +38,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_CROSSBOW_AIM);
+		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -44,6 +46,8 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
+		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
+		
 		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
 		{
 			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));

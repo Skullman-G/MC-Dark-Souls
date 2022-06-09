@@ -219,11 +219,42 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		boolean leftChanged = false;
 		boolean rightChanged = false;
 		
-		if (this.currentMotion != LivingMotion.BLOCKING && this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+		if (this.orgEntity.getUseItemRemainingTicks() != 0)
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-			this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			else
+			{
+				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+				switch (useAction)
+				{
+					case BOW:
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						break;
+						
+					case CROSSBOW:
+						this.currentMixMotions.put(layerPart, LivingMotion.RELOADING);
+						break;
+						
+					case SPEAR:
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						break;
+						
+					case DRINK:
+						this.currentMixMotions.put(layerPart, LivingMotion.DRINKING);
+						break;
+						
+					case EAT:
+						this.currentMixMotions.put(layerPart, LivingMotion.EATING);
+						break;
+						
+					default:
+						this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+						break;
+				}
+			}
+			
 			if (layerPart == LayerPart.LEFT) leftChanged = true;
 			else rightChanged = true;
 		}

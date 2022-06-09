@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 public class AttackPatternGoal extends Goal
 {
 	protected final Mob attacker;
-	protected final MobCap<?> mobdata;
+	protected final MobCap<?> mobCap;
 	protected final float minDist;
 	protected final int yDist;
 	protected final boolean affectHorizon;
@@ -44,8 +44,8 @@ public class AttackPatternGoal extends Goal
 	
 	public AttackPatternGoal(MobCap<?> mobdata, float minDist, int yDist, boolean affectHorizon, StaticAnimation dodge)
 	{
-		this.mobdata = mobdata;
-		this.attacker = this.mobdata.getOriginalEntity();
+		this.mobCap = mobdata;
+		this.attacker = this.mobCap.getOriginalEntity();
 		this.minDist = minDist * minDist;
 		this.yDist = yDist;
 		this.affectHorizon = affectHorizon;
@@ -87,7 +87,7 @@ public class AttackPatternGoal extends Goal
     
     protected boolean canExecuteAttack()
     {
-    	return !this.mobdata.isInaction() && this.mobdata.getEntityState().getContactLevel() != 3;
+    	return !this.mobCap.isInaction() && this.mobCap.getEntityState().getContactLevel() != 3;
     }
     
     protected boolean canExecuteComboAttack()
@@ -95,7 +95,7 @@ public class AttackPatternGoal extends Goal
     	return this.combo > 0
     			&& this.currentAttack > -1
     			&& this.attacks.get(this.currentAttack).isValidRange(this.getTargetRange(this.attacker.getTarget()))
-    			&& this.mobdata.getEntityState().getContactLevel() == 3;
+    			&& this.mobCap.getEntityState().getContactLevel() == 3;
     }
     
     @Override
@@ -116,7 +116,7 @@ public class AttackPatternGoal extends Goal
     		double targetRange = this.getTargetRange(this.attacker.getTarget());
     		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean())
     		{
-    			this.mobdata.playAnimationSynchronized(this.dodge, 0);
+    			this.mobCap.playAnimationSynchronized(this.dodge, 0);
     	    	this.dodgeTime = 3;
     	    	return;
     		}
@@ -130,7 +130,7 @@ public class AttackPatternGoal extends Goal
     	
     	if (attack == null) return;
     	
-        attack.performAttack(this.mobdata, this.combo);
+        attack.performAttack(this.mobCap, this.combo);
         this.currentAttack = this.attacks.indexOf(attack);
         if (attack.animation.length > 1) this.combo = this.combo + 1 >= attack.animation.length ? 0 : this.combo + 1;
         this.dodgeTime--;

@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -41,6 +42,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
+		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
 		this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
