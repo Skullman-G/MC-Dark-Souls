@@ -18,6 +18,7 @@ public class DrinkingEstusGoal extends Goal
 	private final Mob mob;
 	private final ItemStack estusFlask;
 	private ItemStack prevItem;
+	private int recovery;
 
 	public DrinkingEstusGoal(MobCap<?> mobCap)
 	{
@@ -32,13 +33,14 @@ public class DrinkingEstusGoal extends Goal
 
 	public boolean canUse()
 	{
-		return !this.mobCap.isInaction() && EstusFlaskItem.getUses(this.estusFlask) > 0 && this.mob.getHealth() < this.mob.getMaxHealth()
+		return !this.mobCap.isInaction() && EstusFlaskItem.getUses(this.estusFlask) > 0
+				&& (this.mob.getHealth() / this.mob.getMaxHealth()) < 0.5F
 				&& (this.mob.getTarget() == null || this.mob.distanceToSqr(this.mob.getTarget().position()) >= 50);
 	}
 
 	public boolean canContinueToUse()
 	{
-		return this.mob.isUsingItem();
+		return this.mob.isUsingItem() || --this.recovery > 0;
 	}
 
 	public void start()
@@ -46,6 +48,12 @@ public class DrinkingEstusGoal extends Goal
 		this.prevItem = this.mob.getItemBySlot(EquipmentSlot.MAINHAND);
 		this.mob.setItemSlot(EquipmentSlot.MAINHAND, this.estusFlask);
 		this.mob.startUsingItem(InteractionHand.MAIN_HAND);
+	}
+	
+	@Override
+	public void tick()
+	{
+		if (this.mob.getUseItemRemainingTicks() < 10 && this.mob.getUseItemRemainingTicks() > 0) this.recovery = 5;
 	}
 
 	public void stop()
