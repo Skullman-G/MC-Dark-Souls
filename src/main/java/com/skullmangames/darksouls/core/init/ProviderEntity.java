@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.capability.entity.HollowCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranWarriorCap;
 import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 
@@ -39,7 +40,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), (entity) -> HollowLordranSoldierCap::new);
 		CAPABILITIES.put(ModEntities.STRAY_DEMON.get(), (entity) -> StrayDemonCap::new);
 		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidCap::new);
-		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> SimpleHumanoidCap::new);
+		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> AnastaciaOfAstoraCap::new);
 		CAPABILITIES.put(ModEntities.FIRE_KEEPER.get(), (entity) -> FireKeeperCap::new);
 	}
 	

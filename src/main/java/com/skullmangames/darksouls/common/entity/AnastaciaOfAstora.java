@@ -7,16 +7,24 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class AnastaciaOfAstora extends FireKeeper
+public class AnastaciaOfAstora extends AbstractFireKeeper
 {
 	public AnastaciaOfAstora(EntityType<? extends QuestEntity> entity, Level level)
 	{
 		super(entity, level);
+	}
+	
+	public static AttributeSupplier.Builder createAttributes()
+	{
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.0D);
 	}
 	
 	@Override

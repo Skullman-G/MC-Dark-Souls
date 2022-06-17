@@ -2,10 +2,10 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.entity.FireKeeper;
+import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 import com.skullmangames.darksouls.core.init.Animations;
 
-public class FireKeeperCap extends HumanoidCap<FireKeeper>
+public class FireKeeperCap extends HumanoidCap<AbstractFireKeeper>
 {
 	@Override
 	public void updateMotion()

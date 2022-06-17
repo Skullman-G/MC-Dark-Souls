@@ -474,6 +474,9 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
+	
+	// Anastacia of Astora
+	public static final StaticAnimation ANASTACIA_IDLE = new StaticAnimation(0.4F, true, "anastacia_of_astora/idle", (models) -> models.ENTITY_BIPED);
 
 	@OnlyIn(Dist.CLIENT)
 	public static void buildClient() {}
