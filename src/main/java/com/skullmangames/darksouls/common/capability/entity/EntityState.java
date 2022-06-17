@@ -13,7 +13,6 @@ public enum EntityState
 	private boolean collisionDetection;
 	private boolean invincible;
 	private boolean canAct;
-	private boolean blocking;
 	// none : 0, preContact : 1, contact : 2, postContact : 3
 	int contactLevel;
 
@@ -26,11 +25,6 @@ public enum EntityState
 		this.invincible = invincible;
 		this.canAct = canAct;
 		this.contactLevel = level;
-	}
-	
-	public boolean isBlocking()
-	{
-		return this.blocking;
 	}
 
 	public boolean isMovementLocked()

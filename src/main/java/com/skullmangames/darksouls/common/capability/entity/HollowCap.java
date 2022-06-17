@@ -5,10 +5,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
-import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
-import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
-import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -88,13 +86,12 @@ public class HollowCap extends HumanoidCap<Hollow>
 		else
 		{
 			if (category != WeaponCategory.STRAIGHT_SWORD) return;
-			this.orgEntity.goalSelector.addGoal(2, new ChasingGoal(this, false));
-			this.orgEntity.goalSelector.addGoal(1, new AttackPatternGoal(this, 0.0F, true, Animations.BIPED_JUMP_BACK)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
-					.addAttack(new AttackInstance(5, 4.0F, 5.0F, Animations.HOLLOW_JUMP_ATTACK)));
-			this.orgEntity.goalSelector.addGoal(0, new StrafingGoal(this));
+					.addAttack(new AttackInstance(5, 4.0F, 5.0F, Animations.HOLLOW_JUMP_ATTACK))
+					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}
 

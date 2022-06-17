@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.animation;
 
+import java.util.function.Supplier;
+
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
@@ -44,8 +46,8 @@ public abstract class Property<T>
 		public static final AttackProperty<Deflection> DEFLECTION = new AttackProperty<Deflection>();
 		public static final AttackProperty<Integer> STAMINA_DMG_MUL = new AttackProperty<Integer>();
 
-		public static final AttackProperty<SoundEvent> SWING_SOUND = new AttackProperty<SoundEvent>();
-		public static final AttackProperty<SoundEvent> HIT_SOUND = new AttackProperty<SoundEvent>();
+		public static final AttackProperty<Supplier<SoundEvent>> SWING_SOUND = new AttackProperty<Supplier<SoundEvent>>();
+		public static final AttackProperty<Supplier<SoundEvent>> HIT_SOUND = new AttackProperty<Supplier<SoundEvent>>();
 
 		public static final AttackProperty<ParticleSpawner> PARTICLE = new AttackProperty<ParticleSpawner>();
 

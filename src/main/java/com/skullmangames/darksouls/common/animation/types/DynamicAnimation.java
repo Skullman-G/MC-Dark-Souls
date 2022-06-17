@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
@@ -188,6 +189,11 @@ public class DynamicAnimation
 	}
 
 	public <V> Optional<V> getProperty(Property<V> propertyType)
+	{
+		return Optional.empty();
+	}
+	
+	public <V> Optional<V> getPropertyByTime(AttackProperty<V> propertyType, float elapsedTime)
 	{
 		return Optional.empty();
 	}

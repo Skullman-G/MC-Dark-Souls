@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
@@ -82,6 +83,9 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
+		
+		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
 		
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();

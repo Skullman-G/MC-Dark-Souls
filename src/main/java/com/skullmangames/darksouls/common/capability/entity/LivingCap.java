@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
@@ -377,8 +378,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isBlocking()
 	{
-		EntityState entitystate = this.getEntityState();
-		if (entitystate.isBlocking()) return true;
+		if (this.animator.getMainPlayer().getPlay().getPropertyByTime(AttackProperty.BLOCKING, this.animator.getMainPlayer().getElapsedTime()).orElse(false)) return true;
 		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();

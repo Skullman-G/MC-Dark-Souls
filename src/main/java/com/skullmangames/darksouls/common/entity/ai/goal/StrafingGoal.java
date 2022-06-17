@@ -15,24 +15,30 @@ public class StrafingGoal extends Goal
 {
 	protected final MobCap<?> mobdata;
 	protected final Mob mob;
+	private int strafingTime;
+	private float dir;
 	
-	public StrafingGoal(MobCap<?> mobdata)
+	private int time;
+	private int defaultTime;
+	
+	public StrafingGoal(MobCap<?> mobdata, int defaultTime)
 	{
 		this.mobdata = mobdata;
 		this.mob = mobdata.getOriginalEntity();
+		this.defaultTime = defaultTime;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 	
 	@Override
 	public boolean canUse()
 	{
-		return this.mob.getTarget() != null && !this.mobdata.isInaction() && this.mobdata.getStamina() <= 5F;
+		return this.mob.getTarget() != null && !this.mobdata.isInaction() && this.mob.distanceTo(this.mob.getTarget()) <= 5 && this.mob.getRandom().nextBoolean();
 	}
 	
 	@Override
 	public boolean canContinueToUse()
 	{
-		return this.mob.getTarget() != null && this.mobdata.getStamina() < 10F;
+		return this.mob.getTarget() != null && !this.mobdata.isInaction() && this.mob.distanceTo(this.mob.getTarget()) <= 5 && --this.time > 0;
 	}
 	
 	@Override
@@ -40,6 +46,8 @@ public class StrafingGoal extends Goal
 	{
 		if (ModCapabilities.getItemCapability(this.mob.getOffhandItem()) instanceof IShield)
 			this.mob.startUsingItem(InteractionHand.OFF_HAND);
+		
+		this.time = this.defaultTime;
 	}
 	
 	@Override
@@ -52,8 +60,25 @@ public class StrafingGoal extends Goal
 	public void tick()
 	{
 		LivingEntity target = this.mob.getTarget();
+		double targetDist = this.mob.distanceTo(target);
 		this.mobdata.rotateTo(target, 60, false);
-		double targetDist = this.mob.distanceToSqr(target);
-		if (targetDist <= 20F) this.mob.getMoveControl().strafe(-1, 0);
+		
+		if (this.time < 10)
+		{
+			if (targetDist > 2F) this.mob.getMoveControl().strafe(1, 0);
+		}
+		else
+		{
+			if (targetDist <= 3F) this.mob.getMoveControl().strafe(-1, 0);
+			else
+			{
+				if (--this.strafingTime <= 0)
+				{
+					this.strafingTime = 40;
+					this.dir = this.dir > 0 ? -0.4F : 0.4F;
+				}
+				this.mob.getMoveControl().strafe(0, this.dir);
+			}
+		}
 	}
 }
