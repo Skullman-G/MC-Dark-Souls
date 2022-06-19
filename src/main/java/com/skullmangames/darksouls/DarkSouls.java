@@ -4,12 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.fml.config.ModConfig;
 
 import java.util.function.Function;
@@ -61,6 +64,7 @@ import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
+import com.skullmangames.darksouls.core.util.QuestFlags;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModStructures;
@@ -108,6 +112,7 @@ public class DarkSouls
 		else Models.SERVER.buildArmatureData();
 
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+		
 		modBus.addListener(this::doCommonStuff);
 		modBus.addListener(this::doClientStuff);
 		modBus.addListener(this::doServerStuff);
@@ -115,7 +120,9 @@ public class DarkSouls
 		modBus.addListener(ModAttributes::modifyAttributeMap);
 
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-
+		
+		modBus.addGenericListener(DataSerializerEntry.class, this::registerDataSerializers);
+		
 		ModAttributes.ATTRIBUTES.register(modBus);
 		ModSoundEvents.SOUND_EVENTS.register(modBus);
 		ModBlocks.BLOCKS.register(modBus);
@@ -138,6 +145,11 @@ public class DarkSouls
 		ConfigManager.INGAME_CONFIG.populateDefaultValues();
 		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
+	}
+	
+	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)
+	{
+		event.getRegistry().register(new DataSerializerEntry(QuestFlags.SERIALIZER).setRegistryName(new ResourceLocation(MOD_ID, "quest_flags")));
 	}
 
 	private void doServerStuff(final FMLDedicatedServerSetupEvent event)

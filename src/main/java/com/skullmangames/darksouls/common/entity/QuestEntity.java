@@ -1,8 +1,15 @@
 package com.skullmangames.darksouls.common.entity;
 
-import com.skullmangames.darksouls.core.util.timer.ChatRenderTimer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.skullmangames.darksouls.core.util.QuestFlags;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,18 +24,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
 
 public class QuestEntity extends PathfinderMob
 {
-	protected boolean[] questFlags;
-	protected final ChatRenderTimer chatTimer = new ChatRenderTimer();
+	protected static final EntityDataAccessor<QuestFlags> DATA_QUEST_FLAGS = SynchedEntityData.defineId(QuestEntity.class, QuestFlags.SERIALIZER);
 
 	public QuestEntity(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
-		MinecraftForge.EVENT_BUS.register(this.chatTimer);
 	}
+	
+	public void onFinishChat(ServerPlayer player, String location) {}
 	
 	@Override
 	public boolean canBeCollidedWith()
@@ -46,7 +52,6 @@ public class QuestEntity extends PathfinderMob
 	{
 		data = super.finalizeSpawn(level, difficulty, type, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
-		
 		return data;
 	}
 
@@ -72,30 +77,42 @@ public class QuestEntity extends PathfinderMob
 	{
 		return Items.AIR;
 	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(DATA_QUEST_FLAGS, new QuestFlags());
+	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt)
 	{
 		super.addAdditionalSaveData(nbt);
-		
-		byte questFlagsByte = 0;
-		for (int i = 0; i < this.questFlags.length; i++)
-		{
-			if (this.questFlags[i]) questFlagsByte |= 1 << i;
-		}
-		nbt.putByte("QuestFlags", questFlagsByte);
+		this.entityData.get(DATA_QUEST_FLAGS).save(nbt);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt)
 	{
 		super.readAdditionalSaveData(nbt);
-		
-		byte questFlagsByte = nbt.getByte("QuestFlags");
-		for (int i = 0; i < this.questFlags.length; i++)
+		Map<UUID, Byte> questFlags = new HashMap<>();
+		for (String s : nbt.getAllKeys())
 		{
-			this.questFlags[i] = (questFlagsByte & (1 << i)) != 0;
+			if (s.contains("QuestFlags")) questFlags.put(UUID.fromString(s.substring(10)), nbt.getByte(s));
 		}
+		this.entityData.set(DATA_QUEST_FLAGS, new QuestFlags(questFlags));
+	}
+	
+	protected void setQuestFlag(UUID entity, int index, boolean value)
+	{
+		QuestFlags q = this.entityData.get(DATA_QUEST_FLAGS);
+		this.entityData.set(DATA_QUEST_FLAGS, q.setFlag(entity, index, value));
+	}
+	
+	protected boolean getQuestFlag(UUID entity, int index)
+	{
+		return this.entityData.get(DATA_QUEST_FLAGS).getFlag(entity, index);
 	}
 	
 	@Override

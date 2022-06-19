@@ -22,7 +22,6 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	public AbstractFireKeeper(EntityType<? extends QuestEntity> entity, Level level)
 	{
 		super(entity, level);
-		this.questFlags = new boolean[1];
 	}
 
 	private void linkBonfire(BlockPos blockpos)

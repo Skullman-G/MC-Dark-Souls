@@ -2,7 +2,10 @@ package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCNPCChat;
+import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -17,6 +20,8 @@ import net.minecraft.world.level.Level;
 
 public class AnastaciaOfAstora extends AbstractFireKeeper
 {
+	private static final String DIALOGUE_0 = "dialogue.darksouls.anastacia_of_astora.0";
+	
 	public AnastaciaOfAstora(EntityType<? extends QuestEntity> entity, Level level)
 	{
 		super(entity, level);
@@ -28,12 +33,22 @@ public class AnastaciaOfAstora extends AbstractFireKeeper
 	}
 	
 	@Override
+	public void onFinishChat(ServerPlayer player, String location)
+	{
+		switch(location)
+		{
+			case DIALOGUE_0:
+				ModNetworkManager.sendToPlayer(new STCOpenFireKeeperScreen(this.getId()), player);
+				break;
+		}
+	}
+	
+	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		if (player.level.isClientSide && !this.chatTimer.isTicking())
+		if (!player.level.isClientSide)
 		{
-			String[] sentences = { "..." };
-			this.chatTimer.start(60, (time) -> ModNetworkManager.connection.openFireKeeperScreen(this.getId()), sentences);
+			ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayer)player);
 		}
 
 		return InteractionResult.sidedSuccess(player.level.isClientSide);

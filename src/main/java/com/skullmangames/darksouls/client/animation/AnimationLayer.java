@@ -217,8 +217,7 @@ public class AnimationLayer
 		public LayerPart[] otherCompositeLayers()
 		{
 			if (this == UP) return new LayerPart[] { LEFT, RIGHT };
-			if (this == LEFT) return new LayerPart[] { RIGHT, UP };
-			if (this == RIGHT) return new LayerPart[] { LEFT, UP };
+			if (this == LEFT || this == RIGHT) return new LayerPart[] { UP };
 			return compositeLayers();
 		}
 	}

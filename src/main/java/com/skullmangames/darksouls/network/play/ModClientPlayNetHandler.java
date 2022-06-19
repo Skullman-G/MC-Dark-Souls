@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
-import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
@@ -36,12 +35,6 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 	public void setOverlayMessage(Component text)
 	{
 		this.minecraft.gui.setOverlayMessage(text, false);
-	}
-
-	@Override
-	public void openFireKeeperScreen(int firekeeperid)
-	{
-		this.minecraft.setScreen(new FireKeeperScreen(firekeeperid));
 	}
 
 	@Override

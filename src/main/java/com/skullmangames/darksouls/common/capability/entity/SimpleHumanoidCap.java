@@ -12,6 +12,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
 public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
@@ -21,9 +23,11 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
+		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -36,10 +40,11 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		if (cap == null || !(cap instanceof MeleeWeaponCap)) return;
 		MeleeWeaponCap weapon = (MeleeWeaponCap)cap;
 		
-		this.orgEntity.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this.orgEntity, Hollow.class, true));
+		this.orgEntity.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this.orgEntity, Hollow.class, true));
+		if (this.orgEntity instanceof PathfinderMob) this.orgEntity.targetSelector.addGoal(1, new HurtByTargetGoal((PathfinderMob)this.orgEntity));
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.0F, true, false, true)
-				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.LIGHT)))
-				.addAttack(new AttackInstance(1, 1.0F, weapon.getAttacks(AttackType.HEAVY)))
+				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.LIGHT)))
+				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.HEAVY)))
 				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.DASH))));
 	}
 

@@ -1,12 +1,14 @@
 package com.skullmangames.darksouls.common.entity;
 
+import java.util.UUID;
+
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
+import com.skullmangames.darksouls.network.server.STCNPCChat;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -19,39 +21,51 @@ import net.minecraft.world.level.Level;
 
 public class CrestfallenWarrior extends QuestEntity
 {
+	private static final String DIALOGUE_0 = "dialogue.darksouls.crestfallen_warrior.0";
+	private static final String DIALOGUE_1 = "dialogue.darksouls.crestfallen_warrior.1";
+	private static final String DIALOGUE_2 = "dialogue.darksouls.crestfallen_warrior.2";
+	
 	public CrestfallenWarrior(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
-		this.questFlags = new boolean[2];
 	}
 	
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		IModClientPlayNetHandler handler = ModNetworkManager.connection;
-		if (player.level.isClientSide && handler != null && !this.chatTimer.isTicking())
+		if (!player.level.isClientSide && this.getTarget() == null)
 		{
-			PlayerCap<?> playerdata = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (!this.questFlags[0])
+			PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (!this.getQuestFlag(player.getUUID(), 0))
 			{
-				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.0").getString().split("%");
-				this.chatTimer.start(60, sentences);
-				this.questFlags[0] = true;
+				ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayer)player);
 			}
-			else if (!this.questFlags[1] && !playerdata.isHuman())
+			else if (!this.getQuestFlag(player.getUUID(), 1) && !playerCap.isHuman())
 			{
-				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.1").getString().split("%");
-				this.chatTimer.start(60, sentences);
-				this.questFlags[1] = true;
+				ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_1), (ServerPlayer)player);
 			}
 			else
 			{
-				String[] sentences = new TranslatableComponent("dialogue.darksouls.crestfallen_warrior.2").getString().split("%");
-				this.chatTimer.start(60, sentences);
+				ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_2), (ServerPlayer)player);
 			}
 		}
 
 		return InteractionResult.sidedSuccess(player.level.isClientSide);
+	}
+	
+	@Override
+	public void onFinishChat(ServerPlayer player, String location)
+	{
+		UUID uuid = player.getUUID();
+		switch (location)
+		{
+			case DIALOGUE_0:
+				this.setQuestFlag(uuid, 0, true);
+				break;
+			case DIALOGUE_1:
+				this.setQuestFlag(uuid, 1, true);
+				break;
+		}
 	}
 	
 	@Override
