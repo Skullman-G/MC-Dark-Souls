@@ -44,7 +44,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
+		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
 		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
 		{

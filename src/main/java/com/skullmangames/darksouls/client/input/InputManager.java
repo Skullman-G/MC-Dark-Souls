@@ -55,6 +55,7 @@ public class InputManager
 	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
 	private double tracingMouseX;
 	private double tracingMouseY;
+	private AttackType reservedAttack;
 	
 	
 	public InputManager()
@@ -258,7 +259,15 @@ public class InputManager
 	
 	private void handleRightHandAction(EntityState playerState)
 	{
-		if (!this.rightHandToggle) return;
+		if (!this.rightHandToggle)
+		{
+			if (this.reservedAttack != null && this.playerCanAttack(playerState))
+			{
+				this.playerCap.performAttack(this.reservedAttack);
+				this.reservedAttack = null;
+			}
+			return;
+		}
 		
 		if (!this.isKeyDown(options.keyAttack))
 		{
@@ -271,6 +280,7 @@ public class InputManager
 			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
+				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -290,6 +300,7 @@ public class InputManager
 			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
 			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
+		else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;

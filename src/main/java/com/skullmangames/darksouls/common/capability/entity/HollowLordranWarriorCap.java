@@ -35,13 +35,14 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
+		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
+		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
