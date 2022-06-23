@@ -7,8 +7,7 @@ import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
-import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
-import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
@@ -51,8 +50,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	protected void initAI()
 	{
 		super.initAI();
-		orgEntity.goalSelector.addGoal(1, new ChasingGoal(this, false));
-		orgEntity.goalSelector.addGoal(0, new AttackPatternGoal(this, 1.0F, 1, true)
+		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false, false)
 				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_LIGHT_ATTACK))
 				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_HAMMER_DRIVE))
 				.addAttack(new AttackInstance(1, 10.0F, 15.0F, Animations.STRAY_DEMON_JUMP_ATTACK))

@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
@@ -219,11 +220,42 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		boolean leftChanged = false;
 		boolean rightChanged = false;
 		
-		if (this.currentMotion != LivingMotion.BLOCKING && this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+		if (this.orgEntity.getUseItemRemainingTicks() != 0)
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-			this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			else
+			{
+				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+				switch (useAction)
+				{
+					case BOW:
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						break;
+						
+					case CROSSBOW:
+						this.currentMixMotions.put(layerPart, LivingMotion.RELOADING);
+						break;
+						
+					case SPEAR:
+						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						break;
+						
+					case DRINK:
+						this.currentMixMotions.put(layerPart, LivingMotion.DRINKING);
+						break;
+						
+					case EAT:
+						this.currentMixMotions.put(layerPart, LivingMotion.EATING);
+						break;
+						
+					default:
+						this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+						break;
+				}
+			}
+			
 			if (layerPart == LayerPart.LEFT) leftChanged = true;
 			else rightChanged = true;
 		}
@@ -346,8 +378,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isBlocking()
 	{
-		EntityState entitystate = this.getEntityState();
-		if (entitystate.isBlocking()) return true;
+		if (this.animator.getMainPlayer().getPlay().getPropertyByTime(AttackProperty.BLOCKING, this.animator.getMainPlayer().getElapsedTime()).orElse(false)) return true;
 		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();

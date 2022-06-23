@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer.entity.model.vanilla;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.skullmangames.darksouls.common.entity.FireKeeper;
+import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-public class FireKeeperModel extends EntityModel<FireKeeper>
+public class FireKeeperModel extends EntityModel<AbstractFireKeeper>
 {
 	private final ModelPart head;
 	private final ModelPart headwear;
@@ -53,7 +53,7 @@ public class FireKeeperModel extends EntityModel<FireKeeper>
 	}
 
 	@Override
-	public void setupAnim(FireKeeper entity, float limbSwing, float limbSwingAmount, float ageInTicks,
+	public void setupAnim(AbstractFireKeeper entity, float limbSwing, float limbSwingAmount, float ageInTicks,
 			float netHeadYaw, float headPitch)
 	{
 		// previously the render function, render code was moved to a method below

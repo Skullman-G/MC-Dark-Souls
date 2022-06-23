@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -165,6 +166,9 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
+		
+		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
 		
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();

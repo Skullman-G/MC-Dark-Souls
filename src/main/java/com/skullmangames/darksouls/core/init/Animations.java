@@ -358,8 +358,11 @@ public final class Animations
 	// Hollow Lordran Soldier
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_WALK = new MovementAnimation(0.2F, true, "hollow_lordran_soldier/walking", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_RUN = new MovementAnimation(0.2F, true, "hollow_lordran_soldier/run", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_BLOCK = new StaticAnimation(0.2F, true, "hollow_lordran_soldier/block", (models) -> models.ENTITY_BIPED);
-
+	public static final StaticAnimation HOLLOW_LORDRAN_SOLDIER_BLOCK = new AdaptableAnimation(0.2F, true, (models) -> models.ENTITY_BIPED,
+			new AnimConfig(LivingMotion.BLOCKING, "hollow_lordran_soldier/block", "hollow_lordran_soldier/block", false),
+			new AnimConfig(LivingMotion.WALKING, "hollow_lordran_soldier/block_walking", "hollow_lordran_soldier/block_walking", true),
+			new AnimConfig(LivingMotion.RUNNING, "hollow_lordran_soldier/block_run", "hollow_lordran_soldier/block_run", true));
+	
 	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]
 	{ new AttackAnimation(0.2F, 0.0F, 0.44F, 0.76F, 1.6F, "Tool_R", "hollow_lordran_soldier/sword_la_1",
 			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
@@ -420,7 +423,8 @@ public final class Animations
 			1.6F, "Tool_L", "hollow_lordran_soldier/shield_bash", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE);
+					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING);
 
 	// Asylum Demon
 	public static final StaticAnimation STRAY_DEMON_IDLE = new StaticAnimation(1.0F, true, "asylum_demon/idle",
@@ -470,6 +474,9 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
+	
+	// Anastacia of Astora
+	public static final StaticAnimation ANASTACIA_IDLE = new StaticAnimation(0.4F, true, "anastacia_of_astora/idle", (models) -> models.ENTITY_BIPED);
 
 	@OnlyIn(Dist.CLIENT)
 	public static void buildClient() {}

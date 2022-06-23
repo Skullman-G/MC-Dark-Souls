@@ -50,7 +50,7 @@ public class HealthBarIndicator extends EntityIndicator
 		{
 			HealthInfo info = this.healthInfoMap.get(entityIn.getId());
 			info.saveLastHealth = info.lastHealth;
-			info.lastHealth = entityIn.getHealth();
+			info.lastHealth = entityIn.getHealth() / entityIn.getMaxHealth();
 			return false;
 		}
 		return true;
@@ -68,11 +68,9 @@ public class HealthBarIndicator extends EntityIndicator
 		HealthInfo info = this.healthInfoMap.get(entityIn.getId());
 		float maxHealth = entityIn.getMaxHealth();
 		float healthpercentage = entityIn.getHealth() / maxHealth;
-		float lastHealthPercentage = info.lastHealth / maxHealth;
-		float saveLastHealthPercentage = info.saveLastHealth / maxHealth;
 		
 		// Damage Animation
-		if (lastHealthPercentage > healthpercentage)
+		if (info.lastHealth > healthpercentage)
 		{
 			if (!info.damageCooldown.isTicking())
 			{
@@ -82,7 +80,7 @@ public class HealthBarIndicator extends EntityIndicator
 			info.damageCooldown.start(40);
 		}
 		
-		float damagedHealth = saveLastHealthPercentage - (info.damageTimer.getPastTime() * 0.01F);
+		float damagedHealth = info.saveLastHealth - (info.damageTimer.getPastTime() * 0.01F);
 		
 		if (info.damageCooldown.isTicking())
 		{
@@ -90,12 +88,12 @@ public class HealthBarIndicator extends EntityIndicator
 			boolean flag = false;
 			if (damagedHealth <= healthpercentage)
 			{
-				damagedHealth = saveLastHealthPercentage;
+				damagedHealth = info.saveLastHealth;
 				flag = true;
 			}
 			blackStart = damagedHealth;
 			info.damageCooldown.drain(1);
-			if (!info.damageCooldown.isTicking() && (!info.damageTimer.isTicking() || flag)) info.damageTimer.start((int)(damagedHealth * 200));
+			if (!info.damageCooldown.isTicking() && (!info.damageTimer.isTicking() || flag)) info.damageTimer.start((int)(damagedHealth * 100));
 		}
 		else if (info.damageTimer.isTicking())
 		{
@@ -105,7 +103,7 @@ public class HealthBarIndicator extends EntityIndicator
 		}
 		
 		// Heal Animation
-		if ((lastHealthPercentage < healthpercentage && info.isHealing) || info.healTimer.isTicking())
+		if ((info.lastHealth < healthpercentage) || info.healTimer.isTicking())
 		{
 			info.damageTimer.stop();
 			if (!info.healTimer.isTicking())
@@ -113,7 +111,7 @@ public class HealthBarIndicator extends EntityIndicator
 				info.saveLastHealth = info.lastHealth;
 				info.healTimer.start((int)((healthpercentage - info.saveLastHealth) * 100));
 			}
-			redStop = saveLastHealthPercentage + info.healTimer.getPastTime();
+			redStop = info.saveLastHealth + (info.healTimer.getPastTime() * 0.01F);
 			info.healTimer.drain(1);
 		}
 		
@@ -123,18 +121,16 @@ public class HealthBarIndicator extends EntityIndicator
 			redStop = healthpercentage;
 		}
 		
-		lastHealthPercentage = healthpercentage;
-		
 		if (blackStart < redStop) blackStart = redStop;
 		
 		if (redStop != blackStart) this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, redStop - 0.5F, -0.05F, blackStart - 0.5F, 0.05F, 2 + (int)(redStop * 60), 10, 2 + (int)(blackStart * 60), 15); // Yellow
 		this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, redStop - 0.5F, 0.05F, 1, 5, 2 + (int)(redStop * 60), 10); // Red
 		this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, blackStart - 0.5F, -0.05F, 0.5F, 0.05F, 2 + (int)(blackStart * 60), 0, 62, 5); // Black
 		
-		if (info.lastHealth > entityIn.getHealth())
+		if (healthpercentage < info.lastHealth)
 		{
-			info.damage = info.damageNumberTimer > 0 ? info.lastHealth - entityIn.getHealth() + info.damage
-							: info.lastHealth - entityIn.getHealth();
+			info.damage = info.damageNumberTimer > 0 ? (info.lastHealth - healthpercentage) * 100 + info.damage
+							: (info.lastHealth - healthpercentage) * 100;
 			info.damageNumberTimer = 100;
 		}
 		
@@ -149,17 +145,17 @@ public class HealthBarIndicator extends EntityIndicator
 			matStack.scale(-scale, -scale, scale);
 			this.renderDamageNumber(matStack, info.damage, 10, 0);
 			matStack.popPose();
-			info.damageNumberTimer -= 1;
+			--info.damageNumberTimer;
 		}
 
-		info.lastHealth = entityIn.getHealth(); 
+		info.lastHealth = healthpercentage;
 	}
 
 	public void renderDamageNumber(PoseStack matrix, float damage, double x, double y)
 	{
-		int i = Math.abs(Math.round(damage * 10));
+		int i = Math.abs(Math.round(damage));
 		if (i == 0) return;
-		String s = "-"+String.valueOf(i);
+		String s = "-"+String.valueOf(i)+"%";
 		Minecraft minecraft = Minecraft.getInstance();
 		int color = 16777215;
 		minecraft.font.draw(matrix, s, (int) x - 6 * (s.length() - 1), (int) y, color);
@@ -173,7 +169,6 @@ public class HealthBarIndicator extends EntityIndicator
 		
 		private float lastHealth;
 		private float saveLastHealth;
-		private boolean isHealing = false;
 		
 		private float damage;
 		private int damageNumberTimer;

@@ -241,6 +241,12 @@ public class AttackAnimation extends ActionAnimation
 			return EntityState.FREE_INPUT;
 		}
 	}
+	
+	@Override
+	public <V> Optional<V> getPropertyByTime(AttackProperty<V> propertyType, float elapsedTime)
+	{
+		return this.getPhaseByTime(elapsedTime).getProperty(propertyType);
+	}
 
 	public Collider getCollider(LivingCap<?> entityCap, float elapsedTime)
 	{
@@ -270,12 +276,12 @@ public class AttackAnimation extends ActionAnimation
 
 	protected SoundEvent getSwingSound(LivingCap<?> entityCap, Phase phase)
 	{
-		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(entityCap.getSwingSound(phase.hand));
+		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(() -> entityCap.getSwingSound(phase.hand)).get();
 	}
 
 	protected SoundEvent getHitSound(LivingCap<?> entityCap, Phase phase)
 	{
-		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(entityCap.getWeaponHitSound(phase.hand));
+		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(() -> entityCap.getWeaponHitSound(phase.hand)).get();
 	}
 
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Entity target, Phase phase, float amount)

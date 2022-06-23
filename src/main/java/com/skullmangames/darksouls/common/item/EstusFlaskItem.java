@@ -88,18 +88,9 @@ public class EstusFlaskItem extends Item
 
 	public static void setUses(ItemStack itemstack, int value)
 	{
-	    if (value == getUses(itemstack))
-	    {
-	    	return;
-	    }
-		if (value < 0)
-	    {
-	    	value = 0;
-	    }
-	    if (value > getTotalUses(itemstack))
-	    {
-	    	value = getTotalUses(itemstack);
-	    }
+	    if (value == getUses(itemstack)) return;
+		if (value < 0) value = 0;
+	    if (value > getTotalUses(itemstack)) value = getTotalUses(itemstack);
 		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
 	    compoundnbt.putInt("Uses", value);
 	}
@@ -116,30 +107,38 @@ public class EstusFlaskItem extends Item
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, Level worldIn, LivingEntity livingentity)
 	{
-	      Player playerentity = livingentity instanceof Player ? (Player)livingentity : null;
-	      if (playerentity instanceof ServerPlayer)
+	      Player player = livingentity instanceof Player ? (Player)livingentity : null;
+	      if (player instanceof ServerPlayer)
 	      {
-	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)playerentity, itemstack);
+	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemstack);
 	      }
 
-	      if (playerentity != null)
+	      if (player != null)
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-		    	  if (playerentity.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
+		    	  if (player.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
-		    		  playerentity.heal(getHeal(itemstack));
+		    		  player.heal(getHeal(itemstack));
 		    	  }
 		    	  else
 		    	  {
-		    		  playerentity.hurt(DamageSource.IN_FIRE, getHeal(itemstack));
+		    		  player.hurt(DamageSource.IN_FIRE, getHeal(itemstack));
 		    	  }
 		      }
-	    	  playerentity.awardStat(Stats.ITEM_USED.get(this));
-	    	  if (!playerentity.getAbilities().instabuild)
+	    	  player.awardStat(Stats.ITEM_USED.get(this));
+	    	  if (!player.getAbilities().instabuild)
 	    	  {
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
+	      }
+	      else
+	      {
+	    	  if (!worldIn.isClientSide)
+		      {
+	    		  livingentity.heal(getHeal(itemstack));
+		      }
+	    	  setUses(itemstack, getUses(itemstack) - 1);
 	      }
 
 	      return itemstack;

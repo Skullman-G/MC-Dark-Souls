@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.network;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.network.client.CTSBonfireTask;
+import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
 import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
@@ -14,7 +15,9 @@ import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
+import com.skullmangames.darksouls.network.server.STCNPCChat;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
+import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
@@ -76,6 +79,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSOpenFireKeeperContainer.class, CTSOpenFireKeeperContainer::toBytes, CTSOpenFireKeeperContainer::fromBytes, CTSOpenFireKeeperContainer::handle);
 		INSTANCE.registerMessage(id++, CTSPerformDodge.class, CTSPerformDodge::toBytes, CTSPerformDodge::fromBytes, CTSPerformDodge::handle);
 		INSTANCE.registerMessage(id++, CTSLevelUp.class, CTSLevelUp::toBytes, CTSLevelUp::fromBytes, CTSLevelUp::handle);
+		INSTANCE.registerMessage(id++, CTSFinishNPCChat.class, CTSFinishNPCChat::toBytes, CTSFinishNPCChat::fromBytes, CTSFinishNPCChat::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
@@ -93,5 +97,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCLoadPlayerData.class, STCLoadPlayerData::toBytes, STCLoadPlayerData::fromBytes, STCLoadPlayerData::handle);
 		INSTANCE.registerMessage(id++, STCPlayBonfireAmbientSound.class, STCPlayBonfireAmbientSound::toBytes, STCPlayBonfireAmbientSound::fromBytes, STCPlayBonfireAmbientSound::handle);
 		INSTANCE.registerMessage(id++, STCSetPos.class, STCSetPos::toBytes, STCSetPos::fromBytes, STCSetPos::handle);
+		INSTANCE.registerMessage(id++, STCNPCChat.class, STCNPCChat::toBytes, STCNPCChat::fromBytes, STCNPCChat::handle);
+		INSTANCE.registerMessage(id++, STCOpenFireKeeperScreen.class, STCOpenFireKeeperScreen::toBytes, STCOpenFireKeeperScreen::fromBytes, STCOpenFireKeeperScreen::handle);
 	}
 }

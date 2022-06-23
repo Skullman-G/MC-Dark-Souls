@@ -216,9 +216,9 @@ public class AnimationLayer
 		
 		public LayerPart[] otherCompositeLayers()
 		{
-			List<LayerPart> values = new ArrayList<>(Arrays.asList(compositeLayers()));
-			values.remove(this);
-			return values.toArray(new LayerPart[values.size()]);
+			if (this == UP) return new LayerPart[] { LEFT, RIGHT };
+			if (this == LEFT || this == RIGHT) return new LayerPart[] { UP };
+			return compositeLayers();
 		}
 	}
 }

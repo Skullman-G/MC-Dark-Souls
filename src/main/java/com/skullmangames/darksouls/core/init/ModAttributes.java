@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
@@ -64,7 +65,7 @@ public class ModAttributes
 		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
 		event.put(ModEntities.STRAY_DEMON.get(), StrayDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
-		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), QuestEntity.createAttributes().build());
+		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), AnastaciaOfAstora.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)

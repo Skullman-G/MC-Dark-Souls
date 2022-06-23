@@ -41,7 +41,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 17.5D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.25D);
+				.add(Attributes.MOVEMENT_SPEED, 0.24D);
 	}
 
 	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level,
@@ -68,8 +68,6 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
-		percentage = 91;
-		
 		if (percentage <= 75)
 		{
 			if (slot == EquipmentSlot.MAINHAND)

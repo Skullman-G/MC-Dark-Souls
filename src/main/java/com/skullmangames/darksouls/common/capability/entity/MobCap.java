@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
-import com.skullmangames.darksouls.common.entity.ai.goal.AttackPatternGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -72,7 +72,7 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
             Goal inner = goal.getGoal();
             
             if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
-            		|| inner instanceof RangedAttackGoal || inner instanceof AttackPatternGoal || inner instanceof RangedCrossbowAttackGoal)
+            		|| inner instanceof RangedAttackGoal || inner instanceof AttackGoal || inner instanceof RangedCrossbowAttackGoal)
             {
             	toRemove.add(inner);
             }

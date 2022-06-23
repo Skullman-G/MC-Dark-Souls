@@ -9,8 +9,6 @@ public interface IModClientPlayNetHandler
 	
 	void setOverlayMessage(Component text);
 	
-	void openFireKeeperScreen(int firekeeperid);
-	
 	void openBonfireNameScreen(BlockPos blockPos);
 	
 	void openBonfireScreen(BlockPos blockPos);

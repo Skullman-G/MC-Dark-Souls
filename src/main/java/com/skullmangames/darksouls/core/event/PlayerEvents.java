@@ -24,10 +24,10 @@ public class PlayerEvents
 		if (event.getEntity() instanceof Player)
 		{
 			Player player = (Player)event.getEntity();
-			PlayerCap<?> playerdata = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			ItemCapability itemCap = playerdata.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			PlayerCap<?> playerCap = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			ItemCapability itemCap = playerCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 			
-			if (playerdata.isInaction())
+			if (playerCap.isInaction())
 			{
 				event.setCanceled(true);
 			}
@@ -41,14 +41,20 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void cloneEvent(PlayerEvent.Clone event)
 	{
-		PlayerCap<?> playerdata = (PlayerCap<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		PlayerCap<?> playerCap = (PlayerCap<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (playerdata != null && playerdata.getOriginalEntity() != null)
+		if (playerCap != null && playerCap.getOriginalEntity() != null)
 		{
-			playerdata.discard();
+			playerCap.discard();
 		}
 		
 		event.getPlayer().getPersistentData().put(DarkSouls.MOD_ID, event.getOriginal().getPersistentData().getCompound(DarkSouls.MOD_ID));
+	}
+	
+	@SubscribeEvent
+	public static void respawnEvent(PlayerEvent.PlayerRespawnEvent event)
+	{
+		event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
 	}
 	
 	@SubscribeEvent
@@ -58,8 +64,8 @@ public class PlayerEvents
 		{
 			if (event.getItem().getItem() instanceof BowItem)
 			{
-				PlayerCap<?> playerdata = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if (playerdata.isInaction())
+				PlayerCap<?> playerCap = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				if (playerCap.isInaction())
 				{
 					event.setCanceled(true);
 				}
@@ -70,17 +76,17 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void playerLogOutEvent(PlayerLoggedOutEvent event)
 	{
-		PlayerCap<?> playerdata = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if (playerdata == null) return;
-		playerdata.onSave();
+		PlayerCap<?> playerCap = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerCap == null) return;
+		playerCap.onSave();
 	}
 	
 	@SubscribeEvent
 	public static void playerDeathEvent(LivingDeathEvent event)
 	{
 		if (!(event.getEntityLiving() instanceof ServerPlayer)) return;
-		PlayerCap<?> playerdata = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if (playerdata == null) return;
-		playerdata.onSave();
+		PlayerCap<?> playerCap = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerCap == null) return;
+		playerCap.onSave();
 	}
 }
