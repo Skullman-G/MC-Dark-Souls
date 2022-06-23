@@ -80,7 +80,7 @@ public class GameOverlayManager
 	        }
 		});
 		
-		OverlayRegistry.registerOverlayTop("Mod Player Health", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Mod Player Health", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -89,7 +89,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayTop("Player Stamina", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player Stamina", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -116,7 +116,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayTop("Player FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {

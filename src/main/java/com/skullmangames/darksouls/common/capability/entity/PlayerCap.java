@@ -52,7 +52,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
-		this.fp = nbt.getFloat("FocusPoints");
+		
+		if (nbt.contains("FocusPoints")) this.fp = nbt.getFloat("FocusPoints");
+		else this.fp = this.getMaxFP();
 		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
