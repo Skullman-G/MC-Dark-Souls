@@ -41,6 +41,12 @@ public class GameOverlayManager
 	private static int saveLastHealth;
 	public static boolean isHealing = false;
 	
+	private static float lastFP;
+	private static float saveLastFP;
+	private static final Timer fpDrainCooldown = new Timer();
+	private static final Timer fpDrainTimer = new Timer();
+	private static final Timer fpRiseTimer = new Timer();
+	
 	private static final Timer staminaTimer = new Timer();
 	private static final Timer staminaDrainTimer = new Timer();
 	private static final Timer stamiaDrainCooldownTimer = new Timer();
@@ -109,6 +115,86 @@ public class GameOverlayManager
 	            renderSouls(screenWidth, screenHeight, poseStack);
 	        }
 	    });
+		
+		OverlayRegistry.registerOverlayTop("Player FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderFP(gui, screenWidth, screenHeight, poseStack);
+	        }
+	    });
+	}
+	
+	private static void renderFP(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	{
+		AbstractClientPlayerCap<?> player = getCameraPlayerData();
+		if (player == null) return;
+		
+		RenderSystem.enableBlend();
+		int y = height - 49;
+		int x = width / 2 + 7;
+		gui.right_height += 10;
+		
+		RenderSystem.setShaderTexture(0, LOCATION);
+		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		float fpPercentage = player.getFP() / player.getMaxFP();
+		
+		// Drain Animation
+		if (lastFP > fpPercentage)
+		{
+			if (!fpDrainCooldown.isTicking())
+			{
+				saveLastFP = lastFP;
+			}
+
+			fpDrainCooldown.start(50);
+		}
+
+		float visibleFP = saveLastFP - (fpDrainTimer.getPastTime() * 0.01F);
+
+		if (fpDrainCooldown.isTicking())
+		{
+			fpRiseTimer.stop();
+			boolean flag = false;
+			if (visibleFP <= fpPercentage)
+			{
+				visibleFP = saveLastFP;
+				flag = true;
+			}
+			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			fpDrainCooldown.drain(1);
+			if (!fpDrainCooldown.isTicking() && (!fpDrainTimer.isTicking() || flag))
+				fpDrainTimer.start((int)(visibleFP * 200));
+		} else if (fpDrainTimer.isTicking())
+		{
+			fpRiseTimer.stop();
+			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			fpDrainTimer.drain(1);
+		}
+
+		// Rise Animation
+		if ((lastHealth < fpPercentage && isHealing) || fpRiseTimer.isTicking())
+		{
+			fpDrainTimer.stop();
+			if (!fpRiseTimer.isTicking())
+			{
+				saveLastFP = lastFP;
+				fpRiseTimer.start((int)((fpPercentage - saveLastFP) * 100));
+			}
+			float healcentage = saveLastFP + fpRiseTimer.getPastTime();
+			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(healcentage * 88), 7); // Blue
+			fpRiseTimer.drain(1);
+		}
+
+		// Default
+		else
+		{
+			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(fpPercentage * 88), 7); // Blue
+		}
+
+		lastFP = fpPercentage;
+		RenderSystem.disableBlend();
 	}
 	
 	private static void renderBossHealthBars(ForgeIngameGui gui, PoseStack poseStack)

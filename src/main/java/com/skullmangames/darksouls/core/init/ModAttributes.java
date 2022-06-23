@@ -34,6 +34,7 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> POISE_DAMAGE = registerRangedAttribute("poise_damage", 1.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 50.0D, 50.0D, 150.0D);
 	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 150.0D);
+	public static final RegistryObject<Attribute> MAX_FOCUS_POINTS = registerRangedAttribute("max_focus_points", 10.0D, 1.0D, 1024.0D);
 	
 	// Defense
 	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 0.99D);
@@ -75,30 +76,6 @@ public class ModAttributes
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.STRAY_DEMON.get(), event);
 		general(ModEntities.FIRE_KEEPER.get(), event);
-		/*general(EntityType.CAVE_SPIDER, event);
-		general(EntityType.CREEPER, event);
-		general(EntityType.EVOKER, event);
-		general(EntityType.IRON_GOLEM, event);
-		general(EntityType.PILLAGER, event);
-		general(EntityType.RAVAGER, event);
-		general(EntityType.SPIDER, event);
-		general(EntityType.VEX, event);
-		general(EntityType.VINDICATOR, event);
-		general(EntityType.WITCH, event);
-		general(EntityType.HOGLIN, event);
-		general(EntityType.ZOGLIN, event);
-		
-		general(EntityType.DROWNED, event);
-		general(EntityType.ENDERMAN, event);
-		general(EntityType.HUSK, event);
-		general(EntityType.PIGLIN, event);
-		general(EntityType.PIGLIN_BRUTE, event);
-		general(EntityType.SKELETON, event);
-		general(EntityType.STRAY, event);
-		general(EntityType.WITHER_SKELETON, event);
-		general(EntityType.ZOMBIE, event);
-		general(EntityType.ZOMBIE_VILLAGER, event);
-		general(EntityType.ZOMBIFIED_PIGLIN, event);*/
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
@@ -127,6 +104,7 @@ public class ModAttributes
     private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
     {
     	withEquipLoad(entityType, event);
+    	event.add(entityType, ModAttributes.MAX_FOCUS_POINTS.get());
 	}
 	
 	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)

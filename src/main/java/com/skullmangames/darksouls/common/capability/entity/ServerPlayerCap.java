@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
@@ -137,11 +138,17 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	@Override
 	public void setSouls(int value)
 	{
-		if (this.souls == value)
-			return;
+		if (this.souls == value) return;
 		super.setSouls(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls),
-				this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
+	}
+	
+	@Override
+	public void setFP(float value)
+	{
+		if (this.fp == value) return;
+		super.setFP(value);
+		ModNetworkManager.sendToPlayer(new STCFP(this.orgEntity.getId(), this.fp), this.orgEntity);
 	}
 
 	@Override

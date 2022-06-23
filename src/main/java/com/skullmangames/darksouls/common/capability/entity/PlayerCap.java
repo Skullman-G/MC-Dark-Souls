@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
@@ -32,6 +33,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	protected int humanity;
 	protected boolean human;
 	protected int souls;
+	protected float fp;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -50,6 +52,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
+		this.fp = nbt.getFloat("FocusPoints");
 		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
@@ -62,6 +65,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
+		nbt.putFloat("FocusPoints", this.fp);
 		
 		this.stats.saveStats(nbt);
 	}
@@ -89,6 +93,21 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	public void raiseSouls(int value)
 	{
 		this.setSouls(this.souls + value);
+	}
+	
+	public float getFP()
+	{
+		return this.fp;
+	}
+	
+	public void setFP(float value)
+	{
+		this.fp = value;
+	}
+	
+	public float getMaxFP()
+	{
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get());
 	}
 	
 	public boolean isHuman()

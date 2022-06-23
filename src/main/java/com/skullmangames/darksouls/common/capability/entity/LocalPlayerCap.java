@@ -195,11 +195,4 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		super.setHuman(value);
 		if (value) ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
 	}
-	
-	@Override
-	public void setSouls(int value)
-	{
-		if (this.souls == value) return;
-		super.setSouls(value);
-	}
 }

@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
 import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
+import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
@@ -99,5 +100,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCSetPos.class, STCSetPos::toBytes, STCSetPos::fromBytes, STCSetPos::handle);
 		INSTANCE.registerMessage(id++, STCNPCChat.class, STCNPCChat::toBytes, STCNPCChat::fromBytes, STCNPCChat::handle);
 		INSTANCE.registerMessage(id++, STCOpenFireKeeperScreen.class, STCOpenFireKeeperScreen::toBytes, STCOpenFireKeeperScreen::fromBytes, STCOpenFireKeeperScreen::handle);
+		INSTANCE.registerMessage(id++, STCFP.class, STCFP::toBytes, STCFP::fromBytes, STCFP::handle);
 	}
 }
