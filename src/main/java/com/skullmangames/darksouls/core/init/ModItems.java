@@ -32,13 +32,12 @@ public class ModItems
 	public static final List<Item> DESCRIPTION_ITEMS = new ArrayList<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
-	// WEAPONS
-	// Dagger
+	//Dagger
 	/*public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 2, -2.4F, new Item.Properties()
 	.tab(CreativeModeTab.TAB_COMBAT)));*/
 	
 	
-	// Straight Swords
+	//Straight Swords
 	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
@@ -49,12 +48,12 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Axes
+	//Axes
 	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 6.5F, -3.1F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Spears
+	//Spears
 	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(Tiers.IRON, 2, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
@@ -62,17 +61,17 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Ultra Greatsword
+	//Ultra Greatsword
 	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 10, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Great Hammer
+	//Great Hammer
 	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 11, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Shields
+	//Shields
 	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
@@ -83,12 +82,12 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Talismans
+	//Talismans
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Armor
+	//Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set_layer_1", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	public static final RegistryObject<Item> DINGY_ROBE = ITEMS.register("dingy_robe", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.CHEST, "dingy_set_layer_1", new Item.Properties()
@@ -115,7 +114,7 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Other
+	//Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
 			.tab(DarkSouls.TAB)
 			.stacksTo(1)));
@@ -140,7 +139,7 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
-	// Souls
+	//Souls
 	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
@@ -217,6 +216,8 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.BATTLE_AXE.get());
 		DESCRIPTION_ITEMS.add(ModItems.SPEAR.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_SHIELD.get());
+		DESCRIPTION_ITEMS.add(ModItems.TALISMAN.get());
+		DESCRIPTION_ITEMS.add(ModItems.ASHEN_ESTUS_FLASK.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
