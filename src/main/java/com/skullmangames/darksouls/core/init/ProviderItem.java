@@ -18,6 +18,7 @@ import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
+import com.skullmangames.darksouls.common.capability.item.TalismanCap;
 import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
@@ -58,13 +59,13 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 
 	public static void initCapabilityMap()
 	{
-		// WEAPONS
+		//WEAPONS
 		//putCap(new DaggerCap(ModItems.DAGGER.get(), 5, 8, Scaling.E, Scaling.B));
 		
-		// Great Hammers
+		//Great Hammers
 		putCap(new GreatHammerCap(ModItems.DEMON_GREAT_HAMMER.get(), 46, 0, Scaling.B, Scaling.NONE));
 		
-		// Axes
+		//Axes
 		putCap(new AxeCap(Items.WOODEN_AXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.STONE_AXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new AxeCap(Items.IRON_AXE, 10, 10, Scaling.C, Scaling.D));
@@ -73,7 +74,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new AxeCap(Items.NETHERITE_AXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new AxeCap(ModItems.BATTLE_AXE.get(), 12, 8, Scaling.C, Scaling.D));
 		
-		// Hammers
+		//Hammers
 		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.IRON_PICKAXE, 10, 10, Scaling.C, Scaling.D));
@@ -81,7 +82,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new HammerCap(Items.DIAMOND_PICKAXE, 15, 15, Scaling.C, Scaling.D));
 		putCap(new HammerCap(Items.NETHERITE_PICKAXE, 15, 15, Scaling.C, Scaling.D));
 		
-		// Straight Swords
+		//Straight Swords
 		putCap(new SwordCap(Items.WOODEN_SWORD, 8, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.STONE_SWORD, 10, 10, Scaling.C, Scaling.C));
 		putCap(new SwordCap(Items.IRON_SWORD, 9, 10, Scaling.C, Scaling.C));
@@ -92,34 +93,38 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, Scaling.E, Scaling.E));
 		putCap(new LongswordCap(ModItems.LONGSWORD.get(), 10, 10, Scaling.C, Scaling.C));
 		
-		// Spears
+		//Spears
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, Scaling.D, Scaling.C));
 		putCap(new WingedSpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, Scaling.E, Scaling.C));
 		
-		// Shields
+		//Shields
 		putCap(new ShieldCap(Items.SHIELD, ShieldType.NORMAL, ShieldMat.WOOD, 0.7F, 8, 0, Scaling.D, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.SMALL, ShieldMat.METAL, 1F, 8, 0, Scaling.D, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, ShieldMat.WOOD, 0.65F, 6, 0, Scaling.D, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, ShieldMat.METAL, 1F, 11, 0, Scaling.D, Scaling.NONE));
 		
-		// Ultra Greatswords
+		//Ultra Greatswords
 		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, Scaling.C, Scaling.D));
 		
-		// Bows
+		//Bows
 		putCap(new BowCap(Items.BOW, 3, 7, 12, Scaling.D, Scaling.A));
 		
-		// Crossbows
+		//Crossbows
 		putCap(new CrossbowCap(Items.CROSSBOW, 4, 10, 8, Scaling.NONE, Scaling.NONE));
 		
-		// Tridents
+		//Tridents
 		putCap(new TridentCap(Items.TRIDENT, 5, 11, 15, Scaling.NONE, Scaling.NONE));
 		
-		//Armor
+		//Talismans
+		putCap(new TalismanCap(ModItems.TALISMAN.get(), 4, 0, Scaling.E, Scaling.NONE));
+		
+		//ARMOR
 		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), ArmorPart.SKIRT));
 		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), ArmorPart.SKIRT));
 		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), ArmorPart.SKIRT));
 		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), ArmorPart.ONE_SHOE));
 		
+		//CONFIG
 		for (WeaponConfig configWeapon : CapabilityConfig.WEAPON_CONFIGS)
 		{
 			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());

@@ -83,6 +83,11 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
+	// Talismans
+	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
 	// Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set_layer_1", new Item.Properties()
 			.tab(DarkSouls.TAB)));
