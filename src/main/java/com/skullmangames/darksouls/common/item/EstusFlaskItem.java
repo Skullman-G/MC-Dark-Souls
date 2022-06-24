@@ -113,13 +113,13 @@ public class EstusFlaskItem extends Item
 	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemstack);
 	      }
 
-	      if (player != null)
+	      if (player != null) // Player
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
 		    	  if (player.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
-		    		  player.heal(getHeal(itemstack));
+		    		  this.activate(player, itemstack);
 		    	  }
 		    	  else
 		    	  {
@@ -132,16 +132,21 @@ public class EstusFlaskItem extends Item
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
 	      }
-	      else
+	      else // LivingEntity
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-	    		  livingentity.heal(getHeal(itemstack));
+	    		  this.activate(livingentity, itemstack);
 		      }
 	    	  setUses(itemstack, getUses(itemstack) - 1);
 	      }
 
 	      return itemstack;
+	}
+	
+	protected void activate(LivingEntity entity, ItemStack stack)
+	{
+		entity.heal(getHeal(stack));
 	}
 	
 	@Override

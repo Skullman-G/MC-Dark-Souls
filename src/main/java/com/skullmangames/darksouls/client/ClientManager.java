@@ -62,6 +62,11 @@ public class ClientManager
 	    {
 	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
 	    });
+		
+		ItemProperties.register(ModItems.ASHEN_ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living, id) ->
+	    {
+	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
+	    });
 	}
 	
 	public void toggleCombatMode()

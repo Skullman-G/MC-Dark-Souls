@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.item.AshenEstusFlaskItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
@@ -111,7 +112,12 @@ public class ModItems
 	
 	// Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
-			.tab(DarkSouls.TAB)));
+			.tab(DarkSouls.TAB)
+			.stacksTo(1)));
+	
+	public static final RegistryObject<Item> ASHEN_ESTUS_FLASK = ITEMS.register("ashen_estus_flask", () -> new AshenEstusFlaskItem(new Item.Properties()
+			.tab(DarkSouls.TAB)
+			.stacksTo(1)));
 	
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));

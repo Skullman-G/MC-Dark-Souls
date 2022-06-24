@@ -114,7 +114,7 @@ public class BonfireScreen extends Screen
 			String warning = "";
 			if (!this.playerData.hasEnoughHumanity(1)) warning = new TranslatableComponent("gui.darksouls.not_enough_humanity").getString();
 			if (!this.playerData.isHuman()) warning = new TranslatableComponent("gui.darksouls.not_human").getString();
-			if (this.bonfiretileentity.canKindle()) warning = new TranslatableComponent("gui.darksouls.cannot_kindle_further").getString();
+			if (!this.bonfiretileentity.canKindle()) warning = new TranslatableComponent("gui.darksouls.cannot_kindle_further").getString();
 			TextComponent textcomponent = warning == "" ? new TextComponent(description) : new TextComponent(description + "\n\n" + "\u00A74" + warning);
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);

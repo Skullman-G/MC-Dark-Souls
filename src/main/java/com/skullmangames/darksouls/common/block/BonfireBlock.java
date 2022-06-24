@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
@@ -123,12 +125,18 @@ public class BonfireBlock extends Block implements EntityBlock
 		else
 		{
 			Item item = player.getItemInHand(hand).getItem();
-			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
+			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.ASHEN_ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
 			{
 				return InteractionResult.PASS;
 			}
 			
 			player.heal(player.getMaxHealth() - player.getHealth());
+			
+			PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (playerCap != null)
+			{
+				playerCap.setFP(playerCap.getMaxFP());
+			}
 			
 			if (!player.level.isClientSide)
 			{

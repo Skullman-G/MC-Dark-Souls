@@ -24,10 +24,24 @@ public class ReinforceEstusFlaskContainer extends ItemCombinerMenu
 	}
 
 	@Override
-	protected boolean mayPickup(Player p_39798_, boolean p_39799_)
+	protected boolean mayPickup(Player player, boolean p_39799_)
 	{
-		return this.slots.get(0).getItem().getItem() == ModItems.ESTUS_FLASK.get()
-				&& this.slots.get(1).getItem().getItem() == ModItems.ESTUS_SHARD.get();
+		return this.validResult();
+	}
+	
+	private boolean validResult()
+	{
+		return (this.isEstusFlask() || this.isAshenEstusFlask()) && this.slots.get(1).getItem().getItem() == ModItems.ESTUS_SHARD.get();
+	}
+	
+	private boolean isEstusFlask()
+	{
+		return this.slots.get(0).getItem().getItem() == ModItems.ESTUS_FLASK.get();
+	}
+	
+	private boolean isAshenEstusFlask()
+	{
+		return this.slots.get(0).getItem().getItem() == ModItems.ASHEN_ESTUS_FLASK.get();
 	}
 
 	@Override
@@ -59,8 +73,13 @@ public class ReinforceEstusFlaskContainer extends ItemCombinerMenu
 	@Override
 	public void createResult()
 	{
+		if (!this.validResult())
+		{
+			this.resultSlots.setItem(0, ItemStack.EMPTY);
+			return;
+		}
 		int estuslevel = EstusFlaskItem.getTotalUses(this.inputSlots.getItem(0));
-		ItemStack stack = new ItemStack(ModItems.ESTUS_FLASK.get());
+		ItemStack stack = this.isAshenEstusFlask() ? new ItemStack(ModItems.ASHEN_ESTUS_FLASK.get()) : new ItemStack(ModItems.ESTUS_FLASK.get());
 		EstusFlaskItem.setTotalUses(stack, estuslevel + 1);
 		this.resultSlots.setItem(0, stack);
 	}

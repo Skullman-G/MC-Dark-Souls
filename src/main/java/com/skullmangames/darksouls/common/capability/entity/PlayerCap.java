@@ -107,6 +107,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.fp = value;
 	}
 	
+	public void raiseFP(int value)
+	{
+		this.setFP(this.fp + value);
+	}
+	
 	public float getMaxFP()
 	{
 		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get());
