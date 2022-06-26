@@ -98,7 +98,7 @@ public class ScreenManager
 			{
 				if (gui instanceof ModTitleScreen)
 				{
-					TitleScreen screen = (TitleScreen) gui;
+					ModTitleScreen screen = (ModTitleScreen) gui;
 					event.setScreen(new TitleScreen(screen.fading));
 				}
 			}
