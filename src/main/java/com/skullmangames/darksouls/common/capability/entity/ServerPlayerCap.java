@@ -158,7 +158,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	{
 		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->
 		{
-			return new AttunementsMenu(id, inventory, this.attunements);
+			return new AttunementsMenu(id, inventory, this.getAttunements());
 		}, new TranslatableComponent("container.attunements.title"));
 		this.orgEntity.openMenu(container);
 	}

@@ -17,9 +17,13 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.BossHealthOverlay;
@@ -33,6 +37,7 @@ public class GameOverlayManager
 	
 	private static final ResourceLocation LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png");
 	private static final ResourceLocation BOSS_BARS_LOCATION = new ResourceLocation("textures/gui/bars.png");
+	private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/widgets.png");
 	
 	private static final Timer damageCooldown = new Timer();
 	private static final Timer damageTimer = new Timer();
@@ -124,11 +129,78 @@ public class GameOverlayManager
 	            renderFP(gui, screenWidth, screenHeight, poseStack);
 	        }
 	    });
+		
+		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player Attunements", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui)
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderAttunements(gui, screenWidth, screenHeight, poseStack, partialTicks);
+	        }
+	    });
+	}
+	
+	private static void renderAttunements(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
+	{
+		LocalPlayerCap playerCap = getCameraPlayerCap();
+		if (playerCap == null) return;
+		LocalPlayer player = playerCap.getOriginalEntity();
+
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+		int middle = height / 2;
+		int j = gui.getBlitOffset();
+		int k = 182;
+		gui.setBlitOffset(-90);
+		gui.blit(poseStack, 0, middle - k / 2, 234, 74, 22, k);
+		gui.blit(poseStack, 0, middle - k / 2 + playerCap.getAttunements().selected * 20, 0, 22, 24, 24);
+
+		gui.setBlitOffset(j);
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		int i1 = 1;
+
+		for (int j1 = 0; j1 < 9; ++j1)
+		{
+			renderSlot(3, middle - k / 2 + j1 * 20 + 3, partialTicks, player, playerCap.getAttunements().getItem(j1), i1++);
+		}
+
+		RenderSystem.disableBlend();
+	}
+	
+	private static void renderSlot(int x, int y, float partialTicks, Player player, ItemStack itemStack, int p_168683_)
+	{
+		if (!itemStack.isEmpty())
+		{
+			PoseStack posestack = RenderSystem.getModelViewStack();
+			float f = (float) itemStack.getPopTime() - partialTicks;
+			if (f > 0.0F)
+			{
+				float f1 = 1.0F + f / 5.0F;
+				posestack.pushPose();
+				posestack.translate((double) (x + 8), (double) (y + 12), 0.0D);
+				posestack.scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+				posestack.translate((double) (-(x + 8)), (double) (-(y + 12)), 0.0D);
+				RenderSystem.applyModelViewMatrix();
+			}
+
+			ItemRenderer itemRenderer = minecraft.getItemRenderer();
+			itemRenderer.renderAndDecorateItem(player, itemStack, x, y, p_168683_);
+			RenderSystem.setShader(GameRenderer::getPositionColorShader);
+			if (f > 0.0F)
+			{
+				posestack.popPose();
+				RenderSystem.applyModelViewMatrix();
+			}
+
+			itemRenderer.renderGuiItemDecorations(minecraft.font, itemStack, x, y);
+		}
 	}
 	
 	private static void renderFP(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
-		AbstractClientPlayerCap<?> player = getCameraPlayerData();
+		AbstractClientPlayerCap<?> player = getCameraPlayerCap();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -381,7 +453,7 @@ public class GameOverlayManager
 	
 	private static void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
-		AbstractClientPlayerCap<?> player = getCameraPlayerData();
+		AbstractClientPlayerCap<?> player = getCameraPlayerCap();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -513,7 +585,7 @@ public class GameOverlayManager
 	    return minecraft.player;
 	}
 	
-	private static LocalPlayerCap getCameraPlayerData()
+	private static LocalPlayerCap getCameraPlayerCap()
 	{
 		LocalPlayer player = getCameraPlayer();
 		if (player == null) return null;

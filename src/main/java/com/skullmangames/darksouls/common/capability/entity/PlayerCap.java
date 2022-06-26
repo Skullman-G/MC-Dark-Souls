@@ -20,7 +20,6 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -37,7 +36,14 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	protected int souls;
 	protected float fp;
 	
-	protected SpellInventory attunements = new SpellInventory(this.orgEntity);
+	private SpellInventory attunements;
+	
+	@Override
+	public void onEntityConstructed(T entityIn)
+	{
+		super.onEntityConstructed(entityIn);
+		this.attunements = new SpellInventory(entityIn);
+	}
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -49,6 +55,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		{
 			this.orgEntity.getInventory().add(new ItemStack(ModItems.DARKSIGN.get()));
 		}
+	}
+	
+	public SpellInventory getAttunements()
+	{
+		return this.attunements;
 	}
 	
 	public void onLoad(CompoundTag nbt)

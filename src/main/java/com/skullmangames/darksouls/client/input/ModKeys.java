@@ -20,6 +20,8 @@ public class ModKeys
 	public static final KeyMapping SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
 	public static final KeyMapping TOGGLE_COMBAT_MODE = makeKeyBinding("toggle_combat_mode", 82, "combat");
 	public static final KeyMapping OPEN_STAT_SCREEN = makeKeyBinding("open_stat_screen", 77, "gui");
+	public static final KeyMapping ATTUNEMENT_SLOT_UP = makeKeyBinding("attunement_slot_up", 265, "gui");
+	public static final KeyMapping ATTUNEMENT_SLOT_DOWN = makeKeyBinding("attunement_slot_down", 264, "gui");
 	
 	// For temporary use
 	public static final KeyMapping VISIBLE_HITBOXES = new KeyMapping("visible_hitboxes", 79, "debug");

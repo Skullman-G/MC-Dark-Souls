@@ -1,8 +1,12 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCAttunements;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
@@ -109,8 +113,10 @@ public class SpellInventory implements Container
 	@Override
 	public void setChanged()
 	{
-		// TODO Auto-generated method stub
-		
+		if (!this.player.level.isClientSide)
+		{
+			ModNetworkManager.sendToPlayer(new STCAttunements(this.player.getId(), this.spells), (ServerPlayer)this.player);
+		}
 	}
 
 	@Override

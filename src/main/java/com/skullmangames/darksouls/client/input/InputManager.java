@@ -72,6 +72,8 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
 		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
+		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_UP, this::onAttunementSlotUp);
+		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
 		
 		try
 		{
@@ -119,6 +121,22 @@ public class InputManager
 				&& this.player.isOnGround()
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	private void onAttunementSlotUp(int key, int action)
+	{
+		if (action == 1 && this.playerCap.getAttunements().selected > 0)
+		{
+			this.playerCap.getAttunements().selected--;
+		}
+	}
+	
+	private void onAttunementSlotDown(int key, int action)
+	{
+		if (action == 1 && this.playerCap.getAttunements().selected < this.playerCap.getAttunements().getContainerSize() - 1)
+		{
+			this.playerCap.getAttunements().selected++;
+		}
 	}
 	
 	private void toggleRenderCollision(int key, int action)
