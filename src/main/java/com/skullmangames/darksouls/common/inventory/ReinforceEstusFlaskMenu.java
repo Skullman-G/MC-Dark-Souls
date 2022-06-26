@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.inventory.container;
+package com.skullmangames.darksouls.common.inventory;
 
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModContainers;
@@ -11,14 +11,14 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforceEstusFlaskContainer extends ItemCombinerMenu
+public class ReinforceEstusFlaskMenu extends ItemCombinerMenu
 {
-	public ReinforceEstusFlaskContainer(int id, Inventory inventory)
+	public ReinforceEstusFlaskMenu(int id, Inventory inventory)
 	{
 		this(id, inventory, ContainerLevelAccess.NULL);
 	}
 	
-	public ReinforceEstusFlaskContainer(int id, Inventory inventory, ContainerLevelAccess access)
+	public ReinforceEstusFlaskMenu(int id, Inventory inventory, ContainerLevelAccess access)
 	{
 		super(ModContainers.REINFORCE_ESTUS_FLASK.get(), id, inventory, access);
 	}

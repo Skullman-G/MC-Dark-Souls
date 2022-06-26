@@ -11,6 +11,8 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSBonfireTask;
+import com.skullmangames.darksouls.network.client.CTSOpenAttunementScreen;
+
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -28,7 +30,7 @@ public class BonfireScreen extends Screen
 	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_bonfire_main.png");
 	
 	private int imageWidth = 129;
-	private int imageHeight = 166;
+	private int imageHeight = 186;
 	private Button reverseHollowingButton;
 	private Button kindleButton;
 	private BonfireBlockEntity bonfiretileentity;
@@ -59,6 +61,7 @@ public class BonfireScreen extends Screen
 	{
 		super.init();
 		
+		int yPos = this.height / 2 - 10;
 		String name = this.bonfiretileentity.getName();
 		nameparts[0] = StringHelper.trySubstring(name, 0, 12);
 		nameparts[1] = name.length() >= 12 ? StringHelper.trySubstring(name, 12, 24) : "";
@@ -79,7 +82,7 @@ public class BonfireScreen extends Screen
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
 	    };
-		this.estusHealIcon = this.addRenderableWidget(new ImageButton(this.width / 2 - 20 - (16 / 2), this.height / 2 - 69 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/undead_bone_shard.png"), 16, 16, null, tooltip, null));
+		this.estusHealIcon = this.addRenderableWidget(new ImageButton(this.width / 2 - 20 - (16 / 2), this.height / 2 - 79 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/undead_bone_shard.png"), 16, 16, null, tooltip, null));
 		this.estusHealIcon.active = false;
 		
 		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
@@ -89,7 +92,7 @@ public class BonfireScreen extends Screen
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
 	    };
-		this.estusVolumeIcon = this.addRenderableWidget(new ImageButton(this.width / 2 + 10 - (16 / 2), this.height / 2 - 68 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/estus_flask_full.png"), 16, 16, null, tooltip, null));
+		this.estusVolumeIcon = this.addRenderableWidget(new ImageButton(this.width / 2 + 10 - (16 / 2), this.height / 2 - 78 - (16 / 2), 16, 16, 0, 0, 0, new ResourceLocation(DarkSouls.MOD_ID, "textures/items/estus_flask_full.png"), 16, 16, null, tooltip, null));
 		this.estusVolumeIcon.active = false;
 		
 		tooltip = (button, p_238659_2_, p_238659_3_, p_238659_4_) ->
@@ -102,7 +105,7 @@ public class BonfireScreen extends Screen
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
 	    };
-		this.reverseHollowingButton = this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2, this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.reverse_hollowing_button"), (p_214187_1_) ->
+		this.reverseHollowingButton = this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), yPos, this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.reverse_hollowing_button"), (p_214187_1_) ->
 		{
 	         this.reverseHollowing();
 	    }, tooltip));
@@ -119,12 +122,16 @@ public class BonfireScreen extends Screen
 			
 			this.renderTooltip(p_238659_2_, this.minecraft.font.split(textcomponent, Math.max(this.width / 2 - 43, 170)), p_238659_3_, p_238659_4_);
 	    };
-		this.kindleButton = this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (1 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.kindle"), (p_214187_1_) ->
+		this.kindleButton = this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), yPos + (1 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.kindle"), (button) ->
 		{
 	         this.kindle();
 	    }, tooltip));
 		this.kindleButton.active = this.playerData.isHuman() && this.playerData.hasEnoughHumanity(1) && this.bonfiretileentity.canKindle();
-		this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), this.height / 2 + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.leave_button"), (p_214187_1_) ->
+		this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), yPos + (2 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.attunements"), (button) ->
+		{
+	         ModNetworkManager.sendToServer(new CTSOpenAttunementScreen());
+	    }));
+		this.addRenderableWidget(new Button(this.width / 2 - (this.buttonWidth / 2), yPos + (3 * (this.buttonHeight + 5)), this.buttonWidth, this.buttonHeight, new TranslatableComponent("gui.darksouls.leave_button"), (button) ->
 		{
 	         super.onClose();
 	    }));
@@ -137,12 +144,12 @@ public class BonfireScreen extends Screen
 		this.renderBg(matrixstack, partialticks, mouseX, mouseY);
 		
 		
-	    drawCenteredString(matrixstack, this.font, this.nameparts[0], this.width / 2, this.height / 2 - 55, 16777215);
-	    drawCenteredString(matrixstack, this.font, this.nameparts[1], this.width / 2, this.height / 2 - 45, 16777215);
-	    drawCenteredString(matrixstack, this.font, this.nameparts[2], this.width / 2, this.height / 2 - 35, 16777215);
+	    drawCenteredString(matrixstack, this.font, this.nameparts[0], this.width / 2, this.height / 2 - 65, 16777215);
+	    drawCenteredString(matrixstack, this.font, this.nameparts[1], this.width / 2, this.height / 2 - 55, 16777215);
+	    drawCenteredString(matrixstack, this.font, this.nameparts[2], this.width / 2, this.height / 2 - 45, 16777215);
 	    
-	    drawCenteredString(matrixstack, this.font, estusVolumeLevel, this.width / 2 + 25, this.height / 2 - 70, 16777215);
-	    drawCenteredString(matrixstack, this.font, estusHealLevel, this.width / 2 - 5, this.height / 2 - 70, 16777215);
+	    drawCenteredString(matrixstack, this.font, estusVolumeLevel, this.width / 2 + 25, this.height / 2 - 80, 16777215);
+	    drawCenteredString(matrixstack, this.font, estusHealLevel, this.width / 2 - 5, this.height / 2 - 80, 16777215);
 	    
 	    super.render(matrixstack, mouseX, mouseY, partialticks);
 	}

@@ -20,8 +20,10 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 
 public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 {
@@ -34,6 +36,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	protected boolean human;
 	protected int souls;
 	protected float fp;
+	
+	protected SpellInventory attunements = new SpellInventory(this.orgEntity);
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -56,6 +60,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		if (nbt.contains("FocusPoints")) this.fp = nbt.getFloat("FocusPoints");
 		else this.fp = this.getMaxFP();
 		
+		this.attunements.load(nbt.getList("Attunements", 10));
+		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
@@ -68,6 +74,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
 		nbt.putFloat("FocusPoints", this.fp);
+		nbt.put("Attunements", this.attunements.save(new ListTag()));
 		
 		this.stats.saveStats(nbt);
 	}

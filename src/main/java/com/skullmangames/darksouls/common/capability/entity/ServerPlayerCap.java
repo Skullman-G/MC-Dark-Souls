@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.inventory.AttunementsMenu;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -28,8 +29,10 @@ import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 
 public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoaded
@@ -149,6 +152,15 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		if (this.fp == value) return;
 		super.setFP(value);
 		ModNetworkManager.sendToPlayer(new STCFP(this.orgEntity.getId(), this.fp), this.orgEntity);
+	}
+	
+	public void openAttunementMenu()
+	{
+		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->
+		{
+			return new AttunementsMenu(id, inventory, this.attunements);
+		}, new TranslatableComponent("container.attunements.title"));
+		this.orgEntity.openMenu(container);
 	}
 
 	@Override

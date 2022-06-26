@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
+import com.skullmangames.darksouls.common.inventory.ReinforceEstusFlaskMenu;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -119,7 +119,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, p_235576_4_) ->
 		{
-			return new ReinforceEstusFlaskContainer(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
+			return new ReinforceEstusFlaskMenu(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
 		}, new TranslatableComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}

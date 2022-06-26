@@ -159,6 +159,7 @@
 	"gui.darksouls.off": "OFF",
 	"gui.darksouls.done": "Done",
 	"gui.darksouls.reset": "Reset",
+	"gui.darksouls.attunements": "Attunements",
 	
 	
 	"_comment": "Sound Events",
@@ -232,6 +233,7 @@
 	"dialogue.darksouls.anastacia_of_astora.0": "...",
 	
 	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
+	"container.attunements.title": "Attunements",
 	
 	"commands.give.fail.darksign": "Don't even try",
 	

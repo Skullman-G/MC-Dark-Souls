@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
+import com.skullmangames.darksouls.common.inventory.ReinforceEstusFlaskMenu;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -14,11 +14,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ReinforceEstusFlaskScreen extends AbstractContainerScreen<ReinforceEstusFlaskContainer> implements MenuAccess<ReinforceEstusFlaskContainer>
+public class ReinforceEstusFlaskScreen extends AbstractContainerScreen<ReinforceEstusFlaskMenu> implements MenuAccess<ReinforceEstusFlaskMenu>
 {
 	private static final ResourceLocation REINFORCE_ESTUS_FLASK_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/containers/reinforce_estus_flask.png");
 	
-	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskContainer p_i232291_1_, Inventory p_i232291_2_, Component p_i232291_3_)
+	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskMenu p_i232291_1_, Inventory p_i232291_2_, Component p_i232291_3_)
 	{
 		super(p_i232291_1_, p_i232291_2_, p_i232291_3_);
 		this.titleLabelX = 10;
