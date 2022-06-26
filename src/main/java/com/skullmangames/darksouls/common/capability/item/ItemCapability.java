@@ -66,18 +66,19 @@ public class ItemCapability
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
+		int index = 1;
 		String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath();
 		String description = new TranslatableComponent(languagePath).getString();
 		
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
-		if (!description.contains(languagePath)) itemTooltip.add(1, new TextComponent("\u00A77" + description));
+		if (!description.contains(languagePath)) itemTooltip.add(index++, new TextComponent("\u00A77" + description));
 		
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
 		
 		languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
 		description = new TranslatableComponent(languagePath).getString();
 		
-		if (!description.contains(languagePath)) itemTooltip.add(2, new TextComponent("\u00A77\n" + description));
+		if (!description.contains(languagePath)) itemTooltip.add(index++, new TextComponent("\u00A77\n" + description));
 	}
 	
 	public void onHeld(PlayerCap<?> playerCap)

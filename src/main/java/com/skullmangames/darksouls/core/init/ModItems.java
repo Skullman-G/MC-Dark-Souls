@@ -10,9 +10,9 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
 import com.skullmangames.darksouls.common.item.ModArmorItem;
 import com.skullmangames.darksouls.common.item.SoulContainerItem;
+import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
-
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.AxeItem;
@@ -86,6 +86,10 @@ public class ModItems
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	//Miracles
+	public static final RegistryObject<Item> MIRACLE_HEAL = ITEMS.register("miracle_heal", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_HEAL, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set_layer_1", new Item.Properties()
@@ -116,12 +120,10 @@ public class ModItems
 	
 	//Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
-			.tab(DarkSouls.TAB)
-			.stacksTo(1)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> ASHEN_ESTUS_FLASK = ITEMS.register("ashen_estus_flask", () -> new AshenEstusFlaskItem(new Item.Properties()
-			.tab(DarkSouls.TAB)
-			.stacksTo(1)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));

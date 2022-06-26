@@ -24,6 +24,11 @@ public class SpellInventory implements Container
 		this.player = player;
 	}
 	
+	public ItemStack getSelected()
+	{
+		return this.spells.get(this.selected);
+	}
+	
 	public ListTag save(ListTag nbt)
 	{
 		for (int i = 0; i < this.spells.size(); ++i)

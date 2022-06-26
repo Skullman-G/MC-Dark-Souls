@@ -47,6 +47,7 @@
 	"item.darksouls.hollow_lordran_soldier_spawn_egg": "Hollow Soldier of Lordran Spawn Egg",
 	"item.darksouls.ashen_estus_flask": "Ashen Estus Flask",
 	"item.darksouls.talisman": "Talisman",
+	"item.darksouls.miracle_heal": "Miracle: Heal",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -132,6 +133,7 @@
 	"tooltip.darksouls.lordran_soldier_waistcloth.extended": "Waistcloth worn by soldiers of Lordran. It is so tattered that it barely serves its purpose anymore.",
 	"tooltip.darksouls.lordran_soldier_boots.extended": "Boots worn by soldiers of Lordran. Their lack of material makes them look like sandals.",
 	"tooltip.darksouls.talisman.extended": "Talisman for casting miracles of the Gods. Once a very common item among the ranks of the old Way of White. Equip a talisman to cast miracles. Attune miracles from a scroll at a bonfire.",
+	"tooltip.darksouls.miracle_heal.extended": "Elementary miracle cast by clerics. Restores HP for self and those in the vicinity. To cast a miracle, the caster learns a tale of the Gods, and says a prayer to be blessed by its revelations. Heal is the shortest of such miraculous tales.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

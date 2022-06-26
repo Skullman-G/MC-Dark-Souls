@@ -132,6 +132,6 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return ModSoundEvents.DARKSIGN_USE.get();
+		return ModSoundEvents.MIRACLE_USE.get();
 	}
 }

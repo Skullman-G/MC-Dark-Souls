@@ -28,13 +28,23 @@
 		]
 	},
 	
-	"item.darksign.use":
+	"item.miracle.use":
 	{
 		"category": "item",
-		"subtitle": "item.darksign.use.sub",
+		"subtitle": "item.miracle.use.sub",
 		"sounds":
 		[
-			"darksouls:items/darksign/use"
+			"darksouls:items/miracle/use"
+		]
+	},
+	
+	"item.miracle.use_pre":
+	{
+		"category": "item",
+		"subtitle": "item.miracle.use.sub",
+		"sounds":
+		[
+			"darksouls:items/miracle/use_pre"
 		]
 	},
 	

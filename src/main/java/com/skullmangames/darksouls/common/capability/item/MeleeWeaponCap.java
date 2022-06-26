@@ -15,6 +15,8 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -79,16 +81,25 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	{
 		return this.moveset.get(type).getSecond();
 	}
+	
+	@Override
+	public void performAttack(AttackType type, LocalPlayerCap playerCap)
+	{
+		AttackAnimation animation = this.getAttack(type, playerCap);
+		if (animation == null) return;
+		playerCap.getAnimator().playAnimation(animation, 0.0F);
+		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
+	};
 
 	@OnlyIn(Dist.CLIENT)
-	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerdata)
+	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerCap)
 	{
 		Pair<Boolean, AttackAnimation[]> move = this.moveset.get(type);
 		if (move == null) return null;
 		AttackAnimation[] animations = move.getSecond();
 		if (animations == null) return null;
 		List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
-		int combo = animationList.indexOf(playerdata.getClientAnimator().baseLayer.animationPlayer.getPlay());
+		int combo = animationList.indexOf(playerCap.getClientAnimator().baseLayer.animationPlayer.getPlay());
 		if (combo + 1 < animations.length) combo += 1;
 		else if (move.getFirst()) combo = 0;
 		return animations[combo];

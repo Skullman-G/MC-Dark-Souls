@@ -14,7 +14,9 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -67,11 +69,14 @@ public abstract class WeaponCap extends AttributeItemCap
 	{
 		return this.statInfo.get(stat).getSecond();
 	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void performAttack(AttackType type, LocalPlayerCap playerCap) {}
 
-	public boolean meetRequirements(PlayerCap<?> playerdata)
+	public boolean meetRequirements(PlayerCap<?> playerCap)
 	{
 		for (Stat stat : this.statInfo.keySet())
-			if (!this.meetsRequirement(stat, playerdata))
+			if (!this.meetsRequirement(stat, playerCap))
 				return false;
 		return true;
 	}

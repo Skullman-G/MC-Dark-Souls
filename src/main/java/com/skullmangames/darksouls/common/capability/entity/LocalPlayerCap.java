@@ -4,9 +4,10 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import java.util.ArrayList;
@@ -120,10 +121,10 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void performAttack(AttackType type)
 	{
 		AttackAnimation animation = null;
-		MeleeWeaponCap weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND));
 		if (weapon != null)
 		{
-			animation = weapon.getAttack(type, this);
+			weapon.performAttack(type, this);
 		}
 		else
 		{
@@ -146,11 +147,11 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 					animation = Animations.FIST_HEAVY_ATTACK;
 					break;
 			}
+			
+			if (animation == null) return;
+			this.animator.playAnimation(animation, 0.0F);
+			ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 		}
-		
-		if (animation == null) return;
-		this.animator.playAnimation(animation, 0.0F);
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 	}
 	
 	@Override
