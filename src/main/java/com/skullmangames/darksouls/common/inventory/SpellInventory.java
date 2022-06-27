@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.capability.entity;
+package com.skullmangames.darksouls.common.inventory;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCAttunements;
