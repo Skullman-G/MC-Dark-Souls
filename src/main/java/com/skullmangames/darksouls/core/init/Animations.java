@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -99,7 +100,12 @@ public final class Animations
 					{
 							Event.create(Event.ON_END, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
 							Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
-							Event.create(2.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get()))
+							Event.create(2.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(2.0F, Side.CLIENT, (cap) ->
+							{
+								Vec3 pos = cap.getOriginalEntity().position();
+								cap.getOriginalEntity().level.addParticle(ModParticles.MIRACLE_GLOW.get(), pos.x, pos.y + 1, pos.z, 0, 0, 0);
+							})
 					});
 	
 	// Big Weapon
