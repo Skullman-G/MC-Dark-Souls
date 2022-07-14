@@ -14,6 +14,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -28,6 +30,13 @@ public class CrestfallenWarrior extends QuestEntity
 	public CrestfallenWarrior(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
+	}
+	
+	@Override
+	protected void registerGoals()
+	{
+		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
+		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 	}
 	
 	@Override
