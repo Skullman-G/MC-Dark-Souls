@@ -40,8 +40,8 @@ public class LordranCamp extends Structure<NoFeatureConfig>
 	public List<Spawners> getDefaultSpawnList()
 	{
 		List<Spawners> spawns = new ArrayList<>();
-		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), 10, 1, 2));
-		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), 5, 1, 2));
+		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), 2, 1, 1));
+		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), 1, 1, 1));
 		return spawns;
 	}
 
