@@ -92,6 +92,7 @@ public class GameOverlayManager
 				break;
 	
 			case ALL:
+				if (getCameraPlayer().isCreative() || getCameraPlayer().isSpectator()) return;
 				renderHumanity(width, height, matStack);
 				renderSouls(width, height, matStack);
 				break;
