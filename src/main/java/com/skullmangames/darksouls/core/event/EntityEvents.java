@@ -160,12 +160,15 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void arrowHitEvent(Arrow event)
 	{
-		EntityRayTraceResult rayresult = ((EntityRayTraceResult) event.getRayTraceResult());
-		if (rayresult.getEntity() != null && event.getArrow().getOwner() != null)
+		if (event.getRayTraceResult() instanceof EntityRayTraceResult)
 		{
-			if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger()))
+			EntityRayTraceResult rayresult = ((EntityRayTraceResult) event.getRayTraceResult());
+			if (rayresult.getEntity() != null && event.getArrow().getOwner() != null)
 			{
-				event.setCanceled(true);
+				if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger()))
+				{
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
