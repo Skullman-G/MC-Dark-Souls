@@ -1,6 +1,10 @@
 package com.skullmangames.darksouls.common.structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.core.init.ModEntities;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -8,6 +12,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo.Spawners;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -29,6 +34,15 @@ public class LordranCamp extends Structure<NoFeatureConfig>
 	public Decoration step()
 	{
 		return Decoration.SURFACE_STRUCTURES;
+	}
+	
+	@Override
+	public List<Spawners> getDefaultSpawnList()
+	{
+		List<Spawners> spawns = new ArrayList<>();
+		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), 10, 1, 2));
+		spawns.add(new Spawners(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), 5, 1, 2));
+		return spawns;
 	}
 
 	@Override

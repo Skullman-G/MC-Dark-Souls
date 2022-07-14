@@ -53,7 +53,7 @@ public class AttackGoal extends Goal
 	
 	public AttackGoal(MobCap<?> mobCap, float minDist, boolean affectY, boolean defensive, boolean shouldStrafe)
 	{
-		this(mobCap, minDist, 0, affectY, defensive, shouldStrafe);
+		this(mobCap, minDist, 1, affectY, defensive, shouldStrafe);
 	}
 	
 	public AttackGoal(MobCap<?> mobCap, float minDist, int yDist, boolean affectY, boolean defensive, boolean shouldStrafe)
