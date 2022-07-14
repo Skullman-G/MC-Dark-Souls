@@ -41,9 +41,9 @@ public class ModStructures
 	
 	public static void setupStructures()
     {
-        setupMapSpacingAndLand(FIRE_KEEPER_RUINS.get(), new StructureSeparationSettings(1000, 900, 293760225), true);
+        setupMapSpacingAndLand(FIRE_KEEPER_RUINS.get(), new StructureSeparationSettings(20, 10, 293760225), true);
         setupMapSpacingAndLand(LORDRAN_CAMP.get(), new StructureSeparationSettings(20, 10, 728751690), true);
-        setupMapSpacingAndLand(FIRELINK_SHRINE.get(), new StructureSeparationSettings(20, 10, 383073029), true);
+        setupMapSpacingAndLand(FIRELINK_SHRINE.get(), new StructureSeparationSettings(1000, 900, 383073029), true);
     }
     
     public static <F extends Structure<?>> void setupMapSpacingAndLand(F structure, StructureSeparationSettings structureSeparationSettings, boolean transformSurroundingLand)
