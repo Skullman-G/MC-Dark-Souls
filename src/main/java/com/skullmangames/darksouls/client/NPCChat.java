@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.client;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
 
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -31,7 +31,7 @@ public class NPCChat
 			else
 			{
 				this.time = this.startTime;
-				ModNetworkManager.connection.setOverlayMessage(new TextComponent(sentences[this.sentence++]));
+				ModNetworkManager.connection.setOverlayMessage(new StringTextComponent(sentences[this.sentence++]));
 			}
 			return;
 		}
@@ -39,11 +39,11 @@ public class NPCChat
 		this.entity = entity;
 		this.time = this.startTime;
 		this.location = location;
-		this.sentences = new TranslatableComponent(location).getString().split("%");
+		this.sentences = new TranslationTextComponent(location).getString().split("%");
 		this.sentence = 0;
 		this.ticking = true;
 		
-		ModNetworkManager.connection.setOverlayMessage(new TextComponent(sentences[this.sentence++]));
+		ModNetworkManager.connection.setOverlayMessage(new StringTextComponent(sentences[this.sentence++]));
 	}
 	
 	public String getLocation()
@@ -75,7 +75,7 @@ public class NPCChat
 		if (!this.ticking || event.phase == Phase.START) return;
 		if (--this.time > 0) return;
 		
-		if (this.sentence < this.sentences.length) ModNetworkManager.connection.setOverlayMessage(new TextComponent(sentences[this.sentence++]));
+		if (this.sentence < this.sentences.length) ModNetworkManager.connection.setOverlayMessage(new StringTextComponent(sentences[this.sentence++]));
 		else this.stop();
 		
 		if (this.ticking) this.time = this.startTime;

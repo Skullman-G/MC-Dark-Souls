@@ -1,14 +1,14 @@
 package com.skullmangames.darksouls.client.input;
 
-import com.mojang.blaze3d.Blaze3D;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModCamera;
 
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.MouseHandler;
+import net.minecraft.client.MouseHelper;
+import net.minecraft.client.settings.PointOfView;
+import net.minecraft.client.util.NativeUtil;
 
-public class MouseInputManager extends MouseHandler
+public class MouseInputManager extends MouseHelper
 {
 	private final Minecraft minecraft;
 	private final ModCamera camera;
@@ -23,7 +23,7 @@ public class MouseInputManager extends MouseHandler
 	@Override
 	public void turnPlayer()
 	{
-		double d0 = Blaze3D.getTime();
+		double d0 = NativeUtil.getTime();
 		double d1 = d0 - this.lastMouseEventTime;
 	    this.lastMouseEventTime = d0;
 	    if (this.isMouseGrabbed() && this.minecraft.isWindowActive())
@@ -54,7 +54,7 @@ public class MouseInputManager extends MouseHandler
 	        this.minecraft.getTutorial().onMouse(d2, d3);
 	        if (this.minecraft.player != null)
 	        {
-	        	if (this.minecraft.options.getCameraType() == CameraType.FIRST_PERSON)
+	        	if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}

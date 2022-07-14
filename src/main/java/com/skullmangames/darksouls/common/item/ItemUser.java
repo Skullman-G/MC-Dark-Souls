@@ -1,20 +1,20 @@
 package com.skullmangames.darksouls.common.item;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ItemUser
 {
-	public static InteractionResultHolder<ItemStack> startUsing(IHaveDarkSoulsUseAction item, Level level, Player playerentity, InteractionHand hand)
+	public static ActionResult<ItemStack> startUsing(IHaveDarkSoulsUseAction item, World level, PlayerEntity playerentity, Hand hand)
 	{
 	    playerentity.startUsingItem(hand);
-	    return InteractionResultHolder.consume(playerentity.getItemInHand(hand));
+	    return ActionResult.consume(playerentity.getItemInHand(hand));
 	}
 	
 	private static boolean shouldTriggerItemUseEffects(ItemStack itemstack, int durationremaining)
@@ -51,9 +51,9 @@ public class ItemUser
 		double z = 1.0D;
 		for (double x = 0.0D; x < 1.0D;)
 		{
-			if (livingentity.level instanceof ServerLevel)
+			if (livingentity.level instanceof ServerWorld)
 		    {
-		        ServerLevel serverworld = (ServerLevel)livingentity.level;
+		        ServerWorld serverworld = (ServerWorld)livingentity.level;
 		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z + z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x - x, livingentity.position().y, livingentity.position().z - z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		        serverworld.sendParticles(ParticleTypes.FLAME, livingentity.position().x + x, livingentity.position().y, livingentity.position().z - z, 1, 0.0D, 0.0D, 0.0D, 0.0D);

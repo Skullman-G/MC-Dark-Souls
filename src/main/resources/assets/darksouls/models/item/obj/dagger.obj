@@ -1,7 +1,7 @@
 # Blender v2.93.3 OBJ File: 'dagger.blend'
 # www.blender.org
 mtllib dagger.mtl
-o Cube
+o ModelBox
 v -0.125000 -0.062500 0.250000
 v -0.125000 0.125000 0.250000
 v 0.125000 -0.062500 0.250000

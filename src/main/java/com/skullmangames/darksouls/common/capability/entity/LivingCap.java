@@ -36,26 +36,26 @@ import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
@@ -144,7 +144,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator.update();
 	}
 
-	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)
+	public boolean isHoldingWeaponWithHoldingAnimation(Hand hand)
 	{
 		WeaponCap cap = this.getHeldWeaponCapability(hand);
 		return cap != null && cap.hasHoldingAnimation();
@@ -222,12 +222,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		if (this.orgEntity.getUseItemRemainingTicks() != 0)
 		{
-			InteractionHand hand = this.orgEntity.getUsedItemHand();
-			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
+			Hand hand = this.orgEntity.getUsedItemHand();
+			LayerPart layerPart = hand == Hand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
 			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
 			else
 			{
-				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+				UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 				switch (useAction)
 				{
 					case BOW:
@@ -279,12 +279,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				this.orgEntity.getUseItemRemainingTicks());
 	}
 
-	public ItemCapability getHeldItemCapability(InteractionHand hand)
+	public ItemCapability getHeldItemCapability(Hand hand)
 	{
 		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
 	}
 
-	public MeleeWeaponCap getHeldWeaponCapability(InteractionHand hand)
+	public MeleeWeaponCap getHeldWeaponCapability(Hand hand)
 	{
 		return ModCapabilities.getMeleeWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
@@ -369,9 +369,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			float exTime = hitAnimation instanceof HitAnimation ? 0.1F : 0.0F;
 			this.getAnimator().playAnimation(hitAnimation, exTime);
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), this.orgEntity);
-			if(this.orgEntity instanceof ServerPlayer)
+			if(this.orgEntity instanceof ServerPlayerEntity)
 			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), (ServerPlayer)this.orgEntity);
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), (ServerPlayerEntity)this.orgEntity);
 			}
 		}
 	}
@@ -383,7 +383,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();
 		ItemCapability shield = ModCapabilities.getItemCapability(stack);
-		return item.getUseAnimation(stack) == UseAnim.BLOCK || shield instanceof IShield;
+		return item.getUseAnimation(stack) == UseAction.BLOCK || shield instanceof IShield;
 	}
 
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
@@ -408,9 +408,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			float stuntime = 0.0F;
 			attackerCap.getAnimator().playAnimation(deflectAnimation, stuntime);
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), attacker);
-			if (attacker instanceof ServerPlayer)
+			if (attacker instanceof ServerPlayerEntity)
 			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), (ServerPlayer) attacker);
+				ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), (ServerPlayerEntity) attacker);
 			}
 		}
 
@@ -426,7 +426,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				damageType, poiseDamage, staminaDmg);
 	}
 
-	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)
+	public float getDamageToEntity(Entity targetEntity, Hand hand)
 	{
 		float damage = (float) this.orgEntity.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		if (targetEntity instanceof LivingEntity)
@@ -435,13 +435,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 					((LivingEntity) targetEntity).getMobType());
 		} else
 		{
-			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), MobType.UNDEFINED);
+			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), CreatureAttribute.UNDEFINED);
 		}
 
 		return damage;
 	}
 
-	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source, float amount)
+	public boolean hurtEntity(Entity hitTarget, Hand handIn, ExtendedDamageSource source, float amount)
 	{
 		boolean succed = hitTarget.hurt((DamageSource) source, amount);
 
@@ -483,7 +483,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 		if (orgEntity.getRandom().nextDouble() >= orgEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
 		{
-			Vec3 vec = orgEntity.getDeltaMovement();
+			Vector3d vec = orgEntity.getDeltaMovement();
 
 			orgEntity.hasImpulse = true;
 			float f = (float) Math.sqrt(d1 * d1 + d0 * d0);
@@ -515,7 +515,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void rotateTo(float degree, float limit, boolean partialSync)
 	{
 		LivingEntity entity = this.getOriginalEntity();
-		float amount = Mth.wrapDegrees(degree - entity.yRot);
+		float amount = MathHelper.wrapDegrees(degree - entity.yRot);
 
 		while (amount < -180.0F)
 		{
@@ -682,7 +682,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.getClientAnimator().playReboundAnimation();
 	}
 
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType)
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlotType slotType)
 	{
 	}
 
@@ -718,7 +718,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return orgEntity;
 	}
 
-	public SoundEvent getWeaponHitSound(InteractionHand hand)
+	public SoundEvent getWeaponHitSound(Hand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap == null)
@@ -726,7 +726,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return cap.getHitSound();
 	}
 
-	public SoundEvent getWeaponSmashSound(InteractionHand hand)
+	public SoundEvent getWeaponSmashSound(Hand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap == null)
@@ -734,7 +734,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return cap.getSmashSound();
 	}
 
-	public SoundEvent getSwingSound(InteractionHand hand)
+	public SoundEvent getSwingSound(Hand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap == null)
@@ -742,7 +742,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return cap.getSwingSound();
 	}
 
-	public Collider getColliderMatching(InteractionHand hand)
+	public Collider getColliderMatching(Hand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;

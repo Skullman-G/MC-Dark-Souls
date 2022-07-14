@@ -1,45 +1,45 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.scores.Objective;
-import net.minecraft.world.scores.Score;
-import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.scoreboard.Score;
+import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PlayerRenderer extends BipedRenderer<AbstractClientPlayer, AbstractClientPlayerCap<AbstractClientPlayer>>
+public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, AbstractClientPlayerCap<AbstractClientPlayerEntity>>
 {
 	@Override
-	protected ResourceLocation getEntityTexture(AbstractClientPlayer entityIn)
+	protected ResourceLocation getEntityTexture(AbstractClientPlayerEntity entityIn)
 	{
 		return entityIn.getSkinTextureLocation();
 	}
 	
 	@Override
-	protected void renderNameTag(AbstractClientPlayerCap<AbstractClientPlayer> entityCap, AbstractClientPlayer entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn)
+	protected void renderNameTag(AbstractClientPlayerCap<AbstractClientPlayerEntity> entityCap, AbstractClientPlayerEntity entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		EntityRenderDispatcher renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
+		EntityRendererManager renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
 		
 		double d0 = renderManager.distanceToSqr(entityIn);
 		matrixStackIn.pushPose();
 		if (d0 < 100.0D) {
 			Scoreboard scoreboard = entityIn.getScoreboard();
-			Objective scoreobjective = scoreboard.getDisplayObjective(2);
+			ScoreObjective scoreobjective = scoreboard.getDisplayObjective(2);
 			if (scoreobjective != null)
 			{
 				Score score = scoreboard.getOrCreatePlayerScore(entityIn.getScoreboardName(), scoreobjective);
 				super.renderNameTag(entityCap, entityIn, (
-						new TextComponent(Integer.toString(score.getScore()))).append(" ").append(scoreobjective.getDisplayName()),
+						new StringTextComponent(Integer.toString(score.getScore()))).append(" ").append(scoreobjective.getDisplayName()),
 						matrixStackIn, bufferIn, packedLightIn);
 				matrixStackIn.translate(0.0D, (double) (9.0F * 1.15F * 0.025F), 0.0D);
 			}

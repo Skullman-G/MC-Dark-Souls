@@ -1,14 +1,14 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,7 +29,7 @@ public class AsylumDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemon
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemon entityIn, StrayDemonCap entityCap, float partialTicks)
+	protected void applyRotations(MatrixStack matStack, Armature armature, StrayDemon entityIn, StrayDemonCap entityCap, float partialTicks)
 	{
 		float scale = 1.4F;
 		matStack.scale(scale, scale, scale);

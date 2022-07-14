@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.IResourceManager;
 
 public class AimingAnimation extends StaticAnimation
 {
@@ -77,12 +77,12 @@ public class AimingAnimation extends StaticAnimation
 		{
 			JointTransform head = pose.getTransformByName("Head");
 			float f = 90.0F;
-			float ratio = (f - Math.abs(entityCap.getOriginalEntity().getXRot())) / f;
+			float ratio = (f - Math.abs(entityCap.getOriginalEntity().xRot)) / f;
 			float yawOffset = entityCap.getOriginalEntity().getVehicle() != null
-					? entityCap.getOriginalEntity().getYRot()
+					? entityCap.getOriginalEntity().yRot
 					: entityCap.getOriginalEntity().yBodyRot;
 			MathUtils.mulQuaternion(
-					Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().getYRot()) * ratio),
+					Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().yRot) * ratio),
 					head.rotation(), head.rotation());
 		}
 	}
@@ -97,7 +97,7 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
 	{
 		load(resourceManager, models, this);
 		load(resourceManager, models, this.lookUp);

@@ -22,21 +22,20 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
 
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent.Arrow;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -49,7 +48,6 @@ import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
-import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,7 +69,7 @@ public class EntityEvents
 			return;
 		}
 		
-		if (event.getEntity() instanceof Projectile) return;
+		if (event.getEntity() instanceof ProjectileEntity) return;
 		@SuppressWarnings("rawtypes")
 		EntityCapability entityCap = event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if(entityCap != null && event.getEntity().tickCount == 0)
@@ -94,7 +92,7 @@ public class EntityEvents
 		PlayerCap<?> playerCap = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		MeleeWeaponCap weaponCap = ModCapabilities.getMeleeWeaponCap(event.getItemStack());
 		if (weaponCap == null || playerCap == null) return;
-		if (event.getHand() == InteractionHand.MAIN_HAND && ModCapabilities.getMeleeWeaponCap(event.getEntityLiving().getOffhandItem()) != null)
+		if (event.getHand() == Hand.MAIN_HAND && ModCapabilities.getMeleeWeaponCap(event.getEntityLiving().getOffhandItem()) != null)
 		{
 			event.setCanceled(true);
 			return;
@@ -160,17 +158,14 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void arrowHitEvent(ProjectileImpactEvent event)
+	public static void arrowHitEvent(Arrow event)
 	{
-		if (event.getProjectile() instanceof Arrow && event.getRayTraceResult() instanceof EntityHitResult)
+		EntityRayTraceResult rayresult = ((EntityRayTraceResult) event.getRayTraceResult());
+		if (rayresult.getEntity() != null && event.getArrow().getOwner() != null)
 		{
-			EntityHitResult rayresult = ((EntityHitResult) event.getRayTraceResult());
-			if (rayresult.getEntity() != null && event.getProjectile().getOwner() != null)
+			if (rayresult.getEntity().equals(event.getArrow().getOwner().getControllingPassenger()))
 			{
-				if (rayresult.getEntity().equals(event.getProjectile().getOwner().getControllingPassenger()))
-				{
-					event.setCanceled(true);
-				}
+				event.setCanceled(true);
 			}
 		}
 	}
@@ -196,7 +191,7 @@ public class EntityEvents
 			event.getEntityLiving().getAttributes().addTransientAttributeModifiers(toCap.getAttributeModifiers(event.getSlot()));
 		}
 		
-		if (event.getSlot().getType() == EquipmentSlot.Type.ARMOR)
+		if (event.getSlot().getType() == EquipmentSlotType.Group.ARMOR)
 		{
 			entityCap.onArmorSlotChanged(fromCap, toCap, event.getSlot());
 		}
@@ -205,14 +200,14 @@ public class EntityEvents
 			entityCap.cancelUsingItem();
 			if (entityCap instanceof ServerPlayerCap)
 			{
-				((ServerPlayerCap)entityCap).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
-						: InteractionHand.OFF_HAND);
+				((ServerPlayerCap)entityCap).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlotType.MAINHAND ? Hand.MAIN_HAND
+						: Hand.OFF_HAND);
 			}
 		}
 		
 		if (entityCap instanceof EquipLoaded)
 		{
-			AttributeInstance speed = entityCap.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
+			ModifiableAttributeInstance speed = entityCap.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
 			speed.removeModifier(ModAttributes.MOVEMENT_SPEED_MODIFIER_UUID);
 			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((EquipLoaded)entityCap).getEquipLoadLevel()));
 		}
@@ -250,10 +245,10 @@ public class EntityEvents
 	{
 		EntityCapability<?> mountEntity = event.getEntityMounting().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		Level world = event.getWorldObj();
+		World world = event.getWorldObj();
 		if (!world.isClientSide && mountEntity instanceof HumanoidCap && mountEntity.getOriginalEntity() != null)
 		{
-			if (event.getEntityBeingMounted() instanceof Mob)
+			if (event.getEntityBeingMounted() instanceof MobEntity)
 			{
 				((HumanoidCap<?>) mountEntity).onMount(event.isMounting(), event.getEntityBeingMounted());
 			}
@@ -295,17 +290,11 @@ public class EntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onVanillaShieldBlock(ShieldBlockEvent event)
-	{
-		event.setCanceled(true);
-	}
-	
-	@SubscribeEvent
 	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event)
 	{
-		Player player = event.getPlayer();
+		PlayerEntity player = event.getPlayer();
 		ServerPlayerCap playerData = (ServerPlayerCap) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		playerData.modifyLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
+		playerData.modifyLivingMotions(playerData.getHeldItemCapability(Hand.MAIN_HAND));
 	}
 	
 	@SubscribeEvent

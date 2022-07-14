@@ -5,24 +5,26 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.math.vector.Vector4f;
+
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.VertexData;
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.ModelPart.Cube;
-import net.minecraft.client.model.geom.ModelPart.Polygon;
-import net.minecraft.client.model.geom.ModelPart.Vertex;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer.TexturedQuad;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer.ModelBox;
+import net.minecraft.client.renderer.model.ModelRenderer.PositionTextureVertex;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,9 +41,9 @@ public class CustomModelBakery
 	static final ModModelPart RIGHT_LEG = new Limb(1, 2, 3, 6.0F, true);
 	static final ModModelPart CHEST = new Chest();
 	
-	public static ClientModel bakeBipedCustomArmorModel(HumanoidModel<?> model, ArmorItem armorItem)
+	public static ClientModel bakeBipedCustomArmorModel(BipedModel<?> model, ArmorItem armorItem)
 	{
-		EquipmentSlot equipmentSlot = armorItem.getSlot();
+		EquipmentSlotType equipmentSlot = armorItem.getSlot();
 		List<ModelPartBind> allBoxes = Lists.<ModelPartBind>newArrayList();
 		
 		model.head.setPos(0.0F, 0.0F, 0.0F);
@@ -103,7 +105,7 @@ public class CustomModelBakery
 	{
 		List<VertexData> vertices = Lists.<VertexData>newArrayList();
 		List<Integer> indices = Lists.<Integer>newArrayList();
-		PoseStack matrixStack = new PoseStack();
+		MatrixStack matrixStack = new MatrixStack();
 		indexCount = 0;
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		matrixStack.mulPose(Vector3f.XP.rotationDegrees(180.0F));
@@ -116,7 +118,7 @@ public class CustomModelBakery
 		return VertexData.loadVertexInformation(vertices, ArrayUtils.toPrimitive(indices.toArray(new Integer[0])), true);
 	}
 	
-	private static void bake(PoseStack matrixStack, ModModelPart part, ModelPart renderer, List<VertexData> vertices, List<Integer> indices)
+	private static void bake(MatrixStack matrixStack, ModModelPart part, ModelRenderer renderer, List<VertexData> vertices, List<Integer> indices)
 	{
 		matrixStack.pushPose();
 		matrixStack.translate(renderer.x, renderer.y, renderer.z);
@@ -135,12 +137,12 @@ public class CustomModelBakery
 			matrixStack.mulPose(Vector3f.XP.rotation(renderer.xRot));
 		}
 		
-		for (Cube cube : renderer.cubes)
+		for (ModelBox cube : renderer.cubes)
 		{
 			part.bakeCube(matrixStack, cube, vertices, indices);
 		}
 		
-		renderer.children.forEach((name, childRenderer) ->
+		renderer.children.forEach((childRenderer) ->
 		{
 			bake(matrixStack, part, childRenderer, vertices, indices);
 		});
@@ -151,17 +153,17 @@ public class CustomModelBakery
 	@OnlyIn(Dist.CLIENT)
 	static class ModelPartBind
 	{
-		ModelPart modelRenderer;
+		ModelRenderer modelRenderer;
 		ModModelPart partedBaker;
 		
-		public ModelPartBind(ModModelPart partedBaker, ModelPart modelRenderer)
+		public ModelPartBind(ModModelPart partedBaker, ModelRenderer modelRenderer)
 		{
 			this.partedBaker = partedBaker;
 			this.modelRenderer = modelRenderer;
 		}
 	}
 	
-	static void resetRotation(ModelPart modelRenderer)
+	static void resetRotation(ModelRenderer modelRenderer)
 	{
 		modelRenderer.xRot = 0.0F;
 		modelRenderer.yRot = 0.0F;
@@ -171,7 +173,7 @@ public class CustomModelBakery
 	@OnlyIn(Dist.CLIENT)
 	abstract static class ModModelPart
 	{
-		public abstract void bakeCube(PoseStack matrixStack, Cube cube, List<VertexData> vertices, List<Integer> indices);
+		public abstract void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -184,13 +186,13 @@ public class CustomModelBakery
 		}
 		
 		@Override
-		public void bakeCube(PoseStack matrixStack, Cube cube, List<VertexData> vertices, List<Integer> indices)
+		public void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices)
 		{
-			for (Polygon quad : cube.polygons)
+			for (TexturedQuad quad : cube.polygons)
 			{
 				Vector3f norm = quad.normal.copy();
 				norm.transform(matrixStack.last().normal());
-				for (Vertex vertex : quad.vertices)
+				for (PositionTextureVertex vertex : quad.vertices)
 				{
 					Vector4f pos = new Vector4f(vertex.pos);
 					pos.transform(matrixStack.last().pose());
@@ -223,17 +225,17 @@ public class CustomModelBakery
 				new WeightPair(18.0F, 0.5F, 0.5F), new WeightPair(20.1666F, 0.744F, 0.256F), new WeightPair(22.3333F, 0.770F, 0.230F)};
 		
 		@Override
-		public void bakeCube(PoseStack matrixStack, Cube cube, List<VertexData> vertices, List<Integer> indices)
+		public void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices)
 		{
 			List<TexturedJointQuad> seperatedX = Lists.<TexturedJointQuad>newArrayList();
 			List<TexturedJointQuad> seperatedXY = Lists.<TexturedJointQuad>newArrayList();
-			for (Polygon quad : cube.polygons)
+			for (TexturedQuad quad : cube.polygons)
 			{
 				Matrix4f matrix = matrixStack.last().pose();
-				Vertex pos0 = getTranslatedVertex(quad.vertices[0], matrix);
-				Vertex pos1 = getTranslatedVertex(quad.vertices[1], matrix);
-				Vertex pos2 = getTranslatedVertex(quad.vertices[2], matrix);
-				Vertex pos3 = getTranslatedVertex(quad.vertices[3], matrix);
+				PositionTextureVertex pos0 = getTranslatedVertex(quad.vertices[0], matrix);
+				PositionTextureVertex pos1 = getTranslatedVertex(quad.vertices[1], matrix);
+				PositionTextureVertex pos2 = getTranslatedVertex(quad.vertices[2], matrix);
+				PositionTextureVertex pos3 = getTranslatedVertex(quad.vertices[3], matrix);
 				Direction direction = getDirectionFromVector(quad.normal);
 				
 				WeightPair pos0Weight = getMatchingWeightPair(pos0.pos.y());
@@ -245,8 +247,8 @@ public class CustomModelBakery
 				{
 					float distance = pos2.pos.x() - pos1.pos.x();
 					float u = pos1.u + (pos2.u - pos1.u) * ((this.cutX - pos1.pos.x()) / distance);
-					Vertex pos4 = new Vertex(pos0.pos.x(), this.cutX, pos0.pos.z(), u, pos0.v);
-					Vertex pos5 = new Vertex(pos1.pos.x(), this.cutX, pos1.pos.z(), u, pos1.v);
+					PositionTextureVertex pos4 = new PositionTextureVertex(pos0.pos.x(), this.cutX, pos0.pos.z(), u, pos0.v);
+					PositionTextureVertex pos5 = new PositionTextureVertex(pos1.pos.x(), this.cutX, pos1.pos.z(), u, pos1.v);
 					
 					seperatedX.add(new TexturedJointQuad(new PositionTextureJointVertex[]
 					{
@@ -295,8 +297,8 @@ public class CustomModelBakery
 					{
 						float distance = pos2.pos.y() - pos1.pos.y();
 						float v = pos1.v + (pos2.v - pos1.v) * ((weightPair.cutY - pos1.pos.y()) / distance);
-						Vertex pos4 = new Vertex(pos0.pos.x(), weightPair.cutY, pos0.pos.z(), pos0.u, v);
-						Vertex pos5 = new Vertex(pos1.pos.x(), weightPair.cutY, pos1.pos.z(), pos1.u, v);
+						PositionTextureVertex pos4 = new PositionTextureVertex(pos0.pos.x(), weightPair.cutY, pos0.pos.z(), pos0.u, v);
+						PositionTextureVertex pos5 = new PositionTextureVertex(pos1.pos.x(), weightPair.cutY, pos1.pos.z(), pos1.u, v);
 						
 						addedVertexList.add(new PositionTextureJointVertex(pos4, 8, 7, 0, weightPair.weightLower, weightPair.weightUpper, 0));
 						addedVertexList.add(new PositionTextureJointVertex(pos5, 8, 7, 0, weightPair.weightLower, weightPair.weightUpper, 0));
@@ -431,23 +433,23 @@ public class CustomModelBakery
 		}
 		
 		@Override
-		public void bakeCube(PoseStack matrixStack, Cube cube, List<VertexData> vertices, List<Integer> indices)
+		public void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices)
 		{
 			List<TexturedJointQuad> quads = Lists.<TexturedJointQuad>newArrayList();
-			for (Polygon quad : cube.polygons)
+			for (TexturedQuad quad : cube.polygons)
 			{
 				Matrix4f matrix = matrixStack.last().pose();
-				Vertex pos0 = getTranslatedVertex(quad.vertices[0], matrix);
-				Vertex pos1 = getTranslatedVertex(quad.vertices[1], matrix);
-				Vertex pos2 = getTranslatedVertex(quad.vertices[2], matrix);
-				Vertex pos3 = getTranslatedVertex(quad.vertices[3], matrix);
+				PositionTextureVertex pos0 = getTranslatedVertex(quad.vertices[0], matrix);
+				PositionTextureVertex pos1 = getTranslatedVertex(quad.vertices[1], matrix);
+				PositionTextureVertex pos2 = getTranslatedVertex(quad.vertices[2], matrix);
+				PositionTextureVertex pos3 = getTranslatedVertex(quad.vertices[3], matrix);
 				Direction direction = getDirectionFromVector(quad.normal);
 				if (pos1.pos.y() > this.cutY != pos2.pos.y() > this.cutY)
 				{
 					float distance = pos2.pos.y() - pos1.pos.y();
 					float v = pos1.v + (pos2.v - pos1.v) * ((this.cutY - pos1.pos.y()) / distance);
-					Vertex pos4 = new Vertex(pos0.pos.x(), this.cutY, pos0.pos.z(), pos0.u, v);
-					Vertex pos5 = new Vertex(pos1.pos.x(), this.cutY, pos1.pos.z(), pos1.u, v);
+					PositionTextureVertex pos4 = new PositionTextureVertex(pos0.pos.x(), this.cutY, pos0.pos.z(), pos0.u, v);
+					PositionTextureVertex pos5 = new PositionTextureVertex(pos1.pos.x(), this.cutY, pos1.pos.z(), pos1.u, v);
 					
 					int upperId, lowerId;
 					if (distance > 0)
@@ -568,32 +570,32 @@ public class CustomModelBakery
 		return null;
 	}
 	
-	static Vertex getTranslatedVertex(Vertex original, Matrix4f matrix)
+	static PositionTextureVertex getTranslatedVertex(PositionTextureVertex original, Matrix4f matrix)
 	{
 		Vector4f translatedPosition = new Vector4f(original.pos);
 		translatedPosition.transform(matrix);
 		
-		return new Vertex(translatedPosition.x(), translatedPosition.y(), translatedPosition.z(), original.u, original.v);
+		return new PositionTextureVertex(translatedPosition.x(), translatedPosition.y(), translatedPosition.z(), original.u, original.v);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	static class PositionTextureJointVertex extends Vertex
+	static class PositionTextureJointVertex extends PositionTextureVertex
 	{
-		final Vec3i jointId;
+		final Vector3i jointId;
 		final Vector3f weight;
 		
-		public PositionTextureJointVertex(Vertex posTexVertx, int jointId)
+		public PositionTextureJointVertex(PositionTextureVertex posTexVertx, int jointId)
 		{
 			this(posTexVertx, jointId, 0, 0, 1.0F, 0.0F, 0.0F);
 		}
 		
-		public PositionTextureJointVertex(Vertex posTexVertx, int jointId1, int jointId2, int jointId3,
+		public PositionTextureJointVertex(PositionTextureVertex posTexVertx, int jointId1, int jointId2, int jointId3,
 				float weight1, float weight2, float weight3)
 		{
-			this(posTexVertx, new Vec3i(jointId1, jointId2, jointId3), new Vector3f(weight1, weight2, weight3));
+			this(posTexVertx, new Vector3i(jointId1, jointId2, jointId3), new Vector3f(weight1, weight2, weight3));
 		}
 		
-		public PositionTextureJointVertex(Vertex posTexVertx, Vec3i ids, Vector3f weights)
+		public PositionTextureJointVertex(PositionTextureVertex posTexVertx, Vector3i ids, Vector3f weights)
 		{
 			super(posTexVertx.pos.x(), posTexVertx.pos.y(), posTexVertx.pos.z(), posTexVertx.u, posTexVertx.v);
 			this.jointId = ids;

@@ -1,25 +1,23 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ElytraModel;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.entity.model.ElytraModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerModelPart;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -28,17 +26,17 @@ public class RenderElytra extends RenderItemBase
 {
 	private ElytraModel<LivingEntity> modelElytra;
 	private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
+	
+	public RenderElytra()
+	{
+		super();
+		modelElytra = new ElytraModel<>();
+	}
 
 	@Override
-	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer,
-			PoseStack viewMatrixStack, int packedLight, float partialTicks)
+	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, IRenderTypeBuffer buffer,
+			MatrixStack viewMatrixStack, int packedLight, float partialTicks)
 	{
-		if (this.modelElytra == null)
-		{
-			Minecraft minecraft = Minecraft.getInstance();
-			this.modelElytra = new ElytraModel<>(minecraft.getEntityModels().bakeLayer(ModelLayers.ELYTRA));
-		}
-		
 		LivingEntity entity = itemHolder.getOriginalEntity();
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		PublicMatrix4f.scale(-0.9F, -0.9F, 0.9F, modelMatrix, modelMatrix);
@@ -56,9 +54,9 @@ public class RenderElytra extends RenderItemBase
 		float f7 = entity.getViewXRot(partialTicks);
 
 		ResourceLocation resourcelocation;
-		if (entity instanceof AbstractClientPlayer)
+		if (entity instanceof AbstractClientPlayerEntity)
 		{
-			AbstractClientPlayer abstractclientplayerentity = (AbstractClientPlayer) entity;
+			AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) entity;
 			if (abstractclientplayerentity.isReducedDebugInfo()
 					&& abstractclientplayerentity.getElytraTextureLocation() != null)
 			{
@@ -79,8 +77,7 @@ public class RenderElytra extends RenderItemBase
 
 		this.modelElytra.young = entity.isBaby();
 		this.modelElytra.setupAnim(entity, entity.swingTime, entity.animationSpeed, entity.tickCount, f2, f7);
-		VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(buffer,
-				RenderType.entityCutoutNoCull(resourcelocation), false, stack.isEnchanted());
+		IVertexBuilder ivertexbuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityCutoutNoCull(resourcelocation), false, stack.isEnchanted());
 		this.modelElytra.renderToBuffer(viewMatrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F,
 				1.0F, 1.0F, 1.0F);
 	}

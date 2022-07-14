@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.SoundEvent;
 
 public interface IShield
 {

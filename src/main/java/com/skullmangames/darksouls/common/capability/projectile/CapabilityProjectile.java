@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.common.capability.projectile;
 
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.entity.projectile.ProjectileEntity;
 
-public class CapabilityProjectile<T extends Projectile>
+public class CapabilityProjectile<T extends ProjectileEntity>
 {
 	private final float poiseDamage;
 	

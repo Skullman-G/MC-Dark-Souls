@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public class TridentCap extends RangedWeaponCap
 {

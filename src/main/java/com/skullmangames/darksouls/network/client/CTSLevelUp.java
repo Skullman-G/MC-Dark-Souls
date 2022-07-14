@@ -8,9 +8,9 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCStat;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSLevelUp
 {
@@ -21,12 +21,12 @@ public class CTSLevelUp
 		this.stats = stats;
 	}
 	
-	public static CTSLevelUp fromBytes(FriendlyByteBuf buf)
+	public static CTSLevelUp fromBytes(PacketBuffer buf)
 	{
 		return new CTSLevelUp(buf.readVarIntArray());
 	}
 	
-	public static void toBytes(CTSLevelUp msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSLevelUp msg, PacketBuffer buf)
 	{
 		buf.writeVarIntArray(msg.stats);
 	}
@@ -35,7 +35,7 @@ public class CTSLevelUp
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayer serverPlayer = ctx.get().getSender();
+			ServerPlayerEntity serverPlayer = ctx.get().getSender();
 			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			
@@ -67,7 +67,7 @@ public class CTSLevelUp
 		ctx.get().setPacketHandled(true);
 	}
 	
-	public static void addStatValues(ServerPlayer player, Stats stats, int[] addition)
+	public static void addStatValues(ServerPlayerEntity player, Stats stats, int[] addition)
 	{
 		for (int i = 0; i < Stats.STATS.size(); i++)
 		{

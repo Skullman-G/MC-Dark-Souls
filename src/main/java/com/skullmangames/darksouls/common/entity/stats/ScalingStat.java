@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.common.entity.stats;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class ScalingStat extends ModifyingStat
 {
@@ -14,7 +14,7 @@ public class ScalingStat extends ModifyingStat
 	}
 
 	@Override
-	public double getModifyValue(Player player, int value)
+	public double getModifyValue(PlayerEntity player, int value)
 	{
 		float addition = 0F;
 		MeleeWeaponCap weapon = ModCapabilities.getMeleeWeaponCap(player.getMainHandItem());

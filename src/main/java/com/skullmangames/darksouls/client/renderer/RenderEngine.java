@@ -3,10 +3,14 @@ package com.skullmangames.darksouls.client.renderer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.EntityIndicator;
@@ -43,35 +47,33 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
-import net.minecraft.client.Camera;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ElytraItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.TridentItem;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.settings.PointOfView;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.ElytraItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
+import net.minecraft.item.TridentItem;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -182,7 +184,7 @@ public class RenderEngine
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, IRenderTypeBuffer buffer, MatrixStack matStack, int packedLightIn, float partialTicks)
 	{
 		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
 	}
@@ -205,14 +207,14 @@ public class RenderEngine
 		zoomOutTimer = timer;
 	}
 	
-	private void updateCamera(CameraSetup event, CameraType pov, double partialTicks)
+	private void updateCamera(CameraSetup event, PointOfView pov, double partialTicks)
 	{
-		Camera camera = event.getCamera();
+		ActiveRenderInfo camera = event.getInfo();
 		Entity entity = minecraft.getCameraEntity();
 		
-		Vec3 camPos = camera.getPosition();
+		Vector3d camPos = camera.getPosition();
 		
-		if (pov == CameraType.THIRD_PERSON_BACK && zoomCount > 0 && this.aiming)
+		if (pov == PointOfView.THIRD_PERSON_BACK && zoomCount > 0 && this.aiming)
 		{
 			double posX = camPos.x;
 			double posY = camPos.y;
@@ -242,11 +244,11 @@ public class RenderEngine
 				f = f * 0.1F;
 				f1 = f1 * 0.1F;
 				f2 = f2 * 0.1F;
-				HitResult raytraceresult = minecraft.level.clip(new ClipContext(new Vec3(entityPosX + f, entityPosY + f1, entityPosZ + f2),
-							new Vec3(d00 + f + f2, d11 + f1, d22 + f2), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+				RayTraceResult raytraceresult = minecraft.level.clip(new RayTraceContext(new Vector3d(entityPosX + f, entityPosY + f1, entityPosZ + f2),
+							new Vector3d(d00 + f + f2, d11 + f1, d22 + f2), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
 				if (raytraceresult != null)
 				{
-					double d7 = raytraceresult.getLocation().distanceTo(new Vec3(entityPosX, entityPosY, entityPosZ));
+					double d7 = raytraceresult.getLocation().distanceTo(new Vector3d(entityPosX, entityPosY, entityPosZ));
 					if (d7 < smallest) smallest = d7;
 				}
 			}
@@ -270,13 +272,13 @@ public class RenderEngine
 			LivingEntity livingentity = event.getEntity();
 			if (renderEngine.isEntityContained(livingentity))
 			{
-				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F) return;
+				if (livingentity instanceof ClientPlayerEntity && event.getPartialRenderTick() == 1.0F) return;
 				
 				LivingCap<?> entityCap = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entityCap != null)
 				{
 					event.setCanceled(true);
-					renderEngine.renderEntityArmatureModel(livingentity, entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+					renderEngine.renderEntityArmatureModel(livingentity, entityCap, event.getRenderer(), event.getBuffers(), event.getMatrixStack(), event.getLight(), event.getPartialRenderTick());
 				}
 			}
 			
@@ -286,7 +288,7 @@ public class RenderEngine
 				{
 					if (entityIndicator.shouldDraw(event.getEntity()))
 					{
-						entityIndicator.drawIndicator(event.getEntity(), event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick());
+						entityIndicator.drawIndicator(event.getEntity(), event.getMatrixStack(), event.getBuffers(), event.getPartialRenderTick());
 					}
 				}
 			}
@@ -307,7 +309,7 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void cameraSetupEvent(CameraSetup event)
 		{
-			renderEngine.updateCamera(event, minecraft.options.getCameraType(), event.getPartialTicks());
+			renderEngine.updateCamera(event, minecraft.options.getCameraType(), event.getRenderPartialTicks());
 			if (renderEngine.zoomCount > 0)
 			{
 				if (renderEngine.zoomOutTimer > 0)
@@ -327,20 +329,20 @@ public class RenderEngine
 		{
 			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
 			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && !ClientManager.INSTANCE.isCombatModeActive()) return;
-			if (event.getHand() == InteractionHand.MAIN_HAND)
+			if (event.getHand() == Hand.MAIN_HAND)
 			{
-				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),
-						event.getPoseStack(), event.getPackedLight(), event.getPartialTicks());
+				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getBuffers(),
+						event.getMatrixStack(), event.getLight(), event.getPartialTicks());
 			}
 			event.setCanceled(true);
 		}
 		
 		@SubscribeEvent
-		public static void renderWorldLast(RenderLevelLastEvent event)
+		public static void renderWorldLast(RenderWorldLastEvent event)
 		{
-			if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+			if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 			{
-				renderEngine.aimHelper.doRender(event.getPoseStack(), event.getPartialTick());
+				renderEngine.aimHelper.doRender(event.getMatrixStack(), event.getPartialTicks());
 			}
 		}
 	}

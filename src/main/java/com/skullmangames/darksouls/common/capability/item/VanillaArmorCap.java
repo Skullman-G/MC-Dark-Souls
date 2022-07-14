@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public class VanillaArmorCap extends ArmorCap
 {

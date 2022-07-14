@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCOpenFireKeeperScreen
 {
@@ -16,12 +16,12 @@ public class STCOpenFireKeeperScreen
 		this.entityId = entityid;
 	}
 	
-	public static STCOpenFireKeeperScreen fromBytes(FriendlyByteBuf buf)
+	public static STCOpenFireKeeperScreen fromBytes(PacketBuffer buf)
 	{
 		return new STCOpenFireKeeperScreen(buf.readInt());
 	}
 	
-	public static void toBytes(STCOpenFireKeeperScreen msg, FriendlyByteBuf buf)
+	public static void toBytes(STCOpenFireKeeperScreen msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 	}

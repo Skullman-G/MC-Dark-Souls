@@ -6,11 +6,11 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCPlayAnimationAndSetTarget extends STCPlayAnimation
 {
@@ -42,19 +42,19 @@ public class STCPlayAnimationAndSetTarget extends STCPlayAnimation
 		Entity entity = mc.player.level.getEntity(this.entityId);
 		Entity target = mc.player.level.getEntity(this.targetId);
 
-		if (entity instanceof Mob && target instanceof LivingEntity)
+		if (entity instanceof MobEntity && target instanceof LivingEntity)
 		{
-			Mob entityliving = (Mob) entity;
+			MobEntity entityliving = (MobEntity) entity;
 			entityliving.setTarget((LivingEntity) target);
 		}
 	}
 
-	public static STCPlayAnimationAndSetTarget fromBytes(FriendlyByteBuf buf)
+	public static STCPlayAnimationAndSetTarget fromBytes(PacketBuffer buf)
 	{
 		return new STCPlayAnimationAndSetTarget(buf.readInt(), buf.readInt(), buf.readFloat(), buf.readInt());
 	}
 
-	public static void toBytes(STCPlayAnimationAndSetTarget msg, FriendlyByteBuf buf)
+	public static void toBytes(STCPlayAnimationAndSetTarget msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.animationId);
 		buf.writeInt(msg.entityId);

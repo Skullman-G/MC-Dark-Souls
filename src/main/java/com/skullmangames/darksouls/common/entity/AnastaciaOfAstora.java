@@ -5,35 +5,35 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
 import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
 public class AnastaciaOfAstora extends AbstractFireKeeper
 {
 	private static final String DIALOGUE_0 = "dialogue.darksouls.anastacia_of_astora.0";
 	
-	public AnastaciaOfAstora(EntityType<? extends QuestEntity> entity, Level level)
+	public AnastaciaOfAstora(EntityType<? extends QuestEntity> entity, World level)
 	{
 		super(entity, level);
 	}
 	
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.0D);
+		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.0D);
 	}
 	
 	@Override
-	public void onFinishChat(ServerPlayer player, String location)
+	public void onFinishChat(ServerPlayerEntity player, String location)
 	{
 		switch(location)
 		{
@@ -44,24 +44,24 @@ public class AnastaciaOfAstora extends AbstractFireKeeper
 	}
 	
 	@Override
-	protected InteractionResult mobInteract(Player player, InteractionHand hand)
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand)
 	{
 		if (!player.level.isClientSide)
 		{
-			ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayer)player);
+			ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayerEntity)player);
 		}
 
-		return InteractionResult.sidedSuccess(player.level.isClientSide);
+		return ActionResultType.sidedSuccess(player.level.isClientSide);
 	}
 	
 	@Override
-	protected int getExperienceReward(Player p_21511_)
+	protected int getExperienceReward(PlayerEntity p_21511_)
 	{
 		return 50;
 	}
 	
 	@Override
-	protected Item getEquipmentForSlot(EquipmentSlot slot)
+	protected Item getEquipmentForSlot(EquipmentSlotType slot)
 	{
 		switch (slot)
 		{

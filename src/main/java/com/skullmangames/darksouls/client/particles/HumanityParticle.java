@@ -2,20 +2,20 @@ package com.skullmangames.darksouls.client.particles;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.SpriteTexturedParticle;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HumanityParticle extends TextureSheetParticle
+public class HumanityParticle extends SpriteTexturedParticle
 {
-	protected HumanityParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
+	protected HumanityParticle(ClientWorld level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
 	{
 		super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 	    this.quadSize = 0.05F;
@@ -54,23 +54,23 @@ public class HumanityParticle extends TextureSheetParticle
 	 }
 
 	@Override
-	public ParticleRenderType getRenderType()
+	public IParticleRenderType getRenderType()
 	{
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType>
+	public static class Factory implements IParticleFactory<BasicParticleType>
 	{
-	    private final SpriteSet sprite;
+	    private final IAnimatedSprite sprite;
 
-	    public Factory(SpriteSet sprite)
+	    public Factory(IAnimatedSprite sprite)
 	    {
 	    	this.sprite = sprite;
 	    }
 
 	    @Override
-	    public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+	    public Particle createParticle(BasicParticleType type, ClientWorld level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
 	    {
 	    	HumanityParticle soulparticle = new HumanityParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
 	    	soulparticle.pickSprite(this.sprite);

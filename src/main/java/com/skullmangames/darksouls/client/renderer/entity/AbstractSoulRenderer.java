@@ -1,21 +1,21 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.entity.AbstractSoulEntity;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractSoulRenderer extends EntityRenderer<AbstractSoulEntity>
 {
-	public AbstractSoulRenderer(EntityRendererProvider.Context p_i46178_1_)
+	public AbstractSoulRenderer(EntityRendererManager p_i46178_1_)
 	{
 		super(p_i46178_1_);
 		this.shadowRadius = 0.15F;
@@ -29,7 +29,7 @@ public abstract class AbstractSoulRenderer extends EntityRenderer<AbstractSoulEn
 	}
 
 	@Override
-	public void render(AbstractSoulEntity p_114485_, float p_114486_, float p_114487_, PoseStack poseStack, MultiBufferSource p_114489_, int p_114490_)
+	public void render(AbstractSoulEntity p_114485_, float p_114486_, float p_114487_, MatrixStack poseStack, IRenderTypeBuffer p_114489_, int p_114490_)
 	{
 		poseStack.pushPose();
 		poseStack.translate(0.0D, (double) 0.1F, 0.0D);

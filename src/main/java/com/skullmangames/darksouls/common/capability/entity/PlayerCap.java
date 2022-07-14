@@ -16,13 +16,13 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 
-public abstract class PlayerCap<T extends Player> extends LivingCap<T>
+public abstract class PlayerCap<T extends PlayerEntity> extends LivingCap<T>
 {
 	protected float yaw;
 	protected int tickSinceLastAction;
@@ -39,13 +39,13 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		super.onEntityJoinWorld(entityIn);
 		this.tickSinceLastAction = 40;
 		
-		if (!this.orgEntity.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
+		if (!this.orgEntity.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
 		{
-			this.orgEntity.getInventory().add(new ItemStack(ModItems.DARKSIGN.get()));
+			this.orgEntity.inventory.add(new ItemStack(ModItems.DARKSIGN.get()));
 		}
 	}
 	
-	public void onLoad(CompoundTag nbt)
+	public void onLoad(CompoundNBT nbt)
 	{
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
@@ -56,8 +56,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	
 	public void onSave()
 	{
-		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundTag());
-		CompoundTag nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
+		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundNBT());
+		CompoundNBT nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);

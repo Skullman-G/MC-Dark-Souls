@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.client.gui.widget;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.config.Option;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,14 +22,14 @@ public class BooleanButton extends OptionButton<Boolean>
 	}
 	
 	@Override
-	protected Component getRefreshedMessage()
+	protected ITextComponent getRefreshedMessage()
 	{
-		if (!(this.option.getValue() instanceof Boolean)) return new TranslatableComponent(option.getName());
-		return new TextComponent(new TranslatableComponent(this.option.getName()).getString()+this.onOrOff(this.option.getValue()));
+		if (!(this.option.getValue() instanceof Boolean)) return new TranslationTextComponent(option.getName());
+		return new StringTextComponent(new TranslationTextComponent(this.option.getName()).getString()+this.onOrOff(this.option.getValue()));
 	}
 	
 	private String onOrOff(boolean value)
 	{
-		return ": "+new TranslatableComponent(value ? "gui."+DarkSouls.MOD_ID+".on" : "gui."+DarkSouls.MOD_ID+".off").getString();
+		return ": "+new TranslationTextComponent(value ? "gui."+DarkSouls.MOD_ID+".on" : "gui."+DarkSouls.MOD_ID+".off").getString();
 	}
 }

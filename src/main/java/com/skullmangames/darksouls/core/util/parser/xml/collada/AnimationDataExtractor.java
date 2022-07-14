@@ -8,7 +8,8 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.animation.Keyframe;
@@ -19,9 +20,7 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
-
+import net.minecraft.util.ResourceLocation;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 
 public class AnimationDataExtractor
@@ -63,9 +62,9 @@ public class AnimationDataExtractor
 
 			JointTransform transform = new JointTransform(new Vector3f(matrix.m30, matrix.m31, matrix.m32),
 					matrix.toQuaternion(),
-					new Vector3f((float) new Vec3(matrix.m00, matrix.m01, matrix.m02).length(),
-							(float) new Vec3(matrix.m10, matrix.m11, matrix.m12).length(),
-							(float) new Vec3(matrix.m20, matrix.m21, matrix.m22).length()));
+					new Vector3f((float) new Vector3d(matrix.m00, matrix.m01, matrix.m02).length(),
+							(float) new Vector3d(matrix.m10, matrix.m11, matrix.m12).length(),
+							(float) new Vector3d(matrix.m20, matrix.m21, matrix.m22).length()));
 			keyframeList.add(new Keyframe(timeStamp, transform));
 		}
 

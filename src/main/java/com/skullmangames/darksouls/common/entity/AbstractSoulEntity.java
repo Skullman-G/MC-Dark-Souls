@@ -3,37 +3,37 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class AbstractSoulEntity extends Entity implements IEntityAdditionalSpawnData
 {
-	private Player followingEntity;
+	private PlayerEntity followingEntity;
 	protected int value;
 	private int discardTime = 25;
 	
-	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, Level level)
+	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, World level)
 	{
 		super(type, level);
 	}
 	
-	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, Level level, double posX, double posY, double posZ, int value)
+	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, World level, double posX, double posY, double posZ, int value)
 	{
 		this(type, level, posX, posY, posZ);
 		this.value = value;
 	}
 
-	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, Level level, double posX, double posY, double posZ)
+	public AbstractSoulEntity(EntityType<? extends AbstractSoulEntity> type, World level, double posX, double posY, double posZ)
 	{
 		this(type, level);
 		this.setPos(posX, posY, posZ);
@@ -63,7 +63,7 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 
 		if (this.followingEntity != null)
 		{
-			Vec3 vector3d = new Vec3(this.followingEntity.getX() - this.getX(),
+			Vector3d vector3d = new Vector3d(this.followingEntity.getX() - this.getX(),
 					this.followingEntity.getY() + (double) this.followingEntity.getEyeHeight() / 2.0D - this.getY(),
 					this.followingEntity.getZ() - this.getZ());
 			this.setDeltaMovement(vector3d.normalize().scale(0.5D));
@@ -73,7 +73,7 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 	}
 	
 	@Override
-	public void playerTouch(Player player)
+	public void playerTouch(PlayerEntity player)
 	{
 		if (!this.level.isClientSide)
 		{
@@ -82,18 +82,18 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 				PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (playerCap != null) this.realPlayerTouch(playerCap);
 			}
-			else if (--discardTime <= 0) this.discard();
+			else if (--discardTime <= 0) this.remove();
 		}
 	}
 	
 	protected abstract void realPlayerTouch(PlayerCap<?> playerCap);
 	
 	protected abstract void makeParticles();
-
+	
 	@Override
-	protected Entity.MovementEmission getMovementEmission()
+	protected boolean isMovementNoisy()
 	{
-		return Entity.MovementEmission.NONE;
+		return false;
 	}
 
 	@Override
@@ -109,19 +109,19 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 	public boolean isAttackable() { return false; }
 
 	@Override
-	public Packet<?> getAddEntityPacket()
+	public IPacket<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag nbt)
+	protected void readAdditionalSaveData(CompoundNBT nbt)
 	{
 		this.value = nbt.getInt("Value");
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag nbt)
+	protected void addAdditionalSaveData(CompoundNBT nbt)
 	{
 		nbt.putInt("Value", this.value);
 	}
@@ -132,13 +132,13 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 	}
 
 	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer)
+	public void writeSpawnData(PacketBuffer buffer)
 	{
 		buffer.writeInt(this.value);
 	}
 
 	@Override
-	public void readSpawnData(FriendlyByteBuf buffer)
+	public void readSpawnData(PacketBuffer buffer)
 	{
 		this.value = buffer.readInt();
 	}

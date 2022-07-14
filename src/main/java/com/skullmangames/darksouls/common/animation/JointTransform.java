@@ -1,10 +1,9 @@
 package com.skullmangames.darksouls.common.animation;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-
-import net.minecraft.util.Mth;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
@@ -82,7 +81,7 @@ public class JointTransform
 	{
 		if (prev == null || next == null) return JointTransform.empty();
 
-		progression = Mth.clamp(progression, 0.0F, 1.0F);
+		progression = MathHelper.clamp(progression, 0.0F, 1.0F);
 		JointTransform interpolated = interpolateSimple(prev, next, progression);
 
 		return interpolated;

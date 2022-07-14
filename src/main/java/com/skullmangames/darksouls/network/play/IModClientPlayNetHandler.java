@@ -1,13 +1,13 @@
 package com.skullmangames.darksouls.network.play;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 
 public interface IModClientPlayNetHandler
 {
-	void setTitle(Component text, int fadein, int stay, int fadeout);
+	void setTitle(ITextComponent text, int fadein, int stay, int fadeout);
 	
-	void setOverlayMessage(Component text);
+	void setOverlayMessage(ITextComponent text);
 	
 	void openBonfireNameScreen(BlockPos blockPos);
 	

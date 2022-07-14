@@ -6,46 +6,46 @@ import java.util.function.Predicate;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.CrossbowAttackMob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ICrossbowUser;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShootableItem;
+import net.minecraft.world.World;
 
-public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMob
+public class HollowLordranSoldier extends ArmoredMob implements ICrossbowUser
 {
-	public HollowLordranSoldier(EntityType<? extends HollowLordranSoldier> entitytype, Level level)
+	public HollowLordranSoldier(EntityType<? extends HollowLordranSoldier> entitytype, World level)
 	{
 		super(entitytype, level);
 	}
 
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes()
+		return MobEntity.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 17.5D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.24D);
 	}
 
-	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level,
-			MobSpawnType spawntype, BlockPos pos, Random random)
+	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, IServerWorld level,
+			SpawnReason spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL
 				&& checkMobSpawnRules(entitytype, level, spawntype, pos, random);
@@ -54,35 +54,35 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+		this.goalSelector.addGoal(4, new RandomWalkingGoal(this, 0.8D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 
 	@Override
-	protected int getExperienceReward(Player player)
+	protected int getExperienceReward(PlayerEntity player)
 	{
 		return 60;
 	}
 
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int percentage, EquipmentSlotType slot)
 	{
 		if (percentage <= 75)
 		{
-			if (slot == EquipmentSlot.MAINHAND)
+			if (slot == EquipmentSlotType.MAINHAND)
 				return ModItems.LONGSWORD.get();
-			else if (slot == EquipmentSlot.OFFHAND)
+			else if (slot == EquipmentSlotType.OFFHAND)
 				return ModItems.LORDRAN_SOLDIER_SHIELD.get();
 		} else if (percentage <= 90)
 		{
-			if (slot == EquipmentSlot.MAINHAND)
+			if (slot == EquipmentSlotType.MAINHAND)
 				return ModItems.SPEAR.get();
-			else if (slot == EquipmentSlot.OFFHAND)
+			else if (slot == EquipmentSlotType.OFFHAND)
 				return ModItems.LORDRAN_SOLDIER_SHIELD.get();
 		} else
 		{
-			if (slot == EquipmentSlot.MAINHAND)
+			if (slot == EquipmentSlotType.MAINHAND)
 				return Items.CROSSBOW;
 		}
 
@@ -113,7 +113,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	}
 
 	@Override
-	public void shootCrossbowProjectile(LivingEntity target, ItemStack crossbow, Projectile ammo, float f)
+	public void shootCrossbowProjectile(LivingEntity target, ItemStack crossbow, ProjectileEntity ammo, float f)
 	{
 		this.shootCrossbowProjectile(this, target, ammo, f, 1.6F);
 	}
@@ -125,12 +125,12 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	}
 
 	@Override
-	public ItemStack getProjectile(ItemStack p_33038_)
+	public ItemStack getProjectile(ItemStack crossbow)
 	{
-		if (p_33038_.getItem() instanceof ProjectileWeaponItem)
+		if (crossbow.getItem() instanceof ShootableItem)
 		{
-			Predicate<ItemStack> predicate = ((ProjectileWeaponItem) p_33038_.getItem()).getSupportedHeldProjectiles();
-			ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
+			Predicate<ItemStack> predicate = ((ShootableItem) crossbow.getItem()).getSupportedHeldProjectiles();
+			ItemStack itemstack = ShootableItem.getHeldProjectile(this, predicate);
 			return itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack;
 		} else
 		{

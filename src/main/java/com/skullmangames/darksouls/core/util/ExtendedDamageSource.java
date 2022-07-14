@@ -2,15 +2,15 @@ package com.skullmangames.darksouls.core.util;
 
 import com.skullmangames.darksouls.core.init.ModAttributes;
 
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.IndirectEntityDamageSource;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static DamageSourceExtended causePlayerDamage(PlayerEntity player, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
         return new DamageSourceExtended("player", player, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDamage);
     }

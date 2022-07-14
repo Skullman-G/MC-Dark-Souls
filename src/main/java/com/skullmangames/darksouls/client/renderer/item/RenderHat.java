@@ -1,22 +1,21 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.layers.HeadLayer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -25,18 +24,14 @@ public class RenderHat extends RenderItemBase
 {
 	@SuppressWarnings("unchecked")
 	@Override
-	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
+	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, IRenderTypeBuffer buffer, MatrixStack viewMatrixStack, int packedLight, float partialTicks)
 	{
 		EntityRenderer<?> render = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(itemHolder.getOriginalEntity());
-		if(render instanceof LivingEntityRenderer && ((LivingEntityRenderer<?, ?>)render).getModel() instanceof HumanoidModel)
+		if(render instanceof LivingRenderer && ((LivingRenderer<?, ?>)render).getModel() instanceof BipedModel)
 		{
-			ModelPart model = ((HumanoidModel<?>)((LivingEntityRenderer<?, ?>)render).getModel()).hat;
-			CustomHeadLayer<LivingEntity, ?> layer = null;
-			for (RenderLayer<LivingEntity, ?> l : ((LivingEntityRenderer<LivingEntity, ?>)render).layers)
-			{
-				if (l instanceof CustomHeadLayer<LivingEntity, ?>) layer = (CustomHeadLayer<LivingEntity, ?>)l;
-			}
-			if (layer == null) return;
+			ModelRenderer model = ((BipedModel<?>)((LivingRenderer<?, ?>)render).getModel()).hat;
+			@SuppressWarnings("rawtypes")
+			HeadLayer<LivingEntity, ?> layer = new HeadLayer(((LivingRenderer<?, ?>)render));
 			LivingEntity entity = itemHolder.getOriginalEntity();
 			PublicMatrix4f modelMatrix = new PublicMatrix4f();
 			PublicMatrix4f.scale(-0.94F, -0.94F, 0.94F, modelMatrix, modelMatrix);

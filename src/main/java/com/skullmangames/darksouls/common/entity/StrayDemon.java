@@ -5,37 +5,37 @@ import java.util.Random;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.BossEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 
-public class StrayDemon extends PathfinderMob
+public class StrayDemon extends CreatureEntity
 {
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+	private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 	
-	public StrayDemon(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
+	public StrayDemon(EntityType<? extends CreatureEntity> p_i48575_1_, World p_i48575_2_)
 	{
 		super(p_i48575_1_, p_i48575_2_);
 	}
@@ -54,12 +54,12 @@ public class StrayDemon extends PathfinderMob
 	}
 	
 	@Override
-	protected int getExperienceReward(Player p_70693_1_)
+	protected int getExperienceReward(PlayerEntity p_70693_1_)
 	{
 		return 100;
 	}
 	
-	public static boolean checkSpawnRules(EntityType<StrayDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
+	public static boolean checkSpawnRules(EntityType<StrayDemon> entitytype, IServerWorld level, SpawnReason spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
@@ -80,11 +80,11 @@ public class StrayDemon extends PathfinderMob
 	protected void customServerAiStep()
 	{
 		super.customServerAiStep();
-		this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
+		this.bossInfo.setPercent((this.getHealth() / this.getMaxHealth()));
 	}
 
 	@Override
-	public void stopSeenByPlayer(ServerPlayer player)
+	public void stopSeenByPlayer(ServerPlayerEntity player)
 	{
 	    super.stopSeenByPlayer(player);
 	    this.bossInfo.removePlayer(player);
@@ -94,7 +94,7 @@ public class StrayDemon extends PathfinderMob
 	public void setTarget(LivingEntity target)
 	{
 		super.setTarget(target);
-		if (target instanceof ServerPlayer) this.bossInfo.addPlayer((ServerPlayer) target);
+		if (target instanceof ServerPlayerEntity) this.bossInfo.addPlayer((ServerPlayerEntity) target);
 	}
 	
 	@Override
@@ -102,12 +102,12 @@ public class StrayDemon extends PathfinderMob
 	{
 		super.populateDefaultEquipmentSlots(difficulty);
 		
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
-		this.setDropChance(EquipmentSlot.MAINHAND, 1.00F);
+		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
+		this.setDropChance(EquipmentSlotType.MAINHAND, 1.00F);
 	}
 	
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData data, CompoundTag nbt)
+	public ILivingEntityData finalizeSpawn(IServerWorld level, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData data, CompoundNBT nbt)
 	{
 		data = super.finalizeSpawn(level, difficulty, reason, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
@@ -120,9 +120,9 @@ public class StrayDemon extends PathfinderMob
 		return true;
 	}
 	
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes()
+		return MobEntity.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 80.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
@@ -139,10 +139,10 @@ public class StrayDemon extends PathfinderMob
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+		this.goalSelector.addGoal(4, new RandomWalkingGoal(this, 0.8D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 }

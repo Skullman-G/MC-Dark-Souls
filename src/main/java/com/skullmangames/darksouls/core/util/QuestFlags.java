@@ -4,24 +4,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.IDataSerializer;
 
 public class QuestFlags
 {
 	private final Map<UUID, Byte> map;
 	
-	public static final EntityDataSerializer<QuestFlags> SERIALIZER = new EntityDataSerializer<QuestFlags>()
+	public static final IDataSerializer<QuestFlags> SERIALIZER = new IDataSerializer<QuestFlags>()
 	{
-		public void write(FriendlyByteBuf buf, QuestFlags questFlags)
+		public void write(PacketBuffer buf, QuestFlags questFlags)
 		{
-			buf.writeMap(questFlags.map, (b, uuid) -> b.writeUUID(uuid), (b, flags) -> b.writeByte(flags));
+			buf.writeInt(questFlags.map.size());
+			for (Map.Entry<UUID, Byte> entry : questFlags.map.entrySet())
+			{
+				buf.writeUUID(entry.getKey());
+				buf.writeByte(entry.getValue());
+			}
 		}
 
-		public QuestFlags read(FriendlyByteBuf buf)
+		public QuestFlags read(PacketBuffer buf)
 		{
-			return new QuestFlags(buf.readMap((b) -> b.readUUID(), (b) -> b.readByte()));
+			Map<UUID, Byte> map = new HashMap<>();
+			int size = buf.readInt();
+			for (int i = 0; i < size; i++)
+			{
+				map.put(buf.readUUID(), buf.readByte());
+			}
+			return new QuestFlags(map);
 		}
 
 		public QuestFlags copy(QuestFlags questFlags)
@@ -58,7 +69,7 @@ public class QuestFlags
 		return (this.map.getOrDefault(entity, (byte)0) & 1 << index) != 0;
 	}
 	
-	public void save(CompoundTag nbt)
+	public void save(CompoundNBT nbt)
 	{
 		this.map.forEach((entity, flags) ->
 		{

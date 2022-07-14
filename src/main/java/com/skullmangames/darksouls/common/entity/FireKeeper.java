@@ -8,18 +8,18 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
 import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
 public class FireKeeper extends AbstractFireKeeper
 {
@@ -27,26 +27,26 @@ public class FireKeeper extends AbstractFireKeeper
 	private static final String DIALOGUE_1 = "dialogue.darksouls.fire_keeper.1";
 	private static final String DIALOGUE_1_ESTUS_SHARD = "dialogue.darksouls.fire_keeper.1.estus_shard";
 	
-	public FireKeeper(EntityType<? extends QuestEntity> entity, Level level)
+	public FireKeeper(EntityType<? extends QuestEntity> entity, World level)
 	{
 		super(entity, level);
 	}
 
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15D);
+		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15D);
 	}
 	
 	@Override
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new WalkAroundBonfireGoal(this, 1.0D));
-		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
-		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 15.0F, 1.0F));
+		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
 	}
 	
 	@Override
-	public void onFinishChat(ServerPlayer player, String location)
+	public void onFinishChat(ServerPlayerEntity player, String location)
 	{
 		UUID uuid = player.getUUID();
 		switch(location)
@@ -64,27 +64,27 @@ public class FireKeeper extends AbstractFireKeeper
 	}
 	
 	@Override
-	protected InteractionResult mobInteract(Player player, InteractionHand hand)
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand)
 	{
 		if (!player.level.isClientSide)
 		{
 			if (!this.getQuestFlag(player.getUUID(), 0))
 			{
-				ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayer)player);
+				ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_0), (ServerPlayerEntity)player);
 			}
 			else
 			{
-				if (player.getInventory().contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
+				if (player.inventory.contains(new ItemStack(ModItems.ESTUS_SHARD.get())))
 				{
-					ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_1_ESTUS_SHARD), (ServerPlayer)player);
+					ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_1_ESTUS_SHARD), (ServerPlayerEntity)player);
 				}
 				else
 				{
-					ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_1), (ServerPlayer)player);
+					ModNetworkManager.sendToPlayer(new STCNPCChat(this.getId(), DIALOGUE_1), (ServerPlayerEntity)player);
 				}
 			}
 		}
 
-		return InteractionResult.sidedSuccess(player.level.isClientSide);
+		return ActionResultType.sidedSuccess(player.level.isClientSide);
 	}
 }

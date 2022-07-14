@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public abstract class RangedWeaponCap extends WeaponCap
 {

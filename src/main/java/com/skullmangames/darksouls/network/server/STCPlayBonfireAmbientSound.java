@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCPlayBonfireAmbientSound
 {
@@ -17,12 +17,12 @@ public class STCPlayBonfireAmbientSound
 		this.pos = pos;
 	}
 	
-	public static STCPlayBonfireAmbientSound fromBytes(FriendlyByteBuf buf)
+	public static STCPlayBonfireAmbientSound fromBytes(PacketBuffer buf)
 	{
 		return new STCPlayBonfireAmbientSound(buf.readBlockPos());
 	}
 	
-	public static void toBytes(STCPlayBonfireAmbientSound msg, FriendlyByteBuf buf)
+	public static void toBytes(STCPlayBonfireAmbientSound msg, PacketBuffer buf)
 	{
 		buf.writeBlockPos(msg.pos);
 	}

@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
+
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -11,16 +12,16 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -57,7 +58,7 @@ public class ArmorCap extends AttributeItemCap
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 
@@ -67,36 +68,36 @@ public class ArmorCap extends AttributeItemCap
 		{
 			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 					+ ((IForgeRegistryEntry<Item>) this.orgItem).getRegistryName().getPath() + ".extended";
-			String description = new TranslatableComponent(languagePath).getString();
+			String description = new TranslationTextComponent(languagePath).getString();
 
 			if (!description.contains(languagePath))
-				itemTooltip.add(new TextComponent("\u00A77\n" + description));
+				itemTooltip.add(new StringTextComponent("\u00A77\n" + description));
 		}
 		else
 		{
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.standardDef, 100))));
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.standardDef, 100))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 100))));
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 100))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.slashDef, 100))));
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.slashDef, 100))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
 			
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
-			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
+			itemTooltip.add(new TranslationTextComponent("attribute.darksouls.weight").withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
 		}
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot)
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		
@@ -152,18 +153,18 @@ public class ArmorCap extends AttributeItemCap
 	
 	public enum ArmorPart
 	{
-		HELMET(EquipmentSlot.HEAD), CHESTPLATE(EquipmentSlot.CHEST),
-		LEGGINS(EquipmentSlot.LEGS), SKIRT(EquipmentSlot.LEGS),
-		BOOTS(EquipmentSlot.FEET), ONE_SHOE(EquipmentSlot.FEET);
+		HELMET(EquipmentSlotType.HEAD), CHESTPLATE(EquipmentSlotType.CHEST),
+		LEGGINS(EquipmentSlotType.LEGS), SKIRT(EquipmentSlotType.LEGS),
+		BOOTS(EquipmentSlotType.FEET), ONE_SHOE(EquipmentSlotType.FEET);
 		
-		private final EquipmentSlot slot;
+		private final EquipmentSlotType slot;
 		
-		private ArmorPart(EquipmentSlot slot)
+		private ArmorPart(EquipmentSlotType slot)
 		{
 			this.slot = slot;
 		}
 		
-		public static ArmorPart getFrom(EquipmentSlot slot)
+		public static ArmorPart getFrom(EquipmentSlotType slot)
 		{
 			switch (slot)
 			{

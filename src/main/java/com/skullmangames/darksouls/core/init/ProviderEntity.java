@@ -17,12 +17,12 @@ import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.player.RemotePlayer;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -48,15 +48,15 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 	{
 		CAPABILITIES.put(EntityType.PLAYER, (entityIn) ->
 		{
-			if(entityIn instanceof LocalPlayer)
+			if(entityIn instanceof ClientPlayerEntity)
 			{
 				return LocalPlayerCap::new;
 			}
-			else if (entityIn instanceof RemotePlayer)
+			else if (entityIn instanceof AbstractClientPlayerEntity)
 			{
-				return AbstractClientPlayerCap<RemotePlayer>::new;
+				return AbstractClientPlayerCap<AbstractClientPlayerEntity>::new;
 			}
-			else if (entityIn instanceof ServerPlayer)
+			else if (entityIn instanceof ServerPlayerEntity)
 			{
 				return ServerPlayerCap::new;
 			}

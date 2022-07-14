@@ -4,10 +4,10 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BowItem;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -21,11 +21,11 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void itemUseStartEvent(LivingEntityUseItemEvent.Start event)
 	{
-		if (event.getEntity() instanceof Player)
+		if (event.getEntity() instanceof PlayerEntity)
 		{
-			Player player = (Player)event.getEntity();
+			PlayerEntity player = (PlayerEntity)event.getEntity();
 			PlayerCap<?> playerCap = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			ItemCapability itemCap = playerCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			ItemCapability itemCap = playerCap.getHeldItemCapability(Hand.MAIN_HAND);
 			
 			if (playerCap.isInaction())
 			{
@@ -60,7 +60,7 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void itemUseTickEvent(LivingEntityUseItemEvent.Tick event)
 	{
-		if (event.getEntity() instanceof Player)
+		if (event.getEntity() instanceof PlayerEntity)
 		{
 			if (event.getItem().getItem() instanceof BowItem)
 			{
@@ -84,7 +84,7 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void playerDeathEvent(LivingDeathEvent event)
 	{
-		if (!(event.getEntityLiving() instanceof ServerPlayer)) return;
+		if (!(event.getEntityLiving() instanceof ServerPlayerEntity)) return;
 		PlayerCap<?> playerCap = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerCap == null) return;
 		playerCap.onSave();

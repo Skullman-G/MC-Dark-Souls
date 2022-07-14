@@ -1,12 +1,13 @@
 package com.skullmangames.darksouls.core.util.math;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.entity.Entity;
 
 public class MathUtils
 {
@@ -22,7 +23,7 @@ public class MathUtils
 		return (double) Math.round(value * multiply) / multiply;
 	}
 	
-	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void rotateStack(MatrixStack mStack, PublicMatrix4f mat)
 	{
 		mStack.mulPose(getQuaternionFromMatrix(mat));
 	}
@@ -70,17 +71,17 @@ public class MathUtils
 		return quat;
 	}
 	
-	public static Vec3 projectVector(Vec3 from, Vec3 to)
+	public static Vector3d projectVector(Vector3d from, Vector3d to)
 	{
 		double dot = to.dot(from);
 		double normalScale = 1.0D / ((to.x * to.x) + (to.y * to.y) + (to.z * to.z));
-		return new Vec3(dot * to.x * normalScale, dot * to.y * normalScale, dot * to.z * normalScale);
+		return new Vector3d(dot * to.x * normalScale, dot * to.y * normalScale, dot * to.z * normalScale);
 	}
 
 	public static double getAngleBetween(Entity e1, Entity e2)
 	{
-		Vec3 a = e1.getLookAngle();
-		Vec3 b = new Vec3(e2.getX() - e1.getX(), e2.getY() - e1.getY(), e2.getZ() - e1.getZ()).normalize();
+		Vector3d a = e1.getLookAngle();
+		Vector3d b = new Vector3d(e2.getX() - e1.getX(), e2.getY() - e1.getY(), e2.getZ() - e1.getZ()).normalize();
 		double cosTheta = (a.x * b.x + a.y * b.y + a.z * b.z);
 		return Math.acos(cosTheta);
 	}
@@ -116,7 +117,7 @@ public class MathUtils
 		return dest;
 	}
 
-	public static void translateStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void translateStack(MatrixStack mStack, PublicMatrix4f mat)
 	{
 		Vector3f vector = getTranslationFromMatrix(mat);
 		mStack.translate(vector.x(), vector.y(), vector.z());

@@ -3,8 +3,10 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
+
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -21,19 +23,18 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
 
 public class ActionAnimation extends ImmovableAnimation
 {
@@ -94,10 +95,10 @@ public class ActionAnimation extends ImmovableAnimation
 		
 		if (entityCap.isClientSide())
 		{
-			if (!(livingentity instanceof LocalPlayer)) return;
+			if (!(livingentity instanceof ClientPlayerEntity)) return;
 		} else
 		{
-			if ((livingentity instanceof ServerPlayer)) return;
+			if ((livingentity instanceof ServerPlayerEntity)) return;
 		}
 
 		if (!this.validateMovement(entityCap, animation)) return;
@@ -108,7 +109,7 @@ public class ActionAnimation extends ImmovableAnimation
 			BlockPos blockpos = new BlockPos(livingentity.getX(), livingentity.getBoundingBox().minY - 1.0D,
 					livingentity.getZ());
 			BlockState blockState = livingentity.level.getBlockState(blockpos);
-			AttributeInstance movementSpeed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
+			ModifiableAttributeInstance movementSpeed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 			boolean soulboost = blockState.is(BlockTags.SOUL_SPEED_BLOCKS)
 					&& EnchantmentHelper.getEnchantmentLevel(Enchantments.SOUL_SPEED, livingentity) > 0;
 			double speedFactor = soulboost ? 1.0D
@@ -116,11 +117,11 @@ public class ActionAnimation extends ImmovableAnimation
 			double moveMultiplier = this.getProperty(ActionAnimationProperty.AFFECT_SPEED).orElse(false)
 					? (movementSpeed.getValue() / movementSpeed.getBaseValue())
 					: 1.0F;
-			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
+			livingentity.move(MoverType.SELF, new Vector3d(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
 			
-			if (animation instanceof LinkAnimation && this.getProperty(ActionAnimationProperty.ROTATE_TO_TARGET).orElse(true) && livingentity instanceof Mob)
+			if (animation instanceof LinkAnimation && this.getProperty(ActionAnimationProperty.ROTATE_TO_TARGET).orElse(true) && livingentity instanceof MobEntity)
 			{
-				Mob mob = (Mob)livingentity;
+				MobEntity mob = (MobEntity)livingentity;
 				LivingEntity target = mob.getTarget();
 				if (target != null)
 				{
@@ -128,7 +129,7 @@ public class ActionAnimation extends ImmovableAnimation
 				}
 			}
 			
-			if (!entityCap.isClientSide()) ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(livingentity.position(), livingentity.getYRot(), livingentity.getXRot(), livingentity.getId()), livingentity);
+			if (!entityCap.isClientSide()) ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(livingentity.position(), livingentity.yRot, livingentity.xRot, livingentity.getId()), livingentity);
 		}
 	}
 
@@ -265,7 +266,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 			if (moveVertical && currentpos.y() > 0.0F && !hasNoGravity)
 			{
-				Vec3 motion = livingentity.getDeltaMovement();
+				Vector3d motion = livingentity.getDeltaMovement();
 				livingentity.setDeltaMovement(motion.x, motion.y <= 0 ? (motion.y + 0.08D) : motion.y, motion.z);
 			}
 

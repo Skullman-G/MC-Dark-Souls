@@ -6,16 +6,16 @@ import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModItems;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.item.ItemStack;
 
 public class DrinkingEstusGoal extends Goal
 {
 	private final MobCap<?> mobCap;
-	private final Mob mob;
+	private final MobEntity mob;
 	private final ItemStack estusFlask;
 	private ItemStack prevItem;
 	private int recovery;
@@ -45,9 +45,9 @@ public class DrinkingEstusGoal extends Goal
 
 	public void start()
 	{
-		this.prevItem = this.mob.getItemBySlot(EquipmentSlot.MAINHAND);
-		this.mob.setItemSlot(EquipmentSlot.MAINHAND, this.estusFlask);
-		this.mob.startUsingItem(InteractionHand.MAIN_HAND);
+		this.prevItem = this.mob.getItemBySlot(EquipmentSlotType.MAINHAND);
+		this.mob.setItemSlot(EquipmentSlotType.MAINHAND, this.estusFlask);
+		this.mob.startUsingItem(Hand.MAIN_HAND);
 	}
 	
 	@Override
@@ -58,6 +58,6 @@ public class DrinkingEstusGoal extends Goal
 
 	public void stop()
 	{
-		this.mob.setItemSlot(EquipmentSlot.MAINHAND, this.prevItem);
+		this.mob.setItemSlot(EquipmentSlotType.MAINHAND, this.prevItem);
 	}
 }

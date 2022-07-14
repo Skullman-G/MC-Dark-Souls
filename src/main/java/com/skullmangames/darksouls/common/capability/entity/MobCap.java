@@ -17,21 +17,21 @@ import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.world.entity.ai.goal.RangedCrossbowAttackGoal;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.entity.ai.goal.RangedCrossbowAttackGoal;
+import net.minecraft.entity.projectile.ProjectileEntity;
 
-public abstract class MobCap<T extends Mob> extends LivingCap<T>
+public abstract class MobCap<T extends MobEntity> extends LivingCap<T>
 {
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -62,13 +62,13 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 
 	protected void resetCombatAI()
 	{
-		Stream<WrappedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
-		Iterator<WrappedGoal> iterator = goals.iterator();
+		Stream<PrioritizedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
+		Iterator<PrioritizedGoal> iterator = goals.iterator();
 		List<Goal> toRemove = Lists.<Goal>newArrayList();
 		
 		while (iterator.hasNext())
 		{
-        	WrappedGoal goal = iterator.next();
+        	PrioritizedGoal goal = iterator.next();
             Goal inner = goal.getGoal();
             
             if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
@@ -92,12 +92,12 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 	public void clientInitialSettings(ByteBuf buf) {}
 	
 	@Override
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlotType slotType) {}
 	
 	@Override
 	public boolean isTeam(Entity entity)
 	{
-		if (entity instanceof Projectile) return false;
+		if (entity instanceof ProjectileEntity) return false;
 		EntityCapability<?> cap = entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		if(cap != null && cap instanceof MobCap)
 		{
@@ -121,13 +121,13 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 		if (attackTarget != null)
 		{
 			float partialTicks = DarkSouls.isPhysicalClient() ? Minecraft.getInstance().getFrameTime() : 1.0F;
-			Vec3 target = attackTarget.getEyePosition(partialTicks);
-			Vec3 vector3d = this.orgEntity.getEyePosition(partialTicks);
+			Vector3d target = attackTarget.getEyePosition(partialTicks);
+			Vector3d vector3d = this.orgEntity.getEyePosition(partialTicks);
 			double d0 = target.x - vector3d.x;
 			double d1 = target.y - vector3d.y;
 			double d2 = target.z - vector3d.z;
 			double d3 = (double) Math.sqrt(d0 * d0 + d2 * d2);
-			return MathUtils.clamp(Mth.wrapDegrees((float) ((Math.atan2(d1, d3) * (double) (180F / (float) Math.PI)))), -30.0F, 30.0F);
+			return MathUtils.clamp(MathHelper.wrapDegrees((float) ((Math.atan2(d1, d3) * (double) (180F / (float) Math.PI)))), -30.0F, 30.0F);
 		}
 		else
 		{

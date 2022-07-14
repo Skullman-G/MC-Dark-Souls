@@ -3,12 +3,13 @@ package com.skullmangames.darksouls.core.util.math.vector;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
-import net.minecraft.world.phys.Vec3;
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 
 public class PublicMatrix4f
 {
@@ -184,13 +185,13 @@ public class PublicMatrix4f
 		return transform(left, right, new Vector4f());
 	}
 	
-	public static Vec3 transform(PublicMatrix4f matrix, Vec3 src)
+	public static Vector3d transform(PublicMatrix4f matrix, Vector3d src)
 	{
 		double x = matrix.m00 * src.x + matrix.m10 * src.y + matrix.m20 * src.z + matrix.m30 * 1.0F;
 		double y = matrix.m01 * src.x + matrix.m11 * src.y + matrix.m21 * src.z + matrix.m31 * 1.0F;
 		double z = matrix.m02 * src.x + matrix.m12 * src.y + matrix.m22 * src.z + matrix.m32 * 1.0F;
 		
-		return new Vec3(x, y ,z);
+		return new Vector3d(x, y ,z);
 	}
 
 	public static Vector4f transform(PublicMatrix4f left, Vector4f right, Vector4f dest)
@@ -526,12 +527,12 @@ public class PublicMatrix4f
 		return par1 + par3 * f;
 	}
 
-	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void rotateStack(MatrixStack mStack, PublicMatrix4f mat)
 	{
 		mStack.mulPose(toQuaternion(mat));
 	}
 
-	public static void scaleStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void scaleStack(MatrixStack mStack, PublicMatrix4f mat)
 	{
 		Vector3f vector = getScaleFromMatrix(mat);
 		mStack.scale(vector.x(), vector.y(), vector.z());

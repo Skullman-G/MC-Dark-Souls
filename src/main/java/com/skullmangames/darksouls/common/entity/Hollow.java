@@ -4,42 +4,42 @@ import java.util.Random;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.world.World;
 
-public class Hollow extends ArmoredMob implements RangedAttackMob
+public class Hollow extends ArmoredMob implements IRangedAttackMob
 {
-	public Hollow(EntityType<? extends Hollow> entitytype, Level level)
+	public Hollow(EntityType<? extends Hollow> entitytype, World level)
 	{
 		super(entitytype, level);
 	}
 	
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes()
+		return MobEntity.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
@@ -53,7 +53,7 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 		return super.canSpawnSprintParticle() && this.getAttributeValue(Attributes.MOVEMENT_SPEED) >= 0.3F;
 	}
 	
-	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
+	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, IServerWorld level, SpawnReason spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
@@ -61,18 +61,18 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+		this.goalSelector.addGoal(4, new RandomWalkingGoal(this, 0.8D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowLordranWarrior.class, true));
 	    this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HollowLordranSoldier.class, true));
 	}
 	
 	@Override
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int percentage, EquipmentSlotType slot)
 	{
-		if (slot != EquipmentSlot.MAINHAND) return null;
+		if (slot != EquipmentSlotType.MAINHAND) return null;
 		if (percentage <= 75)
 		{
 			return ModItems.BROKEN_STRAIGHT_SWORD.get();
@@ -102,8 +102,8 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	@Override
 	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
 	{
-		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
-	    AbstractArrow abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
+		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileHelper.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
+	    AbstractArrowEntity abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
 	    if (this.getMainHandItem().getItem() instanceof BowItem)
 	       abstractarrowentity = ((BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
 	    double d0 = p_82196_1_.getX() - this.getX();
@@ -115,13 +115,13 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	    this.level.addFreshEntity(abstractarrowentity);
 	}
 	
-	protected AbstractArrow getArrow(ItemStack itemstack, float p_213624_2_)
+	protected AbstractArrowEntity getArrow(ItemStack itemstack, float p_213624_2_)
 	{
-		return ProjectileUtil.getMobArrow(this, itemstack, p_213624_2_);
+		return ProjectileHelper.getMobArrow(this, itemstack, p_213624_2_);
 	}
 	
 	@Override
-	protected int getExperienceReward(Player player)
+	protected int getExperienceReward(PlayerEntity player)
 	{
 		return 20;
 	}

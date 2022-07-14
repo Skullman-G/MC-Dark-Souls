@@ -14,9 +14,9 @@ import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCLivingMotionChange
 {
@@ -67,7 +67,7 @@ public class STCLivingMotionChange
 		});
 	}
 
-	public static STCLivingMotionChange fromBytes(FriendlyByteBuf buf)
+	public static STCLivingMotionChange fromBytes(PacketBuffer buf)
 	{
 		STCLivingMotionChange msg = new STCLivingMotionChange(buf.readInt(), buf.readInt(), buf.readBoolean());
 		List<LivingMotion> motionList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class STCLivingMotionChange
 		return msg;
 	}
 
-	public static void toBytes(STCLivingMotionChange msg, FriendlyByteBuf buf)
+	public static void toBytes(STCLivingMotionChange msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeInt(msg.count);

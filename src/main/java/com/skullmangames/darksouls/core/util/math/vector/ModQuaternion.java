@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.core.util.math.vector;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ModQuaternion
 {

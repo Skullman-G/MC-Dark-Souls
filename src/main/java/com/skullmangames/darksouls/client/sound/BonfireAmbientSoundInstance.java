@@ -5,15 +5,15 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
+import net.minecraft.client.audio.TickableSound;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
+public class BonfireAmbientSoundInstance extends TickableSound
 {
 	private static final float VOLUME_MIN = 0.0F;
 	private static final float VOLUME_MAX = 1.2F;
@@ -21,7 +21,7 @@ public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 
 	public BonfireAmbientSoundInstance(BonfireBlockEntity bonfire)
 	{
-		super(ModSoundEvents.BONFIRE_AMBIENT.get(), SoundSource.BLOCKS);
+		super(ModSoundEvents.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS);
 		this.bonfire = bonfire;
 		this.x = bonfire.getBlockPos().getX();
 		this.y = bonfire.getBlockPos().getY();
@@ -47,8 +47,8 @@ public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
-		LocalPlayer player = minecraft.player;
+		ClientPlayerEntity player = minecraft.player;
 		float f = (float)player.distanceToSqr(this.x, this.y, this.z);
-		this.volume = Mth.lerp(Mth.clamp(1.0F - (f * 0.005F), 0.0F, 0.5F), VOLUME_MIN, VOLUME_MAX);
+		this.volume = MathHelper.lerp(MathHelper.clamp(1.0F - (f * 0.005F), 0.0F, 0.5F), VOLUME_MIN, VOLUME_MAX);
 	}
 }

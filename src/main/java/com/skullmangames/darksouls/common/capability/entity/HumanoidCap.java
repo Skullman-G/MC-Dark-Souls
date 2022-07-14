@@ -13,13 +13,13 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.CrossbowAttackMob;
-import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.util.Hand;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ICrossbowUser;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.MobEntity;
 
-public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
+public abstract class HumanoidCap<T extends MobEntity> extends MobCap<T>
 {
 	@Override
 	public void postInit()
@@ -29,7 +29,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			super.resetCombatAI();
 			WeaponCap heldItem = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 			
-			if(!(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob) && this.isArmed())
+			if(!(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof MobEntity) && this.isArmed())
 			{
 				this.setAttackGoals(heldItem.getWeaponCategory());
 			}
@@ -45,11 +45,11 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setAttackGoals(WeaponCategory category)
 	{
-		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
+		if (category == WeaponCategory.BOW && this.orgEntity instanceof IRangedAttackMob)
 		{
 			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal(this, 40, 15.0F));
 		}
-		else if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
+		else if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof ICrossbowUser)
 		{
 			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));
 		}
@@ -106,7 +106,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		}
 		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
 		{
-			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
+			if (entityCap.getOriginalEntity().getUsedItemHand() == Hand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
 			return Animations.BIPED_BLOCK_HIT_MIRROR;
 		}
 		else
@@ -117,7 +117,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					return Animations.BIPED_HIT_SHORT;
 					
 				case DISARMED:
-					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
+					if (entityCap.getOriginalEntity().getUsedItemHand() == Hand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
 					return Animations.BIPED_DISARM_SHIELD_LEFT;
 					
 				case SMASH_FRONT:

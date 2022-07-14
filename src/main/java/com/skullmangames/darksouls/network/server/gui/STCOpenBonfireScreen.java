@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCOpenBonfireScreen
 {
@@ -17,12 +17,12 @@ public class STCOpenBonfireScreen
 		this.blockPos = pos;
 	}
 	
-	public static STCOpenBonfireScreen fromBytes(FriendlyByteBuf buf)
+	public static STCOpenBonfireScreen fromBytes(PacketBuffer buf)
 	{
 		return new STCOpenBonfireScreen(buf.readBlockPos());
 	}
 	
-	public static void toBytes(STCOpenBonfireScreen msg, FriendlyByteBuf buf)
+	public static void toBytes(STCOpenBonfireScreen msg, PacketBuffer buf)
 	{
 		buf.writeBlockPos(msg.blockPos);
 	}

@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.client.renderer.layer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -14,18 +14,18 @@ import com.skullmangames.darksouls.common.capability.item.ArmorCap.ArmorPart;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.ZombieVillager;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DyeableArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.ZombieVillagerEntity;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.DyeableArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -34,27 +34,27 @@ import net.minecraftforge.client.ForgeHooksClient;
 public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> extends Layer<E, T>
 {
 	private static final Map<ResourceLocation, ClientModel> ARMOR_MODEL_MAP = new HashMap<ResourceLocation, ClientModel>();
-	private final EquipmentSlot slot;
+	private final EquipmentSlotType slot;
 	
-	public WearableItemLayer(EquipmentSlot slotType)
+	public WearableItemLayer(EquipmentSlotType slotType)
 	{
 		this.slot = slotType;
 	}
 	
-	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLightIn, boolean hasEffect, ClientModel model, float r, float g, float b, ResourceLocation armorResource, PublicMatrix4f[] poses)
+	private void renderArmor(MatrixStack matStack, IRenderTypeBuffer buf, int packedLightIn, boolean hasEffect, ClientModel model, float r, float g, float b, ResourceLocation armorResource, PublicMatrix4f[] poses)
 	{
-		VertexConsumer ivertexbuilder = ModRenderTypes.getArmorVertexBuilder(buf, ModRenderTypes.getAnimatedArmorModel(armorResource), hasEffect);
+		IVertexBuilder ivertexbuilder = ModRenderTypes.getArmorVertexBuilder(buf, ModRenderTypes.getAnimatedArmorModel(armorResource), hasEffect);
 		model.draw(matStack, ivertexbuilder, packedLightIn, r, g, b, 1.0F, poses);
 	}
 	
 	@Override
-	public void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, E entityliving, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
 		ItemStack stack = entityliving.getItemBySlot(this.slot);
 		Item item = stack.getItem();
 		
 		matrixStackIn.pushPose();
-		if(this.slot == EquipmentSlot.HEAD && entityliving instanceof ZombieVillager)
+		if(this.slot == EquipmentSlotType.HEAD && entityliving instanceof ZombieVillagerEntity)
 		{
 			matrixStackIn.translate(0.0D, 0.1D, 0.0D);
 		}
@@ -116,7 +116,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		}
 	}
 	
-	private ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type)
+	private ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
 	{
 		ArmorItem item = (ArmorItem) stack.getItem();
 		String texture = item.getMaterial().getName();
@@ -129,13 +129,13 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 			texture = texture.substring(idx + 1);
 		}
 
-		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (slot == EquipmentSlot.LEGS ? 2 : 1), type == null ? "" : String.format("_%s", type));
+		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (slot == EquipmentSlotType.LEGS ? 2 : 1), type == null ? "" : String.format("_%s", type));
 		s1 = ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
-		ResourceLocation resourcelocation = HumanoidArmorLayer.ARMOR_LOCATION_CACHE.get(s1);
+		ResourceLocation resourcelocation = BipedArmorLayer.ARMOR_LOCATION_CACHE.get(s1);
 		if (resourcelocation == null)
 		{
 			resourcelocation = new ResourceLocation(s1);
-			HumanoidArmorLayer.ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
+			BipedArmorLayer.ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
 		}
 
 		return resourcelocation;

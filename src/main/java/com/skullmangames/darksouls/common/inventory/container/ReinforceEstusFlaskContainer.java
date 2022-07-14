@@ -4,34 +4,34 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModItems;
 
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.ItemCombinerMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.AbstractRepairContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IWorldPosCallable;
 
-public class ReinforceEstusFlaskContainer extends ItemCombinerMenu
+public class ReinforceEstusFlaskContainer extends AbstractRepairContainer
 {
-	public ReinforceEstusFlaskContainer(int id, Inventory inventory)
+	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory)
 	{
-		this(id, inventory, ContainerLevelAccess.NULL);
+		this(id, inventory, IWorldPosCallable.NULL);
 	}
 	
-	public ReinforceEstusFlaskContainer(int id, Inventory inventory, ContainerLevelAccess access)
+	public ReinforceEstusFlaskContainer(int id, PlayerInventory inventory, IWorldPosCallable access)
 	{
 		super(ModContainers.REINFORCE_ESTUS_FLASK.get(), id, inventory, access);
 	}
 
 	@Override
-	protected boolean mayPickup(Player p_39798_, boolean p_39799_)
+	protected boolean mayPickup(PlayerEntity p_39798_, boolean p_39799_)
 	{
 		return this.slots.get(0).getItem().getItem() == ModItems.ESTUS_FLASK.get()
 				&& this.slots.get(1).getItem().getItem() == ModItems.ESTUS_SHARD.get();
 	}
 
 	@Override
-	protected void onTake(Player player, ItemStack stack)
+	protected ItemStack onTake(PlayerEntity player, ItemStack stack)
 	{
 		stack.onCraftedBy(player.level, player, stack.getCount());
 		this.resultSlots.awardUsedRecipes(player);
@@ -41,6 +41,7 @@ public class ReinforceEstusFlaskContainer extends ItemCombinerMenu
 		{
 			p_40263_.levelEvent(1044, p_40264_, 0);
 		});
+		return stack;
 	}
 
 	private void shrinkStackInSlot(int id)

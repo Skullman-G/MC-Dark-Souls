@@ -3,20 +3,20 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCSetPos
 {
 	private int entityId;
-	private Vec3 pos;
+	private Vector3d pos;
 	private float yRot;
 	private float xRot;
 	
-	public STCSetPos(Vec3 pos, float yRot, float xRot, int entityId)
+	public STCSetPos(Vector3d pos, float yRot, float xRot, int entityId)
 	{
 		this.pos = pos;
 		this.yRot = yRot;
@@ -24,14 +24,14 @@ public class STCSetPos
 		this.entityId = entityId;
 	}
 	
-	public static STCSetPos fromBytes(FriendlyByteBuf buf)
+	public static STCSetPos fromBytes(PacketBuffer buf)
 	{
-		return new STCSetPos(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()),
+		return new STCSetPos(new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
 				buf.readFloat(), buf.readFloat(),
 				buf.readInt());
 	}
 	
-	public static void toBytes(STCSetPos msg, FriendlyByteBuf buf)
+	public static void toBytes(STCSetPos msg, PacketBuffer buf)
 	{
 		buf.writeDouble(msg.pos.x);
 		buf.writeDouble(msg.pos.y);

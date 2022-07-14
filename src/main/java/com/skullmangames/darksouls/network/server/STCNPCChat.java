@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.client.ClientManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCNPCChat
 {
@@ -19,12 +19,12 @@ public class STCNPCChat
 		this.location = location;
 	}
 	
-	public static STCNPCChat fromBytes(FriendlyByteBuf buf)
+	public static STCNPCChat fromBytes(PacketBuffer buf)
 	{
 		return new STCNPCChat(buf.readInt(), buf.readUtf());
 	}
 	
-	public static void toBytes(STCNPCChat msg, FriendlyByteBuf buf)
+	public static void toBytes(STCNPCChat msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeUtf(msg.location);

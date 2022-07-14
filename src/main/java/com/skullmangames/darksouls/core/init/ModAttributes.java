@@ -12,18 +12,18 @@ import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.QuestEntity;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModAttributes
 {
@@ -75,30 +75,6 @@ public class ModAttributes
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.STRAY_DEMON.get(), event);
 		general(ModEntities.FIRE_KEEPER.get(), event);
-		/*general(EntityType.CAVE_SPIDER, event);
-		general(EntityType.CREEPER, event);
-		general(EntityType.EVOKER, event);
-		general(EntityType.IRON_GOLEM, event);
-		general(EntityType.PILLAGER, event);
-		general(EntityType.RAVAGER, event);
-		general(EntityType.SPIDER, event);
-		general(EntityType.VEX, event);
-		general(EntityType.VINDICATOR, event);
-		general(EntityType.WITCH, event);
-		general(EntityType.HOGLIN, event);
-		general(EntityType.ZOGLIN, event);
-		
-		general(EntityType.DROWNED, event);
-		general(EntityType.ENDERMAN, event);
-		general(EntityType.HUSK, event);
-		general(EntityType.PIGLIN, event);
-		general(EntityType.PIGLIN_BRUTE, event);
-		general(EntityType.SKELETON, event);
-		general(EntityType.STRAY, event);
-		general(EntityType.WITHER_SKELETON, event);
-		general(EntityType.ZOMBIE, event);
-		general(EntityType.ZOMBIE_VILLAGER, event);
-		general(EntityType.ZOMBIFIED_PIGLIN, event);*/
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
@@ -124,12 +100,12 @@ public class ModAttributes
     	event.add(entityType, ModAttributes.MAX_EQUIP_LOAD.get());
     }
     
-    private static void player(EntityType<? extends Player> entityType, EntityAttributeModificationEvent event)
+    private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
     {
     	withEquipLoad(entityType, event);
 	}
 	
-	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)
+	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlotType slot, float value)
 	{
 		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
 	}

@@ -6,16 +6,16 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.World;
 
-public class ReinforceEstusFlaskRecipe implements Recipe<Inventory>
+public class ReinforceEstusFlaskRecipe implements IRecipe<Inventory>
 {
 	private final ResourceLocation id;
 	
@@ -25,7 +25,7 @@ public class ReinforceEstusFlaskRecipe implements Recipe<Inventory>
 	}
 	
 	@Override
-	public boolean matches(Inventory inventory, Level level)
+	public boolean matches(Inventory inventory, World level)
 	{
 		return inventory.getItem(0).getItem() == ModItems.ESTUS_FLASK.get() && EstusFlaskItem.getTotalUses(inventory.getItem(0)) < 20 && inventory.getItem(1).getItem() == ModItems.ESTUS_SHARD.get();
 	}
@@ -58,13 +58,13 @@ public class ReinforceEstusFlaskRecipe implements Recipe<Inventory>
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer()
+	public IRecipeSerializer<?> getSerializer()
 	{
 		return ModRecipes.REINFORCE_ESTUS_FLASK.get();
 	}
 
 	@Override
-	public RecipeType<?> getType()
+	public IRecipeType<?> getType()
 	{
 		return ModRecipeTypes.REINFORCE_ESTUS_FLASK;
 	}
@@ -80,7 +80,7 @@ public class ReinforceEstusFlaskRecipe implements Recipe<Inventory>
 	      return itemstack.getItem() == ModItems.ESTUS_SHARD.get();
 	}
 	
-	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ReinforceEstusFlaskRecipe>
+	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ReinforceEstusFlaskRecipe>
 	{
 	    @Override
 		public ReinforceEstusFlaskRecipe fromJson(ResourceLocation id, JsonObject p_199425_2_)
@@ -89,13 +89,13 @@ public class ReinforceEstusFlaskRecipe implements Recipe<Inventory>
 	    }
 
 	    @Override
-	    public ReinforceEstusFlaskRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf p_199426_2_)
+	    public ReinforceEstusFlaskRecipe fromNetwork(ResourceLocation id, PacketBuffer p_199426_2_)
 	    {
 	    	return new ReinforceEstusFlaskRecipe(id);
 	    }
 
 	    @Override
-	    public void toNetwork(FriendlyByteBuf p_199427_1_, ReinforceEstusFlaskRecipe p_199427_2_)
+	    public void toNetwork(PacketBuffer p_199427_1_, ReinforceEstusFlaskRecipe p_199427_2_)
 	    {
 	    	return;
 	    }

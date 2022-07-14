@@ -4,10 +4,10 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSOpenFireKeeperContainer
 {
@@ -18,12 +18,12 @@ public class CTSOpenFireKeeperContainer
 		this.id = id;
 	}
 	
-	public static CTSOpenFireKeeperContainer fromBytes(FriendlyByteBuf buf)
+	public static CTSOpenFireKeeperContainer fromBytes(PacketBuffer buf)
 	{
 		return new CTSOpenFireKeeperContainer(buf.readInt());
 	}
 	
-	public static void toBytes(CTSOpenFireKeeperContainer msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSOpenFireKeeperContainer msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.id);
 	}
@@ -32,7 +32,7 @@ public class CTSOpenFireKeeperContainer
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayer serverPlayer = ctx.get().getSender();
+			ServerPlayerEntity serverPlayer = ctx.get().getSender();
 			Entity entity = serverPlayer.level.getEntity(msg.id);
 			if (entity instanceof AbstractFireKeeper) ((AbstractFireKeeper)entity).openContainer(serverPlayer);
 		});

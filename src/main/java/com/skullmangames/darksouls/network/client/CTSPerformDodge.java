@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSPerformDodge
 {
@@ -17,12 +17,12 @@ public class CTSPerformDodge
 		this.moving = moving;
 	}
 	
-	public static CTSPerformDodge fromBytes(FriendlyByteBuf buf)
+	public static CTSPerformDodge fromBytes(PacketBuffer buf)
 	{
 		return new CTSPerformDodge(buf.readBoolean());
 	}
 	
-	public static void toBytes(CTSPerformDodge msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSPerformDodge msg, PacketBuffer buf)
 	{
 		buf.writeBoolean(msg.moving);
 	}
@@ -31,7 +31,7 @@ public class CTSPerformDodge
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayer serverPlayer = ctx.get().getSender();
+			ServerPlayerEntity serverPlayer = ctx.get().getSender();
 			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			playerdata.performDodge(msg.moving);

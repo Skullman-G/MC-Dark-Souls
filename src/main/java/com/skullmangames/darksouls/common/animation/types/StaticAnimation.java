@@ -20,8 +20,8 @@ import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -95,12 +95,12 @@ public class StaticAnimation extends DynamicAnimation
 		return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
 	}
 
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
 	{
 		load(resourceManager, models, this);
 	}
 
-	public static void load(ResourceManager resourceManager, Models<?> models, StaticAnimation animation)
+	public static void load(IResourceManager resourceManager, Models<?> models, StaticAnimation animation)
 	{
 		ResourceLocation extenderPath = new ResourceLocation(animation.resourceLocation.getNamespace(),
 				animation.resourceLocation.getPath() + ".dae");

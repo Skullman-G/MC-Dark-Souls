@@ -20,15 +20,15 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -53,11 +53,11 @@ public abstract class WeaponCap extends AttributeItemCap
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot)
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
-		if (slot == EquipmentSlot.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
+		if (slot == EquipmentSlotType.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
 		return map;
 	}
 	
@@ -90,7 +90,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	public abstract float getDamage();
 
 	@Override
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry))
 			return;
@@ -102,31 +102,31 @@ public abstract class WeaponCap extends AttributeItemCap
 		{
 			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 					+ ((IForgeRegistryEntry<Item>) this.orgItem).getRegistryName().getPath() + ".extended";
-			String description = new TranslatableComponent(languagePath).getString();
+			String description = new TranslationTextComponent(languagePath).getString();
 
 			if (!description.contains(languagePath))
-				itemTooltip.add(new TextComponent("\u00A77\n" + description));
+				itemTooltip.add(new StringTextComponent("\u00A77\n" + description));
 		} else
 		{
-			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage()));
+			itemTooltip.add(new StringTextComponent("\u00A72Physical Damage: " + this.getDamage()));
 
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TextComponent("Requirements:"));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new StringTextComponent("Requirements:"));
+			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.STRENGTH.toString()).getString() + ": "
 					+ this.getStatStringValue(Stats.STRENGTH, playerdata)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
+			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.DEXTERITY.toString()).getString() + ": "
 					+ this.getStatStringValue(Stats.DEXTERITY, playerdata)));
 			
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TextComponent("Scaling:"));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new StringTextComponent("Scaling:"));
+			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.STRENGTH.toString()).getString() + ": "
 					+ this.statInfo.get(Stats.STRENGTH).getSecond()));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
+			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.DEXTERITY.toString()).getString() + ": "
 					+ this.statInfo.get(Stats.DEXTERITY).getSecond()));
 			
-			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+			itemTooltip.add(new StringTextComponent(""));
+			itemTooltip.add(new TranslationTextComponent("attribute.darksouls.weight").withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
 		}
 	}
 

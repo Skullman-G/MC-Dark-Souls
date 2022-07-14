@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.entity.IRangedAttackMob;
 
 public class HollowCap extends HumanoidCap<Hollow>
 {
@@ -79,7 +79,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
-		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
+		if (category == WeaponCategory.BOW && this.orgEntity instanceof IRangedAttackMob)
 		{
 			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal(this, 40, 15.0F));
 		}

@@ -6,9 +6,9 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCSouls
 {
@@ -21,12 +21,12 @@ public class STCSouls
 		this.souls = value;
 	}
 	
-	public static STCSouls fromBytes(FriendlyByteBuf buf)
+	public static STCSouls fromBytes(PacketBuffer buf)
 	{
 		return new STCSouls(buf.readInt(), buf.readInt());
 	}
 	
-	public static void toBytes(STCSouls msg, FriendlyByteBuf buf)
+	public static void toBytes(STCSouls msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeInt(msg.souls);
