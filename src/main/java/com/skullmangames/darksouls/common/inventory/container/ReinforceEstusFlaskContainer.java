@@ -52,7 +52,7 @@ public class ReinforceEstusFlaskContainer extends AbstractRepairContainer
 	}
 
 	@Override
-	protected boolean isValidBlock(BlockState p_39788_)
+	protected boolean isValidBlock(BlockState blockstate)
 	{
 		return true;
 	}
@@ -60,9 +60,14 @@ public class ReinforceEstusFlaskContainer extends AbstractRepairContainer
 	@Override
 	public void createResult()
 	{
-		int estuslevel = EstusFlaskItem.getTotalUses(this.inputSlots.getItem(0));
-		ItemStack stack = new ItemStack(ModItems.ESTUS_FLASK.get());
-		EstusFlaskItem.setTotalUses(stack, estuslevel + 1);
-		this.resultSlots.setItem(0, stack);
+		if (this.slots.get(0).getItem().getItem() == ModItems.ESTUS_FLASK.get()
+				&& this.slots.get(1).getItem().getItem() == ModItems.ESTUS_SHARD.get())
+		{
+			int estuslevel = EstusFlaskItem.getTotalUses(this.inputSlots.getItem(0));
+			ItemStack stack = new ItemStack(ModItems.ESTUS_FLASK.get());
+			EstusFlaskItem.setTotalUses(stack, estuslevel + 1);
+			this.resultSlots.setItem(0, stack);
+		}
+		else this.resultSlots.setItem(0, ItemStack.EMPTY);
 	}
 }

@@ -59,19 +59,19 @@ public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFla
 	}
 
 	@Override
-	public void refreshContainer(Container p_71110_1_, NonNullList<ItemStack> p_71110_2_)
+	public void refreshContainer(Container container, NonNullList<ItemStack> p_71110_2_)
 	{
-		this.slotChanged(p_71110_1_, 0, p_71110_1_.getSlot(0).getItem());
+		this.slotChanged(container, 0, container.getSlot(0).getItem());
 	}
 
 	@Override
-	public void slotChanged(Container p_71111_1_, int p_71111_2_, ItemStack p_71111_3_)
+	public void slotChanged(Container container, int slot, ItemStack item)
 	{
-		
+		this.getMenu().slotsChanged(this.inventory);
 	}
 
 	@Override
-	public void setContainerData(Container p_71112_1_, int p_71112_2_, int p_71112_3_)
+	public void setContainerData(Container container, int slot, int p_71112_3_)
 	{
 		
 	}
