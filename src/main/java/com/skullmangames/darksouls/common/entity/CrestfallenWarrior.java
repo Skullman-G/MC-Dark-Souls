@@ -10,6 +10,8 @@ import com.skullmangames.darksouls.network.server.STCNPCChat;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +30,13 @@ public class CrestfallenWarrior extends QuestEntity
 	public CrestfallenWarrior(EntityType<? extends CreatureEntity> type, World level)
 	{
 		super(type, level);
+	}
+	
+	@Override
+	protected void registerGoals()
+	{
+		this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 15.0F, 1.0F));
+		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
 	}
 	
 	@Override
