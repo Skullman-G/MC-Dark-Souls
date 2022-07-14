@@ -1,7 +1,9 @@
 package com.skullmangames.darksouls.client.gui;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -113,10 +115,12 @@ public class GameOverlayManager
 			int i = minecraft.getWindow().getGuiScaledWidth();
 			int j = 12;
 			
+			List<UUID> unused = new ArrayList<>();
 			for (UUID uuid : bossHealthInfoMap.keySet())
 			{
-				if (!events.containsKey(uuid)) bossHealthInfoMap.remove(uuid);
+				if (!events.containsKey(uuid)) unused.add(uuid);
 			}
+			for (UUID uuid : unused) bossHealthInfoMap.remove(uuid);
 			for (UUID uuid : events.keySet())
 			{
 				if (!bossHealthInfoMap.containsKey(uuid)) bossHealthInfoMap.put(uuid, new BossHealthInfo());
