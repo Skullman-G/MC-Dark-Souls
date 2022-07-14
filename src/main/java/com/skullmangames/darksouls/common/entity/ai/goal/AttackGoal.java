@@ -53,7 +53,7 @@ public class AttackGoal extends Goal
 	
 	public AttackGoal(MobCap<?> mobCap, float minDist, boolean affectY, boolean defensive, boolean shouldStrafe)
 	{
-		this(mobCap, minDist, 1, affectY, defensive, shouldStrafe);
+		this(mobCap, minDist, 0, affectY, defensive, shouldStrafe);
 	}
 	
 	public AttackGoal(MobCap<?> mobCap, float minDist, int yDist, boolean affectY, boolean defensive, boolean shouldStrafe)
@@ -215,7 +215,7 @@ public class AttackGoal extends Goal
     	this.attacker.getNavigation().moveTo(this.path, 1D);
 		this.attacker.setAggressive(true);
 		
-		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
+		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
 			this.attacker.startUsingItem(Hand.OFF_HAND);
     }
     
@@ -235,7 +235,7 @@ public class AttackGoal extends Goal
     
     private void startStrafing()
     {
-    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
+    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
 			this.attacker.startUsingItem(Hand.OFF_HAND);
     	
     	this.strafingDir = this.strafeLength == 0 && this.getTargetRange(this.attacker.getTarget()) < this.minDist ? BACK : this.strafingDir == RIGHT ? LEFT : RIGHT;
@@ -342,7 +342,8 @@ public class AttackGoal extends Goal
     protected boolean targetInAttackRange(LivingEntity target)
     {
     	double targetRange = this.getTargetRange(target);
-    	return targetRange <= this.getMaxDist(targetRange) && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
+    	return targetRange <= this.getMaxDist(targetRange) && targetRange >= this.minDist && (this.isInSameHorizontalPosition(target) || (targetRange <= 2
+    			&& target.getY() - attacker.getY() <= 1));
     }
     
     protected boolean isValidTarget(LivingEntity target)
@@ -357,6 +358,12 @@ public class AttackGoal extends Goal
     		return target.getY() - attacker.getY() <= this.yDist && target.getY() - attacker.getY() >= -this.yDist;
     	
     	return true;
+    }
+    
+    @Override
+    public void stop()
+    {
+    	this.attacker.setSprinting(false);
     }
     
     protected enum Phase
