@@ -176,6 +176,12 @@ public class DarkSouls
 
 		ModEntities.registerEntitySpawnPlacement();
 		CriteriaTriggerInit.register();
+	    
+	    event.enqueueWork(() ->
+    	{
+    		ModStructures.setupStructures();
+    	    ModConfiguredStructures.registerConfiguredStructures();
+    	});
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event)

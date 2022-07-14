@@ -53,7 +53,7 @@ public class LordranCamp extends Structure<NoFeatureConfig>
 			int z = (chunkZ << 4) + 7;
 			BlockPos blockpos = new BlockPos(x, 0, z);
 
-			ResourceLocation resourcelocation = new ResourceLocation(DarkSouls.MOD_ID, "lordran_camp/start_pool");
+			ResourceLocation resourcelocation = new ResourceLocation(DarkSouls.MOD_ID, "lordran_camp/center");
 			JigsawManager.addPieces(dynamicregistries,
 					new VillageConfig(() -> dynamicregistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).get(resourcelocation), 10),
 					AbstractVillagePiece::new, generator, templatemanager, blockpos, this.pieces, this.random, false, true);

@@ -32,12 +32,13 @@ public class ModConfiguredStructures
 	
 	public static void biomeModification(BiomeLoadingEvent event)
     {
-    	if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.JUNGLE)
+    	if (event.getCategory() != Biome.Category.OCEAN && event.getCategory() != Biome.Category.NETHER && event.getCategory() != Biome.Category.RIVER
+    			&& event.getCategory() != Biome.Category.THEEND)
         {
         	event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_FIRE_KEEPER_RUINS);
         }
     	
-    	if (event.getCategory() == Biome.Category.FOREST)
+    	if (event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.FOREST)
     	{
     		event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_LORDRAN_CAMP);
     	}

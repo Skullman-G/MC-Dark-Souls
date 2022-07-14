@@ -85,7 +85,7 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(matrixstack, this.title, x + 10, y + 10, 16777215);
 
 		int firstX = x + 19;
-		this.font.draw(matrixstack, "World: " + this.displayedLevel, firstX, y + 36, this.color);
+		this.font.draw(matrixstack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
 		this.font.draw(matrixstack, "Souls: " + (this.playerdata.isCreativeOrSpectator() ? "INFINITE" : this.playerdata.getSouls()), firstX, y + 60,
 				this.color);
 		this.font.draw(matrixstack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);
