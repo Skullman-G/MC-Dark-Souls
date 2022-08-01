@@ -296,9 +296,9 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			float yawDegree = MathUtils.interpolateRotation(orgEntity.yRotO, orgEntity.yRot, partialTick);
 			float pitchDegree = MathUtils.interpolateRotation(orgEntity.xRotO, orgEntity.xRot, partialTick) + 90.0F;
-			PublicMatrix4f.rotate((float)-Math.toRadians(yawDegree), new Vector3f(0F, 1F, 0F), mat, mat);
-			PublicMatrix4f.rotate((float)-Math.toRadians(pitchDegree), new Vector3f(1F, 0F, 0F), mat, mat);
-			PublicMatrix4f.rotate((float)Math.toRadians((orgEntity.tickCount + partialTick) * -55.0), new Vector3f(0F, 1F, 0F), mat, mat);
+			mat.rotate((float)-Math.toRadians(yawDegree), Vector3f.YP);
+			mat.rotate((float)-Math.toRadians(pitchDegree), Vector3f.XP);
+			mat.rotate((float)Math.toRadians((orgEntity.tickCount + partialTick) * -55.0), Vector3f.YP);
             
             return mat;
 		}
@@ -307,11 +307,11 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			PublicMatrix4f mat = PublicMatrix4f.getModelMatrixIntegrated((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			
-			PublicMatrix4f.rotate((float)-Math.toRadians(entity.yBodyRot), new Vector3f(0F, 1F, 0F), mat, mat);
+			mat.rotate((float)-Math.toRadians(entity.yBodyRot), Vector3f.YP);
 			
             float f = (float)orgEntity.getFallFlyingTicks() + Minecraft.getInstance().getFrameTime();
             float f1 = MathUtils.clamp(f * f / 100.0F, 0.0F, 1.0F);
-            PublicMatrix4f.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), new Vector3f(1F, 0F, 0F), mat, mat);
+            mat.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), Vector3f.XP);
             
             Vec3 vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
             Vec3 vec3d1 = orgEntity.getDeltaMovement();
@@ -324,7 +324,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
                 double d2 = (vec3d1.x * vec3d.x + vec3d1.z * vec3d.z) / (Math.sqrt(d0) * Math.sqrt(d1));
                 double d3 = vec3d1.x * vec3d.z - vec3d1.z * vec3d.x;
                 
-                PublicMatrix4f.rotate((float)Math.toRadians((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI), new Vector3f(0F, 1F, 0F), mat, mat);
+                mat.rotate((float)Math.toRadians((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI), Vector3f.YP);
             }
 			
             return mat;

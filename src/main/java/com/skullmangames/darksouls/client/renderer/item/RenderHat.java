@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -39,10 +38,10 @@ public class RenderHat extends RenderItemBase
 			if (layer == null) return;
 			LivingEntity entity = itemHolder.getOriginalEntity();
 			PublicMatrix4f modelMatrix = new PublicMatrix4f();
-			PublicMatrix4f.scale(-0.94F, -0.94F, 0.94F, modelMatrix, modelMatrix);
+			modelMatrix.scale(-0.94F, -0.94F, 0.94F);
 			if(itemHolder.getOriginalEntity().isBaby())
 			{
-				PublicMatrix4f.translate(new Vector3f(0.0F, -0.65F, 0.0F), modelMatrix, modelMatrix);
+				modelMatrix.translate(0.0F, -0.65F, 0.0F);
 			}
 			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 			model.xRot = 0.0F;
