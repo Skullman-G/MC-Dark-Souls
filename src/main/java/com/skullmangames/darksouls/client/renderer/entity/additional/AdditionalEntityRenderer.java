@@ -1,32 +1,30 @@
-package com.skullmangames.darksouls.client.gui;
+package com.skullmangames.darksouls.client.renderer.entity.additional;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class EntityIndicator extends ModIngameGui
+public abstract class AdditionalEntityRenderer extends GuiComponent
 {
-	public static final List<EntityIndicator> ENTITY_INDICATOR_RENDERERS = Lists.newArrayList();
-	public static final ResourceLocation BATTLE_ICON = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/battle_icons.png");
+	public static final List<AdditionalEntityRenderer> ADDITIONAL_ENTITY_RENDERERS = new ArrayList<>();
 	
 	public static void init()
 	{
 		new HealthBarIndicator();
+		new MiracleEffectRenderer();
 	}
 	
 	public void drawTexturedModalRect2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
@@ -46,28 +44,34 @@ public abstract class EntityIndicator extends ModIngameGui
         vertexBuilder.vertex(matrix, minX, maxY, minZ).uv((minTexU * cor), (minTexV) * cor).endVertex();
     }
 	
-	public EntityIndicator()
+	public AdditionalEntityRenderer()
 	{
-		EntityIndicator.ENTITY_INDICATOR_RENDERERS.add(this);
+		AdditionalEntityRenderer.ADDITIONAL_ENTITY_RENDERERS.add(this);
 	}
 	
-	public Matrix4f getMVMatrix(PoseStack matStackIn, LivingEntity entityIn, float correctionX, float correctionY, float correctionZ, boolean lockRotation, boolean setupProjection, float partialTicks)
+	public Matrix4f getMVMatrix(PoseStack poseStack, LivingEntity entity, float correctionX, float correctionY, float correctionZ, boolean lockRotation, float partialTicks)
 	{
-		float posX = (float)Mth.lerp((double)partialTicks, entityIn.xOld, entityIn.getX());
-		float posY = (float)Mth.lerp((double)partialTicks, entityIn.yOld, entityIn.getY());
-		float posZ = (float)Mth.lerp((double)partialTicks, entityIn.zOld, entityIn.getZ());
-		matStackIn.pushPose();
-		matStackIn.translate(-posX, -posY, -posZ);
-		matStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		return this.getMVMatrix(poseStack, entity, correctionX, correctionY, correctionZ, 0.0F, lockRotation, partialTicks);
+	}
+	
+	public Matrix4f getMVMatrix(PoseStack poseStack, LivingEntity entity, float correctionX, float correctionY, float correctionZ, float xRot, boolean lockRotation, float partialTicks)
+	{
+		float posX = (float)Mth.lerp((double)partialTicks, entity.xOld, entity.getX());
+		float posY = (float)Mth.lerp((double)partialTicks, entity.yOld, entity.getY());
+		float posZ = (float)Mth.lerp((double)partialTicks, entity.zOld, entity.getZ());
+		poseStack.pushPose();
+		poseStack.translate(-posX, -posY, -posZ);
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		
-		return this.getMVMatrix(matStackIn, posX + correctionX, posY + correctionY, posZ + correctionZ, lockRotation, setupProjection);
+		return this.getMVMatrix(poseStack, posX + correctionX, posY + correctionY, posZ + correctionZ, xRot, lockRotation);
 	}
 	
-	public Matrix4f getMVMatrix(PoseStack matStackIn, float posX, float posY, float posZ, boolean lockRotation, boolean setupProjection) {
-		PublicMatrix4f viewMatrix = PublicMatrix4f.importMatrix(matStackIn.last().pose());
+	public Matrix4f getMVMatrix(PoseStack poseStack, float posX, float posY, float posZ, float xRot, boolean lockRotation)
+	{
+		PublicMatrix4f viewMatrix = PublicMatrix4f.importMatrix(poseStack.last().pose());
 		PublicMatrix4f finalMatrix = new PublicMatrix4f();
-		finalMatrix.translate(new Vector3f(-posX, posY, -posZ));
-		matStackIn.popPose();
+		finalMatrix.translate(-posX, posY, -posZ);
+		poseStack.popPose();
 		if (lockRotation)
 		{
 			finalMatrix.m00 = viewMatrix.m00;
@@ -81,11 +85,11 @@ public abstract class EntityIndicator extends ModIngameGui
 			finalMatrix.m22 = viewMatrix.m22;
 		}
 		PublicMatrix4f.mul(viewMatrix, finalMatrix, finalMatrix);
-		if(setupProjection) PublicMatrix4f.mul(ClientManager.INSTANCE.renderEngine.getCurrentProjectionMatrix(), finalMatrix, finalMatrix);
+		finalMatrix.rotate((float)Math.toRadians(xRot), new Vector3f(1, 0, 0));
 		
 		return PublicMatrix4f.exportMatrix(finalMatrix);
 	}
 	
-	public abstract void drawIndicator(LivingEntity entityIn, PoseStack matStackIn, MultiBufferSource ivertexBuilder, float partialTicks);
-	public abstract boolean shouldDraw(LivingEntity entityIn);
+	public abstract boolean shouldDraw(LivingEntity entity);
+	public abstract void draw(LivingEntity entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks);
 }

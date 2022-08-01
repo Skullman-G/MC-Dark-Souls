@@ -9,7 +9,6 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.gui.EntityIndicator;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
 import com.skullmangames.darksouls.client.renderer.item.RenderBow;
 import com.skullmangames.darksouls.client.renderer.item.RenderCrossbow;
@@ -22,6 +21,7 @@ import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.additional.AdditionalEntityRenderer;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
@@ -99,7 +99,7 @@ public class RenderEngine
 	{
 		Events.renderEngine = this;
 		RenderItemBase.renderEngine = this;
-		EntityIndicator.init();
+		AdditionalEntityRenderer.init();
 		this.minecraft = Minecraft.getInstance();
 		this.entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
 		this.itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
@@ -280,14 +280,11 @@ public class RenderEngine
 				}
 			}
 			
-			if (!minecraft.options.hideGui)
+			for (AdditionalEntityRenderer additionalRenderer : AdditionalEntityRenderer.ADDITIONAL_ENTITY_RENDERERS)
 			{
-				for (EntityIndicator entityIndicator : EntityIndicator.ENTITY_INDICATOR_RENDERERS)
+				if (additionalRenderer.shouldDraw(event.getEntity()))
 				{
-					if (entityIndicator.shouldDraw(event.getEntity()))
-					{
-						entityIndicator.drawIndicator(event.getEntity(), event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick());
-					}
+					additionalRenderer.draw(event.getEntity(), event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick());
 				}
 			}
 		}

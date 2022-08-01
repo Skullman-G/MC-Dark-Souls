@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.gui;
+package com.skullmangames.darksouls.client.renderer.entity.additional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,59 +15,62 @@ import com.skullmangames.darksouls.core.util.timer.Timer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HealthBarIndicator extends EntityIndicator
+public class HealthBarIndicator extends AdditionalEntityRenderer
 {
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/additional/health_bar_indicator.png");
 	private final Map<Integer, HealthInfo> healthInfoMap = new HashMap<>();
 	
 	@Override
-	public boolean shouldDraw(LivingEntity entityIn)
+	public boolean shouldDraw(LivingEntity entity)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui) return false;
 		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()
-				|| (entityIn.isInvisible() || entityIn == minecraft.player.getControllingPassenger())
-				|| entityIn.distanceToSqr(minecraft.getCameraEntity()) >= 400
-				|| entityIn.deathTime >= 19)
+				|| (entity.isInvisible() || entity == minecraft.player.getControllingPassenger())
+				|| entity.distanceToSqr(minecraft.getCameraEntity()) >= 400
+				|| entity.deathTime >= 19)
 		{
-			this.healthInfoMap.remove(entityIn.getId());
+			this.healthInfoMap.remove(entity.getId());
 			return false;
 		}
-		else if (entityIn instanceof Player)
+		else if (entity instanceof Player)
 		{
-			Player playerIn = (Player) entityIn;
+			Player playerIn = (Player) entity;
 			if (playerIn == minecraft.player || playerIn.isCreative() || playerIn.isSpectator())
 				return false;
 		}
 		
-		if (!this.healthInfoMap.containsKey(entityIn.getId())) this.healthInfoMap.put(entityIn.getId(), new HealthInfo());
+		if (!this.healthInfoMap.containsKey(entity.getId())) this.healthInfoMap.put(entity.getId(), new HealthInfo());
 
-		if (entityIn.getHealth() >= entityIn.getMaxHealth())
+		if (entity.getHealth() >= entity.getMaxHealth())
 		{
-			HealthInfo info = this.healthInfoMap.get(entityIn.getId());
+			HealthInfo info = this.healthInfoMap.get(entity.getId());
 			info.saveLastHealth = info.lastHealth;
-			info.lastHealth = entityIn.getHealth() / entityIn.getMaxHealth();
+			info.lastHealth = entity.getHealth() / entity.getMaxHealth();
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public void drawIndicator(LivingEntity entityIn, PoseStack matStack, MultiBufferSource bufferIn, float partialTicks)
+	public void draw(LivingEntity entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks)
 	{
-		Matrix4f mvMatrix = super.getMVMatrix(matStack, entityIn, 0.0F, entityIn.getBbHeight() + 0.25F, 0.0F, true, false, partialTicks);
-		VertexConsumer vertexBuilder = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(BATTLE_ICON));
+		Matrix4f mvMatrix = super.getMVMatrix(poseStack, entity, 0.0F, entity.getBbHeight() + 0.25F, 0.0F, true, partialTicks);
+		VertexConsumer vertexBuilder = bufferSource.getBuffer(ModRenderTypes.getEntityIndicator(TEXTURE_LOCATION));
 		
 		float redStop = 0;
 		float blackStart = 0;
 		
-		HealthInfo info = this.healthInfoMap.get(entityIn.getId());
-		float maxHealth = entityIn.getMaxHealth();
-		float healthpercentage = entityIn.getHealth() / maxHealth;
+		HealthInfo info = this.healthInfoMap.get(entity.getId());
+		float maxHealth = entity.getMaxHealth();
+		float healthpercentage = entity.getHealth() / maxHealth;
 		
 		// Damage Animation
 		if (info.lastHealth > healthpercentage)
@@ -136,15 +139,15 @@ public class HealthBarIndicator extends EntityIndicator
 		
 		if (info.damageNumberTimer > 0)
 		{
-			matStack.pushPose();
+			poseStack.pushPose();
 			Camera camera = ClientManager.INSTANCE.mainCamera;
 			float scale = 0.03F;
-			matStack.translate(0, entityIn.getBbHeight() + 0.5, 0);
-			matStack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
-			matStack.mulPose(Vector3f.XP.rotationDegrees(camera.getXRot()));
-			matStack.scale(-scale, -scale, scale);
-			this.renderDamageNumber(matStack, info.damage, 10, 0);
-			matStack.popPose();
+			poseStack.translate(0, entity.getBbHeight() + 0.5, 0);
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
+			poseStack.mulPose(Vector3f.XP.rotationDegrees(camera.getXRot()));
+			poseStack.scale(-scale, -scale, scale);
+			this.renderDamageNumber(poseStack, info.damage, 10, 0);
+			poseStack.popPose();
 			--info.damageNumberTimer;
 		}
 
