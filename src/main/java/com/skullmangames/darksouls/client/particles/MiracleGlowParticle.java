@@ -10,6 +10,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class MiracleGlowParticle extends TextureSheetParticle
 {
 	private SpriteSet sprites;

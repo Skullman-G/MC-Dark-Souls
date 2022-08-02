@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.particles.DustCloudParticle;
 import com.skullmangames.darksouls.client.particles.HumanityParticle;
+import com.skullmangames.darksouls.client.particles.MiracleCircleParticle;
 import com.skullmangames.darksouls.client.particles.MiracleGlowParticle;
 import com.skullmangames.darksouls.client.particles.SoulParticle;
 
@@ -27,6 +28,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> SOUL = PARTICLES.register("soul", () -> new SimpleParticleType(true));
 	public static final RegistryObject<SimpleParticleType> HUMANITY = PARTICLES.register("humanity", () -> new SimpleParticleType(true));
 	public static final RegistryObject<SimpleParticleType> MIRACLE_GLOW = PARTICLES.register("miracle_glow", () -> new SimpleParticleType(true));
+	public static final RegistryObject<SimpleParticleType> MIRACLE_CIRCLE = PARTICLES.register("miracle_circle", () -> new SimpleParticleType(true));
 	
 	@SubscribeEvent
 	public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
@@ -36,5 +38,6 @@ public class ModParticles
 		minecraft.particleEngine.register(SOUL.get(), SoulParticle.Factory::new);
 		minecraft.particleEngine.register(HUMANITY.get(), HumanityParticle.Factory::new);
 		minecraft.particleEngine.register(MIRACLE_GLOW.get(), MiracleGlowParticle.Factory::new);
+		minecraft.particleEngine.register(MIRACLE_CIRCLE.get(), MiracleCircleParticle.Factory::new);
 	}
 }

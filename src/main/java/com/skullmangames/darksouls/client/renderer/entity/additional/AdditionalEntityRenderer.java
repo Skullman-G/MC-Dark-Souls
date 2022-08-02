@@ -24,16 +24,15 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 	public static void init()
 	{
 		new HealthBarIndicator();
-		new MiracleEffectRenderer();
 	}
 	
-	public void drawTexturedModalRect2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
+	public void drawTextured2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
 			float minX, float minY, float maxX, float maxY, float minTexU, float minTexV, float maxTexU, float maxTexV)
     {
-		this.drawTexturedModalRect3DPlane(matrix, vertexBuilder, minX, minY, this.getBlitOffset(), maxX, maxY, this.getBlitOffset(), minTexU, minTexV, maxTexU, maxTexV);
+		this.drawTextured3DPlane(matrix, vertexBuilder, minX, minY, this.getBlitOffset(), maxX, maxY, this.getBlitOffset(), minTexU, minTexV, maxTexU, maxTexV);
     }
 	
-	public void drawTexturedModalRect3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
+	public void drawTextured3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
 			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minTexU, float minTexV, float maxTexU, float maxTexV)
     {
         float cor = 0.00390625F;

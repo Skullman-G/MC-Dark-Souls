@@ -126,9 +126,9 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		
 		if (blackStart < redStop) blackStart = redStop;
 		
-		if (redStop != blackStart) this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, redStop - 0.5F, -0.05F, blackStart - 0.5F, 0.05F, 2 + (int)(redStop * 60), 10, 2 + (int)(blackStart * 60), 15); // Yellow
-		this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, redStop - 0.5F, 0.05F, 1, 5, 2 + (int)(redStop * 60), 10); // Red
-		this.drawTexturedModalRect2DPlane(mvMatrix, vertexBuilder, blackStart - 0.5F, -0.05F, 0.5F, 0.05F, 2 + (int)(blackStart * 60), 0, 62, 5); // Black
+		if (redStop != blackStart) this.drawTextured2DPlane(mvMatrix, vertexBuilder, redStop - 0.5F, -0.05F, blackStart - 0.5F, 0.05F, 2 + (int)(redStop * 60), 10, 2 + (int)(blackStart * 60), 15); // Yellow
+		this.drawTextured2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, redStop - 0.5F, 0.05F, 1, 5, 2 + (int)(redStop * 60), 10); // Red
+		this.drawTextured2DPlane(mvMatrix, vertexBuilder, blackStart - 0.5F, -0.05F, 0.5F, 0.05F, 2 + (int)(blackStart * 60), 0, 62, 5); // Black
 		
 		if (healthpercentage < info.lastHealth)
 		{
