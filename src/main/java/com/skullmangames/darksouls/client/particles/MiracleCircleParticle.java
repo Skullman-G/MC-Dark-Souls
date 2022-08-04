@@ -21,18 +21,28 @@ public class MiracleCircleParticle extends TextureSheetParticle
 	protected MiracleCircleParticle(ClientLevel level, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, xCoord, yCoord, zCoord, 0, 0, 0);
-		this.quadSize = 0.01F;
+		this.quadSize = 0.0F;
 	    this.lifetime = 50;
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
+	    this.alpha = 0;
 	}
 	
 	@Override
 	public void tick()
 	{
+		if (this.age < this.lifetime * 0.4F)
+		{
+			float incr = 1.0F / (this.lifetime * 0.4F);
+			this.quadSize += incr;
+			this.alpha += incr;
+		}
+		else if (this.age > this.lifetime * 0.9F)
+		{
+			this.alpha -= 1.0F / (this.lifetime * 0.1F);
+		}
 		super.tick();
-		if (this.quadSize < 1.0F) this.quadSize += 0.05F;
 	}
 	
 	@Override

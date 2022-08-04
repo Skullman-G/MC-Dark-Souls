@@ -98,12 +98,15 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(Event.ON_END, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
 							Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
-							Event.create(2.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
-							Event.create(2.0F, Side.CLIENT, (cap) ->
+							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
 								cap.getOriginalEntity().level.addParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+							}),
+							Event.create(4.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(4.1F, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
+							Event.create(4.0F, Side.CLIENT, (cap) ->
+							{
 								cap.getOriginalEntity().level.addParticle(ModParticles.MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							})
 					});

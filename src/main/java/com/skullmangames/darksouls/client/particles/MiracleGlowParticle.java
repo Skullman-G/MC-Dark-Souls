@@ -31,7 +31,7 @@ public class MiracleGlowParticle extends EntityboundParticle
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 0.5F;
 		this.sprites = sprites;
-	    this.lifetime = 1000;
+	    this.lifetime = 75;
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;

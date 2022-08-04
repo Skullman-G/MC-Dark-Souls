@@ -143,6 +143,11 @@ public class AnimationPlayer
 	{
 		return this.isEnd;
 	}
+	
+	public void forceEnd()
+	{
+		this.isEnd = true;
+	}
 
 	public boolean isReversed()
 	{
