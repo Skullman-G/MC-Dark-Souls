@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -66,26 +65,12 @@ public class MiracleCircleParticle extends TextureSheetParticle
 		float f5 = this.getV0();
 		float f6 = this.getV1();
 		int j = this.getLightColor(partialTicks);
-		vertexBuilder.vertex((double) avector3f[0].x(), (double) avector3f[0].y(), (double) avector3f[0].z()).uv(f8, f6)
-				.color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-		vertexBuilder.vertex((double) avector3f[1].x(), (double) avector3f[1].y(), (double) avector3f[1].z()).uv(f8, f5)
-				.color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-		vertexBuilder.vertex((double) avector3f[2].x(), (double) avector3f[2].y(), (double) avector3f[2].z()).uv(f7, f5)
-				.color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-		vertexBuilder.vertex((double) avector3f[3].x(), (double) avector3f[3].y(), (double) avector3f[3].z()).uv(f7, f6)
-				.color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+		
+		vertexBuilder.vertex((double) avector3f[0].x(), (double) avector3f[0].y(), (double) avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+		vertexBuilder.vertex((double) avector3f[1].x(), (double) avector3f[1].y(), (double) avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+		vertexBuilder.vertex((double) avector3f[2].x(), (double) avector3f[2].y(), (double) avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+		vertexBuilder.vertex((double) avector3f[3].x(), (double) avector3f[3].y(), (double) avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
 	}
-	
-	public void drawTexturedPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
-			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minTexU, float minTexV, float maxTexU, float maxTexV, int light)
-    {
-        float cor = 0.00390625F;
-        
-        vertexBuilder.vertex(matrix, minX, minY, maxZ).uv((minTexU * cor), (maxTexV) * cor).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        vertexBuilder.vertex(matrix, maxX, minY, maxZ).uv((maxTexU * cor), (maxTexV) * cor).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        vertexBuilder.vertex(matrix, maxX, maxY, minZ).uv((maxTexU * cor), (minTexV) * cor).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        vertexBuilder.vertex(matrix, minX, maxY, minZ).uv((minTexU * cor), (minTexV) * cor).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-    }
 	
 	@Override
 	public ParticleRenderType getRenderType()

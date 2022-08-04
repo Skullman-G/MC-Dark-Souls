@@ -42,21 +42,21 @@ public class RenderItemBase
 		correctionMatrix.translate(0, 0.1F, 0);
 	}
 	
-	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
+	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float scale, Vector3d translation)
 	{
 		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
 		String heldingHand = hand == InteractionHand.MAIN_HAND ? "Tool_R" : "Tool_L";
 		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(heldingHand).getAnimatedTransform();
-		PublicMatrix4f.mul(jointTransform, modelMatrix, modelMatrix);
+		modelMatrix.mulFront(jointTransform);
 		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
 		
-		MathUtils.translateStack(matrixStackIn, modelMatrix);
-		PublicMatrix4f.rotateStack(matrixStackIn, transpose);
+		MathUtils.translateStack(poseStack, modelMatrix);
+		PublicMatrix4f.rotateStack(poseStack, transpose);
 		
-		matrixStackIn.scale(scale, scale, scale);
-		matrixStackIn.translate(translation.x, translation.y, translation.z);
+		poseStack.scale(scale, scale, scale);
+		poseStack.translate(translation.x, translation.y, translation.z);
 		
-		Minecraft.getInstance().getItemInHandRenderer().renderItem(itemHolder.getOriginalEntity(), stack, TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, buffer, packedLight);
+		Minecraft.getInstance().getItemInHandRenderer().renderItem(itemHolder.getOriginalEntity(), stack, TransformType.THIRD_PERSON_RIGHT_HAND, false, poseStack, buffer, packedLight);
 		GlStateManager._enableDepthTest();
 	}
 	

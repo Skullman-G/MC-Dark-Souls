@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
@@ -102,7 +103,7 @@ public final class Animations
 							Event.create(2.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 							Event.create(2.0F, Side.CLIENT, (cap) ->
 							{
-								cap.getOriginalEntity().level.addParticle(ModParticles.MIRACLE_GLOW.get(), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+								cap.getOriginalEntity().level.addParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 								cap.getOriginalEntity().level.addParticle(ModParticles.MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							})
 					});

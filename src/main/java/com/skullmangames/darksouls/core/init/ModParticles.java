@@ -1,13 +1,18 @@
 package com.skullmangames.darksouls.core.init;
 
+import java.util.function.Function;
+
+import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.particles.DustCloudParticle;
+import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.client.particles.HumanityParticle;
 import com.skullmangames.darksouls.client.particles.MiracleCircleParticle;
 import com.skullmangames.darksouls.client.particles.MiracleGlowParticle;
 import com.skullmangames.darksouls.client.particles.SoulParticle;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,11 +29,29 @@ public class ModParticles
 {
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, DarkSouls.MOD_ID);
 	
-	public static final RegistryObject<SimpleParticleType> DUST_CLOUD = PARTICLES.register("dust_cloud", () -> new SimpleParticleType(true));
-	public static final RegistryObject<SimpleParticleType> SOUL = PARTICLES.register("soul", () -> new SimpleParticleType(true));
-	public static final RegistryObject<SimpleParticleType> HUMANITY = PARTICLES.register("humanity", () -> new SimpleParticleType(true));
-	public static final RegistryObject<SimpleParticleType> MIRACLE_GLOW = PARTICLES.register("miracle_glow", () -> new SimpleParticleType(true));
-	public static final RegistryObject<SimpleParticleType> MIRACLE_CIRCLE = PARTICLES.register("miracle_circle", () -> new SimpleParticleType(true));
+	public static final RegistryObject<SimpleParticleType> DUST_CLOUD = register("dust_cloud", true);
+	public static final RegistryObject<SimpleParticleType> SOUL = register("soul", true);
+	public static final RegistryObject<SimpleParticleType> HUMANITY = register("humanity", true);
+	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> MIRACLE_GLOW = register("miracle_glow", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
+	public static final RegistryObject<SimpleParticleType> MIRACLE_CIRCLE = register("miracle_circle", true);
+	
+	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
+	{
+		return PARTICLES.register(name, () -> new SimpleParticleType(overrideLimiter));
+	}
+	
+	private static <T extends ParticleOptions> RegistryObject<ParticleType<T>> register(String name,
+			@SuppressWarnings("deprecation") ParticleOptions.Deserializer<T> deserializer, final Function<ParticleType<T>, Codec<T>> codec)
+	{
+		ParticleType<T> type = new ParticleType<T>(false, deserializer)
+		{
+			public Codec<T> codec()
+			{
+				return codec.apply(this);
+			}
+		};
+		return PARTICLES.register(name, () -> type);
+	}
 	
 	@SubscribeEvent
 	public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
