@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.network;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.network.client.CTSBonfireTask;
+import com.skullmangames.darksouls.network.client.CTSCastSpell;
 import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
 import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import com.skullmangames.darksouls.network.client.CTSOpenAttunementScreen;
@@ -84,6 +85,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSLevelUp.class, CTSLevelUp::toBytes, CTSLevelUp::fromBytes, CTSLevelUp::handle);
 		INSTANCE.registerMessage(id++, CTSFinishNPCChat.class, CTSFinishNPCChat::toBytes, CTSFinishNPCChat::fromBytes, CTSFinishNPCChat::handle);
 		INSTANCE.registerMessage(id++, CTSOpenAttunementScreen.class, CTSOpenAttunementScreen::toBytes, CTSOpenAttunementScreen::fromBytes, CTSOpenAttunementScreen::handle);
+		INSTANCE.registerMessage(id++, CTSCastSpell.class, CTSCastSpell::toBytes, CTSCastSpell::fromBytes, CTSCastSpell::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);

@@ -126,7 +126,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.fp = value;
 	}
 	
-	public void raiseFP(int value)
+	public void raiseFP(float value)
 	{
 		this.setFP(this.fp + value);
 	}

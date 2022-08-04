@@ -87,7 +87,7 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	//Miracles
-	public static final RegistryObject<Item> MIRACLE_HEAL = ITEMS.register("miracle_heal", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_HEAL, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_HEAL = ITEMS.register("miracle_heal", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_HEAL, 1.5F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

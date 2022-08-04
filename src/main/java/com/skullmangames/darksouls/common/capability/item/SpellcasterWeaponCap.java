@@ -1,12 +1,10 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
-
+import com.skullmangames.darksouls.network.client.CTSCastSpell;
 import net.minecraft.world.item.Item;
 
 public class SpellcasterWeaponCap extends WeaponCap
@@ -23,12 +21,7 @@ public class SpellcasterWeaponCap extends WeaponCap
 		Item item = playerCap.getAttunements().getSelected().getItem();
 		if (item instanceof SpellItem)
 		{
-			StaticAnimation animation = ((SpellItem)item).getCastingAnimation();
-			if (animation != null)
-			{
-				playerCap.getAnimator().playAnimation(animation, 0.0F);
-				ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
-			}
+			ModNetworkManager.sendToServer(new CTSCastSpell((SpellItem)item));
 		}
 	}
 
