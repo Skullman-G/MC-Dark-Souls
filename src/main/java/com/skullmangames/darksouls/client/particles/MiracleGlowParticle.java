@@ -29,12 +29,13 @@ public class MiracleGlowParticle extends EntityboundParticle
 	protected MiracleGlowParticle(ClientLevel level, int entityId, SpriteSet sprites, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
-		this.quadSize = 0.5F;
+		this.quadSize = 0.3F;
 		this.sprites = sprites;
 	    this.lifetime = 75;
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
+	    this.alpha = 0;
 	    
 	    if (this.entity instanceof LivingEntity)
 	    {
@@ -59,6 +60,18 @@ public class MiracleGlowParticle extends EntityboundParticle
 	public void tick()
 	{
 		super.tick();
+		
+		if (this.age < this.lifetime * 0.2F)
+		{
+			this.quadSize += 0.2F / (this.lifetime * 0.2F);
+			this.alpha += 1.0F / (this.lifetime * 0.2F);
+		}
+		else if (this.age > this.lifetime * 0.8F)
+		{
+			this.quadSize -= 0.2F / (this.lifetime * 0.2F);
+			this.alpha = Math.max(0, this.alpha - 1.0F / (this.lifetime * 0.2F));
+		}
+		
 		this.setSprite(this.sprites.get(this.lastSprite, 4));
 		this.lastSprite = this.lastSprite > 4 ? 0 : this.lastSprite + 1;
 		

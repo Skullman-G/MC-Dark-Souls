@@ -40,10 +40,13 @@ public class CTSCastSpell
 			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerCap == null) return;
 			
-			playerCap.raiseFP(-msg.spell.getFPConsumption());
-			StaticAnimation animation = msg.spell.getCastingAnimation();
-			playerCap.getAnimator().playAnimation(animation, 0.0F);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, 0.0F, playerCap), serverPlayer);
+			if (playerCap.getFP() >= msg.spell.getFPConsumption() || serverPlayer.isCreative())
+			{
+				playerCap.raiseFP(-msg.spell.getFPConsumption());
+				StaticAnimation animation = msg.spell.getCastingAnimation();
+				playerCap.getAnimator().playAnimation(animation, 0.0F);
+				ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, 0.0F, playerCap), serverPlayer);
+			}
 		});
 		
 		ctx.get().setPacketHandled(true);

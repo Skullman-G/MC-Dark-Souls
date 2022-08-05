@@ -18,29 +18,31 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class MiracleCircleParticle extends TextureSheetParticle
 {
-	protected MiracleCircleParticle(ClientLevel level, double xCoord, double yCoord, double zCoord)
+	private final float maxSize;
+	
+	protected MiracleCircleParticle(ClientLevel level, float maxSize, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, xCoord, yCoord, zCoord, 0, 0, 0);
-		this.quadSize = 0.0F;
-	    this.lifetime = 50;
+		this.quadSize = 0;
+	    this.lifetime = 30;
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
 	    this.alpha = 0;
+	    this.maxSize = maxSize;
 	}
 	
 	@Override
 	public void tick()
 	{
-		if (this.age < this.lifetime * 0.4F)
+		this.quadSize += this.maxSize / this.lifetime;
+		if (this.age < this.lifetime * 0.7F)
 		{
-			float incr = 1.0F / (this.lifetime * 0.4F);
-			this.quadSize += incr;
-			this.alpha += incr;
+			this.alpha += 1.0F / (this.lifetime * 0.7F);
 		}
-		else if (this.age > this.lifetime * 0.9F)
+		else
 		{
-			this.alpha -= 1.0F / (this.lifetime * 0.1F);
+			this.alpha -= 1.0F / (this.lifetime * 0.3F);
 		}
 		super.tick();
 	}
@@ -88,20 +90,36 @@ public class MiracleCircleParticle extends TextureSheetParticle
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 	
-	@OnlyIn(Dist.CLIENT)
+	public static Factory tiny(SpriteSet sprite)
+	{
+		return new Factory(sprite, 1.0F);
+	}
+	
+	public static Factory medium(SpriteSet sprite)
+	{
+		return new Factory(sprite, 2.0F);
+	}
+	
+	public static Factory large(SpriteSet sprite)
+	{
+		return new Factory(sprite, 3.0F);
+	}
+	
 	public static class Factory implements ParticleProvider<SimpleParticleType>
 	{
 	    private final SpriteSet sprite;
+	    private final float maxSize;
 
-	    public Factory(SpriteSet sprite)
+	    public Factory(SpriteSet sprite, float maxSize)
 	    {
 	    	this.sprite = sprite;
+	    	this.maxSize = maxSize;
 	    }
 
 	    @Override
 	    public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
 	    {
-	    	MiracleCircleParticle particle = new MiracleCircleParticle(level, x, y, z);
+	    	MiracleCircleParticle particle = new MiracleCircleParticle(level, this.maxSize, x, y, z);
 	    	particle.pickSprite(this.sprite);
 	        return particle;
 	    }

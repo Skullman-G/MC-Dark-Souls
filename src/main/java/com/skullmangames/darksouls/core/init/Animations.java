@@ -101,13 +101,13 @@ public final class Animations
 							Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
-								cap.getOriginalEntity().level.addParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+								cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
-							Event.create(4.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
-							Event.create(4.1F, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
-							Event.create(4.0F, Side.CLIENT, (cap) ->
+							Event.create(3.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(3.1F, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
+							Event.create(3.0F, Side.CLIENT, (cap) ->
 							{
-								cap.getOriginalEntity().level.addParticle(ModParticles.MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+								cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							})
 					});
 	
