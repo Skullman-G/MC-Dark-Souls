@@ -33,10 +33,12 @@ public class AttunementsMenu extends ChestMenu
 	@Override
 	public void clicked(int slotIndex, int p_150401_, ClickType type, Player player)
 	{
-		Slot slot = slotIndex > 0 && slotIndex < this.slots.size() ? this.slots.get(slotIndex) : null;
-		if (slot != null && slot.container == this.getContainer()
-				&& ((!this.getCarried().isEmpty() && !(this.getCarried().getItem() instanceof SpellItem))
-				|| slotIndex > (int)player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) - 1)) return;
+		Slot slot = slotIndex >= 0 && slotIndex < this.slots.size() ? this.slots.get(slotIndex) : null;
+		if (slot != null && slot.container == this.getContainer())
+		{
+			if (!this.getCarried().isEmpty() && !(this.getCarried().getItem() instanceof SpellItem)
+					|| slotIndex > (int)player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) - 1) return;
+		}
 		super.clicked(slotIndex, p_150401_, type, player);
 	}
 }

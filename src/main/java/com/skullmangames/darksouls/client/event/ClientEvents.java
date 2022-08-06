@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
+import com.skullmangames.darksouls.client.gui.screens.AttunementScreen;
 import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
@@ -19,6 +20,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.client.event.ContainerScreenEvent.DrawForeground;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.ScreenEvent.MouseReleasedEvent;
@@ -101,6 +103,15 @@ public class ClientEvents
 						event.setCanceled(true);
 				}
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onDrawForeground(DrawForeground event)
+	{
+		if (event.getContainerScreen() instanceof AttunementScreen)
+		{
+			((AttunementScreen)event.getContainerScreen()).renderFg(event.getPoseStack(), event.getMouseX(), event.getMouseY());
 		}
 	}
 }
