@@ -132,7 +132,7 @@ public final class Animations
 						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 						Event.create(1.0F, Side.CLIENT, (cap) ->

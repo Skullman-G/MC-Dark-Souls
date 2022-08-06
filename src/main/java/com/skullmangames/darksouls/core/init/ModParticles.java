@@ -33,6 +33,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> SOUL = register("soul", true);
 	public static final RegistryObject<SimpleParticleType> HUMANITY = register("humanity", true);
 	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> MIRACLE_GLOW = register("miracle_glow", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
+	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> FAST_MIRACLE_GLOW = register("fast_miracle_glow", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	public static final RegistryObject<SimpleParticleType> TINY_MIRACLE_CIRCLE = register("tiny_miracle_circle", true);
 	public static final RegistryObject<SimpleParticleType> MEDIUM_MIRACLE_CIRCLE = register("medium_miracle_circle", true);
 	public static final RegistryObject<SimpleParticleType> LARGE_MIRACLE_CIRCLE = register("large_miracle_circle", true);
@@ -62,7 +63,8 @@ public class ModParticles
 		minecraft.particleEngine.register(DUST_CLOUD.get(), DustCloudParticle.Factory::new);
 		minecraft.particleEngine.register(SOUL.get(), SoulParticle.Factory::new);
 		minecraft.particleEngine.register(HUMANITY.get(), HumanityParticle.Factory::new);
-		minecraft.particleEngine.register(MIRACLE_GLOW.get(), MiracleGlowParticle.Factory::new);
+		minecraft.particleEngine.register(MIRACLE_GLOW.get(), MiracleGlowParticle::normal);
+		minecraft.particleEngine.register(FAST_MIRACLE_GLOW.get(), MiracleGlowParticle::fast);
 		minecraft.particleEngine.register(TINY_MIRACLE_CIRCLE.get(), MiracleCircleParticle::tiny);
 		minecraft.particleEngine.register(MEDIUM_MIRACLE_CIRCLE.get(), MiracleCircleParticle::medium);
 		minecraft.particleEngine.register(LARGE_MIRACLE_CIRCLE.get(), MiracleCircleParticle::large);

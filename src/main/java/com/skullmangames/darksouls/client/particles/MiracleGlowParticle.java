@@ -26,12 +26,12 @@ public class MiracleGlowParticle extends EntityboundParticle
 	@Nullable private LivingCap<?> entityCap;
 	@Nullable private Joint joint;
 	
-	protected MiracleGlowParticle(ClientLevel level, int entityId, SpriteSet sprites, double xCoord, double yCoord, double zCoord)
+	protected MiracleGlowParticle(ClientLevel level, int entityId, int lifetime, SpriteSet sprites, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 0.3F;
 		this.sprites = sprites;
-	    this.lifetime = 75;
+	    this.lifetime = lifetime;
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
@@ -93,20 +93,31 @@ public class MiracleGlowParticle extends EntityboundParticle
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 	
-	@OnlyIn(Dist.CLIENT)
+	public static Factory normal(SpriteSet sprite)
+	{
+		return new Factory(75, sprite);
+	}
+	
+	public static Factory fast(SpriteSet sprite)
+	{
+		return new Factory(40, sprite);
+	}
+	
 	public static class Factory implements ParticleProvider<EntityboundParticleOptions>
 	{
 	    private final SpriteSet sprite;
+	    private final int lifetime;
 
-	    public Factory(SpriteSet sprite)
+	    public Factory(int lifetime, SpriteSet sprite)
 	    {
 	    	this.sprite = sprite;
+	    	this.lifetime = lifetime;
 	    }
 
 	    @Override
 	    public Particle createParticle(EntityboundParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
 	    {
-	    	MiracleGlowParticle particle = new MiracleGlowParticle(level, options.getEntityId(), this.sprite, x, y, z);
+	    	MiracleGlowParticle particle = new MiracleGlowParticle(level, options.getEntityId(), this.lifetime, this.sprite, x, y, z);
 	    	particle.pickSprite(this.sprite);
 	        return particle;
 	    }
