@@ -80,15 +80,15 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	    if (!livingentity.level.isClientSide)
 	    {
 	    	ServerPlayer serverplayerentity = (ServerPlayer)livingentity;
-	    	PlayerCap<?> playerdata = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+	    	PlayerCap<?> playerCap = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
 	    	
 	    	if (serverplayerentity.getRespawnPosition() != null)
 	    	{
 	    		if (this.looseSouls)
 	    		{
-	    			playerdata.setHumanity(0);
-	    			playerdata.setSouls(0);
+	    			playerCap.setHumanity(0);
+	    			playerCap.setSouls(0);
 	    		}
 	    		serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
 	    	}

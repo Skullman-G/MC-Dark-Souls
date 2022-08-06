@@ -30,6 +30,8 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -142,6 +144,29 @@ public final class Animations
 						Event.create(1.1F, Side.SERVER, (cap) ->
 						{
 							cap.getOriginalEntity().heal(2.5F);
+						})
+					});
+	
+	public static final StaticAnimation BIPED_CAST_MIRACLE_HOMEWARD = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+						{
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+						}),
+						Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+						Event.create(2.5F, Side.CLIENT, (cap) ->
+						{
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+						}),
+						Event.create(3.0F, Side.SERVER, (cap) ->
+						{
+							if (cap.getOriginalEntity() instanceof ServerPlayer)
+							{
+								BlockPos pos = ((ServerPlayer)cap.getOriginalEntity()).getRespawnPosition();
+								cap.getOriginalEntity().teleportTo(pos.getX(), pos.getY(), pos.getZ());
+							}
 						})
 					});
 	
