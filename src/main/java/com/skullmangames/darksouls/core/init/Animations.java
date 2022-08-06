@@ -109,6 +109,10 @@ public final class Animations
 								cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
 							Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(2.5F, Side.CLIENT, (cap) ->
+							{
+								cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+							}),
 							Event.create(2.6F, Side.SERVER, (cap) ->
 							{
 								List<Entity> targets = cap.getLevel().getEntities(null, new AABB(cap.getX() - 3.0F, cap.getY() - 3.0F, cap.getZ() - 3.0F, cap.getX() + 3.0F, cap.getY() + 3.0F, cap.getZ() + 3.0F));
@@ -119,11 +123,26 @@ public final class Animations
 										((LivingEntity)target).heal(5);
 									}
 								}
-							}),
-							Event.create(2.5F, Side.CLIENT, (cap) ->
-							{
-								cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							})
+					});
+	
+	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL_AID = new ActionAnimation(0.5F, "biped/combat/cast_miracle_fast", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+						{
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+						}),
+						Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+						Event.create(1.0F, Side.CLIENT, (cap) ->
+						{
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+						}),
+						Event.create(1.1F, Side.SERVER, (cap) ->
+						{
+							cap.getOriginalEntity().heal(2.5F);
+						})
 					});
 	
 	// Big Weapon
