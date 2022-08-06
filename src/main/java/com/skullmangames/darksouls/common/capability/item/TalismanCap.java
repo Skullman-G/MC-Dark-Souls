@@ -4,9 +4,9 @@ import net.minecraft.world.item.Item;
 
 public class TalismanCap extends SpellcasterWeaponCap
 {
-	public TalismanCap(Item item, int requiredStrength, int requiredDex,
-			Scaling strengthScaling, Scaling dexScaling)
+	public TalismanCap(Item item, int reqStrength, int reqDex, int reqFaith,
+			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.TALISMAN, requiredStrength, requiredDex, strengthScaling, dexScaling, 0);
+		super(item, WeaponCategory.TALISMAN, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 0);
 	}
 }

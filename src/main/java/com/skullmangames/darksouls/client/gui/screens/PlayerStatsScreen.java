@@ -69,7 +69,7 @@ public class PlayerStatsScreen extends Screen
 		this.maxFPBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_FOCUS_POINTS.get());
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
-		this.attackDamageMods = Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY));
+		this.attackDamageMods = Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH));
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
 		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
-				+ Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY)), 100);
+				+ Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH)), 100);
 		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 100) != attackdamage ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Mainhand: " + attackdamage, secondX, y + 160, attackdamagecolor);
 

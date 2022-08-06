@@ -19,9 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SwordCap extends MeleeWeaponCap
 {
-	public SwordCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public SwordCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.STRAIGHT_SWORD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
+		super(item, WeaponCategory.STRAIGHT_SWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
 	}
 	
 	@Override

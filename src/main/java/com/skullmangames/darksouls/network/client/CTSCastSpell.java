@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -40,7 +41,8 @@ public class CTSCastSpell
 			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerCap == null) return;
 			
-			if (playerCap.getFP() >= msg.spell.getFPConsumption() || serverPlayer.isCreative())
+			if ((playerCap.getFP() >= msg.spell.getFPConsumption() && playerCap.getStats().getStatValue(Stats.FAITH) >= msg.spell.getRequiredFaith())
+					|| serverPlayer.isCreative())
 			{
 				playerCap.raiseFP(-msg.spell.getFPConsumption());
 				StaticAnimation animation = msg.spell.getCastingAnimation();

@@ -11,9 +11,9 @@ import net.minecraft.world.item.Item;
 
 public class AxeCap extends MeleeWeaponCap
 {
-	public AxeCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public AxeCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.AXE, requiredStrength, requiredDex, strengthScaling, dexScaling, 35F);
+		super(item, WeaponCategory.AXE, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 35F);
 	}
 	
 	@Override

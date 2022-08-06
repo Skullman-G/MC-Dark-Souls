@@ -32,11 +32,14 @@ public class CapabilityConfig
 			{
 				ConfigValue<String> registryName = config.define(weaponKey+"."+entry.getKey()+".registry_name", "null");
 				ConfigValue<WeaponCategory> category = config.defineEnum(weaponKey+"."+entry.getKey()+".category", WeaponCategory.NONE_WEAON);
-				ConfigValue<Integer> requiredStrength = config.define(weaponKey+"."+entry.getKey()+".requiredStrength", 0);
-				ConfigValue<Integer> requiredDex = config.define(weaponKey+"."+entry.getKey()+".requiredDex", 0);;
-				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strengthScaling", Scaling.NONE);
-				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexScaling", Scaling.NONE);
-				if (!entry.getKey().equals("sample")) WEAPON_CONFIGS.add(new WeaponConfig(registryName, category, requiredStrength, requiredDex, strengthScaling, dexScaling));
+				ConfigValue<Integer> reqStrength = config.define(weaponKey+"."+entry.getKey()+".required_strength", 0);
+				ConfigValue<Integer> reqDex = config.define(weaponKey+"."+entry.getKey()+".required_dexterity", 0);
+				ConfigValue<Integer> reqFaith = config.define(weaponKey+"."+entry.getKey()+".required_faith", 0);
+				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
+				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
+				ConfigValue<Scaling> faithScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
+				if (!entry.getKey().equals("sample")) WEAPON_CONFIGS.add(new WeaponConfig(registryName, category, reqStrength, reqDex, reqFaith,
+						strengthScaling, dexScaling, faithScaling));
 			}
 		}
 		String shieldKey = "shield_config";
@@ -46,18 +49,20 @@ public class CapabilityConfig
 		    Collections.sort(entries, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));
 			for (Map.Entry<String, Object> entry : entries)
 			{
-				ConfigValue<String> registryName = config.define(shieldKey+"."+entry.getKey()+".registry_name", "null");
-				ConfigValue<WeaponCategory> category = config.defineEnum(shieldKey+"."+entry.getKey()+".category", WeaponCategory.NONE_WEAON);
-				ConfigValue<Integer> requiredStrength = config.define(shieldKey+"."+entry.getKey()+".requiredStrength", 0);
-				ConfigValue<Integer> requiredDex = config.define(shieldKey+"."+entry.getKey()+".requiredDex", 0);;
-				ConfigValue<Scaling> strengthScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".strengthScaling", Scaling.NONE);
-				ConfigValue<Scaling> dexScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".dexScaling", Scaling.NONE);
+				ConfigValue<String> registryName = config.define(weaponKey+"."+entry.getKey()+".registry_name", "null");
+				ConfigValue<WeaponCategory> category = config.defineEnum(weaponKey+"."+entry.getKey()+".category", WeaponCategory.NONE_WEAON);
+				ConfigValue<Integer> reqStrength = config.define(weaponKey+"."+entry.getKey()+".required_strength", 0);
+				ConfigValue<Integer> reqDex = config.define(weaponKey+"."+entry.getKey()+".required_dexterity", 0);
+				ConfigValue<Integer> reqFaith = config.define(weaponKey+"."+entry.getKey()+".required_faith", 0);
+				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
+				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
+				ConfigValue<Scaling> faithScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
 				
 				ConfigValue<ShieldType> shieldType = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_type", ShieldType.NONE);
 				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_material", ShieldMat.WOOD);
-				ConfigValue<Double> physicalDefense = config.defineInRange(shieldKey+"."+entry.getKey()+".physicalDefense", 0.0F, 0.0F, 1.0F);
+				ConfigValue<Double> physicalDefense = config.defineInRange(shieldKey+"."+entry.getKey()+".physical_defense", 0.0F, 0.0F, 1.0F);
 				if (!entry.getKey().equals("sample_shield")) SHIELD_CONFIGS.add(new ShieldConfig(registryName, category,
-						requiredStrength, requiredDex, strengthScaling, dexScaling, shieldType, shieldMat, physicalDefense));
+						reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, shieldType, shieldMat, physicalDefense));
 			}
 		}
 	}
@@ -66,21 +71,25 @@ public class CapabilityConfig
 	{
 		public final ConfigValue<String> registryName;
 		public final ConfigValue<WeaponCategory> category;
-		public final ConfigValue<Integer> requiredStrength;
-		public final ConfigValue<Integer> requiredDex;
+		public final ConfigValue<Integer> reqStrength;
+		public final ConfigValue<Integer> reqDex;
+		public final ConfigValue<Integer> reqFaith;
 		public final ConfigValue<Scaling> strengthScaling;
 		public final ConfigValue<Scaling> dexScaling;
+		public final ConfigValue<Scaling> faithScaling;
 		
 		public WeaponConfig(ConfigValue<String> registryName, ConfigValue<WeaponCategory> category,
-				ConfigValue<Integer> requiredStrength, ConfigValue<Integer> requiredDex,
-				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling)
+				ConfigValue<Integer> reqStrength, ConfigValue<Integer> reqDex, ConfigValue<Integer> reqFaith,
+				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling, ConfigValue<Scaling> faithScaling)
 		{
 			this.registryName = registryName;
 			this.category = category;
-			this.requiredStrength = requiredStrength;
-			this.requiredDex = requiredDex;
+			this.reqStrength = reqStrength;
+			this.reqDex = reqDex;
+			this.reqFaith = reqFaith;
 			this.strengthScaling = strengthScaling;
 			this.dexScaling = dexScaling;
+			this.faithScaling = faithScaling;
 		}
 	}
 	
@@ -91,11 +100,11 @@ public class CapabilityConfig
 		public final ConfigValue<Double> physicalDefense;
 		
 		public ShieldConfig(ConfigValue<String> registryName, ConfigValue<WeaponCategory> category,
-				ConfigValue<Integer> requiredStrength, ConfigValue<Integer> requiredDex,
-				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling,
+				ConfigValue<Integer> reqStrength, ConfigValue<Integer> reqDex, ConfigValue<Integer> reqFaith,
+				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling, ConfigValue<Scaling> faithScaling,
 				ConfigValue<ShieldType> shieldType, ConfigValue<ShieldMat> shieldMat, ConfigValue<Double> physicalDefense)
 		{
-			super(registryName, category, requiredStrength, requiredDex, strengthScaling, dexScaling);
+			super(registryName, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 			this.shieldType = shieldType;
 			this.shieldMat = shieldMat;
 			this.physicalDefense = physicalDefense;

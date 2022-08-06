@@ -15,9 +15,9 @@ public class ShieldCap extends MeleeWeaponCap
 	private final ShieldType shieldType;
 	private final ShieldMat shieldMat;
 	
-	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDefense, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDefense, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
+		super(item, WeaponCategory.SHIELD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
 		this.physicalDefense = Math.min(physicalDefense, 1F);
 		this.shieldType = shieldType;
 		this.shieldMat = shieldMat;

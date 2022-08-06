@@ -11,9 +11,9 @@ import net.minecraft.world.item.Item;
 
 public class UltraGreatswordCap extends MeleeWeaponCap
 {
-	public UltraGreatswordCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public UltraGreatswordCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.ULTRA_GREATSWORD, requiredStrength, requiredDex, strengthScaling, dexScaling, 50);
+		super(item, WeaponCategory.ULTRA_GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 50);
 	}
 	
 	@Override

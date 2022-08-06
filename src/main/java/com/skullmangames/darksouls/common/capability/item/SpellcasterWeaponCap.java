@@ -9,10 +9,10 @@ import net.minecraft.world.item.Item;
 
 public class SpellcasterWeaponCap extends WeaponCap
 {
-	public SpellcasterWeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex,
-			Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
+	public SpellcasterWeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith,
+			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling, float poiseDamage)
 	{
-		super(item, category, requiredStrength, requiredDex, strengthScaling, dexScaling, poiseDamage);
+		super(item, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, poiseDamage);
 	}
 	
 	@Override

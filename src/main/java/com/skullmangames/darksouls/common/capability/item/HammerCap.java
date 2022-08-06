@@ -9,10 +9,10 @@ import net.minecraft.world.item.Item;
 
 public class HammerCap extends MeleeWeaponCap
 {
-	public HammerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling,
-			Scaling dexScaling)
+	public HammerCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling,
+			Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.HAMMER, requiredStrength, requiredDex, strengthScaling, dexScaling, 35F);
+		super(item, WeaponCategory.HAMMER, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 35F);
 	}
 	
 	@Override

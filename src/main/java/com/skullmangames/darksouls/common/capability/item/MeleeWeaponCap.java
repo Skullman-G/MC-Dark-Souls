@@ -34,10 +34,10 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 {
 	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
 	
-	public MeleeWeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex,
-			Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
+	public MeleeWeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith,
+			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling, float poiseDamage)
 	{
-		super(item, category, requiredStrength, requiredDex, strengthScaling, dexScaling, poiseDamage);
+		super(item, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, poiseDamage);
 		this.moveset = this.initMoveset().build();
 	}
 	

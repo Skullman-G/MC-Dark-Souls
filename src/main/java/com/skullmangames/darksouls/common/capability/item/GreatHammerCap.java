@@ -13,9 +13,9 @@ import net.minecraft.world.item.Item;
 
 public class GreatHammerCap extends MeleeWeaponCap
 {
-	public GreatHammerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public GreatHammerCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.GREAT_HAMMER, requiredStrength, requiredDex, strengthScaling, dexScaling, 50F);
+		super(item, WeaponCategory.GREAT_HAMMER, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 50F);
 	}
 	
 	@Override

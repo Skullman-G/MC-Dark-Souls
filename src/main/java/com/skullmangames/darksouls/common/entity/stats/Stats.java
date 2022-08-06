@@ -78,6 +78,7 @@ public class Stats
 			});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
 	public static final ScalingStat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2"));
+	public static final ScalingStat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472"));
 	
 	private static <T extends Stat> T register(T stat)
 	{
@@ -90,10 +91,11 @@ public class Stats
 		return level * (10 + level);
 	}
 	
-	public static double getTotalDamageAmount(Player player, int strength, int dex)
+	public static double getTotalDamageAmount(Player player, int strength, int dex, int faith)
 	{
 		return STRENGTH.getModifyValue(player, null, strength)
-				+ DEXTERITY.getModifyValue(player, null, dex);
+				+ DEXTERITY.getModifyValue(player, null, dex)
+				+ FAITH.getModifyValue(player, null, faith);
 	}
 	
 	private final int[] statValues = new int[STATS.size()];

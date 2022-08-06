@@ -8,9 +8,10 @@ public abstract class RangedWeaponCap extends WeaponCap
 {
 	private final float damage;
 	
-	public RangedWeaponCap(Item item, WeaponCategory category, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, float damage, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public RangedWeaponCap(Item item, WeaponCategory category, StaticAnimation reload, StaticAnimation aiming, StaticAnimation shot, float damage,
+			int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, category, requiredStrength, requiredDex, strengthScaling, dexScaling, 0F);
+		super(item, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 0F);
 		
 		this.damage = damage;
 		

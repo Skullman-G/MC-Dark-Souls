@@ -43,15 +43,17 @@ public abstract class WeaponCap extends AttributeItemCap
 	private final float poiseDamage;
 	public final float weight;
 
-	public WeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
+	public WeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling, float poiseDamage)
 	{
 		super(item);
 		this.weaponCategory = category;
 		this.statInfo = ImmutableMap.<Stat, Pair<Integer, Scaling>>builder()
-				.put(Stats.STRENGTH, new Pair<Integer, Scaling>(MathUtils.clamp(requiredStrength, 0, 99), strengthScaling))
-				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(requiredDex, 0, 99), dexScaling)).build();
+				.put(Stats.STRENGTH, new Pair<Integer, Scaling>(MathUtils.clamp(reqStrength, 0, 99), strengthScaling))
+				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(reqDex, 0, 99), dexScaling))
+				.put(Stats.FAITH, new Pair<Integer, Scaling>(MathUtils.clamp(reqFaith, 0, 99), faithScaling))
+				.build();
 		this.poiseDamage = poiseDamage;
-		this.weight = Math.max(((float)requiredStrength - 4F) / 2F, 0F);
+		this.weight = Math.max(((float)reqStrength - 4F) / 2F, 0F);
 	}
 	
 	@Override
@@ -95,7 +97,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	public abstract float getDamage();
 
 	@Override
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry))
 			return;
@@ -118,9 +120,11 @@ public abstract class WeaponCap extends AttributeItemCap
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Requirements:"));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.STRENGTH, playerdata)));
+					+ this.getStatStringValue(Stats.STRENGTH, playerCap)));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.DEXTERITY, playerdata)));
+					+ this.getStatStringValue(Stats.DEXTERITY, playerCap)));
+			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
+					+ this.getStatStringValue(Stats.FAITH, playerCap)));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Scaling:"));
@@ -128,6 +132,8 @@ public abstract class WeaponCap extends AttributeItemCap
 					+ this.statInfo.get(Stats.STRENGTH).getSecond()));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
 					+ this.statInfo.get(Stats.DEXTERITY).getSecond()));
+			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
+					+ this.statInfo.get(Stats.FAITH).getSecond()));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)

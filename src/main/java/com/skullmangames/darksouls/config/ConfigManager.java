@@ -33,10 +33,12 @@ public class ConfigManager
 		{
 			server.define(weaponKey+".sample.registry_name", "samle");
 			server.defineEnum(weaponKey+".sample.category", WeaponCategory.STRAIGHT_SWORD);
-			server.define(weaponKey+".sample.requiredStrength", 0);
-			server.define(weaponKey+".sample.requiredDex", 0);
-			server.defineEnum(weaponKey+".sample.strengthScaling", Scaling.NONE);
-			server.defineEnum(weaponKey+".sample.dexScaling", Scaling.NONE);
+			server.define(weaponKey+".sample.required_strength", 0);
+			server.define(weaponKey+".sample.required_dexterity", 0);
+			server.define(weaponKey+".sample.required_faith", 0);
+			server.defineEnum(weaponKey+".sample.strength_scaling", Scaling.NONE);
+			server.defineEnum(weaponKey+".sample.dexterity_scaling", Scaling.NONE);
+			server.defineEnum(weaponKey+".sample.faith_scaling", Scaling.NONE);
 		}
 		
 		String shieldKey = "shield_config";
@@ -44,13 +46,15 @@ public class ConfigManager
 		{
 			server.define(shieldKey+".sample_shield.registry_name", "sample_shield");
 			server.defineEnum(shieldKey+".sample_shield.category", WeaponCategory.SHIELD);
-			server.define(shieldKey+".sample_shield.requiredStrength", 0);
-			server.define(shieldKey+".sample_shield.requiredDex", 0);
-			server.defineEnum(shieldKey+".sample_shield.strengthScaling", Scaling.NONE);
-			server.defineEnum(shieldKey+".sample_shield.dexScaling", Scaling.NONE);
+			server.define(shieldKey+".sample_shield.required_strength", 0);
+			server.define(shieldKey+".sample_shield.required_dexterity", 0);
+			server.define(shieldKey+".sample_shield.required_faith", 0);
+			server.defineEnum(shieldKey+".sample_shield.strength_scaling", Scaling.NONE);
+			server.defineEnum(shieldKey+".sample_shield.dexterity_scaling", Scaling.NONE);
+			server.defineEnum(shieldKey+".sample_shield.faith_scaling", Scaling.NONE);
 			server.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
 			server.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
-			server.defineInRange(shieldKey+".sample_shield.physicalDefense", 0.0F, 0.0F, 1.0F);
+			server.defineInRange(shieldKey+".sample_shield.physical_defense", 0.0F, 0.0F, 1.0F);
 		}
 		
 		CapabilityConfig.init(server, file.valueMap());
