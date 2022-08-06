@@ -12,13 +12,14 @@ import net.minecraft.world.entity.player.Player;
 public abstract class ModifyingStat extends Stat
 {
 	private final UUID modifierUUID;
-	private final Supplier<Attribute> attribute;
+	private final Supplier<Attribute>[] attributes;
 	
-	public ModifyingStat(String name, String uuid, Supplier<Attribute> attribute)
+	@SafeVarargs
+	public ModifyingStat(String name, String uuid, Supplier<Attribute>... attributes)
 	{
 		super(name);
 		this.modifierUUID = UUID.fromString(uuid);
-		this.attribute = attribute;
+		this.attributes = attributes;
 	}
 	
 	@Override
@@ -28,13 +29,16 @@ public abstract class ModifyingStat extends Stat
 		super.onChange(player, value);
 	}
 	
-	public abstract double getModifyValue(Player player, int value);
+	public abstract double getModifyValue(Player player, Attribute attribute, int value);
 	
 	protected void modifyAttributes(Player player, int value)
 	{
-		AttributeInstance instance = player.getAttribute(this.attribute.get());
-		instance.removeModifier(this.getModifierUUID());
-		instance.addPermanentModifier(new AttributeModifier(this.getModifierUUID(), this.toString(), this.getModifyValue(player, value), Operation.ADDITION));
+		for (Supplier<Attribute> attribute : this.attributes)
+		{
+			AttributeInstance instance = player.getAttribute(attribute.get());
+			instance.removeModifier(this.getModifierUUID());
+			instance.addPermanentModifier(new AttributeModifier(this.getModifierUUID(), this.toString(), this.getModifyValue(player, attribute.get(), value), Operation.ADDITION));
+		}
 	}
 	
 	@Override

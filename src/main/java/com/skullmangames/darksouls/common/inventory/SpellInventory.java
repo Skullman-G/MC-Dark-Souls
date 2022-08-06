@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.inventory;
 
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCAttunements;
 
@@ -22,6 +23,19 @@ public class SpellInventory implements Container
 	public SpellInventory(Player player)
 	{
 		this.player = player;
+	}
+	
+	public void updateSize()
+	{
+		for (int i = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()); i < MAX_SLOTS; i++)
+		{
+			ItemStack spell = this.spells.get(i);
+			if (!spell.isEmpty())
+			{
+				this.player.drop(spell.copy(), true);
+				this.removeItem(i, 1);
+			}
+		}
 	}
 	
 	public ItemStack getSelected()

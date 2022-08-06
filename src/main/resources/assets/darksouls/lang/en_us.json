@@ -260,6 +260,7 @@
 	"stat.darksouls.strength": "Strength",
 	"stat.darksouls.dexterity": "Dexterity",
 	"stat.darksouls.vitality": "Vitality",
+	"stat.darksouls.attunement": "Attunement",
 	
 	"attribute.darksouls.max_stamina": "Max Stamina",
 	"attribute.darksouls.poise": "Poise",
@@ -270,5 +271,7 @@
 	"attribute.darksouls.thrust_defense": "Thrust Defense",
 	"attribute.darksouls.max_equip_load": "Max Equip Load",
 	"attribute.darksouls.equip_load": "Equip Load",
-	"attribute.darksouls.weight": "Weight"
+	"attribute.darksouls.weight": "Weight",
+	"attribute.darksouls.max_focus_points": "Max Focus Points",
+	"attribute.darksouls attunement:slots": "Attunement Slots"
 }
