@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
+import java.util.List;
+
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -28,6 +30,9 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -103,9 +108,19 @@ public final class Animations
 							{
 								cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
-							Event.create(3.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
-							Event.create(3.1F, Side.SERVER, (cap) -> cap.getOriginalEntity().heal(5)),
-							Event.create(3.0F, Side.CLIENT, (cap) ->
+							Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(2.6F, Side.SERVER, (cap) ->
+							{
+								List<Entity> targets = cap.getLevel().getEntities(null, new AABB(cap.getX() - 3.0F, cap.getY() - 3.0F, cap.getZ() - 3.0F, cap.getX() + 3.0F, cap.getY() + 3.0F, cap.getZ() + 3.0F));
+								for (Entity target : targets)
+								{
+									if (target instanceof LivingEntity && target.isAlliedTo(cap.getOriginalEntity()))
+									{
+										((LivingEntity)target).heal(5);
+									}
+								}
+							}),
+							Event.create(2.5F, Side.CLIENT, (cap) ->
 							{
 								cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							})
