@@ -8,6 +8,8 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.network.chat.Component;
@@ -62,16 +64,29 @@ public class ItemCapability
 		return true;
 	}
 	
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		
 		int index = 1;
 		String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath();
 		String description = new TranslatableComponent(languagePath).getString();
+		boolean isSpell = this.orgItem instanceof SpellItem;
 		
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
-		if (!description.contains(languagePath)) itemTooltip.add(index++, new TextComponent("\u00A77" + description));
+		if (!description.contains(languagePath))
+		{
+			itemTooltip.add(index++, new TextComponent("\u00A77" + description));
+			if (isSpell) itemTooltip.add(new TextComponent(""));
+		}
+		if (isSpell)
+		{
+			int reqFaith = ((SpellItem)this.orgItem).getRequiredFaith();
+			String color = playerCap.getStats().getStatValue(Stats.FAITH) >= reqFaith ? "\u00A7f" : "\u00A74";
+			itemTooltip.add(new TextComponent("Requirements:"));
+			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
+					+ color + reqFaith));
+		}
 		
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
 		

@@ -99,11 +99,9 @@ public abstract class WeaponCap extends AttributeItemCap
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
-		if (!(this.orgItem instanceof IForgeRegistryEntry))
-			return;
+		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 
-		while (itemTooltip.size() >= 2)
-			itemTooltip.remove(1);
+		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 
 		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
@@ -113,7 +111,8 @@ public abstract class WeaponCap extends AttributeItemCap
 
 			if (!description.contains(languagePath))
 				itemTooltip.add(new TextComponent("\u00A77\n" + description));
-		} else
+		}
+		else
 		{
 			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage()));
 
@@ -141,14 +140,14 @@ public abstract class WeaponCap extends AttributeItemCap
 		}
 	}
 
-	private String getStatStringValue(Stat stat, PlayerCap<?> playerdata)
+	private String getStatStringValue(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.getStatColor(stat, playerdata) + this.statInfo.get(stat).getFirst();
+		return this.getStatColor(stat, playerCap) + this.statInfo.get(stat).getFirst();
 	}
 
-	private String getStatColor(Stat stat, PlayerCap<?> playerdata)
+	private String getStatColor(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.meetsRequirement(stat, playerdata) ? "\u00A7f" : "\u00A74";
+		return this.meetsRequirement(stat, playerCap) ? "\u00A7f" : "\u00A74";
 	}
 
 	public WeaponCategory getWeaponCategory()
