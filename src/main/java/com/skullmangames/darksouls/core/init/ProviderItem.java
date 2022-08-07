@@ -117,6 +117,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		//Talismans
 		putCap(new TalismanCap(ModItems.TALISMAN.get(), 4, 0, 10, Scaling.E, Scaling.NONE, Scaling.B));
+		putCap(new TalismanCap(ModItems.THOROLUND_TALISMAN.get(), 4, 0, 10, Scaling.C, Scaling.NONE, Scaling.D));
 		
 		//ARMOR
 		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), ArmorPart.SKIRT));

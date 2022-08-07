@@ -50,6 +50,7 @@
 	"item.darksouls.miracle_heal": "Miracle: Heal",
 	"item.darksouls.miracle_heal_aid": "Miracle: Heal Aid",
 	"item.darksouls.miracle_homeward": "Miracle: Homeward",
+	"item.darksouls.thorolund_talisman": "Thorolund Talisman",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -138,6 +139,7 @@
 	"tooltip.darksouls.miracle_heal.extended": "Elementary miracle cast by clerics. Restores HP for self and those in the vicinity.",
 	"tooltip.darksouls.miracle_heal_aid.extended": "Miracle imparted as charity to those of little faith. A show of tolerance from the Way of White. Slightly restores HP. To cast a miracle, the caster learns a tale of the Gods, and says a prayer to be blessed by its revelations. Heal Aid is the shortest of such miraculous tales.",
 	"tooltip.darksouls.miracle_homeward.extended": "Miracle taught to traveling clerics. Returns caster to the last bonfire used for resting. It would normally link to one's homeland, only the curse of the Undead has twisted its power, redirecting casters to a bonfire. Perhaps for the Undead, the bonfire serves as home.",
+	"tooltip.darksouls.thorolund_talisman.extended": "Medium for casting miracles of the Gods. This talisman is only granted to high-ranking Thorolund clerics. Has high miracle adjustment which, thanks to divine protection, is not dependent upon faith.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

@@ -160,7 +160,7 @@ public final class Animations
 						{
 							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 						}),
-						Event.create(3.0F, Side.SERVER, (cap) ->
+						Event.create(3.5F, Side.SERVER, (cap) ->
 						{
 							if (cap.getOriginalEntity() instanceof ServerPlayer)
 							{
