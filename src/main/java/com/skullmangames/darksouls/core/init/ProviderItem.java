@@ -75,12 +75,13 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new AxeCap(ModItems.BATTLE_AXE.get(), 12, 8, 0, Scaling.C, Scaling.D, Scaling.NONE));
 		
 		//Hammers
-		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, 0, Scaling.C, Scaling.D, Scaling.NONE));
-		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, 0, Scaling.C, Scaling.D, Scaling.NONE));
-		putCap(new HammerCap(Items.IRON_PICKAXE, 10, 10, 0, Scaling.C, Scaling.D, Scaling.NONE));
-		putCap(new HammerCap(Items.GOLDEN_PICKAXE, 8, 10, 0, Scaling.C, Scaling.D, Scaling.NONE));
-		putCap(new HammerCap(Items.DIAMOND_PICKAXE, 15, 15, 0,  Scaling.C, Scaling.D, Scaling.NONE));
-		putCap(new HammerCap(Items.NETHERITE_PICKAXE, 15, 15, 0, Scaling.C, Scaling.D, Scaling.NONE));
+		putCap(new HammerCap(Items.WOODEN_PICKAXE, 8, 8, 0, Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(Items.STONE_PICKAXE, 8, 8, 0, Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(Items.IRON_PICKAXE, 10, 10, 0, Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(Items.GOLDEN_PICKAXE, 8, 10, 0, Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(Items.DIAMOND_PICKAXE, 15, 15, 0,  Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(Items.NETHERITE_PICKAXE, 15, 15, 0, Scaling.C, Scaling.NONE, Scaling.NONE));
+		putCap(new HammerCap(ModItems.MACE.get(), 12, 0, 0, Scaling.B, Scaling.NONE, Scaling.NONE));
 		
 		//Straight Swords
 		putCap(new SwordCap(Items.WOODEN_SWORD, 8, 10, 0, Scaling.C, Scaling.C, Scaling.NONE));

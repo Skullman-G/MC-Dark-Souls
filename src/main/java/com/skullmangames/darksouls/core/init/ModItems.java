@@ -53,6 +53,11 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
+	//Hammers
+	public static final RegistryObject<Item> MACE = ITEMS.register("mace", () -> new SwordItem(Tiers.IRON, 4, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
 	//Spears
 	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(Tiers.IRON, 2, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));

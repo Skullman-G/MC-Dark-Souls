@@ -52,6 +52,7 @@
 	"item.darksouls.miracle_homeward": "Miracle: Homeward",
 	"item.darksouls.thorolund_talisman": "Thorolund Talisman",
 	"item.darksouls.knight_shield": "Knight Shield",
+	"item.darksouls.mace": "Mace",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -145,6 +146,7 @@
 	"tooltip.darksouls.miracle_homeward.extended": "Miracle taught to traveling clerics. It would normally link to one's homeland, only the curse of the Undead has twisted its power, redirecting casters to a bonfire. Perhaps for the Undead, the bonfire serves as home.",
 	"tooltip.darksouls.thorolund_talisman.extended": "Medium for casting miracles of the Gods. This talisman is only granted to high-ranking Thorolund clerics. Has high miracle adjustment which, thanks to divine protection, is not dependent upon faith.",
 	"tooltip.darksouls.knight_shield.extended": "This medium metal shield is elegantly carved and painted. Although it is thought to have been used by ancient knights of nobility, its defense and capabilities are similar to other shields.",
+	"tooltip.darksouls.mace.extended": "Iron hammer with a protrusive pommel. This simple bladeless strike weapon is effective against most foes, and can break the guard of a shield. However, one miss leaves one wide open.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	
