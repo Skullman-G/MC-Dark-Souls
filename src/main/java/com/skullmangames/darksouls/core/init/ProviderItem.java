@@ -102,6 +102,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ShieldCap(ModItems.HEATER_SHIELD.get(), ShieldType.SMALL, ShieldMat.METAL, 1F, 8, 0, 0, Scaling.D, Scaling.NONE, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.CRACKED_ROUND_SHIELD.get(), ShieldType.CRACKED_ROUND_SHIELD, ShieldMat.WOOD, 0.65F, 6, 0, 0, Scaling.D, Scaling.NONE, Scaling.NONE));
 		putCap(new ShieldCap(ModItems.LORDRAN_SOLDIER_SHIELD.get(), ShieldType.NORMAL, ShieldMat.METAL, 1F, 11, 0, 0, Scaling.D, Scaling.NONE, Scaling.NONE));
+		putCap(new ShieldCap(ModItems.KNIGHT_SHIELD.get(), ShieldType.NORMAL, ShieldMat.METAL, 1F, 10, 0, 0, Scaling.D, Scaling.NONE, Scaling.NONE));
 		
 		//Ultra Greatswords
 		putCap(new UltraGreatswordCap(ModItems.ZWEIHANDER.get(), 24, 10, 0, Scaling.C, Scaling.D, Scaling.NONE));

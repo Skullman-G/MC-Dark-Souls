@@ -81,6 +81,9 @@ public class ModItems
 	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> KNIGHT_SHIELD = ITEMS.register("knight_shield", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Talismans
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()
