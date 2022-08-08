@@ -48,6 +48,16 @@
 		]
 	},
 	
+	"item.miracle.force":
+	{
+		"category": "item",
+		"subtitle": "item.miracle.force.sub",
+		"sounds":
+		[
+			"darksouls:items/miracle/force"
+		]
+	},
+	
 	"item.soul_container.use":
 	{
 		"category": "item",

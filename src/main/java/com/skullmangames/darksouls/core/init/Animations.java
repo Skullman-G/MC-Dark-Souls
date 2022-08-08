@@ -108,19 +108,19 @@ public final class Animations
 							Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
-								cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
 							Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 							Event.create(2.5F, Side.CLIENT, (cap) ->
 							{
-								cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+								cap.getLevel().addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 							}),
 							Event.create(2.6F, Side.SERVER, (cap) ->
 							{
 								List<Entity> targets = cap.getLevel().getEntities(null, new AABB(cap.getX() - 3.0F, cap.getY() - 3.0F, cap.getZ() - 3.0F, cap.getX() + 3.0F, cap.getY() + 3.0F, cap.getZ() + 3.0F));
 								for (Entity target : targets)
 								{
-									if (target instanceof LivingEntity && target.isAlliedTo(cap.getOriginalEntity()))
+									if (target instanceof LivingEntity)
 									{
 										((LivingEntity)target).heal(5);
 									}
@@ -134,12 +134,12 @@ public final class Animations
 						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 						Event.create(1.0F, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+							cap.getLevel().addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(1.1F, Side.SERVER, (cap) ->
 						{
@@ -153,12 +153,12 @@ public final class Animations
 						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 						Event.create(2.5F, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
+							cap.getLevel().addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(3.5F, Side.SERVER, (cap) ->
 						{
@@ -166,6 +166,27 @@ public final class Animations
 							{
 								BlockPos pos = ((ServerPlayer)cap.getOriginalEntity()).getRespawnPosition();
 								cap.getOriginalEntity().teleportTo(pos.getX(), pos.getY(), pos.getZ());
+							}
+						})
+					});
+	
+	public static final StaticAnimation BIPED_CAST_MIRACLE_FORCE = new ActionAnimation(0.3F, "biped/combat/cast_miracle_force", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+						Event.create(0.56F, Side.CLIENT, (cap) ->
+						{
+							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.FORCE.get(), cap.getX(), cap.getY() + 1.0F, cap.getZ(), 0, 0, 0);
+						}),
+						Event.create(0.56F, Side.SERVER, (cap) ->
+						{
+							cap.playSound(ModSoundEvents.MIRACLE_FORCE.get());
+						}),
+						Event.create(0.6F, Side.SERVER, (cap) ->
+						{
+							List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(cap.getX() - 1.5F, cap.getY() - 1.5F, cap.getZ() - 1.5F, cap.getX() + 1.5F, cap.getY() + 1.5F, cap.getZ() + 1.5F));
+							for (Entity target : targets)
+							{
+								cap.knockBackEntity(target, 0.5F);
 							}
 						})
 					});

@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Colliders;
+import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.item.Item;
 
@@ -29,5 +31,11 @@ public class HammerCap extends MeleeWeaponCap
 	public float getStaminaDamage()
 	{
 		return 8.0F;
+	}
+	
+	@Override
+	public Collider getWeaponCollider()
+	{
+		return Colliders.TOOL;
 	}
 }

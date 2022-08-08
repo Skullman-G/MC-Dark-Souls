@@ -464,52 +464,62 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return null;
 	}
 
-	public void gatherDamageDealt(ExtendedDamageSource source, float amount)
-	{
-	}
+	public void gatherDamageDealt(ExtendedDamageSource source, float amount) {}
 
-	public void knockBackEntity(Entity entityIn, float power)
+	public void knockBackEntity(Entity entity, float power)
 	{
-		power *= 0.1D;
-
-		double d1 = entityIn.getX() - this.orgEntity.getX();
+		double d1 = this.orgEntity.getX() - entity.getX();
 		double d0;
 
-		for (d0 = entityIn.getZ() - this.orgEntity.getZ(); d1 * d1
+		for (d0 = this.orgEntity.getZ() - entity.getZ(); d1 * d1
 				+ d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D)
 		{
 			d1 = (Math.random() - Math.random()) * 0.01D;
 		}
 
-		if (orgEntity.getRandom().nextDouble() >= orgEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
+		if (entity instanceof LivingEntity)
 		{
-			Vec3 vec = orgEntity.getDeltaMovement();
-
-			orgEntity.hasImpulse = true;
-			float f = (float) Math.sqrt(d1 * d1 + d0 * d0);
-
-			double x = vec.x;
-			double y = vec.y;
-			double z = vec.z;
-
-			x /= 2.0D;
-			z /= 2.0D;
-			x -= d1 / (double) f * (double) power;
-			z -= d0 / (double) f * (double) power;
-
-			if (!orgEntity.isOnGround())
+			if (entity.level.random.nextDouble() < ((LivingEntity)entity).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)) return;
+			LivingCap<?> entityCap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (entityCap != null)
 			{
-				y /= 2.0D;
-				y += (double) power;
-
-				if (y > 0.4000000059604645D)
+				StaticAnimation hitAnimation = this.getHitAnimation(StunType.DEFAULT);
+				float exTime = 0.1F;
+				entityCap.getAnimator().playAnimation(hitAnimation, exTime);
+				ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, entity.getId(), exTime), entity);
+				if(entity instanceof ServerPlayer)
 				{
-					y = 0.4000000059604645D;
+					ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, entity.getId(), exTime), (ServerPlayer)entity);
 				}
 			}
-
-			orgEntity.setDeltaMovement(x, y, z);
 		}
+		
+		Vec3 vec = entity.getDeltaMovement();
+
+		entity.hasImpulse = true;
+		float f = (float) Math.sqrt(d1 * d1 + d0 * d0);
+
+		double x = vec.x;
+		double y = vec.y;
+		double z = vec.z;
+
+		x /= 2.0D;
+		z /= 2.0D;
+		x -= d1 / (double) f * (double) power;
+		z -= d0 / (double) f * (double) power;
+
+		if (entity.isOnGround())
+		{
+			y /= 2.0D;
+			y += (double) power / 2;
+
+			if (y > 0.4000000059604645D)
+			{
+				y = 0.4000000059604645D;
+			}
+		}
+
+		entity.setDeltaMovement(x, y, z);
 	}
 
 	public void rotateTo(float degree, float limit, boolean partialSync)
@@ -574,7 +584,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
 					orgEntity.getSoundSource(), volume, 1.0F);
-		} else
+		}
+		else
 		{
 			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
 					orgEntity.getSoundSource(), volume, 1.0F);

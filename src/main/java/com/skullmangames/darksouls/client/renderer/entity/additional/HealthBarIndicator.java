@@ -31,7 +31,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 	public boolean shouldDraw(LivingEntity entity)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui) return false;
+		if (minecraft.options.hideGui) return false;
 		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()
 				|| (entity.isInvisible() || entity == minecraft.player.getControllingPassenger())
 				|| entity.distanceToSqr(minecraft.getCameraEntity()) >= 400

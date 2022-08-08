@@ -17,6 +17,7 @@ public class ModSoundEvents
 
 	public static final RegistryObject<SoundEvent> MIRACLE_USE = registerSound("item.miracle.use");
 	public static final RegistryObject<SoundEvent> MIRACLE_USE_PRE = registerSound("item.miracle.use_pre");
+	public static final RegistryObject<SoundEvent> MIRACLE_FORCE = registerSound("item.miracle.force");
 	
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_USE = registerSound("item.soul_container.use");
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_FINISH = registerSound("item.soul_container.finish");

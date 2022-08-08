@@ -108,6 +108,9 @@ public class ModItems
 	public static final RegistryObject<Item> MIRACLE_HOMEWARD = ITEMS.register("miracle_homeward", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_HOMEWARD, 18, 0.9F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> MIRACLE_FORCE = ITEMS.register("miracle_force", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_FORCE, 12, 0.6F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set_layer_1", new Item.Properties()
