@@ -15,7 +15,8 @@
     	"0.2.4": "-Added new stun animation when hit by a greathammer\n-Fixed crash when loading a world while in forge version 36.2.15 and above (#6)",
     	"0.2.5": "-Works on server now\n-Added Soul particles\n-Added Fire Keeper spawns (which I forgor in the previous version)\n-You have now infinite humanity in creative\n-Fixed a bug where Hollows where able to rotate when stunned by Asylum Demon",
     	
-    	"0.3.2": "See changelog of MC: Dark Souls 1.18.2 0.3.2 (Legends of Lordran)"
+    	"0.3.2": "See changelog of MC: Dark Souls 1.18.2 0.3.2 (Legends of Lordran)",
+    	"0.3.3": "See changelog of MC: Dark Souls 1.18.2 0.3.3 (Legends of Lordran)"
     },
     "1.18.2":
     { 
@@ -27,8 +28,8 @@
     
     "promos":
     {
-      "1.16.5-latest": "0.3.2",
-      "1.16.5-recommended": "0.3.2",
+      "1.16.5-latest": "0.3.3",
+      "1.16.5-recommended": "0.3.3",
       
       "1.18.2-latest": "0.3.3",
       "1.18.2-recommended": "0.3.3"
