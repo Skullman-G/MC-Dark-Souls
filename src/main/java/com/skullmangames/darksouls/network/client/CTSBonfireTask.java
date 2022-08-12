@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -70,7 +70,7 @@ public class CTSBonfireTask
 					if (!bonfire.getBlockState().getValue(BonfireBlock.LIT))
 					{
 						bonfire.setLit(true);
-						CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, true);
+						ModCriteriaTriggers.BONFIRE_LIT.trigger(serverplayer, true);
 					}
 					break;
 			}

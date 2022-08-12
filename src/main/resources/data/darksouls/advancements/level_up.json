@@ -1,0 +1,29 @@
+{
+	"parent": "darksouls:light_bonfire",
+	"display": {
+    "icon": {
+      "item": "darksouls:soul_of_a_lost_undead"
+    },
+    "title": {
+      "translate": "advancements.darksouls.level_up.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.level_up.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "level_up": {
+      "trigger": "minecraft:player_level_up"
+    }
+  },
+  "requirements": [
+    [
+      "level_up"
+    ]
+  ]
+}
