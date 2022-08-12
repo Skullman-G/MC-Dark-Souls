@@ -106,7 +106,8 @@ public abstract class WeaponCap extends AttributeItemCap
 
 			if (!description.contains(languagePath))
 				itemTooltip.add(new TextComponent("\u00A77\n" + description));
-		} else
+		}
+		else
 		{
 			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage()));
 
