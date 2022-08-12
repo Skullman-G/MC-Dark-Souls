@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.item;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +34,7 @@ public class UndeadBoneShardItem extends Item
 			{
 				if (itemusecontext.getPlayer() instanceof ServerPlayerEntity)
 				{
-					CriteriaTriggerInit.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
+          ModCriteriaTriggers.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
 				}
 			}
 			bonfire.raiseEstusHealLevel();

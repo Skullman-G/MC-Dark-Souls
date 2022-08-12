@@ -322,6 +322,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			extSource = ExtendedDamageSource.getIndirectFrom((IndirectEntityDamageSource)damageSource, amount);
 		}
+		else
+		{
+			extSource = ExtendedDamageSource.getFrom(damageSource, amount);
+		}
 		
 		// Damage Calculation
 		if (!indirect)
@@ -397,7 +401,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
 		this.playSound(shield.getBlockSound(), 0.8F, 1.0F);
 
-		if (damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
+		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
 		{
 			LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (attackerCap == null) return true;

@@ -71,7 +71,7 @@ public class CTSBonfireTask
 					if (!bonfire.getBlockState().getValue(BonfireBlock.LIT))
 					{
 						bonfire.setLit(true);
-						CriteriaTriggerInit.BONFIRE_LIT.trigger(serverplayer, true);
+						ModCriteriaTriggers.BONFIRE_LIT.trigger(serverplayer, true);
 					}
 					break;
 			}

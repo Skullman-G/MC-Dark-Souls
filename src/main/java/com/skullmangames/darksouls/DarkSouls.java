@@ -55,7 +55,7 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModConfiguredStructures;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModContainers;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
@@ -175,11 +175,11 @@ public class DarkSouls
 		ProviderProjectile.makeMap();
 
 		ModEntities.registerEntitySpawnPlacement();
-		CriteriaTriggerInit.register();
+		ModCriteriaTriggers.register();
 	    
 	    event.enqueueWork(() ->
     	{
-    		ModStructures.setupStructures();
+    		  ModStructures.setupStructures();
     	    ModConfiguredStructures.registerConfiguredStructures();
     	});
 	}

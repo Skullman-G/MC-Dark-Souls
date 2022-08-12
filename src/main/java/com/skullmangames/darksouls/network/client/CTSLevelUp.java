@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCStat;
@@ -36,32 +37,36 @@ public class CTSLevelUp
 		ctx.get().enqueueWork(()->
 		{
 			ServerPlayerEntity serverPlayer = ctx.get().getSender();
-			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (playerdata == null) return;
+			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (playerCap == null) return;
 			
-			Stats playerstats = playerdata.getStats();
+			Stats playerstats = playerCap.getStats();
 			for (int i = 0; i < Stats.STATS.size(); i++)
 			{
 				msg.stats[i] = Math.min(msg.stats[i], 99 - playerstats.getStatValue(i));
 				if (!serverPlayer.isCreative()) msg.stats[i] = Math.max(msg.stats[i], 0);
 			}
 			
+			int preLevel = playerCap.getSoulLevel();
 			if (serverPlayer.isCreative())
 			{
 				addStatValues(serverPlayer, playerstats, msg.stats);
 			}
 			else
 			{
-				int level = playerdata.getSoulLevel();
+				int level = playerCap.getSoulLevel();
 				for (int add : msg.stats) level += add;
 				int cost = Stats.getCost(level);
 				
-				if (cost <= playerdata.getSouls())
+				if (cost <= playerCap.getSouls())
 				{
-					playerdata.raiseSouls(cost);
+					playerCap.raiseSouls(cost);
 					addStatValues(serverPlayer, playerstats, msg.stats);
 				}
 			}
+			
+			int postLevel = playerCap.getSoulLevel();
+			if (preLevel < postLevel) ModCriteriaTriggers.LEVEL_UP.trigger(serverPlayer, true);
 		});
 		
 		ctx.get().setPacketHandled(true);

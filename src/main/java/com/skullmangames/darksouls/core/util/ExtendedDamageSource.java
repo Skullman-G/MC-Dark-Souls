@@ -1,6 +1,10 @@
 package com.skullmangames.darksouls.core.util;
 
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +27,26 @@ public interface ExtendedDamageSource
 	public static DamageSourceExtended getFrom(ExtendedDamageSource org)
 	{
 		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getStunType(), org.getAmount(), org.getRequiredDeflectionLevel(), org.getDamageType(), org.getPoiseDamage(), org.getStaminaDamage());
+	}
+	
+	public static DamageSourceExtended getFrom(DamageSource org, float amount)
+	{
+		int reqDeflection = amount > 5.0F ? Deflection.MEDIUM.getLevel() : amount > 10.0F ? Deflection.HEAVY.getLevel() : Deflection.LIGHT.getLevel();
+		StunType stunType = amount > 10.0F ? StunType.SMASH_BACK : StunType.DEFAULT;
+		float poiseDamage = 1.0F;
+		float staminaDamage = 1.0F;
+		LivingCap<?> cap = org.getDirectEntity() instanceof LivingEntity ? (LivingCap<?>)org.getDirectEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) : null;
+		if (cap != null)
+		{
+			MeleeWeaponCap weapon = cap.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+			if (weapon != null)
+			{
+				poiseDamage = weapon.poiseDamage;
+				staminaDamage = weapon.getStaminaDamage();
+			}
+			
+		}
+		return new DamageSourceExtended(org.getMsgId(), org.getDirectEntity(), stunType, amount, reqDeflection, DamageType.REGULAR, poiseDamage, staminaDamage);
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)

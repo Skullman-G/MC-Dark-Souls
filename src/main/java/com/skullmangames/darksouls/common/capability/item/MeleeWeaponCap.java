@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
+import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
@@ -25,8 +27,10 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 {
@@ -47,6 +51,17 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	protected void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
 	{
 		builder.put(type, new Pair<Boolean, AttackAnimation[]>(repeat, animations));
+	}
+	
+	@Override
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
+	{
+		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
+		super.modifyItemTooltip(itemTooltip, playerCap, stack);
+		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		{
+			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getPhysicalDefense() * 100) + "%"));
+		}
 	}
 	
 	@Override
