@@ -8,27 +8,27 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.DrinkHelper;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.UseAction;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,9 +39,9 @@ public class EstusFlaskItem extends Item
 		super(properties.stacksTo(1));
 	}
 	
-	private static CompoundTag getOrCreateNBT(ItemStack itemstack)
+	private static CompoundNBT getOrCreateNBT(ItemStack itemstack)
 	{
-		CompoundTag compoundnbt = itemstack.getTag();
+		CompoundNBT compoundnbt = itemstack.getTag();
 		if (compoundnbt == null)
 		{
 			compoundnbt = itemstack.getOrCreateTag();
@@ -55,19 +55,19 @@ public class EstusFlaskItem extends Item
 	
 	public static int getHeal(ItemStack itemstack)
 	{
-		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		return compoundnbt.getInt("Heal");
 	}
 	
 	public static void setHeal(ItemStack itemstack, int heallevel)
 	{
-		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		compoundnbt.putInt("Heal", 5 + heallevel - 1);
 	}
 	
 	public static int getTotalUses(ItemStack itemstack)
 	{
-		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		return compoundnbt.getInt("TotalUses");
 	}
 	
@@ -75,14 +75,14 @@ public class EstusFlaskItem extends Item
 	{
 	    if (value <= 20)
 	    {
-			CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+			CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 		    compoundnbt.putInt("TotalUses", value);
 	    }
 	}
 	
 	public static int getUses(ItemStack itemstack)
 	{
-	    CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+	    CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 	    return compoundnbt.getInt("Uses");
 	}
 
@@ -91,33 +91,33 @@ public class EstusFlaskItem extends Item
 	    if (value == getUses(itemstack)) return;
 		if (value < 0) value = 0;
 	    if (value > getTotalUses(itemstack)) value = getTotalUses(itemstack);
-		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
+		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 	    compoundnbt.putInt("Uses", value);
 	}
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (ClientManager.INSTANCE == null) return;
-		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) tooltip.add(new TextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
+		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) tooltip.add(new StringTextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
 	}
 	
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemstack, Level worldIn, LivingEntity livingentity)
+	public ItemStack finishUsingItem(ItemStack itemstack, World worldIn, LivingEntity livingentity)
 	{
-	      Player player = livingentity instanceof Player ? (Player)livingentity : null;
-	      if (player instanceof ServerPlayer)
+	      PlayerEntity player = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
+	      if (player instanceof ServerPlayerEntity)
 	      {
-	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemstack);
+	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)player, itemstack);
 	      }
 
 	      if (player != null)
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-		    	  if (player.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
+		    	  if (player.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
 		    		  player.heal(getHeal(itemstack));
 		    	  }
@@ -127,7 +127,7 @@ public class EstusFlaskItem extends Item
 		    	  }
 		      }
 	    	  player.awardStat(Stats.ITEM_USED.get(this));
-	    	  if (!player.getAbilities().instabuild)
+	    	  if (!player.abilities.instabuild)
 	    	  {
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
@@ -151,39 +151,39 @@ public class EstusFlaskItem extends Item
 	}
 	
 	@Override
-	public UseAnim getUseAnimation(ItemStack itemstack)
+	public UseAction getUseAnimation(ItemStack itemstack)
 	{
-		return UseAnim.DRINK;
+		return UseAction.DRINK;
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player player, InteractionHand hand)
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity player, Hand hand)
 	{
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (getUses(itemstack) > 0)
 		{
-			return ItemUtils.startUsingInstantly(worldIn, player, hand);
+			return DrinkHelper.useDrink(worldIn, player, hand);
 		}
 		else
 		{
-			return InteractionResultHolder.pass(itemstack);
+			return ActionResult.pass(itemstack);
 		}
 	}
 	
 	@Override
-	public InteractionResult useOn(UseOnContext itemusecontext)
+	public ActionResultType useOn(ItemUseContext itemusecontext)
 	{
-		Level level = itemusecontext.getLevel();
+		World level = itemusecontext.getLevel();
 		BlockPos blockpos = itemusecontext.getClickedPos();
 		BlockState blockstate = level.getBlockState(blockpos);
 		if (blockstate.getBlock() instanceof BonfireBlock && blockstate.getValue(BonfireBlock.LIT))
 		{
 			setUses(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) * 5);
 			setHeal(itemusecontext.getItemInHand(), blockstate.getValue(BonfireBlock.ESTUS_HEAL_LEVEL));
-			return InteractionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		}
 		
-		return InteractionResult.PASS;
+		return ActionResultType.PASS;
 	}
 	
 	@Override

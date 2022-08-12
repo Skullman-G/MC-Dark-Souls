@@ -4,18 +4,18 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
 
 public class HumanityEntity extends AbstractSoulEntity
 {
-	public HumanityEntity(EntityType<? extends HumanityEntity> type, Level level)
+	public HumanityEntity(EntityType<? extends HumanityEntity> type, World level)
 	{
 		super(type, level);
 	}
 	
-	public HumanityEntity(Level level, double posX, double posY, double posZ, int value)
+	public HumanityEntity(World level, double posX, double posY, double posZ, int value)
 	{
 		super(ModEntities.HUMANITY.get(), level, posX, posY, posZ, value);
 	}
@@ -23,7 +23,7 @@ public class HumanityEntity extends AbstractSoulEntity
 	@Override
 	protected void realPlayerTouch(PlayerCap<?> playerCap)
 	{
-		Player player = playerCap.getOriginalEntity();
+		PlayerEntity player = playerCap.getOriginalEntity();
 		playerCap.raiseHumanity(this.value);
 		player.heal(player.getMaxHealth() - player.getHealth());
 		this.value = 0;

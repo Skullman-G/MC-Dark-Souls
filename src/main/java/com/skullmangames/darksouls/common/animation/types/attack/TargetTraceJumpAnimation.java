@@ -4,7 +4,8 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
@@ -12,18 +13,17 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class TargetTraceJumpAnimation extends AttackAnimation
 {
 	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, collider, index, weaponOffset, path, model);
+		this(convertTime, antic, preDelay, contact, recovery, Hand.MAIN_HAND, collider, index, weaponOffset, path, model);
 	}
 	
-	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, InteractionHand hand, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
+	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, Hand hand, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
 	{
 		this(convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
 	}
@@ -43,7 +43,7 @@ public class TargetTraceJumpAnimation extends AttackAnimation
 		{
 			LivingEntity orgEntity = entityCap.getOriginalEntity();
 			LivingEntity target = entityCap.getTarget();
-			float multiplier = (orgEntity instanceof Player) ? 2.0F : 1.0F;
+			float multiplier = (orgEntity instanceof PlayerEntity) ? 2.0F : 1.0F;
 			
 			if (target != null)
 			{
@@ -74,7 +74,7 @@ public class TargetTraceJumpAnimation extends AttackAnimation
 	{
 		protected final float weaponOffset;
 		
-		public TargetTracePhase(float antic, float preDelay, float contact, float recovery, InteractionHand hand, String indexer, Collider collider, float weaponOffset)
+		public TargetTracePhase(float antic, float preDelay, float contact, float recovery, Hand hand, String indexer, Collider collider, float weaponOffset)
 		{
 			super(antic, preDelay, contact, recovery, hand, indexer, collider);
 			this.weaponOffset = weaponOffset;

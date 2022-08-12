@@ -6,35 +6,35 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.core.util.QuestFlags;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 
-public class QuestEntity extends PathfinderMob
+public class QuestEntity extends CreatureEntity
 {
-	protected static final EntityDataAccessor<QuestFlags> DATA_QUEST_FLAGS = SynchedEntityData.defineId(QuestEntity.class, QuestFlags.SERIALIZER);
+	protected static final DataParameter<QuestFlags> DATA_QUEST_FLAGS = EntityDataManager.defineId(QuestEntity.class, QuestFlags.SERIALIZER);
 
-	public QuestEntity(EntityType<? extends PathfinderMob> type, Level level)
+	public QuestEntity(EntityType<? extends CreatureEntity> type, World level)
 	{
 		super(type, level);
 	}
 	
-	public void onFinishChat(ServerPlayer player, String location) {}
+	public void onFinishChat(ServerPlayerEntity player, String location) {}
 	
 	@Override
 	public boolean canBeCollidedWith()
@@ -42,13 +42,13 @@ public class QuestEntity extends PathfinderMob
 		return true;
 	}
 	
-	public static AttributeSupplier.Builder createAttributes()
+	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 1.0D);
+		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 	
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData data, CompoundTag nbt)
+	public ILivingEntityData finalizeSpawn(IServerWorld level, DifficultyInstance difficulty, SpawnReason type, ILivingEntityData data, CompoundNBT nbt)
 	{
 		data = super.finalizeSpawn(level, difficulty, type, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
@@ -58,7 +58,7 @@ public class QuestEntity extends PathfinderMob
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty)
 	{
-		for (EquipmentSlot slot : EquipmentSlot.values())
+		for (EquipmentSlotType slot : EquipmentSlotType.values())
 		{
 			ItemStack itemstack = this.getItemBySlot(slot);
 			if (itemstack.isEmpty())
@@ -73,7 +73,7 @@ public class QuestEntity extends PathfinderMob
 		}
 	}
 	
-	protected Item getEquipmentForSlot(EquipmentSlot slot)
+	protected Item getEquipmentForSlot(EquipmentSlotType slot)
 	{
 		return Items.AIR;
 	}
@@ -86,14 +86,14 @@ public class QuestEntity extends PathfinderMob
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag nbt)
+	public void addAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.addAdditionalSaveData(nbt);
 		this.entityData.get(DATA_QUEST_FLAGS).save(nbt);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag nbt)
+	public void readAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.readAdditionalSaveData(nbt);
 		Map<UUID, Byte> questFlags = new HashMap<>();

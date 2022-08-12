@@ -5,14 +5,14 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
-import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSBonfireTask
 {
@@ -27,12 +27,12 @@ public class CTSBonfireTask
 		this.name = name;
 	}
 	
-	public static CTSBonfireTask fromBytes(FriendlyByteBuf buf)
+	public static CTSBonfireTask fromBytes(PacketBuffer buf)
 	{
 		return new CTSBonfireTask(buf.readEnum(Task.class), buf.readBlockPos(), buf.readUtf());
 	}
 	
-	public static void toBytes(CTSBonfireTask msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSBonfireTask msg, PacketBuffer buf)
 	{
 		buf.writeEnum(msg.task);
 		buf.writeBlockPos(msg.bonfirePos);
@@ -43,11 +43,12 @@ public class CTSBonfireTask
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayer serverplayer = ctx.get().getSender();
+			ServerPlayerEntity serverplayer = ctx.get().getSender();
 			ServerPlayerCap playerdata = (ServerPlayerCap) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerdata == null) return;
 			
-			BonfireBlockEntity bonfire = serverplayer.level.getBlockEntity(msg.bonfirePos, ModBlockEntities.BONFIRE.get()).orElse(null);
+			TileEntity tileentity = serverplayer.level.getBlockEntity(msg.bonfirePos);
+			BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
 			if (bonfire == null) return;
 			
 			switch(msg.task)

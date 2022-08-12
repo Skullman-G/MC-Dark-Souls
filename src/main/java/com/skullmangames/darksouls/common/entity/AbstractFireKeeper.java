@@ -2,24 +2,23 @@ package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 
 public abstract class AbstractFireKeeper extends QuestEntity
 {
 	private BlockPos linkedBonfirePos;
 	private boolean hasLinkedBonfire = false;
 
-	public AbstractFireKeeper(EntityType<? extends QuestEntity> entity, Level level)
+	public AbstractFireKeeper(EntityType<? extends QuestEntity> entity, World level)
 	{
 		super(entity, level);
 	}
@@ -43,7 +42,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 
 	public BonfireBlockEntity getLinkedBonfire()
 	{
-		BlockEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
+		TileEntity tileentity = this.level.getBlockEntity(this.linkedBonfirePos);
 		return tileentity instanceof BonfireBlockEntity
 				? (BonfireBlockEntity) tileentity
 				: null;
@@ -56,7 +55,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag nbt)
+	public void addAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.addAdditionalSaveData(nbt);
 		nbt.putInt("LinkedBonfireX", this.linkedBonfirePos.getX());
@@ -66,7 +65,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag nbt)
+	public void readAdditionalSaveData(CompoundNBT nbt)
 	{
 		super.readAdditionalSaveData(nbt);
 		this.linkedBonfirePos = new BlockPos(nbt.getInt("LinkedBonfireX"), nbt.getInt("LinkedBonfireY"), nbt.getInt("LinkedBonfireZ"));
@@ -82,10 +81,9 @@ public abstract class AbstractFireKeeper extends QuestEntity
 		{
 			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 			{
-				BonfireBlockEntity t = this.level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
-				if (t != null
-						&& !t.hasFireKeeper()
-						&& t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+				TileEntity tileentity = this.level.getBlockEntity(pos);
+				BonfireBlockEntity t = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+				if (t != null && !t.hasFireKeeper() && t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
 				{
 					this.linkBonfire(t.getBlockPos());
 					break;
@@ -115,12 +113,12 @@ public abstract class AbstractFireKeeper extends QuestEntity
 		super.die(source);
 	}
 
-	public void openContainer(ServerPlayer serverplayer)
+	public void openContainer(ServerPlayerEntity serverplayer)
 	{
-		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, p_235576_4_) ->
+		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
 		{
-			return new ReinforceEstusFlaskContainer(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
-		}, new TranslatableComponent("container.reinforce_estus_flask.title"));
+			return new ReinforceEstusFlaskContainer(id, inventory, IWorldPosCallable.create(this.level, this.blockPosition()));
+		}, new TranslationTextComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}
 }

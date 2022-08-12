@@ -1,20 +1,20 @@
 package com.skullmangames.darksouls.common.entity;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-public abstract class ArmoredMob extends PathfinderMob
+public abstract class ArmoredMob extends CreatureEntity
 {
-	protected ArmoredMob(EntityType<? extends ArmoredMob> entitytype, Level level)
+	protected ArmoredMob(EntityType<? extends ArmoredMob> entitytype, World level)
 	{
 		super(entitytype, level);
 	}
@@ -26,7 +26,7 @@ public abstract class ArmoredMob extends PathfinderMob
 	}
 	
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData data, CompoundTag nbt)
+	public ILivingEntityData finalizeSpawn(IServerWorld level, DifficultyInstance difficulty, SpawnReason type, ILivingEntityData data, CompoundNBT nbt)
 	{
 		data = super.finalizeSpawn(level, difficulty, type, data, nbt);
 		this.populateDefaultEquipmentSlots(difficulty);
@@ -37,10 +37,10 @@ public abstract class ArmoredMob extends PathfinderMob
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty)
 	{
-		int percentage = this.random.nextInt(1, 101);
+		int percentage = this.random.nextInt(100) + 1;
 		boolean drop = false;
 		
-		for (EquipmentSlot slot : EquipmentSlot.values())
+		for (EquipmentSlotType slot : EquipmentSlotType.values())
 		{
 			ItemStack itemstack = this.getItemBySlot(slot);
 			if (itemstack.isEmpty())
@@ -61,5 +61,5 @@ public abstract class ArmoredMob extends PathfinderMob
 		}
 	}
 	
-	protected abstract Item getEquipmentForSlot(int percentage, EquipmentSlot slot);
+	protected abstract Item getEquipmentForSlot(int percentage, EquipmentSlotType slot);
 }

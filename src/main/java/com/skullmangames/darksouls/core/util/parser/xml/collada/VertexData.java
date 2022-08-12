@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Lists;
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
 public class VertexData

@@ -4,39 +4,38 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
 
-public class BonfireBlockEntity extends BlockEntity
+public class BonfireBlockEntity extends TileEntity
 {
 	private String name = "";
 	private boolean hasFireKeeper;
 	private String fireKeeperStringUUID = "";
 
-	public BonfireBlockEntity(BlockPos pos, BlockState state)
+	public BonfireBlockEntity()
 	{
-		super(ModBlockEntities.BONFIRE.get(), pos, state);
+		super(ModBlockEntities.BONFIRE.get());
 	}
 	
 	@Override
-	protected void saveAdditional(CompoundTag nbt)
+	public CompoundNBT save(CompoundNBT nbt)
 	{
-		super.saveAdditional(nbt);
+		nbt = super.save(nbt);
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
 		nbt.putString("fire_keeper_string_uuid", this.fireKeeperStringUUID);
+		return nbt;
 	}
 
 	@Override
-	public void load(CompoundTag nbt)
+	public void load(BlockState blockstate, CompoundNBT nbt)
 	{
-		super.load(nbt);
+		super.load(blockstate, nbt);
 		this.name = nbt.getString("name");
 		this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
 		this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
@@ -46,17 +45,26 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		this.name = name;
 	}
+	
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket()
+	{
+	    CompoundNBT nbtTag = new CompoundNBT();
+	    nbtTag = this.save(nbtTag);
+	    return new SUpdateTileEntityPacket(this.getBlockPos(), -1, nbtTag);
+	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getUpdatePacket()
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
 	{
-		return ClientboundBlockEntityDataPacket.create(this);
+	    CompoundNBT tag = pkt.getTag();
+	    this.load(this.getBlockState(), tag);
 	}
 	
 	@Override
-	public CompoundTag getUpdateTag()
+	public CompoundNBT getUpdateTag()
 	{
-		return this.saveWithoutMetadata();
+		return this.save(new CompoundNBT());
 	}
 
 	private void markDirty()
@@ -82,12 +90,6 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		return this.getBlockState().getValue(BonfireBlock.LIT);
 	}
-	
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-	}
 
 	public String getName()
 	{
@@ -109,7 +111,7 @@ public class BonfireBlockEntity extends BlockEntity
 
 	private void playKindleSound()
 	{
-		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 
 	public void raiseEstusHealLevel()
@@ -122,7 +124,7 @@ public class BonfireBlockEntity extends BlockEntity
 
 	public boolean hasName()
 	{
-		return !this.name.isBlank();
+		return !this.name.isEmpty();
 	}
 
 	public void addFireKeeper(String uuid)

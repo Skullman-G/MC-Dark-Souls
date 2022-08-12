@@ -8,14 +8,14 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.client.resources.ReloadListener;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public class AnimationManager extends SimplePreparableReloadListener<Map<Integer, StaticAnimation>>
+public class AnimationManager extends ReloadListener<Map<Integer, StaticAnimation>>
 {
 	private final Map<Integer, StaticAnimation> animationById = new HashMap<>();
 	private final Map<ResourceLocation, StaticAnimation> animationByName = new HashMap<>();
@@ -43,7 +43,7 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 		throw new IllegalArgumentException("Unable to find animation with path: " + resourceLocation);
 	}
 
-	public void loadAnimationsInit(ResourceManager resourceManager)
+	public void loadAnimationsInit(IResourceManager resourceManager)
 	{
 		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 		this.animationById.values().forEach((animation) ->
@@ -53,16 +53,16 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 	}
 
 	@Override
-	protected Map<Integer, StaticAnimation> prepare(ResourceManager resourceManager,
-			ProfilerFiller profilerIn)
+	protected Map<Integer, StaticAnimation> prepare(IResourceManager resourceManager,
+			IProfiler profilerIn)
 	{
 		Animations.buildClient();
 		return this.animationById;
 	}
 
 	@Override
-	protected void apply(Map<Integer, StaticAnimation> objectIn, ResourceManager resourceManager,
-			ProfilerFiller profilerIn)
+	protected void apply(Map<Integer, StaticAnimation> objectIn, IResourceManager resourceManager,
+			IProfiler profilerIn)
 	{
 		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
 		objectIn.values().forEach((animation) ->

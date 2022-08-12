@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.IResourceManager;
 
 public class MirrorAnimation extends StaticAnimation
 {
@@ -57,7 +57,7 @@ public class MirrorAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
 	{
 		load(resourceManager, models, this);
 		load(resourceManager, models, this.mirror);

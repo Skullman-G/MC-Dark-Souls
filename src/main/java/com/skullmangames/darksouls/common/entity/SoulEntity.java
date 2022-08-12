@@ -4,17 +4,17 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.EntityType;
+import net.minecraft.world.World;
 
 public class SoulEntity extends AbstractSoulEntity
 {
-	public SoulEntity(EntityType<? extends SoulEntity> type, Level level)
+	public SoulEntity(EntityType<? extends SoulEntity> type, World level)
 	{
 		super(type, level);
 	}
 	
-	public SoulEntity(Level level, double posX, double posY, double posZ, int value)
+	public SoulEntity(World level, double posX, double posY, double posZ, int value)
 	{
 		super(ModEntities.SOUL.get(), level, posX, posY, posZ, value);
 	}

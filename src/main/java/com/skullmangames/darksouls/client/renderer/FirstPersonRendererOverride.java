@@ -1,29 +1,30 @@
 package com.skullmangames.darksouls.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.item.ItemStack;
 
 public class FirstPersonRendererOverride
 {
 	public static void renderArmWithItem(IHaveDarkSoulsUseAction item, float swingProgress, float partialticks,
-			float equipProgress, InteractionHand hand, ItemStack itemstack, PoseStack matrixstack,
-			MultiBufferSource rendertypebuffer, int i)
+			float equipProgress, Hand hand, ItemStack itemstack, MatrixStack matrixstack,
+			IRenderTypeBuffer rendertypebuffer, int i)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		LocalPlayer player = minecraft.player;
-		boolean flag = hand == InteractionHand.MAIN_HAND;
-		HumanoidArm handside = flag ? player.getMainArm() : player.getMainArm().getOpposite();
+		ClientPlayerEntity player = minecraft.player;
+		boolean flag = hand == Hand.MAIN_HAND;
+		HandSide handside = flag ? player.getMainArm() : player.getMainArm().getOpposite();
 		matrixstack.pushPose();
-		boolean flag3 = handside == HumanoidArm.RIGHT;
+		boolean flag3 = handside == HandSide.RIGHT;
 		if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == hand)
 		{
 			switch (item.getDarkSoulsUseAnimation())
@@ -58,17 +59,14 @@ public class FirstPersonRendererOverride
 			applyItemArmAttackTransform(matrixstack, handside, swingProgress);
 		}
 
-		minecraft.getItemInHandRenderer().renderItem(player, itemstack,
-				flag3 ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
-						: ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND,
-				!flag3, matrixstack, rendertypebuffer, i);
-
-		matrixstack.popPose();
+		minecraft.itemInHandRenderer.renderItem(player, itemstack, flag3 ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, matrixstack, rendertypebuffer, i);
+        
+        matrixstack.popPose();
 	}
 
-	private static void applyItemArmAttackTransform(PoseStack matrixstack, HumanoidArm handside, float swingProgress)
+	private static void applyItemArmAttackTransform(MatrixStack matrixstack, HandSide handside, float swingProgress)
 	{
-		int i = handside == HumanoidArm.RIGHT ? 1 : -1;
+		int i = handside == HandSide.RIGHT ? 1 : -1;
 		double f = Math.sin(swingProgress * swingProgress * (float) Math.PI);
 		matrixstack.mulPose(Vector3f.YP.rotationDegrees((float)(i * (45.0F + f * -20.0F))));
 		double f1 = Math.sin(Math.sqrt(swingProgress) * (float) Math.PI);
@@ -77,13 +75,13 @@ public class FirstPersonRendererOverride
 		matrixstack.mulPose(Vector3f.YP.rotationDegrees((float)(i * -45.0F)));
 	}
 
-	private static void applyItemArmTransform(PoseStack matrixstack, HumanoidArm handside, float equipProgress)
+	private static void applyItemArmTransform(MatrixStack matrixstack, HandSide handside, float equipProgress)
 	{
-		int i = handside == HumanoidArm.RIGHT ? 1 : -1;
+		int i = handside == HandSide.RIGHT ? 1 : -1;
 		matrixstack.translate((double) ((float) i * 0.56F), (double) (-0.52F + equipProgress * -0.6F), (double) -0.72F);
 	}
 
-	private static void applyConsumeTransform(PoseStack matrixstack, float partialticks, HumanoidArm handside,
+	private static void applyConsumeTransform(MatrixStack matrixstack, float partialticks, HandSide handside,
 			ItemStack itemstack)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
@@ -97,7 +95,7 @@ public class FirstPersonRendererOverride
 		}
 
 		float f3 = 1.0F - (float) Math.pow((double) f1, 27.0D);
-		int i = handside == HumanoidArm.RIGHT ? 1 : -1;
+		int i = handside == HandSide.RIGHT ? 1 : -1;
 		matrixstack.translate((double) (f3 * 0.6F * (float) i), (double) (f3 * -0.5F), (double) (f3 * 0.0F));
 		matrixstack.mulPose(Vector3f.YP.rotationDegrees((float) i * f3 * 90.0F));
 		matrixstack.mulPose(Vector3f.XP.rotationDegrees(f3 * 10.0F));

@@ -9,17 +9,17 @@ import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Hand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.pathfinding.Path;
 
 public class AttackGoal extends Goal
 {
-	protected final Mob attacker;
+	protected final MobEntity attacker;
 	protected final MobCap<?> mobCap;
 	protected final float minDist;
 	protected final int yDist;
@@ -169,7 +169,8 @@ public class AttackGoal extends Goal
     	}
     }
     
-    private boolean strafingBlocked(boolean inAttackRange)
+    @SuppressWarnings("deprecation")
+	private boolean strafingBlocked(boolean inAttackRange)
     {
     	if (this.strafingDir == BACK) return !inAttackRange;
     	
@@ -214,8 +215,8 @@ public class AttackGoal extends Goal
     	this.attacker.getNavigation().moveTo(this.path, 1D);
 		this.attacker.setAggressive(true);
 		
-		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
-			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
+		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
+			this.attacker.startUsingItem(Hand.OFF_HAND);
     }
     
     private void stopChasing()
@@ -234,8 +235,8 @@ public class AttackGoal extends Goal
     
     private void startStrafing()
     {
-    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
-			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
+    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
+			this.attacker.startUsingItem(Hand.OFF_HAND);
     	
     	this.strafingDir = this.strafeLength == 0 && this.getTargetRange(this.attacker.getTarget()) < this.minDist ? BACK : this.strafingDir == RIGHT ? LEFT : RIGHT;
     	this.strafingTime = 50;
@@ -341,13 +342,14 @@ public class AttackGoal extends Goal
     protected boolean targetInAttackRange(LivingEntity target)
     {
     	double targetRange = this.getTargetRange(target);
-    	return targetRange <= this.getMaxDist(targetRange) && targetRange >= this.minDist && this.isInSameHorizontalPosition(target);
+    	return targetRange <= this.getMaxDist(targetRange) && targetRange >= this.minDist && (this.isInSameHorizontalPosition(target) || (targetRange <= 2
+    			&& target.getY() - attacker.getY() <= 1));
     }
     
     protected boolean isValidTarget(LivingEntity target)
     {
     	return target != null && target.isAlive() &&
-    			!((target instanceof Player) && (((Player)target).isSpectator() || ((Player)target).isCreative()));
+    			!((target instanceof PlayerEntity) && (((PlayerEntity)target).isSpectator() || ((PlayerEntity)target).isCreative()));
     }
     
     protected boolean isInSameHorizontalPosition(LivingEntity target)
@@ -356,6 +358,12 @@ public class AttackGoal extends Goal
     		return target.getY() - attacker.getY() <= this.yDist && target.getY() - attacker.getY() >= -this.yDist;
     	
     	return true;
+    }
+    
+    @Override
+    public void stop()
+    {
+    	this.attacker.setSprinting(false);
     }
     
     protected enum Phase

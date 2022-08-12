@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
@@ -13,29 +13,29 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class Collider
 {
-	protected final Vec3 modelCenter;
-	protected final AABB outerAABB;
-	protected Vec3 worldCenter;
+	protected final Vector3d modelCenter;
+	protected final AxisAlignedBB outerAABB;
+	protected Vector3d worldCenter;
 
-	public Collider(Vec3 center, @Nullable AABB outerAABB)
+	public Collider(Vector3d center, @Nullable AxisAlignedBB outerAABB)
 	{
 		this.modelCenter = center;
 		this.outerAABB = outerAABB;
-		this.worldCenter = new Vec3(0, 0, 0);
+		this.worldCenter = new Vector3d(0, 0, 0);
 	}
 	
-	public Vec3 getWorldCenter()
+	public Vector3d getWorldCenter()
 	{
-		return new Vec3(-this.worldCenter.x, this.worldCenter.y, -this.worldCenter.z);
+		return new Vector3d(-this.worldCenter.x, this.worldCenter.y, -this.worldCenter.z);
 	}
 
 	protected void transform(PublicMatrix4f mat)
@@ -75,10 +75,10 @@ public abstract class Collider
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public abstract void drawInternal(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, boolean red);
+	public abstract void drawInternal(MatrixStack matrixStackIn, IRenderTypeBuffer buffer, PublicMatrix4f pose, boolean red);
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack matrixStackIn, MultiBufferSource buffer, LivingCap<?> entityCap,
+	public void draw(MatrixStack matrixStackIn, IRenderTypeBuffer buffer, LivingCap<?> entityCap,
 			AttackAnimation animation, float prevElapsedTime, float elapsedTime, float partialTicks, float attackSpeed)
 	{
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
@@ -104,7 +104,7 @@ public abstract class Collider
 		entities.removeIf((entity) -> !this.collide(entity));
 	}
 
-	public AABB getHitboxAABB()
+	public AxisAlignedBB getHitboxAABB()
 	{
 		return this.outerAABB.move(-this.worldCenter.x, this.worldCenter.y, -this.worldCenter.z);
 	}

@@ -7,7 +7,6 @@ import java.util.function.BiConsumer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
@@ -17,33 +16,34 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
-import net.minecraft.client.CameraType;
-import net.minecraft.client.KeyMapping;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec2;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.PointOfView;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
 public class InputManager
 {
-	private final Map<KeyMapping, BiConsumer<Integer, Integer>> keyFunctionMap;
-	private LocalPlayer player;
+	private final Map<KeyBinding, BiConsumer<Integer, Integer>> keyFunctionMap;
+	private ClientPlayerEntity player;
 	private LocalPlayerCap playerCap;
 	private KeyBindingMap keyHash;
 	private int rightHandPressCounter;
@@ -51,7 +51,7 @@ public class InputManager
 	private boolean sprintToggle;
 	private int sprintPressCounter;
 	private Minecraft minecraft;
-	public Options options;
+	public GameSettings options;
 	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
 	private double tracingMouseX;
 	private double tracingMouseY;
@@ -63,7 +63,7 @@ public class InputManager
 		Events.inputManager = this;
 		this.minecraft = Minecraft.getInstance();
 		this.options = this.minecraft.options;
-		this.keyFunctionMap = new HashMap<KeyMapping, BiConsumer<Integer, Integer>>();
+		this.keyFunctionMap = new HashMap<KeyBinding, BiConsumer<Integer, Integer>>();
 		
 		this.keyFunctionMap.put(this.options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
@@ -75,7 +75,7 @@ public class InputManager
 		
 		try
 		{
-			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyMapping.class, "f_90810_").get(null);
+			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyBinding.class, "field_74514_b").get(null);
 		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
@@ -160,7 +160,7 @@ public class InputManager
 	
 	private void onSwapHandKeyPressed(int key, int action)
 	{
-		ItemCapability cap = this.playerCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability cap = this.playerCap.getHeldItemCapability(Hand.MAIN_HAND);
 
 		if (this.playerCap.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
@@ -173,9 +173,9 @@ public class InputManager
 	{
 		if (action == 1)
 		{
-			Options options = this.minecraft.options;
+			GameSettings options = this.minecraft.options;
 			
-			if (options.getCameraType() == CameraType.THIRD_PERSON_BACK)
+			if (options.getCameraType() == PointOfView.THIRD_PERSON_BACK)
 			{
 				ClientManager.INSTANCE.switchToFirstPerson();
 			}
@@ -231,13 +231,13 @@ public class InputManager
 	
 	private boolean playerCanSprint()
 	{
-		Vec2 vector2f = this.player.input.getMoveVector();
-		return (this.player.isOnGround() || this.player.isUnderWater() || this.player.getAbilities().mayfly)
+		Vector2f vector2f = this.player.input.getMoveVector();
+		return (this.player.isOnGround() || this.player.isUnderWater() || this.player.abilities.mayfly)
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
-				&& !this.player.hasEffect(MobEffects.BLINDNESS)
+				&& !this.player.hasEffect(Effects.BLINDNESS)
 				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
 	}
 	
@@ -306,22 +306,22 @@ public class InputManager
 		this.rightHandPressCounter = 0;
 	}
 	
-	public boolean isKeyDown(KeyMapping key)
+	public boolean isKeyDown(KeyBinding key)
 	{
-		if(key.getKey().getType() == InputConstants.Type.KEYSYM)
+		if(key.getKey().getType() == InputMappings.Type.KEYSYM)
 		{
 			return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key.getKey().getValue()) > 0;
 		}
-		else if(key.getKey().getType() == InputConstants.Type.MOUSE)
+		else if(key.getKey().getType() == InputMappings.Type.MOUSE)
 		{
 			return GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(), key.getKey().getValue()) > 0;
 		}
 		else return false;
 	}
 	
-	public void setKeyBind(KeyMapping key, boolean setter)
+	public void setKeyBind(KeyBinding key, boolean setter)
 	{
-		KeyMapping.set(key.getKey(), setter);
+		KeyBinding.set(key.getKey(), setter);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -341,8 +341,8 @@ public class InputManager
 				event.setSwingHand(false);
 			}
 			
-			if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
-					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
+					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
 			{
 				event.setCanceled(true);
 			}
@@ -353,8 +353,8 @@ public class InputManager
 		{
 			if (minecraft.player != null && minecraft.getOverlay() == null && minecraft.screen == null)
 			{
-				InputConstants.Key input = InputConstants.Type.MOUSE.getOrCreate(event.getButton());
-				for (KeyMapping keybinding : inputManager.keyHash.lookupAll(input))
+				InputMappings.Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
+				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
@@ -381,8 +381,8 @@ public class InputManager
 		{
 			if (minecraft.player != null && minecraft.screen == null)
 			{
-				InputConstants.Key input = InputConstants.Type.KEYSYM.getOrCreate(event.getKey());
-				for (KeyMapping keybinding : inputManager.keyHash.lookupAll(input))
+				InputMappings.Input input = InputMappings.Type.KEYSYM.getOrCreate(event.getKey());
+				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
 					{
@@ -393,14 +393,14 @@ public class InputManager
 		}
 		
 		@SubscribeEvent
-		public static void onMoveInput(MovementInputUpdateEvent event)
+		public static void onMoveInput(InputUpdateEvent event)
 		{
 			if(inputManager.playerCap == null) return;
 			EntityState playerState = inputManager.playerCap.getEntityState();
 			
 			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
 			{
-				if (minecraft.options.getCameraType() == CameraType.FIRST_PERSON)
+				if (minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
 				{
 					GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
 					minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
@@ -413,15 +413,15 @@ public class InputManager
 					minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				}
 				
-				event.getInput().forwardImpulse = 0.0F;
-				event.getInput().leftImpulse = 0.0F;
-				event.getInput().up = false;
-				event.getInput().down = false;
-				event.getInput().left = false;
-				event.getInput().right = false;
-				event.getInput().jumping = false;
-				event.getInput().shiftKeyDown = false;
-				((LocalPlayer)event.getPlayer()).sprintTime = -1;
+				event.getMovementInput().forwardImpulse = 0.0F;
+				event.getMovementInput().leftImpulse = 0.0F;
+				event.getMovementInput().up = false;
+				event.getMovementInput().down = false;
+				event.getMovementInput().left = false;
+				event.getMovementInput().right = false;
+				event.getMovementInput().jumping = false;
+				event.getMovementInput().shiftKeyDown = false;
+				((ClientPlayerEntity)event.getPlayer()).sprintTime = -1;
 			}
 			else
 			{
@@ -429,7 +429,7 @@ public class InputManager
 				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
-				if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON
+				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON
 						&& !ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
@@ -437,32 +437,32 @@ public class InputManager
 					float rot = inputManager.player.yRot;
 					boolean back = false;
 					
-					if (event.getInput().forwardImpulse > 0.0F)
+					if (event.getMovementInput().forwardImpulse > 0.0F)
 					{
 						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
-						forward = event.getInput().forwardImpulse;
+						forward = event.getMovementInput().forwardImpulse;
 					}
-					else if (event.getInput().forwardImpulse < 0.0F)
+					else if (event.getMovementInput().forwardImpulse < 0.0F)
 					{
 						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 180.0F;
-						forward = -event.getInput().forwardImpulse;
+						forward = -event.getMovementInput().forwardImpulse;
 						back = true;
 					}
-					if (event.getInput().leftImpulse > 0.0F)
+					if (event.getMovementInput().leftImpulse > 0.0F)
 					{
 						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 90.0F;
 						
-						if (forward == 0.0F) forward = event.getInput().leftImpulse;
-						else if (!back) left = -event.getInput().leftImpulse;
-						else left = event.getInput().leftImpulse;
+						if (forward == 0.0F) forward = event.getMovementInput().leftImpulse;
+						else if (!back) left = -event.getMovementInput().leftImpulse;
+						else left = event.getMovementInput().leftImpulse;
 					}
-					else if (event.getInput().leftImpulse < 0.0F)
+					else if (event.getMovementInput().leftImpulse < 0.0F)
 					{
 						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) + 90.0F;
 						
-						if (forward == 0.0F) forward = -event.getInput().leftImpulse;
-						else if (!back) left = -event.getInput().leftImpulse;
-						else left = event.getInput().leftImpulse;
+						if (forward == 0.0F) forward = -event.getMovementInput().leftImpulse;
+						else if (!back) left = -event.getMovementInput().leftImpulse;
+						else left = event.getMovementInput().leftImpulse;
 					}
 					
 					if (forward > 0 && left > 0)
@@ -472,13 +472,13 @@ public class InputManager
 					}
 					
 					inputManager.player.yRot = rot;
-					event.getInput().forwardImpulse = forward;
-					event.getInput().leftImpulse = left;
+					event.getMovementInput().forwardImpulse = forward;
+					event.getMovementInput().leftImpulse = left;
 					
 					if (inputManager.playerCap.isBlocking())
 					{
-						event.getInput().leftImpulse *= 20F;
-						event.getInput().forwardImpulse *= 20F;
+						event.getMovementInput().leftImpulse *= 20F;
+						event.getMovementInput().forwardImpulse *= 20F;
 					}
 				}
 			}

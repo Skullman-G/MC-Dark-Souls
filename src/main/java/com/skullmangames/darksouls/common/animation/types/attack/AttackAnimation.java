@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -33,16 +33,16 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
@@ -63,7 +63,7 @@ public class AttackAnimation extends ActionAnimation
 		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand,
 			@Nullable Collider collider, String index, String path, Function<Models<?>, Model> model)
 	{
 		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
@@ -99,7 +99,7 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (entityCap instanceof MobCap)
 			{
-				((Mob) entityCap.getOriginalEntity()).getNavigation().stop();
+				((MobEntity) entityCap.getOriginalEntity()).getNavigation().stop();
 				LivingEntity target = entityCap.getTarget();
 				if (target != null)
 				{
@@ -143,10 +143,10 @@ public class AttackAnimation extends ActionAnimation
 						if (e instanceof LivingEntity || e instanceof PartEntity)
 						{
 							if (entity.level
-									.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
-											new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
-											ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
-									.getType() == HitResult.Type.MISS)
+									.clip(new RayTraceContext(new Vector3d(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
+											new Vector3d(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
+											RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity))
+									.getType() == RayTraceResult.Type.MISS)
 							{
 
 								float amount = this.getDamageAmount(entityCap, e, phase);
@@ -188,13 +188,13 @@ public class AttackAnimation extends ActionAnimation
 		
 		Collider collider = this.getCollider(entityCap, elapsedTime);
 		collider.update(entityCap, phase.getColliderJointName());
-		Vec3 pos = collider.getWorldCenter();
-		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+		Vector3d pos = collider.getWorldCenter();
+		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientWorld)entity.level, pos);
 	}
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entitypatch, float playTime, float partialTicks)
+	public void renderDebugging(MatrixStack poseStack, IRenderTypeBuffer buffer, LivingCap<?> entitypatch, float playTime, float partialTicks)
 	{
 		AnimationPlayer animPlayer = entitypatch.getAnimator().getPlayerFor(this);
 		float prevElapsedTime = animPlayer.getPrevElapsedTime();
@@ -214,7 +214,7 @@ public class AttackAnimation extends ActionAnimation
 		entityCap.currentlyAttackedEntity.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{
-			Mob entity = (Mob) entityCap.getOriginalEntity();
+			MobEntity entity = (MobEntity) entityCap.getOriginalEntity();
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
@@ -335,7 +335,7 @@ public class AttackAnimation extends ActionAnimation
 		protected final float contactEnd;
 		protected final float end;
 		protected final String jointName;
-		protected final InteractionHand hand;
+		protected final Hand hand;
 		protected Collider collider;
 		protected boolean smashed = false;
 
@@ -346,10 +346,10 @@ public class AttackAnimation extends ActionAnimation
 		
 		public Phase(float antic, float preDelay, float contact, float recovery, String jointName, Collider collider)
 		{
-			this(antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, jointName, collider);
+			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, jointName, collider);
 		}
 
-		public Phase(float antic, float preDelay, float contact, float recovery, InteractionHand hand, String jointName, Collider collider)
+		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String jointName, Collider collider)
 		{
 			this.begin = antic;
 			this.contactStart = preDelay;

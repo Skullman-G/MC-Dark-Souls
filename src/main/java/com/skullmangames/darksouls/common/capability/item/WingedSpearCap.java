@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public class WingedSpearCap extends SpearCap
 {

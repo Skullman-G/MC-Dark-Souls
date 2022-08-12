@@ -3,20 +3,21 @@ package com.skullmangames.darksouls.client.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,9 +38,9 @@ public class HealthBarIndicator extends EntityIndicator
 			this.healthInfoMap.remove(entityIn.getId());
 			return false;
 		}
-		else if (entityIn instanceof Player)
+		else if (entityIn instanceof PlayerEntity)
 		{
-			Player playerIn = (Player) entityIn;
+			PlayerEntity playerIn = (PlayerEntity) entityIn;
 			if (playerIn == minecraft.player || playerIn.isCreative() || playerIn.isSpectator())
 				return false;
 		}
@@ -57,10 +58,10 @@ public class HealthBarIndicator extends EntityIndicator
 	}
 
 	@Override
-	public void drawIndicator(LivingEntity entityIn, PoseStack matStack, MultiBufferSource bufferIn, float partialTicks)
+	public void drawIndicator(LivingEntity entityIn, MatrixStack matStack, IRenderTypeBuffer bufferIn, float partialTicks)
 	{
 		Matrix4f mvMatrix = super.getMVMatrix(matStack, entityIn, 0.0F, entityIn.getBbHeight() + 0.25F, 0.0F, true, false, partialTicks);
-		VertexConsumer vertexBuilder = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(BATTLE_ICON));
+		IVertexBuilder vertexBuilder = bufferIn.getBuffer(ModRenderTypes.getEntityIndicator(BATTLE_ICON));
 		
 		float redStop = 0;
 		float blackStart = 0;
@@ -137,7 +138,7 @@ public class HealthBarIndicator extends EntityIndicator
 		if (info.damageNumberTimer > 0)
 		{
 			matStack.pushPose();
-			Camera camera = ClientManager.INSTANCE.mainCamera;
+			ActiveRenderInfo camera = ClientManager.INSTANCE.mainCamera;
 			float scale = 0.03F;
 			matStack.translate(0, entityIn.getBbHeight() + 0.5, 0);
 			matStack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
@@ -151,7 +152,7 @@ public class HealthBarIndicator extends EntityIndicator
 		info.lastHealth = healthpercentage;
 	}
 
-	public void renderDamageNumber(PoseStack matrix, float damage, double x, double y)
+	public void renderDamageNumber(MatrixStack matrix, float damage, double x, double y)
 	{
 		int i = Math.abs(Math.round(damage));
 		if (i == 0) return;

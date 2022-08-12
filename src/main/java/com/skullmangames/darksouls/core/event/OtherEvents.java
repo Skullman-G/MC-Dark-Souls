@@ -3,12 +3,12 @@ package com.skullmangames.darksouls.core.event;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
@@ -32,7 +32,7 @@ public class OtherEvents
 	@SubscribeEvent
 	public static void onCheckSpawn(final CheckSpawn event)
 	{
-		if (event.getEntityLiving() instanceof Zombie)
+		if (event.getEntityLiving() instanceof ZombieEntity)
 		{
 			event.setResult(Result.DENY);
 		}
@@ -46,16 +46,16 @@ public class OtherEvents
 	}
 	
 	@SubscribeEvent
-	public static void onFOVUpdate(final FOVModifierEvent event)
+	public static void onFOVUpdate(final FOVUpdateEvent event)
 	{
-		 Player player = event.getEntity();
+		 PlayerEntity player = event.getEntity();
 		float f = 1.0F;
-	      if (player.getAbilities().flying) {
+	      if (player.abilities.flying) {
 	         f *= 1.1F;
 	      }
 
-	      f = (float)((double)f * ((player.getAttributeValue(Attributes.MOVEMENT_SPEED) / (double)player.getAbilities().getWalkingSpeed() + 1.0D) / 2.0D));
-	      if (player.getAttributeValue(Attributes.MOVEMENT_SPEED) == 0.0D || player.getAbilities().getWalkingSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
+	      f = (float)((double)f * ((player.getAttributeValue(Attributes.MOVEMENT_SPEED) / (double)player.abilities.getWalkingSpeed() + 1.0D) / 2.0D));
+	      if (player.getAttributeValue(Attributes.MOVEMENT_SPEED) == 0.0D || player.abilities.getWalkingSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
 	         f = 1.0F;
 	      }
 

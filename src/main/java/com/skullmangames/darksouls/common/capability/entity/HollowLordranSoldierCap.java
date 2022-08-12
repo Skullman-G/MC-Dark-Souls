@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
-import net.minecraft.world.entity.monster.CrossbowAttackMob;
+import net.minecraft.entity.ICrossbowUser;
 
 public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 {
@@ -46,7 +46,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
-		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
+		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof ICrossbowUser)
 		{
 			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));
 		}

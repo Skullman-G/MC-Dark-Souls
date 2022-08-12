@@ -7,9 +7,9 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSReqSpawnInfo
 {
@@ -25,12 +25,12 @@ public class CTSReqSpawnInfo
 		this.entityId = entityId;
 	}
 	
-	public static CTSReqSpawnInfo fromBytes(FriendlyByteBuf buf)
+	public static CTSReqSpawnInfo fromBytes(PacketBuffer buf)
 	{
 		return new CTSReqSpawnInfo(buf.readInt());
 	}
 	
-	public static void toBytes(CTSReqSpawnInfo msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSReqSpawnInfo msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 	}

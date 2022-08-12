@@ -5,12 +5,12 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.BowItem;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.item.BowItem;
 
-public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCap<T>> extends RangeAttackGoal<T, D>
+public class BowAttackGoal<T extends MobEntity & IRangedAttackMob, D extends HumanoidCap<T>> extends RangeAttackGoal<T, D>
 {
 	public BowAttackGoal(D entityCap, int attackCooldown, float maxAttackDist)
 	{
@@ -29,7 +29,7 @@ public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCa
         if (i >= 20)
         {
             this.mob.stopUsingItem();
-            ((RangedAttackMob)this.mob).performRangedAttack(this.chasingTarget, BowItem.getPowerForTime(i));
+            ((IRangedAttackMob)this.mob).performRangedAttack(this.chasingTarget, BowItem.getPowerForTime(i));
             ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_REBOUND, mob.getId(), 0.0F), mob);
             this.attackTime = this.attackCooldown;
         }
@@ -39,6 +39,6 @@ public class BowAttackGoal<T extends Mob & RangedAttackMob, D extends HumanoidCa
 	protected void aim()
 	{
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_BOW_AIM, mob.getId(), 0.0F), mob);
-        this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof BowItem));
+        this.mob.startUsingItem(ProjectileHelper.getWeaponHoldingHand(this.mob, item -> item instanceof BowItem));
 	}
 }

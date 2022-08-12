@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.SoundEvent;
 
 public abstract class Property<T>
 {

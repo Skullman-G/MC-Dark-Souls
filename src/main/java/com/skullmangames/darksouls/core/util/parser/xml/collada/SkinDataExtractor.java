@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 

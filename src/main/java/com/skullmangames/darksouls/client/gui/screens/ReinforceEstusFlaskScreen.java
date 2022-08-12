@@ -1,57 +1,92 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
 
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ReinforceEstusFlaskScreen extends AbstractContainerScreen<ReinforceEstusFlaskContainer> implements MenuAccess<ReinforceEstusFlaskContainer>
+public class ReinforceEstusFlaskScreen extends ContainerScreen<ReinforceEstusFlaskContainer> implements IContainerListener
 {
 	private static final ResourceLocation REINFORCE_ESTUS_FLASK_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/containers/reinforce_estus_flask.png");
 	
-	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskContainer p_i232291_1_, Inventory p_i232291_2_, Component p_i232291_3_)
+	public ReinforceEstusFlaskScreen(ReinforceEstusFlaskContainer container, PlayerInventory inventory, ITextComponent title)
 	{
-		super(p_i232291_1_, p_i232291_2_, p_i232291_3_);
+		super(container, inventory, title);
 		this.titleLabelX = 10;
 	    this.titleLabelY = 18;
 	}
 	
 	@Override
-	public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
+	public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks)
 	{
-	   this.renderBackground(p_230430_1_);
-	   super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+	   this.renderBackground(poseStack);
+	   super.render(poseStack, mouseX, mouseY, partialTicks);
 	   RenderSystem.disableBlend();
-	   this.renderTooltip(p_230430_1_, p_230430_2_, p_230430_3_);
+	   this.renderTooltip(poseStack, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_)
+	protected void renderBg(MatrixStack poseStack, float partialTicks, int mouseX, int mouseY)
 	{
-	    RenderSystem.setShaderTexture(0, REINFORCE_ESTUS_FLASK_LOCATION);
+	    minecraft.getTextureManager().bind(REINFORCE_ESTUS_FLASK_LOCATION);
 	    int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;
-	    this.blit(p_230450_1_, x, y, 0, 0, this.imageWidth, this.imageHeight);
-	    this.blit(p_230450_1_, x + 59, y + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
+	    this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+	    this.blit(poseStack, x + 59, y + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
 	    if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(2).hasItem())
 	    {
-	       this.blit(p_230450_1_, x + 99, y + 45, this.imageWidth, 0, 28, 21);
+	       this.blit(poseStack, x + 99, y + 45, this.imageWidth, 0, 28, 21);
 	    }
 	}
 	
 	@Override
-	protected void renderLabels(PoseStack p_230451_1_, int p_230451_2_, int p_230451_3_)
+	protected void renderLabels(MatrixStack poseStack, int mouseX, int mouseY)
 	{
 		RenderSystem.disableBlend();
-		super.renderLabels(p_230451_1_, p_230451_2_, p_230451_3_);
+		super.renderLabels(poseStack, mouseX, mouseY);
+	}
+
+	@Override
+	public void refreshContainer(Container container, NonNullList<ItemStack> p_71110_2_)
+	{
+		this.slotChanged(container, 0, container.getSlot(0).getItem());
+	}
+
+	@Override
+	public void slotChanged(Container container, int slot, ItemStack item)
+	{
+		this.getMenu().slotsChanged(this.inventory);
+	}
+
+	@Override
+	public void setContainerData(Container container, int slot, int p_71112_3_)
+	{
+		
+	}
+	
+	@Override
+	protected void init()
+	{
+		super.init();
+		this.menu.addSlotListener(this);
+	}
+	
+	@Override
+	public void removed()
+	{
+		super.removed();
+		this.menu.removeSlotListener(this);
 	}
 }

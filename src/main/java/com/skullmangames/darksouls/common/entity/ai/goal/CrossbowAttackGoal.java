@@ -7,23 +7,23 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.monster.CrossbowAttackMob;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.entity.ICrossbowUser;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.util.math.vector.Vector3d;
 
-public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends HumanoidCap<T>> extends Goal
+public class CrossbowAttackGoal<T extends MobEntity & ICrossbowUser, D extends HumanoidCap<T>> extends Goal
 {
 	private final T mob;
 	private final D mobdata;
 	private int attackCooldown;
 	
-	private Vec3 targetPos = Vec3.ZERO;
+	private Vector3d targetPos = Vector3d.ZERO;
 	
 	private CrossbowState crossbowState = CrossbowState.UNCHARGED;
 
@@ -60,8 +60,8 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 	
 	private void move(LivingEntity target)
 	{
-		if (this.mobdata.isInaction() || (this.targetPos != Vec3.ZERO && target.distanceToSqr(this.targetPos) <= 1.0D)) return;
-		this.mob.getLookControl().setLookAt(target);
+		if (this.mobdata.isInaction() || (this.targetPos != Vector3d.ZERO && target.distanceToSqr(this.targetPos) <= 1.0D)) return;
+		this.mob.getLookControl().setLookAt(target.position());
 		this.targetPos = target.position();
 		Path path = this.mob.getNavigation().createPath(target, 8);
 		this.mob.getNavigation().moveTo(path, 1.0D);
@@ -73,7 +73,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 		if (this.crossbowState == CrossbowState.UNCHARGED)
 		{
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_RELOAD, mob.getId(), 0.0F), mob);
-			this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
+			this.mob.startUsingItem(ProjectileHelper.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
 			this.crossbowState = CrossbowState.CHARGING;
 			this.mob.setChargingCrossbow(true);
 		}
@@ -105,7 +105,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 		{
 			this.mob.performRangedAttack(target, 1.0F);
 			ItemStack itemstack1 = this.mob
-					.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
+					.getItemInHand(ProjectileHelper.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
 			CrossbowItem.setCharged(itemstack1, false);
 			this.crossbowState = CrossbowState.UNCHARGED;
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_SHOT, mob.getId(), 0.0F), mob);

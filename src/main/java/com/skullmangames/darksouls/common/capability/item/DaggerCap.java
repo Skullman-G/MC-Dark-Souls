@@ -8,8 +8,8 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.item.Item;
 
 public class DaggerCap extends MeleeWeaponCap
 {

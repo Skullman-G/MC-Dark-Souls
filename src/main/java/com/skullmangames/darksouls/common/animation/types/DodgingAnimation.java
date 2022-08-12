@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;

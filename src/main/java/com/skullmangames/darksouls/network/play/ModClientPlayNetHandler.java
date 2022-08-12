@@ -7,10 +7,11 @@ import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -25,14 +26,13 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 	}
 
 	@Override
-	public void setTitle(Component text, int fadein, int stay, int fadeout)
+	public void setTitle(ITextComponent text, int fadein, int stay, int fadeout)
 	{
-		this.minecraft.gui.setTimes(fadein, stay, fadeout);
-		this.minecraft.gui.setTitle(text);
+		this.minecraft.gui.setTitles(text, StringTextComponent.EMPTY, fadein, stay, fadeout);
 	}
 	
 	@Override
-	public void setOverlayMessage(Component text)
+	public void setOverlayMessage(ITextComponent text)
 	{
 		this.minecraft.gui.setOverlayMessage(text, false);
 	}
@@ -40,14 +40,16 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 	@Override
 	public void openBonfireNameScreen(BlockPos blockPos)
 	{
-		BonfireBlockEntity bonfire = this.minecraft.level.getBlockEntity(blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
+		TileEntity tileentity = this.minecraft.level.getBlockEntity(blockPos);
+		BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
 		if (bonfire != null) this.minecraft.setScreen(new BonfireNameScreen(bonfire));
 	}
 
 	@Override
 	public void openBonfireScreen(BlockPos blockPos)
 	{
-		BonfireBlockEntity bonfire = this.minecraft.level.getBlockEntity(blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
+		TileEntity tileentity = this.minecraft.level.getBlockEntity(blockPos);
+		BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
 		if (bonfire != null) this.minecraft.setScreen(new BonfireScreen(bonfire));
 	}
 
@@ -59,7 +61,8 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 		float dist = (float)this.minecraft.player.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 		if (!this.sounds.contains(blockPos) && (1.0F - (dist * 0.005F)) >= 0.0F)
 		{
-			BonfireBlockEntity bonfire = this.minecraft.player.level.getBlockEntity(blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
+			TileEntity tileentity = this.minecraft.player.level.getBlockEntity(blockPos);
+			BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
 			if (bonfire == null) return;
 			BonfireAmbientSoundInstance soundInstance = new BonfireAmbientSoundInstance(bonfire);
 			this.minecraft.getSoundManager().queueTickingSound(soundInstance);

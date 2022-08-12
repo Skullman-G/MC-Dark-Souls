@@ -26,19 +26,19 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
-public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoaded
+public class ServerPlayerCap extends PlayerCap<ServerPlayerEntity> implements EquipLoaded
 {
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
 	private List<LivingMotion> modifiedLivingMotions = new ArrayList<>();
 
 	@Override
-	public void onEntityJoinWorld(ServerPlayer entityIn)
+	public void onEntityJoinWorld(ServerPlayerEntity entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
 		livingMotionMap.put(LivingMotion.IDLE, Animations.BIPED_IDLE);
@@ -57,7 +57,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
 		}
 
-		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
+		CompoundNBT nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
 	}
@@ -147,10 +147,10 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	@Override
 	public void updateMotion() {}
 
-	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
+	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, Hand hand)
 	{
-		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
-				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability mainHandCap = hand == Hand.MAIN_HAND ? toChange
+				: this.getHeldItemCapability(Hand.MAIN_HAND);
 		if (mainHandCap != null)
 			mainHandCap.onHeld(this);
 
@@ -256,7 +256,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	}
 
 	@Override
-	public ServerPlayer getOriginalEntity()
+	public ServerPlayerEntity getOriginalEntity()
 	{
 		return this.orgEntity;
 	}

@@ -1,19 +1,20 @@
 package com.skullmangames.darksouls;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -35,10 +36,8 @@ import com.skullmangames.darksouls.client.event.ClientEvents;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.Animator;
@@ -52,12 +51,13 @@ import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModConfiguredStructures;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.init.ModModelLayers;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModRecipeTypes;
@@ -78,7 +78,7 @@ public class DarkSouls
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
 	public static IngameConfig CLIENT_INGAME_CONFIG;
-	public static final CreativeModeTab TAB = new CreativeModeTab("darksouls")
+	public static final ItemGroup TAB = new ItemGroup("darksouls")
 	{
 		@Override
 		public ItemStack makeIcon()
@@ -139,6 +139,9 @@ public class DarkSouls
 		forgeBus.register(CapabilityEvents.class);
 		forgeBus.register(PlayerEvents.class);
 		forgeBus.addListener(ModEntities::addEntitySpawns);
+		
+		forgeBus.addListener(EventPriority.NORMAL, ModStructures::addDimensionalSpacing);
+        forgeBus.addListener(EventPriority.HIGH, ModConfiguredStructures::biomeModification);
 
 		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
@@ -160,6 +163,7 @@ public class DarkSouls
 
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
+		ModCapabilities.registerCapabilities();
 		ModRecipeTypes.call();
 
 		ModNetworkManager.registerPackets();
@@ -172,6 +176,12 @@ public class DarkSouls
 
 		ModEntities.registerEntitySpawnPlacement();
 		ModCriteriaTriggers.register();
+	    
+	    event.enqueueWork(() ->
+    	{
+    		  ModStructures.setupStructures();
+    	    ModConfiguredStructures.registerConfiguredStructures();
+    	});
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event)
@@ -181,7 +191,7 @@ public class DarkSouls
 
 		new ClientManager();
 
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		ClientModels.CLIENT.buildMeshData();
 		this.animationManager.loadAnimationsInit(resourceManager);
 		Animations.buildClient();
@@ -195,34 +205,32 @@ public class DarkSouls
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
 
 		// Register ReloadListeners
-		((ReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
+		((IReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
 
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
 
-		ModModelLayers.call();
-
-		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
 																							// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
 																											// a better
 																											// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
 																											// a better
 																											// solution
-		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
 																										// better
 																										// solution
-		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
 																										// better
 																										// solution
-		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.STRAY_DEMON.get(), VanillaHumanoidRenderer::new); // Should find a better
 																							// solution
-		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
-		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.SOUL.get(), SoulRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

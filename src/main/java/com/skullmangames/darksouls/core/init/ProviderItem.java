@@ -28,15 +28,15 @@ import com.skullmangames.darksouls.config.CapabilityConfig;
 import com.skullmangames.darksouls.config.CapabilityConfig.ShieldConfig;
 import com.skullmangames.darksouls.config.CapabilityConfig.WeaponConfig;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DiggerItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShootableItem;
+import net.minecraft.item.SwordItem;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ToolItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -125,7 +125,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());
 			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
 			Item item = ForgeRegistries.ITEMS.getValue(name);
-			if (!(item instanceof SwordItem || item instanceof DiggerItem || item instanceof ProjectileWeaponItem)) continue;
+			if (!(item instanceof SwordItem || item instanceof ToolItem || item instanceof ShootableItem)) continue;
 			switch (configWeapon.category.get())
 			{
 			default: break;

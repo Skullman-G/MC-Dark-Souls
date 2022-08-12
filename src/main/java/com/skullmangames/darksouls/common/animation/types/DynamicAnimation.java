@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -214,6 +214,6 @@ public class DynamicAnimation
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap,
+	public void renderDebugging(MatrixStack poseStack, IRenderTypeBuffer buffer, LivingCap<?> entityCap,
 			float playTime, float partialTicks) {}
 }

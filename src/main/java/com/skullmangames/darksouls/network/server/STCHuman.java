@@ -5,9 +5,9 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCHuman
 {
@@ -20,12 +20,12 @@ public class STCHuman
 		this.human = value;
 	}
 	
-	public static STCHuman fromBytes(FriendlyByteBuf buf)
+	public static STCHuman fromBytes(PacketBuffer buf)
 	{
 		return new STCHuman(buf.readInt(), buf.readBoolean());
 	}
 	
-	public static void toBytes(STCHuman msg, FriendlyByteBuf buf)
+	public static void toBytes(STCHuman msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeBoolean(msg.human);

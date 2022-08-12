@@ -18,18 +18,16 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.item.Item;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolItem;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -72,23 +70,23 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		super.onHeld(playerCap);
 		if (playerCap.isClientSide())
 		{
-			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-			instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
+			ModifiableAttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
+			instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlotType.MAINHAND.ordinal()]);
+			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlotType.MAINHAND, this.getDamage()));
 		}
 	}
 	
-	public InteractionResult onUse(PlayerCap<?> playerCap, InteractionHand hand)
+	public ActionResultType onUse(PlayerCap<?> playerCap, Hand hand)
 	{
-		if (!playerCap.canBlock()) return InteractionResult.PASS;
+		if (!playerCap.canBlock()) return ActionResultType.PASS;
 		playerCap.getOriginalEntity().startUsingItem(hand);
-		return InteractionResult.CONSUME;
+		return ActionResultType.CONSUME;
 	}
 	
 	public float getDamage()
 	{
 		return this.orgItem instanceof SwordItem ? ((SwordItem) this.orgItem).getDamage()
-				: this.orgItem instanceof DiggerItem ? ((DiggerItem) this.orgItem).getAttackDamage()
+				: this.orgItem instanceof ToolItem ? ((ToolItem) this.orgItem).getAttackDamage()
 				: 0.0F;
 	}
 	

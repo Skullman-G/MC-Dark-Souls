@@ -11,12 +11,12 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.CreatureEntity;
 
-public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
+public class SimpleHumanoidCap<T extends MobEntity> extends HumanoidCap<T>
 {
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
@@ -41,7 +41,7 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		MeleeWeaponCap weapon = (MeleeWeaponCap)cap;
 		
 		this.orgEntity.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this.orgEntity, Hollow.class, true));
-		if (this.orgEntity instanceof PathfinderMob) this.orgEntity.targetSelector.addGoal(1, new HurtByTargetGoal((PathfinderMob)this.orgEntity));
+		if (this.orgEntity instanceof CreatureEntity) this.orgEntity.targetSelector.addGoal(1, new HurtByTargetGoal((CreatureEntity)this.orgEntity));
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.0F, true, false, true)
 				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.LIGHT)))
 				.addAttack(new AttackInstance(1, 2.0F, weapon.getAttacks(AttackType.HEAVY)))

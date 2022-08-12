@@ -8,9 +8,9 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCPlayAnimation
 {
@@ -62,7 +62,7 @@ public class STCPlayAnimation
 		}
 	}
 
-	public static STCPlayAnimation fromBytes(FriendlyByteBuf buf)
+	public static STCPlayAnimation fromBytes(PacketBuffer buf)
 	{
 		return new STCPlayAnimation(buf.readInt(), buf.readInt(), buf.readFloat());
 	}

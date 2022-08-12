@@ -7,17 +7,72 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.Capability.IStorage;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class ModCapabilities
 {
-	public static final Capability<EntityCapability<?>> CAPABILITY_ENTITY = null;
+	@SuppressWarnings("rawtypes")
+	@CapabilityInject(EntityCapability.class)
+	public static final Capability<EntityCapability> CAPABILITY_ENTITY = null;
 	
+	@CapabilityInject(ItemCapability.class)
     public static final Capability<ItemCapability> CAPABILITY_ITEM = null;
 	
-    public static final Capability<CapabilityProjectile<Projectile>> CAPABILITY_PROJECTILE = null;
+	@SuppressWarnings("rawtypes")
+	@CapabilityInject(CapabilityProjectile.class)
+    public static final Capability<CapabilityProjectile> CAPABILITY_PROJECTILE = null;
+	
+	@SuppressWarnings("rawtypes")
+	public static void registerCapabilities()
+	{
+		CapabilityManager.INSTANCE.register(ItemCapability.class, new IStorage<ItemCapability>()
+		{
+			@Override
+			public INBT writeNBT(Capability<ItemCapability> capability, ItemCapability instance, Direction side)
+			{
+				return null;
+			}
+
+			@Override
+			public void readNBT(Capability<ItemCapability> capability, ItemCapability instance, Direction side, INBT nbt)
+			{
+			}
+		}, () -> null);
+		
+		CapabilityManager.INSTANCE.register(EntityCapability.class, new IStorage<EntityCapability>()
+		{
+			@Override
+			public INBT writeNBT(Capability<EntityCapability> capability, EntityCapability instance, Direction side)
+			{
+				return null;
+			}
+
+			@Override
+			public void readNBT(Capability<EntityCapability> capability, EntityCapability instance, Direction side, INBT nbt)
+			{
+			}
+		}, () -> null);
+		
+		CapabilityManager.INSTANCE.register(CapabilityProjectile.class, new IStorage<CapabilityProjectile>()
+		{
+			@Override
+			public INBT writeNBT(Capability<CapabilityProjectile> capability, CapabilityProjectile instance, Direction side)
+			{
+				return null;
+			}
+
+			@Override
+			public void readNBT(Capability<CapabilityProjectile> capability, CapabilityProjectile instance, Direction side, INBT nbt)
+			{
+			}
+		}, () -> null);
+	}
 	
 	
 	public static ItemCapability getItemCapability(ItemStack stack)

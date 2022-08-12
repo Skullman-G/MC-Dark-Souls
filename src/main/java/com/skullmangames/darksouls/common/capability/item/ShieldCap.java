@@ -6,8 +6,8 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.item.Item;
 
 public class ShieldCap extends MeleeWeaponCap
 {

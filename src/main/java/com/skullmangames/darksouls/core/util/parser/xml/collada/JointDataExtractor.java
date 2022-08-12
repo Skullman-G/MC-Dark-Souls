@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;

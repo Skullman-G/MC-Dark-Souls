@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
+
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;

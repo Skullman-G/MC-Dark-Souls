@@ -1,18 +1,18 @@
 package com.skullmangames.darksouls.client.renderer.layer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -34,7 +34,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 	}
 	
 	@Override
-	public void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, E entityliving, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
 		ItemStack mainHandStack = entityCap.getOriginalEntity().getMainHandItem();
 		RenderEngine renderEngine = ClientManager.INSTANCE.renderEngine;
@@ -44,7 +44,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 		{
 			if (entityCap.getOriginalEntity().getControllingPassenger() != null)
 			{
-				ItemCapability itemCap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+				ItemCapability itemCap = entityCap.getHeldItemCapability(Hand.MAIN_HAND);
 				if (itemCap != null && !itemCap.canUseOnMount())
 				{
 					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entityCap, buffer, matrixStackIn, packedLightIn);
@@ -52,7 +52,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 					return;
 				}
 			}
-			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entityCap, InteractionHand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entityCap, Hand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 		}
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
@@ -60,17 +60,17 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 		
 		if (offHandStack.getItem() != Items.AIR)
 		{
-			ItemCapability cap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
+			ItemCapability cap = entityCap.getHeldItemCapability(Hand.MAIN_HAND);
 			if (cap != null)
 			{
 				if (cap.canBeRenderedBoth(offHandStack))
 				{
-					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 				}
 			}
 			else
 			{
-				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 			}
 		}
 		matrixStackIn.popPose();

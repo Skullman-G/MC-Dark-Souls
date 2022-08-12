@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
-import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -12,20 +11,21 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends PlayerCap<T>
+public class AbstractClientPlayerCap<T extends AbstractClientPlayerEntity> extends PlayerCap<T>
 {
 	protected float prevYaw;
 	protected float bodyYaw;
@@ -89,7 +89,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		else
 		{
 			ClientAnimator animator = getClientAnimator();
-			Vec3 mov = this.orgEntity.getDeltaMovement();
+			Vector3d mov = this.orgEntity.getDeltaMovement();
 
 			if (this.orgEntity.isSwimming() && mov.y < -0.005)
 			{
@@ -143,12 +143,12 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		
 		if (this.orgEntity.getUseItemRemainingTicks() > 0)
 		{
-			InteractionHand hand = this.orgEntity.getUsedItemHand();
-			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
+			Hand hand = this.orgEntity.getUsedItemHand();
+			LayerPart layerPart = hand == Hand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
 			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
 			else
 			{
-				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+				UseAction useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 				switch (useAction)
 				{
 					case BOW:
@@ -195,12 +195,12 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
 			else 
 			{
-				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
+				if (this.isHoldingWeaponWithHoldingAnimation(Hand.MAIN_HAND))
 				{
 					this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
 					changedRight = true;
 				}
-				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
+				if (this.isHoldingWeaponWithHoldingAnimation(Hand.OFF_HAND))
 				{
 					this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
 					changedLeft = true;
@@ -221,14 +221,14 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		ItemStack mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
-		ItemStack offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
+		ItemStack mainHandItem = this.orgEntity.getItemInHand(Hand.MAIN_HAND);
+		ItemStack offHandItem = this.orgEntity.getItemInHand(Hand.OFF_HAND);
 		boolean isMainHandChanged = this.prevHeldItem != mainHandItem;
 		boolean isOffHandChanged = this.prevHeldItemOffHand != offHandItem;
 		
 		if(isMainHandChanged || isOffHandChanged)
 		{
-			this.onHeldItemChange(this.getHeldItemCapability(InteractionHand.MAIN_HAND), this.getHeldItemCapability(InteractionHand.OFF_HAND));
+			this.onHeldItemChange(this.getHeldItemCapability(Hand.MAIN_HAND), this.getHeldItemCapability(Hand.OFF_HAND));
 			this.prevHeldItem = mainHandItem;
 			this.prevHeldItemOffHand = offHandItem;
 		}
@@ -313,8 +313,8 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
             float f1 = MathUtils.clamp(f * f / 100.0F, 0.0F, 1.0F);
             PublicMatrix4f.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), new Vector3f(1F, 0F, 0F), mat, mat);
             
-            Vec3 vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
-            Vec3 vec3d1 = orgEntity.getDeltaMovement();
+            Vector3d vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
+            Vector3d vec3d1 = orgEntity.getDeltaMovement();
             
             double d0 = vec3d1.x * vec3d1.x + vec3d1.z * vec3d1.z;
             double d1 = vec3d.x * vec3d.x + vec3d.z * vec3d.z;
@@ -354,7 +354,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			{
 				float f = this.orgEntity.getSwimAmount(partialTick);
 				float f3 = this.orgEntity.isInWater() ? this.orgEntity.xRot : 0;
-		        float f4 = Mth.lerp(f, 0.0F, f3);
+		        float f4 = MathHelper.lerp(f, 0.0F, f3);
 		        prevPitch = f4;
 		        pitch = f4;
 			}

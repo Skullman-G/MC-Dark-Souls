@@ -10,10 +10,10 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -43,7 +43,7 @@ public class SwordCap extends MeleeWeaponCap
 	@Override
 	public WieldStyle getStyle(LivingCap<?> entityCap)
 	{
-		WeaponCap item = entityCap.getHeldWeaponCapability(InteractionHand.OFF_HAND);
+		WeaponCap item = entityCap.getHeldWeaponCapability(Hand.OFF_HAND);
 		if(item != null && item.getWeaponCategory() == WeaponCategory.STRAIGHT_SWORD)
 		{
 			return WieldStyle.TWO_HAND;

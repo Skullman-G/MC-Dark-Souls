@@ -6,15 +6,15 @@ import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.util.Hand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 
 public class StrafingGoal extends Goal
 {
 	protected final MobCap<?> mobdata;
-	protected final Mob mob;
+	protected final MobEntity mob;
 	private int strafingTime;
 	private float dir;
 	
@@ -45,7 +45,7 @@ public class StrafingGoal extends Goal
 	public void start()
 	{
 		if (ModCapabilities.getItemCapability(this.mob.getOffhandItem()) instanceof IShield)
-			this.mob.startUsingItem(InteractionHand.OFF_HAND);
+			this.mob.startUsingItem(Hand.OFF_HAND);
 		
 		this.time = this.defaultTime;
 	}

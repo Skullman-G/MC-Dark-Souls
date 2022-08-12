@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.ArrayList;
 import java.util.List;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
 public class Stats
 {
@@ -15,14 +15,14 @@ public class Stats
 	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
 			{
 				@Override		
-				public void onChange(Player player, int value)
+				public void onChange(PlayerEntity player, int value)
 				{
 					super.onChange(player, value);
 					player.setHealth(player.getMaxHealth());
 				}
 				
 				@Override
-				public double getModifyValue(Player player, int value)
+				public double getModifyValue(PlayerEntity player, int value)
 				{
 					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
 				}
@@ -30,7 +30,7 @@ public class Stats
 	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
 			{
 				@Override
-				public double getModifyValue(Player player, int value)
+				public double getModifyValue(PlayerEntity player, int value)
 				{
 					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
 				}
@@ -38,7 +38,7 @@ public class Stats
 	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
 			{
 				@Override
-				public double getModifyValue(Player player, int value)
+				public double getModifyValue(PlayerEntity player, int value)
 				{
 					return -0.019D * (value - STANDARD_LEVEL) * (value - 188);
 				}
@@ -57,7 +57,7 @@ public class Stats
 		return level * (10 + level);
 	}
 	
-	public static double getTotalDamageAmount(Player player, int strength, int dex)
+	public static double getTotalDamageAmount(PlayerEntity player, int strength, int dex)
 	{
 		return STRENGTH.getModifyValue(player, strength)
 				+ DEXTERITY.getModifyValue(player, dex);
@@ -75,18 +75,18 @@ public class Stats
 		return this.statValues[index];
 	}
 	
-	public void setStatValue(Player player, Stat stat, int value)
+	public void setStatValue(PlayerEntity player, Stat stat, int value)
 	{
 		this.setStatValue(player, STATS.indexOf(stat), value);
 	}
 	
-	public void setStatValue(Player player, int index, int value)
+	public void setStatValue(PlayerEntity player, int index, int value)
 	{
 		this.statValues[index] = value;
 		STATS.get(index).onChange(player, value);
 	}
 	
-	public void loadStats(Player player, CompoundTag nbt)
+	public void loadStats(PlayerEntity player, CompoundNBT nbt)
 	{
 		for (int i = 0; i < STATS.size(); i++)
 		{
@@ -95,13 +95,13 @@ public class Stats
 		}
 	}
 	
-	public void initStatValue(Player player, int index, int value)
+	public void initStatValue(PlayerEntity player, int index, int value)
 	{
 		this.statValues[index] = value;
 		STATS.get(index).init(player, value);
 	}
 	
-	public void saveStats(CompoundTag nbt)
+	public void saveStats(CompoundNBT nbt)
 	{
 		for (int i = 0; i < STATS.size(); i++)
 		{

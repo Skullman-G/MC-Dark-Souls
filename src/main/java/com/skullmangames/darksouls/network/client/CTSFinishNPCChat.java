@@ -3,10 +3,10 @@ package com.skullmangames.darksouls.network.client;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.entity.QuestEntity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSFinishNPCChat
 {
@@ -19,12 +19,12 @@ public class CTSFinishNPCChat
 		this.location = location;
 	}
 	
-	public static CTSFinishNPCChat fromBytes(FriendlyByteBuf buf)
+	public static CTSFinishNPCChat fromBytes(PacketBuffer buf)
 	{
 		return new CTSFinishNPCChat(buf.readInt(), buf.readUtf());
 	}
 	
-	public static void toBytes(CTSFinishNPCChat msg, FriendlyByteBuf buf)
+	public static void toBytes(CTSFinishNPCChat msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeUtf(msg.location);
@@ -34,7 +34,7 @@ public class CTSFinishNPCChat
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ServerPlayer player = ctx.get().getSender();
+			ServerPlayerEntity player = ctx.get().getSender();
 			Entity entity = player.level.getEntity(msg.entityId);
 			if (!(entity instanceof QuestEntity)) return;
 			

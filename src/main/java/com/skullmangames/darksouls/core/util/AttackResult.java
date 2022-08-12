@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.world.entity.Entity;
+import net.minecraft.entity.Entity;
 
 public class AttackResult
 {

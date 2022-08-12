@@ -19,27 +19,27 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.settings.PointOfView;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraft.world.phys.EntityHitResult;
 
 @OnlyIn(Dist.CLIENT)
-public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
+public class LocalPlayerCap extends AbstractClientPlayerCap<ClientPlayerEntity>
 {
 	private LivingEntity rayTarget;
 	private Minecraft minecraft = Minecraft.getInstance();
 	
 	@Override
-	public void onEntityConstructed(LocalPlayer entity)
+	public void onEntityConstructed(ClientPlayerEntity entity)
 	{
 		super.onEntityConstructed(entity);
 		ClientManager.INSTANCE.setPlayerCap(this);
@@ -48,16 +48,16 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	}
 	
 	@Override
-	public void onEntityJoinWorld(LocalPlayer entityIn)
+	public void onEntityJoinWorld(ClientPlayerEntity entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
 		
-		if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
+		if (minecraft.options.getCameraType() == PointOfView.THIRD_PERSON_BACK) ClientManager.INSTANCE.switchToThirdPerson();
 		else ClientManager.INSTANCE.switchToFirstPerson();
 	}
 	
 	@Override
-	public void onLoad(CompoundTag nbt)
+	public void onLoad(CompoundNBT nbt)
 	{
 		super.onLoad(nbt);
 		GameOverlayManager.canAnimateSouls = true;
@@ -85,11 +85,11 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	{
 		super.updateOnClient();
 		
-		HitResult rayResult = this.minecraft.hitResult;
+		RayTraceResult rayResult = this.minecraft.hitResult;
 
-		if (rayResult.getType() == HitResult.Type.ENTITY)
+		if (rayResult.getType() == RayTraceResult.Type.ENTITY)
 		{
-			Entity hit = ((EntityHitResult)rayResult).getEntity();
+			Entity hit = ((EntityRayTraceResult)rayResult).getEntity();
 			if (hit instanceof LivingEntity)
 				this.rayTarget = (LivingEntity)hit;
 		}
@@ -120,7 +120,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void performAttack(AttackType type)
 	{
 		AttackAnimation animation = null;
-		MeleeWeaponCap weapon = this.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+		MeleeWeaponCap weapon = this.getHeldWeaponCapability(Hand.MAIN_HAND);
 		if (weapon != null)
 		{
 			animation = weapon.getAttack(type, this);
@@ -185,7 +185,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	@Override
 	public boolean isFirstPerson()
 	{
-		return this.minecraft.options.getCameraType() == CameraType.FIRST_PERSON;
+		return this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON;
 	}
 	
 	@Override
@@ -193,7 +193,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	{
 		if (this.human == value) return;
 		super.setHuman(value);
-		if (value) ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
+		if (value) ModNetworkManager.connection.setTitle(new TranslationTextComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
 	}
 	
 	@Override

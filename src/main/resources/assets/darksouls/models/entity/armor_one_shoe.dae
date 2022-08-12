@@ -36,7 +36,7 @@
     </material>
   </library_materials>
   <library_geometries>
-    <geometry id="Cube_001-mesh" name="Cube.001">
+    <geometry id="Cube_001-mesh" name="ModelBox.001">
       <mesh>
         <source id="Cube_001-mesh-positions">
           <float_array id="Cube_001-mesh-positions-array" count="24">0.2962568 0.1375 -0.03080987 0.2962568 -0.1375 -0.03080987 -0.04625684 -0.1375 -0.03080987 -0.04625666 0.1375 -0.03080987 -0.04625666 0.1375 0.380841 0.2962568 0.1374999 0.380841 -0.04625684 -0.1375 0.380841 0.2962567 -0.1375001 0.380841</float_array>
@@ -341,14 +341,14 @@
             </technique>
           </extra>
         </node>
-        <node id="Cube" name="Cube" type="NODE">
+        <node id="ModelBox" name="ModelBox" type="NODE">
           <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
           <instance_controller url="#Armature_Cube-skin">
             <skeleton>#Armature_Root</skeleton>
             <bind_material>
               <technique_common>
                 <instance_material symbol="Material_001-material" target="#Material_001-material">
-                  <bind_vertex_input semantic="Cube-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+                  <bind_vertex_input semantic="ModelBox-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
                 </instance_material>
               </technique_common>
             </bind_material>

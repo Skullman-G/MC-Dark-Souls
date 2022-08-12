@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Hand;
 
 public class StrayDemonCap extends MobCap<StrayDemon>
 {
@@ -39,7 +39,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	}
 	
 	@Override
-	public Collider getColliderMatching(InteractionHand hand)
+	public Collider getColliderMatching(Hand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
 		if (cap instanceof GreatHammerCap) return Colliders.STRAY_DEMON_GREAT_HAMMER;

@@ -4,9 +4,9 @@ import java.util.Random;
 
 import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 
-public class WalkAroundBonfireGoal extends WaterAvoidingRandomStrollGoal
+public class WalkAroundBonfireGoal extends RandomWalkingGoal
 {
 	private final AbstractFireKeeper fireKeeper;
 	

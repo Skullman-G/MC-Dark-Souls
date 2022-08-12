@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.common.animation;
 
 import java.util.List;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
-import net.minecraft.util.Mth;
+import net.minecraft.util.math.MathHelper;
 
 public class TransformSheet
 {
@@ -109,7 +109,7 @@ public class TransformSheet
 		Keyframe startKeyframe = keyframes[0];
 		Keyframe endKeyframe = keyframes[keyframes.length - 1];
 		float pitchDeg = (float) Math.toDegrees(
-				Mth.atan2(modifiedStartToEnd.y() - startToEnd.y(), Vector3fHelper.length(modifiedStartToEnd)));
+				MathHelper.atan2(modifiedStartToEnd.y() - startToEnd.y(), Vector3fHelper.length(modifiedStartToEnd)));
 		float yawDeg = (float) Math.toDegrees(MathUtils.getAngleBetween(
 				Vector3fHelper.normalize(Vector3fHelper.mul(modifiedStartToEnd, 1.0F, 0.0F, 1.0F)),
 				Vector3fHelper.normalize(Vector3fHelper.mul(startToEnd, 1.0F, 0.0F, 1.0F))));

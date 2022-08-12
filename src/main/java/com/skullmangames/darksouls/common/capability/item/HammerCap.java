@@ -5,7 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public class HammerCap extends MeleeWeaponCap
 {

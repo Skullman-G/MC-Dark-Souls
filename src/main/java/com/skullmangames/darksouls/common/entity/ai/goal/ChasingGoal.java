@@ -6,17 +6,17 @@ import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.util.Hand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.pathfinding.Path;
 
 public class ChasingGoal extends Goal
 {
 	protected final MobCap<?> mobCap;
-	protected final Mob attacker;
+	protected final MobEntity attacker;
 	
 	private final boolean defensive;
 	private Path path;
@@ -50,7 +50,7 @@ public class ChasingGoal extends Goal
 	{
 		LivingEntity target = this.attacker.getTarget();
 		if (target == null || !target.isAlive() || this.mobCap.isInaction()) return false;
-		else return (!(target instanceof Player) || !target.isSpectator() && !((Player) target).isCreative())
+		else return (!(target instanceof PlayerEntity) || !target.isSpectator() && !((PlayerEntity) target).isCreative())
 				&& this.attacker.distanceTo(target) > 2;
 	}
 
@@ -61,7 +61,7 @@ public class ChasingGoal extends Goal
 		this.attacker.setAggressive(true);
 		
 		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
-			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
+			this.attacker.startUsingItem(Hand.OFF_HAND);
 	}
 
 	@Override

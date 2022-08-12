@@ -29,12 +29,12 @@ import com.skullmangames.darksouls.network.server.STCStat;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class ModNetworkManager
 {
@@ -58,12 +58,12 @@ public class ModNetworkManager
 		INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> {return entity;}), message);
 	}
 	
-	public static <MSG> void sendToPlayer(MSG message, ServerPlayer player)
+	public static <MSG> void sendToPlayer(MSG message, ServerPlayerEntity player)
 	{
 		INSTANCE.send(PacketDistributor.PLAYER.with(() -> {return player;}), message);
 	}
 
-	public static <MSG> void sendToAllPlayerTrackingThisEntityWithSelf(MSG message, ServerPlayer entity)
+	public static <MSG> void sendToAllPlayerTrackingThisEntityWithSelf(MSG message, ServerPlayerEntity entity)
 	{
 		sendToPlayer(message, entity);
 		INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> {return entity;}), message);

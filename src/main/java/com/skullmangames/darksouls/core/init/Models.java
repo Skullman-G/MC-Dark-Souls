@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public abstract class Models<T extends Model>
 {

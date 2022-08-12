@@ -1,19 +1,19 @@
 package com.skullmangames.darksouls.client.particles;
 
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.client.particle.SpriteTexturedParticle;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DustCloudParticle extends TextureSheetParticle
+public class DustCloudParticle extends SpriteTexturedParticle
 {
-	public DustCloudParticle(ClientLevel world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
+	public DustCloudParticle(ClientWorld world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
 	{
 		super(world, posX, posY, posZ, speedX, speedY, speedZ);
 
@@ -39,23 +39,23 @@ public class DustCloudParticle extends TextureSheetParticle
 	}
 
 	@Override
-	public ParticleRenderType getRenderType()
+	public IParticleRenderType getRenderType()
 	{
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType>
+	public static class Factory implements IParticleFactory<BasicParticleType>
 	{
-		private final SpriteSet sprite;
+		private final IAnimatedSprite sprite;
 
-		public Factory(SpriteSet sprite)
+		public Factory(IAnimatedSprite sprite)
 		{
 			this.sprite = sprite;
 		}
 
 		@Override
-		public Particle createParticle(SimpleParticleType particle, ClientLevel world, double posX, double posY, double posZ, double speedX,
+		public Particle createParticle(BasicParticleType particle, ClientWorld world, double posX, double posY, double posZ, double speedX,
 				double speedY, double speedZ)
 		{
 			DustCloudParticle dustCloud = new DustCloudParticle(world, posX, posY, posZ, speedX, speedY, speedZ);

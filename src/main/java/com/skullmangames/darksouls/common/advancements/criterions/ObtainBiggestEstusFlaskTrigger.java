@@ -2,15 +2,15 @@ package com.skullmangames.darksouls.common.advancements.criterions;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
+import net.minecraft.loot.ConditionArraySerializer;
 
-public class ObtainBiggestEstusFlaskTrigger extends SimpleCriterionTrigger<ObtainBiggestEstusFlaskTrigger.Instance>
+public class ObtainBiggestEstusFlaskTrigger extends AbstractCriterionTrigger<ObtainBiggestEstusFlaskTrigger.Instance>
 {
 	private static final ResourceLocation ID = new ResourceLocation("obtain_biggest_estus_flask");
 	
@@ -21,12 +21,12 @@ public class ObtainBiggestEstusFlaskTrigger extends SimpleCriterionTrigger<Obtai
 	}
 	
 	@Override
-	protected ObtainBiggestEstusFlaskTrigger.Instance createInstance(JsonObject arg0, EntityPredicate.Composite arg1, DeserializationContext arg2)
+	protected ObtainBiggestEstusFlaskTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
 	{
 		return new ObtainBiggestEstusFlaskTrigger.Instance(ID, arg1);
 	}
 	
-	public void trigger(ServerPlayer player, int totaluses)
+	public void trigger(ServerPlayerEntity player, int totaluses)
 	{
 	    this.trigger(player, (p_226524_1_) ->
 	    {
@@ -34,16 +34,16 @@ public class ObtainBiggestEstusFlaskTrigger extends SimpleCriterionTrigger<Obtai
 	    });
 	}
 	
-	public static class Instance extends AbstractCriterionTriggerInstance
+	public static class Instance extends CriterionInstance
 	{
 		private final int totalUses = 20;
 		
-		public Instance(ResourceLocation resourcelocation, EntityPredicate.Composite predicate)
+		public Instance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
 			super(resourcelocation, predicate);
 		}
 		
-		public static ObtainBiggestEstusFlaskTrigger.Instance createInstance(ResourceLocation resourcelocation, EntityPredicate.Composite predicate)
+		public static ObtainBiggestEstusFlaskTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate)
 		{
 			return new ObtainBiggestEstusFlaskTrigger.Instance(resourcelocation, predicate);
 	    }
@@ -54,7 +54,7 @@ public class ObtainBiggestEstusFlaskTrigger extends SimpleCriterionTrigger<Obtai
 	    }
 		
 		@Override
-		public JsonObject serializeToJson(SerializationContext serializer)
+		public JsonObject serializeToJson(ConditionArraySerializer serializer)
 		{
 			JsonObject jsonobject = super.serializeToJson(serializer);
 			return jsonobject;
