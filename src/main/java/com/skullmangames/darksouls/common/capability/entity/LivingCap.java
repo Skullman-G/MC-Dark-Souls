@@ -322,6 +322,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			extSource = ExtendedDamageSource.getIndirectFrom((IndirectEntityDamageSource)damageSource, amount);
 		}
+		else
+		{
+			extSource = ExtendedDamageSource.getFrom(damageSource, amount);
+		}
 		
 		// Damage Calculation
 		if (!indirect)
