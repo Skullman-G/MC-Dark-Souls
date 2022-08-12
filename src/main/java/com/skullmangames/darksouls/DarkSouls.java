@@ -37,6 +37,7 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
@@ -223,6 +224,7 @@ public class DarkSouls
 																							// solution
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
+		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

@@ -29,7 +29,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleS
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
-
+import com.skullmangames.darksouls.common.entity.LightningSpear;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -175,7 +175,7 @@ public final class Animations
 					{
 						Event.create(0.56F, Side.CLIENT, (cap) ->
 						{
-							cap.getOriginalEntity().level.addAlwaysVisibleParticle(ModParticles.FORCE.get(), cap.getX(), cap.getY() + 1.0F, cap.getZ(), 0, 0, 0);
+							cap.getLevel().addAlwaysVisibleParticle(ModParticles.FORCE.get(), cap.getX(), cap.getY() + 1.0F, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(0.56F, Side.SERVER, (cap) ->
 						{
@@ -189,6 +189,20 @@ public final class Animations
 								cap.knockBackEntity(target, 0.5F);
 							}
 						})
+					});
+	
+	public static final StaticAnimation BIPED_CAST_MIRACLE_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/cast_miracle_spear", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.28F, Side.CLIENT, (cap) ->
+							{
+								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+							})/*,
+							Event.create(0.92F, Side.SERVER, (cap) ->
+							{
+								LightningSpear spear = new LightningSpear(cap, false);
+								cap.getLevel().addFreshEntity(spear);
+							})*/
 					});
 	
 	// Big Weapon

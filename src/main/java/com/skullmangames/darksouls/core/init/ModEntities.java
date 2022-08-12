@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.HumanityEntity;
+import com.skullmangames.darksouls.common.entity.LightningSpear;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -70,6 +71,13 @@ public class ModEntities
 			EntityType.Builder.<AnastaciaOfAstora>of(AnastaciaOfAstora::new, MobCategory.CREATURE)
 				.sized(0.6F, 1.95F)
 				.canSpawnFarFromPlayer());
+	
+	//Projectiles
+	public static final RegistryObject<EntityType<LightningSpear>> LIGHTNING_SPEAR = register("lightning_spear",
+			EntityType.Builder.<LightningSpear>of(LightningSpear::new, MobCategory.MISC)
+			.sized(1.5F, 0.5F)
+			.clientTrackingRange(6)
+			.updateInterval(20));
 	
 	public static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder)
 	{

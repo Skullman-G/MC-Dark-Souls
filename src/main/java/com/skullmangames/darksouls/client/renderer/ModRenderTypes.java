@@ -101,16 +101,16 @@ public class ModRenderTypes extends RenderType
 				false, false, state);
 	}
 	
-	public static RenderType getEntityEffect(ResourceLocation locationIn)
+	public static RenderType getEffectEntity(ResourceLocation locationIn)
 	{
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
 				.setShaderState(POSITION_TEX_SHADER)
-				.setTransparencyState(ADDITIVE_TRANSPARENCY)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setDepthTestState(LEQUAL_DEPTH_TEST)
 				.createCompositeState(false);
 		
-		return create(DarkSouls.MOD_ID + "entity_effect", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, state);
+		return create(DarkSouls.MOD_ID + ":effect_entity", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, state);
 	}
 
 	public static RenderType getBoundingBox()

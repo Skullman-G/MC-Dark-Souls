@@ -33,14 +33,14 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
     }
 	
 	public void drawTextured3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
-			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minTexU, float minTexV, float maxTexU, float maxTexV)
+			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minU, float minV, float maxU, float maxV)
     {
         float cor = 0.00390625F;
         
-        vertexBuilder.vertex(matrix, minX, minY, maxZ).uv((minTexU * cor), (maxTexV) * cor).endVertex();
-        vertexBuilder.vertex(matrix, maxX, minY, maxZ).uv((maxTexU * cor), (maxTexV) * cor).endVertex();
-        vertexBuilder.vertex(matrix, maxX, maxY, minZ).uv((maxTexU * cor), (minTexV) * cor).endVertex();
-        vertexBuilder.vertex(matrix, minX, maxY, minZ).uv((minTexU * cor), (minTexV) * cor).endVertex();
+        vertexBuilder.vertex(matrix, minX, minY, maxZ).uv(minU * cor, maxV * cor).endVertex();
+        vertexBuilder.vertex(matrix, maxX, minY, maxZ).uv(maxU * cor, maxV * cor).endVertex();
+        vertexBuilder.vertex(matrix, maxX, maxY, minZ).uv(maxU * cor, minV * cor).endVertex();
+        vertexBuilder.vertex(matrix, minX, maxY, minZ).uv(minU * cor, minV * cor).endVertex();
     }
 	
 	public AdditionalEntityRenderer()

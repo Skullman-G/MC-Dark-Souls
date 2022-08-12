@@ -54,6 +54,7 @@
 	"item.darksouls.knight_shield": "Knight Shield",
 	"item.darksouls.mace": "Mace",
 	"item.darksouls.miracle_force": "Miracle: Force",
+	"item.darksouls.miracle_lightning_spear": "Miracle: Lightning Spear",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -75,6 +76,7 @@
 	"entity.darksouls.anastacia_of_astora": "Anastacia of Astora",
 	"entity.darksouls.hollow_lordran_warrior": "Hollow Warrior of Lordran",
 	"entity.darksouls.hollow_lordran_soldier": "Hollow Soldier of Lordran",
+	"entity.darksouls.lightning_spear": "Lightning Spear",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -150,6 +152,8 @@
 	"tooltip.darksouls.mace.extended": "Iron hammer with a protrusive pommel. This simple bladeless strike weapon is effective against most foes, and can break the guard of a shield. However, one miss leaves one wide open.",
 	"tooltip.darksouls.miracle_force": "Releases a shockwave that staggers foes.",
 	"tooltip.darksouls.miracle_force.extended": "Elementary miracle among clerics. This quickly-acting miracle inflicts no damage, but propels foes back and defends against arrows. Cleric knights use this miracle when charging into enemy mobs.",
+	"tooltip.darksouls.miracle_lightning_spear": "Hurls a lightning spear.",
+	"tooltip.darksouls.miracle_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. The spears inflict lightning damage. Especially powerful against metal armor and dragons.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

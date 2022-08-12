@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
@@ -17,6 +16,7 @@ import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -282,6 +282,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public ItemCapability getHeldItemCapability(InteractionHand hand)
 	{
 		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
+	}
+	
+	public SpellcasterWeaponCap getHeldSpellcasterWeaponCap(InteractionHand hand)
+	{
+		return ModCapabilities.getSpellcasterWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
 
 	public MeleeWeaponCap getHeldWeaponCapability(InteractionHand hand)

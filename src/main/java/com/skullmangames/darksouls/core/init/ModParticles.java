@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.client.particles.DustCloudParticle;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.client.particles.ForceParticle;
 import com.skullmangames.darksouls.client.particles.HumanityParticle;
+import com.skullmangames.darksouls.client.particles.LightningSpearParticle;
 import com.skullmangames.darksouls.client.particles.MiracleCircleParticle;
 import com.skullmangames.darksouls.client.particles.MiracleGlowParticle;
 import com.skullmangames.darksouls.client.particles.SoulParticle;
@@ -39,6 +40,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> MEDIUM_MIRACLE_CIRCLE = register("medium_miracle_circle", true);
 	public static final RegistryObject<SimpleParticleType> LARGE_MIRACLE_CIRCLE = register("large_miracle_circle", true);
 	public static final RegistryObject<SimpleParticleType> FORCE = register("force", true);
+	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> LIGHTNING_SPEAR = register("lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
 	{
@@ -71,5 +73,6 @@ public class ModParticles
 		minecraft.particleEngine.register(MEDIUM_MIRACLE_CIRCLE.get(), MiracleCircleParticle::medium);
 		minecraft.particleEngine.register(LARGE_MIRACLE_CIRCLE.get(), MiracleCircleParticle::large);
 		minecraft.particleEngine.register(FORCE.get(), ForceParticle.Factory::new);
+		minecraft.particleEngine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle.Factory::new);
 	}
 }
