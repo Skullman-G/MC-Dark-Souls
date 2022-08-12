@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
+import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
@@ -16,6 +18,8 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,9 +28,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 {
@@ -47,6 +53,17 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	protected void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
 	{
 		builder.put(type, new Pair<Boolean, AttackAnimation[]>(repeat, animations));
+	}
+	
+	@Override
+	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
+	{
+		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
+		super.modifyItemTooltip(itemTooltip, playerCap, stack);
+		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		{
+			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getPhysicalDefense() * 100) + "%"));
+		}
 	}
 	
 	@Override

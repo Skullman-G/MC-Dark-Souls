@@ -38,7 +38,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	private final WeaponCategory weaponCategory;
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
 	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
-	private final float poiseDamage;
+	public final float poiseDamage;
 	public final float weight;
 
 	public WeaponCap(Item item, WeaponCategory category, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling, float poiseDamage)
@@ -106,7 +106,8 @@ public abstract class WeaponCap extends AttributeItemCap
 
 			if (!description.contains(languagePath))
 				itemTooltip.add(new TextComponent("\u00A77\n" + description));
-		} else
+		}
+		else
 		{
 			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage()));
 
