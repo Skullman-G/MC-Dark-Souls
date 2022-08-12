@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.network.PacketBuffer;
@@ -44,8 +44,8 @@ public class CTSBonfireTask
 		ctx.get().enqueueWork(()->
 		{
 			ServerPlayerEntity serverplayer = ctx.get().getSender();
-			ServerPlayerCap playerdata = (ServerPlayerCap) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (playerdata == null) return;
+			ServerPlayerCap playerCap = (ServerPlayerCap) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (playerCap == null) return;
 			
 			TileEntity tileentity = serverplayer.level.getBlockEntity(msg.bonfirePos);
 			BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
@@ -54,14 +54,14 @@ public class CTSBonfireTask
 			switch(msg.task)
 			{
 				case REVERSE_HOLLOWING:
-					if (playerdata.isHuman() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerdata.hasEnoughHumanity(1)) return;
-					playerdata.raiseHumanity(-1);
-					playerdata.setHuman(true);
+					if (playerCap.isHuman() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerCap.hasEnoughHumanity(1)) return;
+					playerCap.raiseHumanity(-1);
+					playerCap.setHuman(true);
 					break;
 					
 				case KINDLE:
-					if (!playerdata.isHuman() || !bonfire.canKindle() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerdata.hasEnoughHumanity(1)) return;
-					playerdata.raiseHumanity(-1);
+					if (!playerCap.isHuman() || !bonfire.canKindle() || !bonfire.getBlockState().getValue(BonfireBlock.LIT) || !playerCap.hasEnoughHumanity(1)) return;
+					playerCap.raiseHumanity(-1);
 					bonfire.kindle();
 					break;
 					

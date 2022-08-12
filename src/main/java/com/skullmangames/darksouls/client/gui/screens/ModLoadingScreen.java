@@ -78,6 +78,7 @@ public class ModLoadingScreen extends LoadingGui
 		return output.toString().split("\n");
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void render(MatrixStack matStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{

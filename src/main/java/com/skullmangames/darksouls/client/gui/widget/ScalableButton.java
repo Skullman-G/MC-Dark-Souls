@@ -23,6 +23,7 @@ public class ScalableButton extends Button
 		super(p_i232256_1_, p_i232256_2_, p_i232256_3_, p_i232256_4_, p_i232256_5_, p_i232256_6_);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void renderButton(MatrixStack matStack, int p_230431_2_, int p_230431_3_, float p_230431_4_)
 	{

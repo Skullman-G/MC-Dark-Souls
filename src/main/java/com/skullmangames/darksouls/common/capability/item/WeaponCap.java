@@ -90,7 +90,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	public abstract float getDamage();
 
 	@Override
-	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerCap<?> playerdata, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry))
 			return;
@@ -114,9 +114,9 @@ public abstract class WeaponCap extends AttributeItemCap
 			itemTooltip.add(new StringTextComponent(""));
 			itemTooltip.add(new StringTextComponent("Requirements:"));
 			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.STRENGTH.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.STRENGTH, playerdata)));
+					+ this.getStatStringValue(Stats.STRENGTH, playerCap)));
 			itemTooltip.add(new StringTextComponent("  " + new TranslationTextComponent(Stats.DEXTERITY.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.DEXTERITY, playerdata)));
+					+ this.getStatStringValue(Stats.DEXTERITY, playerCap)));
 			
 			itemTooltip.add(new StringTextComponent(""));
 			itemTooltip.add(new StringTextComponent("Scaling:"));

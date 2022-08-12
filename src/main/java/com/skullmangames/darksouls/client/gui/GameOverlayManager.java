@@ -103,6 +103,7 @@ public class GameOverlayManager
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void renderBossHealthBars(MatrixStack poseStack)
 	{
 		minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);

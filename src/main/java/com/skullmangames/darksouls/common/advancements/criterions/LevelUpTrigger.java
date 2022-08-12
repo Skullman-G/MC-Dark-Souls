@@ -2,15 +2,15 @@ package com.skullmangames.darksouls.common.advancements.criterions;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
+import net.minecraft.loot.ConditionArraySerializer;
+import net.minecraft.util.ResourceLocation;
 
-public class LevelUpTrigger extends SimpleCriterionTrigger<LevelUpTrigger.Instance>
+public class LevelUpTrigger extends AbstractCriterionTrigger<LevelUpTrigger.Instance>
 {
 	private static final ResourceLocation ID = new ResourceLocation("player_level_up");
 	
@@ -21,12 +21,12 @@ public class LevelUpTrigger extends SimpleCriterionTrigger<LevelUpTrigger.Instan
 	}
 	
 	@Override
-	protected LevelUpTrigger.Instance createInstance(JsonObject arg0, EntityPredicate.Composite arg1, DeserializationContext arg2)
+	protected LevelUpTrigger.Instance createInstance(JsonObject arg0, AndPredicate arg1, ConditionArrayParser arg2)
 	{
 		return new LevelUpTrigger.Instance(ID, arg1, true);
 	}
 	
-	public void trigger(ServerPlayer player, boolean bool)
+	public void trigger(ServerPlayerEntity player, boolean bool)
 	{
 	    this.trigger(player, (instance) ->
 	    {
@@ -34,17 +34,17 @@ public class LevelUpTrigger extends SimpleCriterionTrigger<LevelUpTrigger.Instan
 	    });
 	}
 	
-	public static class Instance extends AbstractCriterionTriggerInstance
+	public static class Instance extends CriterionInstance
 	{
 		private final boolean bool;
 		
-		public Instance(ResourceLocation resourcelocation, EntityPredicate.Composite predicate, boolean bool)
+		public Instance(ResourceLocation resourcelocation, AndPredicate predicate, boolean bool)
 		{
 			super(resourcelocation, predicate);
 			this.bool = bool;
 		}
 		
-		public static LevelUpTrigger.Instance createInstance(ResourceLocation resourcelocation, EntityPredicate.Composite predicate, boolean bool)
+		public static LevelUpTrigger.Instance createInstance(ResourceLocation resourcelocation, AndPredicate predicate, boolean bool)
 		{
 			return new LevelUpTrigger.Instance(resourcelocation, predicate, bool);
 	    }
@@ -55,7 +55,7 @@ public class LevelUpTrigger extends SimpleCriterionTrigger<LevelUpTrigger.Instan
 	    }
 		
 		@Override
-		public JsonObject serializeToJson(SerializationContext serializer)
+		public JsonObject serializeToJson(ConditionArraySerializer serializer)
 		{
 			JsonObject jsonobject = super.serializeToJson(serializer);
 			return jsonobject;

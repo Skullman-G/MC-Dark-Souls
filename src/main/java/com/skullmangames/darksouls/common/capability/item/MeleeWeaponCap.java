@@ -21,12 +21,15 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
+import net.minecraft.util.text.ITextComponent;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,13 +57,13 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 	
 	@Override
-	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
+	public void modifyItemTooltip(List<ITextComponent> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		super.modifyItemTooltip(itemTooltip, playerCap, stack);
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
-			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getPhysicalDefense() * 100) + "%"));
+			itemTooltip.add(2, new StringTextComponent("\u00A72Physical Defense: " + (int)(this.getPhysicalDefense() * 100) + "%"));
 		}
 	}
 	

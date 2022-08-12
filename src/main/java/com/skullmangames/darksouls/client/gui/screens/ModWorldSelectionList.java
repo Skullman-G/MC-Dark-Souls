@@ -228,6 +228,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			this.icon = this.loadServerIcon();
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void render(MatrixStack matStack, int field, int y, int x, int p_230432_5_,
 				int p_230432_6_, int p_230432_7_, int p_230432_8_, boolean isMouseOver, float p_230432_10_)

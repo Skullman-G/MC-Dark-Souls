@@ -10,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.IndirectEntityDamageSource;
 
 public interface ExtendedDamageSource
@@ -38,7 +40,7 @@ public interface ExtendedDamageSource
 		LivingCap<?> cap = org.getDirectEntity() instanceof LivingEntity ? (LivingCap<?>)org.getDirectEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) : null;
 		if (cap != null)
 		{
-			MeleeWeaponCap weapon = cap.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
+			MeleeWeaponCap weapon = cap.getHeldWeaponCapability(Hand.MAIN_HAND);
 			if (weapon != null)
 			{
 				poiseDamage = weapon.poiseDamage;

@@ -45,6 +45,7 @@ public class ScreenManager
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void renderDarkBackground(Screen screen)
 	{
 		Tessellator tessellator = Tessellator.getInstance();
