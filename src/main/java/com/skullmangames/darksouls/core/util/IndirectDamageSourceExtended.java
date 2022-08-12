@@ -3,24 +3,29 @@ package com.skullmangames.darksouls.core.util;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.IndirectEntityDamageSource;
 
-public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements IExtendedDamageSource
+public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements ExtendedDamageSource
 {
-	private float impact;
-	private StunType stunType;
 	private float amount;
-	private DamageType damageType;
+	private final float staminaDamage;
+	private final float poiseDamage;
+	private boolean headshot;
+	private StunType stunType;
+	private final DamageType damageType;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, DamageType damageType)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
 		this.damageType = damageType;
+		this.poiseDamage = poiseDamage;
+		this.amount = amount;
+		this.staminaDamage = staminaDamage;
 	}
 
 	@Override
 	public int getRequiredDeflectionLevel()
 	{
-		return 4;
+		return 0;
 	}
 
 	@Override
@@ -36,33 +41,15 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public void setImpact(float amount)
-	{
-		this.impact = amount;
-	}
-
-	@Override
-	public void setStunType(StunType stunType)
-	{
-		this.stunType = stunType;
-	}
-
-	@Override
-	public float getImpact()
-	{
-		return impact;
-	}
-
-	@Override
 	public StunType getStunType()
 	{
-		return stunType;
+		return this.stunType;
 	}
 
 	@Override
 	public Entity getOwner()
 	{
-		return super.getDirectEntity();
+		return this.getEntity();
 	}
 
 	@Override
@@ -72,20 +59,44 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public int getSkillId()
-	{
-		return -1;
-	}
-
-	@Override
-	public DamageType getAttackType()
+	public DamageType getDamageType()
 	{
 		return this.damageType;
 	}
 
 	@Override
-	public void setAttackType(DamageType damageType)
+	public float getPoiseDamage()
 	{
-		this.damageType = damageType;
+		return this.poiseDamage;
+	}
+
+	@Override
+	public boolean isHeadshot()
+	{
+		return this.headshot;
+	}
+
+	@Override
+	public void setHeadshot(boolean value)
+	{
+		this.headshot = value;
+	}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return this.staminaDamage;
+	}
+
+	@Override
+	public void setStunType(StunType value)
+	{
+		this.stunType = value;
+	}
+
+	@Override
+	public Entity getSource()
+	{
+		return this.getDirectEntity();
 	}
 }

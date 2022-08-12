@@ -9,12 +9,10 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability.AttackType;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -24,7 +22,6 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,7 +35,6 @@ import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -48,7 +44,7 @@ public class InputManager
 {
 	private final Map<KeyBinding, BiConsumer<Integer, Integer>> keyFunctionMap;
 	private ClientPlayerEntity player;
-	private ClientPlayerData playerdata;
+	private LocalPlayerCap playerCap;
 	private KeyBindingMap keyHash;
 	private int rightHandPressCounter;
 	private boolean rightHandToggle;
@@ -59,6 +55,7 @@ public class InputManager
 	private GLFWCursorPosCallbackI callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
 	private double tracingMouseX;
 	private double tracingMouseY;
+	private AttackType reservedAttack;
 	
 	
 	public InputManager()
@@ -70,29 +67,32 @@ public class InputManager
 		
 		this.keyFunctionMap.put(this.options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
-		this.keyFunctionMap.put(ModKeys.SWAP_ACTION_MODE, this::onSwapActionModeKeyPressed);
+		this.keyFunctionMap.put(ModKeys.TOGGLE_COMBAT_MODE, this::onToggleCombatModeKeyPressed);
 		this.keyFunctionMap.put(this.options.keySprint, this::onSprintKeyPressed);
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
+		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
 		
 		try
 		{
 			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyBinding.class, "field_74514_b").get(null);
-		}
-		catch (IllegalArgumentException | IllegalAccessException e)
+		} catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
 	}
 	
-	public void setGamePlayer(ClientPlayerData playerdata)
+	public void setGamePlayer(LocalPlayerCap playerCap)
 	{
 		this.rightHandPressCounter = 0;
 		this.rightHandToggle = false;
 		this.sprintToggle = false;
 		this.sprintPressCounter = 0;
-		this.player = playerdata.getOriginalEntity();
-		this.playerdata = playerdata;
+		this.player = playerCap.getOriginalEntity();
+		this.playerCap = playerCap;
 	}
 	
 	public boolean playerCanMove(EntityState playerState)
@@ -102,17 +102,22 @@ public class InputManager
 
 	public boolean playerCanAct(EntityState playerState)
 	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerdata.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
+		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
+	}
+	
+	public boolean movingKeysDown()
+	{
+		return this.isKeyDown(this.options.keyUp) || this.isKeyDown(this.options.keyDown) || this.isKeyDown(this.options.keyLeft) || this.isKeyDown(this.options.keyRight);
 	}
 
-	public boolean playerCanExecuteSkill(EntityState playerState)
+	public boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
-				&& !(this.player.isFallFlying() || this.playerdata.currentMotion == LivingMotion.FALL || !playerState.canAct())
-				&& (this.playerdata.getStamina() >= 3.0F || this.player.isCreative())
-				&& !this.player.isInWater()
+				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
+				&& !this.player.isUnderWater()
 				&& this.player.isOnGround()
-				&& !this.player.isUsingItem()
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
 	}
 	
@@ -139,12 +144,12 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1 && !this.minecraft.options.getCameraType().isFirstPerson())
+		if (action == 1 && (ClientManager.INSTANCE.isCombatModeActive() || !this.options.getCameraType().isFirstPerson()))
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
 
-			if (player.getTicksUsingItem() == 0 && !rightHandToggle) this.rightHandToggle = true;
+			if (!rightHandToggle) this.rightHandToggle = true;
 		}
 
 		if (player.getAttackStrengthScale(0) < 0.9F)
@@ -155,16 +160,16 @@ public class InputManager
 	
 	private void onSwapHandKeyPressed(int key, int action)
 	{
-		CapabilityItem cap = this.playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+		ItemCapability cap = this.playerCap.getHeldItemCapability(Hand.MAIN_HAND);
 
-		if (this.playerdata.isInaction() || (cap != null && !cap.canUsedInOffhand()))
+		if (this.playerCap.isInaction() || (cap != null && !cap.canUsedInOffhand()))
 		{
 			while (options.keySwapOffhand.consumeClick()) {}
 			this.setKeyBind(options.keySwapOffhand, false);
 		}
 	}
 	
-	private void onSwapActionModeKeyPressed(int key, int action)
+	private void onTogglePerspectiveKeyPressed(int key, int action)
 	{
 		if (action == 1)
 		{
@@ -181,27 +186,45 @@ public class InputManager
 		}
 	}
 	
+	private void onToggleCombatModeKeyPressed(int key, int action)
+	{
+		if (action == 1)
+		{
+			ClientManager.INSTANCE.toggleCombatMode();
+		}
+	}
+	
 	public void tick()
 	{
-		if (this.playerdata == null) return;
+		if (this.playerCap == null) return;
 
-		EntityState playerState = this.playerdata.getEntityState();
+		EntityState playerState = this.playerCap.getEntityState();
 		
 		if (this.sprintToggle)
 		{
-			if (!this.player.isCreative() && this.playerdata.getStamina() <= 0.0F)
+			if (!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F)
 			{
 				this.player.setSprinting(false);
 				this.sprintToggle = false;
 			}
 		}
-		else if (this.isKeyDown(this.options.keySprint) && (this.playerdata.getStamina() / this.playerdata.getMaxStamina()) >= 0.7F)
+		else if (this.isKeyDown(this.options.keySprint) && (this.playerCap.getStamina() / this.playerCap.getMaxStamina()) >= 0.7F)
 		{
 			this.sprintToggle = true;
 		}
-
 		this.handleRightHandAction(playerState);
 		this.handleSprintAction(playerState);
+		
+		for (int i = 0; i < 9; ++i)
+		{
+			if (isKeyDown(this.options.keyHotbarSlots[i]))
+			{
+				if (this.playerCap.isInaction())
+				{
+					this.options.keyHotbarSlots[i].consumeClick();
+				}
+			}
+		}
 		
 		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
@@ -213,7 +236,7 @@ public class InputManager
 				&& (this.player.isUnderWater() ? this.player.input.hasForwardImpulse() : (double)this.player.input.forwardImpulse >= 0.8D)
 				&& !this.player.isSprinting()
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
-				&& !this.player.isUsingItem()
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& !this.player.hasEffect(Effects.BLINDNESS)
 				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
 	}
@@ -229,14 +252,22 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanExecuteSkill(playerState)) this.playerdata.performDodge();
+			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerCap.performDodge(this.movingKeysDown());
 			this.sprintPressCounter = 0;
 		}
 	}
 	
 	private void handleRightHandAction(EntityState playerState)
 	{
-		if (!this.rightHandToggle) return;
+		if (!this.rightHandToggle)
+		{
+			if (this.reservedAttack != null && this.playerCanAttack(playerState))
+			{
+				this.playerCap.performAttack(this.reservedAttack);
+				this.reservedAttack = null;
+			}
+			return;
+		}
 		
 		if (!this.isKeyDown(options.keyAttack))
 		{
@@ -248,7 +279,8 @@ public class InputManager
 		{
 			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
 			{
-				if (this.playerCanExecuteSkill(playerState)) this.playerdata.performAttack(AttackType.HEAVY);
+				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
+				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -263,11 +295,12 @@ public class InputManager
 	
 	private void rightHandLightPress(EntityState playerState)
 	{
-		if (this.playerCanExecuteSkill(playerState))
+		if (this.playerCanAttack(playerState))
 		{
-			if (this.player.isSprinting()) this.playerdata.performAttack(AttackType.DASH);
-			else this.playerdata.performAttack(AttackType.LIGHT);
+			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
+			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
+		else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;
@@ -303,36 +336,24 @@ public class InputManager
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
 			if (!event.isAttack()) return;
-			if (!minecraft.options.getCameraType().isFirstPerson())
+			if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
 			{
 				event.setSwingHand(false);
 			}
 			
 			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
-					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
-					&& !minecraft.options.getCameraType().isFirstPerson()))
+					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
 			{
 				event.setCanceled(true);
 			}
 		}
 		
 		@SubscribeEvent
-		public static void onItemRightClick(PlayerInteractEvent.RightClickItem event)
-		{
-			if (event.getHand() == Hand.OFF_HAND) return;
-			WeaponCapability mainCap = ModCapabilities.getWeaponCapability(event.getItemStack());
-			if (mainCap == null) return;
-			WeaponCapability offCap = ModCapabilities.getWeaponCapability(event.getEntityLiving().getOffhandItem());
-			if (offCap == null) return;
-			event.setCanceled(true);
-		}
-		
-		@SubscribeEvent
 		public static void onMouseInput(RawMouseEvent event)
 		{
-			if (minecraft.player != null && minecraft.overlay == null && minecraft.screen == null)
+			if (minecraft.player != null && minecraft.getOverlay() == null && minecraft.screen == null)
 			{
-				Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
+				InputMappings.Input input = InputMappings.Type.MOUSE.getOrCreate(event.getButton());
 				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
@@ -346,7 +367,7 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMouseScroll(MouseScrollEvent event)
 		{
-			if (minecraft.player != null && inputManager.playerdata != null && inputManager.playerdata.isInaction())
+			if (minecraft.player != null && inputManager.playerCap != null && inputManager.playerCap.isInaction())
 			{
 				if(minecraft.screen == null)
 				{
@@ -360,7 +381,7 @@ public class InputManager
 		{
 			if (minecraft.player != null && minecraft.screen == null)
 			{
-				Input input = InputMappings.Type.KEYSYM.getOrCreate(event.getKey());
+				InputMappings.Input input = InputMappings.Type.KEYSYM.getOrCreate(event.getKey());
 				for (KeyBinding keybinding : inputManager.keyHash.lookupAll(input))
 				{
 					if(inputManager.keyFunctionMap.containsKey(keybinding))
@@ -374,8 +395,8 @@ public class InputManager
 		@SubscribeEvent
 		public static void onMoveInput(InputUpdateEvent event)
 		{
-			if(inputManager.playerdata == null) return;
-			EntityState playerState = inputManager.playerdata.getEntityState();
+			if(inputManager.playerCap == null) return;
+			EntityState playerState = inputManager.playerCap.getEntityState();
 			
 			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
 			{
@@ -409,7 +430,7 @@ public class InputManager
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 				
 				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON
-						&& !ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+						&& !ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -453,6 +474,12 @@ public class InputManager
 					inputManager.player.yRot = rot;
 					event.getMovementInput().forwardImpulse = forward;
 					event.getMovementInput().leftImpulse = left;
+					
+					if (inputManager.playerCap.isBlocking())
+					{
+						event.getMovementInput().leftImpulse *= 20F;
+						event.getMovementInput().forwardImpulse *= 20F;
+					}
 				}
 			}
 		}

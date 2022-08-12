@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.gui.widget.LevelButton;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSStat;
+import com.skullmangames.darksouls.network.client.CTSLevelUp;
 
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
@@ -23,7 +23,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	public LevelUpScreen()
 	{
-		super(new StringTextComponent("Level Up"));
+		super(new StringTextComponent("World Up"));
 	}
 	
 	@Override
@@ -44,14 +44,14 @@ public class LevelUpScreen extends PlayerStatsScreen
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 1).intValue() > 1 : this.displayedStats.getOrDefault(stat, 1).intValue() > statValue;
+			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 10).intValue() > 10 : this.displayedStats.getOrDefault(stat, 10).intValue() > statValue;
 			
 			LevelButton upButton = this.addButton(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new StringTextComponent(">"), (button) ->
 			{
 				this.levelUp(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(this.getCost());
+			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 10;
@@ -70,7 +70,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 			int statvalue = this.playerdata.getStats().getStatValue(down.getStat());
 			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
 			down.active = this.playerdata.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
-			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(this.getCost());
+			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 		});
 	}
 	
@@ -88,18 +88,14 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	private void accept()
 	{
-		if (this.displayedLevel != this.playerdata.getSoulLevel())
+		int[] additions = new int[Stats.STATS.size()];
+		for (int i = 0; i < additions.length; i++)
 		{
-			this.displayedLevel -= 1;
-			if (!this.playerdata.isCreativeOrSpectator()) this.playerdata.raiseSouls(-this.getCost());
+			int statvalue = this.playerdata.getStats().getStatValue(i);
+			int addition = this.displayedStats.getOrDefault(Stats.STATS.get(i), statvalue) - statvalue;
+			additions[i] = addition;
 		}
-		for (Stat stat : Stats.STATS)
-		{
-			int statvalue = this.playerdata.getStats().getStatValue(stat);
-			int value = this.displayedStats.getOrDefault(stat, statvalue).intValue();
-			this.playerdata.setStatValue(stat, value);
-			ModNetworkManager.sendToServer(new CTSStat(stat.toString(), value));
-		}
+		ModNetworkManager.sendToServer(new CTSLevelUp(additions));
 		super.onClose();
 	}
 	

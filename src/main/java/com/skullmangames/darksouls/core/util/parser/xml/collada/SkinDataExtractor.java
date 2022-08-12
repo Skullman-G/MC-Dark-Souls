@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
-
-import net.minecraft.util.math.vector.Vector3f;
 
 public class SkinDataExtractor
 {

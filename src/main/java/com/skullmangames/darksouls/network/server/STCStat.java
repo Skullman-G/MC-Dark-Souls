@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -13,25 +13,25 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class STCStat
 {
 	private int entityId;
-	private String name;
+	private int stat;
 	private int value;
 	
-	public STCStat(int entityid, String name, int value)
+	public STCStat(int entityid, int stat, int value)
 	{
 		this.entityId = entityid;
-		this.name = name;
+		this.stat = stat;
 		this.value = value;
 	}
 	
 	public static STCStat fromBytes(PacketBuffer buf)
 	{
-		return new STCStat(buf.readInt(), buf.readUtf(), buf.readInt());
+		return new STCStat(buf.readInt(), buf.readInt(), buf.readInt());
 	}
 	
 	public static void toBytes(STCStat msg, PacketBuffer buf)
 	{
 		buf.writeInt(msg.entityId);
-		buf.writeUtf(msg.name);
+		buf.writeInt(msg.stat);
 		buf.writeInt(msg.value);
 	}
 	
@@ -43,10 +43,10 @@ public class STCStat
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if (entity == null) return;
 			
-			PlayerData<?> entitydata = (PlayerData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (entitydata == null) return;
+			PlayerCap<?> entityCap = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (entityCap == null) return;
 			
-			entitydata.getStats().initStatValue(entitydata.getOriginalEntity(), msg.name, msg.value);
+			entityCap.getStats().initStatValue(entityCap.getOriginalEntity(), msg.stat, msg.value);
 		});
 		
 		ctx.get().setPacketHandled(true);

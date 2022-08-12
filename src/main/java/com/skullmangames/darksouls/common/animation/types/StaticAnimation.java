@@ -1,164 +1,240 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.animation.MixPart;
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
+import com.skullmangames.darksouls.client.animation.AnimationLayer;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
-import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class StaticAnimation extends DynamicAnimation
 {
-	protected String path;
-	protected final int id;
-	protected List<SoundKey> soundStream;
-	protected final boolean clientOnly;
-	protected final String armature;
-	private final MixPart mixPart;
-	
+	protected final Map<Property<?>, Object> properties = new HashMap<>();
+	protected final Function<Models<?>, Model> model;
+	protected final ResourceLocation resourceLocation;
+	protected final int animationId;
+
 	public StaticAnimation()
 	{
-		super();
-		this.id = -1;
-		this.clientOnly = true;
-		this.armature = "";
-		this.mixPart = MixPart.FULL;
+		super(0.0F, false);
+		this.animationId = -1;
+		this.resourceLocation = null;
+		this.model = null;
 	}
-	
-	public StaticAnimation(boolean register, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
+
+	public StaticAnimation(boolean repeatPlay, String path, Function<Models<?>, Model> model)
 	{
-		this(register, convertTime, isRepeat, path, armature, clientOnly, MixPart.FULL);
+		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
 	}
-	
-	public StaticAnimation(boolean register, float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly, MixPart mixPart)
+
+	public StaticAnimation(float convertTime, boolean isRepeat, String path, Function<Models<?>, Model> model)
 	{
 		super(convertTime, isRepeat);
-		
-		this.clientOnly = clientOnly;
-		this.armature = armature;
-		this.path = this.makeDataPath(path);
-		this.totalTime = 0;
-		this.mixPart = mixPart;
-		
-		if (register)
-		{
-			this.id = Animations.ANIMATIONS.size();
-			Animations.ANIMATIONS.add(this);
-		}
-		else this.id = -1;
+		AnimationManager animationManager = DarkSouls.getInstance().animationManager;
+		this.animationId = animationManager.getIdCounter();
+		animationManager.getIdMap().put(this.animationId, this);
+		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID, "animations/" + path);
+		animationManager.getNameMap().put(new ResourceLocation(DarkSouls.MOD_ID, path), this);
+		this.model = model;
+	}
+
+	public StaticAnimation(float convertTime, boolean repeatPlay, String path, Function<Models<?>, Model> model,
+			boolean doNotRegister)
+	{
+		super(convertTime, repeatPlay);
+		this.animationId = -1;
+		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID,
+				"animations/" + path);
+		this.model = model;
 	}
 	
-	public StaticAnimation(String path)
+	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
 	{
-		this();
-		this.path = this.makeDataPath(path);
+		return this;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public AnimationLayer.LayerPart getLayerPart()
+	{
+		return this.getProperty(StaticAnimationProperty.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
+	}
+
+	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
+	{
+		this.properties.put(propertyType, value);
+		return this;
+	}
+
+	public ResourceLocation getLocation()
+	{
+		return this.resourceLocation;
 	}
 	
-	public StaticAnimation(boolean register, boolean repeatPlay, String path, String armature, boolean clientOnly)
+	@SuppressWarnings("unchecked")
+	@Override
+	public <V> Optional<V> getProperty(Property<V> propertyType)
 	{
-		this(register, repeatPlay, path, armature, clientOnly, MixPart.FULL);
+		return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
 	}
-	
-	public StaticAnimation(boolean register, boolean repeatPlay, String path, String armature, boolean clientOnly, MixPart mixPart)
+
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
 	{
-		this(register, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, armature, clientOnly, mixPart);
+		load(resourceManager, models, this);
 	}
-	
-	public MixPart getMixPart()
+
+	public static void load(IResourceManager resourceManager, Models<?> models, StaticAnimation animation)
 	{
-		return this.mixPart;
-	}
-	
-	private String makeDataPath(String path)
-	{
-		return "models/animations/"+path+".dae";
-	}
-	
-	public void bind(Dist dist)
-	{
-		if (this.clientOnly && dist != Dist.CLIENT) return;
-		
-		if(path != null)
-		{
-			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, path), this, armature);
-			path = null;
-		}
-		
-		if(this.soundStream != null) this.soundStream.sort(null);
-		return;
+		ResourceLocation extenderPath = new ResourceLocation(animation.resourceLocation.getNamespace(),
+				animation.resourceLocation.getPath() + ".dae");
+		AnimationDataExtractor.extractAnimation(extenderPath, animation, animation.model.apply(models).getArmature());
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entitydata)
+	public boolean shouldSync()
 	{
-		if(this.soundStream != null)
+		return this.getProperty(StaticAnimationProperty.SHOULD_SYNC).orElse(false) && this.getLayerPart() != LayerPart.FULL;
+	}
+
+	@Override
+	public void onStart(LivingCap<?> entityCap)
+	{
+		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{
-			AnimationPlayer player = entitydata.getAnimator().getPlayerFor(this);
-			float prevElapsed = player.getPrevElapsedTime();
-			float elapsed = player.getElapsedTime();
-			
-			for(SoundKey key : this.soundStream)
+			for (Event event : events)
 			{
-				if(key.time < prevElapsed || key.time >= elapsed) continue;
-				else
+				if (event.time == Event.ON_BEGIN)
 				{
-					if(entitydata.isClientSide() == key.isClientSide)
+					event.tryExecuting(entityCap);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onUpdate(LivingCap<?> entityCap)
+	{
+		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
+		{
+			AnimationPlayer player = entityCap.getAnimator().getPlayerFor(this);
+
+			if (player != null)
+			{
+				float prevElapsed = player.getPrevElapsedTime();
+				float elapsed = player.getElapsedTime();
+
+				for (Event event : events)
+				{
+					if (event.time != Event.ON_BEGIN && event.time != Event.ON_END)
 					{
-						entitydata.playSound(key.sound, 0.0F, 0.0F);
+						if (event.time < prevElapsed || event.time >= elapsed)
+						{
+							continue;
+						} else
+						{
+							event.tryExecuting(entityCap);
+						}
 					}
 				}
 			}
-		}
+		});
 	}
-	
-	public int getId()
+
+	@Override
+	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
-		return id;
-	}
-	
-	public StaticAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
-	{
-		if(this.soundStream == null) this.soundStream = Lists.<SoundKey>newArrayList();
-		this.soundStream.add(new SoundKey(sound, time, isRemote));
-		return this;
+		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
+		{
+			for (Event event : events)
+			{
+				if (event.time == Event.ON_END)
+				{
+					event.tryExecuting(entityCap);
+				}
+			}
+		});
 	}
 	
 	@Override
+	public float getPlaySpeed(LivingCap<?> entityCap)
+	{
+		return super.getPlaySpeed(entityCap);
+	}
+
+	public int getId()
+	{
+		return this.animationId;
+	}
+
+	@Override
 	public String toString()
 	{
-		return this.id+" "+this.path;
+		return this.resourceLocation.toString();
 	}
-	
-	protected static class SoundKey implements Comparable<SoundKey>
+
+	public static class Event implements Comparable<Event>
 	{
-		SoundEvent sound;
-		float time;
-		boolean isClientSide;
-		
-		protected SoundKey(SoundEvent sound, float time, boolean isClientSide)
+		public static final float ON_BEGIN = Float.MIN_VALUE;
+		public static final float ON_END = Float.MAX_VALUE;
+		final float time;
+		final Side executionSide;
+		final Consumer<LivingCap<?>> event;
+
+		private Event(float time, Side executionSide, Consumer<LivingCap<?>> event)
 		{
-			this.sound = sound;
 			this.time = time;
-			this.isClientSide = isClientSide;
+			this.executionSide = executionSide;
+			this.event = event;
 		}
+
 		@Override
-		public int compareTo(SoundKey arg0)
+		public int compareTo(Event arg0)
 		{
-			if(this.time == arg0.time) return 0;
+			if (this.time == arg0.time) return 0;
 			else return this.time > arg0.time ? 1 : -1;
+		}
+
+		public void tryExecuting(LivingCap<?> entityCap)
+		{
+			if (this.executionSide.predicate.test(entityCap.isClientSide()))
+			{
+				this.event.accept(entityCap);
+			}
+		}
+
+		public static Event create(float time, Side isRemote, Consumer<LivingCap<?>> event)
+		{
+			return new Event(time, isRemote, event);
+		}
+
+		public enum Side
+		{
+			CLIENT((isLogicalClient) -> isLogicalClient), SERVER((isLogicalClient) -> !isLogicalClient),
+			BOTH((isLogicalClient) -> true);
+
+			Predicate<Boolean> predicate;
+
+			Side(Predicate<Boolean> predicate)
+			{
+				this.predicate = predicate;
+			}
 		}
 	}
 }

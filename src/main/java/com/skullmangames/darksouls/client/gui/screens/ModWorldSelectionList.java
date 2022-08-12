@@ -23,9 +23,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.hash.Hashing;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.skullmangames.darksouls.client.gui.ScreenManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
@@ -79,10 +78,10 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 			"selectWorld.tooltip.fromNewerVersion1")).withStyle(TextFormatting.RED);
 	private static final ITextComponent FROM_NEWER_TOOLTIP_2 = (new TranslationTextComponent(
 			"selectWorld.tooltip.fromNewerVersion2")).withStyle(TextFormatting.RED);
-	private static final ITextComponent SNAPSHOT_TOOLTIP_1 = (new TranslationTextComponent(
-			"selectWorld.tooltip.snapshot1")).withStyle(TextFormatting.GOLD);
-	private static final ITextComponent SNAPSHOT_TOOLTIP_2 = (new TranslationTextComponent(
-			"selectWorld.tooltip.snapshot2")).withStyle(TextFormatting.GOLD);
+	private static final ITextComponent SNAPSHOT_TOOLTIP_1 = (new TranslationTextComponent("selectWorld.tooltip.snapshot1"))
+			.withStyle(TextFormatting.GOLD);
+	private static final ITextComponent SNAPSHOT_TOOLTIP_2 = (new TranslationTextComponent("selectWorld.tooltip.snapshot2"))
+			.withStyle(TextFormatting.GOLD);
 	private static final ITextComponent WORLD_LOCKED_TOOLTIP = (new TranslationTextComponent("selectWorld.locked"))
 			.withStyle(TextFormatting.RED);
 	private final ModWorldSelectionScreen screen;
@@ -102,37 +101,20 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 		this.refreshList(p_i49846_8_, false);
 	}
 
-	@Override
-	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_)
-	{
-		ScreenManager.renderDarkBackground(this.screen);
-
-		int j1 = this.getRowLeft();
-		int k = this.y0 + 4 - (int) this.getScrollAmount();
-
-		this.renderList(p_230430_1_, j1, k, p_230430_2_, p_230430_3_, p_230430_4_);
-
-		this.renderDecorations(p_230430_1_, p_230430_2_, p_230430_3_);
-		RenderSystem.enableTexture();
-		RenderSystem.shadeModel(7424);
-		RenderSystem.enableAlphaTest();
-		RenderSystem.disableBlend();
-	}
-
 	public void refreshList(Supplier<String> p_212330_1_, boolean p_212330_2_)
 	{
 		this.clearEntries();
-		SaveFormat saveformat = this.minecraft.getLevelSource();
+		SaveFormat levelstoragesource = this.minecraft.getLevelSource();
 		if (this.cachedList == null || p_212330_2_)
 		{
 			try
 			{
-				this.cachedList = saveformat.getLevelList();
-			} catch (AnvilConverterException anvilconverterexception)
+				this.cachedList = levelstoragesource.getLevelList();
+			} catch (AnvilConverterException levelstorageexception)
 			{
-				LOGGER.error("Couldn't load level list", (Throwable) anvilconverterexception);
+				LOGGER.error("Couldn't load level list", (Throwable) levelstorageexception);
 				this.minecraft.setScreen(new ErrorScreen(new TranslationTextComponent("selectWorld.unable_to_load"),
-						new StringTextComponent(anvilconverterexception.getMessage())));
+						new StringTextComponent(levelstorageexception.getMessage())));
 				return;
 			}
 
@@ -141,17 +123,18 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 
 		if (this.cachedList.isEmpty())
 		{
-			this.minecraft.setScreen(CreateWorldScreen.create((Screen) null));
-		} else
+			this.minecraft.setScreen(CreateWorldScreen.create((Screen)null));
+		}
+		else
 		{
 			String s = p_212330_1_.get().toLowerCase(Locale.ROOT);
 
-			for (WorldSummary worldsummary : this.cachedList)
+			for (WorldSummary levelsummary : this.cachedList)
 			{
-				if (worldsummary.getLevelName().toLowerCase(Locale.ROOT).contains(s)
-						|| worldsummary.getLevelId().toLowerCase(Locale.ROOT).contains(s))
+				if (levelsummary.getLevelName().toLowerCase(Locale.ROOT).contains(s)
+						|| levelsummary.getLevelId().toLowerCase(Locale.ROOT).contains(s))
 				{
-					this.addEntry(new ModWorldSelectionList.Entry(this, worldsummary));
+					this.addEntry(new ModWorldSelectionList.Entry(this, levelsummary));
 				}
 			}
 
@@ -177,12 +160,12 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 	}
 
 	@Override
-	public void setSelected(@Nullable ModWorldSelectionList.Entry p_241215_1_)
+	public void setSelected(@Nullable ModWorldSelectionList.Entry entry)
 	{
-		super.setSelected(p_241215_1_);
-		if (p_241215_1_ != null)
+		super.setSelected(entry);
+		if (entry != null)
 		{
-			WorldSummary worldsummary = p_241215_1_.summary;
+			WorldSummary worldsummary = entry.summary;
 			NarratorChatListener.INSTANCE.sayNow((new TranslationTextComponent("narrator.select",
 					new TranslationTextComponent("narrator.select.world", worldsummary.getLevelName(),
 							new Date(worldsummary.getLastPlayed()),
@@ -193,15 +176,15 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 							worldsummary.getWorldVersionName()))).getString());
 		}
 
-		this.screen.updateButtonStatus(p_241215_1_ != null && !p_241215_1_.summary.isLocked());
+		this.screen.updateButtonStatus(entry != null && !entry.summary.isLocked());
 	}
 
 	@Override
-	protected void moveSelection(AbstractList.Ordering p_241219_1_)
+	protected void moveSelection(AbstractList.Ordering p_101673_)
 	{
-		this.moveSelection(p_241219_1_, (p_241652_0_) ->
+		this.moveSelection(p_101673_, (p_101681_) ->
 		{
-			return !p_241652_0_.summary.isLocked();
+			return !p_101681_.summary.isLocked();
 		});
 	}
 
@@ -210,14 +193,13 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 		return Optional.ofNullable(this.getSelected());
 	}
 
-	public ModWorldSelectionScreen getScreen()
+	public ModWorldSelectionScreen getGui()
 	{
 		return this.screen;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public final class Entry extends ExtendedList.AbstractListEntry<ModWorldSelectionList.Entry>
-			implements AutoCloseable
+	public final class Entry extends ExtendedList.AbstractListEntry<ModWorldSelectionList.Entry> implements AutoCloseable
 	{
 		private final Minecraft minecraft;
 		private final ModWorldSelectionScreen screen;
@@ -230,7 +212,7 @@ public class ModWorldSelectionList extends ExtendedList<ModWorldSelectionList.En
 
 		public Entry(ModWorldSelectionList p_i242066_2_, WorldSummary p_i242066_3_)
 		{
-			this.screen = p_i242066_2_.getScreen();
+			this.screen = p_i242066_2_.getGui();
 			this.summary = p_i242066_3_;
 			this.minecraft = Minecraft.getInstance();
 			String s = p_i242066_3_.getLevelId();

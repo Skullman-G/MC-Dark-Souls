@@ -6,23 +6,24 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import com.skullmangames.darksouls.core.init.ModEffects;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.init.ModTileEntities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
@@ -30,10 +31,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.TransportationHelper;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -48,10 +46,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ICollisionReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BonfireBlock extends BaseHorizontalBlock
+public class BonfireBlock extends Block
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final IntegerProperty ESTUS_VOLUME_LEVEL = IntegerProperty.create("estus_volume_level", 1, 4);
@@ -60,7 +59,7 @@ public class BonfireBlock extends BaseHorizontalBlock
 	private static final ImmutableList<Vector3i> RESPAWN_HORIZONTAL_OFFSETS = ImmutableList.of(new Vector3i(0, 0, -1), new Vector3i(-1, 0, 0), new Vector3i(0, 0, 1), new Vector3i(1, 0, 0), new Vector3i(-1, 0, -1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, 1));
 	private static final ImmutableList<Vector3i> RESPAWN_OFFSETS = (new Builder<Vector3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vector3i::above).iterator()).add(new Vector3i(0, 1, 0)).build();
 	
-	protected static final VoxelShape SHAPE = Stream.of(
+	private static final Optional<VoxelShape> SHAPE = Stream.of(
 			Block.box(2, 0, 2, 14, 1, 14),
 			Block.box(4, 0.5, 4, 12, 2.5, 12),
 			Block.box(6, 2.4, 6, 10, 3.4, 10),
@@ -74,106 +73,91 @@ public class BonfireBlock extends BaseHorizontalBlock
 			Block.box(9.5, 0.10000000000000009, 11.5, 10.5, 1.3000000000000003, 14.5),
 			Block.box(12, 1, 7, 14, 1.5, 8),
 			Block.box(3, 1, 8, 6, 3, 9)
-			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
+			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR));
 	
 	public BonfireBlock()
 	{
-		super(AbstractBlock.Properties.of(Material.DIRT)
+		super(Properties.of(Material.DIRT)
 				.strength(15f)
 				.sound(SoundType.GRAVEL));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH));
-		this.runCalculation(SHAPE);
+		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)));
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context)
 	{
 		if (context.getLevel().isEmptyBlock(context.getClickedPos().below())) return null;
-		return this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1)).setValue(HORIZONTAL_FACING, Direction.NORTH);
+		return this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)).setValue(ESTUS_VOLUME_LEVEL, Integer.valueOf(1)).setValue(ESTUS_HEAL_LEVEL, Integer.valueOf(1));
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> container) 
 	{
 	    super.createBlockStateDefinition(container);
-		container.add(LIT, ESTUS_VOLUME_LEVEL, ESTUS_HEAL_LEVEL, HORIZONTAL_FACING);
+		container.add(LIT, ESTUS_VOLUME_LEVEL, ESTUS_HEAL_LEVEL);
 	}
 	
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		if (player.hasEffect(ModEffects.UNDEAD_CURSE.get()))
+		TileEntity tileentity = level.getBlockEntity(pos);
+		BonfireBlockEntity blockentity = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+		if (blockentity == null) return ActionResultType.PASS;
+		if (!state.getValue(LIT))
 		{
-			TileEntity t = level.getBlockEntity(pos);
-			if (t instanceof BonfireTileEntity)
+			if (player.getItemInHand(hand).getItem() == ModItems.DARKSIGN.get())
 			{
-				BonfireTileEntity tileentity = (BonfireTileEntity)t;
-				if (!state.getValue(LIT))
+				if (blockentity.hasFireKeeper())
 				{
-					if (player.getItemInHand(hand).getItem() == ModItems.DARKSIGN.get())
-					{
-						if (tileentity.hasFireKeeper())
-						{
-							player.sendMessage(new TranslationTextComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
-						}
-						else if (!tileentity.hasName() && ModNetworkManager.connection != null)
-						{
-							ModNetworkManager.connection.openBonfireNameScreen(player, tileentity);
-						}
-						return ActionResultType.sidedSuccess(level.isClientSide);
-					}
-					return ActionResultType.PASS;
+					player.sendMessage(new TranslationTextComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
 				}
-				else
+				else if (!blockentity.hasName() && !player.level.isClientSide)
 				{
-					Item item = player.getItemInHand(hand).getItem();
-					if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
-					{
-						return ActionResultType.PASS;
-					}
-					
-					player.heal(player.getMaxHealth() - player.getHealth());
-					
-					if (ModNetworkManager.connection != null)
-					{
-						if (!tileentity.hasName())
-						{
-							ModNetworkManager.connection.openBonfireNameScreen(player, tileentity);
-						}
-						else
-						{
-							ModNetworkManager.connection.openBonfireScreen(tileentity);
-						}
-					}
-					
-					Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
-					if (optional.isPresent())
-					{
-						if (player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
-					}
-					else
-					{
-						player.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
-					}
-					
-					return ActionResultType.SUCCESS;
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireNameScreen(pos), (ServerPlayerEntity) player);
 				}
+				return ActionResultType.sidedSuccess(level.isClientSide);
 			}
-			else
-			{
-				return ActionResultType.PASS;
-			}
+			return ActionResultType.PASS;
 		}
 		else
 		{
-			player.hurt(DamageSource.IN_FIRE, player.getMaxHealth() / 2.0F);
+			Item item = player.getItemInHand(hand).getItem();
+			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
+			{
+				return ActionResultType.PASS;
+			}
+			
+			player.heal(player.getMaxHealth() - player.getHealth());
+			
+			if (!player.level.isClientSide)
+			{
+				if (!blockentity.hasName())
+				{
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireNameScreen(pos), (ServerPlayerEntity) player);
+				}
+				else
+				{
+					ModNetworkManager.sendToPlayer(new STCOpenBonfireScreen(pos), (ServerPlayerEntity) player);
+				}
+			}
+			
+			Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
+			if (optional.isPresent())
+			{
+				if (player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+			}
+			else
+			{
+				player.sendMessage(new TranslationTextComponent("gui.darksouls.respawn_position_fail_message"), Util.NIL_UUID);
+			}
+			
 			return ActionResultType.SUCCESS;
 		}
 	}
 	
 	public static Optional<Vector3d> findStandUpPosition(EntityType<?> p_235560_0_, ICollisionReader p_235560_1_, BlockPos p_235560_2_)
 	{
-	    Optional<Vector3d> optional = findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, true);
+		Optional<Vector3d> optional = findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, true);
 	    return optional.isPresent() ? optional : findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, false);
 	}
 
@@ -203,65 +187,76 @@ public class BonfireBlock extends BaseHorizontalBlock
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos vertex, ISelectionContext context)
 	{
-		return SHAPES.get(state.getValue(HORIZONTAL_FACING));
+		return SHAPE.orElse(VoxelShapes.block());
 	}
 	
 	@Override
-	public boolean hasTileEntity(BlockState state) 
+	public void randomTick(BlockState state, ServerWorld level, BlockPos pos, Random random)
+	{
+		if (random.nextInt(10) == 1 && state.getValue(BonfireBlock.LIT))
+		{
+			int i = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
+			int j = (random.nextInt(1)) * (random.nextBoolean() ? -1 : 1);
+			BlockPos blockpos = pos.offset(i, pos.getZ(), j);
+			ItemEntity homewardbone = new ItemEntity(level, blockpos.getX(), blockpos.getY(), blockpos.getZ(),
+					new ItemStack(ModItems.HOMEWARD_BONE.get()));
+			level.addFreshEntity(homewardbone);
+		}
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState state, World level, BlockPos pos, Random random)
+	{
+		if (state.getValue(LIT))
+		{
+			ModNetworkManager.connection.tryPlayBonfireAmbientSound(pos);
+			
+			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
+			{
+				level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
+		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
+		        
+		        if (i >= 2)
+		        {
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
+		        }
+		        if (i >= 3)
+		        {
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
+		        }
+		        if (i == 4)
+		        {
+		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
+			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
+		        }
+			}
+		}
+	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state)
 	{
 		return true;
 	}
 	
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader level) 
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return ModTileEntities.BONFIRE.get().create();
-	}
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World worldIn, BlockPos vertex, Random random)
-	{
-		if (state.getValue(LIT))
-		{
-			if (random.nextInt(8) == 0)
-			{
-				worldIn.playLocalSound((double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.5D, (double)vertex.getZ() + 0.5D, ModSoundEvents.BONFIRE_AMBIENT.get(), SoundCategory.BLOCKS, 0.3F, random.nextFloat() * 0.7F + 0.3F, false);
-			}
-			
-			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
-			{
-				worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.4D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.6D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-		        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)i * 0.1D), (double)vertex.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
-		        
-		        if (i >= 2)
-		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.35D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.65D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)vertex.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
-		        }
-		        if (i >= 3)
-		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.3D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.7D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)vertex.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
-		        }
-		        if (i == 4)
-		        {
-		        	worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.25D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.75D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
-			        worldIn.addParticle(ParticleTypes.FLAME, (double)vertex.getX() + 0.5D, (double)vertex.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)vertex.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
-		        }
-			}
-		}
+		return ModBlockEntities.BONFIRE.get().create();
 	}
 }

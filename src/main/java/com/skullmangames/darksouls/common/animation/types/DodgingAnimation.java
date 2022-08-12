@@ -1,67 +1,62 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import net.minecraft.entity.EntitySize;
+import java.util.function.Function;
+
+import net.minecraft.util.math.vector.Vector3f;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.Models;
 
 public class DodgingAnimation extends ActionAnimation
 {
-	private final EntitySize size;
+	protected float encumbrance = 0.0F;
 	
-	public DodgingAnimation(float convertTime, boolean affectVelocity, String path, float width, float height, String armature)
+	public DodgingAnimation(float convertTime, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, 0.0F, affectVelocity, path, width, height, armature);
+		this(convertTime, 0.0F, path, model);
 	}
 	
-	public DodgingAnimation(float convertTime, float delayTime, boolean affectVelocity, String path, float width, float height, String armature)
+	public DodgingAnimation(float convertTime, float delayTime, String path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, delayTime, affectVelocity, path, armature);
-		
-		if(width > 0.0F || height > 0.0F)
+		super(convertTime, delayTime, path, model);
+	}
+	
+	@Override
+	public void onStart(LivingCap<?> entity)
+	{
+		super.onStart(entity);
+		if (entity instanceof EquipLoaded)
 		{
-			this.size = EntitySize.scalable(width, height);
-		}
-		else
-		{
-			this.size = null;
+			this.encumbrance = ((EquipLoaded)entity).getEncumbrance();
 		}
 	}
 	
 	@Override
-	public void onUpdate(LivingData<?> entitydata)
+	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
-		super.onUpdate(entitydata);
-		if(this.size != null)
-		{
-			entitydata.resetSize(size);
-		}
+		super.onFinish(entityCap, isEnd);
+		this.encumbrance = 0.0F;
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public float getPlaySpeed(LivingCap<?> entityCap)
 	{
-		super.onFinish(entitydata, isEnd);
-		if(this.size != null)
-		{
-			entitydata.getOriginalEntity().setLocationFromBoundingbox();
-		}
+		return 1.3F - this.encumbrance / 2;
 	}
 	
 	@Override
-	public float getPlaySpeed(LivingData<?> entitydata)
+	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
-		return 1.0F;
+		Vector3f vec = super.getCoordVector(entityCap, animation);
+		vec.mul(1.5F);
+		return vec;
 	}
 	
 	@Override
-	public LivingData.EntityState getState(float time)
+	public EntityState getState(float time)
 	{
-		if(time < this.delayTime)
-		{
-			return LivingData.EntityState.PRE_DELAY;
-		}
-		else
-		{
-			return LivingData.EntityState.INVINCIBLE;
-		}
+		return EntityState.INVINCIBLE;
 	}
 }

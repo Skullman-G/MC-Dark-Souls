@@ -6,23 +6,25 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.math.vector.Vector4f;
+
+import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.VertexData;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer.TexturedQuad;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.model.ModelRenderer.ModelBox;
 import net.minecraft.client.renderer.model.ModelRenderer.PositionTextureVertex;
-import net.minecraft.client.renderer.model.ModelRenderer.TexturedQuad;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,14 +32,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CustomModelBakery
 {
 	static int indexCount = 0;
-	static final ModelPart HEAD = new SimplePart(9);
-	static final ModelPart LEFT_FEET = new SimplePart(5);
-	static final ModelPart RIGHT_FEET = new SimplePart(2);
-	static final ModelPart LEFT_ARM = new Limb(16, 17, 19, 19.0F, false);
-	static final ModelPart RIGHT_ARM = new Limb(11, 12, 14, 19.0F, false);
-	static final ModelPart LEFT_LEG = new Limb(4, 5, 6, 6.0F, true);
-	static final ModelPart RIGHT_LEG = new Limb(1, 2, 3, 6.0F, true);
-	static final ModelPart CHEST = new Chest();
+	static final ModModelPart HEAD = new SimplePart(9);
+	static final ModModelPart LEFT_FEET = new SimplePart(5);
+	static final ModModelPart RIGHT_FEET = new SimplePart(2);
+	static final ModModelPart LEFT_ARM = new Limb(16, 17, 19, 19.0F, false);
+	static final ModModelPart RIGHT_ARM = new Limb(11, 12, 14, 19.0F, false);
+	static final ModModelPart LEFT_LEG = new Limb(4, 5, 6, 6.0F, true);
+	static final ModModelPart RIGHT_LEG = new Limb(1, 2, 3, 6.0F, true);
+	static final ModModelPart CHEST = new Chest();
 	
 	public static ClientModel bakeBipedCustomArmorModel(BipedModel<?> model, ArmorItem armorItem)
 	{
@@ -56,14 +58,14 @@ public class CustomModelBakery
 	    model.rightArm.setPos(-5.0F, 2.0F, 0.0F);
 	    resetRotation(model.rightArm);
 	    
-	    model.leftArm.mirror = true;
+	    model.leftArm.visible = true;
 	    model.leftArm.setPos(5.0F, 2.0F, 0.0F);
 	    resetRotation(model.leftArm);
 	    
 	    model.rightLeg.setPos(-1.9F, 12.0F, 0.0F);
 	    resetRotation(model.rightLeg);
 	    
-	    model.leftLeg.mirror = true;
+	    model.leftLeg.visible = true;
 	    model.leftLeg.setPos(1.9F, 12.0F, 0.0F);
 	    resetRotation(model.leftLeg);
 		
@@ -116,7 +118,7 @@ public class CustomModelBakery
 		return VertexData.loadVertexInformation(vertices, ArrayUtils.toPrimitive(indices.toArray(new Integer[0])), true);
 	}
 	
-	private static void bake(MatrixStack matrixStack, ModelPart part, ModelRenderer renderer, List<VertexData> vertices, List<Integer> indices)
+	private static void bake(MatrixStack matrixStack, ModModelPart part, ModelRenderer renderer, List<VertexData> vertices, List<Integer> indices)
 	{
 		matrixStack.pushPose();
 		matrixStack.translate(renderer.x, renderer.y, renderer.z);
@@ -140,10 +142,10 @@ public class CustomModelBakery
 			part.bakeCube(matrixStack, cube, vertices, indices);
 		}
 		
-		for (ModelRenderer childRenderer : renderer.children)
+		renderer.children.forEach((childRenderer) ->
 		{
 			bake(matrixStack, part, childRenderer, vertices, indices);
-		}
+		});
 		
 		matrixStack.popPose();
 	}
@@ -152,9 +154,9 @@ public class CustomModelBakery
 	static class ModelPartBind
 	{
 		ModelRenderer modelRenderer;
-		ModelPart partedBaker;
+		ModModelPart partedBaker;
 		
-		public ModelPartBind(ModelPart partedBaker, ModelRenderer modelRenderer)
+		public ModelPartBind(ModModelPart partedBaker, ModelRenderer modelRenderer)
 		{
 			this.partedBaker = partedBaker;
 			this.modelRenderer = modelRenderer;
@@ -169,13 +171,13 @@ public class CustomModelBakery
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	abstract static class ModelPart
+	abstract static class ModModelPart
 	{
 		public abstract void bakeCube(MatrixStack matrixStack, ModelBox cube, List<VertexData> vertices, List<Integer> indices);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	static class SimplePart extends ModelPart
+	static class SimplePart extends ModModelPart
 	{
 		final int jointId;
 		public SimplePart (int jointId)
@@ -216,7 +218,7 @@ public class CustomModelBakery
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	static class Chest extends ModelPart
+	static class Chest extends ModModelPart
 	{
 		final float cutX = 0.0F;
 		final WeightPair[] cutYList = { new WeightPair(13.6666F, 0.254F, 0.746F), new WeightPair(15.8333F, 0.254F, 0.746F),
@@ -413,7 +415,7 @@ public class CustomModelBakery
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	static class Limb extends ModelPart
+	static class Limb extends ModModelPart
 	{
 		final int upperJointId;
 		final int lowerJointId;

@@ -13,7 +13,7 @@ public class Joint
 	private final PublicMatrix4f localTransform;
 	private PublicMatrix4f inversedTransform = new PublicMatrix4f();
 	private PublicMatrix4f animatedTransform = new PublicMatrix4f();
-	
+
 	public Joint(String name, int jointID, PublicMatrix4f localTransform)
 	{
 		this.jointId = jointID;
@@ -23,36 +23,38 @@ public class Joint
 
 	public void addSubJoint(Joint... joints)
 	{
-		for (Joint joint : joints) this.subJoints.add(joint);
+		for (Joint joint : joints)
+		{
+			this.subJoints.add(joint);
+		}
 	}
-	
+
 	public void setAnimatedTransform(PublicMatrix4f animatedTransform)
 	{
-		this.animatedTransform = animatedTransform;
+		this.animatedTransform.load(animatedTransform);
 	}
 
 	public void initializeAnimationTransform()
 	{
 		this.animatedTransform.setIdentity();
-
 		for (Joint joint : this.subJoints)
 		{
 			joint.initializeAnimationTransform();
 		}
 	}
-	
-	public void setInversedModelTransform(PublicMatrix4f superTransform)
+
+	public void setInversedModelTransform(PublicMatrix4f parentTransform)
 	{
-		PublicMatrix4f modelTransform = PublicMatrix4f.mul(superTransform, this.localTransform, null);
+		PublicMatrix4f modelTransform = PublicMatrix4f.mul(parentTransform, this.localTransform, null);
 		PublicMatrix4f.invert(modelTransform, this.inversedTransform);
-		
+
 		for (Joint joint : this.subJoints)
 		{
 			joint.setInversedModelTransform(modelTransform);
 		}
 	}
-	
-	public PublicMatrix4f getLocalTrasnform()
+
+	public PublicMatrix4f getLocalTransform()
 	{
 		return this.localTransform;
 	}
@@ -66,7 +68,7 @@ public class Joint
 	{
 		return this.inversedTransform;
 	}
-	
+
 	public List<Joint> getSubJoints()
 	{
 		return this.subJoints;
@@ -80,5 +82,26 @@ public class Joint
 	public int getId()
 	{
 		return this.jointId;
+	}
+
+	public String searchPath(String path, String joint)
+	{
+		if (joint.equals(this.getName()))
+		{
+			return path;
+		} else
+		{
+			int i = 1;
+			for (Joint subJoint : this.subJoints)
+			{
+				String str = subJoint.searchPath(String.valueOf(i) + path, joint);
+				i++;
+				if (str != null)
+				{
+					return str;
+				}
+			}
+			return null;
+		}
 	}
 }

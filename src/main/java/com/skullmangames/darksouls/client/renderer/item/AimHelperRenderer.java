@@ -3,6 +3,13 @@ package com.skullmangames.darksouls.client.renderer.item;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
@@ -12,21 +19,16 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AimHelperRenderer
 {
-	@SuppressWarnings("resource")
 	public void doRender(MatrixStack matStackIn, float partialTicks)
 	{
-		Entity entity = Minecraft.getInstance().player;
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity entity = minecraft.player;
 		RayTraceResult ray = entity.pick(200.D, partialTicks, false);
 		Vector3d vec3 = ray.getLocation();
 		Vector3f pos1 = new Vector3f((float) MathHelper.lerp((double)partialTicks, entity.xOld, entity.getX()),
@@ -39,7 +41,7 @@ public class AimHelperRenderer
 		GL11.glEnable(GL11.GL_POINT_SMOOTH);
 		GL11.glLineWidth(3.0F);
 		
-		ActiveRenderInfo renderInfo = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ActiveRenderInfo renderInfo = minecraft.gameRenderer.getMainCamera();
 		Vector3d projectedView = renderInfo.getPosition();
 		matStackIn.pushPose();
 		matStackIn.translate(-projectedView.x, -projectedView.y, -projectedView.z);

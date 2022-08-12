@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -46,11 +46,11 @@ public class STCNotifyPlayerYawChanged
 			
 			if(entity != null)
 			{
-				PlayerData<?> entitydata = (PlayerData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				PlayerCap<?> entityCap = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if(entitydata != null)
+				if(entityCap != null)
 				{
-					entitydata.changeYaw(msg.yaw);
+					entityCap.changeYaw(msg.yaw);
 				}
 			}
 		});

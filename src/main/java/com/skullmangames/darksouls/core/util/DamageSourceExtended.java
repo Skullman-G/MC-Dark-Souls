@@ -1,30 +1,27 @@
 package com.skullmangames.darksouls.core.util;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EntityDamageSource;
 
-public class DamageSourceExtended extends EntityDamageSource implements IExtendedDamageSource
+public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
 {
-	private float impact;
-	private StunType stunType;
-	private final int id;
 	private float amount;
-	private int requiredDeflectionLevel;
-	private DamageType damageType;
+	private final int requiredDeflectionLevel;
+	private final float poiseDamage;
+	private final float staminaDamage;
+	private StunType stunType;
+	private final DamageType damageType;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, int id, float amount, int requireddeflectionlevel, DamageType damageType)
+	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
 		super(damageTypeIn, damageSourceEntityIn);
 		
-		LivingData<?> entityCap = (LivingData<?>) damageSourceEntityIn.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		
 		this.stunType = stunType;
-		this.impact = entityCap.getImpact();
-		this.id = id;
 		this.amount = amount;
 		this.damageType = damageType;
+		this.poiseDamage = poiseDamage;
+		this.requiredDeflectionLevel = requireddeflectionlevel;
+		this.staminaDamage = staminaDamage;
 	}
 	
 	@Override
@@ -44,29 +41,11 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	{
 		this.amount = amount;
 	}
-	
-	@Override
-	public void setImpact(float amount)
-	{
-		this.impact = amount;
-	}
-
-	@Override
-	public void setStunType(StunType stunType)
-	{
-		this.stunType = stunType;
-	}
-
-	@Override
-	public float getImpact()
-	{
-		return impact;
-	}
 
 	@Override
 	public StunType getStunType()
 	{
-		return stunType;
+		return this.stunType;
 	}
 
 	@Override
@@ -82,20 +61,41 @@ public class DamageSourceExtended extends EntityDamageSource implements IExtende
 	}
 
 	@Override
-	public int getSkillId()
-	{
-		return this.id;
-	}
-
-	@Override
-	public DamageType getAttackType()
+	public DamageType getDamageType()
 	{
 		return this.damageType;
 	}
 
 	@Override
-	public void setAttackType(DamageType damageType)
+	public float getPoiseDamage()
 	{
-		this.damageType = damageType;
+		return this.poiseDamage;
+	}
+
+	@Override
+	public boolean isHeadshot()
+	{
+		return false;
+	}
+
+	@Override
+	public void setHeadshot(boolean value) {}
+
+	@Override
+	public float getStaminaDamage()
+	{
+		return this.staminaDamage;
+	}
+
+	@Override
+	public void setStunType(StunType value)
+	{
+		this.stunType = value;
+	}
+
+	@Override
+	public Entity getSource()
+	{
+		return this.getDirectEntity();
 	}
 }

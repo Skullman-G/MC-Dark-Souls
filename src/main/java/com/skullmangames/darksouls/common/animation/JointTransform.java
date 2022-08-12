@@ -1,109 +1,125 @@
 package com.skullmangames.darksouls.common.animation;
 
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
-
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 public class JointTransform
 {
-	public static final JointTransform DEFAULT = new JointTransform(new Vector3f(0.0F,0.0F,0.0F), new Quaternion(0.0F,0.0F,0.0F,1.0F), new Vector3f(1.0F,1.0F,1.0F));
-	
-	private Vector3f position;
+	private Vector3f translation;
 	private Vector3f scale;
 	private Quaternion rotation;
-	private Quaternion customRotation;
 
 	public JointTransform(Vector3f position, Quaternion rotation, Vector3f scale)
 	{
-		this.position = position;
+		this.translation = position;
 		this.rotation = rotation;
 		this.scale = scale;
-	}
-	
-	public JointTransform(Vector3f position, Quaternion rotation, Quaternion customRotation, Vector3f scale)
-	{
-		this.position = position;
-		this.rotation = rotation;
-		this.scale = scale;
-		this.customRotation = customRotation;
-	}
-	
-	public Vector3f getPosition()
-	{
-		return position;
 	}
 
-	public Quaternion getRotation()
+	public Vector3f translation()
+	{
+		return translation;
+	}
+
+	public Quaternion rotation()
 	{
 		return rotation;
 	}
-	
-	public Quaternion getCustomRotation()
-	{
-		return customRotation;
-	}
-	
-	public Vector3f getScale()
+
+	public Vector3f scale()
 	{
 		return scale;
 	}
 
-	public void setRotation(Quaternion quat)
+	public JointTransform copy()
 	{
-		this.rotation = quat;
+		return JointTransform.empty().copyFrom(this);
+	}
+
+	public JointTransform copyFrom(JointTransform jt)
+	{
+		Vector3f newV = jt.translation();
+		Quaternion newQ = jt.rotation();
+		Vector3f newS = jt.scale;
+		this.translation.set(newV.x(), newV.y(), newV.z());
+		this.rotation.set(newQ.i(), newQ.j(), newQ.k(), newQ.r());
+		this.scale.set(newS.x(), newS.y(), newS.z());
+
+		return this;
 	}
 	
-	public void setCustomRotation(Quaternion quat)
+	public PublicMatrix4f getParentboundMatrix(Joint joint, PublicMatrix4f parentTransform)
 	{
-		this.customRotation = quat;
+		return this.toMatrix().mulFront(joint.getLocalTransform()).mulFront(parentTransform).mulBack(joint.getAnimatedTransform());
 	}
-	
-	public PublicMatrix4f toTransformMatrix()
+
+	public PublicMatrix4f toMatrix()
 	{
-		PublicMatrix4f matrix = new PublicMatrix4f();
-		matrix.translate(position);
-		PublicMatrix4f.mul(matrix, rotation.toRotationMatrix(), matrix);
-		matrix.scale(this.scale);
+		PublicMatrix4f matrix = new PublicMatrix4f()
+				.translate(this.translation).mulBack(PublicMatrix4f.fromQuaternion(this.rotation)).scale(this.scale);
 		return matrix;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return String.format("%s %s", this.translation, this.rotation);
+	}
+
+	private static JointTransform interpolateSimple(JointTransform prev, JointTransform next, float progression)
+	{
+		return new JointTransform(MathUtils.lerpVector(prev.translation, next.translation, progression),
+				MathUtils.lerpQuaternion(prev.rotation, next.rotation, progression),
+				MathUtils.lerpVector(prev.scale, next.scale, progression));
+	}
+
 	public static JointTransform interpolate(JointTransform prev, JointTransform next, float progression)
 	{
-		if (prev == null || next == null)
-		{
-			return JointTransform.DEFAULT;
-		}
-		
-		Vector3f vertex = interpolate(prev.position, next.position, progression);
-		Quaternion rot = Quaternion.interpolate(prev.rotation, next.rotation, progression);
-		Vector3f scale = interpolate(prev.scale, next.scale, progression);
-		
-		if (prev.customRotation != null || next.customRotation != null)
-		{
-			if (prev.customRotation == null)
-			{
-				prev.customRotation = new Quaternion(0, 0, 0, 1);
-			}
-			if (next.customRotation == null)
-			{
-				next.customRotation = new Quaternion(0, 0, 0, 1);
-			}
-			
-			return new JointTransform(vertex, rot, Quaternion.interpolate(prev.customRotation, next.customRotation, progression), scale);
-			
-		}
-		else
-		{
-			return new JointTransform(vertex, rot, scale);
-		}
+		if (prev == null || next == null) return JointTransform.empty();
+
+		progression = MathHelper.clamp(progression, 0.0F, 1.0F);
+		JointTransform interpolated = interpolateSimple(prev, next, progression);
+
+		return interpolated;
 	}
-	
-	private static Vector3f interpolate(Vector3f start, Vector3f end, float progression)
+
+	public static JointTransform fromMatrixNoScale(PublicMatrix4f matrix)
 	{
-		float x = start.x() + (end.x() - start.x()) * progression;
-		float y = start.y() + (end.y() - start.y()) * progression;
-		float z = start.z() + (end.z() - start.z()) * progression;
-		return new Vector3f(x, y, z);
+		return new JointTransform(matrix.toTranslationVector(), matrix.toQuaternion(), new Vector3f(1.0F, 1.0F, 1.0F));
+	}
+
+	public static JointTransform getTranslation(Vector3f vec)
+	{
+		return JointTransform.translationRotation(vec, new Quaternion(0.0F, 0.0F, 0.0F, 1.0F));
+	}
+
+	public static JointTransform getRotation(Quaternion quat)
+	{
+		return JointTransform.translationRotation(new Vector3f(0.0F, 0.0F, 0.0F), quat);
+	}
+
+	public static JointTransform getScale(Vector3f vec)
+	{
+		return new JointTransform(new Vector3f(1.0F, 1.0F, 1.0F), new Quaternion(0.0F, 0.0F, 0.0F, 1.0F), vec);
+	}
+
+	public static JointTransform fromMatrix(PublicMatrix4f matrix)
+	{
+		return new JointTransform(matrix.toTranslationVector(), matrix.toQuaternion(), matrix.toScaleVector());
+	}
+
+	public static JointTransform translationRotation(Vector3f vec, Quaternion quat)
+	{
+		return new JointTransform(vec, quat, new Vector3f(1.0F, 1.0F, 1.0F));
+	}
+
+	public static JointTransform empty()
+	{
+		return new JointTransform(new Vector3f(0.0F, 0.0F, 0.0F), new Quaternion(0.0F, 0.0F, 0.0F, 1.0F),
+				new Vector3f(1.0F, 1.0F, 1.0F));
 	}
 }

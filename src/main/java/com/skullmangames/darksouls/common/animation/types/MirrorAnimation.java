@@ -1,53 +1,65 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
-import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
+import java.util.function.Function;
 
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Models;
+
+import net.minecraft.resources.IResourceManager;
 
 public class MirrorAnimation extends StaticAnimation
 {
-	public StaticAnimation mirrorAnimation;
+	public StaticAnimation mirror;
 	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String armature, boolean clientOnly)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		super(true, convertTime, repeatPlay, path1, armature, clientOnly);
-		this.mirrorAnimation = new StaticAnimation(false, convertTime, repeatPlay, path2, armature, clientOnly);
+		this(convertTime, repeatPlay, true, path1, path2, model);
 	}
 	
-	public StaticAnimation checkHandAndReturnAnimation(Hand hand)
+	public MirrorAnimation(float convertTime, boolean repeatPlay, boolean applyLayerParts, String path1, String path2, Function<Models<?>, Model> model)
 	{
-		switch(hand)
-		{
-			case MAIN_HAND:
-				return this;
-			case OFF_HAND:
-				return mirrorAnimation;
-		}
+		super(convertTime, repeatPlay, path1, model);
+		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
 		
-		return null;
+		if (applyLayerParts)
+		{
+			this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
+			this.mirror.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT);
+		}
 	}
 	
 	@Override
-	public void bind(Dist dist)
+	public <V> MirrorAnimation addProperty(Property<V> propertyType, V value)
 	{
-		if (this.clientOnly && dist != Dist.CLIENT) return;
-		
-		if(mirrorAnimation.path != null)
+		super.addProperty(propertyType, value);
+		return this;
+	}
+	
+	@Override
+	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
+	{
+		switch (layerPart)
 		{
-			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, mirrorAnimation.path), mirrorAnimation, armature);
-			mirrorAnimation.path = null;
+			case RIGHT: return this;
+			case LEFT: return this.mirror;
+			default: switch(entityCap.getOriginalEntity().getUsedItemHand())
+			{
+				case MAIN_HAND: return this;
+				case OFF_HAND: return this.mirror;
+				default: return Animations.DUMMY_ANIMATION;
+			}
 		}
-		
-		super.bind(dist);
-		
-		return;
+	}
+	
+	@Override
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
+	{
+		load(resourceManager, models, this);
+		load(resourceManager, models, this.mirror);
 	}
 }

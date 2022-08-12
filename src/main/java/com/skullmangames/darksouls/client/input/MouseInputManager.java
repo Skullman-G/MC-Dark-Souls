@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.input;
 
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.renderer.Camera;
+import com.skullmangames.darksouls.client.renderer.ModCamera;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
@@ -11,7 +11,7 @@ import net.minecraft.client.util.NativeUtil;
 public class MouseInputManager extends MouseHelper
 {
 	private final Minecraft minecraft;
-	private final Camera camera;
+	private final ModCamera camera;
 	
 	public MouseInputManager(Minecraft minecraft)
 	{
@@ -58,7 +58,7 @@ public class MouseInputManager extends MouseHelper
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}
-	        	else if (ClientManager.INSTANCE.getPlayerData().getClientAnimator().prevAiming())
+	        	else if (ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        		this.minecraft.player.yBodyRot = (float)((double)this.minecraft.player.yRot + d1);

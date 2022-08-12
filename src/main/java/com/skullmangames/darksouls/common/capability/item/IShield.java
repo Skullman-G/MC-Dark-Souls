@@ -1,9 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import net.minecraft.util.SoundEvent;
+
 public interface IShield
 {
 	public float getPhysicalDefense();
 	public ShieldType getShieldType();
+	public SoundEvent getBlockSound();
 	
 	public default int getDeflectionLevel()
 	{

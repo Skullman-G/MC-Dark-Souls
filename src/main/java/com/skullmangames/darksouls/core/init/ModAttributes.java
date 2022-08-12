@@ -3,9 +3,14 @@ package com.skullmangames.darksouls.core.init;
 import java.util.UUID;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.AsylumDemonEntity;
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
-import com.skullmangames.darksouls.common.entity.HollowEntity;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
+import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.FireKeeper;
+import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
+import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
+import com.skullmangames.darksouls.common.entity.QuestEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +18,7 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -23,11 +29,11 @@ public class ModAttributes
 {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, DarkSouls.MOD_ID);
 	
-    public static final RegistryObject<Attribute> MAX_STUN_ARMOR = registerRangedAttribute("stun_armor", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> IMPACT = registerRangedAttribute("impact", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_DAMAGE = registerRangedAttribute("offhand_attack_damage", 1.0D, 0.0D, 2048.0D);
-	public static final RegistryObject<Attribute> OFFHAND_ATTACK_SPEED = registerRangedAttribute("offhand_attack_speed", 4.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
+	public static final RegistryObject<Attribute> POISE = registerRangedAttribute("poise", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> POISE_DAMAGE = registerRangedAttribute("poise_damage", 1.0D, 1.0D, 1024.0D);
+	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 50.0D, 50.0D, 150.0D);
+	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 150.0D);
 	
 	// Defense
 	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 0.99D);
@@ -35,91 +41,88 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 0.99D);
 	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 0.99D);
 	
-	// UUID
-	public static final UUID IMPACT_ID = UUID.fromString("b0a746ac-5734-11eb-ae93-0242ac130002");
-	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-	public static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
+	public static final UUID[] EUIPMENT_MODIFIER_UUIDS = new UUID[]
+	{
+			UUID.fromString("02787320-87ac-4c4f-b057-cb79a2660041"),
+			UUID.fromString("f16541b7-8a55-4a2b-ad65-0c21a3a12028"),
+			UUID.fromString("683ac74c-a751-497e-abfe-e0af614bef46"),
+			UUID.fromString("f3d4a8bb-853c-407f-9a02-0bf11c284466"),
+			UUID.fromString("26c0477e-664b-44cd-9108-140699ad6807"),
+			UUID.fromString("868429ef-4804-4cb8-b253-c89ac4af6c73")
+	};
+	public static final UUID MOVEMENT_SPEED_MODIFIER_UUID = UUID.fromString("1cdc2c63-da86-47bb-a6ea-ff0a06dab01e");
     
 	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
 	{
 		return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute."+DarkSouls.MOD_ID+"."+name, defaultValue, minValue, maxValue).setSyncable(true));
 	}
 	
-	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event)
+	public static void createAttributeMap(EntityAttributeCreationEvent event)
 	{
-		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeperEntity.createAttributes().build());
-		event.put(ModEntities.HOLLOW.get(), HollowEntity.createAttributes().build());
-		event.put(ModEntities.ASYLUM_DEMON.get(), AsylumDemonEntity.createAttributes().build());
+		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeper.createAttributes().build());
+		event.put(ModEntities.HOLLOW.get(), Hollow.createAttributes().build());
+		event.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), HollowLordranWarrior.createAttributes().build());
+		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
+		event.put(ModEntities.STRAY_DEMON.get(), StrayDemon.createAttributes().build());
+		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
+		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), AnastaciaOfAstora.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
 	{
+		general(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), event);
+		general(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), event);
 		general(ModEntities.HOLLOW.get(), event);
-		general(ModEntities.ASYLUM_DEMON.get(), event);
-		general(EntityType.CAVE_SPIDER, event);
-		general(EntityType.CREEPER, event);
-		general(EntityType.EVOKER, event);
-		general(EntityType.IRON_GOLEM, event);
-		general(EntityType.PILLAGER, event);
-		general(EntityType.RAVAGER, event);
-		general(EntityType.SPIDER, event);
-		general(EntityType.VEX, event);
-		general(EntityType.VINDICATOR, event);
-		general(EntityType.WITCH, event);
-		general(EntityType.HOGLIN, event);
-		general(EntityType.ZOGLIN, event);
+		general(ModEntities.STRAY_DEMON.get(), event);
+		general(ModEntities.FIRE_KEEPER.get(), event);
 		
-		withStunArmor(EntityType.DROWNED, event);
-		withStunArmor(EntityType.ENDERMAN, event);
-		withStunArmor(EntityType.HUSK, event);
-		withStunArmor(EntityType.PIGLIN, event);
-		withStunArmor(EntityType.PIGLIN_BRUTE, event);
-		withStunArmor(EntityType.SKELETON, event);
-		withStunArmor(EntityType.STRAY, event);
-		withStunArmor(EntityType.WITHER_SKELETON, event);
-		withStunArmor(EntityType.ZOMBIE, event);
-		withStunArmor(EntityType.ZOMBIE_VILLAGER, event);
-		withStunArmor(EntityType.ZOMBIFIED_PIGLIN, event);
+		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
+		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
 		
 		player(EntityType.PLAYER, event);
 	}
     
     private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
-		event.add(entityType, ModAttributes.IMPACT.get());
-		
-		event.add(entityType, ModAttributes.STANDARD_DEFENSE.get());
+    	event.add(entityType, ModAttributes.POISE.get());
+		event.add(entityType, ModAttributes.POISE_DAMAGE.get());
+    	event.add(entityType, ModAttributes.STANDARD_DEFENSE.get());
 		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
 		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
 		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
+		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
     
-    private static void withStunArmor(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
+    public static void withEquipLoad(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
-		general(entityType, event);
-		event.add(entityType, ModAttributes.MAX_STUN_ARMOR.get());
-	}
+    	general(entityType, event);
+    	event.add(entityType, ModAttributes.EQUIP_LOAD.get());
+    	event.add(entityType, ModAttributes.MAX_EQUIP_LOAD.get());
+    }
     
     private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
     {
-		withStunArmor(entityType, event);
-		event.add(entityType, ModAttributes.OFFHAND_ATTACK_DAMAGE.get());
-		event.add(entityType, ModAttributes.OFFHAND_ATTACK_SPEED.get());
-		event.add(entityType, ModAttributes.MAX_STAMINA.get());
+    	withEquipLoad(entityType, event);
 	}
-
-	public static AttributeModifier getImpactModifier(double value)
+	
+	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlotType slot, float value)
 	{
-		return new AttributeModifier(ModAttributes.IMPACT_ID, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
-
-	public static AttributeModifier getAttackDamageModifier(double value)
+	
+	public static AttributeModifier getMovementSpeedModifier(EquipLoadLevel level)
 	{
-		return new AttributeModifier(ATTACK_DAMAGE_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
-	}
-
-	public static AttributeModifier getAttackSpeedModifier(double value)
-	{
-		return new AttributeModifier(ATTACK_SPEED_MODIFIER, DarkSouls.MOD_ID + ":weapon_modifier", value, AttributeModifier.Operation.ADDITION);
+		double value = 1.0F;
+		
+		switch (level)
+		{
+			default: value = 0.0F; break;
+			case LIGHT: value = -0.1F; break;
+			case MEDIUM: value = -0.2F; break;
+			case HEAVY: value = -0.35F; break;
+			case OVERENCUMBERED: value = -0.5F; break;
+		}
+		
+		return new AttributeModifier(MOVEMENT_SPEED_MODIFIER_UUID, DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	}
 }

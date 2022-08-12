@@ -2,27 +2,27 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.UUID;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
 public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseAction
 {
@@ -59,7 +59,7 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand)
 	{
 		ModifiableAttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
-		AttributeModifier speedmodifier = new AttributeModifier(SPEED_MODIFIER_CASTING_UUID, "item use speed reduction", -speed.getValue(), Operation.ADDITION);
+		AttributeModifier speedmodifier = new AttributeModifier(SPEED_MODIFIER_CASTING_UUID, "item use speed reduction", 0, Operation.MULTIPLY_TOTAL);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) == null) speed.addTransientModifier(speedmodifier);
 		return ItemUser.startUsing(this, level, player, hand);
 	}
@@ -76,14 +76,11 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	{
 		ModifiableAttributeInstance speed = livingentity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed.getModifier(SPEED_MODIFIER_CASTING_UUID) != null) speed.removeModifier(SPEED_MODIFIER_CASTING_UUID);
-		
 		PlayerEntity playerentity = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
-	      
-	    // SERVER SIDE
-	    if (livingentity instanceof ServerPlayerEntity)
+	    if (!livingentity.level.isClientSide)
 	    {
 	    	ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)livingentity;
-	    	PlayerData<?> playerdata = (PlayerData<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+	    	PlayerCap<?> playerdata = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
 	    	
 	    	if (serverplayerentity.getRespawnPosition() != null)

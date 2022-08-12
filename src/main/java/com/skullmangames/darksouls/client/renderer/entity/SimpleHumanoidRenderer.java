@@ -1,0 +1,25 @@
+package com.skullmangames.darksouls.client.renderer.entity;
+
+import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
+public class SimpleHumanoidRenderer<E extends LivingEntity, T extends LivingCap<E>> extends BipedRenderer<E, T>
+{
+	public final ResourceLocation textureLocation;
+	
+	public SimpleHumanoidRenderer(String texturePath)
+	{
+		this.textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/" + texturePath + ".png");
+	}
+	
+	@Override
+	protected ResourceLocation getEntityTexture(E entity)
+	{
+		return textureLocation;
+	}
+}

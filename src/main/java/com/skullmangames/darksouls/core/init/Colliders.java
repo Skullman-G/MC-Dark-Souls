@@ -1,29 +1,25 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.common.capability.entity.AsylumDemonData;
+import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.physics.CubeCollider;
 
 public class Colliders
 {
-	public static final Collider body = new Collider(0.5F, 0.7F, 0.7F, 0F, 1.0F, -0.6F);
-	public static final Collider bodyShockwave = new Collider(2.0F, 0.7F, 2.8F, 0F, 1.0F, -0.6F);
-	public static final Collider dualSwordDash = new Collider(0.8F, 0.5F, 1.5F, 0F, 1.0F, 0.0F);
-	public static final Collider fatal_draw = new Collider(1.75F, 0.7F, 1.5F, 0F, 1.0F, -1.5F);
-	public static final Collider fatal_draw_dash = new Collider(0.7F, 0.7F, 5.0F, 0F, 1.0F, -4.0F);
-	public static final Collider fist = new Collider(0.4F, 0.4F, 0.4F, 0F, 0F, 0F);
-	public static final Collider headbutt = new Collider(0.4F, 0.4F, 0.4F, 0F, 0F, -0.3F);
-	public static final Collider headbutt_ravaber = new Collider(0.8F, 0.8F, 0.8F, 0F, 0F, -0.3F);
-	public static final Collider sword = new Collider(0.75F, 0.55F, 0.85F, 0F, 0F, -0.25F);
-	public static final Collider swordDash = new Collider(0.4F, 0.4F, 0.75F, 0F, 0F, -0.6F);
-	public static final Collider brokenSword = new Collider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
-	public static final Collider swordSwingFast = new Collider(0.4F, 1.0F, 0.75F, 0F, 0F, -0.3F);
-	public static final Collider spearNarrow = new Collider(0.4F, 0.4F, 0.9F, 0F, 0F, -1.35F);
-	public static final Collider spearSwing = new Collider(0.5F, 1.0F, 0.9F, 0F, 0F, -1.0F);
-	public static final Collider tools = new Collider(0.4F, 0.4F, 0.55F, 0F, 0.0F, 0F);
-	public static final Collider fist_fast = new Collider(0.4F, 0.4F, 0.5F, 0F, 1.0F, -0.85F);
-	public static final Collider great_hammer = new Collider(0.6F, 0.6F, 0.7F, 0.0F, 0.3F, -1.9F);
+	public static Collider BODY = new CubeCollider(0.5F, 0.7F, 0.7F, 0F, 1.0F, -0.6F);
+	public static Collider BODY_SHOCKWAVE = new CubeCollider(2.0F, 0.7F, 2.8F, 0F, 1.0F, -0.6F);
+	public static Collider FIST = new CubeCollider(0.4F, 0.4F, 0.4F, 0F, 0F, 0F);
+	public static Collider SHORTSWORD = new CubeCollider(0.4F, 0.3F, 0.7F, 0F, 0F, -0.5F);
+	public static Collider LONGSWORD = new CubeCollider(0.4F, 0.3F, 0.9F, 0F, 0F, -0.5F);
+	public static Collider BROKEN_SWORD = new CubeCollider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
+	public static Collider TOOL = new CubeCollider(0.3F, 0.3F, 0.4F, 0F, 0.25F, -0.7F);
+	public static Collider GREAT_HAMMER = new CubeCollider(0.6F, 0.6F, 0.7F, 0.0F, 0.3F, -1.9F);
+	public static Collider DAGGER = new CubeCollider(0.45F, 0.25F, 0.45F, 0.0F, 0.0F, -0.25F);
+	public static Collider SPEAR = new CubeCollider(0.4F, 0.4F, 0.4F, 0F, 0F, -1.35F);
+	public static Collider WINGED_SPEAR = new CubeCollider(0.4F, 0.4F, 0.75F, 0F, 0F, -1.35F);
+	public static Collider ULTRA_GREATSWORD = new CubeCollider(0.4F, 0.4F, 0.95F, 0F, 0F, -1.35F);
 	
-	//Asylum Demon
-	public static final Collider asylum_demon_great_hammer = great_hammer.getScaledCollider(AsylumDemonData.getWeaponScale());
-	public static final Collider asylum_demon_body = new Collider(3F, 1F, 3F, 0F, 0F, 0F);
+	//Stray Demon
+	public static Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.getWeaponScale());
+	public static Collider STRAY_DEMON_BODY = new CubeCollider(3F, 1F, 3F, 0F, 0F, 0F);
 }

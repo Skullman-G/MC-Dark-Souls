@@ -4,135 +4,226 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
-import com.skullmangames.darksouls.common.item.FireKeeperSoulItem;
-import com.skullmangames.darksouls.common.item.GreatHammerItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
+import com.skullmangames.darksouls.common.item.ModArmorItem;
+import com.skullmangames.darksouls.common.item.SoulContainerItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
-import com.skullmangames.darksouls.common.item.WeaponItem;
 
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemTier;
+import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.SwordItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ModItems 
+public class ModItems
 {
 	public static final List<Item> DESCRIPTION_ITEMS = new ArrayList<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
 	
+	// WEAPONS
+	// Dagger
+	/*public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(ItemTier.WOOD, 2, -2.4F, new Item.Properties()
+	.tab(ItemGroup.TAB_COMBAT)));*/
+	
+	
+	// Straight Swords
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new SwordItem(ItemTier.WOOD, 0, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(ItemTier.IRON, 3, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Axes
+	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(ItemTier.IRON, 6.5F, -3.1F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Spears
+	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(ItemTier.IRON, 2, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> SPEAR = ITEMS.register("spear", () -> new SwordItem(ItemTier.IRON, 3, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Ultra Greatsword
+	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(ItemTier.IRON, 10, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Great Hammer
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(ItemTier.WOOD, 11, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Shields
+	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Armor
+	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, "dingy_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> DINGY_ROBE = ITEMS.register("dingy_robe", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.CHEST, "dingy_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BLOOD_STAINED_SKIRT = ITEMS.register("blood_stained_skirt", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.LEGS, "dingy_set_layer_2", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_HELM = ITEMS.register("lordran_warrior_helm", () -> new ModArmorItem(ArmorMaterial.IRON, EquipmentSlotType.HEAD, "lordran_warrior_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_ARMOR = ITEMS.register("lordran_warrior_armor", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.CHEST, "lordran_warrior_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_WAISTCLOTH = ITEMS.register("lordran_warrior_waistcloth", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.LEGS, "lordran_warrior_set_layer_2", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_WARRIOR_BOOTS = ITEMS.register("lordran_warrior_boots", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.FEET, "lordran_warrior_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_HELM = ITEMS.register("lordran_soldier_helm", () -> new ModArmorItem(ArmorMaterial.IRON, EquipmentSlotType.HEAD, "lordran_soldier_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_ARMOR = ITEMS.register("lordran_soldier_armor", () -> new ModArmorItem(ArmorMaterial.IRON, EquipmentSlotType.CHEST, "lordran_soldier_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_WAISTCLOTH = ITEMS.register("lordran_soldier_waistcloth", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.LEGS, "lordran_soldier_set_layer_2", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_BOOTS = ITEMS.register("lordran_soldier_boots", () -> new ModArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.FEET, "lordran_soldier_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
+	// Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> ESTUS_SHARD = ITEMS.register("estus_shard", () -> new Item(new Item.Properties()
-			.tab(ItemGroup.TAB_MATERIALS)));
-	
-	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new FireKeeperSoulItem(new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> EMERALD_FLASK = ITEMS.register("emerald_flask", () -> new Item(new Item.Properties()
-			.tab(ItemGroup.TAB_BREWING)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> DARKSIGN = ITEMS.register("darksign", () -> new Teleport2BonfireItem(DarkSoulsUseAction.DARKSIGN, true, false, true, new Item.Properties()
 			.stacksTo(1)));
 	
 	public static final RegistryObject<Item> HOMEWARD_BONE = ITEMS.register("homeward_bone", () -> new Teleport2BonfireItem(DarkSoulsUseAction.MIRACLE, false, true, false, new Item.Properties()
-			.tab(ItemGroup.TAB_TOOLS)));
-	
-	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(new Item.Properties()
-			.tab(DarkSouls.TAB_SOULS)));
-	
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new WeaponItem(ItemTier.WOOD, 1, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT)));
-	
-	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new WeaponItem(ItemTier.WOOD, 0, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT)));
+			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
-			.tab(ItemGroup.TAB_MATERIALS)));
+			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new GreatHammerItem(ItemTier.WOOD, 7, -2.4F, new Item.Properties()
-			.tab(ItemGroup.TAB_COMBAT))
-			.addStat(Stats.STRENGTH, 46));
 	
-	/*public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new KeyItem(new Item.Properties()
-			.tab(ItemGroup.TAB_REDSTONE)));*/
+	// Souls
+	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LARGE_SOUL_OF_A_LOST_UNDEAD = ITEMS.register("large_soul_of_a_lost_undead", () -> new SoulContainerItem(400, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(1, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> FIRE_KEEPER_SOUL = ITEMS.register("fire_keeper_soul", () -> new HumanityItem(5, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Block Items
-	public static final RegistryObject<Item> TITANITE_ORE = ITEMS.register("titanite_ore", () -> new BlockItem(ModBlocks.TITANITE_ORE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
-	
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(ModBlocks.BIG_ACACIA_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_BIRCH_DOOR = ITEMS.register("big_birch_door", () -> new BlockItem(ModBlocks.BIG_BIRCH_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_OAK_DOOR = ITEMS.register("big_oak_door", () -> new BlockItem(ModBlocks.BIG_OAK_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_SPRUCE_DOOR = ITEMS.register("big_spruce_door", () -> new BlockItem(ModBlocks.BIG_SPRUCE_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_JUNGLE_DOOR = ITEMS.register("big_jungle_door", () -> new BlockItem(ModBlocks.BIG_JUNGLE_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_DARK_OAK_DOOR = ITEMS.register("big_dark_oak_door", () -> new BlockItem(ModBlocks.BIG_DARK_OAK_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_CRIMSON_DOOR = ITEMS.register("big_crimson_door", () -> new BlockItem(ModBlocks.BIG_CRIMSON_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BIG_WARPED_DOOR = ITEMS.register("big_warped_door", () -> new BlockItem(ModBlocks.BIG_WARPED_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(ModBlocks.IRON_BAR_DOOR.get(),
-			new Item.Properties().tab(ItemGroup.TAB_REDSTONE)));
+			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
-			.tab(ItemGroup.TAB_MISC)));
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_WARRIOR_SPAWN_EGG = ITEMS.register("hollow_lordran_warrior_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_WARRIOR, 0x2e2103, 0xbd6d1c, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_SOLDIER_SPAWN_EGG = ITEMS.register("hollow_lordran_soldier_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_SOLDIER, 0x7d7d7d, 0xbd6d1c, new Item.Properties()
+			.tab(DarkSouls.TAB)));
 	
 	
 	public static void registerDescriptionItems()
 	{
-		DESCRIPTION_ITEMS.add(ESTUS_FLASK.get());
-		DESCRIPTION_ITEMS.add(ESTUS_SHARD.get());
-		DESCRIPTION_ITEMS.add(FIRE_KEEPER_SOUL.get());
-		DESCRIPTION_ITEMS.add(EMERALD_FLASK.get());
-		DESCRIPTION_ITEMS.add(DARKSIGN.get());
-		DESCRIPTION_ITEMS.add(HOMEWARD_BONE.get());
-		DESCRIPTION_ITEMS.add(HUMANITY.get());
-		DESCRIPTION_ITEMS.add(BROKEN_STRAIGHT_SWORD.get());
-		DESCRIPTION_ITEMS.add(STRAIGHT_SWORD_HILT.get());
-		DESCRIPTION_ITEMS.add(UNDEAD_BONE_SHARD.get());
-		DESCRIPTION_ITEMS.add(DEMON_GREAT_HAMMER.get());
+		DESCRIPTION_ITEMS.add(ModItems.ESTUS_FLASK.get());
+		DESCRIPTION_ITEMS.add(ModItems.ESTUS_SHARD.get());
+		DESCRIPTION_ITEMS.add(ModItems.FIRE_KEEPER_SOUL.get());
+		DESCRIPTION_ITEMS.add(ModItems.EMERALD_FLASK.get());
+		DESCRIPTION_ITEMS.add(ModItems.DARKSIGN.get());
+		DESCRIPTION_ITEMS.add(ModItems.HOMEWARD_BONE.get());
+		DESCRIPTION_ITEMS.add(ModItems.HUMANITY.get());
+		DESCRIPTION_ITEMS.add(ModItems.BROKEN_STRAIGHT_SWORD.get());
+		DESCRIPTION_ITEMS.add(ModItems.STRAIGHT_SWORD_HILT.get());
+		DESCRIPTION_ITEMS.add(ModItems.UNDEAD_BONE_SHARD.get());
+		DESCRIPTION_ITEMS.add(ModItems.DEMON_GREAT_HAMMER.get());
+		DESCRIPTION_ITEMS.add(ModItems.HEATER_SHIELD.get());
+		DESCRIPTION_ITEMS.add(ModItems.WINGED_SPEAR.get());
+		DESCRIPTION_ITEMS.add(ModItems.ZWEIHANDER.get());
+		DESCRIPTION_ITEMS.add(ModItems.LONGSWORD.get());
+		DESCRIPTION_ITEMS.add(ModItems.BATTLE_AXE.get());
+		DESCRIPTION_ITEMS.add(ModItems.SPEAR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_SHIELD.get());
+		
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_LEGGINGS);
+		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_BOOTS);
+		
+		DESCRIPTION_ITEMS.add(ModItems.DINGY_HOOD.get());
+		DESCRIPTION_ITEMS.add(ModItems.DINGY_ROBE.get());
+		DESCRIPTION_ITEMS.add(ModItems.BLOOD_STAINED_SKIRT.get());
+		
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_HELM.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_ARMOR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_WARRIOR_BOOTS.get());
+		
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_HELM.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_ARMOR.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get());
+		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_BOOTS.get());
 	}
-	
-	
-	//Vanilla Overrides
-	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
-	
-	
-	public static final RegistryObject<Item> SMITHING_TABLE = VANILLA_ITEMS.register("smithing_table", () -> new BlockItem(ModBlocks.SMITHING_TABLE.get(),
-			new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
-	
-	public static final RegistryObject<Item> WOODEN_SWORD = VANILLA_ITEMS.register("wooden_sword", () -> new WeaponItem(ItemTier.WOOD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> DIAMOND_SWORD = VANILLA_ITEMS.register("diamond_sword", () -> new WeaponItem(ItemTier.DIAMOND, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> GOLDEN_SWORD = VANILLA_ITEMS.register("golden_sword", () -> new WeaponItem(ItemTier.GOLD, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> IRON_SWORD = VANILLA_ITEMS.register("iron_sword", () -> new WeaponItem(ItemTier.IRON, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> NETHERITE_SWORD = VANILLA_ITEMS.register("netherite_sword", () -> new WeaponItem(ItemTier.NETHERITE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
-	public static final RegistryObject<Item> STONE_SWORD = VANILLA_ITEMS.register("stone_sword", () -> new WeaponItem(ItemTier.STONE, 3, -2.4F, new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 }

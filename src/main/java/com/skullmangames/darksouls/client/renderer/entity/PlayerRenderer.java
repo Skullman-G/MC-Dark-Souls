@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, RemoteClientPlayerData<AbstractClientPlayerEntity>>
+public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, AbstractClientPlayerCap<AbstractClientPlayerEntity>>
 {
 	@Override
 	protected ResourceLocation getEntityTexture(AbstractClientPlayerEntity entityIn)
@@ -26,7 +26,7 @@ public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, Re
 	}
 	
 	@Override
-	protected void renderNameTag(RemoteClientPlayerData<AbstractClientPlayerEntity> entitydata, AbstractClientPlayerEntity entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	protected void renderNameTag(AbstractClientPlayerCap<AbstractClientPlayerEntity> entityCap, AbstractClientPlayerEntity entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		EntityRendererManager renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
 		
@@ -38,14 +38,14 @@ public class PlayerRenderer extends BipedRenderer<AbstractClientPlayerEntity, Re
 			if (scoreobjective != null)
 			{
 				Score score = scoreboard.getOrCreatePlayerScore(entityIn.getScoreboardName(), scoreobjective);
-				super.renderNameTag(entitydata, entityIn, (
+				super.renderNameTag(entityCap, entityIn, (
 						new StringTextComponent(Integer.toString(score.getScore()))).append(" ").append(scoreobjective.getDisplayName()),
 						matrixStackIn, bufferIn, packedLightIn);
 				matrixStackIn.translate(0.0D, (double) (9.0F * 1.15F * 0.025F), 0.0D);
 			}
 		}
 
-		super.renderNameTag(entitydata, entityIn, displayNameIn, matrixStackIn, bufferIn, packedLightIn);
+		super.renderNameTag(entityCap, entityIn, displayNameIn, matrixStackIn, bufferIn, packedLightIn);
 		matrixStackIn.popPose();
 	}
 }

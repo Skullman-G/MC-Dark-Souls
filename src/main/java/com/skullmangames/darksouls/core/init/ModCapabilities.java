@@ -1,8 +1,10 @@
 package com.skullmangames.darksouls.core.init;
 
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
-import com.skullmangames.darksouls.common.capability.item.WeaponCapability;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
 import net.minecraft.item.ItemStack;
@@ -16,11 +18,11 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 public class ModCapabilities
 {
 	@SuppressWarnings("rawtypes")
-	@CapabilityInject(EntityData.class)
-	public static final Capability<EntityData> CAPABILITY_ENTITY = null;
+	@CapabilityInject(EntityCapability.class)
+	public static final Capability<EntityCapability> CAPABILITY_ENTITY = null;
 	
-	@CapabilityInject(CapabilityItem.class)
-    public static final Capability<CapabilityItem> CAPABILITY_ITEM = null;
+	@CapabilityInject(ItemCapability.class)
+    public static final Capability<ItemCapability> CAPABILITY_ITEM = null;
 	
 	@SuppressWarnings("rawtypes")
 	@CapabilityInject(CapabilityProjectile.class)
@@ -29,30 +31,30 @@ public class ModCapabilities
 	@SuppressWarnings("rawtypes")
 	public static void registerCapabilities()
 	{
-		CapabilityManager.INSTANCE.register(CapabilityItem.class, new IStorage<CapabilityItem>()
+		CapabilityManager.INSTANCE.register(ItemCapability.class, new IStorage<ItemCapability>()
 		{
 			@Override
-			public INBT writeNBT(Capability<CapabilityItem> capability, CapabilityItem instance, Direction side)
+			public INBT writeNBT(Capability<ItemCapability> capability, ItemCapability instance, Direction side)
 			{
 				return null;
 			}
 
 			@Override
-			public void readNBT(Capability<CapabilityItem> capability, CapabilityItem instance, Direction side, INBT nbt)
+			public void readNBT(Capability<ItemCapability> capability, ItemCapability instance, Direction side, INBT nbt)
 			{
 			}
 		}, () -> null);
 		
-		CapabilityManager.INSTANCE.register(EntityData.class, new IStorage<EntityData>()
+		CapabilityManager.INSTANCE.register(EntityCapability.class, new IStorage<EntityCapability>()
 		{
 			@Override
-			public INBT writeNBT(Capability<EntityData> capability, EntityData instance, Direction side)
+			public INBT writeNBT(Capability<EntityCapability> capability, EntityCapability instance, Direction side)
 			{
 				return null;
 			}
 
 			@Override
-			public void readNBT(Capability<EntityData> capability, EntityData instance, Direction side, INBT nbt)
+			public void readNBT(Capability<EntityCapability> capability, EntityCapability instance, Direction side, INBT nbt)
 			{
 			}
 		}, () -> null);
@@ -72,14 +74,27 @@ public class ModCapabilities
 		}, () -> null);
 	}
 	
-	public static CapabilityItem getItemCapability(ItemStack stack)
+	
+	public static ItemCapability getItemCapability(ItemStack stack)
 	{
 		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 	
-	public static WeaponCapability getWeaponCapability(ItemStack stack)
+	public static WeaponCap getWeaponCap(ItemStack stack)
 	{
-		CapabilityItem cap = getItemCapability(stack);
-		return cap instanceof WeaponCapability ? (WeaponCapability)cap : null;
+		ItemCapability cap = getItemCapability(stack);
+		return cap instanceof WeaponCap ? (WeaponCap)cap : null;
+	}
+	
+	public static MeleeWeaponCap getMeleeWeaponCap(ItemStack stack)
+	{
+		ItemCapability cap = getItemCapability(stack);
+		return cap instanceof MeleeWeaponCap ? (MeleeWeaponCap)cap : null;
+	}
+	
+	public static AttributeItemCap getAttributeItemCap(ItemStack stack)
+	{
+		ItemCapability cap = getItemCapability(stack);
+		return cap instanceof AttributeItemCap ? (AttributeItemCap)cap : null;
 	}
 }

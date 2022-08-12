@@ -1,35 +1,33 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import java.util.function.Function;
+
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.core.init.Models;
 
 public class ReboundAnimation extends AimingAnimation
 {
-	public ReboundAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
+	public ReboundAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
 	{
-		super(convertTime, repeatPlay, path1, path2, path3, armature, clientOnly);
+		super(convertTime, repeatPlay, path1, path2, path3, model);
 	}
-	
-	@Override
-	public void onActivate(LivingData<?> entity)
+
+	public ReboundAnimation(boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
 	{
-		if (entity.isClientSide())
-		{
-			AnimatorClient animator = entity.getClientAnimator();
-			if(animator.mixLayerActivated())
-			{
-				animator.mixLayerLeft.pause = false;
-				animator.mixLayerRight.pause = false;
-			}
-		}
+		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
 	}
-	
-	@Override
-	public void onUpdate(LivingData<?> entity) {}
 
 	@Override
-	public LivingData.EntityState getState(float time)
+	public EntityState getState(float time)
 	{
-		return LivingData.EntityState.POST_DELAY;
+		return EntityState.POST_CONTACT;
+	}
+
+	@Override
+	public boolean isReboundAnimation()
+	{
+		return true;
 	}
 }

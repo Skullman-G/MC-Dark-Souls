@@ -1,16 +1,19 @@
 package com.skullmangames.darksouls.network.play;
 
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.play.server.STitlePacket;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 
 public interface IModClientPlayNetHandler
 {
-	void openBonfireNameScreen(PlayerEntity player, BonfireTileEntity tileentity);
+	void setTitle(ITextComponent text, int fadein, int stay, int fadeout);
 	
-	void openBonfireScreen(BonfireTileEntity tileentity);
+	void setOverlayMessage(ITextComponent text);
 	
-	void handleSetTitles(STitlePacket packet);
+	void openBonfireNameScreen(BlockPos blockPos);
 	
-	void openFireKeeperScreen(int firekeeperid);
+	void openBonfireScreen(BlockPos blockPos);
+	
+	void tryPlayBonfireAmbientSound(BlockPos blockPos);
+	
+	void removeBonfireAmbientSound(BlockPos blockPos);
 }

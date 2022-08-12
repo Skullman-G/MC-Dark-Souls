@@ -18,7 +18,7 @@ public class ModKeys
 	
 	
 	public static final KeyBinding SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
-	public static final KeyBinding SWAP_ACTION_MODE = makeKeyBinding("swap_action_mode", 294, "combat");
+	public static final KeyBinding TOGGLE_COMBAT_MODE = makeKeyBinding("toggle_combat_mode", 82, "combat");
 	public static final KeyBinding OPEN_STAT_SCREEN = makeKeyBinding("open_stat_screen", 77, "gui");
 	
 	// For temporary use

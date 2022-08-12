@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.entity.FireKeeperEntity;
+import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -34,7 +34,7 @@ public class CTSOpenFireKeeperContainer
 		{
 			ServerPlayerEntity serverPlayer = ctx.get().getSender();
 			Entity entity = serverPlayer.level.getEntity(msg.id);
-			if (entity instanceof FireKeeperEntity) ((FireKeeperEntity)entity).openContainer(serverPlayer);
+			if (entity instanceof AbstractFireKeeper) ((AbstractFireKeeper)entity).openContainer(serverPlayer);
 		});
 		
 		ctx.get().setPacketHandled(true);

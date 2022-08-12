@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
@@ -43,11 +43,11 @@ public class CTSReqSpawnInfo
 			
 			if(entity != null)
 			{
-				BipedMobData<?> entitydata = (BipedMobData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				HumanoidCap<?> entityCap = (HumanoidCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if(entitydata != null)
+				if(entityCap != null)
 				{
-					STCMobInitialSetting mobSet = entitydata.sendInitialInformationToClient();
+					STCMobInitialSetting mobSet = entityCap.sendInitialInformationToClient();
 					
 					if(mobSet != null)
 						ModNetworkManager.sendToPlayer(mobSet, ctx.get().getSender());

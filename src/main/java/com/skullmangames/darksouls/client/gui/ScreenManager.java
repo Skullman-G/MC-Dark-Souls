@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.gui.screens.ModMainMenuScreen;
+import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
@@ -47,12 +47,12 @@ public class ScreenManager
 
 	public static void renderDarkBackground(Screen screen)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuilder();
+		Minecraft minecraft = Minecraft.getInstance();
 		minecraft.getTextureManager().bind(Screen.BACKGROUND_LOCATION);
-		RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+	    RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		bufferbuilder.vertex(0.0D, (double) screen.height, 0.0D).uv(0.0F, (float) screen.height / 32.0F + (float) 0).color(0, 0, 0, 255).endVertex();
 		bufferbuilder.vertex((double) screen.width, (double) screen.height, 0.0D)
 				.uv((float) screen.width / 32.0F, (float) screen.height / 32.0F + (float) 0).color(0, 0, 0, 255).endVertex();
@@ -73,7 +73,7 @@ public class ScreenManager
 
 			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
 			{
-				if (gui == null && minecraft.level != null)
+				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{
 					LoadingGui overlay = minecraft.getOverlay();
 					if (overlay instanceof ModLoadingScreen)
@@ -84,7 +84,7 @@ public class ScreenManager
 				if (gui instanceof MainMenuScreen)
 				{
 					MainMenuScreen screen = (MainMenuScreen) gui;
-					event.setGui(new ModMainMenuScreen(screen.fading));
+					event.setGui(new ModTitleScreen(screen.fading));
 				}
 				else if (gui instanceof WorldLoadProgressScreen)
 				{
@@ -94,7 +94,7 @@ public class ScreenManager
 			}
 			else
 			{
-				if (gui instanceof ModMainMenuScreen)
+				if (gui instanceof ModTitleScreen)
 				{
 					MainMenuScreen screen = (MainMenuScreen) gui;
 					event.setGui(new MainMenuScreen(screen.fading));

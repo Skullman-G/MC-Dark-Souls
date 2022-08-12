@@ -2,7 +2,8 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import io.netty.buffer.ByteBuf;
@@ -15,69 +16,62 @@ public class STCPlayAnimation
 {
 	protected int animationId;
 	protected int entityId;
-	protected float modifyTime;
-	protected boolean mixLayer;
+	protected float convertTimeModifier;
 
 	public STCPlayAnimation()
 	{
 		this.animationId = 0;
 		this.entityId = 0;
-		this.modifyTime = 0;
-		this.mixLayer = false;
+		this.convertTimeModifier = 0;
 	}
-	
-	public STCPlayAnimation(int animation, int entityId, float modifyTime)
+
+	public STCPlayAnimation(StaticAnimation animation, float convertTimeModifier, LivingCap<?> entityCap)
 	{
-		this(animation, entityId, modifyTime, false);
+		this(animation.getId(), entityCap.getOriginalEntity().getId(),
+				convertTimeModifier);
 	}
-	
-	public STCPlayAnimation(int animation, int entityId, float modifyTime, boolean mixLayer)
+
+	public STCPlayAnimation(StaticAnimation animation, int entityId, float convertTimeModifier)
+	{
+		this(animation.getId(), entityId, convertTimeModifier);
+	}
+
+	public STCPlayAnimation(int animation, int entityId, float convertTimeModifier)
 	{
 		this.animationId = animation;
 		this.entityId = entityId;
-		this.modifyTime = modifyTime;
-		this.mixLayer = mixLayer;
+		this.convertTimeModifier = convertTimeModifier;
 	}
-	
+
 	public <T extends STCPlayAnimation> void onArrive()
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		Entity entity = minecraft.player.level.getEntity(this.entityId);
-		if(entity == null) return;
-		
-		LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		
-		if (entitydata == null) return;
-		
-		if (this.animationId < 0)
+		Minecraft mc = Minecraft.getInstance();
+		Entity entity = mc.player.level.getEntity(this.entityId);
+
+		if (entity == null)
 		{
-			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerLeft, false);
-			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerRight, false);
+			return;
 		}
-		else
+
+		LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
+				.orElse(null);
+
+		if (entityCap != null)
 		{
-			if (this.mixLayer)
-			{
-				entitydata.getClientAnimator().playMixLayerAnimation(this.animationId);
-			}
-			else
-			{
-				entitydata.getAnimator().playAnimation(this.animationId, this.modifyTime);
-			}
+			entityCap.getAnimator().playAnimation(this.animationId, this.convertTimeModifier);
 		}
 	}
-	
+
 	public static STCPlayAnimation fromBytes(PacketBuffer buf)
 	{
-		return new STCPlayAnimation(buf.readInt(), buf.readInt(), buf.readFloat(), buf.readBoolean());
+		return new STCPlayAnimation(buf.readInt(), buf.readInt(), buf.readFloat());
 	}
 
 	public static void toBytes(STCPlayAnimation msg, ByteBuf buf)
 	{
 		buf.writeInt(msg.animationId);
 		buf.writeInt(msg.entityId);
-		buf.writeFloat(msg.modifyTime);
-		buf.writeBoolean(msg.mixLayer);
+		buf.writeFloat(msg.convertTimeModifier);
 	}
 
 	public static void handle(STCPlayAnimation msg, Supplier<NetworkEvent.Context> ctx)
@@ -86,6 +80,7 @@ public class STCPlayAnimation
 		{
 			msg.onArrive();
 		});
+
 		ctx.get().setPacketHandled(true);
 	}
 }

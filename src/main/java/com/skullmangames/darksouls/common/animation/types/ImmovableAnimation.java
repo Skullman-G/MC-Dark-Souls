@@ -1,56 +1,55 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
+import java.util.function.Function;
+
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ImmovableAnimation extends StaticAnimation
 {
-	public ImmovableAnimation(float convertTime, String path, String armature, boolean clientOnly)
+	public ImmovableAnimation(float convertTime, String path, Function<Models<?>, Model> model)
 	{
-		super(true, convertTime, false, path, armature, clientOnly);
+		super(convertTime, false, path, model);
 	}
-	
-	public ImmovableAnimation(float convertTime, boolean isRepeat, String path, String armature, boolean clientOnly)
-	{
-		super(true, convertTime, isRepeat, path, armature, clientOnly);
-	}
-	
+
 	@Override
-	public void onActivate(LivingData<?> entitydata)
+	public void onStart(LivingCap<?> entityCap)
 	{
-		super.onActivate(entitydata);
-		
-		if(entitydata.isClientSide())
+		super.onStart(entityCap);
+
+		if (entityCap.isClientSide())
 		{
-			entitydata.getClientAnimator().resetMotion();
-			entitydata.getClientAnimator().resetMixMotion();
-			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerLeft, true);
-			entitydata.getClientAnimator().offMixLayer(entitydata.getClientAnimator().mixLayerRight, true);
-			entitydata.currentMotion = LivingMotion.IDLE;
-			entitydata.currentMixMotion = LivingMotion.NONE;
+			entityCap.getClientAnimator().startInaction();
+			entityCap.getClientAnimator().resetCompositeMotion();
+			for (LayerPart part : LayerPart.compositeLayers()) entityCap.getClientAnimator().baseLayer.disableLayer(part);
 		}
-		
-		entitydata.cancelUsingItem();
+	}
+
+	@Override
+	public void onUpdate(LivingCap<?> entityCap)
+	{
+		super.onUpdate(entityCap);
+		entityCap.getOriginalEntity().animationSpeed = 0;
 	}
 	
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
-		super.onFinish(entitydata, isEnd);
-		
-		if (entitydata.isClientSide() && entitydata instanceof ClientPlayerData)
-	    {
-			((ClientPlayerData)entitydata).changeYaw(0);
-			ModNetworkManager.sendToServer(new CTSRotatePlayerYaw(0));
-	    }
+		super.onFinish(entityCap, isEnd);
 	}
-	
+
 	@Override
-	public LivingData.EntityState getState(float time)
+	public boolean isMainFrameAnimation()
 	{
-		return LivingData.EntityState.PRE_DELAY;
+		return true;
+	}
+
+	@Override
+	public EntityState getState(float time)
+	{
+		return EntityState.PRE_CONTACT;
 	}
 }

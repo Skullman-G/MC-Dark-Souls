@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity.model;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.common.animation.Joint;
@@ -7,40 +9,66 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public class Armature
 {
-	private final Map<Integer, Joint> jointTable;
+	private final Map<Integer, Joint> jointById;
+	private final Map<String, Joint> jointByName;
+	private final Map<String, Integer> pathIndexMap;
 	private final Joint jointHierarcy;
 	private final int jointNumber;
 
-	public Armature(int jointNumber, Joint rootJoint, Map<Integer, Joint> jointTable)
+	public Armature(int jointNumber, Joint rootJoint, Map<String, Joint> jointMap)
 	{
 		this.jointNumber = jointNumber;
 		this.jointHierarcy = rootJoint;
-		this.jointTable = jointTable;
+		this.jointByName = jointMap;
+		this.jointById = new HashMap<>();
+		this.pathIndexMap = new HashMap<>();
+		this.jointByName.values().forEach((joint) ->
+		{
+			this.jointById.put(joint.getId(), joint);
+		});
 	}
 
 	public PublicMatrix4f[] getJointTransforms()
 	{
-		PublicMatrix4f[] jointMatrices = new PublicMatrix4f[jointNumber];
-		jointToTransformMatrixArray(jointHierarcy, jointMatrices);
+		PublicMatrix4f[] jointMatrices = new PublicMatrix4f[this.jointNumber];
+		this.jointToTransformMatrixArray(this.jointHierarcy, jointMatrices);
 		return jointMatrices;
 	}
 
-	public Joint findJointById(int id)
+	public Joint searchJointById(int id)
 	{
-		return this.jointTable.get(id);
+		return this.jointById.get(id);
 	}
 
-	public Joint findJointByName(String name)
+	public Joint searchJointByName(String name)
 	{
-		for (int i : jointTable.keySet())
-		{
-			if (jointTable.get(i).getName().equals(name))
-			{
-				return jointTable.get(i);
-			}
-		}
+		return this.jointByName.get(name);
+	}
 
-		return null;
+	public Collection<Joint> getJoints()
+	{
+		return this.jointByName.values();
+	}
+
+	public int searchPathIndex(String joint)
+	{
+		if (this.pathIndexMap.containsKey(joint))
+		{
+			return this.pathIndexMap.get(joint);
+		} else
+		{
+			String pathIndex = this.jointHierarcy.searchPath(new String(""), joint);
+			int pathIndex2Int = 0;
+			if (pathIndex == null)
+			{
+				throw new IllegalArgumentException("failed to get joint path index for " + joint);
+			} else
+			{
+				pathIndex2Int = (pathIndex.length() == 0) ? -1 : Integer.parseInt(pathIndex);
+				this.pathIndexMap.put(joint, pathIndex2Int);
+			}
+			return pathIndex2Int;
+		}
 	}
 
 	public void initializeTransform()
@@ -50,23 +78,22 @@ public class Armature
 
 	public int getJointNumber()
 	{
-		return jointNumber;
+		return this.jointNumber;
 	}
 
 	public Joint getJointHierarcy()
 	{
-		return jointHierarcy;
+		return this.jointHierarcy;
 	}
 
 	private void jointToTransformMatrixArray(Joint joint, PublicMatrix4f[] jointMatrices)
 	{
-		PublicMatrix4f result = new PublicMatrix4f();
-		PublicMatrix4f.mul(joint.getAnimatedTransform(), joint.getInversedModelTransform(), result);
+		PublicMatrix4f result = PublicMatrix4f.mul(joint.getAnimatedTransform(), joint.getInversedModelTransform(), null);
 		jointMatrices[joint.getId()] = result;
 
 		for (Joint childJoint : joint.getSubJoints())
 		{
-			jointToTransformMatrixArray(childJoint, jointMatrices);
+			this.jointToTransformMatrixArray(childJoint, jointMatrices);
 		}
 	}
 }

@@ -1,12 +1,16 @@
 package com.skullmangames.darksouls.network.server;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -18,61 +22,70 @@ public class STCLivingMotionChange
 {
 	private int entityId;
 	private int count;
-	
-	private LivingMotion[] motion;
-	private StaticAnimation[] animation;
-	
+	private boolean setChangesAsDefault;
+	private List<LivingMotion> motionList = new ArrayList<>();
+	private List<StaticAnimation> animationList = new ArrayList<>();
+
 	public STCLivingMotionChange()
 	{
-		this.entityId = 0;
-		this.count = 0;
+		this(-1);
 	}
-	
-	public STCLivingMotionChange(int entityId, int count)
+
+	public STCLivingMotionChange(int entityId)
+	{
+		this(entityId, 0, false);
+	}
+
+	public STCLivingMotionChange(int entityId, boolean setChangesAsDefault)
+	{
+		this(entityId, 0, setChangesAsDefault);
+	}
+
+	private STCLivingMotionChange(int entityId, int count, boolean setChangesAsDefault)
 	{
 		this.entityId = entityId;
 		this.count = count;
-		this.motion = new LivingMotion[0];
-		this.animation = new StaticAnimation[0];
+		this.setChangesAsDefault = setChangesAsDefault;
 	}
-	
-	public void setAnimations(StaticAnimation... animation)
+
+	public STCLivingMotionChange put(LivingMotion motion, StaticAnimation animation)
 	{
-		this.animation = animation;
+		this.motionList.add(motion);
+		this.animationList.add(animation);
+		this.count++;
+		return this;
 	}
-	
-	public void setMotions(LivingMotion... motion)
+
+	public void putEntries(Set<Map.Entry<LivingMotion, StaticAnimation>> motionSet)
 	{
-		this.motion = motion;
+		this.count += motionSet.size();
+
+		motionSet.forEach((entry) ->
+		{
+			this.motionList.add(entry.getKey());
+			this.animationList.add(entry.getValue());
+		});
 	}
-	
-	public LivingMotion[] getMotions()
-	{
-		return motion;
-	}
-	
-	public StaticAnimation[] getAnimations()
-	{
-		return animation;
-	}
-	
+
 	public static STCLivingMotionChange fromBytes(PacketBuffer buf)
 	{
-		STCLivingMotionChange msg = new STCLivingMotionChange(buf.readInt(), buf.readInt());
-		LivingMotion[] motionarr = new LivingMotion[msg.count];
-		StaticAnimation[] idarr = new StaticAnimation[msg.count];
-		
-		for(int i = 0; i < msg.count; i++) {
-			motionarr[i] = LivingMotion.values()[buf.readInt()];
+		STCLivingMotionChange msg = new STCLivingMotionChange(buf.readInt(), buf.readInt(), buf.readBoolean());
+		List<LivingMotion> motionList = new ArrayList<>();
+		List<StaticAnimation> animationList = new ArrayList<>();
+
+		for (int i = 0; i < msg.count; i++)
+		{
+			motionList.add(LivingMotion.values()[buf.readInt()]);
 		}
-			
-		for(int i = 0; i < msg.count; i++) {
-			idarr[i] = Animations.getById(buf.readInt());
+
+		for (int i = 0; i < msg.count; i++)
+		{
+			animationList.add(DarkSouls.getInstance().animationManager.findAnimationById(buf.readInt()));
 		}
-		
-		msg.motion = motionarr;
-		msg.animation = idarr;
-		
+
+		msg.motionList = motionList;
+		msg.animationList = animationList;
+
 		return msg;
 	}
 
@@ -80,39 +93,48 @@ public class STCLivingMotionChange
 	{
 		buf.writeInt(msg.entityId);
 		buf.writeInt(msg.count);
-		
-		for(LivingMotion motion : msg.motion) {
+		buf.writeBoolean(msg.setChangesAsDefault);
+
+		for (LivingMotion motion : msg.motionList)
+		{
 			buf.writeInt(motion.getId());
 		}
-		
-		for(StaticAnimation anim : msg.animation) {
+
+		for (StaticAnimation anim : msg.animationList)
+		{
 			buf.writeInt(anim.getId());
 		}
 	}
-	
+
 	public static void handle(STCLivingMotionChange msg, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(()->
+		ctx.get().enqueueWork(() ->
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			Entity entity = minecraft.player.level.getEntity(msg.entityId);
-			if(entity != null)
+			Minecraft mc = Minecraft.getInstance();
+			Entity entity = mc.player.level.getEntity(msg.entityId);
+
+			if (entity != null)
 			{
-				LivingData<?> entitydata = (LivingData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				AnimatorClient animator = entitydata.getClientAnimator();
-				if (entitydata.currentMixMotion != LivingMotion.HOLDING_WEAPON)
+				LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+				ClientAnimator animator = entityCap.getClientAnimator();
+				animator.resetMotions();
+				animator.resetCompositeMotion();
+
+				for (int i = 0; i < msg.count; i++)
 				{
-					animator.resetMixMotion();
-					animator.offMixLayer(animator.mixLayerLeft, false);
-					animator.offMixLayer(animator.mixLayerRight, false);
+					LivingMotion motion = msg.motionList.get(i);
+					StaticAnimation animation = msg.animationList.get(i);
+					animator.addLivingAnimation(motion, animation);
+					if (animator.isMotionActive(motion)) animator.playAnimation(animation, 0.0F);
 				}
-				animator.resetModifiedLivingMotions();
-				
-				for(int i = 0; i < msg.count; i++)
-					entitydata.getClientAnimator().addModifiedLivingMotion(msg.motion[i], msg.animation[i]);
+
+				if (msg.setChangesAsDefault)
+				{
+					animator.setCurrentMotionsToDefault();
+				}
 			}
 		});
-		
+
 		ctx.get().setPacketHandled(true);
 	}
 }

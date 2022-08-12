@@ -3,22 +3,22 @@ package com.skullmangames.darksouls.client.gui.screens;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.LoadingGui;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ColorHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -47,7 +47,7 @@ public class ModLoadingScreen extends LoadingGui
 
 		String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 				+ ((IForgeRegistryEntry<Item>) this.descriptionItem.getItem()).getRegistryName().getPath() + ".extended";
-		this.description = this.addLinebreaks(new TranslationTextComponent(languagePath).getString(), 40);
+		this.description = this.addLinebreaks(new TranslationTextComponent(languagePath).getString(), 50);
 	}
 
 	public String[] addLinebreaks(String input, int maxCharInLine)
@@ -101,9 +101,9 @@ public class ModLoadingScreen extends LoadingGui
 				this.minecraft.screen.render(matStack, 0, 0, p_230430_4_);
 			}
 
-			int l = MathHelper.ceil((1.0F - MathHelper.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
+			int l = (int)Math.ceil((1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
 			fill(matStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | l << 24);
-			alpha = 1.0F - MathHelper.clamp(outf - 1.0F, 0.0F, 1.0F);
+			alpha = 1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F);
 		} else
 		{
 			if (this.minecraft.screen != null && inf < 1.0F)
@@ -111,20 +111,20 @@ public class ModLoadingScreen extends LoadingGui
 				this.minecraft.screen.render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
 			}
 
-			int i2 = MathHelper.ceil(MathHelper.clamp((double) inf, 0.15D, 1.0D) * 255.0D);
+			int i2 = (int)Math.ceil(MathUtils.clamp((double) inf, 0.15D, 1.0D) * 255.0D);
 			fill(matStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | i2 << 24);
-			alpha = MathHelper.clamp(inf, 0.0F, 1.0F);
+			alpha = MathUtils.clamp(inf, 0.0F, 1.0F);
 		}
 
 		RenderSystem.enableBlend();
 
-		int l = MathHelper.ceil(alpha * 255.0F) << 24;
+		int l = (int)Math.ceil(alpha * 255.0F) << 24;
 		if ((l & -67108864) != 0)
 		{
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
 			this.renderBg(matStack, width, height);
 
-			this.minecraft.getTextureManager().bind(BONFIRE_LOADING);
+			minecraft.getTextureManager().bind(BONFIRE_LOADING);
 			float loadingscale = 1.5F;
 			matStack.scale(loadingscale, loadingscale, 1.0F);
 			AbstractGui.blit(matStack, (int) (20 / loadingscale), (int) ((height - 40) / loadingscale), 0 + (int) (this.loadingGif++ * 0.25F) * 16, 0,
@@ -136,7 +136,7 @@ public class ModLoadingScreen extends LoadingGui
 			int x = width / 2;
 			int y = height / 2;
 
-			if (alpha > 0.5F) this.renderItem(this.descriptionItem, x - 119, y - 58);
+			if (alpha > 0.5F) this.renderItem(matStack, this.descriptionItem, x - 121, y - 57);
 
 			drawString(matStack, this.minecraft.font, this.descriptionItem.getHoverName(), x - 100, y - 50, 16755200 | l);
 
@@ -151,7 +151,7 @@ public class ModLoadingScreen extends LoadingGui
 
 		if (outf >= 2.0F)
 		{
-			this.minecraft.setOverlay((LoadingGui) null);
+			this.minecraft.setOverlay((LoadingGui)null);
 		}
 		if (this.fadeOutStart == -1L && this.canFadeOut && inf >= 2.0F)
 		{
@@ -172,17 +172,17 @@ public class ModLoadingScreen extends LoadingGui
 
 	private void renderBg(MatrixStack matrixstack, int width, int height)
 	{
-		this.minecraft.getTextureManager().bind(ITEM_DESCRIPTION_WINDOW);
+		minecraft.getTextureManager().bind(ITEM_DESCRIPTION_WINDOW);
 		int x = (width - 350) / 2;
 		int y = (height - 200) / 2;
 		AbstractGui.blit(matrixstack, x, y, 0, 0, 350, 200, 350, 200);
 	}
 
-	private void renderItem(ItemStack itemstack, int posX, int yPos)
+	private void renderItem(MatrixStack posestack, ItemStack itemstack, int posX, int yPos)
 	{
 		ItemRenderer itemRenderer = this.minecraft.getItemRenderer();
 
-		RenderSystem.translatef(0.0F, 0.0F, 32.0F);
+		posestack.translate(0.0F, 0.0F, 32.0F);
 		this.setBlitOffset(200);
 		itemRenderer.blitOffset = 200.0F;
 		net.minecraft.client.gui.FontRenderer font = itemstack.getItem().getFontRenderer(itemstack);

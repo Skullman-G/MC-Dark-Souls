@@ -1,12 +1,14 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
@@ -22,10 +24,10 @@ public class PlayerEvents
 		if (event.getEntity() instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity)event.getEntity();
-			PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			CapabilityItem itemCap = playerdata.getHeldItemCapability(Hand.MAIN_HAND);
+			PlayerCap<?> playerCap = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			ItemCapability itemCap = playerCap.getHeldItemCapability(Hand.MAIN_HAND);
 			
-			if (playerdata.isInaction())
+			if (playerCap.isInaction())
 			{
 				event.setCanceled(true);
 			}
@@ -39,12 +41,20 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void cloneEvent(PlayerEvent.Clone event)
 	{
-		PlayerData<?> playerdata = (PlayerData<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		PlayerCap<?> playerCap = (PlayerCap<?>) event.getOriginal().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
-		if (playerdata.getOriginalEntity() != null)
+		if (playerCap != null && playerCap.getOriginalEntity() != null)
 		{
-			playerdata.discard();
+			playerCap.discard();
 		}
+		
+		event.getPlayer().getPersistentData().put(DarkSouls.MOD_ID, event.getOriginal().getPersistentData().getCompound(DarkSouls.MOD_ID));
+	}
+	
+	@SubscribeEvent
+	public static void respawnEvent(PlayerEvent.PlayerRespawnEvent event)
+	{
+		event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
 	}
 	
 	@SubscribeEvent
@@ -54,8 +64,8 @@ public class PlayerEvents
 		{
 			if (event.getItem().getItem() instanceof BowItem)
 			{
-				PlayerData<?> playerdata = (PlayerData<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-				if (playerdata.isInaction())
+				PlayerCap<?> playerCap = (PlayerCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				if (playerCap.isInaction())
 				{
 					event.setCanceled(true);
 				}
@@ -66,8 +76,17 @@ public class PlayerEvents
 	@SubscribeEvent
 	public static void playerLogOutEvent(PlayerLoggedOutEvent event)
 	{
-		PlayerData<?> playerdata = (PlayerData<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if (playerdata == null) return;
-		playerdata.onSave();
+		PlayerCap<?> playerCap = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerCap == null) return;
+		playerCap.onSave();
+	}
+	
+	@SubscribeEvent
+	public static void playerDeathEvent(LivingDeathEvent event)
+	{
+		if (!(event.getEntityLiving() instanceof ServerPlayerEntity)) return;
+		PlayerCap<?> playerCap = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerCap == null) return;
+		playerCap.onSave();
 	}
 }

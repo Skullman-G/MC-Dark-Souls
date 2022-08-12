@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -40,10 +40,10 @@ public class STCSouls
 			Entity entity = minecraft.player.level.getEntity(msg.entityId);
 			if (entity == null) return;
 			
-			PlayerData<?> entitydata = (PlayerData<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (entitydata == null) return;
+			PlayerCap<?> entityCap = (PlayerCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (entityCap == null) return;
 			
-			entitydata.setSouls(msg.souls);
+			entityCap.setSouls(msg.souls);
 		});
 		
 		ctx.get().setPacketHandled(true);

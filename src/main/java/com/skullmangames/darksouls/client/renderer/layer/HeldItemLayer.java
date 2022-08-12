@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.client.renderer.layer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.item.CapabilityItem;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -17,14 +17,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> extends Layer<E, T>
+public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> extends Layer<E, T>
 {
 	private final float scale;
 	private final Vector3d translation;
 	
 	public HeldItemLayer()
 	{
-		this(1.0F, Vector3d.ZERO);
+		this(1.0F, new Vector3d(0, 0, 0));
 	}
 	
 	public HeldItemLayer(float scale, Vector3d translation)
@@ -34,43 +34,43 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingData<E>> exte
 	}
 	
 	@Override
-	public void renderLayer(T entitydata, E entityliving, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, E entityliving, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
-		ItemStack mainHandStack = entitydata.getOriginalEntity().getMainHandItem();
+		ItemStack mainHandStack = entityCap.getOriginalEntity().getMainHandItem();
 		RenderEngine renderEngine = ClientManager.INSTANCE.renderEngine;
 		matrixStackIn.pushPose();
 		
 		if (mainHandStack.getItem() != Items.AIR)
 		{
-			if (entitydata.getOriginalEntity().getControllingPassenger() != null)
+			if (entityCap.getOriginalEntity().getControllingPassenger() != null)
 			{
-				CapabilityItem itemCap = entitydata.getHeldItemCapability(Hand.MAIN_HAND);
+				ItemCapability itemCap = entityCap.getHeldItemCapability(Hand.MAIN_HAND);
 				if (itemCap != null && !itemCap.canUseOnMount())
 				{
-					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entitydata, buffer, matrixStackIn, packedLightIn);
+					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entityCap, buffer, matrixStackIn, packedLightIn);
 					matrixStackIn.popPose();
 					return;
 				}
 			}
-			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entitydata, Hand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entityCap, Hand.MAIN_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 		}
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
-		ItemStack offHandStack = entitydata.getOriginalEntity().getOffhandItem();
+		ItemStack offHandStack = entityCap.getOriginalEntity().getOffhandItem();
 		
 		if (offHandStack.getItem() != Items.AIR)
 		{
-			CapabilityItem cap = entitydata.getHeldItemCapability(Hand.MAIN_HAND);
+			ItemCapability cap = entityCap.getHeldItemCapability(Hand.MAIN_HAND);
 			if (cap != null)
 			{
 				if (cap.canBeRenderedBoth(offHandStack))
 				{
-					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entitydata, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 				}
 			}
 			else
 			{
-				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entitydata, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
+				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, Hand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 			}
 		}
 		matrixStackIn.popPose();

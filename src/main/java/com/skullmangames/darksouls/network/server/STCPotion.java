@@ -50,8 +50,8 @@ public class STCPotion
 	{
 		ctx.get().enqueueWork(()->
 		{
-			@SuppressWarnings("resource")
-			Entity entity = Minecraft.getInstance().level.getEntity(msg.entityId);
+			Minecraft minecraft = Minecraft.getInstance();
+			Entity entity = minecraft.level.getEntity(msg.entityId);
 			
 			if(entity != null && entity instanceof LivingEntity)
 			{

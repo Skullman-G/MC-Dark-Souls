@@ -1,40 +1,47 @@
 package com.skullmangames.darksouls.client.gui;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
-import com.skullmangames.darksouls.common.capability.entity.EntityData;
-import com.skullmangames.darksouls.common.capability.entity.RemoteClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.Timer;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.timer.Timer;
 
-import net.minecraft.client.GameSettings;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.BossInfo;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.settings.AttackIndicatorStatus;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.ClientBossInfo;
+import net.minecraft.client.gui.overlay.BossOverlayGui;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.GameType;
-import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
+@EventBusSubscriber(modid = DarkSouls.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class GameOverlayManager
 {
 	private static final Minecraft minecraft = Minecraft.getInstance();
 	
 	private static final ResourceLocation LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png");
+	private static final ResourceLocation BOSS_BARS_LOCATION = new ResourceLocation("textures/gui/bars.png");
 	
 	private static final Timer damageCooldown = new Timer();
 	private static final Timer damageTimer = new Timer();
@@ -46,103 +53,178 @@ public class GameOverlayManager
 	private static final Timer staminaTimer = new Timer();
 	private static final Timer staminaDrainTimer = new Timer();
 	private static final Timer stamiaDrainCooldownTimer = new Timer();
-	private static int lastStamina;
-	private static int saveLastStamina;
-	private static int saveLastStamina2;
+	private static float lastStamina;
+	private static float saveLastStamina;
+	private static float saveLastStamina2;
 	
-	public static void renderAdditional(MainWindow window, MatrixStack matrixstack)
-	{
-		if (minecraft.player.isCreative() || minecraft.player.isSpectator()) return;
-		
-		renderHumanity(window, matrixstack);
-		renderSouls(window, matrixstack);
-	}
+	public static int lastSouls;
+	private static int soulIncr;
+	public static int lerpSouls;
+	private static final Timer soulGetTimer = new Timer();
+	public static boolean canAnimateSouls = false;
 	
-	private static boolean canRenderCrosshairForSpectator(RayTraceResult raytraceresult)
-	{
-	      if (raytraceresult == null) return false;
-	      else if (raytraceresult.getType() == RayTraceResult.Type.ENTITY)
-	      {
-	         return ((EntityRayTraceResult)raytraceresult).getEntity() instanceof INamedContainerProvider;
-	      }
-	      else if (raytraceresult.getType() == RayTraceResult.Type.BLOCK)
-	      {
-	         BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getBlockPos();
-	         World world = minecraft.level;
-	         return world.getBlockState(blockpos).getMenuProvider(world, blockpos) != null;
-	      }
-	      else return false;
-	   }
+	private static final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
 	
-	public static void renderCrosshair(MainWindow window, MatrixStack matrixstack)
+	@SubscribeEvent
+	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
 	{
-	   GameSettings gamesettings = minecraft.options;
-	   int screenWidth = window.getGuiScaledWidth();
-	   int screenHeight = window.getGuiScaledHeight();
-	   
-	   if (gamesettings.getCameraType().isFirstPerson())
-	   {
-	      if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || canRenderCrosshairForSpectator(minecraft.hitResult))
-	      {
-	         if (gamesettings.renderDebug && !gamesettings.hideGui && !minecraft.player.isReducedDebugInfo() && !gamesettings.reducedDebugInfo)
-	         {
-	            RenderSystem.pushMatrix();
-	            RenderSystem.translatef((float)(screenWidth / 2), (float)(screenHeight / 2), (float)minecraft.gui.getBlitOffset());
-	            ActiveRenderInfo activerenderinfo = minecraft.gameRenderer.getMainCamera();
-	            RenderSystem.rotatef(activerenderinfo.getXRot(), -1.0F, 0.0F, 0.0F);
-	            RenderSystem.rotatef(activerenderinfo.getYRot(), 0.0F, 1.0F, 0.0F);
-	            RenderSystem.scalef(-1.0F, -1.0F, -1.0F);
-	            RenderSystem.renderCrosshair(10);
-	            RenderSystem.popMatrix();
-	         }
-	         else
-	         {
-	            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-	            		GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-	            minecraft.gui.blit(matrixstack, (screenWidth - 15) / 2, (screenHeight - 15) / 2, 0, 0, 15, 15);
-	            if (minecraft.options.attackIndicator == AttackIndicatorStatus.CROSSHAIR)
-	            {
-	               float f = minecraft.player.getAttackStrengthScale(0.0F);
-	               boolean flag = false;
-	               if (minecraft.crosshairPickEntity != null && minecraft.crosshairPickEntity instanceof LivingEntity && f >= 1.0F)
-	               {
-	                  flag = minecraft.player.getCurrentItemAttackStrengthDelay() > 5.0F;
-	                  flag = flag & minecraft.crosshairPickEntity.isAlive();
-	               }
+		MainWindow window = event.getWindow();
+		MatrixStack matStack = event.getMatrixStack();
+		int width = window.getGuiScaledWidth();
+		int height = window.getGuiScaledHeight();
 
-	               int j = screenHeight / 2 - 7 + 16;
-	               int k = screenWidth / 2 - 8;
-	               if (flag)
-	               {
-	                  minecraft.gui.blit(matrixstack, k, j, 68, 94, 16, 16);
-	               }
-	            }
-	         }
-
-	      }
-	   }
+		switch (event.getType())
+		{
+			case HEALTH:
+				event.setCanceled(true);
+				renderHealth(width, height, matStack);
+				break;
+	
+			case FOOD:
+				if (!(minecraft.getCameraEntity() instanceof LivingEntity)) break;
+				event.setCanceled(true);
+				renderStamina(width, height, matStack);
+				break;
+				
+			case BOSSHEALTH:
+				event.setCanceled(true);
+				renderBossHealthBars(matStack);
+				break;
+	
+			case ALL:
+				if (getCameraPlayer().isCreative() || getCameraPlayer().isSpectator()) return;
+				renderHumanity(width, height, matStack);
+				renderSouls(width, height, matStack);
+				break;
+	
+			default:
+				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+				break;
+		}
 	}
 	
-	public static void renderHumanity(MainWindow window, MatrixStack matrixstack)
+	private static void renderBossHealthBars(MatrixStack poseStack)
 	{
-		ClientPlayerData playerdata = ClientManager.INSTANCE.getPlayerData();
-		int x = window.getGuiScaledWidth() / 2;
-		int y = window.getGuiScaledHeight() - 45;
-		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
-		
-		ForgeIngameGui.drawCenteredString(matrixstack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
+		minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+		RenderSystem.defaultBlendFunc();
+		minecraft.getProfiler().push("bossHealth");
+
+		Map<UUID, ClientBossInfo> events = minecraft.gui.getBossOverlay().events;
+
+		if (!events.isEmpty())
+		{
+			int i = minecraft.getWindow().getGuiScaledWidth();
+			int j = 12;
+			
+			List<UUID> unused = new ArrayList<>();
+			for (UUID uuid : bossHealthInfoMap.keySet())
+			{
+				if (!events.containsKey(uuid)) unused.add(uuid);
+			}
+			for (UUID uuid : unused) bossHealthInfoMap.remove(uuid);
+			for (UUID uuid : events.keySet())
+			{
+				if (!bossHealthInfoMap.containsKey(uuid)) bossHealthInfoMap.put(uuid, new BossHealthInfo());
+			}
+
+			for (ClientBossInfo lerpingbossevent : events.values())
+			{
+				int k = i / 2 - 91;
+				net.minecraftforge.client.event.RenderGameOverlayEvent.BossInfo event = net.minecraftforge.client.ForgeHooksClient
+						.bossBarRenderPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, j, 10 + minecraft.font.lineHeight);
+				if (!event.isCanceled())
+				{
+					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+					minecraft.getTextureManager().bind(BOSS_BARS_LOCATION);
+					drawBossBar(minecraft.gui.getBossOverlay(), poseStack, k, j, lerpingbossevent);
+					ITextComponent component = lerpingbossevent.getName();
+					int l = minecraft.font.width(component);
+					int i1 = i / 2 - l / 2;
+					int j1 = j - 9;
+					minecraft.font.drawShadow(poseStack, component, (float) i1, (float) j1, 16777215);
+				}
+				j += event.getIncrement();
+				net.minecraftforge.client.ForgeHooksClient.bossBarRenderPost(poseStack, minecraft.getWindow());
+				if (j >= minecraft.getWindow().getGuiScaledHeight() / 3) break;
+			}
+
+		}
+
+		minecraft.getProfiler().pop();
 	}
 	
-	public static void renderHealth(MainWindow window, MatrixStack matrixstack)
+	private static void drawBossBar(BossOverlayGui gui, MatrixStack poseStack, int x, int y, ClientBossInfo bossEvent)
+	{
+		gui.blit(poseStack, x, y, 0, bossEvent.getColor().ordinal() * 5 * 2, 182, 5); // Background
+		if (bossEvent.getOverlay() != BossInfo.Overlay.PROGRESS)
+		{
+			gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2, 182, 5); // Background LoadingGui
+		}
+
+		int progress = (int) (bossEvent.getPercent() * 183.0F);
+		BossHealthInfo info = bossHealthInfoMap.get(bossEvent.getId());
+		
+		// Damage Animation
+		if (info.lastHealth > progress)
+		{
+			if (!info.damageCooldown.isTicking())
+			{
+				info.saveLastHealth = info.lastHealth;
+			}
+
+			info.damageCooldown.start(30);
+		}
+
+		int damagedHealth = info.saveLastHealth - info.damageTimer.getPastTime();
+
+		if (info.damageCooldown.isTicking())
+		{
+			boolean flag = false;
+			if (damagedHealth <= progress)
+			{
+				damagedHealth = info.saveLastHealth;
+				flag = true;
+			}
+			gui.blit(poseStack, x, y, 0, 45, damagedHealth, 5); // Yellow
+			info.damageCooldown.drain(1);
+			if (!info.damageCooldown.isTicking() && (!info.damageTimer.isTicking() || flag)) info.damageTimer.start(damagedHealth * 2);
+		}
+		else if (info.damageTimer.isTicking())
+		{
+			gui.blit(poseStack, x, y, 0, 45, damagedHealth, 5); // Yellow
+			info.damageTimer.drain(1);
+		}
+		
+		info.lastHealth = progress;
+		
+		if (progress > 0)
+		{
+			gui.blit(poseStack, x, y, 0, bossEvent.getColor().ordinal() * 5 * 2 + 5, progress, 5); // Foreground
+			if (bossEvent.getOverlay() != BossInfo.Overlay.PROGRESS)
+			{
+				gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2 + 5, progress, 5); // Foreground LoadingGui
+			}
+		}
+	}
+	
+	private static class BossHealthInfo
+	{
+		private final Timer damageCooldown = new Timer();
+		private final Timer damageTimer = new Timer();
+		private int lastHealth;
+		private int saveLastHealth;
+	}
+	
+	private static void renderHealth(int width, int height, MatrixStack poseStack)
 	{
 		RenderSystem.enableBlend();
-		int x = window.getGuiScaledWidth() / 2 - 91;
-		int y = window.getGuiScaledHeight() - 39;
+		int x = width / 2 - 96;
+		int y = height - 39;
 		ForgeIngameGui.left_height += 10;
 		
 		minecraft.getTextureManager().bind(LOCATION);
-		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
-		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 90);
+		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7); // Black
+		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 88);
 		
 		// Damage Animation
 		if (lastHealth > healthpercentage)
@@ -166,15 +248,15 @@ public class GameOverlayManager
 				damagedHealth = saveLastHealth;
 				flag = true;
 			}
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
-			damageCooldown.drain(1.0F);
-			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth);
+			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			damageCooldown.drain(1);
+			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth * 2);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
-			minecraft.gui.blit(matrixstack, x, y, 0, 18, damagedHealth, 9);
-			damageTimer.drain(0.5F);
+			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			damageTimer.drain(1);
 		}
 		
 		// Heal Animation
@@ -187,51 +269,33 @@ public class GameOverlayManager
 				healTimer.start(healthpercentage - saveLastHealth);
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
-			minecraft.gui.blit(matrixstack, x, y, 0, 9, healcentage, 9);
-			healTimer.drain(1.0F);
+			minecraft.gui.blit(poseStack, x, y, 0, 7, healcentage, 7); // Red
+			healTimer.drain(1);
 		}
 		
 		// Default
 		else
 		{
-			minecraft.gui.blit(matrixstack, x, y, 0, 9, healthpercentage, 9);
+			minecraft.gui.blit(poseStack, x, y, 0, 7, healthpercentage, 7); // Red
 		}
 		
 		lastHealth = healthpercentage;
+		RenderSystem.disableBlend();
 	}
 	
-	public static void renderSouls(MainWindow window, MatrixStack matrixstack)
+	private static void renderStamina(int width, int height, MatrixStack poseStack)
 	{
-		int x = window.getGuiScaledWidth() - 76;
-		int y = window.getGuiScaledHeight() - 21;
-		
-		minecraft.getTextureManager().bind(LOCATION);
-		minecraft.gui.blit(matrixstack, x, y, 0, 44, 65, 16);
-		
-		x = window.getGuiScaledWidth() - (76 / 2);
-		y = window.getGuiScaledHeight() - 15;
-		int color = Color.WHITE.getRGB();
-		
-		MatrixStack ms = new MatrixStack();
-		float scale = 0.8F;
-		ms.scale(scale, scale, scale);
-		ForgeIngameGui.drawCenteredString(ms, minecraft.font, String.valueOf(ClientManager.INSTANCE.getPlayerData().getSouls()), Math.round(x / scale), Math.round(y / scale), color);
-	}
-	
-	public static void renderStamina(MainWindow window, MatrixStack matrixstack)
-	{
-		RemoteClientPlayerData<?> player = getCameraPlayerData();
+		AbstractClientPlayerCap<?> player = getCameraPlayerData();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = window.getGuiScaledHeight() - 39;
-		int x = window.getGuiScaledWidth() / 2 + 3;
+		int y = height - 39;
+		int x = width / 2 + 7;
 		ForgeIngameGui.right_height += 10;
 		
 		minecraft.getTextureManager().bind(LOCATION);
-		minecraft.gui.blit(matrixstack, x, y, 0, 0, 90, 9);
-		double staminaPercentageDouble = (double)player.getStamina() / (double)player.getMaxStamina() * 90.0D;
-		int staminaPercentage = (int)staminaPercentageDouble;
+		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		float staminaPercentage = player.getStamina() / player.getMaxStamina();
 		
 		// Yellow Bar
 		if (lastStamina > staminaPercentage && !getCameraPlayer().isSprinting())
@@ -244,7 +308,7 @@ public class GameOverlayManager
 			stamiaDrainCooldownTimer.start(10);
 		}
 		
-		int drainedStamina = saveLastStamina - staminaDrainTimer.getPastTime();
+		float drainedStamina = saveLastStamina - (staminaDrainTimer.getPastTime() * 0.01F);
 		
 		if (drainedStamina <= staminaPercentage)
 		{
@@ -255,12 +319,12 @@ public class GameOverlayManager
 		
 		if (stamiaDrainCooldownTimer.isTicking())
 		{
-			stamiaDrainCooldownTimer.drain(1.0F);
-			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start(drainedStamina);
+			stamiaDrainCooldownTimer.drain(1);
+			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start((int)(drainedStamina * 200));
 		}
-		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(0.5F);
+		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(1);
 		
-		minecraft.gui.blit(matrixstack, x, y, 0, 18, drainedStamina, 9);
+		minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(drainedStamina * 88), 7); // Yellow
 		
 		
 		// Green Bar
@@ -269,31 +333,96 @@ public class GameOverlayManager
 			if (!staminaTimer.isTicking())
 			{
 				saveLastStamina2 = lastStamina;
-				staminaTimer.start(staminaPercentage - saveLastStamina2);
+				staminaTimer.start((int)((staminaPercentage - saveLastStamina2) * 100));
 			}
-			int percentage = saveLastStamina2 + staminaTimer.getPastTime();
-			minecraft.gui.blit(matrixstack, x, y, 0, 35, percentage, 9);
-			staminaTimer.drain(1.0F);
+			float percentage = saveLastStamina2 + (staminaTimer.getPastTime() * 0.01F);
+			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(percentage * 88), 7);
+			staminaTimer.drain(1);
 		}
 		else
 		{
-			minecraft.gui.blit(matrixstack, x, y, 0, 35, staminaPercentage, 9);
+			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(staminaPercentage * 88), 7);
 		}
 		
 		lastStamina = staminaPercentage;
+		RenderSystem.disableBlend();
 	}
 	
-	private static AbstractClientPlayerEntity getCameraPlayer()
+	private static void renderHumanity(int width, int height, MatrixStack poseStack)
 	{
-	    return !(Minecraft.getInstance().getCameraEntity() instanceof AbstractClientPlayerEntity) ? null : (AbstractClientPlayerEntity)Minecraft.getInstance().getCameraEntity();
+		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
+		int x = width / 2;
+		int y = height - 45;
+		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		
+		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
+	}
+
+	private static void renderSouls(int width, int height, MatrixStack poseStack)
+	{
+		RenderSystem.enableBlend();
+		int x = width - 76;
+		int y = height - 21;
+		
+		minecraft.getTextureManager().bind(LOCATION);
+		minecraft.gui.blit(poseStack, x, y, 0, 46, 65, 16);
+		
+		x = width - (76 / 2);
+		y = height - 15;
+		
+		MatrixStack ps = new MatrixStack();
+		float scale = 0.8F;
+		ps.scale(scale, scale, scale);
+		
+		int currentSouls = ClientManager.INSTANCE.getPlayerCap().getSouls();
+		
+		if (canAnimateSouls)
+		{
+			int displaySouls = MathUtils.lerp(5, lerpSouls, currentSouls);
+			if (!soulGetTimer.isTicking() && currentSouls != lastSouls)
+			{
+				soulIncr = currentSouls - lastSouls;
+				soulGetTimer.start(200);
+			}
+			if (soulGetTimer.isTicking())
+			{
+				int alpha = 255;
+				if (soulGetTimer.getLeftTime() <= 10)
+				{
+					alpha = (int)((soulGetTimer.getLeftTime() / 10.0F) * 255);
+				}
+				
+				ForgeIngameGui.drawCenteredString(ps, minecraft.font, soulIncr > 0 ? "+" + String.valueOf(soulIncr) : String.valueOf(soulIncr),
+						Math.round(x / scale), Math.round((y - 12) / scale), new Color(255, 255, 255, alpha).getRGB());
+			}
+			ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(displaySouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
+			
+			if (!minecraft.isPaused())
+			{
+				soulGetTimer.drain(1);
+				lastSouls = currentSouls;
+				lerpSouls = displaySouls;
+			}
+		}
+		else
+		{
+			ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(currentSouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
+		}
+		
+		RenderSystem.disableBlend();
 	}
 	
-	private static RemoteClientPlayerData<?> getCameraPlayerData()
+	private static ClientPlayerEntity getCameraPlayer()
 	{
-		AbstractClientPlayerEntity player = getCameraPlayer();
+	    return minecraft.player;
+	}
+	
+	private static LocalPlayerCap getCameraPlayerData()
+	{
+		ClientPlayerEntity player = getCameraPlayer();
 		if (player == null) return null;
-		EntityData<?> entitydata = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (!(entitydata instanceof RemoteClientPlayerData<?>)) return null;
-		return (RemoteClientPlayerData<?>)entitydata;
+		EntityCapability<?> entityCap = player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (!(entityCap instanceof LocalPlayerCap)) return null;
+		return (LocalPlayerCap)entityCap;
 	}
 }

@@ -5,30 +5,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.Property.AttackProperty;
-import com.skullmangames.darksouls.common.capability.entity.BipedMobData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.MobData;
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
-import com.skullmangames.darksouls.core.event.EntityEventListener.EventType;
+import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.DamageType;
-import com.skullmangames.darksouls.core.util.IExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceContext;
@@ -42,74 +51,84 @@ public class AttackAnimation extends ActionAnimation
 {
 	public final Phase[] phases;
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, String index, String path,
-			String armature)
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, String index, String path,
+			Function<Models<?>, Model> model)
 	{
-		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY,
-			@Nullable Collider collider, String index, String path, String armature)
+	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery,
+			@Nullable Collider collider, String index, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
 	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand,
-			@Nullable Collider collider, String index, String path, String armature)
+			@Nullable Collider collider, String index, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, affectY, path, armature, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 
-	public AttackAnimation(float convertTime, boolean affectY, String path, String armature, Phase... phases)
+	public AttackAnimation(float convertTime, String path, Function<Models<?>, Model> model, Phase... phases)
 	{
-		super(convertTime, affectY, path, armature);
+		super(convertTime, path, model);
 		this.phases = phases;
 	}
 
 	@Override
-	public void onUpdate(LivingData<?> entitydata)
+	public void onUpdate(LivingCap<?> entityCap)
 	{
-		super.onUpdate(entitydata);
+		super.onUpdate(entityCap);
 		
-		LivingEntity entity = entitydata.getOriginalEntity();
-		
-		if (entitydata.isClientSide())
+		if (entityCap.isClientSide())
 		{
-			this.onClientUpdate(entitydata);
+			this.onClientUpdate(entityCap);
 			return;
 		}
+		
+		LivingEntity entity = entityCap.getOriginalEntity();
 
-		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
-		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
-		LivingData.EntityState state = this.getState(elapsedTime);
-		LivingData.EntityState prevState = this.getState(prevElapsedTime);
+		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
+		float elapsedTime = animPlayer.getElapsedTime();
+		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		EntityState state = this.getState(elapsedTime);
+		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 
-		if (state == LivingData.EntityState.FREE_CAMERA)
+		if (state == EntityState.FREE_CAMERA)
 		{
-			if (entitydata instanceof MobData)
+			if (entityCap instanceof MobCap)
 			{
-				((MobEntity) entitydata.getOriginalEntity()).getNavigation().stop();
-				LivingEntity target = entitydata.getTarget();
+				((MobEntity) entityCap.getOriginalEntity()).getNavigation().stop();
+				LivingEntity target = entityCap.getTarget();
 				if (target != null)
 				{
-					entitydata.rotateTo(target, 60.0F, false);
+					entityCap.rotateTo(target, 60.0F, false);
 				}
 			}
 		} else if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				entitydata.playSound(this.getSwingSound(entitydata, phase), 0.0F, 0.0F);
-				entitydata.currentlyAttackedEntity.clear();
+				entityCap.playSound(this.getSwingSound(entityCap, phase), 0.0F, 0.0F, 0.5F);
+				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
+				{
+					WeaponCap weapon = ModCapabilities.getWeaponCap(entityCap.getOriginalEntity().getMainHandItem());
+					float incr = weapon == null ? -4.0F : Math.min(-weapon.weight / 3, -4.0F);
+					((ServerPlayerCap)entityCap).increaseStamina(incr);
+				}
+				else if (entityCap instanceof MobCap)
+				{
+					((MobCap<?>)entityCap).increaseStamina(-2.5F);
+				}
+				entityCap.currentlyAttackedEntity.clear();
 			}
 
-			Collider collider = this.getCollider(entitydata, elapsedTime);
-			entitydata.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-			PublicMatrix4f jointTransform = entitydata.getServerAnimator().getColliderTransformMatrix(phase.jointIndexer);
-			collider.transform(PublicMatrix4f.mul(entitydata.getModelMatrix(1.0F), jointTransform, null));
-			List<Entity> list = entity.level.getEntities(entity, collider.getHitboxAABB());
-			collider.extractHitEntities(list);
+			Collider collider = this.getCollider(entityCap, elapsedTime);
+			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();				
+			float prevPoseTime = phase.contactStart;
+			float poseTime = phase.contactEnd;
+			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
 
 			if (list.size() > 0)
 			{
@@ -119,7 +138,7 @@ public class AttackAnimation extends ActionAnimation
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
-					if (!entitydata.currentlyAttackedEntity.contains(trueEntity) && !entitydata.isTeam(e))
+					if (!entityCap.currentlyAttackedEntity.contains(trueEntity) && !entityCap.isTeam(e))
 					{
 						if (e instanceof LivingEntity || e instanceof PartEntity)
 						{
@@ -130,38 +149,22 @@ public class AttackAnimation extends ActionAnimation
 									.getType() == RayTraceResult.Type.MISS)
 							{
 
-								float amount = this.getDamageAmount(entitydata, e, phase);
-								IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase, amount);
+								float amount = this.getDamageAmount(entityCap, e, phase);
+								ExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
 								
-								if (phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT) == StunType.SMASH_FRONT)
-								{
-									Vector3d colPos = collider.getCenter();
-									double x = colPos.x - e.getX();
-									double z = colPos.z - e.getZ();
-									double rot = MathUtils.getNearestTo(Math.abs((int)e.yRot), 90, 180, 260);
-									
-									if ((rot == 0 && x < 0)
-											|| (rot == 90 && z < 0)
-											|| (rot == 180 && x > 0)
-											|| (rot == 260 && z > 0))
-									{
-										source.setStunType(StunType.SMASH_BACK);
-									}
-								}
-								
-								if (entitydata.hurtEntity(e, phase.hand, source, amount))
+								if (entityCap.hurtEntity(e, phase.hand, source, amount))
 								{
 									e.invulnerableTime = 0;
-									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entitydata, phase), e.getSoundSource(),
+									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(),
 											1.0F, 1.0F);
-									if (flag1 && entitydata instanceof PlayerData && trueEntity instanceof LivingEntity)
+									if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
 									{
-										entitydata.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
-												((PlayerData<?>) entitydata).getOriginalEntity());
+										entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
+												((PlayerCap<?>) entityCap).getOriginalEntity());
 										flag1 = false;
 									}
 								}
-								entitydata.currentlyAttackedEntity.add(trueEntity);
+								entityCap.currentlyAttackedEntity.add(trueEntity);
 							}
 						}
 					}
@@ -171,78 +174,84 @@ public class AttackAnimation extends ActionAnimation
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void onClientUpdate(LivingData<?> entitydata)
+	public void onClientUpdate(LivingCap<?> entityCap)
 	{
-		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
-		float prevElapsedTime = entitydata.getAnimator().getPlayer().getPrevElapsedTime();
+		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
+		float elapsedTime = animPlayer.getElapsedTime();
+		float prevElapsedTime = animPlayer.getPrevElapsedTime();
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
 		
 		if (spawner == null) return;
 		
-		LivingEntity entity = entitydata.getOriginalEntity();
+		LivingEntity entity = entityCap.getOriginalEntity();
 		
-		Collider collider = this.getCollider(entitydata, elapsedTime);
-		Vector3d pos = collider.getCenter();
-		pos = new Vector3d(-pos.x, pos.y, -pos.z);
-		if (elapsedTime >= phase.contactEnd && prevElapsedTime - 0.4F < phase.contactEnd) spawner.spawnParticles((ClientWorld)entity.level, pos);
+		Collider collider = this.getCollider(entityCap, elapsedTime);
+		collider.update(entityCap, phase.getColliderJointName());
+		Vector3d pos = collider.getWorldCenter();
+		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientWorld)entity.level, pos);
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void renderDebugging(MatrixStack poseStack, IRenderTypeBuffer buffer, LivingCap<?> entitypatch, float playTime, float partialTicks)
+	{
+		AnimationPlayer animPlayer = entitypatch.getAnimator().getPlayerFor(this);
+		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		float elapsedTime = animPlayer.getElapsedTime();
+		this.getCollider(entitypatch, elapsedTime).draw(poseStack, buffer, entitypatch, this, prevElapsedTime, elapsedTime, partialTicks, this.getPlaySpeed(entitypatch));
+	}
+	
+	public String getPathIndexByTime(float elapsedTime)
+	{
+		return this.getPhaseByTime(elapsedTime).jointName;
 	}
 
 	@Override
-	public void onFinish(LivingData<?> entitydata, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
-		super.onFinish(entitydata, isEnd);
-
-		if (entitydata instanceof PlayerData)
+		super.onFinish(entityCap, isEnd);
+		entityCap.currentlyAttackedEntity.clear();
+		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{
-			((PlayerData<?>) entitydata).getEventListener().activateEvents(EventType.ON_ATTACK_END_EVENT, entitydata.currentlyAttackedEntity.size(),
-					this.getId());
-		}
-
-		entitydata.currentlyAttackedEntity.clear();
-
-		if (entitydata instanceof BipedMobData && entitydata.isClientSide())
-		{
-			MobEntity entity = (MobEntity) entitydata.getOriginalEntity();
+			MobEntity entity = (MobEntity) entityCap.getOriginalEntity();
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
-
 		for (Phase phase : this.phases)
 			phase.smashed = false;
 	}
 
 	@Override
-	public LivingData.EntityState getState(float time)
+	public EntityState getState(float time)
 	{
 		Phase phase = this.getPhaseByTime(time);
 
 		if (time <= phase.begin || (phase.begin < time && time < phase.contactStart))
 		{
-			return LivingData.EntityState.FREE_CAMERA;
+			return EntityState.PRE_CONTACT;
 		} else if (phase.contactStart <= time && time <= phase.contactEnd)
 		{
-			return LivingData.EntityState.CONTACT;
+			return EntityState.CONTACT;
 		} else if (time < phase.end)
 		{
-			return LivingData.EntityState.POST_DELAY;
+			return EntityState.POST_CONTACT;
 		} else
 		{
-			return LivingData.EntityState.FREE_INPUT;
+			return EntityState.FREE_INPUT;
 		}
-	}
-
-	public Collider getCollider(LivingData<?> entitydata, float elapsedTime)
-	{
-		Phase phase = this.getPhaseByTime(elapsedTime);
-		return phase.collider != null ? phase.collider : entitydata.getColliderMatching(phase.hand);
 	}
 	
 	@Override
-	public AttackAnimation registerSound(SoundEvent sound, float time, boolean isRemote)
+	public <V> Optional<V> getPropertyByTime(AttackProperty<V> propertyType, float elapsedTime)
 	{
-		super.registerSound(sound, time, isRemote);
-		return this;
+		return this.getPhaseByTime(elapsedTime).getProperty(propertyType);
+	}
+
+	public Collider getCollider(LivingCap<?> entityCap, float elapsedTime)
+	{
+		Phase phase = this.getPhaseByTime(elapsedTime);
+		return phase.collider != null ? phase.collider : entityCap.getColliderMatching(phase.hand);
 	}
 
 	public Entity getTrueEntity(Entity entity)
@@ -255,9 +264,9 @@ public class AttackAnimation extends ActionAnimation
 		return entity;
 	}
 
-	protected float getDamageAmount(LivingData<?> entitydata, Entity target, Phase phase)
+	protected float getDamageAmount(LivingCap<?> entityCap, Entity target, Phase phase)
 	{
-		return entitydata.getDamageToEntity(target, phase.hand);
+		return entityCap.getDamageToEntity(target, phase.hand);
 	}
 
 	protected int getRequiredDeflectionLevel(Phase phase)
@@ -265,48 +274,43 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE).getLevel();
 	}
 
-	protected SoundEvent getSwingSound(LivingData<?> entitydata, Phase phase)
+	protected SoundEvent getSwingSound(LivingCap<?> entityCap, Phase phase)
 	{
-		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(entitydata.getSwingSound(phase.hand));
+		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(() -> entityCap.getSwingSound(phase.hand)).get();
 	}
 
-	protected SoundEvent getHitSound(LivingData<?> entitydata, Phase phase)
+	protected SoundEvent getHitSound(LivingCap<?> entityCap, Phase phase)
 	{
-		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(entitydata.getWeaponHitSound(phase.hand));
+		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(() -> entityCap.getWeaponHitSound(phase.hand)).get();
 	}
 
-	protected IExtendedDamageSource getDamageSourceExt(LivingData<?> entitydata, Entity target, Phase phase, float amount)
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Entity target, Phase phase, float amount)
 	{
-		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.SHORT);
-		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.STANDARD);
-		IExtendedDamageSource extDmgSource = entitydata.getDamageSource(stunType, this.getId(), amount, this.getRequiredDeflectionLevel(phase), damageType);
-		
-		phase.getProperty(AttackProperty.IMPACT).ifPresent((opt) ->
-		{
-			extDmgSource.setImpact(opt.get(extDmgSource.getImpact()));
-		});
-
+		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.DEFAULT);
+		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
+		float poiseDamage = (float) entityCap.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
+		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 
-	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value)
+	public <V> AttackAnimation addProperty(Property<V> propertyType, V value)
 	{
-		for (int i = 0; i < this.phases.length; i++)
+		if (propertyType instanceof AttackProperty)
 		{
-			this.addProperty(propertyType, value, i);
+			for (int i = 0; i < this.phases.length; i++)
+			{
+				this.addProperty(propertyType, value, i);
+			}
 		}
+		else super.addProperty(propertyType, value);
 		return this;
 	}
 
-	public <V> AttackAnimation addProperty(AttackProperty<V> propertyType, V value, int index)
+	public <V> AttackAnimation addProperty(Property<V> propertyType, V value, int index)
 	{
 		this.phases[index].addProperty(propertyType, value);
 		return this;
-	}
-
-	public int getIndexer(float elapsedTime)
-	{
-		return this.getPhaseByTime(elapsedTime).jointIndexer;
 	}
 
 	public Phase getPhaseByTime(float elapsedTime)
@@ -325,27 +329,27 @@ public class AttackAnimation extends ActionAnimation
 
 	public static class Phase
 	{
-		protected final Map<AttackProperty<?>, Object> properties = new HashMap<AttackProperty<?>, Object>();;
+		protected final Map<Property<?>, Object> properties = new HashMap<Property<?>, Object>();
 		protected final float begin;
 		protected final float contactStart;
 		protected final float contactEnd;
 		protected final float end;
-		protected final int jointIndexer;
+		protected final String jointName;
 		protected final Hand hand;
 		protected Collider collider;
 		protected boolean smashed = false;
 
-		public Phase(float antic, float preDelay, float contact, float recovery, String indexer)
+		public Phase(float antic, float preDelay, float contact, float recovery, String jointName)
 		{
-			this(antic, preDelay, contact, recovery, indexer, null);
+			this(antic, preDelay, contact, recovery, jointName, null);
 		}
 		
-		public Phase(float antic, float preDelay, float contact, float recovery, String indexer, Collider collider)
+		public Phase(float antic, float preDelay, float contact, float recovery, String jointName, Collider collider)
 		{
-			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, indexer, collider);
+			this(antic, preDelay, contact, recovery, Hand.MAIN_HAND, jointName, collider);
 		}
 
-		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String indexer, Collider collider)
+		public Phase(float antic, float preDelay, float contact, float recovery, Hand hand, String jointName, Collider collider)
 		{
 			this.begin = antic;
 			this.contactStart = preDelay;
@@ -353,24 +357,10 @@ public class AttackAnimation extends ActionAnimation
 			this.end = recovery;
 			this.collider = collider;
 			this.hand = hand;
-
-			int coded = 0;
-			if (indexer.length() == 0)
-			{
-				this.jointIndexer = -1;
-			} else
-			{
-				for (int i = 0; i < indexer.length(); i++)
-				{
-					int value = indexer.charAt(i) - '0';
-					coded = coded | value;
-					coded = coded << 5;
-				}
-				this.jointIndexer = coded;
-			}
+			this.jointName = jointName;
 		}
 
-		public <V> Phase addProperty(AttackProperty<V> propertyType, V value)
+		public <V> Phase addProperty(Property<V> propertyType, V value)
 		{
 			this.properties.put(propertyType, value);
 			return this;
@@ -385,9 +375,14 @@ public class AttackAnimation extends ActionAnimation
 		}
 
 		@SuppressWarnings("unchecked")
-		protected <V> Optional<V> getProperty(AttackProperty<V> propertyType)
+		public <V> Optional<V> getProperty(AttackProperty<V> propertyType)
 		{
 			return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
+		}
+		
+		public String getColliderJointName()
+		{
+			return this.jointName;
 		}
 	}
 }

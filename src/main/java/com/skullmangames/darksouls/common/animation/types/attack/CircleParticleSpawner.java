@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -19,7 +18,7 @@ public class CircleParticleSpawner extends ParticleSpawner
 	@Override
 	public void spawnParticles(ClientWorld world, Vector3d pos)
 	{
-		IParticleData p = this.particle.get();
+		BasicParticleType p = this.particle.get();
 		float incr = this.radius * 0.5F;
 		
 		for (double x = this.radius, z = 0D; x >= 0D && z <= this.radius; x -= incr, z += incr)

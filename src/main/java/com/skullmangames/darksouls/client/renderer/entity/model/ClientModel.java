@@ -47,7 +47,7 @@ public class ClientModel extends Model
 		}
 	}
 
-	public void draw(MatrixStack matrixStackIn, IVertexBuilder builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
+	public void draw(MatrixStack posestack, IVertexBuilder builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
 	{
 		float[] animatedPosition = this.mesh.positionList.clone();
 		float[] animatedNormal = this.mesh.normalList.clone();		
@@ -80,8 +80,8 @@ public class ClientModel extends Model
 			animatedNormal[k + 2] = totalNormal.z();
 		}
 		
-		Matrix4f matrix4f = matrixStackIn.last().pose();
-		Matrix3f matrix3f = matrixStackIn.last().normal();
+		Matrix4f matrix4f = posestack.last().pose();
+		Matrix3f matrix3f = posestack.last().normal();
 		
 		for(int i = 0; i < this.mesh.indexCount; i++)
 		{

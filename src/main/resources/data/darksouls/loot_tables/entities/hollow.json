@@ -10,13 +10,13 @@
                 },
                 {
                     "type": "item",
-                    "weight": 1,
-                    "name": "darksouls:estus_shard"
+                    "weight": 40,
+                    "name": "minecraft:rotten_flesh"
                 },
                 {
                     "type": "item",
-                    "weight": 40,
-                    "name": "minecraft:rotten_flesh"
+                    "weight": 58,
+                    "name": "minecraft:air"
                 }
             ]
         }

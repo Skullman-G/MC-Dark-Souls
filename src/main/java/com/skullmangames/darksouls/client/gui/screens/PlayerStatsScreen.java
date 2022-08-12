@@ -7,30 +7,38 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.common.capability.entity.ClientPlayerData;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class PlayerStatsScreen extends Screen
 {
 	protected final Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
 	protected int displayedLevel;
-	protected final ClientPlayerData playerdata;
+	protected final LocalPlayerCap playerdata;
+	protected final ClientPlayerEntity player;
 
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");
 	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_level_up.png");
 
 	protected final int imageWidth;
 	protected final int imageHeight;
+	
+	protected final int maxHealthBase;
+	protected final int maxStaminaBase;
+	protected final float maxEquipLoadBase;
+	protected final double attackDamageMods;
 
 	protected final int color;
 
@@ -39,10 +47,11 @@ public class PlayerStatsScreen extends Screen
 		this(new StringTextComponent("Status"));
 	}
 	
-	public PlayerStatsScreen(ITextComponent title)
+	public PlayerStatsScreen(StringTextComponent title)
 	{
 		super(title);
-		this.playerdata = ClientManager.INSTANCE.getPlayerData();
+		this.playerdata = ClientManager.INSTANCE.getPlayerCap();
+		this.player = this.playerdata.getOriginalEntity();
 		this.displayedLevel = this.playerdata.getSoulLevel();
 		for (Stat stat : Stats.STATS)
 			this.displayedStats.put(stat, this.playerdata.getStats().getStatValue(stat));
@@ -51,6 +60,11 @@ public class PlayerStatsScreen extends Screen
 		this.imageHeight = 240;
 
 		this.color = DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
+		
+		this.maxHealthBase = (int)this.player.getAttributeBaseValue(Attributes.MAX_HEALTH);
+		this.maxStaminaBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_STAMINA.get());
+		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
+		this.attackDamageMods = Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY));
 	}
 
 	@Override
@@ -74,7 +88,7 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(matrixstack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
 		this.font.draw(matrixstack, "Souls: " + (this.playerdata.isCreativeOrSpectator() ? "INFINITE" : this.playerdata.getSouls()), firstX, y + 60,
 				this.color);
-		this.font.draw(matrixstack, "Cost: " + this.getCost(), firstX, y + 72, this.color);
+		this.font.draw(matrixstack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);
 		this.font.draw(matrixstack, "Attributes", firstX, y + 128, this.color);
 
 		int textheight = y + 143;
@@ -92,52 +106,50 @@ public class PlayerStatsScreen extends Screen
 
 		int secondX = x + 195;
 		
-		this.font.draw(matrixstack, "Base power", secondX, y + 36, this.color);
+		this.font.draw(matrixstack, "Base Power", secondX, y + 36, this.color);
 		
-		int maxhealth = (int) this.playerdata.getOriginalEntity().getAttributeValue(Attributes.MAX_HEALTH)
-				+ this.displayedStats.get(Stats.VIGOR).intValue()
-				- this.playerdata.getStats().getStatValue(Stats.VIGOR);
-		int maxhealthcolor = (int) this.playerdata.getOriginalEntity().getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
-		this.font.draw(matrixstack, "Max health: " + maxhealth, secondX, y + 52, maxhealthcolor);
+		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, this.displayedStats.get(Stats.VIGOR).intValue());
+		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
+		this.font.draw(matrixstack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
 
-		int maxstamina = (int) this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.MAX_STAMINA.get())
-				+ this.displayedStats.get(Stats.ENDURANCE).intValue()
-				- this.playerdata.getStats().getStatValue(Stats.ENDURANCE);
-		int maxstaminacolor = (int) this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
-		this.font.draw(matrixstack, "Max stamina: " + maxstamina, secondX, y + 64, maxstaminacolor);
+		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, this.displayedStats.get(Stats.ENDURANCE).intValue());
+		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
+		this.font.draw(matrixstack, "Max Stamina: " + maxstamina, secondX, y + 64, maxstaminacolor);
+		
+		float maxEquipLoad = this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, this.displayedStats.get(Stats.VITALITY).intValue());
+		int maxEquipLoadColor = (float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
+		this.font.draw(matrixstack, "Max Equip Load: " + MathUtils.round(maxEquipLoad, 100), secondX, y + 76, maxEquipLoadColor);
 
 		this.font.draw(matrixstack, "Attack power", secondX, y + 144, this.color);
-		this.font.draw(matrixstack, "Mainhand: " + this.playerdata.getOriginalEntity().getAttributeValue(Attributes.ATTACK_DAMAGE), secondX, y + 160, this.color);
+		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
+				+ Stats.getTotalDamageAmount(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY)), 100);
+		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 100) != attackdamage ? 0x8cc9ff : this.color;
+		this.font.draw(matrixstack, "Mainhand: " + attackdamage, secondX, y + 160, attackdamagecolor);
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;
 
 		this.font.draw(matrixstack, "Defense", thirdX, y + 36, this.color);
-		this.font.draw(matrixstack, "Physical: " + (int) (this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "Physical: " + (int) (this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()) * 100) + "%",
 				thirdX, y + 52, this.color);
-		this.font.draw(matrixstack, "VS strike: " + (int) (this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Strike: " + (int) (this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 64, this.color);
-		this.font.draw(matrixstack, "VS slash: " + (int) (this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.SLASH_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Slash: " + (int) (this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 76, this.color);
-		this.font.draw(matrixstack, "VS thrust: " + (int) (this.playerdata.getOriginalEntity().getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
+		this.font.draw(matrixstack, "VS Thrust: " + (int) (this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 88, this.color);
 
 		matrixstack.popPose();
 
 		super.render(matrixstack, mouseX, mouseY, partialticks);
 	}
-	
-	protected int getCost()
-	{
-		return this.displayedLevel * (10 + this.displayedLevel);
-	}
 
 	private void renderBg(MatrixStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
 		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
-			this.minecraft.getTextureManager().bind(DS_TEXTURE_LOCATION);
+			minecraft.getTextureManager().bind(DS_TEXTURE_LOCATION);
 		else
-			this.minecraft.getTextureManager().bind(TEXTURE_LOCATION);
+			minecraft.getTextureManager().bind(TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 		int y = (this.height - this.imageHeight) / 2;
 		AbstractGui.blit(matrixstack, x, y, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);

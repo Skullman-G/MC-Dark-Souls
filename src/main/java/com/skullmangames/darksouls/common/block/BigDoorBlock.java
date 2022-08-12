@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.block;
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.state.properties.TrippleBlockPart;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -12,17 +13,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoorHingeSide;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -34,15 +37,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BigDoorBlock extends LockableBlock
+public class BigDoorBlock extends HorizontalBlock
 {
 	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -80,7 +78,6 @@ public class BigDoorBlock extends LockableBlock
 	    }
 	}
 	
-	@Override
 	public BlockPos[] getPartPositions(World world, BlockPos blockpos)
 	{
 		BlockPos[] positions = new BlockPos[3];
@@ -119,7 +116,7 @@ public class BigDoorBlock extends LockableBlock
 	    }
 	    else
 	    {
-	    	return trippleblockpart == TrippleBlockPart.LOWER && direction == Direction.DOWN && !blockstate.canSurvive(world, p_196271_5_) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockstate, direction, blockstate2, world, p_196271_5_, p_196271_6_);
+	    	return trippleblockpart == TrippleBlockPart.LOWER && direction == Direction.DOWN && !blockstate.canSurvive(world, p_196271_5_) ? Blocks.AIR.defaultBlockState() : blockstate;
 	    }
 	}
 	
@@ -172,7 +169,7 @@ public class BigDoorBlock extends LockableBlock
 	@Override
 	public boolean isPathfindable(BlockState p_196266_1_, IBlockReader p_196266_2_, BlockPos p_196266_3_, PathType p_196266_4_)
 	{
-	    switch(p_196266_4_)
+		switch(p_196266_4_)
 	    {
 	      case LAND:
 	         return p_196266_1_.getValue(OPEN);
@@ -264,11 +261,6 @@ public class BigDoorBlock extends LockableBlock
 	public ActionResultType use(BlockState blockstate, World world, BlockPos blockpos, PlayerEntity player, Hand hand, BlockRayTraceResult raytraceresult)
 	{
 		if (this.material == Material.METAL) return ActionResultType.PASS;
-		   else if (this.isLocked(world, blockpos))
-		   {
-			   if (player != null && player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).connection.send(new STitlePacket(STitlePacket.Type.ACTIONBAR, new StringTextComponent("Door locked by "+this.getKeyName(world, blockpos))));
-			   return ActionResultType.SUCCESS;
-		   }
 	    else
 	    {
 	       blockstate = blockstate.cycle(OPEN);
@@ -306,7 +298,7 @@ public class BigDoorBlock extends LockableBlock
 	@Override
 	public boolean canSurvive(BlockState p_196260_1_, IWorldReader p_196260_2_, BlockPos p_196260_3_)
 	{
-	    BlockPos blockpos = p_196260_3_.below();
+		BlockPos blockpos = p_196260_3_.below();
 	    BlockState blockstate = p_196260_2_.getBlockState(blockpos);
 	    return p_196260_1_.getValue(PART) == TrippleBlockPart.LOWER ? blockstate.isFaceSturdy(p_196260_2_, blockpos, Direction.UP) : blockstate.is(this);
 	}
@@ -328,6 +320,7 @@ public class BigDoorBlock extends LockableBlock
 	    return p_185499_1_.setValue(FACING, p_185499_2_.rotate(p_185499_1_.getValue(FACING)));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_)
 	{
@@ -342,7 +335,7 @@ public class BigDoorBlock extends LockableBlock
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_206840_1_)
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> p_206840_1_)
 	{
 		p_206840_1_.add(PART, FACING, OPEN, HINGE, POWERED);
 	}

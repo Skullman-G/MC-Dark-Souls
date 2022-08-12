@@ -3,16 +3,13 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.block.LockableDoorBlock;
-import com.skullmangames.darksouls.common.block.SmithingTableBlockOverride;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,13 +17,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ModBlocks 
 {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DarkSouls.MOD_ID);
-	
-	public static final RegistryObject<Block> TITANITE_ORE = BLOCKS.register("titanite_ore", () -> new Block(AbstractBlock.Properties
-			.of(Material.STONE)
-			.strength(15, 30)
-			.harvestTool(ToolType.PICKAXE)
-			.harvestLevel(1)
-			.sound(SoundType.STONE)));
 	
 	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new BonfireBlock());
 	
@@ -78,20 +68,9 @@ public class ModBlocks
 			.sound(SoundType.WOOD)
 			.noOcclusion()));
 	
-	public static final RegistryObject<Block> IRON_BAR_DOOR = BLOCKS.register("iron_bar_door", () -> new LockableDoorBlock(AbstractBlock.Properties
-			.of(Material.METAL, MaterialColor.METAL)
-			.requiresCorrectToolForDrops()
-			.strength(5.0F)
+	public static final RegistryObject<Block> IRON_BAR_DOOR = BLOCKS.register("iron_bar_door", () -> new DoorBlock(AbstractBlock.Properties
+			.of(Material.METAL, Blocks.IRON_BARS.defaultMaterialColor())
+			.strength(3.0F)
 			.sound(SoundType.METAL)
 			.noOcclusion()));
-	
-	
-	// Vanilla Overrides
-	public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "minecraft");
-	
-	
-	public static final RegistryObject<Block> SMITHING_TABLE = VANILLA_BLOCKS.register("smithing_table", () -> new SmithingTableBlockOverride(AbstractBlock.Properties
-			.of(Material.WOOD)
-			.strength(2.5F)
-			.sound(SoundType.WOOD)));
 }

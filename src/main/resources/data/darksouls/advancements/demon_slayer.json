@@ -1,0 +1,34 @@
+{
+	"parent": "darksouls:root",
+	"display": {
+    "icon": {
+      "item": "darksouls:demon_great_hammer"
+    },
+    "title": {
+      "translate": "advancements.darksouls.demon_slayer.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.demon_slayer.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "player_killed_stray_demon": {
+      "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "darksouls:stray_demon"
+                }
+            }
+    }
+  },
+  "requirements": [
+    [
+      "player_killed_stray_demon"
+    ]
+  ]
+}

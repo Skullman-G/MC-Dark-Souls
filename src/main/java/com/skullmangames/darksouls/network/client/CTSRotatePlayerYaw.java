@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.network.client;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.capability.entity.PlayerData;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
@@ -42,9 +42,9 @@ public class CTSRotatePlayerYaw
 			
 			if(player != null)
 			{
-				PlayerData<?> entitydata = (PlayerData<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				PlayerCap<?> entityCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				
-				if(entitydata != null)
+				if(entityCap != null)
 				{
 					ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCNotifyPlayerYawChanged(player.getId(), msg.yaw), player);
 				}

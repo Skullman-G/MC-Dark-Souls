@@ -10,16 +10,6 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
@@ -28,6 +18,16 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.stats.Stats;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -88,18 +88,9 @@ public class EstusFlaskItem extends Item
 
 	public static void setUses(ItemStack itemstack, int value)
 	{
-	    if (value == getUses(itemstack))
-	    {
-	    	return;
-	    }
-		if (value < 0)
-	    {
-	    	value = 0;
-	    }
-	    if (value > getTotalUses(itemstack))
-	    {
-	    	value = getTotalUses(itemstack);
-	    }
+	    if (value == getUses(itemstack)) return;
+		if (value < 0) value = 0;
+	    if (value > getTotalUses(itemstack)) value = getTotalUses(itemstack);
 		CompoundNBT compoundnbt = getOrCreateNBT(itemstack);
 	    compoundnbt.putInt("Uses", value);
 	}
@@ -116,30 +107,38 @@ public class EstusFlaskItem extends Item
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, World worldIn, LivingEntity livingentity)
 	{
-	      PlayerEntity playerentity = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
-	      if (playerentity instanceof ServerPlayerEntity)
+	      PlayerEntity player = livingentity instanceof PlayerEntity ? (PlayerEntity)livingentity : null;
+	      if (player instanceof ServerPlayerEntity)
 	      {
-	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)playerentity, itemstack);
+	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)player, itemstack);
 	      }
 
-	      if (playerentity != null)
+	      if (player != null)
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-		    	  if (playerentity.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
+		    	  if (player.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
-		    		  playerentity.heal(getHeal(itemstack));
+		    		  player.heal(getHeal(itemstack));
 		    	  }
 		    	  else
 		    	  {
-		    		  playerentity.hurt(DamageSource.IN_FIRE, getHeal(itemstack));
+		    		  player.hurt(DamageSource.IN_FIRE, getHeal(itemstack));
 		    	  }
 		      }
-	    	  playerentity.awardStat(Stats.ITEM_USED.get(this));
-	    	  if (!playerentity.abilities.instabuild)
+	    	  player.awardStat(Stats.ITEM_USED.get(this));
+	    	  if (!player.abilities.instabuild)
 	    	  {
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
+	      }
+	      else
+	      {
+	    	  if (!worldIn.isClientSide)
+		      {
+	    		  livingentity.heal(getHeal(itemstack));
+		      }
+	    	  setUses(itemstack, getUses(itemstack) - 1);
 	      }
 
 	      return itemstack;

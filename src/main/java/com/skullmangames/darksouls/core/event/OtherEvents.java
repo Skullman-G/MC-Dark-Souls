@@ -2,18 +2,13 @@ package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
-import com.skullmangames.darksouls.core.init.CommandInit;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.server.DedicatedPlayerListOverride;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
@@ -21,7 +16,6 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 
 @EventBusSubscriber(modid = DarkSouls.MOD_ID, bus = Bus.FORGE)
 public class OtherEvents
@@ -32,22 +26,6 @@ public class OtherEvents
 		if (event.getEntityItem().getItem().getItem() == ModItems.DARKSIGN.get())
 		{
 			event.getPlayer().addItem(event.getEntityItem().getItem());
-		}
-    }
-	
-	@SubscribeEvent
-	public static void onRegisterCommands(final RegisterCommandsEvent event)
-    {
-		CommandInit.register(event.getDispatcher());
-    }
-	
-	@SubscribeEvent
-	public static void onServerAboutToStart(final FMLServerAboutToStartEvent event)
-    {
-		MinecraftServer server = event.getServer();
-		if (server instanceof DedicatedServer)
-		{
-			server.setPlayerList(new DedicatedPlayerListOverride((DedicatedServer)server, server.registryHolder, server.playerDataStorage));
 		}
     }
 	

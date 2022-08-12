@@ -1,43 +1,48 @@
 package com.skullmangames.darksouls.common.animation.types.attack;
 
+import java.util.function.Function;
+
 import javax.annotation.Nullable;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.common.capability.entity.LivingData.EntityState;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3f;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class TargetTraceJumpAnimation extends AttackAnimation
 {
-	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, @Nullable Collider collider, String index, float weaponOffset, String path, String armature)
+	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, antic, preDelay, contact, recovery, affectY, Hand.MAIN_HAND, collider, index, weaponOffset, path, armature);
+		this(convertTime, antic, preDelay, contact, recovery, Hand.MAIN_HAND, collider, index, weaponOffset, path, model);
 	}
 	
-	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, Hand hand, @Nullable Collider collider, String index, float weaponOffset, String path, String armature)
+	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, Hand hand, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, affectY, path, armature, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
+		this(convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
 	}
 	
-	public TargetTraceJumpAnimation(float convertTime, boolean affectY, String path, String armature, TargetTracePhase... phases)
+	public TargetTraceJumpAnimation(float convertTime, String path, Function<Models<?>, Model> model, TargetTracePhase... phases)
 	{
-		super(convertTime, affectY, path, armature, phases);
+		super(convertTime, path, model, phases);
 	}
 	
 	@Override
-	protected Vector3f getCoordVector(LivingData<?> entitydata)
+	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
-		float elapsedTime = entitydata.getAnimator().getPlayer().getElapsedTime();
+		float elapsedTime = entityCap.getAnimator().getPlayerFor(animation).getElapsedTime();
 		EntityState state = this.getState(elapsedTime);
-		Vector3f vec3 = super.getCoordVector(entitydata);
+		Vector3f vec3 = super.getCoordVector(entityCap, animation);
 		if(state.getContactLevel() < 3)
 		{
-			LivingEntity orgEntity = entitydata.getOriginalEntity();
-			LivingEntity target = entitydata.getTarget();
+			LivingEntity orgEntity = entityCap.getOriginalEntity();
+			LivingEntity target = entityCap.getTarget();
 			float multiplier = (orgEntity instanceof PlayerEntity) ? 2.0F : 1.0F;
 			
 			if (target != null)

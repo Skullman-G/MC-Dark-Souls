@@ -1,13 +1,15 @@
 package com.skullmangames.darksouls.network.play;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
-import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
-import com.skullmangames.darksouls.common.tileentity.BonfireTileEntity;
+import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketThreadUtil;
-import net.minecraft.network.play.server.STitlePacket;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,52 +18,61 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 {
-	@Override
-	public void openBonfireNameScreen(PlayerEntity player, BonfireTileEntity tileentity)
+	private final Minecraft minecraft;
+	
+	public ModClientPlayNetHandler()
 	{
-		Minecraft.getInstance().setScreen(new BonfireNameScreen(player, tileentity));
+		this.minecraft = Minecraft.getInstance();
 	}
 
 	@Override
-	public void openBonfireScreen(BonfireTileEntity tileentity)
+	public void setTitle(ITextComponent text, int fadein, int stay, int fadeout)
 	{
-		Minecraft.getInstance().setScreen(new BonfireScreen(tileentity));
+		this.minecraft.gui.setTitles(text, StringTextComponent.EMPTY, fadein, stay, fadeout);
+	}
+	
+	@Override
+	public void setOverlayMessage(ITextComponent text)
+	{
+		this.minecraft.gui.setOverlayMessage(text, false);
 	}
 
 	@Override
-	public void handleSetTitles(STitlePacket packet)
+	public void openBonfireNameScreen(BlockPos blockPos)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		PacketThreadUtil.ensureRunningOnSameThread(packet, minecraft.getConnection(), minecraft);
-		STitlePacket.Type stitlepacket$type = packet.getType();
-		ITextComponent title = null;
-		ITextComponent subtitle = null;
-		ITextComponent text = packet.getText() != null ? packet.getText() : StringTextComponent.EMPTY;
-		switch (stitlepacket$type)
+		TileEntity tileentity = this.minecraft.level.getBlockEntity(blockPos);
+		BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+		if (bonfire != null) this.minecraft.setScreen(new BonfireNameScreen(bonfire));
+	}
+
+	@Override
+	public void openBonfireScreen(BlockPos blockPos)
+	{
+		TileEntity tileentity = this.minecraft.level.getBlockEntity(blockPos);
+		BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+		if (bonfire != null) this.minecraft.setScreen(new BonfireScreen(bonfire));
+	}
+
+	
+	Set<BlockPos> sounds = new HashSet<>();
+	@Override
+	public void tryPlayBonfireAmbientSound(BlockPos blockPos)
+	{
+		float dist = (float)this.minecraft.player.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+		if (!this.sounds.contains(blockPos) && (1.0F - (dist * 0.005F)) >= 0.0F)
 		{
-		case TITLE:
-			title = text;
-			break;
-		case SUBTITLE:
-			subtitle = text;
-			break;
-		case ACTIONBAR:
-			minecraft.gui.setOverlayMessage(text, false);
-			return;
-		case RESET:
-			minecraft.gui.setTitles((ITextComponent) null, (ITextComponent) null, -1, -1, -1);
-			minecraft.gui.resetTitleTimes();
-			return;
-		default:
-			break;
+			TileEntity tileentity = this.minecraft.player.level.getBlockEntity(blockPos);
+			BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+			if (bonfire == null) return;
+			BonfireAmbientSoundInstance soundInstance = new BonfireAmbientSoundInstance(bonfire);
+			this.minecraft.getSoundManager().queueTickingSound(soundInstance);
+			this.sounds.add(blockPos.immutable());
 		}
-
-		minecraft.gui.setTitles(title, subtitle, packet.getFadeInTime(), packet.getStayTime(), packet.getFadeOutTime());
 	}
 
 	@Override
-	public void openFireKeeperScreen(int firekeeperid)
+	public void removeBonfireAmbientSound(BlockPos blockPos)
 	{
-		Minecraft.getInstance().setScreen(new FireKeeperScreen(firekeeperid));
+		this.sounds.remove(blockPos);
 	}
 }

@@ -1,106 +1,106 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.client.animation.AnimatorClient;
-import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
+import java.util.function.Function;
+
+import net.minecraft.util.math.vector.Vector3f;
+import com.skullmangames.darksouls.client.animation.AnimationLayer;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.client.animation.ClientAnimator;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
-import com.skullmangames.darksouls.common.capability.entity.LivingData;
-import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.vector.Quaternion;
-import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
-
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.resources.IResourceManager;
 
 public class AimingAnimation extends StaticAnimation
 {
 	public StaticAnimation lookUp;
 	public StaticAnimation lookDown;
 
-	public AimingAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, String armature, boolean clientOnly)
+	public AimingAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
 	{
-		super(true, convertTime, repeatPlay, path1, armature, clientOnly);
-		lookUp = new StaticAnimation(path2);
-		lookDown = new StaticAnimation(path3);
+		super(convertTime, repeatPlay, path1, model);
+		this.lookUp = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
+		this.lookDown = new StaticAnimation(convertTime, repeatPlay, path3, model, true);
+		this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
 	}
-	
-	@Override
-	public void onUpdate(LivingData<?> entitydata)
+
+	public AimingAnimation(boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
 	{
-		super.onUpdate(entitydata);
-		
-		AnimatorClient animator = entitydata.getClientAnimator();
-		if (animator.mixLayerActivated())
+		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
+	}
+
+	@Override
+	public void onUpdate(LivingCap<?> entityCap)
+	{
+		super.onUpdate(entityCap);
+		if (!this.isReboundAnimation())
 		{
-			AnimationPlayer player = animator.getLeftMixLayerPlayer();
+			ClientAnimator animator = entityCap.getClientAnimator();
+			AnimationLayer layer = animator.getCompositeLayer(this.getLayerPart());
+			AnimationPlayer player = layer.animationPlayer;
+
 			if (player.getElapsedTime() >= this.totalTime - 0.06F)
-			{
-				animator.mixLayerLeft.pause = true;
-				animator.mixLayerRight.pause = true;
-			}
+				layer.pause();
 		}
 	}
-	
+
 	@Override
-	public Pose getPoseByTime(LivingData<?> entitydata, float time)
+	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
-		if (entitydata.isFirstPerson())
+		if (!entityCap.isFirstPerson())
 		{
-			return super.getPoseByTime(entitydata, time);
-		}
-		else
-		{
-			float pitch = entitydata.getOriginalEntity().getViewXRot(Minecraft.getInstance().getFrameTime());
+			float pitch = entityCap.getOriginalEntity().getViewXRot(Minecraft.getInstance().getFrameTime());
 			StaticAnimation interpolateAnimation;
 			interpolateAnimation = (pitch > 0) ? this.lookDown : this.lookUp;
-			Pose pose1 = getPoseByTime(time);
-			Pose pose2 = interpolateAnimation.getPoseByTime(entitydata, time);
+			Pose pose1 = super.getPoseByTime(entityCap, time, partialTicks);
+			Pose pose2 = interpolateAnimation.getPoseByTime(entityCap, time, partialTicks);
+			this.modifyPose(pose2, entityCap, time);
 			Pose interpolatedPose = Pose.interpolatePose(pose1, pose2, (Math.abs(pitch) / 90.0F));
-			JointTransform chest = interpolatedPose.getTransformByName("Chest");
-			JointTransform head = interpolatedPose.getTransformByName("Head");
-			float f = 90.0F;
-			float ratio = (f - Math.abs(entitydata.getOriginalEntity().xRot)) / f;
-			float yawOffset = entitydata.getOriginalEntity().getVehicle() != null ? entitydata.getOriginalEntity().yRot : entitydata.getOriginalEntity().yBodyRot;
-			head.setRotation(Quaternion.rotate((float)-Math.toRadians((yawOffset - entitydata.getOriginalEntity().yRot) * ratio), new Vector3f(0,1,0), head.getRotation()));
-			chest.setCustomRotation(Quaternion.rotate((float)-Math.toRadians((entitydata.getOriginalEntity().yRot - yawOffset) * ratio),
-					new Vector3f(0,1,0), null));
-			
 			return interpolatedPose;
 		}
+
+		return super.getPoseByTime(entityCap, time, partialTicks);
 	}
-	
-	private Pose getPoseByTime(float time)
-	{
-		Pose pose = new Pose();
-		for (String jointName : jointTransforms.keySet())
-		{
-			pose.putJointData(jointName, jointTransforms.get(jointName).getInterpolatedTransform(time));
-		}
-		
-		return pose;
-	}
-	
+
 	@Override
-	public void bind(Dist dist)
+	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
 	{
-		if (this.clientOnly && dist != Dist.CLIENT) return;
-		
-		if (path != null)
+		if (!entityCap.isFirstPerson())
 		{
-			Models<?> modeldata = dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-			Armature armature = modeldata.findArmature(this.armature);
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, path), this, armature);
-			path = null;
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookUp.path), lookUp, armature);
-			lookUp.path = null;
-			AnimationDataExtractor.extractAnimation(new ResourceLocation(DarkSouls.MOD_ID, lookDown.path), lookDown, armature);
-			lookDown.path = null;
+			JointTransform head = pose.getTransformByName("Head");
+			float f = 90.0F;
+			float ratio = (f - Math.abs(entityCap.getOriginalEntity().xRot)) / f;
+			float yawOffset = entityCap.getOriginalEntity().getVehicle() != null
+					? entityCap.getOriginalEntity().yRot
+					: entityCap.getOriginalEntity().yBodyRot;
+			MathUtils.mulQuaternion(
+					Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().yRot) * ratio),
+					head.rotation(), head.rotation());
 		}
-		return;
+	}
+
+	@Override
+	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
+	{
+		super.addProperty(propertyType, value);
+		this.lookDown.addProperty(propertyType, value);
+		this.lookUp.addProperty(propertyType, value);
+		return this;
+	}
+
+	@Override
+	public void loadAnimation(IResourceManager resourceManager, Models<?> models)
+	{
+		load(resourceManager, models, this);
+		load(resourceManager, models, this.lookUp);
+		load(resourceManager, models, this.lookDown);
 	}
 }
