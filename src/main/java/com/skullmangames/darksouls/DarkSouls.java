@@ -55,7 +55,7 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModContainers;
-import com.skullmangames.darksouls.core.init.CriteriaTriggerInit;
+import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModModelLayers;
@@ -172,7 +172,7 @@ public class DarkSouls
 		ProviderProjectile.makeMap();
 
 		ModEntities.registerEntitySpawnPlacement();
-		CriteriaTriggerInit.register();
+		ModCriteriaTriggers.register();
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event)
