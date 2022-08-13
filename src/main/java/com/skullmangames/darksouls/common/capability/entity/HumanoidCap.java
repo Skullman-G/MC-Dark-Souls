@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.world.InteractionHand;
@@ -85,7 +86,10 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
-		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		for (Damage damage : damageSource.getDamages())
+		{
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+		}
 		
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();

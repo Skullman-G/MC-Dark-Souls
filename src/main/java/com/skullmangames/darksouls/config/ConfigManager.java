@@ -55,6 +55,7 @@ public class ConfigManager
 			server.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
 			server.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
 			server.defineInRange(shieldKey+".sample_shield.physical_defense", 0.0F, 0.0F, 1.0F);
+			server.defineInRange(shieldKey+".sample_shield.lightning_defense", 0.0F, 0.0F, 1.0F);
 		}
 		
 		CapabilityConfig.init(server, file.valueMap());

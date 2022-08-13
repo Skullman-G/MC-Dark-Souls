@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -64,7 +65,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		super.modifyItemTooltip(itemTooltip, playerCap, stack);
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
-			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getPhysicalDefense() * 100) + "%"));
+			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getDefense(DamageType.REGULAR) * 100) + "%"));
 		}
 	}
 	
@@ -75,7 +76,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		if (playerCap.isClientSide())
 		{
 			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-			instance.removeModifier(ModAttributes.EUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
+			instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
 			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
 		}
 	}
@@ -152,9 +153,9 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	{
 		return ModSoundEvents.WEAPON_BLOCK.get();
 	}
-
+	
 	@Override
-	public float getPhysicalDefense()
+	public float getDefense(DamageType damageType)
 	{
 		return 0.1F;
 	}

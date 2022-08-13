@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
@@ -12,13 +13,15 @@ import net.minecraft.world.item.Item;
 public class ShieldCap extends MeleeWeaponCap
 {
 	private final float physicalDefense;
+	private final float lightningDefense;
 	private final ShieldType shieldType;
 	private final ShieldMat shieldMat;
 	
-	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDefense, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
 		super(item, WeaponCategory.SHIELD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
-		this.physicalDefense = Math.min(physicalDefense, 1F);
+		this.physicalDefense = Math.min(physicalDef, 1F);
+		this.lightningDefense = Math.min(lightningDef, 1F);
 		this.shieldType = shieldType;
 		this.shieldMat = shieldMat;
 	}
@@ -32,9 +35,13 @@ public class ShieldCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public float getPhysicalDefense()
+	public float getDefense(DamageType damageType)
 	{
-		return this.physicalDefense;
+		switch(damageType)
+		{
+			case LIGHTNING: return this.lightningDefense;
+			default: return this.physicalDefense;
+		}
 	}
 
 	@Override

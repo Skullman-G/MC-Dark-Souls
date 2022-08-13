@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -320,13 +321,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
-		DamageType damageType = DamageType.REGULAR;
 		
 		ExtendedDamageSource extSource = null;
 		if(damageSource instanceof ExtendedDamageSource)
 		{
 			extSource = (ExtendedDamageSource)damageSource;
-			damageType = extSource.getDamageType();
 		}
 		else if (indirect)
 		{
@@ -340,17 +339,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		// Damage Calculation
 		if (!indirect)
 		{
-			Attribute defAttribute = damageType.getDefenseAttribute();
-			amount -= this.orgEntity.getAttribute(defAttribute) != null ? this.orgEntity.getAttributeValue(defAttribute) : 0.0F;
-		}
-		if (extSource != null)
-		{
-			extSource.setAmount(amount);
-			if (this.blockingAttack(extSource))
+			for (Damage damage : extSource.getDamages())
 			{
-				this.orgEntity.actuallyHurt(damageSource, extSource.getAmount());
-				return false;
+				Attribute defAttribute = damage.getType().getDefenseAttribute();
+				damage.setAmount(this.orgEntity.getAttribute(defAttribute) != null ? damage.getAmount() - (float)this.orgEntity.getAttributeValue(defAttribute) : damage.getAmount() - 0.0F);
 			}
+		}
+		if (this.blockingAttack(extSource))
+		{
+			this.orgEntity.actuallyHurt(damageSource, extSource.getAmount());
+			return false;
 		}
 
 		this.orgEntity.playSound(ModSoundEvents.GENERIC_HIT.get(), 1.0F, 1.0F);
@@ -408,7 +406,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 		
-		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		for (Damage damage : damageSource.getDamages())
+		{
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+		}
+		
 		this.playSound(shield.getBlockSound(), 0.8F, 1.0F);
 
 		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
@@ -436,8 +438,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount, requireddeflectionlevel,
-				damageType, poiseDamage, staminaDmg);
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 
 	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)

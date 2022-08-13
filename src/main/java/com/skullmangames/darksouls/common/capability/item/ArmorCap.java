@@ -33,6 +33,7 @@ public class ArmorCap extends AttributeItemCap
 	protected final float strikeDef;
 	protected final float slashDef;
 	protected final float thrustDef;
+	protected final float lightningDef;
 	
 	protected float poise;
 	protected float weight;
@@ -48,6 +49,7 @@ public class ArmorCap extends AttributeItemCap
 		this.slashDef = this.standardDef;
 		this.strikeDef = this.standardDef * 1.1F;
 		this.thrustDef = this.standardDef * 0.9F;
+		this.lightningDef = this.standardDef * 0.5F;
 	}
 	
 	@Override
@@ -86,6 +88,9 @@ public class ArmorCap extends AttributeItemCap
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
+			
+			itemTooltip.add(new TranslatableComponent(ModAttributes.LIGHTNING_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 100))));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)

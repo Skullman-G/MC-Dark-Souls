@@ -5,39 +5,33 @@ import net.minecraft.world.entity.Entity;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements ExtendedDamageSource
 {
-	private float amount;
 	private final float staminaDamage;
 	private final float poiseDamage;
 	private boolean headshot;
 	private StunType stunType;
-	private final DamageType damageType;
+	private final Damage[] damages;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
-		this.damageType = damageType;
+		this.damages = damages;
 		this.poiseDamage = poiseDamage;
-		this.amount = amount;
 		this.staminaDamage = staminaDamage;
+	}
+	
+	@Override
+	public float getAmount()
+	{
+		float amount = 0;
+		for (Damage damage : this.getDamages()) amount += damage.getAmount();
+		return amount;
 	}
 
 	@Override
 	public int getRequiredDeflectionLevel()
 	{
 		return 0;
-	}
-
-	@Override
-	public float getAmount()
-	{
-		return this.amount;
-	}
-	
-	@Override
-	public void setAmount(float amount)
-	{
-		this.amount = amount;
 	}
 
 	@Override
@@ -59,9 +53,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public DamageType getDamageType()
+	public Damage[] getDamages()
 	{
-		return this.damageType;
+		return this.damages;
 	}
 
 	@Override

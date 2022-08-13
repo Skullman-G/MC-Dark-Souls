@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -268,7 +269,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = weapon != null ? Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul : 4;
-		return ExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
+		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 	
 	public void discard()

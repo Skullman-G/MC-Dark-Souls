@@ -17,24 +17,24 @@ import net.minecraft.world.entity.projectile.Projectile;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int reqDeflection, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-        return new DamageSourceExtended("player", player, stunType, amount, reqDeflection, damageType, poiseDamage, staminaDamage);
+        return new DamageSourceExtended("player", player, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, float amount, int reqDeflection, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-        return new DamageSourceExtended("mob", mob, stunType, amount, reqDeflection, damageType, poiseDamage, staminaDamage);
+        return new DamageSourceExtended("mob", mob, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-		return new IndirectDamageSourceExtended("projectile", projectile, owner, amount, stunType, damageType, poiseDamage, staminaDamage);
+		return new IndirectDamageSourceExtended("projectile", projectile, owner, stunType, poiseDamage, staminaDamage, damages);
 	}
 	
 	public static DamageSourceExtended getFrom(ExtendedDamageSource org)
 	{
-		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getStunType(), org.getAmount(), org.getRequiredDeflectionLevel(), org.getDamageType(), org.getPoiseDamage(), org.getStaminaDamage());
+		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getStunType(), org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
 	}
 	
 	public static DamageSourceExtended getFrom(DamageSource org, float amount)
@@ -54,27 +54,26 @@ public interface ExtendedDamageSource
 			}
 			
 		}
-		return new DamageSourceExtended(org.getMsgId(), org.getDirectEntity(), stunType, amount, reqDeflection, DamageType.REGULAR, poiseDamage, staminaDamage);
+		return new DamageSourceExtended(org.getMsgId(), org.getDirectEntity(), stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)
 	{
-		return new IndirectDamageSourceExtended(org.getType(), org.getSource(), org.getOwner(), org.getAmount(), org.getStunType(), org.getDamageType(), org.getPoiseDamage(), org.getStaminaDamage());
+		return new IndirectDamageSourceExtended(org.getType(), org.getSource(), org.getOwner(), org.getStunType(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(IndirectEntityDamageSource org, float amount)
 	{
-		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), amount, StunType.DEFAULT, DamageType.REGULAR, 1.0F, 0.0F);
+		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), StunType.DEFAULT, 1.0F, 0.0F, new Damage(DamageType.REGULAR, amount));
 	}
 	
 	public float getAmount();
-	public void setAmount(float amount);
 	public StunType getStunType();
 	public Entity getOwner();
 	public Entity getSource();
 	public String getType();
 	public int getRequiredDeflectionLevel();
-	public DamageType getDamageType();
+	public Damage[] getDamages();
 	public float getPoiseDamage();
 	public boolean isHeadshot();
 	public void setHeadshot(boolean value);
@@ -106,7 +105,7 @@ public interface ExtendedDamageSource
 	
 	public enum DamageType
 	{
-		REGULAR, STRIKE, SLASH, THRUST;
+		REGULAR, STRIKE, SLASH, THRUST, LIGHTNING;
 		
 		public Attribute getDefenseAttribute()
 		{
@@ -116,7 +115,35 @@ public interface ExtendedDamageSource
 				case STRIKE: return ModAttributes.STRIKE_DEFENSE.get();
 				case SLASH: return ModAttributes.SLASH_DEFENSE.get();
 				case THRUST: return ModAttributes.THRUST_DEFENSE.get();
+				case LIGHTNING: return ModAttributes.LIGHTNING_DEFENSE.get();
 			}
+		}
+	}
+	
+	public class Damage
+	{
+		private DamageType type;
+		private float amount;
+		
+		public Damage(DamageType type, float amount)
+		{
+			this.type = type;
+			this.amount = amount;
+		}
+		
+		public DamageType getType()
+		{
+			return this.type;
+		}
+		
+		public float getAmount()
+		{
+			return this.amount;
+		}
+		
+		public void setAmount(float value)
+		{
+			this.amount = value;
 		}
 	}
 }

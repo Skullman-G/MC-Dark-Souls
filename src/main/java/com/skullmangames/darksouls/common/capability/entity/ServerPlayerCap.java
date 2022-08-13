@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCFP;
@@ -187,7 +188,11 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
-		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		
+		for (Damage damage : damageSource.getDamages())
+		{
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+		}
 		
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();

@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -126,7 +127,7 @@ public class LightningSpear extends Projectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), this.baseDamage, StunType.DEFAULT, DamageType.REGULAR, 1.0F, 1.0F), this.baseDamage);
+		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.DEFAULT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.baseDamage)), this.baseDamage);
 	}
 	
 	public int getParticle()

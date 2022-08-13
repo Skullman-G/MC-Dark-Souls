@@ -294,5 +294,6 @@
 	"attribute.darksouls.equip_load": "Equip Load",
 	"attribute.darksouls.weight": "Weight",
 	"attribute.darksouls.max_focus_points": "Max Focus Points",
-	"attribute.darksouls attunement:slots": "Attunement Slots"
+	"attribute.darksouls attunement_slots": "Attunement Slots",
+	"attribute.darksouls.lightning_defense": "Lightning Defense"
 }
