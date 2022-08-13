@@ -27,4 +27,17 @@ public class ScalingStat extends ModifyingStat
 		}
 		return addition;
 	}
+	
+	public double getModifyValue(Player player, Attribute attribute, float baseDamage, int value)
+	{
+		float addition = 0F;
+		MeleeWeaponCap weapon = ModCapabilities.getMeleeWeaponCap(player.getMainHandItem());
+		if (weapon != null)
+		{
+			float weaponBonus = weapon.getScaling(this).getPercentage();
+			float scale = -0.000127F * (value - Stats.STANDARD_LEVEL) * (value - 188F);
+			addition = baseDamage * weaponBonus * scale;
+		}
+		return addition;
+	}
 }

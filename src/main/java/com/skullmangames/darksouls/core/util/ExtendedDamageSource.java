@@ -13,18 +13,24 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, float amount, int reqDeflection, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
-        return new DamageSourceExtended("player", player, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDamage);
+        return new DamageSourceExtended("player", player, stunType, amount, reqDeflection, damageType, poiseDamage, staminaDamage);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, float amount, int reqDeflection, DamageType damageType, float poiseDamage, float staminaDamage)
 	{
-        return new DamageSourceExtended("mob", mob, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDamage);
+        return new DamageSourceExtended("mob", mob, stunType, amount, reqDeflection, damageType, poiseDamage, staminaDamage);
     }
+	
+	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
+	{
+		return new IndirectDamageSourceExtended("projectile", projectile, owner, amount, stunType, damageType, poiseDamage, staminaDamage);
+	}
 	
 	public static DamageSourceExtended getFrom(ExtendedDamageSource org)
 	{

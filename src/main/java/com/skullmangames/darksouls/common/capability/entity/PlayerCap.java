@@ -63,6 +63,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		return this.attunements;
 	}
 	
+	@Override
+	public float getDamageScalingMultiplier(float baseDamage)
+	{
+		return (float)Stats.getTotalDamageMultiplier(this.orgEntity, baseDamage, this.getStatValue(Stats.STRENGTH), this.getStatValue(Stats.DEXTERITY), this.getStatValue(Stats.FAITH));
+	}
+	
 	public void onLoad(CompoundTag nbt)
 	{
 		this.humanity = nbt.getInt("Humanity");
@@ -209,6 +215,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	public void setStatValue(int index, int value)
 	{
 		this.stats.setStatValue(this.orgEntity, index, value);
+	}
+	
+	public int getStatValue(Stat stat)
+	{
+		return this.stats.getStatValue(stat);
 	}
 	
 	@Override

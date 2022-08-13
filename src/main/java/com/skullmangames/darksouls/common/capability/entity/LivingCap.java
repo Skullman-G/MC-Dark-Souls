@@ -86,6 +86,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.poiseDef = this.getPoise();
 		this.stamina = this.getMaxStamina();
 	}
+	
+	public float getDamageScalingMultiplier(float baseDamage)
+	{
+		return 1.0F;
+	}
 
 	public void setStamina(float value)
 	{

@@ -83,9 +83,9 @@ public abstract class WeaponCap extends AttributeItemCap
 		return true;
 	}
 
-	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerdata)
+	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.statInfo.get(stat).getFirst() <= playerdata.getStats().getStatValue(stat);
+		return this.statInfo.get(stat).getFirst() <= playerCap.getStats().getStatValue(stat);
 	}
 
 	@Nullable

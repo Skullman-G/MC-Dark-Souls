@@ -197,12 +197,13 @@ public final class Animations
 							Event.create(0.28F, Side.CLIENT, (cap) ->
 							{
 								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
-							})/*,
+							}),
 							Event.create(0.92F, Side.SERVER, (cap) ->
 							{
-								LightningSpear spear = new LightningSpear(cap, false);
+								LightningSpear spear = new LightningSpear(cap);
+								spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
 								cap.getLevel().addFreshEntity(spear);
-							})*/
+							})
 					});
 	
 	// Big Weapon

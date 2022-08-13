@@ -48,6 +48,16 @@ public abstract class EntityCapability<T extends Entity>
 	{
 		return this.orgEntity.getZ();
 	}
+	
+	public float getXRot()
+	{
+		return this.orgEntity.getXRot();
+	}
+	
+	public float getYRot()
+	{
+		return this.orgEntity.getYRot();
+	}
 
 	public boolean isClientSide()
 	{

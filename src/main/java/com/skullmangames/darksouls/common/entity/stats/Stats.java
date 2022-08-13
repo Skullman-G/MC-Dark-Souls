@@ -91,11 +91,18 @@ public class Stats
 		return level * (10 + level);
 	}
 	
-	public static double getTotalDamageAmount(Player player, int strength, int dex, int faith)
+	public static double getTotalDamageMultiplier(Player player, int strength, int dex, int faith)
 	{
 		return STRENGTH.getModifyValue(player, null, strength)
 				+ DEXTERITY.getModifyValue(player, null, dex)
 				+ FAITH.getModifyValue(player, null, faith);
+	}
+	
+	public static double getTotalDamageMultiplier(Player player, float baseDamage, int strength, int dex, int faith)
+	{
+		return STRENGTH.getModifyValue(player, null, baseDamage, strength)
+				+ DEXTERITY.getModifyValue(player, null, baseDamage, dex)
+				+ FAITH.getModifyValue(player, null, baseDamage, faith);
 	}
 	
 	private final int[] statValues = new int[STATS.size()];

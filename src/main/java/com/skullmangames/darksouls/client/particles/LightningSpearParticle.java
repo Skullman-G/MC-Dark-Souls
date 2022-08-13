@@ -22,7 +22,10 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class LightningSpearParticle extends EntityboundParticle
 {
 	@Nullable private LivingCap<?> entityCap;
@@ -38,7 +41,7 @@ public class LightningSpearParticle extends EntityboundParticle
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
-	    this.lifetime = 1000;
+	    this.lifetime = 13;
 	    
 	    if (this.entity instanceof LivingEntity)
 	    {
@@ -106,7 +109,7 @@ public class LightningSpearParticle extends EntityboundParticle
 		
 		for (int i = 0; i < 5; i++)
 		{
-			Vector3f v = new Vector3f(-0.8F + 0.4F * i, -0.8F + 0.4F * i, 0.0F);
+			Vector3f v = new Vector3f(-0.6F + 0.3F * i, -0.6F + 0.3F * i, 0.0F);
 			v.transform(this.rot2);
 			poseStack.pushPose();
 			poseStack.translate(v.x(), v.y(), v.z());
