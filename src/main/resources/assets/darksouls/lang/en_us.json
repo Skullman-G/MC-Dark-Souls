@@ -244,6 +244,11 @@
 	"entity.stray_demon.smash.sub": "Stray Demon smashing his weapon",
 	"entity.generic.human_form": "Human Form",
 	"entity.generic.human_form.sub": "Human Form achieved",
+	"entity.lightning_spear.appear": "Lightning Spear appear",
+	"entity.lightning_spear.shot": "Lightning Spear shot",
+	"entity.lightning_spear.shot.sub": "Lightning Spear gets shot",
+	"entity.lightning_spear.impact": "Lightning Spear impact",
+	"entity.lightning_spear.impact.sub": "Lightning Spear impacts",
 	
 	
 	"itemGroup.darksouls": "Dark Souls",

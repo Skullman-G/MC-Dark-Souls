@@ -1,4 +1,33 @@
 {
+	"entity.lightning_spear.appear":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/appear"
+		]
+	},
+	
+	"entity.lightning_spear.shot":
+	{
+		"category": "entity",
+		"subtitle": "entity.lightning_spear.shot.sub",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/shot"
+		]
+	},
+	
+	"entity.lightning_spear.impact":
+	{
+		"category": "entity",
+		"subtitle": "entity.lightning_spear.impact.sub",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/impact"
+		]
+	},
+	
 	"entity.generic.roll":
 	{
 		"category": "entity",

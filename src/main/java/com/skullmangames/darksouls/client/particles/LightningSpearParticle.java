@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.Camera;
@@ -41,7 +42,8 @@ public class LightningSpearParticle extends EntityboundParticle
 	    this.xd = 0;
 	    this.yd = 0;
 	    this.zd = 0;
-	    this.lifetime = 13;
+	    this.lifetime = 20;
+	    this.alpha = 0;
 	    
 	    if (this.entity instanceof LivingEntity)
 	    {
@@ -70,6 +72,21 @@ public class LightningSpearParticle extends EntityboundParticle
 	public void tick()
 	{
 		super.tick();
+		
+		if (this.age > 5 && this.age < 8)
+		{
+			for (int i = 0; i < 360; i++)
+			{
+				if (i % 80 == 0)
+				{
+					level.addParticle(ModParticles.LIGHTNING.get(), this.x, this.y - 0.25F, this.z, Math.cos(i) * 0.1D, Math.sin(i) * 0.1D, Math.sin(i) * 0.1D);
+				}
+			}
+		}
+		if (this.age > 8 && this.age <= 14)
+		{
+			this.alpha += 1.0F / 6.0F;
+		}
 		
 		this.spriteId = this.random.nextInt(6);
 		
