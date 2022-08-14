@@ -79,22 +79,6 @@ public class LightningSpear extends Projectile
 			this.onHit(hitresult);
 		}
 		
-		if (this.isInWater())
-		{
-			if (this.level.isClientSide)
-			{
-				Vec3 pos = this.position();
-				for (int i = 0; i < 360; i++)
-				{
-					if (i % 20 == 0)
-					{
-						this.level.addAlwaysVisibleParticle(ModParticles.LIGHTNING.get(), pos.x, pos.y, pos.z, Math.cos(i) * 0.1D, Math.sin(i) * 0.1D, Math.sin(i) * 0.1D);
-					}
-				}
-			}
-			this.remove(RemovalReason.DISCARDED);
-		}
-		
         this.setPos(this.position().add(this.getDeltaMovement()));
         ProjectileUtil.rotateTowardsMovement(this, 1.0F);
 	}
@@ -111,7 +95,7 @@ public class LightningSpear extends Projectile
 		super.onHit(hitresult);
 		if (this.level.isClientSide)
 		{
-			Vec3 pos = hitresult.getLocation();
+			Vec3 pos = this.position();
 			for (int i = 0; i < 360; i++)
 			{
 				if (i % 20 == 0)

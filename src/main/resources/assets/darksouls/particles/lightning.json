@@ -1,6 +1,8 @@
 {
 	"textures":
 	[
-		"darksouls:lightning_1"
+		"darksouls:lightning/lightning_1",
+		"darksouls:lightning/lightning_2",
+		"darksouls:lightning/lightning_3"
 	]
 }

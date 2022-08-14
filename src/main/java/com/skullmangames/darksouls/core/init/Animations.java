@@ -35,6 +35,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -194,11 +195,21 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/cast_miracle_spear", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
+							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+							{
+								for (int i = 0; i < 360; i++)
+								{
+									if (i % 20 == 0)
+									{
+										cap.getLevel().addAlwaysVisibleParticle(ModParticles.LIGHTNING.get(), cap.getX(), cap.getY() + 2.0F, cap.getZ(), Math.cos(i) * 0.1D, Math.sin(i) * 0.1D, Math.sin(i) * 0.1D);
+									}
+								}
+							}),
 							Event.create(0.28F, Side.CLIENT, (cap) ->
 							{
 								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
-							Event.create(0.92F, Side.SERVER, (cap) ->
+							Event.create(0.90F, Side.SERVER, (cap) ->
 							{
 								LightningSpear spear = new LightningSpear(cap);
 								spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
