@@ -189,6 +189,9 @@ public class ModItems
 	public static final RegistryObject<Item> BONFIRE = ITEMS.register("bonfire", () -> new BlockItem(ModBlocks.BONFIRE.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> SUNLIGHT_ALTAR = ITEMS.register("sunlight_altar", () -> new BlockItem(ModBlocks.SUNLIGHT_ALTAR.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
 	public static final RegistryObject<Item> BIG_ACACIA_DOOR = ITEMS.register("big_acacia_door", () -> new BlockItem(ModBlocks.BIG_ACACIA_DOOR.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
