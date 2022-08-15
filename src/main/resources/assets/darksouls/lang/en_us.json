@@ -56,6 +56,7 @@
 	"item.darksouls.miracle_force": "Miracle: Force",
 	"item.darksouls.miracle_lightning_spear": "Miracle: Lightning Spear",
 	"item.darksouls.miracle_great_lightning_spear": "Miracle: Great Lightning Spear",
+	"item.darksouls.sunlight_medal": "Sunlight Medal",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -160,6 +161,8 @@
 	"tooltip.darksouls.miracle_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. The spears inflict lightning damage. Especially powerful against metal armor and dragons.",
 	"tooltip.darksouls.miracle_great_lightning_spear": "Hurls a great lightning spear.",
 	"tooltip.darksouls.miracle_great_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. Gwyn, the First Lord, slew dragons with his sunlight spear, a tradition upheld by his firstborn and the greatspear he wielded.",
+	"tooltip.darksouls.sunlight_medal": "Offer it to the altar to strengthen bond with your covenant.",
+	"tooltip.darksouls.sunlight_medal.extended": "The symbol represents Lord Gwyn's firstborn, who lost his deity status and was expunged from the annals. But the old God of War still watches closely over his warriors.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

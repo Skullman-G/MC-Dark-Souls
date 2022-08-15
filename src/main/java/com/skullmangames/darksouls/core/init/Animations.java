@@ -197,7 +197,7 @@ public final class Animations
 					{
 							Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
 							{
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get(), 0.5F, 1.0F);
+								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
 							}),
 							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
@@ -208,7 +208,7 @@ public final class Animations
 								LightningSpear spear = LightningSpear.lightningSpear(cap);
 								spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
 								cap.getLevel().addFreshEntity(spear);
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get(), 0.5F, 1.0F);
+								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get());
 							})
 					});
 	

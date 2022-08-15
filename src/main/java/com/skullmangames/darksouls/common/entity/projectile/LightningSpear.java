@@ -126,7 +126,7 @@ public class LightningSpear extends Projectile
 		}
 		else
 		{
-			this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 0.5F, 1.0F);
+			this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 1.0F, 1.0F);
 		}
 		this.remove(RemovalReason.DISCARDED);
 	}

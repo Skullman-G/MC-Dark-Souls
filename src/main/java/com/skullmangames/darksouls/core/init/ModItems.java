@@ -167,6 +167,9 @@ public class ModItems
 	public static final RegistryObject<Item> UNDEAD_BONE_SHARD = ITEMS.register("undead_bone_shard", () -> new UndeadBoneShardItem(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> SUNLIGHT_MEDAL = ITEMS.register("sunlight_medal", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Souls
 	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
