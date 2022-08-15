@@ -72,8 +72,7 @@ public class ItemCapability
 		String languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath();
 		String description = new TranslatableComponent(languagePath).getString();
 		boolean isSpell = this.orgItem instanceof SpellItem;
-		
-		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
+
 		if (!description.contains(languagePath))
 		{
 			itemTooltip.add(index++, new TextComponent("\u00A77" + description));
