@@ -3,13 +3,13 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.HumanityEntity;
-import com.skullmangames.darksouls.common.entity.LightningSpear;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -74,10 +74,14 @@ public class ModEntities
 	
 	//Projectiles
 	public static final RegistryObject<EntityType<LightningSpear>> LIGHTNING_SPEAR = register("lightning_spear",
-			EntityType.Builder.<LightningSpear>of(LightningSpear::new, MobCategory.MISC)
+			EntityType.Builder.<LightningSpear>of(LightningSpear::lightningSpear, MobCategory.MISC)
 			.sized(1.5F, 0.5F)
 			.clientTrackingRange(6)
 			.updateInterval(20));
+	
+	public static final RegistryObject<EntityType<LightningSpear>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear",
+			EntityType.Builder.<LightningSpear>of(LightningSpear::greatLightningSpear, MobCategory.MISC)
+			.sized(2.0F, 1.0F));
 	
 	public static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder)
 	{

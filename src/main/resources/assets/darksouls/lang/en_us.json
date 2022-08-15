@@ -55,6 +55,7 @@
 	"item.darksouls.mace": "Mace",
 	"item.darksouls.miracle_force": "Miracle: Force",
 	"item.darksouls.miracle_lightning_spear": "Miracle: Lightning Spear",
+	"item.darksouls.miracle_great_lightning_spear": "Miracle: Great Lightning Spear",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -77,6 +78,7 @@
 	"entity.darksouls.hollow_lordran_warrior": "Hollow Warrior of Lordran",
 	"entity.darksouls.hollow_lordran_soldier": "Hollow Soldier of Lordran",
 	"entity.darksouls.lightning_spear": "Lightning Spear",
+	"entity.darksouls.great_lightning_spear": "Great Lightning Spear",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -156,6 +158,8 @@
 	"tooltip.darksouls.miracle_force.extended": "Elementary miracle among clerics. This quickly-acting miracle inflicts no damage, but propels foes back and defends against arrows. Cleric knights use this miracle when charging into enemy mobs.",
 	"tooltip.darksouls.miracle_lightning_spear": "Hurls a lightning spear.",
 	"tooltip.darksouls.miracle_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. The spears inflict lightning damage. Especially powerful against metal armor and dragons.",
+	"tooltip.darksouls.miracle_great_lightning_spear": "Hurls a great lightning spear.",
+	"tooltip.darksouls.miracle_great_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. Gwyn, the First Lord, slew dragons with his sunlight spear, a tradition upheld by his firstborn and the greatspear he wielded.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

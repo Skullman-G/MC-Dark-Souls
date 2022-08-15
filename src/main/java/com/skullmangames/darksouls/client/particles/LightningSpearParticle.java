@@ -34,8 +34,9 @@ public class LightningSpearParticle extends EntityboundParticle
 	private int spriteId;
 	private Quaternion rot;
 	private Quaternion rot2;
+	private final float scale;
 	
-	protected LightningSpearParticle(ClientLevel level, int entityId, double xCoord, double yCoord, double zCoord)
+	protected LightningSpearParticle(ClientLevel level, int entityId, float scale, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 1.0F;
@@ -44,6 +45,7 @@ public class LightningSpearParticle extends EntityboundParticle
 	    this.zd = 0;
 	    this.lifetime = 20;
 	    this.alpha = 0;
+	    this.scale = scale;
 	    
 	    if (this.entity instanceof LivingEntity)
 	    {
@@ -73,7 +75,7 @@ public class LightningSpearParticle extends EntityboundParticle
 	{
 		super.tick();
 		
-		if (this.age > 5 && this.age < 8)
+		if (this.age > 5 && this.age < 7)
 		{
 			for (int i = 0; i < 360; i++)
 			{
@@ -117,6 +119,7 @@ public class LightningSpearParticle extends EntityboundParticle
 		int uv2 = this.getLightColor(partialTicks);
 		
 		poseStack.translate(posX, posY, posZ);
+		poseStack.scale(this.scale, this.scale, this.scale);
 		poseStack.pushPose();
 		poseStack.mulPose(this.rot);
 		this.drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5, uv2);
@@ -161,19 +164,31 @@ public class LightningSpearParticle extends EntityboundParticle
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 	
+	public static Factory lightningSpear(SpriteSet sprite)
+	{
+		return new Factory(sprite, 1.0F);
+	}
+	
+	public static Factory greatLightningSpear(SpriteSet sprite)
+	{
+		return new Factory(sprite, 1.5F);
+	}
+	
 	public static class Factory implements ParticleProvider<EntityboundParticleOptions>
 	{
 	    private final SpriteSet sprite;
+	    private final float scale;
 
-	    public Factory(SpriteSet sprite)
+	    public Factory(SpriteSet sprite, float scale)
 	    {
 	    	this.sprite = sprite;
+	    	this.scale = scale;
 	    }
 
 	    @Override
 	    public Particle createParticle(EntityboundParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
 	    {
-	    	LightningSpearParticle particle = new LightningSpearParticle(level, options.getEntityId(), x, y, z);
+	    	LightningSpearParticle particle = new LightningSpearParticle(level, options.getEntityId(), this.scale, x, y, z);
 	    	particle.pickSprite(this.sprite);
 	        return particle;
 	    }

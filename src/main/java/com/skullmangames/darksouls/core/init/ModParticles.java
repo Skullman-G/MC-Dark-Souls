@@ -42,6 +42,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> LARGE_MIRACLE_CIRCLE = register("large_miracle_circle", true);
 	public static final RegistryObject<SimpleParticleType> FORCE = register("force", true);
 	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> LIGHTNING_SPEAR = register("lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
+	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	public static final RegistryObject<SimpleParticleType> LIGHTNING = register("lightning", true);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
@@ -75,7 +76,8 @@ public class ModParticles
 		minecraft.particleEngine.register(MEDIUM_MIRACLE_CIRCLE.get(), MiracleCircleParticle::medium);
 		minecraft.particleEngine.register(LARGE_MIRACLE_CIRCLE.get(), MiracleCircleParticle::large);
 		minecraft.particleEngine.register(FORCE.get(), ForceParticle.Factory::new);
-		minecraft.particleEngine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle.Factory::new);
+		minecraft.particleEngine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle::lightningSpear);
+		minecraft.particleEngine.register(GREAT_LIGHTNING_SPEAR.get(), LightningSpearParticle::greatLightningSpear);
 		minecraft.particleEngine.register(LIGHTNING.get(), LightningParticle.Factory::new);
 	}
 }

@@ -114,6 +114,9 @@ public class ModItems
 	public static final RegistryObject<Item> MIRACLE_LIGHTNING_SPEAR = ITEMS.register("miracle_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR, 20, 0.57F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> MIRACLE_GREAT_LIGHTNING_SPEAR = ITEMS.register("miracle_great_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, 30, 0.8F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Armor
 	public static final RegistryObject<Item> DINGY_HOOD = ITEMS.register("dingy_hood", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, "dingy_set_layer_1", new Item.Properties()

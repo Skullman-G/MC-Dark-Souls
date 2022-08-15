@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.entity;
+package com.skullmangames.darksouls.common.entity.projectile;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.animation.Joint;
@@ -26,17 +26,17 @@ import net.minecraft.world.phys.Vec3;
 public class LightningSpear extends Projectile
 {
 	private int particle;
-	private final float baseDamage;
+	private final float damage;
 	
-	public LightningSpear(EntityType<? extends LightningSpear> type, Level level)
+	private LightningSpear(EntityType<? extends LightningSpear> type, Level level, float baseDamage)
 	{
 		super(type, level);
-		this.baseDamage = 15.0F;
+		this.damage = baseDamage;
 	}
 	
-	public LightningSpear(LivingCap<?> entityCap)
+	private LightningSpear(EntityType<? extends LightningSpear> type, LivingCap<?> entityCap, float baseDamage)
 	{
-		super(ModEntities.LIGHTNING_SPEAR.get(), entityCap.getLevel());
+		super(type, entityCap.getLevel());
 		this.setOwner(entityCap.getOriginalEntity());
 		
 		Joint joint = entityCap.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName("Tool_R");
@@ -48,8 +48,27 @@ public class LightningSpear extends Projectile
 		jpos.mul(-1, 1, -1);
 		
 		this.setPos(jpos.x(), jpos.y(), jpos.z());
-		
-		this.baseDamage = 15.0F + entityCap.getDamageScalingMultiplier(15.0F);
+		this.damage = baseDamage + entityCap.getDamageScalingMultiplier(baseDamage);
+	}
+	
+	public static LightningSpear lightningSpear(EntityType<? extends LightningSpear> type, Level level)
+	{
+		return new LightningSpear(type, level, 15.0F);
+	}
+	
+	public static LightningSpear lightningSpear(LivingCap<?> entityCap)
+	{
+		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap, 15.0F);
+	}
+	
+	public static LightningSpear greatLightningSpear(EntityType<? extends LightningSpear> type, Level level)
+	{
+		return new LightningSpear(type, level, 20.0F);
+	}
+	
+	public static LightningSpear greatLightningSpear(LivingCap<?> entityCap)
+	{
+		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap, 20.0F);
 	}
 	
 	@Override
@@ -94,7 +113,6 @@ public class LightningSpear extends Projectile
 	protected void onHit(HitResult hitresult)
 	{
 		super.onHit(hitresult);
-		this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 1.0F, 1.0F);
 		if (this.level.isClientSide)
 		{
 			Vec3 pos = this.position();
@@ -106,6 +124,10 @@ public class LightningSpear extends Projectile
 				}
 			}
 		}
+		else
+		{
+			this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 0.5F, 1.0F);
+		}
 		this.remove(RemovalReason.DISCARDED);
 	}
 	
@@ -113,7 +135,7 @@ public class LightningSpear extends Projectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.DEFAULT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.baseDamage)), this.baseDamage);
+		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.DEFAULT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.damage)), this.damage);
 	}
 	
 	public int getParticle()

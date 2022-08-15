@@ -595,16 +595,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void playSound(SoundEvent sound, float minPitch, float maxPitch, float volume)
 	{
-		if (!this.isClientSide())
-		{
-			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F);
-		}
-		else
-		{
-			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F);
-		}
+		this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
+				orgEntity.getSoundSource(), volume, 1.0F);
 	}
 
 	public LivingEntity getTarget()

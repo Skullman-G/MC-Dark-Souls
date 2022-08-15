@@ -7,7 +7,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
-import com.skullmangames.darksouls.common.entity.LightningSpear;
+import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
@@ -22,10 +22,22 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 {
 	private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/particle/lightning_spear.png");
 	private static final RenderType RENDER_TYPE = ModRenderTypes.getEffectEntity(TEXTURE_LOCATION);
+	private final float scale;
 	
-	public LightningSpearRenderer(Context context)
+	private LightningSpearRenderer(Context context, float scale)
 	{
 		super(context);
+		this.scale = scale;
+	}
+	
+	public static LightningSpearRenderer lightningSpear(Context context)
+	{
+		return new LightningSpearRenderer(context, 1.0F);
+	}
+	
+	public static LightningSpearRenderer greatLightningSpear(Context context)
+	{
+		return new LightningSpearRenderer(context, 1.5F);
 	}
 	
 	@Override
@@ -43,6 +55,7 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 				0, entity.xRotO, entity.yRot, 1.0F, 1.0F, 1.0F, 1.0F).transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion();
 		rot.mul(Vector3f.YP.rotationDegrees(90));
 		
+		poseStack.scale(this.scale, this.scale, this.scale);
 		poseStack.pushPose();
 		poseStack.translate(0.0F, 0.25F, 0.0F);
 		poseStack.mulPose(rot);
