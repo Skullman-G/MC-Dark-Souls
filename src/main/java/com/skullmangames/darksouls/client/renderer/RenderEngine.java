@@ -37,6 +37,7 @@ import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
+import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -121,6 +122,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, AnastaciaOfAstoraCap>("quest_entity/anastacia_of_astora"));
 		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new AsylumDemonRenderer());
 		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<AbstractFireKeeper, FireKeeperCap>("fire_keeper"));
+		this.entityRendererMap.put(ModEntities.PETRUS_OF_THOROLUND.get(), new SimpleHumanoidRenderer<PetrusOfThorolund, SimpleHumanoidCap<PetrusOfThorolund>>("quest_entity/petrus_of_thorolund"));
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();

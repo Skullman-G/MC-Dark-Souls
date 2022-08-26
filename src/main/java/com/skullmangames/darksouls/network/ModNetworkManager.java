@@ -10,8 +10,8 @@ import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
-import com.skullmangames.darksouls.network.client.CTSRotatePlayerYaw;
-import com.skullmangames.darksouls.network.play.IModClientPlayNetHandler;
+import com.skullmangames.darksouls.network.client.CTSSelectTrade;
+import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCSetPos;
+import com.skullmangames.darksouls.network.server.STCSoulMerchantOffers;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
@@ -45,7 +46,7 @@ public class ModNetworkManager
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DarkSouls.MOD_ID, "network_manager"),
 			() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public static IModClientPlayNetHandler connection;
+	public static ModPlayNetHandler connection;
 
 	public static <MSG> void sendToServer(MSG message)
 	{
@@ -78,7 +79,6 @@ public class ModNetworkManager
 		int id = 0;
 		INSTANCE.registerMessage(id++, CTSPlayAnimation.class, CTSPlayAnimation::toBytes, CTSPlayAnimation::fromBytes, CTSPlayAnimation::handle);
 		INSTANCE.registerMessage(id++, CTSReqSpawnInfo.class, CTSReqSpawnInfo::toBytes, CTSReqSpawnInfo::fromBytes, CTSReqSpawnInfo::handle);
-		INSTANCE.registerMessage(id++, CTSRotatePlayerYaw.class, CTSRotatePlayerYaw::toBytes, CTSRotatePlayerYaw::fromBytes, CTSRotatePlayerYaw::handle);
 		INSTANCE.registerMessage(id++, CTSBonfireTask.class, CTSBonfireTask::toBytes, CTSBonfireTask::fromBytes, CTSBonfireTask::handle);
 		INSTANCE.registerMessage(id++, CTSOpenFireKeeperContainer.class, CTSOpenFireKeeperContainer::toBytes, CTSOpenFireKeeperContainer::fromBytes, CTSOpenFireKeeperContainer::handle);
 		INSTANCE.registerMessage(id++, CTSPerformDodge.class, CTSPerformDodge::toBytes, CTSPerformDodge::fromBytes, CTSPerformDodge::handle);
@@ -86,6 +86,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSFinishNPCChat.class, CTSFinishNPCChat::toBytes, CTSFinishNPCChat::fromBytes, CTSFinishNPCChat::handle);
 		INSTANCE.registerMessage(id++, CTSOpenAttunementScreen.class, CTSOpenAttunementScreen::toBytes, CTSOpenAttunementScreen::fromBytes, CTSOpenAttunementScreen::handle);
 		INSTANCE.registerMessage(id++, CTSCastSpell.class, CTSCastSpell::toBytes, CTSCastSpell::fromBytes, CTSCastSpell::handle);
+		INSTANCE.registerMessage(id++, CTSSelectTrade.class, CTSSelectTrade::toBytes, CTSSelectTrade::fromBytes, CTSSelectTrade::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
@@ -107,5 +108,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCOpenFireKeeperScreen.class, STCOpenFireKeeperScreen::toBytes, STCOpenFireKeeperScreen::fromBytes, STCOpenFireKeeperScreen::handle);
 		INSTANCE.registerMessage(id++, STCFP.class, STCFP::toBytes, STCFP::fromBytes, STCFP::handle);
 		INSTANCE.registerMessage(id++, STCAttunements.class, STCAttunements::toBytes, STCAttunements::fromBytes, STCAttunements::handle);
+		INSTANCE.registerMessage(id++, STCSoulMerchantOffers.class, STCSoulMerchantOffers::toBytes, STCSoulMerchantOffers::fromBytes, STCSoulMerchantOffers::handle);
 	}
 }

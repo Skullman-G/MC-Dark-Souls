@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +26,7 @@ public class CrestfallenWarrior extends QuestEntity
 	private static final String DIALOGUE_1 = "dialogue.darksouls.crestfallen_warrior.1";
 	private static final String DIALOGUE_2 = "dialogue.darksouls.crestfallen_warrior.2";
 	
-	public CrestfallenWarrior(EntityType<? extends PathfinderMob> type, Level level)
+	public CrestfallenWarrior(EntityType<? extends CrestfallenWarrior> type, Level level)
 	{
 		super(type, level);
 	}
@@ -78,7 +77,7 @@ public class CrestfallenWarrior extends QuestEntity
 	}
 	
 	@Override
-	protected int getExperienceReward(Player p_21511_)
+	protected int getExperienceReward(Player player)
 	{
 		return 1000;
 	}

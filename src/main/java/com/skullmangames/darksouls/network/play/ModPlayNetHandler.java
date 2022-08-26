@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.play;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
-public interface IModClientPlayNetHandler
+public interface ModPlayNetHandler
 {
 	void setTitle(Component text, int fadein, int stay, int fadeout);
 	

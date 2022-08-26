@@ -206,22 +206,13 @@ public class DarkSouls
 		ModModelLayers.call();
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
-																							// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better
-																							// solution
+		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new);
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);

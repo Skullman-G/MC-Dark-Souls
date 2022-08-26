@@ -68,6 +68,7 @@ public class ModAttributes
 		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
 		event.put(ModEntities.STRAY_DEMON.get(), StrayDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
+		event.put(ModEntities.PETRUS_OF_THOROLUND.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), AnastaciaOfAstora.createAttributes().build());
 	}
 	
@@ -81,6 +82,7 @@ public class ModAttributes
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
+		withEquipLoad(ModEntities.PETRUS_OF_THOROLUND.get(), event);
 		
 		player(EntityType.PLAYER, event);
 	}

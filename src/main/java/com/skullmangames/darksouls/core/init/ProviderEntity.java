@@ -42,6 +42,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(ModEntities.CRESTFALLEN_WARRIOR.get(), (entity) -> SimpleHumanoidCap::new);
 		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> AnastaciaOfAstoraCap::new);
 		CAPABILITIES.put(ModEntities.FIRE_KEEPER.get(), (entity) -> FireKeeperCap::new);
+		CAPABILITIES.put(ModEntities.PETRUS_OF_THOROLUND.get(), (entity) -> SimpleHumanoidCap::new);
 	}
 	
 	public static void makeMapClient()

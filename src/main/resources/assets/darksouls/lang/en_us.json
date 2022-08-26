@@ -81,6 +81,7 @@
 	"entity.darksouls.hollow_lordran_soldier": "Hollow Soldier of Lordran",
 	"entity.darksouls.lightning_spear": "Lightning Spear",
 	"entity.darksouls.great_lightning_spear": "Great Lightning Spear",
+	"entity.darksouls.petrus_of_thorolund": "Petrus of Thorolund",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -268,6 +269,9 @@
 	"dialogue.darksouls.crestfallen_warrior.1": "Oh, your face!%You're practically Hollow.%But who knows, going Hollow could solve quite a bit!%Hah hah hah hah...%Hm, what?%Restoring your humanity?%Well, there are a few ways to go about it...%You could collect it bit by bit from corpses.%But the quickest way, although I'd never do it,%is to kill a healthy Undead, and pillage its humanity.%Coveting thy neighbour is only human, after all!%Hah hah hah hah...%What are you looking at?%Don't try anything clever.%You might regret it.",
 	"dialogue.darksouls.crestfallen_warrior.2": "Bloody hell, what is it now?%You ask too many questions.%I'm not up for chatting.%Leave me alone.",
 	"dialogue.darksouls.anastacia_of_astora.0": "...",
+	"dialogue.darksouls.petrus_of_thorolund.0": "Hello there.%I believe we are not acquainted?%I am Petrus of Thorolund.%Have you business with us?%...If not, I'd prefer to keep a distance, if possible.",
+	"dialogue.darksouls.petrus_of_thorolund.1": "Hello there.%I realize that I have requested that we retain our distance,%but I also want you to know that it is not meant in ill-will.%Here, take this. As a token of peace.%No, go ahead. It's for you.",
+	"dialogue.darksouls.petrus_of_thorolund.2": "Oh, my... you again?%Oh, I know. How about this...%I have to await my companions here anyway, so,%what if I were to teach you some miracles?%Would that please you?",
 	
 	"container.reinforce_estus_flask.title": "Reinforce Estus Flask",
 	"container.attunements.title": "Attunements",

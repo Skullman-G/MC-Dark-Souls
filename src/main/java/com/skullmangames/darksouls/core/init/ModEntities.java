@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.HumanityEntity;
+import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -69,6 +70,11 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<AnastaciaOfAstora>> ANASTACIA_OF_ASTORA = register("anastacia_of_astora",
 			EntityType.Builder.<AnastaciaOfAstora>of(AnastaciaOfAstora::new, MobCategory.CREATURE)
+				.sized(0.6F, 1.95F)
+				.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<PetrusOfThorolund>> PETRUS_OF_THOROLUND = register("petrus_of_thorolund",
+			EntityType.Builder.<PetrusOfThorolund>of(PetrusOfThorolund::new, MobCategory.CREATURE)
 				.sized(0.6F, 1.95F)
 				.canSpawnFarFromPlayer());
 	

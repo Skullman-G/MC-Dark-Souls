@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ModClientPlayNetHandler implements IModClientPlayNetHandler
+public class ModClientPlayNetHandler implements ModPlayNetHandler
 {
 	private final Minecraft minecraft;
 	
