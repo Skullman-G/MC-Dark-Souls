@@ -57,6 +57,9 @@
 	"item.darksouls.miracle_lightning_spear": "Miracle: Lightning Spear",
 	"item.darksouls.miracle_great_lightning_spear": "Miracle: Great Lightning Spear",
 	"item.darksouls.sunlight_medal": "Sunlight Medal",
+	"item.darksouls.elite_cleric_helm": "Elite Cleric Helm",
+	"item.darksouls.elite_cleric_armor": "Elite Cleric Armor",
+	"item.darksouls.elite_cleric_leggings": "Elite Cleric Leggings",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -165,6 +168,9 @@
 	"tooltip.darksouls.miracle_great_lightning_spear.extended": "Miracle passed down to those bound by the Warrior of Sunlight covenant. Gwyn, the First Lord, slew dragons with his sunlight spear, a tradition upheld by his firstborn and the greatspear he wielded.",
 	"tooltip.darksouls.sunlight_medal": "Offer it to the altar to strengthen bond with your covenant.",
 	"tooltip.darksouls.sunlight_medal.extended": "The symbol represents Lord Gwyn's firstborn, who lost his deity status and was expunged from the annals. But the old God of War still watches closely over his warriors.",
+	"tooltip.darksouls.elite_cleric_helm.extended": "Helm worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
+	"tooltip.darksouls.elite_cleric_armor.extended": "Armor worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
+	"tooltip.darksouls.elite_cleric_leggings.extended": "Leggings worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

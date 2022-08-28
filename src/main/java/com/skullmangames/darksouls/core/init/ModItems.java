@@ -144,6 +144,13 @@ public class ModItems
 	public static final RegistryObject<Item> LORDRAN_SOLDIER_BOOTS = ITEMS.register("lordran_soldier_boots", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.FEET, "lordran_soldier_set_layer_1", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> ELITE_CLERIC_HELM = ITEMS.register("elite_cleric_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "elite_cleric_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> ELITE_CLERIC_ARMOR = ITEMS.register("elite_cleric_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "elite_cleric_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> ELITE_CLERIC_LEGGINGS = ITEMS.register("elite_cleric_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "elite_cleric_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()

@@ -14,9 +14,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
@@ -67,6 +69,20 @@ public class PetrusOfThorolund extends QuestEntity implements SoulMerchant
 		return InteractionResult.sidedSuccess(player.level.isClientSide);
 	}
 	
+	@Override
+	protected Item getEquipmentForSlot(EquipmentSlot slot)
+	{
+		switch (slot)
+		{
+			default: return Items.AIR;	
+			case MAINHAND: return ModItems.MACE.get();
+			case OFFHAND: return ModItems.KNIGHT_SHIELD.get();
+			case CHEST: return ModItems.ELITE_CLERIC_ARMOR.get();
+			case LEGS: return ModItems.ELITE_CLERIC_LEGGINGS.get();
+			case FEET: return Items.IRON_BOOTS;
+		}
+	}
+	
 	private void startTrading(Player player)
 	{
 		this.setTradingPlayer(player);
@@ -105,10 +121,7 @@ public class PetrusOfThorolund extends QuestEntity implements SoulMerchant
 	}
 
 	@Override
-	public void notifyTrade(SoulMerchantOffer offer)
-	{
-		
-	}
+	public void notifyTrade(SoulMerchantOffer offer) {}
 
 	@Override
 	public boolean isClientSide()
