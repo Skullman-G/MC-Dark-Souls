@@ -78,15 +78,19 @@ public class ModItems
 	
 	//Shields
 	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> KNIGHT_SHIELD = ITEMS.register("knight_shield", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	
