@@ -115,7 +115,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	
 	public void setSouls(int value)
 	{
-		this.souls = value;
+		this.souls = Math.max(0, value);
 	}
 	
 	public void raiseSouls(int value)

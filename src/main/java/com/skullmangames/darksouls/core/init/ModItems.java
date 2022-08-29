@@ -92,9 +92,11 @@ public class ModItems
 	
 	//Talismans
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> THOROLUND_TALISMAN = ITEMS.register("thorolund_talisman", () -> new Item(new Item.Properties()
+			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
 	
@@ -259,7 +261,14 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.SPEAR.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_SHIELD.get());
 		DESCRIPTION_ITEMS.add(ModItems.TALISMAN.get());
+		DESCRIPTION_ITEMS.add(ModItems.THOROLUND_TALISMAN.get());
 		DESCRIPTION_ITEMS.add(ModItems.ASHEN_ESTUS_FLASK.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_HEAL_AID.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_HEAL.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_FORCE.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_HOMEWARD.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_LIGHTNING_SPEAR.get());
+		DESCRIPTION_ITEMS.add(ModItems.MIRACLE_GREAT_LIGHTNING_SPEAR.get());
 		
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_HELMET);
 		DESCRIPTION_ITEMS.add(Items.CHAINMAIL_CHESTPLATE);
@@ -279,5 +288,9 @@ public class ModItems
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_ARMOR.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get());
 		DESCRIPTION_ITEMS.add(ModItems.LORDRAN_SOLDIER_BOOTS.get());
+		
+		DESCRIPTION_ITEMS.add(ModItems.ELITE_CLERIC_HELM.get());
+		DESCRIPTION_ITEMS.add(ModItems.ELITE_CLERIC_ARMOR.get());
+		DESCRIPTION_ITEMS.add(ModItems.ELITE_CLERIC_LEGGINGS.get());
 	}
 }

@@ -184,7 +184,7 @@ public final class Animations
 						}),
 						Event.create(0.6F, Side.SERVER, (cap) ->
 						{
-							List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(cap.getX() - 1.5F, cap.getY() - 1.5F, cap.getZ() - 1.5F, cap.getX() + 1.5F, cap.getY() + 1.5F, cap.getZ() + 1.5F));
+							List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(cap.getX() - 2.0F, cap.getY() - 2.0F, cap.getZ() - 2.0F, cap.getX() + 2.0F, cap.getY() + 2.0F, cap.getZ() + 2.0F));
 							for (Entity target : targets)
 							{
 								cap.knockBackEntity(target, 0.5F);

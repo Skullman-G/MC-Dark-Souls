@@ -58,7 +58,7 @@ public class SoulMerchantResultSlot extends Slot
 		{
 			this.merchant.notifyTrade(offer);
 			PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (playerCap != null) playerCap.raiseSouls(-offer.getCost());
+			if (playerCap != null && !player.isCreative()) playerCap.raiseSouls(-offer.getCost());
 		}
 	}
 }

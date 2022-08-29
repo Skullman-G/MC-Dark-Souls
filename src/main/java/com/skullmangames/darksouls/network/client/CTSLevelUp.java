@@ -60,7 +60,7 @@ public class CTSLevelUp
 				
 				if (cost <= playerCap.getSouls())
 				{
-					playerCap.raiseSouls(cost);
+					playerCap.raiseSouls(-cost);
 					addStatValues(serverPlayer, playerstats, msg.stats);
 				}
 			}
