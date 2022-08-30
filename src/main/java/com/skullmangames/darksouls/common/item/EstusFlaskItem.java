@@ -44,7 +44,7 @@ public class EstusFlaskItem extends Item
 		{
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
-		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
+		    compoundnbt.putInt("Uses", 0);
 		    compoundnbt.putInt("Heal", 5);
 		}
 		
