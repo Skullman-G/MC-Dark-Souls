@@ -73,7 +73,7 @@ public class Stats
 					{
 						return (int)(-0.001262468 * (value - STANDARD_LEVEL) * (value - 188));
 					}
-					else return -0.019D * (value - STANDARD_LEVEL) * (value - 188);
+					else return -0.0076 * (value - STANDARD_LEVEL) * (value - 188);
 				}
 			});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
