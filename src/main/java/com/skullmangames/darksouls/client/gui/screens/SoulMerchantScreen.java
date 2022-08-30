@@ -271,7 +271,6 @@ public class SoulMerchantScreen extends AbstractContainerScreen<SoulMerchantMenu
 					SoulMerchantScreen.this.renderTooltip(poseStack, itemstack1, mouseX, mouseY);
 				}
 			}
-
 		}
 	}
 }
