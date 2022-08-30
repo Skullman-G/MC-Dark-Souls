@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.inventory.ReinforceEstusFlaskMenu;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -82,13 +81,17 @@ public abstract class AbstractFireKeeper extends QuestEntity
 		{
 			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 			{
-				BonfireBlockEntity t = this.level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
-				if (t != null
-						&& !t.hasFireKeeper()
-						&& t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+				BlockEntity t = this.level.getBlockEntity(pos);
+				if (t instanceof BonfireBlockEntity)
 				{
-					this.linkBonfire(t.getBlockPos());
-					break;
+					BonfireBlockEntity b = (BonfireBlockEntity)t;
+					if (b != null
+							&& !b.hasFireKeeper()
+							&& b.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+					{
+						this.linkBonfire(b.getBlockPos());
+						break;
+					}
 				}
 			}
 		}
