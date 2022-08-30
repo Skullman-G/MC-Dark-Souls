@@ -225,7 +225,7 @@ public class GameOverlayManager
 			fpDrainCooldown.start(50);
 		}
 
-		float visibleFP = saveLastFP - (fpDrainTimer.getPastTime() * 0.01F);
+		float visibleFP = saveLastFP - fpDrainTimer.getPastTime() * 0.01F;
 
 		if (fpDrainCooldown.isTicking())
 		{
@@ -248,7 +248,7 @@ public class GameOverlayManager
 		}
 
 		// Rise Animation
-		if ((lastHealth < fpPercentage && isHealing) || fpRiseTimer.isTicking())
+		if (lastFP < fpPercentage || fpRiseTimer.isTicking())
 		{
 			fpDrainTimer.stop();
 			if (!fpRiseTimer.isTicking())
@@ -256,8 +256,8 @@ public class GameOverlayManager
 				saveLastFP = lastFP;
 				fpRiseTimer.start((int)((fpPercentage - saveLastFP) * 100));
 			}
-			float healcentage = saveLastFP + fpRiseTimer.getPastTime();
-			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(healcentage * 88), 7); // Blue
+			float risecentage = saveLastFP + fpRiseTimer.getPastTime() * 0.01F;
+			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(risecentage * 88), 7); // Blue
 			fpRiseTimer.drain(1);
 		}
 
