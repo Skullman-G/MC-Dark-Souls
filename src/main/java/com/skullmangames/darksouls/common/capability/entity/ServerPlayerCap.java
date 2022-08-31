@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.common.inventory.AttunementsMenu;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -19,6 +20,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -106,12 +108,19 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 			return;
 		this.increaseStamina(-4.0F);
 	}
+	
+	@Override
+	public void setCovenant(Covenant value)
+	{
+		if (value == this.getCovenant()) return;
+		super.setCovenant(value);
+		ModNetworkManager.sendToPlayer(new STCCovenant(this.orgEntity.getId(), this.getCovenant()), this.orgEntity);
+	}
 
 	@Override
 	public void setStamina(float value)
 	{
-		if (value == this.getStamina())
-			return;
+		if (value == this.getStamina()) return;
 		super.setStamina(value);
 		ModNetworkManager.sendToPlayer(new STCStamina(this.orgEntity.getId(), this.getStamina()), this.orgEntity);
 	}
@@ -119,40 +128,37 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	@Override
 	public void setHumanity(int value)
 	{
-		if (this.humanity == value)
-			return;
+		if (this.getHumanity() == value) return;
 		super.setHumanity(value);
-		ModNetworkManager.sendToPlayer(new STCHumanity(this.orgEntity.getId(), this.humanity), this.orgEntity);
+		ModNetworkManager.sendToPlayer(new STCHumanity(this.orgEntity.getId(), this.getHumanity()), this.orgEntity);
 	}
 
 	@Override
 	public void setHuman(boolean value)
 	{
-		if (this.human == value)
-			return;
+		if (this.isHuman() == value) return;
 		if (value)
 		{
 			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get(), -0.2F, -0.2F);
 		}
 		super.setHuman(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.human),
-				this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.isHuman()), this.orgEntity);
 	}
 
 	@Override
 	public void setSouls(int value)
 	{
-		if (this.souls == value) return;
+		if (this.getSouls() == value) return;
 		super.setSouls(value);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.souls), this.orgEntity);
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCSouls(this.orgEntity.getId(), this.getSouls()), this.orgEntity);
 	}
 	
 	@Override
 	public void setFP(float value)
 	{
-		if (this.fp == value) return;
+		if (this.getFP() == value) return;
 		super.setFP(value);
-		ModNetworkManager.sendToPlayer(new STCFP(this.orgEntity.getId(), this.fp), this.orgEntity);
+		ModNetworkManager.sendToPlayer(new STCFP(this.orgEntity.getId(), this.getFP()), this.orgEntity);
 	}
 	
 	public void openAttunementMenu()

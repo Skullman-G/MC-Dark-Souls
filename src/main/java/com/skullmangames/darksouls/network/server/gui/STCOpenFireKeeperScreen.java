@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.network.server;
+package com.skullmangames.darksouls.network.server.gui;
 
 import java.util.function.Supplier;
 

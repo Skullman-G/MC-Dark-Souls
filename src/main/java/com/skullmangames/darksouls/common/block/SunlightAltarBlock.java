@@ -3,16 +3,28 @@ package com.skullmangames.darksouls.common.block;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.gui.STCOpenJoinCovenantScreen;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -86,5 +98,20 @@ public class SunlightAltarBlock extends HorizontalDirectionalBlock
 		case WEST: return SHAPE_WEST.orElse(Shapes.block());
 		case EAST: return SHAPE_EAST.orElse(Shapes.block());
 		}
+	}
+	
+	@Override
+	public InteractionResult use(BlockState blockstate, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hitresult)
+	{
+		if (player instanceof ServerPlayer)
+		{
+			PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (playerCap != null)
+			{
+				if (playerCap.getCovenant() != Covenant.WARRIORS_OF_SUNLIGHT) ModNetworkManager.sendToPlayer(new STCOpenJoinCovenantScreen(Covenant.WARRIORS_OF_SUNLIGHT), (ServerPlayer)player);
+			}
+		}
+		return InteractionResult.CONSUME;
 	}
 }

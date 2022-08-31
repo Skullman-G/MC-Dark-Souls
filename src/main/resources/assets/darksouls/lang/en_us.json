@@ -199,6 +199,8 @@
 	"gui.darksouls.done": "Done",
 	"gui.darksouls.reset": "Reset",
 	"gui.darksouls.attunements": "Attunements",
+	"gui.darksouls.yes": "YES",
+	"gui.darksouls.no": "NO",
 	
 	
 	"_comment": "Sound Events",
@@ -318,5 +320,10 @@
 	"attribute.darksouls.weight": "Weight",
 	"attribute.darksouls.max_focus_points": "Max Focus Points",
 	"attribute.darksouls attunement_slots": "Attunement Slots",
-	"attribute.darksouls.lightning_defense": "Lightning Defense"
+	"attribute.darksouls.lightning_defense": "Lightning Defense",
+	
+	"covenant.darksouls.none": "None",
+	"covenant.darksouls.warriors_of_sunlight": "Warriors of Sunlight",
+	
+	"covenant.darksouls.warriors_of_sunlight.description": "The warriors of sunlight are watched over by the god of war. They help those in need and slay mighty creatures in battle. Warriors of sunlight get rewarded with Sunlight Medals, which can be used to deepen your allegiance to the covenant at a sunlight altar."
 }

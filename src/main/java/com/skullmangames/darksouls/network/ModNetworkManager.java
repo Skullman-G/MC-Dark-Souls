@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.network;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.network.client.CTSBonfireTask;
 import com.skullmangames.darksouls.network.client.CTSCastSpell;
+import com.skullmangames.darksouls.network.client.CTSCovenant;
 import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
 import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import com.skullmangames.darksouls.network.client.CTSOpenAttunementScreen;
@@ -13,6 +14,7 @@ import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSSelectTrade;
 import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
+import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -21,7 +23,6 @@ import com.skullmangames.darksouls.network.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
-import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
@@ -33,6 +34,8 @@ import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenFireKeeperScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenJoinCovenantScreen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -87,6 +90,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSOpenAttunementScreen.class, CTSOpenAttunementScreen::toBytes, CTSOpenAttunementScreen::fromBytes, CTSOpenAttunementScreen::handle);
 		INSTANCE.registerMessage(id++, CTSCastSpell.class, CTSCastSpell::toBytes, CTSCastSpell::fromBytes, CTSCastSpell::handle);
 		INSTANCE.registerMessage(id++, CTSSelectTrade.class, CTSSelectTrade::toBytes, CTSSelectTrade::fromBytes, CTSSelectTrade::handle);
+		INSTANCE.registerMessage(id++, CTSCovenant.class, CTSCovenant::toBytes, CTSCovenant::fromBytes, CTSCovenant::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
@@ -109,5 +113,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCFP.class, STCFP::toBytes, STCFP::fromBytes, STCFP::handle);
 		INSTANCE.registerMessage(id++, STCAttunements.class, STCAttunements::toBytes, STCAttunements::fromBytes, STCAttunements::handle);
 		INSTANCE.registerMessage(id++, STCSoulMerchantOffers.class, STCSoulMerchantOffers::toBytes, STCSoulMerchantOffers::fromBytes, STCSoulMerchantOffers::handle);
+		INSTANCE.registerMessage(id++, STCCovenant.class, STCCovenant::toBytes, STCCovenant::fromBytes, STCCovenant::handle);
+		INSTANCE.registerMessage(id++, STCOpenJoinCovenantScreen.class, STCOpenJoinCovenantScreen::toBytes, STCOpenJoinCovenantScreen::fromBytes, STCOpenJoinCovenantScreen::handle);
 	}
 }

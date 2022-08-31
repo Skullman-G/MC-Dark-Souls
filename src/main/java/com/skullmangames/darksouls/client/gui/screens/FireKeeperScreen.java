@@ -23,10 +23,8 @@ public class FireKeeperScreen extends Screen
 
 	private final int color;
 
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/fire_keeper_main.png");
-	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/ds_fire_keeper_main.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/fire_keeper_main.png");
+	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private int buttonWidth = 100;

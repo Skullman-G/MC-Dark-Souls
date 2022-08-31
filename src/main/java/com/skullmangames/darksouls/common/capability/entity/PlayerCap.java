@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.inventory.SpellInventory;
@@ -31,14 +32,16 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	protected float yaw;
 	protected int tickSinceLastAction;
 	
-	protected Stats stats = new Stats();
+	private Stats stats = new Stats();
 	
-	protected int humanity;
-	protected boolean human;
-	protected int souls;
-	protected float fp;
+	private int humanity;
+	private boolean human;
+	private int souls;
+	private float fp;
 	
 	private SpellInventory attunements;
+	
+	private Covenant covenant = Covenant.NONE;
 	
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -75,12 +78,10 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
-		
 		if (nbt.contains("FocusPoints")) this.fp = nbt.getFloat("FocusPoints");
 		else this.fp = this.getMaxFP();
-		
 		this.attunements.load(nbt.getList("Attunements", 10));
-		
+		this.covenant = Covenant.values()[nbt.getInt("Covenant")];
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
@@ -94,8 +95,18 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		nbt.putBoolean("IsHuman", this.human);
 		nbt.putFloat("FocusPoints", this.fp);
 		nbt.put("Attunements", this.attunements.save(new ListTag()));
-		
+		nbt.putInt("Covenant", this.covenant.ordinal());
 		this.stats.saveStats(nbt);
+	}
+	
+	public Covenant getCovenant()
+	{
+		return this.covenant;
+	}
+	
+	public void setCovenant(Covenant value)
+	{
+		this.covenant = value;
 	}
 	
 	public Stats getStats()
