@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.network.server.gui;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
-import net.minecraft.client.Minecraft;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -30,8 +30,7 @@ public class STCOpenFireKeeperScreen
 	{
 		ctx.get().enqueueWork(()->
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			minecraft.setScreen(new FireKeeperScreen(msg.entityId));
+			ModNetworkManager.connection.openFireKeeperScreen(msg.entityId);
 		});
 		
 		ctx.get().setPacketHandled(true);

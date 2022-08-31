@@ -2,9 +2,9 @@ package com.skullmangames.darksouls.network.server.gui;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.common.entity.Covenant;
-import net.minecraft.client.Minecraft;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -31,8 +31,7 @@ public class STCOpenJoinCovenantScreen
 	{
 		ctx.get().enqueueWork(()->
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			minecraft.setScreen(new JoinCovenantScreen(msg.covenant));
+			ModNetworkManager.connection.openJoinCovenantScreen(msg.covenant);
 		});
 		
 		ctx.get().setPacketHandled(true);

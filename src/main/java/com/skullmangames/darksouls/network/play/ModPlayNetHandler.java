@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.network.play;
 
+import com.skullmangames.darksouls.common.entity.Covenant;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
@@ -16,4 +18,8 @@ public interface ModPlayNetHandler
 	void tryPlayBonfireAmbientSound(BlockPos blockPos);
 	
 	void removeBonfireAmbientSound(BlockPos blockPos);
+	
+	void openFireKeeperScreen(int entityId);
+	
+	void openJoinCovenantScreen(Covenant covenant);
 }

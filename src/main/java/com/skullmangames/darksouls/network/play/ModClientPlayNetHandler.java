@@ -5,8 +5,11 @@ import java.util.Set;
 
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
+import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -71,5 +74,17 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	public void removeBonfireAmbientSound(BlockPos blockPos)
 	{
 		this.sounds.remove(blockPos);
+	}
+
+	@Override
+	public void openFireKeeperScreen(int entityId)
+	{
+		this.minecraft.setScreen(new FireKeeperScreen(entityId));
+	}
+	
+	@Override
+	public void openJoinCovenantScreen(Covenant covenant)
+	{
+		this.minecraft.setScreen(new JoinCovenantScreen(covenant));
 	}
 }
