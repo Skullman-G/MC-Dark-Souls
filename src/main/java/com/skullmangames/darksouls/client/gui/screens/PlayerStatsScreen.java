@@ -30,7 +30,7 @@ public class PlayerStatsScreen extends Screen
 {
 	protected final Map<Stat, Integer> displayedStats = new HashMap<Stat, Integer>();
 	protected int displayedLevel;
-	protected final LocalPlayerCap playerdata;
+	protected final LocalPlayerCap playerCap;
 	protected final LocalPlayer player;
 
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/level_up.png");
@@ -56,11 +56,11 @@ public class PlayerStatsScreen extends Screen
 	public PlayerStatsScreen(TextComponent title)
 	{
 		super(title);
-		this.playerdata = ClientManager.INSTANCE.getPlayerCap();
-		this.player = this.playerdata.getOriginalEntity();
-		this.displayedLevel = this.playerdata.getSoulLevel();
+		this.playerCap = ClientManager.INSTANCE.getPlayerCap();
+		this.player = this.playerCap.getOriginalEntity();
+		this.displayedLevel = this.playerCap.getSoulLevel();
 		for (Stat stat : Stats.STATS)
-			this.displayedStats.put(stat, this.playerdata.getStats().getStatValue(stat));
+			this.displayedStats.put(stat, this.playerCap.getStats().getStatValue(stat));
 
 		this.imageWidth = 418;
 		this.imageHeight = 240;
@@ -94,7 +94,7 @@ public class PlayerStatsScreen extends Screen
 
 		int firstX = x + 19;
 		this.font.draw(poseStack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
-		this.font.draw(poseStack, "Souls: " + (this.playerdata.isCreativeOrSpectator() ? "INFINITE" : this.playerdata.getSouls()), firstX, y + 60,
+		this.font.draw(poseStack, "Souls: " + (this.playerCap.isCreativeOrSpectator() ? "INFINITE" : this.playerCap.getSouls()), firstX, y + 60,
 				this.color);
 		this.font.draw(poseStack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);
 		this.font.draw(poseStack, "Attributes", firstX, y + 128, this.color);
@@ -104,7 +104,7 @@ public class PlayerStatsScreen extends Screen
 		{
 			this.font.draw(poseStack, new TranslatableComponent(stat.toString()), firstX, textheight, this.color);
 
-			int statvalue = this.playerdata.getStats().getStatValue(stat);
+			int statvalue = this.playerCap.getStats().getStatValue(stat);
 			int displaystatvalue = this.displayedStats.get(stat).intValue();
 			int color = statvalue != displaystatvalue ? 0x8cc9ff : this.color;
 			this.font.draw(poseStack, String.valueOf(displaystatvalue), (float)(firstX + 120 - this.font.width(String.valueOf(displaystatvalue)) / 2), textheight, color);
@@ -136,6 +136,8 @@ public class PlayerStatsScreen extends Screen
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Attunement Slots: " + maxAttunementSlots, secondX, y + 100, maxAttunementSlotsColor);
 		
+		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 112, this.color);
+		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
 		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
 				+ Stats.getTotalDamageMultiplier(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH)), 100);
@@ -154,6 +156,8 @@ public class PlayerStatsScreen extends Screen
 				fourthX, y + 76, this.color);
 		this.font.draw(poseStack, "VS Thrust: " + (int) (this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
 				fourthX, y + 88, this.color);
+		this.font.draw(poseStack, "Lightning: " + (int) (this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()) * 100) + "%",
+				thirdX, y + 100, this.color);
 
 		poseStack.popPose();
 

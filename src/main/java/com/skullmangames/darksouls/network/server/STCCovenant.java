@@ -5,9 +5,11 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -45,6 +47,7 @@ public class STCCovenant
 			if (playerCap == null) return;
 			
 			playerCap.setCovenant(msg.covenant);
+			ModNetworkManager.connection.setOverlayMessage(new TextComponent("Covenant joined"));
 		});
 		
 		ctx.get().setPacketHandled(true);
