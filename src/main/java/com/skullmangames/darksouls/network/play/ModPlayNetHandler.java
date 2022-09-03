@@ -22,4 +22,6 @@ public interface ModPlayNetHandler
 	void openFireKeeperScreen(int entityId);
 	
 	void openJoinCovenantScreen(Covenant covenant);
+	
+	void openCovenantScreen(Covenant covenant);
 }

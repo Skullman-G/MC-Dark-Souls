@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.network.client.CTSSelectTrade;
 import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
 import com.skullmangames.darksouls.network.server.STCCovenant;
+import com.skullmangames.darksouls.network.server.STCCovenantProgress;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -34,6 +35,7 @@ import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenCovenantScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenFireKeeperScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenJoinCovenantScreen;
 
@@ -115,5 +117,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCSoulMerchantOffers.class, STCSoulMerchantOffers::toBytes, STCSoulMerchantOffers::fromBytes, STCSoulMerchantOffers::handle);
 		INSTANCE.registerMessage(id++, STCCovenant.class, STCCovenant::toBytes, STCCovenant::fromBytes, STCCovenant::handle);
 		INSTANCE.registerMessage(id++, STCOpenJoinCovenantScreen.class, STCOpenJoinCovenantScreen::toBytes, STCOpenJoinCovenantScreen::fromBytes, STCOpenJoinCovenantScreen::handle);
+		INSTANCE.registerMessage(id++, STCOpenCovenantScreen.class, STCOpenCovenantScreen::toBytes, STCOpenCovenantScreen::fromBytes, STCOpenCovenantScreen::handle);
+		INSTANCE.registerMessage(id++, STCCovenantProgress.class, STCCovenantProgress::toBytes, STCCovenantProgress::fromBytes, STCCovenantProgress::handle);
 	}
 }

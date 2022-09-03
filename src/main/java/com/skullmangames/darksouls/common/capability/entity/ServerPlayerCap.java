@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.Covenant.Reward;
 import com.skullmangames.darksouls.common.inventory.AttunementsMenu;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -21,6 +22,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCCovenant;
+import com.skullmangames.darksouls.network.server.STCCovenantProgress;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -33,6 +35,7 @@ import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -113,8 +116,24 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	public void setCovenant(Covenant value)
 	{
 		if (value == this.getCovenant()) return;
+		Reward reward = value.getNextReward(this);
 		super.setCovenant(value);
 		ModNetworkManager.sendToPlayer(new STCCovenant(this.orgEntity.getId(), this.getCovenant()), this.orgEntity);
+		
+		if (reward != null && reward.getReqCount() == 0)
+		{
+			ItemEntity itementity = new ItemEntity(this.getLevel(), this.getX(), this.getY() + 1, this.getZ(), reward.getRewardItem());
+			itementity.setDefaultPickUpDelay();
+			this.getLevel().addFreshEntity(itementity);
+		}
+	}
+	
+	@Override
+	public void setCovenantProgress(int value)
+	{
+		if (value == this.getCovenantProgress()) return;
+		super.setCovenantProgress(value);
+		ModNetworkManager.sendToPlayer(new STCCovenantProgress(this.orgEntity.getId(), this.getCovenantProgress()), this.orgEntity);
 	}
 
 	@Override

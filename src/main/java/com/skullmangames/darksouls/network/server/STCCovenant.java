@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.Covenants;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
@@ -26,13 +27,13 @@ public class STCCovenant
 	
 	public static STCCovenant fromBytes(FriendlyByteBuf buf)
 	{
-		return new STCCovenant(buf.readInt(), buf.readEnum(Covenant.class));
+		return new STCCovenant(buf.readInt(), Covenants.COVENANTS.get(buf.readInt()));
 	}
 	
 	public static void toBytes(STCCovenant msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
-		buf.writeEnum(msg.covenant);
+		buf.writeInt(Covenants.COVENANTS.indexOf(msg.covenant));
 	}
 	
 	public static void handle(STCCovenant msg, Supplier<NetworkEvent.Context> ctx)
@@ -47,7 +48,11 @@ public class STCCovenant
 			if (playerCap == null) return;
 			
 			playerCap.setCovenant(msg.covenant);
-			ModNetworkManager.connection.setOverlayMessage(new TextComponent("Covenant joined"));
+			if (msg.covenant.is(Covenants.NONE))
+			{
+				ModNetworkManager.connection.setOverlayMessage(new TextComponent("Covenant left"));
+			}
+			else ModNetworkManager.connection.setOverlayMessage(new TextComponent("Covenant joined"));
 		});
 		
 		ctx.get().setPacketHandled(true);

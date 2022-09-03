@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.CovenantScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
@@ -86,5 +87,11 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	public void openJoinCovenantScreen(Covenant covenant)
 	{
 		this.minecraft.setScreen(new JoinCovenantScreen(covenant));
+	}
+
+	@Override
+	public void openCovenantScreen(Covenant covenant)
+	{
+		this.minecraft.setScreen(new CovenantScreen(covenant));
 	}
 }

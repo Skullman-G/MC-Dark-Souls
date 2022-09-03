@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.Covenants;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,12 +21,12 @@ public class CTSCovenant
 	
 	public static CTSCovenant fromBytes(FriendlyByteBuf buf)
 	{
-		return new CTSCovenant(buf.readEnum(Covenant.class));
+		return new CTSCovenant(Covenants.COVENANTS.get(buf.readInt()));
 	}
 	
 	public static void toBytes(CTSCovenant msg, FriendlyByteBuf buf)
 	{
-		buf.writeEnum(msg.covenant);
+		buf.writeInt(Covenants.COVENANTS.indexOf(msg.covenant));
 	}
 	
 	public static void handle(CTSCovenant msg, Supplier<NetworkEvent.Context> ctx)
