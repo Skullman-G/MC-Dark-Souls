@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.entity.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.inventory.SpellInventory;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -44,6 +45,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	
 	private Covenant covenant = Covenants.NONE;
 	private int covenantProgress;
+	private int[] covenantProgresses = new int[Covenants.COVENANTS.size()];
 	
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -85,6 +87,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.attunements.load(nbt.getList("Attunements", 10));
 		this.covenant = Covenants.COVENANTS.get(nbt.getInt("Covenant"));
 		this.covenantProgress = nbt.getInt("CovenantProgress");
+		
+		for (int i = 0; i < Covenants.COVENANTS.size(); i++)
+		{
+			this.covenantProgresses[i] = nbt.getInt(Covenants.COVENANTS.get(i).toString());
+		}
+		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
@@ -100,6 +108,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		nbt.put("Attunements", this.attunements.save(new ListTag()));
 		nbt.putInt("Covenant", Covenants.COVENANTS.indexOf(this.covenant));
 		nbt.putInt("CovenantProgress", this.covenantProgress);
+		
+		for (int i = 0; i < Covenants.COVENANTS.size(); i++)
+		{
+			nbt.putInt(Covenants.COVENANTS.get(i).toString(), this.covenantProgresses[i]);
+		}
+		
 		this.stats.saveStats(nbt);
 	}
 	
@@ -123,11 +137,21 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	public void setCovenantProgress(int value)
 	{
 		this.covenantProgress = value;
+		int i = Covenants.COVENANTS.indexOf(this.covenant);
+		if (this.covenantProgresses[i] < value)
+		{
+			this.covenantProgresses[i] = value;
+		}
 	}
 	
 	public void raiseCovenantProgress(int raise)
 	{
 		this.setCovenantProgress(this.covenantProgress + raise);
+	}
+	
+	public int getLastProgressFor(Covenant covenant)
+	{
+		return this.covenantProgresses[Covenants.COVENANTS.indexOf(covenant)];
 	}
 	
 	public Stats getStats()

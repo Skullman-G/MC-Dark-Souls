@@ -22,6 +22,12 @@ public class Covenant
 		return this.name == covenant.name;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
+	
 	public String getRegistryName()
 	{
 		return new TranslatableComponent(this.name).getString();
@@ -39,13 +45,11 @@ public class Covenant
 	
 	public Reward getNextReward(PlayerCap<?> playerCap)
 	{
-		if (this.rewards.length > 0)
+		for (Reward r : this.rewards)
 		{
-			if (!playerCap.getCovenant().is(this)) return this.rewards[0];
-			for (Reward r : this.rewards)
-			{
-				if (playerCap.getCovenantProgress() < r.reqCount) return r;
-			}
+			int progress = playerCap.getLastProgressFor(this);
+			if (!playerCap.getCovenant().is(this) && progress == 0) return r;
+			if (progress < r.reqCount) return r;
 		}
 		return null;
 	}

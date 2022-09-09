@@ -124,11 +124,10 @@ public abstract class AbstractCovenantScreen extends Screen
 		
 		if (this.showProgress)
 		{
+			this.font.draw(poseStack, "Next Reward", (float) (this.width / 2 - this.font.width("Next Reward") / 2), y + 185, this.color);
 			Reward reward = this.covenant.getNextReward(this.playerCap);
 			if (reward != null)
 			{
-				this.font.draw(poseStack, "Next Reward", (float) (this.width / 2 - this.font.width("Next Reward") / 2), y + 185, this.color);
-				
 				if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 				else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 				
@@ -153,6 +152,10 @@ public abstract class AbstractCovenantScreen extends Screen
 						this.renderTooltip(poseStack, rewardItem, mouseX, mouseY);
 					}
 				}
+			}
+			else
+			{
+				this.font.draw(poseStack, "None", (float) (this.width / 2 - this.font.width("None") / 2), y + 200, this.color);
 			}
 		}
 
