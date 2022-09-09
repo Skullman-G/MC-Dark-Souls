@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "darksouls:miracle_heal",
+    "darksouls:miracle_heal_aid",
+    "darksouls:miracle_force",
+    "darksouls:miracle_homeward",
+    "darksouls:miracle_lightning_spear",
+    "darksouls:miracle_great_lightning_spear"
+  ]
+}
