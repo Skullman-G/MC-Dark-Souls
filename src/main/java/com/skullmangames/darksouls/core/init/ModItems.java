@@ -157,6 +157,15 @@ public class ModItems
 	public static final RegistryObject<Item> ELITE_CLERIC_LEGGINGS = ITEMS.register("elite_cleric_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "elite_cleric_set_layer_1", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> FALCONER_HELM = ITEMS.register("falconer_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "falconer_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> FALCONER_ARMOR = ITEMS.register("falconer_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "falconer_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> FALCONER_LEGGINGS = ITEMS.register("falconer_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "falconer_set_layer_1", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> FALCONER_BOOTS = ITEMS.register("falconer_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "falconer_set_layer_2", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()

@@ -60,6 +60,10 @@
 	"item.darksouls.elite_cleric_helm": "Elite Cleric Helm",
 	"item.darksouls.elite_cleric_armor": "Elite Cleric Armor",
 	"item.darksouls.elite_cleric_leggings": "Elite Cleric Leggings",
+	"item.darksouls.falconer_helm": "Falconer Helm",
+	"item.darksouls.falconer_armor": "Falconer Armor",
+	"item.darksouls.falconer_leggings": "Falconer Leggings",
+	"item.darksouls.falconer_boots": "Falconer Boots",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -177,6 +181,10 @@
 	"tooltip.darksouls.elite_cleric_helm.extended": "Helm worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
 	"tooltip.darksouls.elite_cleric_armor.extended": "Armor worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
 	"tooltip.darksouls.elite_cleric_leggings.extended": "Leggings worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
+	"tooltip.darksouls.falconer_helm.extended": "Helm worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.falconer_armor.extended": "Armor worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.falconer_leggings.extended": "Leggings worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.falconer_boots.extended": "Boots worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

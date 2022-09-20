@@ -127,6 +127,8 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), ArmorPart.SKIRT));
 		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), ArmorPart.ONE_SHOE));
 		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), ArmorPart.SKIRT));
+		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), ArmorPart.FALCONER_HELM));
+		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), ArmorPart.FALCONER_ARMOR));
 		
 		//CONFIG
 		for (WeaponConfig configWeapon : CapabilityConfig.WEAPON_CONFIGS)

@@ -150,6 +150,12 @@ public class ArmorCap extends AttributeItemCap
 				case ONE_SHOE:
 					return models.ITEM_ONE_SHOE;
 					
+				case FALCONER_HELM:
+					return models.ITEM_FALCONER_HELM;
+					
+				case FALCONER_ARMOR:
+					return models.ITEM_FALCONER_ARMOR;
+					
 				default:
 					return null;
 		}
@@ -159,7 +165,8 @@ public class ArmorCap extends AttributeItemCap
 	{
 		HELMET(EquipmentSlot.HEAD), CHESTPLATE(EquipmentSlot.CHEST),
 		LEGGINS(EquipmentSlot.LEGS), SKIRT(EquipmentSlot.LEGS),
-		BOOTS(EquipmentSlot.FEET), ONE_SHOE(EquipmentSlot.FEET);
+		BOOTS(EquipmentSlot.FEET), ONE_SHOE(EquipmentSlot.FEET),
+		FALCONER_HELM(EquipmentSlot.HEAD), FALCONER_ARMOR(EquipmentSlot.CHEST);
 		
 		private final EquipmentSlot slot;
 		
