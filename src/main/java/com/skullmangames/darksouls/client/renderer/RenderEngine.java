@@ -149,6 +149,7 @@ public class RenderEngine
 		itemRendererMapByInstance.put(ModItems.CRACKED_ROUND_SHIELD.get(), shieldRenderer);
 		itemRendererMapByInstance.put(ModItems.LORDRAN_SOLDIER_SHIELD.get(), shieldRenderer);
 		itemRendererMapByInstance.put(ModItems.KNIGHT_SHIELD.get(), shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.GOLDEN_FALCON_SHIELD.get(), shieldRenderer);
 		
 		itemRendererMapByClass.put(BlockItem.class, hatRenderer);
 		itemRendererMapByClass.put(BowItem.class, bowRenderer);

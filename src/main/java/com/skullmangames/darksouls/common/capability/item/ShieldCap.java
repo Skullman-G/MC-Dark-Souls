@@ -70,11 +70,12 @@ public class ShieldCap extends MeleeWeaponCap
 			default:
 			case WOOD: return ModSoundEvents.WOODEN_SHIELD_BLOCK.get();
 			case METAL: return ModSoundEvents.IRON_SHIELD_BLOCK.get();
+			case GOLD: return ModSoundEvents.IRON_SHIELD_BLOCK.get();
 		}
 	}
 	
 	public enum ShieldMat
 	{
-		WOOD, METAL
+		WOOD, METAL, GOLD
 	}
 }

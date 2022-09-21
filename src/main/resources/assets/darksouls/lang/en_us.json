@@ -64,6 +64,7 @@
 	"item.darksouls.falconer_armor": "Falconer Armor",
 	"item.darksouls.falconer_leggings": "Falconer Leggings",
 	"item.darksouls.falconer_boots": "Falconer Boots",
+	"item.darksouls.golden_falcon_shield": "Golden Falcon Shield",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -185,6 +186,7 @@
 	"tooltip.darksouls.falconer_armor.extended": "Armor worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
 	"tooltip.darksouls.falconer_leggings.extended": "Leggings worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
 	"tooltip.darksouls.falconer_boots.extended": "Boots worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.golden_falcon_shield.extended": "Small shield used by Volgen Falconers. Appears like a glistening gold falcon from afar. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. The falconers are rumored to be untrusting of others, and demanding of prompt, full payment. But no wonder; they deliver much more than they are paid, and are well aware of it.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	
