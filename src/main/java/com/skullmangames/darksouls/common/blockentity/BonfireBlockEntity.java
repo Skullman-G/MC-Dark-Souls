@@ -41,11 +41,6 @@ public class BonfireBlockEntity extends BlockEntity
 		this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
 		this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
 	}
-	
-	public void loadOnClient(String name)
-	{
-		this.name = name;
-	}
 
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket()
@@ -81,12 +76,6 @@ public class BonfireBlockEntity extends BlockEntity
 	public boolean isLit()
 	{
 		return this.getBlockState().getValue(BonfireBlock.LIT);
-	}
-	
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
 	}
 
 	public String getName()

@@ -112,7 +112,7 @@ public class BonfireBlock extends Block implements EntityBlock
 			{
 				if (blockentity.hasFireKeeper())
 				{
-					player.sendMessage(new TranslatableComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
+					if (player.level.isClientSide) player.sendMessage(new TranslatableComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
 				}
 				else if (!blockentity.hasName() && !player.level.isClientSide)
 				{
