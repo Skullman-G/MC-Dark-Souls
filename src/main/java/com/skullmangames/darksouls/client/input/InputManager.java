@@ -416,39 +416,22 @@ public class InputManager
 			if(inputManager.playerCap == null) return;
 			EntityState playerState = inputManager.playerCap.getEntityState();
 			
-			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
+			if (minecraft.options.getCameraType() == CameraType.FIRST_PERSON && playerState.isRotationLocked() && inputManager.player.isAlive())
 			{
-				if (minecraft.options.getCameraType() == CameraType.FIRST_PERSON)
-				{
-					GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
-					minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
-					minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
-				}
-				else
-				{
-					inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
-					inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
-					minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
-				}
-				
-				event.getInput().forwardImpulse = 0.0F;
-				event.getInput().leftImpulse = 0.0F;
-				event.getInput().up = false;
-				event.getInput().down = false;
-				event.getInput().left = false;
-				event.getInput().right = false;
-				event.getInput().jumping = false;
-				event.getInput().shiftKeyDown = false;
-				((LocalPlayer)event.getPlayer()).sprintTime = -1;
+				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
+				minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
+				minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
 			}
 			else
 			{
 				inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
 				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
-				
-				if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON
-						&& !ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+			}
+			
+			if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
+			{
+				if (!ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -489,16 +472,32 @@ public class InputManager
 						left *= 2.0F;
 					}
 					
-					inputManager.player.yRot = rot;
-					event.getInput().forwardImpulse = forward;
-					event.getInput().leftImpulse = left;
-					
-					if (inputManager.playerCap.isBlocking())
+					if (!playerState.isRotationLocked()) inputManager.player.yRot = rot;
+					if (inputManager.playerCanMove(playerState))
 					{
-						event.getInput().leftImpulse *= 20F;
-						event.getInput().forwardImpulse *= 20F;
+						event.getInput().forwardImpulse = forward;
+						event.getInput().leftImpulse = left;
 					}
 				}
+			}
+			
+			if (inputManager.playerCap.isBlocking())
+			{
+				event.getInput().leftImpulse *= 20F;
+				event.getInput().forwardImpulse *= 20F;
+			}
+			
+			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
+			{
+				event.getInput().forwardImpulse = 0.0F;
+				event.getInput().leftImpulse = 0.0F;
+				event.getInput().up = false;
+				event.getInput().down = false;
+				event.getInput().left = false;
+				event.getInput().right = false;
+				event.getInput().jumping = false;
+				event.getInput().shiftKeyDown = false;
+				((LocalPlayer)event.getPlayer()).sprintTime = -1;
 			}
 		}
 		
