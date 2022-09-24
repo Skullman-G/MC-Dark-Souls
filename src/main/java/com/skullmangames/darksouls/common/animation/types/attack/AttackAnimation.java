@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.skullmangames.darksouls.client.particles.spawner.ParticleSpawner;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -94,19 +95,8 @@ public class AttackAnimation extends ActionAnimation
 		EntityState state = this.getState(elapsedTime);
 		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
-
-		if (state == EntityState.FREE_CAMERA)
-		{
-			if (entityCap instanceof MobCap)
-			{
-				((Mob) entityCap.getOriginalEntity()).getNavigation().stop();
-				LivingEntity target = entityCap.getTarget();
-				if (target != null)
-				{
-					entityCap.rotateTo(target, 60.0F, false);
-				}
-			}
-		} else if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
+		
+		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
 			if (!prevState.shouldDetectCollision())
 			{

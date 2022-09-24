@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
+import com.skullmangames.darksouls.client.particles.spawner.CircleParticleSpawner;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
@@ -25,7 +26,6 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.Side;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
-import com.skullmangames.darksouls.common.animation.types.attack.CircleParticleSpawner;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;

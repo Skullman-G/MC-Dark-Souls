@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.animation.types.attack;
+package com.skullmangames.darksouls.client.particles.spawner;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
