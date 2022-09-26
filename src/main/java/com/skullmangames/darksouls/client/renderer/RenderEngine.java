@@ -38,6 +38,7 @@ import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
+import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -326,8 +327,19 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
+			if (!ClientManager.INSTANCE.isCombatModeActive())
+			{
+				if (event.getItemStack().getItem() instanceof IHaveDarkSoulsUseAction)
+				{
+					Minecraft minecraft = Minecraft.getInstance();
+					IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
+					FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
+					event.setCanceled(true);
+				}
+				return;
+			}
+			
 			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
-			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && !ClientManager.INSTANCE.isCombatModeActive()) return;
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
 				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),

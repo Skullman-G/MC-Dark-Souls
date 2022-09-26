@@ -28,26 +28,27 @@ public class FirstPersonRendererOverride
 		{
 			switch (item.getDarkSoulsUseAnimation())
 			{
-			case SOUL_CONTAINER:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case MIRACLE:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case DARKSIGN:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			default:
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
+				case SOUL_CONTAINER:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case MIRACLE:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case DARKSIGN:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				default:
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
 			}
-		} else
+		}
+		else
 		{
 			double f5 = -0.4F * Math.sin(Math.sqrt(swingProgress) * (float) Math.PI);
 			double f6 = 0.2F * Math.sin(Math.sqrt(swingProgress) * ((float) Math.PI * 2F));

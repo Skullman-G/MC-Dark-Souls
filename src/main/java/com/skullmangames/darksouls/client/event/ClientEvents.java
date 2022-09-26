@@ -5,9 +5,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.screens.AttunementScreen;
-import com.skullmangames.darksouls.client.renderer.FirstPersonRendererOverride;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -21,7 +19,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.client.event.ContainerScreenEvent.DrawForeground;
-import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.ScreenEvent.MouseReleasedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,18 +48,6 @@ public class ClientEvents
 		if (event.getEntityLiving() instanceof Player && event.getEntityLiving().getUUID() == minecraft.player.getUUID() && !event.getEntityLiving().isSpectator())
 		{
 			GameOverlayManager.isHealing = true;
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onRenderHand(final RenderHandEvent event)
-	{
-		if (event.getItemStack().getItem() instanceof IHaveDarkSoulsUseAction)
-		{
-			event.setCanceled(true);
-			Minecraft minecraft = Minecraft.getInstance();
-			IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
-			FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
 		}
 	}
 	
