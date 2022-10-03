@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.HumanityEntity;
@@ -44,6 +45,10 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<HollowLordranSoldier>> HOLLOW_LORDRAN_SOLDIER = register("hollow_lordran_soldier",
 			EntityType.Builder.<HollowLordranSoldier>of(HollowLordranSoldier::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F));
+	
+	public static final RegistryObject<EntityType<Falconer>> FALCONER = register("falconer",
+			EntityType.Builder.<Falconer>of(Falconer::new, MobCategory.MONSTER)
 			.sized(0.6F, 1.95F));
 
 	public static final RegistryObject<EntityType<SoulEntity>> SOUL = register("soul",

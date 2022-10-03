@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.common.capability.entity.FalconerCap;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierCap;
@@ -43,6 +44,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(ModEntities.ANASTACIA_OF_ASTORA.get(), (entity) -> AnastaciaOfAstoraCap::new);
 		CAPABILITIES.put(ModEntities.FIRE_KEEPER.get(), (entity) -> FireKeeperCap::new);
 		CAPABILITIES.put(ModEntities.PETRUS_OF_THOROLUND.get(), (entity) -> SimpleHumanoidCap::new);
+		CAPABILITIES.put(ModEntities.FALCONER.get(), (entity) -> FalconerCap::new);
 	}
 	
 	public static void makeMapClient()

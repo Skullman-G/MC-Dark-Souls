@@ -212,6 +212,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.FALCONER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new);
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);

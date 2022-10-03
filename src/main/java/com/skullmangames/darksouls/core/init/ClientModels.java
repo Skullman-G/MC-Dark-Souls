@@ -31,7 +31,7 @@ public class ClientModels extends Models<ClientModel>
 		this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
 		this.ENTITY_BIPED_FIRST_PERSON = this.registerMeshOnly("biped_firstperson");
 		this.ENTITY_BIPED_OUTER_LAYER = this.registerMeshOnly("biped_outer_layer");
-		this.ENTITY_ASYLUM_DEMON = this.register("asylum_demon");
+		this.ENTITY_STRAY_DEMON = this.register("asylum_demon");
 		
 		this.ITEM_HELMET = this.registerMeshOnly("armor_helmet");
 		this.ITEM_CHESTPLATE = this.registerMeshOnly("armor_chestplate");

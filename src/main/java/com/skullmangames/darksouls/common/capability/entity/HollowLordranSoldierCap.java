@@ -40,7 +40,6 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
@@ -48,7 +47,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		
 		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));
+			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal<HollowLordranSoldier, HollowLordranSoldierCap>(this));
 		}
 		else
 		{

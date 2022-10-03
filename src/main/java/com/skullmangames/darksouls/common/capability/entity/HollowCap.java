@@ -75,13 +75,12 @@ public class HollowCap extends HumanoidCap<Hollow>
 		}
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
 		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal(this, 40, 15.0F));
+			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal<Hollow, HollowCap>(this, 40, 15.0F));
 		}
 		else
 		{

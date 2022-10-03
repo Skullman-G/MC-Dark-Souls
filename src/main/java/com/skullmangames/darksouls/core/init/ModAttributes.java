@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
@@ -70,6 +71,7 @@ public class ModAttributes
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.PETRUS_OF_THOROLUND.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), AnastaciaOfAstora.createAttributes().build());
+		event.put(ModEntities.FALCONER.get(), Falconer.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -79,6 +81,7 @@ public class ModAttributes
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.STRAY_DEMON.get(), event);
 		general(ModEntities.FIRE_KEEPER.get(), event);
+		general(ModEntities.FALCONER.get(), event);
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);

@@ -21,7 +21,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
-		return modelDB.ENTITY_ASYLUM_DEMON;
+		return modelDB.ENTITY_STRAY_DEMON;
 	}
 
 	@Override

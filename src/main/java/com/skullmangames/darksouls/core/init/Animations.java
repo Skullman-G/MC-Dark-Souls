@@ -547,8 +547,9 @@ public final class Animations
 							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT) };
 
 	public static final AttackAnimation[] HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS = new AttackAnimation[]
-	{ new AttackAnimation(0.2F, 0.0F, 0.64F, 0.8F, 1.6F, "Tool_R", "hollow_lordran_soldier/spear_thrust_1",
-			(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+	{ 
+			new AttackAnimation(0.2F, 0.0F, 0.64F, 0.8F, 1.6F, "Tool_R", "hollow_lordran_soldier/spear_thrust_1",
+					(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT),
 			new AttackAnimation(0.2F, 0.0F, 0.72F, 0.88F, 1.6F, "Tool_R",
 					"hollow_lordran_soldier/spear_thrust_2", (models) -> models.ENTITY_BIPED)
@@ -557,7 +558,8 @@ public final class Animations
 			new AttackAnimation(0.2F, 0.0F, 0.88F, 1.04F, 1.6F, "Tool_R",
 					"hollow_lordran_soldier/spear_thrust_3", (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
-							.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM) };
+							.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+	};
 
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH = new AttackAnimation(0.2F, 0.0F, 0.6F, 0.8F,
 			1.6F, "Tool_L", "hollow_lordran_soldier/shield_bash", (models) -> models.ENTITY_BIPED)
@@ -565,48 +567,68 @@ public final class Animations
 					.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING);
+	
+	// Falconer
+	public static final StaticAnimation FALCONER_IDLE = new StaticAnimation(1.0F, true, "falconer/idle", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation FALCONER_WALK = new MovementAnimation(0.2F, true, "falconer/walking", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation FALCONER_RUN = new MovementAnimation(0.2F, true, "falconer/run", (models) -> models.ENTITY_BIPED);
+	
+	public static final AttackAnimation[] FALCONER_SWINGS = new AttackAnimation[]
+	{
+			new AttackAnimation(0.2F, 0.0F, 0.56F, 0.68F, 1.88F, "Tool_R", "falconer/swing_1", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY),
+			new AttackAnimation(0.1F, 0.0F, 0.72F, 1.04F, 1.88F, "Tool_R", "falconer/swing_2", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY),
+			new AttackAnimation(0.1F, 0.0F, 0.52F, 0.68F, 1.88F, "Tool_R", "falconer/swing_3", (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+	};
+	
+	
 
-	// Asylum Demon
+	// Stray Demon
 	public static final StaticAnimation STRAY_DEMON_IDLE = new StaticAnimation(1.0F, true, "asylum_demon/idle",
-			(models) -> models.ENTITY_ASYLUM_DEMON);
+			(models) -> models.ENTITY_STRAY_DEMON);
 	public static final StaticAnimation STRAY_DEMON_MOVE = new StaticAnimation(0.5F, true, "asylum_demon/move",
-			(models) -> models.ENTITY_ASYLUM_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())) })
+			(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.2F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) });
 	public static final StaticAnimation STRAY_DEMON_DEATH = new StaticAnimation(0.5F, false, "asylum_demon/death",
-			(models) -> models.ENTITY_ASYLUM_DEMON);
+			(models) -> models.ENTITY_STRAY_DEMON);
 
 	public static final AttackAnimation[] STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R", "asylum_demon/light_attack_1", (models) -> models.ENTITY_ASYLUM_DEMON)
+	{ new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R", "asylum_demon/light_attack_1", (models) -> models.ENTITY_STRAY_DEMON)
 		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.52F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R", "asylum_demon/light_attack_2",
-					(models) -> models.ENTITY_ASYLUM_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())) })
+					(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())) })
 							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 							.addProperty(AttackProperty.PARTICLE,
 									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R", "asylum_demon/light_attack_3",
-					(models) -> models.ENTITY_ASYLUM_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.72F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
+					(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.72F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
 							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 							.addProperty(AttackProperty.PARTICLE,
 									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)) };
-	public static final AttackAnimation STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R", "asylum_demon/heavy_attack", (models) -> models.ENTITY_ASYLUM_DEMON)
+	public static final AttackAnimation STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R", "asylum_demon/heavy_attack", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.92F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(1.0F, 0.0F, 0.6F, 1.2F, 2.0F,
-			"Tool_R", "asylum_demon/dash_attack", (models) -> models.ENTITY_ASYLUM_DEMON)
+			"Tool_R", "asylum_demon/dash_attack", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH_FRONT)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
-	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root", "asylum_demon/ground_pound", (models) -> models.ENTITY_ASYLUM_DEMON)
+	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root", "asylum_demon/ground_pound", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
