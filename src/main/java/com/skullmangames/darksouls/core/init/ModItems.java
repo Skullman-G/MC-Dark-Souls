@@ -256,6 +256,9 @@ public class ModItems
 	public static final RegistryObject<SpawnEggItem> HOLLOW_LORDRAN_SOLDIER_SPAWN_EGG = ITEMS.register("hollow_lordran_soldier_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW_LORDRAN_SOLDIER, 0x7d7d7d, 0xbd6d1c, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<SpawnEggItem> FALCONER_SPAWN_EGG = ITEMS.register("falconer_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FALCONER, 0x590d07, 0x573f1e, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	public static void registerDescriptionItems()
 	{
