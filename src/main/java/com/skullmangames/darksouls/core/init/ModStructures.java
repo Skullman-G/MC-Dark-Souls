@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.structures.FalconerCamp;
 import com.skullmangames.darksouls.common.structures.FireKeeperRuins;
 import com.skullmangames.darksouls.common.structures.FirelinkShrine;
 import com.skullmangames.darksouls.common.structures.LordranCamp;
@@ -17,4 +18,5 @@ public class ModStructures
 	public static final RegistryObject<StructureFeature<?>> LORDRAN_CAMP = STRUCTURES.register("lordran_camp", LordranCamp::new);
 	//public static final RegistryObject<StructureFeature<?>> UNDEAD_ASYLUM = STRUCTURES.register("undead_asylum", UndeadAsylum::new);
 	public static final RegistryObject<StructureFeature<?>> FIRELINK_SHRINE = STRUCTURES.register("firelink_shrine", FirelinkShrine::new);
+	public static final RegistryObject<StructureFeature<?>> FALCONER_CAMP = STRUCTURES.register("falconer_camp", FalconerCamp::new);
 }

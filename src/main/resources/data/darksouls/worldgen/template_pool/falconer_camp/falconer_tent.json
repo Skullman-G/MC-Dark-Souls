@@ -1,0 +1,13 @@
+{
+  "name" : "darksouls:falconer_camp/falconer_tent",
+  "fallback" : "minecraft:empty",
+  "elements" : [ {
+    "weight" : 1,
+    "element" : {
+      "location" : "darksouls:falconer_camp/falconer_tent",
+      "processors" : "minecraft:empty",
+      "projection" : "rigid",
+      "element_type" : "minecraft:single_pool_element"
+    }
+  } ]
+}
