@@ -217,6 +217,29 @@ public class BonfireBlock extends Block implements EntityBlock
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
 	{
+		BlockEntity blockentity = level.getBlockEntity(pos);
+		if (blockentity instanceof BonfireBlockEntity)
+		{
+			BonfireBlockEntity bonfire = (BonfireBlockEntity)blockentity;
+			if (bonfire.requestsKindleEffect())
+			{
+				int r = 4;
+				for (int i = 0; i < 180; i++)
+				{
+					if (i % 20 == 0)
+					{
+						double xd = Math.cos(Math.toRadians(i)) / r;
+						double yd = Math.sin(Math.toRadians(i)) / r;
+						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, xd, yd, 0);
+						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0, yd, xd);
+						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0.75D * xd, yd, 0.75D * xd);
+						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, -0.75D * xd, yd, 0.75D * xd);
+					}
+				}
+				bonfire.setRequestKindleEffect(false);
+			}
+		}
+		
 		if (state.getValue(LIT))
 		{
 			ModNetworkManager.connection.tryPlayBonfireAmbientSound(pos);
