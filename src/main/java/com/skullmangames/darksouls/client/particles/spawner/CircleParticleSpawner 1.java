@@ -19,15 +19,14 @@ public class CircleParticleSpawner extends ParticleSpawner
 	public void spawnParticles(ClientLevel world, Vec3 pos)
 	{
 		SimpleParticleType p = this.particle.get();
+		float incr = this.radius * 0.5F;
 		
 		for (int i = 0; i < 360; i++)
 		{
 			if (i % 40 == 0)
 			{
-				double a = Math.toRadians(i);
-				world.addParticle(p, pos.x, pos.y, pos.z, Math.sin(a) * this.radius, 0, Math.cos(a) * this.radius);
+				world.addParticle(p, pos.x, pos.y, pos.z, Math.sin(Math.toRadians(i)) * r, 0, Math.cos(Math.toRadians(i)) * r);
 			}
 		}
-		
 	}
 }

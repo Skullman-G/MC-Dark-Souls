@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.common.entity.Covenants;
@@ -96,11 +97,15 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
-	public void onSave()
+	public final void onSave()
 	{
-		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundTag());
-		CompoundTag nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
-		
+		CompoundTag nbt = new CompoundTag();
+		this.onSave(nbt);
+		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, nbt);
+	}
+	
+	public void onSave(CompoundTag nbt)
+	{
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
@@ -116,6 +121,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		
 		this.stats.saveStats(nbt);
 	}
+	
+	public void addTeleport(BonfireBlockEntity bonfire) {}
 	
 	public Covenant getCovenant()
 	{

@@ -220,6 +220,8 @@
 	"gui.darksouls.yes": "YES",
 	"gui.darksouls.no": "NO",
 	"gui.darksouls.leave_covenant": "Leave Covenant",
+	"gui.darksouls.teleport": "Teleport",
+	"gui.darksouls.teleport.title": "Teleport to Bonfire",
 	
 	
 	"_comment": "Sound Events",

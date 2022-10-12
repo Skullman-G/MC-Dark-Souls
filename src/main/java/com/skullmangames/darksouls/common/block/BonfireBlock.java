@@ -136,6 +136,7 @@ public class BonfireBlock extends Block implements EntityBlock
 			if (playerCap != null)
 			{
 				playerCap.setFP(playerCap.getMaxFP());
+				playerCap.addTeleport(blockentity);
 			}
 			
 			if (!player.level.isClientSide)
@@ -150,10 +151,13 @@ public class BonfireBlock extends Block implements EntityBlock
 				}
 			}
 			
-			Optional<Vec3> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
+			Optional<Vec3> optional = findStandUpPosition(player.getType(), level, pos);
 			if (optional.isPresent())
 			{
-				if (player instanceof ServerPlayer) ((ServerPlayer)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+				if (player instanceof ServerPlayer)
+				{
+					((ServerPlayer)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+				}
 			}
 			else
 			{
@@ -164,20 +168,20 @@ public class BonfireBlock extends Block implements EntityBlock
 		}
 	}
 	
-	public static Optional<Vec3> findStandUpPosition(EntityType<?> p_235560_0_, CollisionGetter p_235560_1_, BlockPos p_235560_2_)
+	public static Optional<Vec3> findStandUpPosition(EntityType<?> entityType, CollisionGetter collision, BlockPos blockPos)
 	{
-		Optional<Vec3> optional = findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, true);
-	    return optional.isPresent() ? optional : findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, false);
+		Optional<Vec3> optional = findStandUpPosition(entityType, collision, blockPos, true);
+	    return optional.isPresent() ? optional : findStandUpPosition(entityType, collision, blockPos, false);
 	}
 
-	private static Optional<Vec3> findStandUpPosition(EntityType<?> p_242678_0_, CollisionGetter p_242678_1_, BlockPos p_242678_2_, boolean p_242678_3_)
+	private static Optional<Vec3> findStandUpPosition(EntityType<?> entityType, CollisionGetter collision, BlockPos blockPos, boolean p_242678_3_)
 	{
 	    BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
 	    for(Vec3i vector3i : RESPAWN_OFFSETS)
 	    {
-	         blockpos$mutable.set(p_242678_2_).move(vector3i);
-	         Vec3 vector3d = DismountHelper.findSafeDismountLocation(p_242678_0_, p_242678_1_, blockpos$mutable, p_242678_3_);
+	         blockpos$mutable.set(blockPos).move(vector3i);
+	         Vec3 vector3d = DismountHelper.findSafeDismountLocation(entityType, collision, blockpos$mutable, p_242678_3_);
 	         if (vector3d != null)
 	         {
 	            return Optional.of(vector3d);
@@ -213,33 +217,27 @@ public class BonfireBlock extends Block implements EntityBlock
 		}
 	}
 	
+	public static void kindleEffect(Level level, BlockPos pos)
+	{
+		int r = 4;
+		for (int i = 0; i < 180; i++)
+		{
+			if (i % 20 == 0)
+			{
+				double xd = Math.cos(Math.toRadians(i)) / r;
+				double yd = Math.sin(Math.toRadians(i)) / r;
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, xd, yd, 0);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0, yd, xd);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0.75D * xd, yd, 0.75D * xd);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, -0.75D * xd, yd, 0.75D * xd);
+			}
+		}
+	}
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
 	{
-		BlockEntity blockentity = level.getBlockEntity(pos);
-		if (blockentity instanceof BonfireBlockEntity)
-		{
-			BonfireBlockEntity bonfire = (BonfireBlockEntity)blockentity;
-			if (bonfire.requestsKindleEffect())
-			{
-				int r = 4;
-				for (int i = 0; i < 180; i++)
-				{
-					if (i % 20 == 0)
-					{
-						double xd = Math.cos(Math.toRadians(i)) / r;
-						double yd = Math.sin(Math.toRadians(i)) / r;
-						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, xd, yd, 0);
-						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0, yd, xd);
-						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0.75D * xd, yd, 0.75D * xd);
-						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, -0.75D * xd, yd, 0.75D * xd);
-					}
-				}
-				bonfire.setRequestKindleEffect(false);
-			}
-		}
-		
 		if (state.getValue(LIT))
 		{
 			ModNetworkManager.connection.tryPlayBonfireAmbientSound(pos);

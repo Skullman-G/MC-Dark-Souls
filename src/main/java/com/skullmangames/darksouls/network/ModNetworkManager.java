@@ -7,13 +7,16 @@ import com.skullmangames.darksouls.network.client.CTSCovenant;
 import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
 import com.skullmangames.darksouls.network.client.CTSLevelUp;
 import com.skullmangames.darksouls.network.client.CTSOpenAttunementScreen;
+import com.skullmangames.darksouls.network.client.CTSOpenBonfireTeleportScreen;
 import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSSelectTrade;
+import com.skullmangames.darksouls.network.client.CTSTeleportPlayer;
 import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
+import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
 import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCCovenantProgress;
 import com.skullmangames.darksouls.network.server.STCFP;
@@ -35,6 +38,7 @@ import com.skullmangames.darksouls.network.server.STCStamina;
 import com.skullmangames.darksouls.network.server.STCStat;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireTeleportScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenCovenantScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenFireKeeperScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenJoinCovenantScreen;
@@ -93,6 +97,8 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSCastSpell.class, CTSCastSpell::toBytes, CTSCastSpell::fromBytes, CTSCastSpell::handle);
 		INSTANCE.registerMessage(id++, CTSSelectTrade.class, CTSSelectTrade::toBytes, CTSSelectTrade::fromBytes, CTSSelectTrade::handle);
 		INSTANCE.registerMessage(id++, CTSCovenant.class, CTSCovenant::toBytes, CTSCovenant::fromBytes, CTSCovenant::handle);
+		INSTANCE.registerMessage(id++, CTSTeleportPlayer.class, CTSTeleportPlayer::toBytes, CTSTeleportPlayer::fromBytes, CTSTeleportPlayer::handle);
+		INSTANCE.registerMessage(id++, CTSOpenBonfireTeleportScreen.class, CTSOpenBonfireTeleportScreen::toBytes, CTSOpenBonfireTeleportScreen::fromBytes, CTSOpenBonfireTeleportScreen::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);
@@ -119,5 +125,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCOpenJoinCovenantScreen.class, STCOpenJoinCovenantScreen::toBytes, STCOpenJoinCovenantScreen::fromBytes, STCOpenJoinCovenantScreen::handle);
 		INSTANCE.registerMessage(id++, STCOpenCovenantScreen.class, STCOpenCovenantScreen::toBytes, STCOpenCovenantScreen::fromBytes, STCOpenCovenantScreen::handle);
 		INSTANCE.registerMessage(id++, STCCovenantProgress.class, STCCovenantProgress::toBytes, STCCovenantProgress::fromBytes, STCCovenantProgress::handle);
+		INSTANCE.registerMessage(id++, STCOpenBonfireTeleportScreen.class, STCOpenBonfireTeleportScreen::toBytes, STCOpenBonfireTeleportScreen::fromBytes, STCOpenBonfireTeleportScreen::handle);
+		INSTANCE.registerMessage(id++, STCBonfireKindleEffect.class, STCBonfireKindleEffect::toBytes, STCBonfireKindleEffect::fromBytes, STCBonfireKindleEffect::handle);
 	}
 }

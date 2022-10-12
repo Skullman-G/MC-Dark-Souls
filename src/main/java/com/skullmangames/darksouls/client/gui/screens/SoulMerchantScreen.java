@@ -191,9 +191,9 @@ public class SoulMerchantScreen extends AbstractContainerScreen<SoulMerchantMenu
 
 	}
 
-	private boolean canScroll(int p_99141_)
+	private boolean canScroll(int size)
 	{
-		return p_99141_ > 7;
+		return size > 7;
 	}
 
 	public boolean mouseScrolled(double p_99127_, double p_99128_, double p_99129_)

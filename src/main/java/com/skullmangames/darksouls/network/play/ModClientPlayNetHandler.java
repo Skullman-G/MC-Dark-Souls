@@ -1,10 +1,13 @@
 package com.skullmangames.darksouls.network.play;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.BonfireTeleportScreen;
 import com.skullmangames.darksouls.client.gui.screens.CovenantScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
@@ -93,5 +96,12 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	public void openCovenantScreen(Covenant covenant)
 	{
 		this.minecraft.setScreen(new CovenantScreen(covenant));
+	}
+
+	@Override
+	public void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports)
+	{
+		BonfireBlockEntity bonfire = this.minecraft.level.getBlockEntity(blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
+		if (bonfire != null) this.minecraft.setScreen(new BonfireTeleportScreen(teleports));
 	}
 }

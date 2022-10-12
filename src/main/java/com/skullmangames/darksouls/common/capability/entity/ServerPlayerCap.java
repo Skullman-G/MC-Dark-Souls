@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import com.google.common.collect.Sets;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.Covenant;
@@ -37,7 +39,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -46,6 +51,8 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
 	private List<LivingMotion> modifiedLivingMotions = new ArrayList<>();
+	
+	public final Set<BonfireBlockEntity> teleports = new HashSet<>();
 
 	@Override
 	public void onEntityJoinWorld(ServerPlayer entityIn)
@@ -70,6 +77,60 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
+	}
+	
+	@Override
+	public void onLoad(CompoundTag nbt)
+	{
+		super.onLoad(nbt);
+		
+		ListTag teleportsNbt = nbt.getList("Teleports", 10);
+		for (int i = 0; i < teleportsNbt.size(); i++)
+		{
+			CompoundTag tnbt = teleportsNbt.getCompound(i);
+			BlockPos pos = new BlockPos(tnbt.getInt("X"), tnbt.getInt("Y"), tnbt.getInt("Z"));
+			BlockEntity blockentity = this.getLevel().getBlockEntity(pos);
+			if (blockentity instanceof BonfireBlockEntity)
+			{
+				this.teleports.add((BonfireBlockEntity)blockentity);
+			}
+		}
+		this.updateTeleports();
+	}
+	
+	@Override
+	public void onSave(CompoundTag nbt)
+	{
+		super.onSave(nbt);
+		
+		ListTag teleportsNbt = new ListTag();
+		for (BonfireBlockEntity bonfire : this.teleports)
+		{
+			CompoundTag tnbt = new CompoundTag();
+			BlockPos pos = bonfire.getBlockPos();
+			tnbt.putInt("X", pos.getX());
+			tnbt.putInt("Y", pos.getY());
+			tnbt.putInt("Z", pos.getZ());
+			teleportsNbt.add(tnbt);
+		}
+		nbt.put("Teleports", teleportsNbt);
+	}
+	
+	@Override
+	public void addTeleport(BonfireBlockEntity bonfire)
+	{
+		if (!this.teleports.contains(bonfire)) this.teleports.add(bonfire);
+		this.updateTeleports();
+	}
+	
+	public void updateTeleports()
+	{
+		BonfireBlockEntity[] bonfires = new BonfireBlockEntity[this.teleports.size()];
+		bonfires = this.teleports.toArray(bonfires);
+		for (BonfireBlockEntity bonfire : bonfires)
+		{
+			if (bonfire.isRemoved()) this.teleports.remove(bonfire);
+		}
 	}
 
 	@Override

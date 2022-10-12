@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.network.play;
 
+import java.util.List;
+
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.entity.Covenant;
 
 import net.minecraft.core.BlockPos;
@@ -24,4 +27,6 @@ public interface ModPlayNetHandler
 	void openJoinCovenantScreen(Covenant covenant);
 	
 	void openCovenantScreen(Covenant covenant);
+	
+	void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports);
 }

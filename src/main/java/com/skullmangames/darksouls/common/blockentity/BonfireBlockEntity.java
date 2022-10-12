@@ -2,6 +2,8 @@ package com.skullmangames.darksouls.common.blockentity;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +20,6 @@ public class BonfireBlockEntity extends BlockEntity
 	private String name = "";
 	private boolean hasFireKeeper;
 	private String fireKeeperStringUUID = "";
-	private boolean requestKindleEffect;
 
 	public BonfireBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -32,7 +33,6 @@ public class BonfireBlockEntity extends BlockEntity
 		nbt.putString("name", this.name);
 		nbt.putBoolean("has_fire_keeper", this.hasFireKeeper);
 		nbt.putString("fire_keeper_string_uuid", this.fireKeeperStringUUID);
-		nbt.putBoolean("request_kindle_effect", this.requestKindleEffect);
 	}
 
 	@Override
@@ -42,7 +42,6 @@ public class BonfireBlockEntity extends BlockEntity
 		this.name = nbt.getString("name");
 		this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
 		this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
-		this.requestKindleEffect = nbt.getBoolean("request_kindle_effect");
 	}
 
 	@Override
@@ -61,17 +60,6 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 2);
-	}
-	
-	public boolean requestsKindleEffect()
-	{
-		return this.requestKindleEffect;
-	}
-	
-	public void setRequestKindleEffect(boolean value)
-	{
-		this.requestKindleEffect = value;
-		this.markDirty();
 	}
 
 	public void setName(String value)
@@ -112,7 +100,7 @@ public class BonfireBlockEntity extends BlockEntity
 
 	private void triggerKindleEffects()
 	{
-		this.setRequestKindleEffect(true);
+		ModNetworkManager.sendToAll(new STCBonfireKindleEffect(this.worldPosition));
 		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 
