@@ -28,6 +28,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 
@@ -55,11 +56,40 @@ public final class Animations
 	public static final StaticAnimation BIPED_DEATH = new StaticAnimation(0.16F, false, "biped/living/death", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
+	public static final StaticAnimation BIPED_TOUCH_BONFIRE = new ActionAnimation(0.5F, "biped/living/touching_bonfire", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.5F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(1.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(1.5F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(2.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(2.5F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(3.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(3.5F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(4.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(3.2F, Side.SERVER, (cap) ->
+					{
+						cap.getOriginalEntity().teleportTo(cap.futureTeleport.x, cap.futureTeleport.y, cap.futureTeleport.z);
+					}),
+			});
+	
+	public static void teleportParticles(LivingCap<?> cap)
+	{
+		double r = 0.1F;
+		for (int i = 0; i < 360; i++)
+		{
+			if (i % 40 == 0)
+			{
+				double ir = Math.toRadians(i);
+				cap.getLevel().addParticle(ModParticles.DUST_CLOUD.get(), cap.getX(), cap.getY(), cap.getZ(), Math.sin(ir) * r, 0, Math.cos(ir) * r);
+			}
+		}
+	}
 
 	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
-	
+
 	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, (models) -> models.ENTITY_BIPED,
 			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
 			new AnimConfig(LivingMotion.WALKING, "biped/combat/block_walk_mirror", "biped/combat/block_walk", true),

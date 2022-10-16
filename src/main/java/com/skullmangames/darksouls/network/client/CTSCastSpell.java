@@ -7,8 +7,6 @@ import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -46,8 +44,7 @@ public class CTSCastSpell
 			{
 				playerCap.raiseFP(-msg.spell.getFPConsumption());
 				StaticAnimation animation = msg.spell.getCastingAnimation();
-				playerCap.getAnimator().playAnimation(animation, 0.0F);
-				ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCPlayAnimation(animation, 0.0F, playerCap), serverPlayer);
+				playerCap.playAnimationSynchronized(animation, 0.0F);
 			}
 		});
 		

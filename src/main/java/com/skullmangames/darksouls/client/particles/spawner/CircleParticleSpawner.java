@@ -28,6 +28,5 @@ public class CircleParticleSpawner extends ParticleSpawner
 				world.addParticle(p, pos.x, pos.y, pos.z, Math.sin(a) * this.radius, 0, Math.cos(a) * this.radius);
 			}
 		}
-		
 	}
 }

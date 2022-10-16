@@ -68,6 +68,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
 	private float stamina;
 	protected boolean canUseShield = true;
+	public Vec3 futureTeleport = Vec3.ZERO;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
