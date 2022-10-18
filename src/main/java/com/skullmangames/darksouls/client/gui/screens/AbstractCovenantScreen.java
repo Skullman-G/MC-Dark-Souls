@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.common.entity.Covenant.Reward;
+import com.skullmangames.darksouls.config.ConfigManager;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
@@ -128,7 +129,7 @@ public abstract class AbstractCovenantScreen extends Screen
 			Reward reward = this.covenant.getNextReward(this.playerCap);
 			if (reward != null)
 			{
-				if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+				if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 				else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 				
 				this.blit(poseStack, this.width / 2 - 9, this.height / 2 + 85, 234, 0, 22, 15);
@@ -164,7 +165,7 @@ public abstract class AbstractCovenantScreen extends Screen
 
 	private void renderBg(PoseStack poseStack, float partialticks, int x, int y)
 	{
-		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
 			RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else
 			RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);

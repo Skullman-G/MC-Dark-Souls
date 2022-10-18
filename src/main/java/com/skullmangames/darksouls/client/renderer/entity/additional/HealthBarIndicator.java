@@ -10,6 +10,7 @@ import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.Camera;
@@ -35,7 +36,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.options.hideGui) return false;
-		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()
+		if (!ConfigManager.INGAME_CONFIG.showHealthIndicator.getValue()
 				|| (entity.isInvisible() || entity == minecraft.player.getControllingPassenger())
 				|| entity.distanceToSqr(minecraft.getCameraEntity()) >= 400
 				|| entity.deathTime >= 19)

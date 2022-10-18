@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSBonfireTask;
@@ -162,7 +163,7 @@ public class BonfireScreen extends Screen
 	
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
-		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;

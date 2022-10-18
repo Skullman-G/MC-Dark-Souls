@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.BooleanButton;
 import com.skullmangames.darksouls.client.gui.widget.OptionButton;
 import com.skullmangames.darksouls.client.gui.widget.RewindableButton;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.Option;
 import com.skullmangames.darksouls.config.Option.BooleanOption;
 import com.skullmangames.darksouls.config.Option.IntegerOption;
@@ -38,7 +39,7 @@ public class IngameConfigurationScreen extends Screen
 		
 		int yDistance = -24;
 		
-		for (Option<?> option : DarkSouls.CLIENT_INGAME_CONFIG.OPTIONS)
+		for (Option<?> option : ConfigManager.INGAME_CONFIG.OPTIONS)
 		{
 			if (option instanceof BooleanOption)
 			{
@@ -72,7 +73,7 @@ public class IngameConfigurationScreen extends Screen
 		
 		this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslatableComponent("gui."+DarkSouls.MOD_ID+".reset"), (button) ->
 		{
-			DarkSouls.CLIENT_INGAME_CONFIG.resetSettings();
+			ConfigManager.INGAME_CONFIG.resetSettings();
 			for (OptionButton<?> b : buttons)
 			{
 				b.refreshMessage();
@@ -90,7 +91,7 @@ public class IngameConfigurationScreen extends Screen
 	@Override
 	public void onClose()
 	{
-		DarkSouls.CLIENT_INGAME_CONFIG.save();
+		ConfigManager.INGAME_CONFIG.save();
 		this.minecraft.setScreen(this.parentScreen);
 	}
 }

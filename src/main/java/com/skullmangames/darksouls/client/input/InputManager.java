@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -295,7 +296,7 @@ public class InputManager
 		}
 		else
 		{
-			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
+			if (this.rightHandPressCounter > ConfigManager.INGAME_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
 				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;

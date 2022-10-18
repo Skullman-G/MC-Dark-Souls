@@ -16,14 +16,43 @@ import com.electronwill.nightconfig.core.AbstractCommentedConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
-public class CapabilityConfig
+public class ServerConfig
 {
-	public static final List<WeaponConfig> WEAPON_CONFIGS = new ArrayList<>();
-	public static final List<ShieldConfig> SHIELD_CONFIGS = new ArrayList<>();
+	public final List<WeaponConfig> weapons = new ArrayList<>();
+	public final List<ShieldConfig> shields = new ArrayList<>();
 	
-	public static void init(ForgeConfigSpec.Builder config, Map<String, Object> values)
+	public ServerConfig(ForgeConfigSpec.Builder config, Map<String, Object> values)
 	{
 		String weaponKey = "weapon_config";
+		if(values.get(weaponKey) == null)
+		{
+			config.define(weaponKey+".sample.registry_name", "samle");
+			config.defineEnum(weaponKey+".sample.category", WeaponCategory.STRAIGHT_SWORD);
+			config.define(weaponKey+".sample.required_strength", 0);
+			config.define(weaponKey+".sample.required_dexterity", 0);
+			config.define(weaponKey+".sample.required_faith", 0);
+			config.defineEnum(weaponKey+".sample.strength_scaling", Scaling.NONE);
+			config.defineEnum(weaponKey+".sample.dexterity_scaling", Scaling.NONE);
+			config.defineEnum(weaponKey+".sample.faith_scaling", Scaling.NONE);
+		}
+		
+		String shieldKey = "shield_config";
+		if(values.get(shieldKey) == null)
+		{
+			config.define(shieldKey+".sample_shield.registry_name", "sample_shield");
+			config.defineEnum(shieldKey+".sample_shield.category", WeaponCategory.SHIELD);
+			config.define(shieldKey+".sample_shield.required_strength", 0);
+			config.define(shieldKey+".sample_shield.required_dexterity", 0);
+			config.define(shieldKey+".sample_shield.required_faith", 0);
+			config.defineEnum(shieldKey+".sample_shield.strength_scaling", Scaling.NONE);
+			config.defineEnum(shieldKey+".sample_shield.dexterity_scaling", Scaling.NONE);
+			config.defineEnum(shieldKey+".sample_shield.faith_scaling", Scaling.NONE);
+			config.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
+			config.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
+			config.defineInRange(shieldKey+".sample_shield.physical_defense", 0.0F, 0.0F, 1.0F);
+			config.defineInRange(shieldKey+".sample_shield.lightning_defense", 0.0F, 0.0F, 1.0F);
+		}
+		
 		if (values.get(weaponKey) != null)
 		{
 			List<Map.Entry<String, Object>> entries = new LinkedList<>(((AbstractCommentedConfig)values.get(weaponKey)).valueMap().entrySet());
@@ -38,11 +67,10 @@ public class CapabilityConfig
 				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
 				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
 				ConfigValue<Scaling> faithScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
-				if (!entry.getKey().equals("sample")) WEAPON_CONFIGS.add(new WeaponConfig(registryName, category, reqStrength, reqDex, reqFaith,
+				if (!entry.getKey().equals("sample")) weapons.add(new WeaponConfig(registryName, category, reqStrength, reqDex, reqFaith,
 						strengthScaling, dexScaling, faithScaling));
 			}
 		}
-		String shieldKey = "shield_config";
 		if (values.get(shieldKey) != null)
 		{
 			List<Map.Entry<String, Object>> entries = new LinkedList<>(((AbstractCommentedConfig)values.get(shieldKey)).valueMap().entrySet());
@@ -62,7 +90,7 @@ public class CapabilityConfig
 				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_material", ShieldMat.WOOD);
 				ConfigValue<Double> physicalDef = config.defineInRange(shieldKey+"."+entry.getKey()+".physical_defense", 0.0F, 0.0F, 1.0F);
 				ConfigValue<Double> lightningDef = config.defineInRange(shieldKey+"."+entry.getKey()+".lightning_defense", 0.0F, 0.0F, 1.0F);
-				if (!entry.getKey().equals("sample_shield")) SHIELD_CONFIGS.add(new ShieldConfig(registryName, category,
+				if (!entry.getKey().equals("sample_shield")) shields.add(new ShieldConfig(registryName, category,
 						reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, shieldType, shieldMat, physicalDef, lightningDef));
 			}
 		}

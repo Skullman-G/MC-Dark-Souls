@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
@@ -73,7 +74,7 @@ public class ScreenManager
 		{
 			Screen gui = event.getScreen();
 
-			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+			if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
 			{
 				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{

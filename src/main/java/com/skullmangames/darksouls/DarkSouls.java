@@ -46,7 +46,6 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ConfigManager;
-import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
@@ -78,7 +77,6 @@ public class DarkSouls
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
-	public static IngameConfig CLIENT_INGAME_CONFIG;
 	public static final CreativeModeTab TAB = new CreativeModeTab("darksouls")
 	{
 		@Override
@@ -221,9 +219,7 @@ public class DarkSouls
 
 		ModItems.registerDescriptionItems();
 
-		CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
-
-		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
+		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue());
 		
 		this.animatorProvider = ClientAnimator::getAnimator;
 	}

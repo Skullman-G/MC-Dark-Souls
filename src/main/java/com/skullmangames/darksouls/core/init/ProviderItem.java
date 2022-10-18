@@ -25,9 +25,9 @@ import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.capability.item.WingedSpearCap;
-import com.skullmangames.darksouls.config.CapabilityConfig;
-import com.skullmangames.darksouls.config.CapabilityConfig.ShieldConfig;
-import com.skullmangames.darksouls.config.CapabilityConfig.WeaponConfig;
+import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.config.ServerConfig.ShieldConfig;
+import com.skullmangames.darksouls.config.ServerConfig.WeaponConfig;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -132,7 +132,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), ArmorPart.FALCONER_ARMOR));
 		
 		//CONFIG
-		for (WeaponConfig configWeapon : CapabilityConfig.WEAPON_CONFIGS)
+		for (WeaponConfig configWeapon : ConfigManager.SERVER_CONFIG.weapons)
 		{
 			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());
 			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
@@ -185,7 +185,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 			}
 		}
 		
-		for (ShieldConfig configShield : CapabilityConfig.SHIELD_CONFIGS)
+		for (ShieldConfig configShield : ConfigManager.SERVER_CONFIG.shields)
 		{
 			ResourceLocation name = new ResourceLocation(configShield.registryName.get());
 			if (!ForgeRegistries.ITEMS.containsKey(name)
