@@ -95,8 +95,11 @@ public class ModRenderTypes extends RenderType
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
 				.setShaderState(POSITION_TEX_SHADER)
-				.setTransparencyState(NO_TRANSPARENCY).setDepthTestState(NO_DEPTH_TEST).createCompositeState(false);
-
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setOverlayState(OVERLAY)
+				.setOutputState(OUTLINE_TARGET)
+				.createCompositeState(false);
+		
 		return create(DarkSouls.MOD_ID + ":entity_indicator", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256,
 				false, false, state);
 	}
@@ -108,6 +111,7 @@ public class ModRenderTypes extends RenderType
 				.setShaderState(POSITION_TEX_SHADER)
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
 				.createCompositeState(false);
 		
 		return create(DarkSouls.MOD_ID + ":effect_entity", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, state);

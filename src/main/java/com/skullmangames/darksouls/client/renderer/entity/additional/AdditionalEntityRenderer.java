@@ -24,6 +24,7 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 	public static void init()
 	{
 		new HealthBarIndicator();
+		new TargetIndicator();
 	}
 	
 	public void drawTextured2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
