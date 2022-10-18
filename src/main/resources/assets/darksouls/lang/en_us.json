@@ -228,8 +228,10 @@
 	
 	"block.bonfire.lit": "Bonfire lit",
 	"block.bonfire.lit.sub": "Bonfire lit",
-	"block.bonfire.ambient": "Bonfire burning",
+	"block.bonfire.ambient": "Bonfire ambient",
 	"block.bonfire.ambient.sub": "Bonfire burning",
+	"block.bonfire.teleport": "Bonfire teleport",
+	"block.bonfire.teleport.sub": "Bonfire teleports player",
 	
 	"item.darksign.use": "Darksign use",
 	"item.darksign.use.sub": "Darksign flickers",

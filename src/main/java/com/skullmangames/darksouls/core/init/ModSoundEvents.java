@@ -14,6 +14,7 @@ public class ModSoundEvents
 	
 	public static final RegistryObject<SoundEvent> BONFIRE_LIT = register("block.bonfire.lit");
 	public static final RegistryObject<SoundEvent> BONFIRE_AMBIENT = register("block.bonfire.ambient");
+	public static final RegistryObject<SoundEvent> BONFIRE_TELEPORT = register("block.bonfire.teleport");
 
 	public static final RegistryObject<SoundEvent> MIRACLE_USE = register("item.miracle.use");
 	public static final RegistryObject<SoundEvent> MIRACLE_USE_PRE = register("item.miracle.use_pre");

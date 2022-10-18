@@ -37,6 +37,16 @@
 		]
 	},
 	
+	"block.bonfire.teleport":
+	{
+		"category": "block",
+		"subtitle": "block.bonfire.teleport.sub",
+		"sounds":
+		[
+			"darksouls:blocks/bonfire/teleport"
+		]
+	},
+	
 	"block.bonfire.lit":
 	{
 		"category": "block",

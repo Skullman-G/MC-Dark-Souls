@@ -67,6 +67,10 @@ public final class Animations
 					Event.create(3.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
 					Event.create(3.5F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
 					Event.create(4.0F, Side.CLIENT, (cap) -> { teleportParticles(cap); }),
+					Event.create(2.5F, Side.SERVER, (cap) ->
+					{
+						cap.playSound(ModSoundEvents.BONFIRE_TELEPORT.get());
+					}),
 					Event.create(3.2F, Side.SERVER, (cap) ->
 					{
 						cap.getOriginalEntity().teleportTo(cap.futureTeleport.x, cap.futureTeleport.y, cap.futureTeleport.z);
