@@ -84,6 +84,7 @@ public class ClientManager
 		this.options.setCameraType(CameraType.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
 		this.combatModeActive = false;
+		this.getPlayerCap().removeTarget();
 	}
 	
 	public void switchToThirdPerson()

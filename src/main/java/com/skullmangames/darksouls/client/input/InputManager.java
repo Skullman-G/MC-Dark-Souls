@@ -127,7 +127,7 @@ public class InputManager
 	
 	private void onTrySelectTarget(int key, int action)
 	{
-		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive() && !this.options.getCameraType().isFirstPerson())
 		{
 			this.playerCap.updateTarget();
 		}

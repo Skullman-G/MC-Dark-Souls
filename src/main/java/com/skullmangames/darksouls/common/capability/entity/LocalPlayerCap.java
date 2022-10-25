@@ -81,6 +81,11 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		}
 	}
 	
+	public void removeTarget()
+	{
+		this.rayTarget = null;
+	}
+	
 	public void updateTarget()
 	{
 		if (this.rayTarget != null)
