@@ -8,8 +8,6 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,18 +18,20 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
+
+import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraft.world.phys.EntityHitResult;
 
 @OnlyIn(Dist.CLIENT)
 public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
@@ -81,35 +81,44 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		}
 	}
 	
-	@Override
-	public void updateOnClient()
+	public void updateTarget()
 	{
-		super.updateOnClient();
-		
-		HitResult rayResult = this.minecraft.hitResult;
-
-		if (rayResult.getType() == HitResult.Type.ENTITY)
-		{
-			Entity hit = ((EntityHitResult)rayResult).getEntity();
-			if (hit instanceof LivingEntity)
-				this.rayTarget = (LivingEntity)hit;
-		}
-
 		if (this.rayTarget != null)
 		{
-			if(!this.rayTarget.isAlive())
+			this.rayTarget = null;
+			return;
+		}
+		
+		Camera cam = this.minecraft.gameRenderer.getMainCamera();
+		Vec3 rot = this.calculateViewVector(cam.getXRot(), cam.getYRot());
+		double add = 20;
+		List<Entity> targets = this.getLevel().getEntities(this.orgEntity, this.orgEntity.getBoundingBox().inflate(add * rot.x, add * rot.y, add * rot.z));
+		LivingEntity e = null;
+		for (Entity target : targets)
+		{
+			if (target instanceof LivingEntity && (e == null || target.distanceTo(this.orgEntity) < e.distanceTo(this.orgEntity)))
 			{
-				this.rayTarget = null;
-			}
-			else if(this.getOriginalEntity().distanceToSqr(this.rayTarget) > 64.0D)
-			{
-				this.rayTarget = null;
-			}
-			else if(MathUtils.getAngleBetween(this.getOriginalEntity(), this.rayTarget) > 1.5707963267948966D)
-			{
-				this.rayTarget = null;
+				e = (LivingEntity)target;
 			}
 		}
+		
+		this.rayTarget = e;
+
+		if (this.rayTarget != null && !this.rayTarget.isAlive())
+		{
+			this.rayTarget = null;
+		}
+	}
+	
+	protected final Vec3 calculateViewVector(float xRot, float yRot)
+	{
+		float f = xRot * ((float) Math.PI / 180F);
+		float f1 = -yRot * ((float) Math.PI / 180F);
+		float f2 = Mth.cos(f1);
+		float f3 = Mth.sin(f1);
+		float f4 = Mth.cos(f);
+		float f5 = Mth.sin(f);
+		return new Vec3((double) (f3 * f4), (double) (-f5), (double) (f2 * f4));
 	}
 	
 	public void performDodge(boolean moving)

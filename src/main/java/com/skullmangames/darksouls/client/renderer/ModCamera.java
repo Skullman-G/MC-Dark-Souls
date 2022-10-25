@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.Vec3;
 
 public class ModCamera extends Camera
 {
@@ -64,7 +65,7 @@ public class ModCamera extends Camera
 	   return partialTicks == 1.0F ? this.pivotRot.y : Mth.lerp(partialTicks, this.pivotRotOld.y, this.pivotRot.y);
 	}
 	
-	public void setPivotRot(float x, float y)
+	public void addPivotRot(float x, float y)
 	{
 		float xMod = x * 0.1F;
 	    float yMod = y * 0.1F;
@@ -76,5 +77,46 @@ public class ModCamera extends Camera
 	    this.pivotRotOld.x = this.pivotRotOld.x + xMod;
 	    this.pivotRotOld.y = this.pivotRotOld.y + yMod;
 	    this.pivotRotOld.y = Mth.clamp(this.pivotRotOld.y, -90.0F, 90.0F);
+	}
+	
+	public void rotatePivotTo(Entity target, float limit)
+	{
+		Vec3 pos = this.getPosition();
+		double dx = target.getX() - pos.x;
+		double dz = target.getZ() - pos.z;
+		double dy = target.getY() + target.getBbHeight() * (3F/5F) - pos.y - 2.0D;
+		float xDegree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - 90.0F;
+		float xAmount = Mth.wrapDegrees(xDegree - this.getYRot());
+		float yDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
+		float yAmount = Mth.wrapDegrees(yDegree - this.getXRot());
+		
+		this.limitRotAmount(xAmount, limit);
+		this.limitRotAmount(yAmount, limit);
+		
+		this.addPivotRot(xAmount, yAmount);
+	}
+	
+	private float limitRotAmount(float amount, float limit)
+	{
+		while (amount < -180.0F)
+		{
+			amount += 360.0F;
+		}
+		
+		while (amount > 180.0F)
+		{
+			amount -= 360.0F;
+		}
+		
+		if (amount > limit)
+		{
+			amount = limit;
+		}
+		if (amount < -limit)
+		{
+			amount = -limit;
+		}
+		
+		return amount;
 	}
 }

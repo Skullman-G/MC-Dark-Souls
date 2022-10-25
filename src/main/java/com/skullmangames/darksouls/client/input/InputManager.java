@@ -75,6 +75,7 @@ public class InputManager
 		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_UP, this::onAttunementSlotUp);
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
+		this.keyFunctionMap.put(this.options.keyPickItem, this::onTrySelectTarget);
 		
 		try
 		{
@@ -122,6 +123,14 @@ public class InputManager
 				&& this.player.isOnGround()
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	private void onTrySelectTarget(int key, int action)
+	{
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
+		{
+			this.playerCap.updateTarget();
+		}
 	}
 	
 	private void onAttunementSlotUp(int key, int action)
@@ -354,16 +363,25 @@ public class InputManager
 		@SubscribeEvent
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
-			if (!event.isAttack()) return;
-			if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+			if (event.isAttack())
 			{
-				event.setSwingHand(false);
+				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				{
+					event.setSwingHand(false);
+				}
+				
+				if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
+						|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+				{
+					event.setCanceled(true);
+				}
 			}
-			
-			if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
-					|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+			else if (event.isPickBlock())
 			{
-				event.setCanceled(true);
+				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				{
+					event.setCanceled(true);
+				}
 			}
 		}
 		
@@ -417,6 +435,7 @@ public class InputManager
 			if(inputManager.playerCap == null) return;
 			EntityState playerState = inputManager.playerCap.getEntityState();
 			
+			// Mouse Movement
 			if (minecraft.options.getCameraType() == CameraType.FIRST_PERSON && playerState.isRotationLocked() && inputManager.player.isAlive())
 			{
 				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
@@ -430,9 +449,14 @@ public class InputManager
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
 			}
 			
-			if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
+			// Keyboard Movement
+			if (inputManager.playerCap.getTarget() != null)
 			{
-				if (!ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+				inputManager.playerCap.rotateTo(inputManager.playerCap.getTarget(), 60, false);
+			}
+			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
+			{
+				if (!inputManager.playerCap.getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
