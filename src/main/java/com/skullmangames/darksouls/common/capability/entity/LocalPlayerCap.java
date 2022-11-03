@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge;
+import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
 
@@ -64,6 +65,13 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		GameOverlayManager.canAnimateSouls = true;
 		GameOverlayManager.lastSouls = this.getSouls();
 		GameOverlayManager.lerpSouls = this.getSouls();
+	}
+	
+	@Override
+	public void update()
+	{
+		super.update();
+		if (this.rayTarget != null && !this.rayTarget.isAlive()) this.rayTarget = null;
 	}
 	
 	@Override
@@ -126,10 +134,10 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		return new Vec3((double) (f3 * f4), (double) (-f5), (double) (f2 * f4));
 	}
 	
-	public void performDodge(boolean moving)
+	public void performDodge(DodgeType type)
 	{
 		if (this.isFirstPerson()) return;
-		ModNetworkManager.sendToServer(new CTSPerformDodge(moving));
+		ModNetworkManager.sendToServer(new CTSPerformDodge(type));
 	}
 	
 	public void performAttack(AttackType type)

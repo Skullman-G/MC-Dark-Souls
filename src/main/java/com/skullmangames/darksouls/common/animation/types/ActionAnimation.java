@@ -118,7 +118,7 @@ public class ActionAnimation extends ImmovableAnimation
 					: 1.0F;
 			livingentity.move(MoverType.SELF, new Vec3(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
 			
-			if (animation instanceof LinkAnimation && this.getProperty(ActionAnimationProperty.ROTATE_TO_TARGET).orElse(true) && livingentity instanceof Mob)
+			if (animation instanceof LinkAnimation && livingentity instanceof Mob)
 			{
 				Mob mob = (Mob)livingentity;
 				LivingEntity target = mob.getTarget();
@@ -199,7 +199,7 @@ public class ActionAnimation extends ImmovableAnimation
 	public void setLinkAnimation(Pose lastPose, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
 	{
 		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : this.convertTime;
-		float nextStart = 0.0F;
+		float nextStart = 0.05F;
 		
 		if (convertTimeModifier < 0.0F)
 		{
@@ -234,8 +234,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
-		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER)
-				.orElse(null);
+		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse(null);
 		TransformSheet rootTransforms = (coordFunction == null || animation instanceof LinkAnimation)
 				? animation.jointTransforms.get("Root")
 				: entityCap.getAnimator().getPlayerFor(this).getMovementAnimation();

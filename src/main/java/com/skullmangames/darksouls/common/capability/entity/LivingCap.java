@@ -578,9 +578,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void rotateTo(Entity target, float limit, boolean partialSync)
 	{
-		double d0 = target.getX() - this.orgEntity.getX();
-		double d1 = target.getZ() - this.orgEntity.getZ();
-		float degree = (float) (Math.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
+		double dx = target.getX() - this.orgEntity.getX();
+		double dz = target.getZ() - this.orgEntity.getZ();
+		float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - 90.0F;
 		this.rotateTo(degree, limit, partialSync);
 	}
 	

@@ -23,6 +23,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCCovenantProgress;
 import com.skullmangames.darksouls.network.server.STCFP;
@@ -158,18 +159,37 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		}
 	}
 
-	public void performDodge(boolean moving)
+	public void performDodge(DodgeType type)
 	{
 		float e = this.getEncumbrance();
-		StaticAnimation animation = !moving ? Animations.BIPED_JUMP_BACK
-				: e >= 0.5F ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+		boolean fat = e >= 0.5F;
+		StaticAnimation animation = null;
+		
+		switch (type)
+		{
+		default:
+		case JUMP_BACK:
+			animation = Animations.BIPED_JUMP_BACK;
+			break;
+		case FORWARD:
+			animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+			break;
+		case BACK:
+			animation = Animations.BIPED_ROLL_BACK;
+			break;
+		case LEFT:
+			animation = Animations.BIPED_ROLL_LEFT;
+			break;
+		case RIGHT:
+			animation = Animations.BIPED_ROLL_RIGHT;
+			break;
+		}
 
 		this.animator.playAnimation(animation, 0.0F);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(
 				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 
-		if (this.isCreativeOrSpectator())
-			return;
+		if (this.isCreativeOrSpectator()) return;
 		this.increaseStamina(-4.0F);
 	}
 	

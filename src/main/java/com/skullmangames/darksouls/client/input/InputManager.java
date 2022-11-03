@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -25,6 +26,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.api.distmarker.Dist;
@@ -107,11 +109,6 @@ public class InputManager
 	public boolean playerCanAct(EntityState playerState)
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
-	}
-	
-	public boolean movingKeysDown()
-	{
-		return this.isKeyDown(this.options.keyUp) || this.isKeyDown(this.options.keyDown) || this.isKeyDown(this.options.keyLeft) || this.isKeyDown(this.options.keyRight);
 	}
 
 	public boolean playerCanAttack(EntityState playerState)
@@ -280,7 +277,22 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerCap.performDodge(this.movingKeysDown());
+			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState))
+			{
+				DodgeType dodgeType = DodgeType.JUMP_BACK;
+				if (this.playerCap.getTarget() != null)
+				{
+					if (this.isKeyDown(this.options.keyUp)) dodgeType = DodgeType.FORWARD;
+					else if (this.isKeyDown(this.options.keyDown)) dodgeType = DodgeType.BACK;
+					else if (this.isKeyDown(this.options.keyLeft)) dodgeType = DodgeType.LEFT;
+					else if (this.isKeyDown(this.options.keyRight)) dodgeType = DodgeType.RIGHT;
+				}
+				else if (this.isKeyDown(this.options.keyUp)
+						|| this.isKeyDown(this.options.keyDown)
+						|| this.isKeyDown(this.options.keyLeft)
+						|| this.isKeyDown(this.options.keyRight)) dodgeType = DodgeType.FORWARD;
+				this.playerCap.performDodge(dodgeType);
+			}
 			this.sprintPressCounter = 0;
 		}
 	}
@@ -452,7 +464,47 @@ public class InputManager
 			// Keyboard Movement
 			if (inputManager.playerCap.getTarget() != null)
 			{
-				inputManager.playerCap.rotateTo(inputManager.playerCap.getTarget(), 60, false);
+				float forward = event.getInput().forwardImpulse;
+				float left = event.getInput().leftImpulse;
+				float rot = 0.0F;
+				
+				if (inputManager.sprintPressCounter >= 5)
+				{
+					boolean w = inputManager.isKeyDown(inputManager.options.keyUp);
+					boolean s = inputManager.isKeyDown(inputManager.options.keyDown);
+					boolean a = inputManager.isKeyDown(inputManager.options.keyLeft);
+					boolean d = inputManager.isKeyDown(inputManager.options.keyRight);
+					
+					rot = w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
+							: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
+							: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
+							: w && !s && !a && d ? 315 : 0;
+					
+					forward = rot == 0.0F ? event.getInput().forwardImpulse
+							: rot == 180.0F ? -event.getInput().forwardImpulse
+							: rot == 90.0F ? event.getInput().leftImpulse
+							: rot == 270.0F ? -event.getInput().leftImpulse
+							: rot == 45.0F ? event.getInput().forwardImpulse * 10
+							: rot == 135.0F ? -event.getInput().forwardImpulse * 10
+							: rot == 225.0F ? -event.getInput().forwardImpulse * 10
+							: rot == 315.0F ? event.getInput().forwardImpulse * 10
+							: 0.0F;
+					
+					left = rot == 45.0F ? event.getInput().leftImpulse
+							: rot == 135.0F ? -event.getInput().leftImpulse
+							: rot == 225.0F ? -event.getInput().leftImpulse
+							: rot == 315.0F ? event.getInput().leftImpulse
+							: 0.0F;
+				}
+				
+				Entity target = inputManager.playerCap.getTarget();
+				double dx = target.getX() - inputManager.player.getX();
+				double dz = target.getZ() - inputManager.player.getZ();
+				float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - rot - 90.0F;
+				if (!playerState.isRotationLocked()) inputManager.playerCap.rotateTo(degree, 60, false);
+				event.getInput().forwardImpulse = forward;
+				event.getInput().leftImpulse = left;
+				
 			}
 			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
 			{
