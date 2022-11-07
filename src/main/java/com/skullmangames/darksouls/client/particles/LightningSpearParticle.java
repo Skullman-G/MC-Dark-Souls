@@ -125,11 +125,15 @@ public class LightningSpearParticle extends EntityboundParticle
 		this.drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5, uv2);
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		this.drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5, uv2);
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+		this.drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5, uv2);
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+		this.drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5, uv2);
 		poseStack.popPose();
 		
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 7; i++)
 		{
-			Vector3f v = new Vector3f(-0.6F + 0.3F * i, -0.6F + 0.3F * i, 0.0F);
+			Vector3f v = new Vector3f(-0.6F + 0.2F * i, -0.6F + 0.2F * i, 0.0F);
 			v.transform(this.rot2);
 			poseStack.pushPose();
 			poseStack.translate(v.x(), v.y(), v.z());

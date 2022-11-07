@@ -62,12 +62,16 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 		drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5);
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5);
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+		drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5);
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+		drawTexturedPlane(vertexBuilder, poseStack.last().pose(), -1.0F, -0.15F, 1.0F, 0.15F, 0, 0, 32, 5);
 		poseStack.popPose();
 		
 		rot.mul(Vector3f.ZN.rotationDegrees(45));
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 7; i++)
 		{
-			Vector3f v = new Vector3f(-0.6F + 0.3F * i, -0.6F + 0.3F * i, 0.0F);
+			Vector3f v = new Vector3f(-0.6F + 0.2F * i, -0.6F + 0.2F * i, 0.0F);
 			v.transform(rot);
 			poseStack.pushPose();
 			poseStack.translate(v.x(), v.y(), v.z());
