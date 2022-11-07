@@ -6,7 +6,6 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.client.particles.spawner.CircleParticleSpawner;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
@@ -52,7 +51,6 @@ public final class Animations
 	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(0.08F, true, "biped/living/float", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(0.08F, true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_MOUNT = new StaticAnimation(0.08F, true, "biped/living/mount", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DEATH = new StaticAnimation(0.16F, false, "biped/living/death", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
@@ -107,6 +105,8 @@ public final class Animations
 	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new BlockAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
+	public static final StaticAnimation BIPED_HORSEBACK_IDLE = new StaticAnimation(0.2F, true, "biped/living/horseback/horseback_idle", (models) -> models.ENTITY_BIPED);
+	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
 
@@ -130,20 +130,15 @@ public final class Animations
 	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.08F, "biped/living/land_damage", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.1F, "biped/combat/fat_roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_BACK = new DodgingAnimation(0.1F, "biped/combat/roll_back", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_LEFT = new DodgingAnimation(0.1F, true, "biped/combat/roll_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_RIGHT = new DodgingAnimation(0.1F, true, "biped/combat/roll_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) })
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, "biped/combat/jump_back", (models) -> models.ENTITY_BIPED);
 	
 	// Miracle
@@ -279,6 +274,17 @@ public final class Animations
 	// Big Weapon
 	public static final MirrorAnimation BIPED_HOLDING_BIG_WEAPON = new MirrorAnimation(0.2F, true, true,
 			"biped/living/holding_big_weapon_r", "biped/living/holding_big_weapon_l", (models) -> models.ENTITY_BIPED);
+	
+	// Horseback Attacks
+	public static final AttackAnimation[] HORSEBACK_LIGHT_ATTACK = new AttackAnimation[]
+	{
+				new AttackAnimation(0.5F, 0.0F, 0.2F, 0.52F, 1.6F, "Tool_R", "biped/combat/horseback_light_attack_1", (models) -> models.ENTITY_BIPED)
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
+				new AttackAnimation(0.5F, 0.0F, 0.12F, 0.48F, 1.6F, "Tool_R", "biped/combat/horseback_light_attack_2", (models) -> models.ENTITY_BIPED)
+						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+	};
 
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]
@@ -434,8 +440,7 @@ public final class Animations
 	public static final AttackAnimation FIST_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.15F, 0.3F, 1.0F, "Tool_R", "biped/combat/fist_dash_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT);
 	public static final AttackAnimation FIST_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R", "biped/combat/fist_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
@@ -561,8 +566,7 @@ public final class Animations
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_DA = new AttackAnimation(0.2F, 0.0F, 0.35F, 0.5F, 3.0F, "Tool_R", "hollow_lordran_soldier/sword_da", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
-			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
-			.addProperty(ActionAnimationProperty.MOVE_ON_LINK, true);
+			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
 
 	public static final AttackAnimation HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST = new AttackAnimation(0.2F, 0.0F,
 			1.0F, 1.16F, 2.0F, "Tool_R", "hollow_lordran_soldier/sword_heavy_thrust",

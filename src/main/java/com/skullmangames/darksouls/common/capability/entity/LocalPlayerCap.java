@@ -109,7 +109,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		LivingEntity e = null;
 		for (Entity target : targets)
 		{
-			if (target instanceof LivingEntity && (e == null || target.distanceTo(this.orgEntity) < e.distanceTo(this.orgEntity)))
+			if (target instanceof LivingEntity && target != this.orgEntity.getVehicle() && (e == null || target.distanceTo(this.orgEntity) < e.distanceTo(this.orgEntity)))
 			{
 				e = (LivingEntity)target;
 			}
@@ -150,24 +150,35 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		}
 		else
 		{
-			switch (type)
+			if (this.isRidingHorse())
 			{
-				default:
-				case LIGHT:
-					List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.FIST_LIGHT_ATTACK));
-					int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-					if (combo + 1 < animations.size()) combo += 1;
-					else combo = 0;
-					animation = animations.get(combo);
-					break;
-					
-				case DASH:
-					animation = Animations.FIST_DASH_ATTACK;
-					break;
-					
-				case HEAVY:
-					animation = Animations.FIST_HEAVY_ATTACK;
-					break;
+				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
+				int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+				if (combo + 1 < animations.size()) combo += 1;
+				else combo = 0;
+				animation = animations.get(combo);
+			}
+			else
+			{
+				switch (type)
+				{
+					default:
+					case LIGHT:
+						List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.FIST_LIGHT_ATTACK));
+						int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+						if (combo + 1 < animations.size()) combo += 1;
+						else combo = 0;
+						animation = animations.get(combo);
+						break;
+						
+					case DASH:
+						animation = Animations.FIST_DASH_ATTACK;
+						break;
+						
+					case HEAVY:
+						animation = Animations.FIST_HEAVY_ATTACK;
+						break;
+				}
 			}
 			
 			if (animation == null) return;

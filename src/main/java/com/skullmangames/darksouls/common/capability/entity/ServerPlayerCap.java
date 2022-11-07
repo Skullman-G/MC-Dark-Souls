@@ -67,7 +67,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		livingMotionMap.put(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
 		livingMotionMap.put(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		livingMotionMap.put(LivingMotion.FALL, Animations.BIPED_FALL);
-		livingMotionMap.put(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
+		livingMotionMap.put(LivingMotion.HORSEBACK_IDLE, Animations.BIPED_HORSEBACK_IDLE);
 		livingMotionMap.put(LivingMotion.DEATH, Animations.BIPED_DEATH);
 
 		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())

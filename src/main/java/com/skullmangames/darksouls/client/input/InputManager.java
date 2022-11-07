@@ -117,7 +117,19 @@ public class InputManager
 				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isUnderWater()
+				&& (this.player.isOnGround() || this.playerCap.isRidingHorse())
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
+				&& this.minecraft.screen == null;
+	}
+	
+	public boolean playerCanDodge(EntityState playerState)
+	{
+		return !this.player.isSpectator()
+				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
+				&& !this.player.isUnderWater()
 				&& this.player.isOnGround()
+				&& this.player.getVehicle() == null
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
 	}
@@ -277,7 +289,7 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState))
+			if (this.sprintPressCounter < 5 && this.playerCanDodge(playerState))
 			{
 				DodgeType dodgeType = DodgeType.JUMP_BACK;
 				if (this.playerCap.getTarget() != null)
@@ -340,7 +352,7 @@ public class InputManager
 			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
 			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
-		else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.LIGHT;
+		else if ((this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;
@@ -468,12 +480,12 @@ public class InputManager
 				float left = event.getInput().leftImpulse;
 				float rot = 0.0F;
 				
-				if (inputManager.sprintPressCounter >= 5)
+				if (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null)
 				{
-					boolean w = inputManager.isKeyDown(inputManager.options.keyUp);
-					boolean s = inputManager.isKeyDown(inputManager.options.keyDown);
-					boolean a = inputManager.isKeyDown(inputManager.options.keyLeft);
-					boolean d = inputManager.isKeyDown(inputManager.options.keyRight);
+					boolean w = event.getInput().up;
+					boolean s = event.getInput().down;
+					boolean a = event.getInput().left;
+					boolean d = event.getInput().right;
 					
 					rot = w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
 							: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
@@ -500,15 +512,63 @@ public class InputManager
 				Entity target = inputManager.playerCap.getTarget();
 				double dx = target.getX() - inputManager.player.getX();
 				double dz = target.getZ() - inputManager.player.getZ();
+				double dy = target.getY() + (3/5) * target.getBbHeight() - inputManager.player.getY();
 				float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - rot - 90.0F;
-				if (!playerState.isRotationLocked()) inputManager.playerCap.rotateTo(degree, 60, false);
+				float xDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
+				if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null)
+				{
+					inputManager.playerCap.rotateTo(degree, 60, false);
+					inputManager.player.xRot = xDegree;
+				}
 				event.getInput().forwardImpulse = forward;
 				event.getInput().leftImpulse = left;
 				
 			}
 			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
 			{
-				if (!inputManager.playerCap.getClientAnimator().isAiming())
+				if (inputManager.player.getVehicle() != null)
+				{
+					float forward = event.getInput().forwardImpulse;
+					float left = event.getInput().leftImpulse;
+					float rot = inputManager.player.yRot;
+					
+					boolean w = event.getInput().up;
+					boolean s = event.getInput().down;
+					boolean a = event.getInput().left;
+					boolean d = event.getInput().right;
+					
+					float pivot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
+					
+					if (w || a || s || d)
+					{
+						rot = pivot;
+						rot -= w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
+								: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
+								: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
+								: w && !s && !a && d ? 315 : 0;
+					}
+					
+					forward = rot == pivot ? event.getInput().forwardImpulse
+							: rot == pivot - 180.0F ? -event.getInput().forwardImpulse
+							: rot == pivot - 90.0F ? event.getInput().leftImpulse
+							: rot == pivot - 270.0F ? -event.getInput().leftImpulse
+							: rot == pivot - 45.0F ? event.getInput().forwardImpulse * 10
+							: rot == pivot - 135.0F ? -event.getInput().forwardImpulse * 10
+							: rot == pivot - 225.0F ? -event.getInput().forwardImpulse * 10
+							: rot == pivot - 315.0F ? event.getInput().forwardImpulse * 10
+							: 0.0F;
+					
+					left = rot == pivot - 45.0F ? event.getInput().leftImpulse
+							: rot == pivot - 135.0F ? -event.getInput().leftImpulse
+							: rot == pivot - 225.0F ? -event.getInput().leftImpulse
+							: rot == pivot - 315.0F ? event.getInput().leftImpulse
+							: 0.0F;
+					
+					if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null) inputManager.playerCap.rotateTo(rot, 60, false);
+					event.getInput().forwardImpulse = forward;
+					event.getInput().leftImpulse = left;
+				}
+				else if (!inputManager.playerCap.getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;

@@ -95,12 +95,11 @@ public class ActionAnimation extends ImmovableAnimation
 		if (entityCap.isClientSide())
 		{
 			if (!(livingentity instanceof LocalPlayer)) return;
-		} else
+		}
+		else
 		{
 			if ((livingentity instanceof ServerPlayer)) return;
 		}
-
-		if (!this.validateMovement(entityCap, animation)) return;
 
 		if (entityCap.isInaction())
 		{
@@ -132,45 +131,14 @@ public class ActionAnimation extends ImmovableAnimation
 		}
 	}
 
-	private boolean validateMovement(LivingCap<?> entityCap, DynamicAnimation animation)
-	{
-		if (animation instanceof LinkAnimation)
-		{
-			if (!this.getProperty(ActionAnimationProperty.MOVE_ON_LINK).orElse(true))
-			{
-				return false;
-			}
-			else
-			{
-				return this.checkMovementTime(0.0F);
-			}
-		} else
-		{
-			return this.checkMovementTime(entityCap.getAnimator().getPlayerFor(animation).getElapsedTime());
-		}
-	}
-
-	private boolean checkMovementTime(float currentTime)
-	{
-		if (this.properties.containsKey(ActionAnimationProperty.ACTION_TIME))
-		{
-			ActionTime[] actionTimes = this.getProperty(ActionAnimationProperty.ACTION_TIME).get();
-			for (ActionTime actionTime : actionTimes)
-			{
-				if (currentTime <= actionTime.end && actionTime.onStart <= currentTime) return true;
-			}
-			return false;
-		}
-		else return true;
-	}
-
 	@Override
 	public EntityState getState(float time)
 	{
 		if (time <= this.delayTime)
 		{
 			return EntityState.PRE_CONTACT;
-		} else
+		}
+		else
 		{
 			return EntityState.FREE;
 		}
@@ -272,23 +240,6 @@ public class ActionAnimation extends ImmovableAnimation
 		} else
 		{
 			return new Vector3f(0, 0, 0);
-		}
-	}
-
-	public static class ActionTime
-	{
-		private float onStart;
-		private float end;
-
-		private ActionTime(float onStart, float end)
-		{
-			this.onStart = onStart;
-			this.end = end;
-		}
-
-		public static ActionTime crate(float onStart, float end)
-		{
-			return new ActionTime(onStart, end);
 		}
 	}
 }

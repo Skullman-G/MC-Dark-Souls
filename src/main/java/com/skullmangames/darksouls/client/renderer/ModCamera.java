@@ -41,7 +41,7 @@ public class ModCamera extends Camera
 	    	else
 	    	{
 	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
-		    	this.move(-this.getMaxZoom(4.0D), 0.0D, 0.0D);
+		    	this.move(-this.getMaxZoom(5.0D), 0.0D, 0.0D);
 		    	
 		    	entity.xRotO = 0;
 		    	entity.xRot = 0;
@@ -84,7 +84,7 @@ public class ModCamera extends Camera
 		Vec3 pos = this.getPosition();
 		double dx = target.getX() - pos.x;
 		double dz = target.getZ() - pos.z;
-		double dy = target.getY() + target.getBbHeight() * (3F/5F) - pos.y - 2.0D;
+		double dy = target.getY() + (3/5) * target.getBbHeight() - pos.y;
 		float xDegree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - 90.0F;
 		float xAmount = Mth.wrapDegrees(xDegree - this.getYRot());
 		float yDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;

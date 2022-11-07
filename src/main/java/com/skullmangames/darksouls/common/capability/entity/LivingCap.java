@@ -50,6 +50,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,6 +88,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.initAttributes();
 		this.poiseDef = this.getPoise();
 		this.stamina = this.getMaxStamina();
+	}
+	
+	public boolean isRidingHorse()
+	{
+		return this.orgEntity.getVehicle() instanceof Horse;
 	}
 	
 	public float getDamageScalingMultiplier(float baseDamage)
@@ -188,7 +194,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
+		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK_IDLE, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 	}
 
@@ -197,17 +203,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (this.orgEntity.getHealth() <= 0.0F)
 		{
 			currentMotion = LivingMotion.DEATH;
-		} else if (orgEntity.getVehicle() != null)
+		}
+		else if (this.orgEntity.getVehicle() instanceof Horse)
 		{
-			currentMotion = LivingMotion.MOUNT;
+			currentMotion = LivingMotion.HORSEBACK_IDLE;
 		}
 		else
 		{
-			if (orgEntity.getDeltaMovement().y < -0.55F)
+			if (this.orgEntity.getDeltaMovement().y < -0.55F)
 			{
 				currentMotion = LivingMotion.FALL;
 			}
-			else if (orgEntity.animationSpeed > 0.01F)
+			else if (this.orgEntity.animationSpeed > 0.01F)
 			{
 				if (this.orgEntity.isSprinting())
 					this.currentMotion = LivingMotion.RUNNING;
@@ -308,7 +315,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public boolean canBlock()
 	{
-		return this.canUseShield;
+		return this.canUseShield && this.orgEntity.getVehicle() == null;
 	}
 
 	public boolean hurt(DamageSource damageSource, float amount)

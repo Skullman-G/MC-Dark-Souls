@@ -61,14 +61,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 		if (offHandStack.getItem() != Items.AIR)
 		{
 			ItemCapability cap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
-			if (cap != null)
-			{
-				if (cap.canBeRenderedBoth(offHandStack))
-				{
-					renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
-				}
-			}
-			else
+			if (entityCap.getOriginalEntity().getVehicle() == null && (cap == null || cap.canBeRenderedBoth(offHandStack)))
 			{
 				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, matrixStackIn, packedLightIn, this.scale, this.translation);
 			}

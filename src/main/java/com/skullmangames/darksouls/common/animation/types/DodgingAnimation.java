@@ -51,7 +51,8 @@ public class DodgingAnimation extends ActionAnimation
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
 		Vector3f vec = super.getCoordVector(entityCap, animation);
-		vec.mul(2.0F - this.encumbrance);
+		if (this.canRotate) vec.mul(1.5F - this.encumbrance);
+		else vec.mul(2.0F - this.encumbrance);
 		return vec;
 	}
 	

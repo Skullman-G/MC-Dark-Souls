@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -101,6 +102,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	}
 	
 	@Override
+	@OnlyIn(Dist.CLIENT)
 	public void performAttack(AttackType type, LocalPlayerCap playerCap)
 	{
 		AttackAnimation animation = this.getAttack(type, playerCap);
@@ -112,6 +114,15 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerCap)
 	{
+		if (playerCap.isRidingHorse())
+		{
+			List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
+			int combo = animations.indexOf(playerCap.getClientAnimator().baseLayer.animationPlayer.getPlay());
+			if (combo + 1 < animations.size()) combo += 1;
+			else combo = 0;
+			return animations.get(combo);
+		}
+		
 		Pair<Boolean, AttackAnimation[]> move = this.moveset.get(type);
 		if (move == null) return null;
 		AttackAnimation[] animations = move.getSecond();

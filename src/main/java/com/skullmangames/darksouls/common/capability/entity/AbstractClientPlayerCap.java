@@ -17,6 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
@@ -78,9 +79,9 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			this.currentMotion = LivingMotion.FLYING;
 		}
-		else if (this.orgEntity.getControllingPassenger() != null)
+		else if (this.orgEntity.getVehicle() instanceof Horse)
 		{
-			this.currentMotion = LivingMotion.MOUNT;
+			this.currentMotion = LivingMotion.HORSEBACK_IDLE;
 		}
 		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{
