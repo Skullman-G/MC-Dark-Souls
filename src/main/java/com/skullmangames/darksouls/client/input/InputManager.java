@@ -480,7 +480,7 @@ public class InputManager
 				float left = event.getInput().leftImpulse;
 				float rot = 0.0F;
 				
-				if (!ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming()
+				if (!inputManager.playerCap.getClientAnimator().isAiming()
 					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
 				{
 					boolean w = event.getInput().up;
@@ -525,7 +525,7 @@ public class InputManager
 				event.getInput().leftImpulse = left;
 				
 			}
-			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
+			else if (!inputManager.playerCap.getClientAnimator().isAiming() && minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
 			{
 				if (inputManager.player.getVehicle() != null)
 				{
