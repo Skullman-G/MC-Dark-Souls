@@ -480,7 +480,8 @@ public class InputManager
 				float left = event.getInput().leftImpulse;
 				float rot = 0.0F;
 				
-				if (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null)
+				if (!ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming()
+					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
 				{
 					boolean w = event.getInput().up;
 					boolean s = event.getInput().down;
@@ -512,7 +513,7 @@ public class InputManager
 				Entity target = inputManager.playerCap.getTarget();
 				double dx = target.getX() - inputManager.player.getX();
 				double dz = target.getZ() - inputManager.player.getZ();
-				double dy = target.getY() + (3/5) * target.getBbHeight() - inputManager.player.getY();
+				double dy = target.getY() + 0.6D * target.getBbHeight() - inputManager.player.getY() - inputManager.player.getEyeHeight();
 				float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - rot - 90.0F;
 				float xDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
 				if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null)
@@ -614,6 +615,14 @@ public class InputManager
 					{
 						event.getInput().forwardImpulse = forward;
 						event.getInput().leftImpulse = left;
+					}
+				}
+				else
+				{
+					if (!playerState.isRotationLocked())
+					{
+						inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
+						inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
 					}
 				}
 			}

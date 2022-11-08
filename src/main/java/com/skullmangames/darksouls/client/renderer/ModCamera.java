@@ -15,6 +15,7 @@ public class ModCamera extends Camera
 {
 	private Vector2f pivotRot = Vector2f.ZERO;
 	private Vector2f pivotRotOld = Vector2f.ZERO;
+	private double aimZ = 0.0D;
 	
 	@Override
 	public void setup(BlockGetter world, Entity entity, boolean detached, boolean mirror, float partialTick)
@@ -31,24 +32,28 @@ public class ModCamera extends Camera
 	    {
 	    	if (ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 	    	{
-	    		this.move(-this.getMaxZoom(4.0D), 0.25D, -1.25D);
+	    		this.move(-this.getMaxZoom(4.0D), 0.25D, this.aimZ);
 	    		
 	    		this.pivotRotOld.y = entity.xRotO;
 	    		this.pivotRotOld.x = entity.yRotO;
 	    		this.pivotRot.y = entity.xRot;
 	    		this.pivotRot.x = entity.yRot;
+	    		
+	    		if (this.aimZ > -2D) this.aimZ = Math.max(this.aimZ - 0.1D * partialTick, -2D);
 	    	}
 	    	else
 	    	{
 	    		float xRot = this.getPivotXRot(partialTick);
 	    		float yRot = this.getPivotYRot(partialTick);
 	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
-		    	this.move(-this.getMaxZoom(4.0D), 0.25D, 0.0D);
+		    	this.move(-this.getMaxZoom(4.0D), 0.25D, this.aimZ);
 		    	
 		    	entity.xRotO = 0;
 		    	entity.xRot = 0;
 		    	this.pivotRotOld.x = xRot;
 		    	this.pivotRotOld.y = yRot;
+		    	
+		    	if (this.aimZ < 0D) this.aimZ = Math.min(this.aimZ + 0.1D * partialTick, 0D);
 	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
@@ -84,7 +89,7 @@ public class ModCamera extends Camera
 		Vec3 pos = this.getPosition();
 		double dx = target.getX() - pos.x;
 		double dz = target.getZ() - pos.z;
-		double dy = target.getY() + (3D/5D) * target.getBbHeight() - pos.y - 5D;
+		double dy = target.getY() + 0.6D * target.getBbHeight() - pos.y - this.entity.getEyeHeight();
 		float xDegree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - 90.0F;
 		float xAmount = Mth.wrapDegrees(xDegree - this.getYRot());
 		float yDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
