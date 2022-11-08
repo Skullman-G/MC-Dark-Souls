@@ -40,13 +40,15 @@ public class ModCamera extends Camera
 	    	}
 	    	else
 	    	{
-	    		this.setRotation(Mth.lerp(partialTick, this.pivotRotOld.x, this.pivotRot.x), Mth.lerp(partialTick, this.pivotRotOld.y, this.pivotRot.y));
+	    		float xRot = this.getPivotXRot(partialTick);
+	    		float yRot = this.getPivotYRot(partialTick);
+	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
 		    	this.move(-this.getMaxZoom(4.0D), 0.25D, 0.0D);
 		    	
 		    	entity.xRotO = 0;
 		    	entity.xRot = 0;
-		    	this.pivotRotOld.x = this.pivotRot.x;
-		    	this.pivotRotOld.y = this.pivotRot.y;
+		    	this.pivotRotOld.x = xRot;
+		    	this.pivotRotOld.y = yRot;
 	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
@@ -88,8 +90,8 @@ public class ModCamera extends Camera
 		float yDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
 		float yAmount = Mth.wrapDegrees(yDegree - this.getXRot());
 		
-		this.limitRotAmount(xAmount, limit);
-		this.limitRotAmount(yAmount, limit);
+		xAmount = this.limitRotAmount(xAmount, limit);
+		yAmount = this.limitRotAmount(yAmount, limit);
 		
 		this.addPivotRot(xAmount, yAmount);
 	}
