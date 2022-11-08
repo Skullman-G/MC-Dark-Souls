@@ -121,10 +121,10 @@ public class ModItems
 	public static final RegistryObject<Item> MIRACLE_FORCE = ITEMS.register("miracle_force", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_FORCE, 12, 0.6F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_LIGHTNING_SPEAR = ITEMS.register("miracle_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR, 20, 0.57F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_LIGHTNING_SPEAR = ITEMS.register("miracle_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR, Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR, 20, 0.57F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_GREAT_LIGHTNING_SPEAR = ITEMS.register("miracle_great_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, 30, 0.8F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_GREAT_LIGHTNING_SPEAR = ITEMS.register("miracle_great_lightning_spear", () -> new SpellItem(Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, 30, 0.8F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

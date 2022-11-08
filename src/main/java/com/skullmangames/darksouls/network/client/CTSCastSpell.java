@@ -39,11 +39,12 @@ public class CTSCastSpell
 			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerCap == null) return;
 			
-			if ((playerCap.getFP() >= msg.spell.getFPConsumption() && playerCap.getStats().getStatValue(Stats.FAITH) >= msg.spell.getRequiredFaith())
+			if (((playerCap.getFP() >= msg.spell.getFPConsumption() && playerCap.getStats().getStatValue(Stats.FAITH) >= msg.spell.getRequiredFaith())
 					|| serverPlayer.isCreative())
+					&& (!playerCap.isRidingHorse() || msg.spell.getHorsebackAnimation() != null))
 			{
 				playerCap.raiseFP(-msg.spell.getFPConsumption());
-				StaticAnimation animation = msg.spell.getCastingAnimation();
+				StaticAnimation animation = playerCap.isRidingHorse() ? msg.spell.getHorsebackAnimation() : msg.spell.getCastingAnimation();
 				playerCap.playAnimationSynchronized(animation, 0.0F);
 			}
 		});

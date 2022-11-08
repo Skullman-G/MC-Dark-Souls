@@ -231,45 +231,53 @@ public final class Animations
 						})
 					});
 	
-	public static final StaticAnimation BIPED_CAST_MIRACLE_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/cast_miracle_spear", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+	private static final Event[] LIGHTNING_SPEAR_EVENTS = new Event[]
+			{
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
 					{
-							Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
-							{
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
-							}),
-							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
-							{
-								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
-							}),
-							Event.create(0.9F, Side.SERVER, (cap) ->
-							{
-								LightningSpear spear = LightningSpear.lightningSpear(cap);
-								spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
-								cap.getLevel().addFreshEntity(spear);
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get());
-							})
-					});
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
+					}),
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+					{
+						cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+					}),
+					Event.create(0.9F, Side.SERVER, (cap) ->
+					{
+						LightningSpear spear = LightningSpear.lightningSpear(cap);
+						spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
+						cap.getLevel().addFreshEntity(spear);
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get());
+					})
+			};
+	
+	public static final StaticAnimation BIPED_CAST_MIRACLE_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/cast_miracle_spear", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, LIGHTNING_SPEAR_EVENTS);
+	public static final StaticAnimation HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/horseback_cast_miracle_spear", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, LIGHTNING_SPEAR_EVENTS);
+	
+	private static final Event[] GREAT_LIGHTNING_SPEAR_EVENTS = new Event[]
+			{
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+					{
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get(), 0.5F, 1.0F);
+					}),
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+					{
+						cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.GREAT_LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
+					}),
+					Event.create(0.9F, Side.SERVER, (cap) ->
+					{
+						LightningSpear spear = LightningSpear.greatLightningSpear(cap);
+						spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
+						cap.getLevel().addFreshEntity(spear);
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get(), 0.5F, 1.0F);
+					})
+			};
 	
 	public static final StaticAnimation BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/cast_miracle_spear", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-					{
-							Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
-							{
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get(), 0.5F, 1.0F);
-							}),
-							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
-							{
-								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.GREAT_LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
-							}),
-							Event.create(0.9F, Side.SERVER, (cap) ->
-							{
-								LightningSpear spear = LightningSpear.greatLightningSpear(cap);
-								spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
-								cap.getLevel().addFreshEntity(spear);
-								cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get(), 0.5F, 1.0F);
-							})
-					});
+			.addProperty(StaticAnimationProperty.EVENTS, GREAT_LIGHTNING_SPEAR_EVENTS);
+	public static final StaticAnimation HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR = new ActionAnimation(0.3F, "biped/combat/horseback_cast_miracle_spear", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, GREAT_LIGHTNING_SPEAR_EVENTS);
 	
 	// Big Weapon
 	public static final MirrorAnimation BIPED_HOLDING_BIG_WEAPON = new MirrorAnimation(0.2F, true, true,
