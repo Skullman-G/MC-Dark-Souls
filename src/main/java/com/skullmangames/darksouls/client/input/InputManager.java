@@ -116,7 +116,7 @@ public class InputManager
 		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
-				&& !this.player.isUnderWater()
+				&& (!this.player.isUnderWater() || this.player.isOnGround())
 				&& (this.player.isOnGround() || this.playerCap.isRidingHorse())
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
