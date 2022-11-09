@@ -83,6 +83,10 @@ public class ModAttributes
 		general(ModEntities.FIRE_KEEPER.get(), event);
 		general(ModEntities.FALCONER.get(), event);
 		
+		general(EntityType.ZOMBIE, event);
+		general(EntityType.HUSK, event);
+		general(EntityType.DROWNED, event);
+		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
 		withEquipLoad(ModEntities.PETRUS_OF_THOROLUND.get(), event);

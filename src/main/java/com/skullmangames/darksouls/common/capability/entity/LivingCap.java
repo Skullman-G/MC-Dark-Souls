@@ -445,7 +445,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
-		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
+		float staminaDmg = weapon == null ? 4F : Math.max(4F, weapon.getStaminaDamage()) * staminaDmgMul;
 		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 

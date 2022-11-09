@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
@@ -132,11 +131,6 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		if (combo + 1 < animations.length) combo += 1;
 		else if (move.getFirst()) combo = 0;
 		return animations[combo];
-	}
-
-	public List<StaticAnimation> getMountAttackMotion()
-	{
-		return null;
 	}
 	
 	public SoundEvent getSwingSound()
