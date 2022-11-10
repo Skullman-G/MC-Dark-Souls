@@ -345,6 +345,8 @@
 	"attribute.darksouls attunement_slots": "Attunement Slots",
 	"attribute.darksouls.lightning_defense": "Lightning Defense",
 	
+	"command.failed": "Command failed",
+	
 	"covenant.darksouls.none": "None",
 	"covenant.darksouls.warriors_of_sunlight": "Warriors of Sunlight",
 	
