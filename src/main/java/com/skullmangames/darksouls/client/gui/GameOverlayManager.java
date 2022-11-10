@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
-import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
@@ -48,7 +47,7 @@ public class GameOverlayManager
 	private static int saveLastHealth;
 	public static boolean isHealing = false;
 	
-	private static float lastFP;
+	public static float lastFP;
 	private static float saveLastFP;
 	private static final Timer fpDrainCooldown = new Timer();
 	private static final Timer fpDrainTimer = new Timer();
@@ -57,7 +56,7 @@ public class GameOverlayManager
 	private static final Timer staminaTimer = new Timer();
 	private static final Timer staminaDrainTimer = new Timer();
 	private static final Timer stamiaDrainCooldownTimer = new Timer();
-	private static float lastStamina;
+	public static float lastStamina;
 	private static float saveLastStamina;
 	private static float saveLastStamina2;
 	
@@ -202,7 +201,7 @@ public class GameOverlayManager
 	
 	private static void renderFP(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
-		AbstractClientPlayerCap<?> player = getCameraPlayerCap();
+		LocalPlayerCap player = getCameraPlayerCap();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -457,7 +456,7 @@ public class GameOverlayManager
 	
 	private static void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
-		AbstractClientPlayerCap<?> player = getCameraPlayerCap();
+		LocalPlayerCap player = getCameraPlayerCap();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
