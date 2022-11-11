@@ -1,10 +1,10 @@
 {
-  "name" : "darksouls:falconer_camp/falconer_tower",
+  "name" : "darksouls:sunlight_altar/sunlight_altar",
   "fallback" : "minecraft:empty",
   "elements" : [ {
     "weight" : 1,
     "element" : {
-      "location" : "darksouls:falconer_camp/falconer_tower",
+      "location" : "darksouls:sunlight_altar/sunlight_altar",
       "processors" : "minecraft:empty",
       "projection" : "rigid",
       "element_type" : "minecraft:single_pool_element"
