@@ -24,7 +24,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -300,11 +300,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.orgEntity.getFoodData().setFoodLevel(15);
 	}
 	
-	public float getAttackSpeed()
-	{
-		return (float)this.orgEntity.getAttributeValue(Attributes.ATTACK_SPEED);
-	}
-	
 	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
@@ -347,8 +342,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType)
+	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
 	{
-		return HumanoidCap.getHumanoidHitAnimation(this, stunType);
+		return HumanoidCap.getHumanoidHitAnimation(this, attacker, stunType);
 	}
 }

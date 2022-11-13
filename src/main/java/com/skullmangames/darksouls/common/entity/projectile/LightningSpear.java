@@ -135,7 +135,7 @@ public class LightningSpear extends Projectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.DEFAULT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.damage)), this.damage);
+		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.LIGHT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.damage)), this.damage);
 	}
 	
 	public int getParticle()

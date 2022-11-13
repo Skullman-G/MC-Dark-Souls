@@ -97,12 +97,12 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType)
+	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
 	{
-		return getHumanoidHitAnimation(this, stunType);
+		return getHumanoidHitAnimation(this, attacker, stunType);
 	}
 	
-	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, StunType stunType)
+	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, Entity attacker, StunType stunType)
 	{
 		if (entityCap.getOriginalEntity().getControllingPassenger() != null)
 		{
@@ -115,14 +115,27 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		}
 		else
 		{
+			float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
+			float yRot = entityCap.getYRot() - 180;
+			if (yRot < -180) yRot += 360F;
+			float dir = Math.abs(-yRot - attackAngle);
 			switch (stunType)
 			{
-				case DEFAULT:
-					return Animations.BIPED_HIT_SHORT;
-					
 				case DISARMED:
 					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
 					return Animations.BIPED_DISARM_SHIELD_LEFT;
+					
+				case LIGHT:
+					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_LIGHT_RIGHT
+							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_LIGHT_BACK
+							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_LIGHT_LEFT
+							: Animations.BIPED_HIT_LIGHT_FRONT;
+					
+				case HEAVY:
+					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_HEAVY_RIGHT
+							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_HEAVY_BACK
+							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_HEAVY_LEFT
+							: Animations.BIPED_HIT_HEAVY_FRONT;
 					
 				case SMASH_FRONT:
 					return Animations.BIPED_HIT_DOWN_FRONT;

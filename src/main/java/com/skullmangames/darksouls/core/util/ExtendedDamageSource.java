@@ -40,7 +40,7 @@ public interface ExtendedDamageSource
 	public static DamageSourceExtended getFrom(DamageSource org, float amount)
 	{
 		int reqDeflection = amount > 5.0F ? Deflection.MEDIUM.getLevel() : amount > 10.0F ? Deflection.HEAVY.getLevel() : Deflection.LIGHT.getLevel();
-		StunType stunType = amount > 10.0F ? StunType.SMASH_BACK : StunType.DEFAULT;
+		StunType stunType = amount > 10.0F ? StunType.SMASH_BACK : StunType.LIGHT;
 		float poiseDamage = 1.0F;
 		float staminaDamage = 1.0F;
 		LivingCap<?> cap = org.getDirectEntity() instanceof LivingEntity ? (LivingCap<?>)org.getDirectEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) : null;
@@ -64,7 +64,7 @@ public interface ExtendedDamageSource
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(IndirectEntityDamageSource org, float amount)
 	{
-		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), StunType.DEFAULT, 1.0F, 0.0F, new Damage(DamageType.REGULAR, amount));
+		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), StunType.LIGHT, 1.0F, 0.0F, new Damage(DamageType.REGULAR, amount));
 	}
 	
 	public float getAmount();
@@ -82,7 +82,7 @@ public interface ExtendedDamageSource
 	
 	public enum StunType
 	{
-		NONE(0), DEFAULT(1), DISARMED(1), SMASH_FRONT(2), SMASH_BACK(2);
+		NONE(0), DISARMED(0), LIGHT(1), HEAVY(2), SMASH_FRONT(3), SMASH_BACK(3);
 		
 		private final int level;
 		
@@ -91,14 +91,10 @@ public interface ExtendedDamageSource
 			this.level = level;
 		}
 		
-		public int getLevel()
-		{
-			return this.level;
-		}
-		
 		public StunType downgrade()
 		{
-			if (this.level == 2) return DEFAULT;
+			if (this.level == 3) return HEAVY;
+			if (this.level == 2) return LIGHT;
 			else return NONE;
 		}
 	}
