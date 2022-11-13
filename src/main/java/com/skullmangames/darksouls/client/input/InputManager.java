@@ -618,7 +618,7 @@ public class InputManager
 					}
 				}
 			}
-			else if (!playerState.isRotationLocked())
+			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON && !playerState.isRotationLocked())
 			{
 				inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
 				inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
