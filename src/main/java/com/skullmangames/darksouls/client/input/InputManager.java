@@ -617,11 +617,11 @@ public class InputManager
 						event.getInput().leftImpulse = left;
 					}
 				}
-				else if (!playerState.isRotationLocked())
-				{
-					inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
-					inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
-				}
+			}
+			else if (!playerState.isRotationLocked())
+			{
+				inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
+				inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
 			}
 			
 			if (inputManager.playerCap.isBlocking())
