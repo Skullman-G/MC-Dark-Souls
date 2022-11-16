@@ -104,11 +104,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	
 	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, Entity attacker, StunType stunType)
 	{
-		if (entityCap.getOriginalEntity().getControllingPassenger() != null)
-		{
-			return Animations.BIPED_HIT_ON_MOUNT;
-		}
-		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
+		if (entityCap.isBlocking() && stunType != StunType.DISARMED)
 		{
 			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
 			return Animations.BIPED_BLOCK_HIT_MIRROR;
@@ -137,11 +133,14 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 							: dir <= 135 && dir >= 45 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
 							: entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
 					
-				case SMASH_FRONT:
-					return Animations.BIPED_HIT_DOWN_FRONT;
+				case SMASH:
+					return Animations.BIPED_HIT_SMASH;
 					
-				case SMASH_BACK:
-					return Animations.BIPED_HIT_DOWN_BACK;
+				case FLY:
+					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
+							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
+							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
+							: Animations.BIPED_HIT_FLY;
 					
 				default:
 					return null;

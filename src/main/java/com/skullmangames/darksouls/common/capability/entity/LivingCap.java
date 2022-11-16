@@ -384,6 +384,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		if(hitAnimation != null)
 		{
+			if (stunType.getLevel() == 3)
+			{
+				if (this.orgEntity.getVehicle() != null) this.orgEntity.stopRiding();
+			}
 			this.playAnimationSynchronized(hitAnimation, 0.0F);
 		}
 	}
