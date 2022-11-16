@@ -126,16 +126,16 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					return Animations.BIPED_DISARM_SHIELD_LEFT;
 					
 				case LIGHT:
-					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_LIGHT_RIGHT
-							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_LIGHT_BACK
-							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_LIGHT_LEFT
-							: Animations.BIPED_HIT_LIGHT_FRONT;
+					return dir <= 315 && dir >= 225 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
+							: dir <= 225 && dir >= 135 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK : Animations.BIPED_HIT_LIGHT_BACK
+							: dir <= 135 && dir >= 45 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT : Animations.BIPED_HIT_LIGHT_LEFT
+							: entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT : Animations.BIPED_HIT_LIGHT_FRONT;
 					
 				case HEAVY:
-					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_HEAVY_RIGHT
-							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_HEAVY_BACK
-							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_HEAVY_LEFT
-							: Animations.BIPED_HIT_HEAVY_FRONT;
+					return dir <= 315 && dir >= 225 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT : Animations.BIPED_HIT_HEAVY_RIGHT
+							: dir <= 225 && dir >= 135 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK : Animations.BIPED_HIT_HEAVY_BACK
+							: dir <= 135 && dir >= 45 ? entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
+							: entityCap.isRidingHorse() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
 					
 				case SMASH_FRONT:
 					return Animations.BIPED_HIT_DOWN_FRONT;

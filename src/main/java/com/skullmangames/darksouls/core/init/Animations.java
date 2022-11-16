@@ -138,6 +138,24 @@ public final class Animations
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	public static final StaticAnimation BIPED_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/heavy_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	
 	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(0.08F, "biped/combat/hit_on_mount", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_DOWN_BACK = new InvincibleAnimation(0.08F, "biped/combat/hit_down_back", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_DOWN_FRONT = new InvincibleAnimation(0.08F, "biped/combat/hit_down_front", (models) -> models.ENTITY_BIPED);
