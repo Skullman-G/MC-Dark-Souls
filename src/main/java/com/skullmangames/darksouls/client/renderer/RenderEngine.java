@@ -40,7 +40,7 @@ import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -339,10 +339,10 @@ public class RenderEngine
 		{
 			if (!ClientManager.INSTANCE.isCombatModeActive())
 			{
-				if (event.getItemStack().getItem() instanceof IHaveDarkSoulsUseAction)
+				if (event.getItemStack().getItem() instanceof HasDarkSoulsUseAction)
 				{
 					Minecraft minecraft = Minecraft.getInstance();
-					IHaveDarkSoulsUseAction item = (IHaveDarkSoulsUseAction)event.getItemStack().getItem();
+					HasDarkSoulsUseAction item = (HasDarkSoulsUseAction)event.getItemStack().getItem();
 					FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
 					event.setCanceled(true);
 				}

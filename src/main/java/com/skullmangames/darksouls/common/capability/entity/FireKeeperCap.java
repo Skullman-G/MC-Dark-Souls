@@ -10,7 +10,7 @@ public class FireKeeperCap extends HumanoidCap<AbstractFireKeeper>
 	@Override
 	public void updateMotion()
 	{
-		super.commonCreatureUpdateMotion();
+		super.commonMotionUpdate();
 	}
 	
 	@Override
@@ -19,7 +19,7 @@ public class FireKeeperCap extends HumanoidCap<AbstractFireKeeper>
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK_IDLE, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.setCurrentMotionsToDefault();
 	}

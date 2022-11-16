@@ -12,7 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.sounds.SoundEvent;
 
-public class HumanityItem extends Item implements IHaveDarkSoulsUseAction
+public class HumanityItem extends Item implements HasDarkSoulsUseAction
 {
 	private final int amount;
 	

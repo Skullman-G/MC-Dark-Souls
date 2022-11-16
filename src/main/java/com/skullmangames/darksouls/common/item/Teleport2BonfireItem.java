@@ -24,7 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.sounds.SoundEvent;
 
-public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseAction
+public class Teleport2BonfireItem extends Item implements HasDarkSoulsUseAction
 {
 	private static final UUID SPEED_MODIFIER_CASTING_UUID = UUID.fromString("7b6eb570-5411-4c74-9b82-ce52e68c5ac5");
 	private final boolean looseAfterUse;

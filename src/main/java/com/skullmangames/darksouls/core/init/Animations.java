@@ -6,13 +6,13 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.client.particles.spawner.CircleParticleSpawner;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation.AnimConfig;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
-import com.skullmangames.darksouls.common.animation.types.ConsumeAnimation;
 import com.skullmangames.darksouls.common.animation.types.BlockAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
@@ -88,9 +88,9 @@ public final class Animations
 		}
 	}
 
-	public static final StaticAnimation BIPED_EAT = new ConsumeAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_DRINK = new ConsumeAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_CONSUME_SOUL = new ConsumeAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_EAT = new MirrorAnimation(0.2F, true, "biped/living/eat_r", "biped/living/eat_l", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_DRINK = new MirrorAnimation(0.2F, true, "biped/living/drink_r", "biped/living/drink_l", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_CONSUME_SOUL = new MirrorAnimation(0.2F, true, "biped/living/consume_soul_r", "biped/living/consume_soul_l", (models) -> models.ENTITY_BIPED);
 
 	public static final StaticAnimation BIPED_BLOCK = new AdaptableAnimation(0.2F, true, (models) -> models.ENTITY_BIPED,
 			new AnimConfig(LivingMotion.BLOCKING, "biped/combat/block_mirror", "biped/combat/block", false),
@@ -122,14 +122,22 @@ public final class Animations
 	public static final StaticAnimation BIPED_SPEER_AIM = new AimingAnimation(0.16F, false, "biped/combat/javelin_aim_mid", "biped/combat/javelin_aim_up", "biped/combat/javelin_aim_down", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_SPEER_REBOUND = new ReboundAnimation(0.08F, false, "biped/combat/javelin_throw_mid", "biped/combat/javelin_throw_up", "biped/combat/javelin_throw_down", (models) -> models.ENTITY_BIPED);
 
-	public static final StaticAnimation BIPED_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/combat/hit/light_front", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/combat/hit/light_left", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/light_right", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/combat/hit/light_back", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/combat/hit/heavy_front", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/combat/hit/heavy_back", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/combat/hit/heavy_left", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/heavy_right", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/combat/hit/light_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/combat/hit/light_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/light_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/combat/hit/light_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/combat/hit/heavy_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/combat/hit/heavy_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/combat/hit/heavy_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/heavy_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	public static final StaticAnimation BIPED_HIT_ON_MOUNT = new HitAnimation(0.08F, "biped/combat/hit_on_mount", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_DOWN_BACK = new InvincibleAnimation(0.08F, "biped/combat/hit_down_back", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_DOWN_FRONT = new InvincibleAnimation(0.08F, "biped/combat/hit_down_front", (models) -> models.ENTITY_BIPED);

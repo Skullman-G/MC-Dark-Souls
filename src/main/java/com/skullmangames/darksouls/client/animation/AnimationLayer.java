@@ -39,8 +39,7 @@ public class AnimationLayer
 		if (part == LayerPart.RIGHT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R"));
 		else if (part == LayerPart.LEFT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L"));
 		else if (part == LayerPart.UP) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R",
-				"Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L",
-				"Head", "Chest"));
+				"Shoulder_L", "Arm_L", "Ellbow_L", "Tool_L", "Hand_L", "Head", "Chest"));
 	}
 	
 	public boolean isJointEnabled(String joint)
@@ -157,15 +156,13 @@ public class AnimationLayer
 
 	public static class BaseLayer extends AnimationLayer
 	{
-		protected Map<LayerPart, AnimationLayer> compositeLayers = new HashMap<>();
+		protected Map<LayerPart, AnimationLayer> mixLayers = new HashMap<>();
 
 		public BaseLayer()
 		{
 			super(LayerPart.FULL);
-			this.compositeLayers.computeIfAbsent(LayerPart.LEFT, AnimationLayer::new);
-			this.compositeLayers.computeIfAbsent(LayerPart.RIGHT, AnimationLayer::new);
-			this.compositeLayers.computeIfAbsent(LayerPart.UP, AnimationLayer::new);
-			this.compositeLayers.put(LayerPart.FULL, this);
+			for (LayerPart part : LayerPart.mixLayers()) this.mixLayers.computeIfAbsent(part, AnimationLayer::new);
+			this.mixLayers.put(LayerPart.FULL, this);
 		}
 		
 		@Override
@@ -179,7 +176,7 @@ public class AnimationLayer
 		{
 			super.update(entityCap);
 
-			for (AnimationLayer layer : this.compositeLayers.values())
+			for (AnimationLayer layer : this.mixLayers.values())
 			{
 				if (layer != this)
 				{
@@ -190,7 +187,7 @@ public class AnimationLayer
 
 		public void disableLayer(LayerPart part)
 		{
-			AnimationLayer layer = this.compositeLayers.get(part);
+			AnimationLayer layer = this.mixLayers.get(part);
 			layer.disabled = true;
 			Animations.DUMMY_ANIMATION.putOnPlayer(layer.animationPlayer);
 		}
@@ -209,16 +206,16 @@ public class AnimationLayer
 	{
 		FULL, UP, LEFT, RIGHT;
 		
-		public static LayerPart[] compositeLayers()
+		public static LayerPart[] mixLayers()
 		{
 			return new LayerPart[] { UP, LEFT, RIGHT };
 		}
 		
-		public LayerPart[] otherCompositeLayers()
+		public LayerPart[] otherMixLayers()
 		{
 			if (this == UP) return new LayerPart[] { LEFT, RIGHT };
 			if (this == LEFT || this == RIGHT) return new LayerPart[] { UP };
-			return compositeLayers();
+			return mixLayers();
 		}
 	}
 }

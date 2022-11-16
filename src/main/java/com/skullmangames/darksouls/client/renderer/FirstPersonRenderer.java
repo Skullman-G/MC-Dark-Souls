@@ -60,7 +60,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
 		boolean flag2 = false;
 		
-		for (LayerPart layerPart : LayerPart.compositeLayers())
+		for (LayerPart layerPart : LayerPart.mixLayers())
 		{
 			if (entityCap.getClientAnimator().getCompositeLayer(layerPart).animationPlayer.getPlay() instanceof AimingAnimation)
 			{

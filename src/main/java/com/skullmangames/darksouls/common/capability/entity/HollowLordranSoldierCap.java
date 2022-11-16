@@ -32,7 +32,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_SOLDIER_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_SOLDIER_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK_IDLE, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_CROSSBOW_AIM);
@@ -75,6 +75,6 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	@Override
 	public void updateMotion()
 	{
-		super.commonCreatureUpdateMotion();
+		super.commonMotionUpdate();
 	}
 }

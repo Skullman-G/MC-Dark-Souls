@@ -73,7 +73,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-		for (LayerPart part : LayerPart.compositeLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
+		for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
 		this.currentlyAttackedEntity = new ArrayList<Entity>();
@@ -186,25 +186,25 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator.update();
 	}
 
-	protected final void commonBipedCreatureAnimatorInit(ClientAnimator animatorClient)
+	protected final void commonBipedAnimatorInit(ClientAnimator animatorClient)
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK_IDLE, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 	}
 
-	protected final void commonCreatureUpdateMotion()
+	protected final void commonMotionUpdate()
 	{
 		if (this.orgEntity.getHealth() <= 0.0F)
 		{
 			currentMotion = LivingMotion.DEATH;
 		}
-		else if (this.orgEntity.getVehicle() instanceof Horse)
+		else if (this.isRidingHorse())
 		{
-			currentMotion = LivingMotion.HORSEBACK_IDLE;
+			this.currentMotion = LivingMotion.HORSEBACK;
 		}
 		else
 		{

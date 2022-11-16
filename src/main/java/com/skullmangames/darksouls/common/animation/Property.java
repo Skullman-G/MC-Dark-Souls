@@ -27,6 +27,7 @@ public abstract class Property<T>
 		public static final ActionAnimationProperty<Boolean> MOVE_VERTICAL = new ActionAnimationProperty<Boolean>();
 		public static final ActionAnimationProperty<MovementAnimationSet> MOVEMENT_ANIMATION_SETTER = new ActionAnimationProperty<MovementAnimationSet>();
 		public static final ActionAnimationProperty<Boolean> AFFECT_SPEED = new ActionAnimationProperty<Boolean>();
+		public static final ActionAnimationProperty<Boolean> ALLOW_MIX_LAYERS = new ActionAnimationProperty<Boolean>();
 	}
 	
 	@FunctionalInterface

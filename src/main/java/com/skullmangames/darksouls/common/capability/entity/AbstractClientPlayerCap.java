@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
@@ -17,7 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
@@ -49,39 +48,13 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			this.currentMotion = LivingMotion.DEATH;
 		}
-		else if (this.orgEntity.isUsingItem() && this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof IHaveDarkSoulsUseAction)
-		{
-			ItemStack useitem = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand());
-			if (useitem.getItem() instanceof IHaveDarkSoulsUseAction)
-			{
-				DarkSoulsUseAction useaction = ((IHaveDarkSoulsUseAction)useitem.getItem()).getDarkSoulsUseAnimation();
-				
-				switch (useaction)
-				{
-					case DARKSIGN:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					case MIRACLE:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					case SOUL_CONTAINER:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					default:
-						break;
-				}
-			}
-		}
 		else if (this.orgEntity.isFallFlying())
 		{
 			this.currentMotion = LivingMotion.FLYING;
 		}
-		else if (this.orgEntity.getVehicle() instanceof Horse)
+		else if (this.isRidingHorse())
 		{
-			this.currentMotion = LivingMotion.HORSEBACK_IDLE;
+			this.currentMotion = LivingMotion.HORSEBACK;
 		}
 		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{
@@ -146,7 +119,16 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof HasDarkSoulsUseAction)
+			{
+				DarkSoulsUseAction useaction = ((HasDarkSoulsUseAction)this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem()).getDarkSoulsUseAnimation();
+				
+				if (useaction == DarkSoulsUseAction.DARKSIGN || useaction == DarkSoulsUseAction.MIRACLE || useaction == DarkSoulsUseAction.SOUL_CONTAINER)
+				{
+					this.currentMixMotions.put(layerPart, LivingMotion.CONSUME_SOUL);
+				}
+			}
+			else if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();

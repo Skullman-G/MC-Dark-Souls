@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class FirstPersonRendererOverride
 {
-	public static void renderArmWithItem(IHaveDarkSoulsUseAction item, float swingProgress, float partialticks,
+	public static void renderArmWithItem(HasDarkSoulsUseAction item, float swingProgress, float partialticks,
 			float equipProgress, InteractionHand hand, ItemStack itemstack, PoseStack matrixstack,
 			MultiBufferSource rendertypebuffer, int i)
 	{

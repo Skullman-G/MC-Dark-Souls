@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.item;
 
 import net.minecraft.sounds.SoundEvent;
 
-public interface IHaveDarkSoulsUseAction
+public interface HasDarkSoulsUseAction
 {
 	public DarkSoulsUseAction getDarkSoulsUseAnimation();
 	
