@@ -18,7 +18,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,15 +31,15 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	protected float prevYaw;
 	protected float bodyYaw;
 	protected float prevBodyYaw;
-	private ItemStack prevHeldItem;
-	private ItemStack prevHeldItemOffHand;
+	private Item prevHeldItem;
+	private Item prevHeldItemOffHand;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.prevHeldItem = ItemStack.EMPTY;
-		this.prevHeldItemOffHand = ItemStack.EMPTY;
+		this.prevHeldItem = Items.AIR;
+		this.prevHeldItemOffHand = Items.AIR;
 	}
 	
 	@Override
@@ -204,8 +205,8 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		ItemStack mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
-		ItemStack offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
+		Item mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem();
+		Item offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND).getItem();
 		boolean isMainHandChanged = this.prevHeldItem != mainHandItem;
 		boolean isOffHandChanged = this.prevHeldItemOffHand != offHandItem;
 		

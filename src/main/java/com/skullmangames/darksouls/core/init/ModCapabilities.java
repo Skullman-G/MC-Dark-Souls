@@ -23,7 +23,7 @@ public class ModCapabilities
 	
 	public static ItemCapability getItemCapability(ItemStack stack)
 	{
-		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+		return stack.isEmpty() ? null : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
 	}
 	
 	public static SpellcasterWeaponCap getSpellcasterWeaponCap(ItemStack stack)
