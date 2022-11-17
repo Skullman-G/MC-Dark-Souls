@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
@@ -332,13 +333,21 @@ public final class Animations
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]
 	{
 			new AttackAnimation(0.5F, 0.0F, 0.7F, 1.0F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_1", (models) -> models.ENTITY_BIPED)
-						.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+						{
+								Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 			new AttackAnimation(0.5F, 0.0F, 0.45F, 1.05F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_2", (models) -> models.ENTITY_BIPED)
-						.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+						{
+								Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -348,21 +357,33 @@ public final class Animations
 	public static final AttackAnimation[] ULTRA_GREATSWORD_HEAVY_ATTACK = new AttackAnimation[]
 	{
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+				})
 				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_2", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 	};
 	public static final AttackAnimation ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+					Event.create(1.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+			})
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -404,7 +425,11 @@ public final class Animations
 
 	// Great Hammer
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 1.57F, 1.9F, 3.75F, "Tool_R", "biped/combat/great_hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(1.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+					Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+			})
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -413,20 +438,32 @@ public final class Animations
 	public static final AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 	{
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_2", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 	};
 	public static final AttackAnimation GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+					Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+			})
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -701,53 +738,78 @@ public final class Animations
 	
 
 	// Stray Demon
-	public static final StaticAnimation STRAY_DEMON_IDLE = new StaticAnimation(1.0F, true, "asylum_demon/idle",
-			(models) -> models.ENTITY_STRAY_DEMON);
-	public static final StaticAnimation STRAY_DEMON_MOVE = new StaticAnimation(0.5F, true, "asylum_demon/move",
-			(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.2F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) });
-	public static final StaticAnimation STRAY_DEMON_DEATH = new StaticAnimation(0.5F, false, "asylum_demon/death",
-			(models) -> models.ENTITY_STRAY_DEMON);
+	public static final StaticAnimation STRAY_DEMON_IDLE = new StaticAnimation(1.0F, true, "asylum_demon/idle", (models) -> models.ENTITY_STRAY_DEMON);
+	public static final StaticAnimation STRAY_DEMON_MOVE = new StaticAnimation(0.5F, true, "asylum_demon/move", (models) -> models.ENTITY_STRAY_DEMON)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+					Event.create(0.4F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+					Event.create(1.2F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+					Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+			});
+	public static final StaticAnimation STRAY_DEMON_DEATH = new StaticAnimation(0.5F, false, "asylum_demon/death", (models) -> models.ENTITY_STRAY_DEMON);
 
 	public static final AttackAnimation[] STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
-	{ new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R", "asylum_demon/light_attack_1", (models) -> models.ENTITY_STRAY_DEMON)
-		.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.52F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
-			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-			.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
-			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
-			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R", "asylum_demon/light_attack_2",
-					(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())) })
-							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-							.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
-							.addProperty(AttackProperty.PARTICLE,
-									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
-			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R", "asylum_demon/light_attack_3",
-					(models) -> models.ENTITY_STRAY_DEMON).addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.72F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
-							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-							.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
-							.addProperty(AttackProperty.PARTICLE,
-									new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)) };
+	{
+			new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R", "asylum_demon/light_attack_1", (models) -> models.ENTITY_STRAY_DEMON)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.52F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+						Event.create(0.52F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
+			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R", "asylum_demon/light_attack_2", (models) -> models.ENTITY_STRAY_DEMON)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+						Event.create(0.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
+			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R", "asylum_demon/light_attack_3", (models) -> models.ENTITY_STRAY_DEMON)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.72F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(0.72F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)) };
 	public static final AttackAnimation STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R", "asylum_demon/heavy_attack", (models) -> models.ENTITY_STRAY_DEMON)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.92F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
-					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.92F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+					Event.create(0.92F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+			})
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(1.0F, 0.0F, 0.6F, 1.2F, 2.0F,
 			"Tool_R", "asylum_demon/dash_attack", (models) -> models.ENTITY_STRAY_DEMON)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())) })
-					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(0.8F, Side.BOTH, (cap) -> { cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get()); cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get()); }),
+					Event.create(0.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+			})
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F));
 	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root", "asylum_demon/ground_pound", (models) -> models.ENTITY_STRAY_DEMON)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())) })
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(2.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())) })
-					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(1.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(2.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
+					Event.create(2.76F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 40, 3.0F))
+			})
+			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F));
 	
 	// Anastacia of Astora
 	public static final StaticAnimation ANASTACIA_IDLE = new StaticAnimation(0.4F, true, "anastacia_of_astora/idle", (models) -> models.ENTITY_BIPED);

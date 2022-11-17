@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.client.renderer;
 
+import java.util.Random;
+
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
@@ -16,6 +18,9 @@ public class ModCamera extends Camera
 	private Vector2f pivotRot = Vector2f.ZERO;
 	private Vector2f pivotRotOld = Vector2f.ZERO;
 	private double aimZ = 0.0D;
+	private int shakeDuration;
+	private float shakeMagnitude;
+	private final Random random = new Random();
 	
 	@Override
 	public void setup(BlockGetter world, Entity entity, boolean detached, boolean mirror, float partialTick)
@@ -62,6 +67,19 @@ public class ModCamera extends Camera
 	       this.setRotation(direction != null ? direction.toYRot() - 180.0F : 0.0F, 0.0F);
 	       this.move(0.0D, 0.3D, 0.0D);
 	    }
+	    
+	    if (this.shakeDuration > 0)
+	    {
+	    	double y = this.random.nextInt(-1, 2) * 0.1F * this.shakeMagnitude;
+	    	this.move(0, y, 0);
+	    	this.shakeDuration--;
+	    }
+	}
+	
+	public void shake(int duration, float magnitude)
+	{
+		this.shakeDuration = duration;
+		this.shakeMagnitude = magnitude;
 	}
 	
 	public float getPivotXRot(float partialTicks)

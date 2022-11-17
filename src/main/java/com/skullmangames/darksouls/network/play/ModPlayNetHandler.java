@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.Covenant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.Vec3;
 
 public interface ModPlayNetHandler
 {
@@ -29,4 +30,6 @@ public interface ModPlayNetHandler
 	void openCovenantScreen(Covenant covenant);
 	
 	void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports);
+	
+	void shakeCam(Vec3 source, int duration, float magnitude);
 }
