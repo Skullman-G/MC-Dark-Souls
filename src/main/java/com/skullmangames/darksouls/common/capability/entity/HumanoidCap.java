@@ -104,7 +104,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	
 	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, Entity attacker, StunType stunType)
 	{
-		if (entityCap.isBlocking() && stunType != StunType.DISARMED)
+		if (attacker == null) return null;
+		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
 		{
 			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
 			return Animations.BIPED_BLOCK_HIT_MIRROR;

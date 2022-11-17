@@ -161,7 +161,7 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_FLY_BACK = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_back", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_left", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_HIT_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_right", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_LAND_DAMAGE = new HitAnimation(0.05F, "biped/living/land_damage", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/combat/hit/land_heavy", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
