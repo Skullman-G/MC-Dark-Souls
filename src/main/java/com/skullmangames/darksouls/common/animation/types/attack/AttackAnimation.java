@@ -100,7 +100,6 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				entityCap.playSound(this.getSwingSound(entityCap, phase));
 				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
 				{
 					WeaponCap weapon = ModCapabilities.getWeaponCap(entityCap.getOriginalEntity().getMainHandItem());
@@ -169,17 +168,24 @@ public class AttackAnimation extends ActionAnimation
 		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
 		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		EntityState state = this.getState(elapsedTime);
+		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
 		
-		if (spawner == null) return;
-		
-		LivingEntity entity = entityCap.getOriginalEntity();
-		
-		Collider collider = this.getCollider(entityCap, elapsedTime);
-		collider.update(entityCap, phase.getColliderJointName());
-		Vec3 pos = collider.getWorldCenter();
-		if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+		if (spawner != null)
+		{
+			LivingEntity entity = entityCap.getOriginalEntity();
+			
+			Collider collider = this.getCollider(entityCap, elapsedTime);
+			collider.update(entityCap, phase.getColliderJointName());
+			Vec3 pos = collider.getWorldCenter();
+			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+		}
+		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
+		{
+			entityCap.playSound(this.getSwingSound(entityCap, phase));
+		}
 	}
 	
 	@Override

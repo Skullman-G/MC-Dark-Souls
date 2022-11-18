@@ -59,7 +59,7 @@ public class AttackGoal extends Goal
 	public AttackGoal(MobCap<?> mobCap, float minDist, int yDist, boolean affectY, boolean defensive, boolean shouldStrafe)
 	{
 		this.mobCap = mobCap;
-		this.attacker = this.mobCap.getOriginalEntity();
+		this.attacker = mobCap.getOriginalEntity();
 		this.minDist = minDist * minDist;
 		this.yDist = yDist;
 		this.affectY = affectY;

@@ -102,9 +102,9 @@ public final class Animations
 	public static final StaticAnimation BIPED_BLOCK_HIT = new BlockAnimation(0.05F, "biped/combat/block_hit_mirror", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_BLOCK_HIT_MIRROR = new BlockAnimation(0.05F, "biped/combat/block_hit", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_DISARM_SHIELD_LEFT = new BlockAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new BlockAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
 	public static final StaticAnimation BIPED_HORSEBACK_IDLE = new StaticAnimation(0.2F, true, "biped/living/horseback/horseback_idle", (models) -> models.ENTITY_BIPED);
 	
@@ -165,27 +165,27 @@ public final class Animations
 	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/combat/hit/land_heavy", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.1F, "biped/combat/fat_roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_BACK = new DodgingAnimation(0.1F, "biped/combat/roll_back", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_LEFT = new DodgingAnimation(0.1F, true, "biped/combat/roll_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_RIGHT = new DodgingAnimation(0.1F, true, "biped/combat/roll_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final DodgingAnimation BIPED_JUMP_BACK = new DodgingAnimation(0.08F, "biped/combat/jump_back", (models) -> models.ENTITY_BIPED);
 	
 	// Miracle
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
 								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
-							Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+							Event.create(2.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 							Event.create(2.5F, Side.CLIENT, (cap) ->
 							{
 								cap.getLevel().addAlwaysVisibleParticle(ModParticles.MEDIUM_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
@@ -206,12 +206,12 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL_AID = new ActionAnimation(0.5F, "biped/combat/cast_miracle_fast", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
 							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
-						Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+						Event.create(1.0F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 						Event.create(1.0F, Side.CLIENT, (cap) ->
 						{
 							cap.getLevel().addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
@@ -225,12 +225,12 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HOMEWARD = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-						Event.create(Event.ON_BEGIN, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
 							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
-						Event.create(2.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
+						Event.create(2.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
 						Event.create(2.5F, Side.CLIENT, (cap) ->
 						{
 							cap.getLevel().addAlwaysVisibleParticle(ModParticles.TINY_MIRACLE_CIRCLE.get(), cap.getX(), cap.getY() + 0.1F, cap.getZ(), 0, 0, 0);
@@ -258,10 +258,24 @@ public final class Animations
 						}),
 						Event.create(0.6F, Side.SERVER, (cap) ->
 						{
-							List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(cap.getX() - 2.0F, cap.getY() - 2.0F, cap.getZ() - 2.0F, cap.getX() + 2.0F, cap.getY() + 2.0F, cap.getZ() + 2.0F));
+							List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(cap.getX() - 3.0F, cap.getY() - 3.0F, cap.getZ() - 3.0F, cap.getX() + 3.0F, cap.getY() + 3.0F, cap.getZ() + 3.0F));
 							for (Entity target : targets)
 							{
-								cap.knockBackEntity(target, 0.5F);
+								if (target instanceof LivingEntity)
+								{
+									LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+									if (targetCap != null)
+									{
+										StaticAnimation hitAnim = targetCap.getHitAnimation(StunType.FLY, cap.getOriginalEntity());
+										if (hitAnim != null)
+										{
+											if (target.getVehicle() != null) target.stopRiding();
+											targetCap.playAnimationSynchronized(hitAnim, 0F);
+										}
+									}
+									else cap.knockBackEntity(target, 0.5F);
+								}
+								else cap.knockBackEntity(target, 1.0F);
 							}
 						})
 					});
@@ -335,7 +349,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 0.7F, 1.0F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_1", (models) -> models.ENTITY_BIPED)
 						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
-								Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.9F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
@@ -345,7 +359,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 0.45F, 1.05F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_2", (models) -> models.ENTITY_BIPED)
 						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
-								Event.create(0.9F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.9F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
@@ -359,7 +373,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
@@ -370,7 +384,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_2", (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
@@ -381,7 +395,7 @@ public final class Animations
 	public static final AttackAnimation ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/ultra_greatsword_heavy_attack_1", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(1.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+					Event.create(1.6F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 					Event.create(1.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 			})
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
@@ -427,7 +441,7 @@ public final class Animations
 	public static final AttackAnimation GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 1.57F, 1.9F, 3.75F, "Tool_R", "biped/combat/great_hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(1.8F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+					Event.create(1.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
 					Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 			})
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
@@ -440,7 +454,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
 						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
@@ -450,7 +464,7 @@ public final class Animations
 			new AttackAnimation(0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_2", (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
 						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
@@ -461,7 +475,7 @@ public final class Animations
 	public static final AttackAnimation GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", "biped/combat/great_hammer_light_attack_1", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(1.5F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+					Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
 					Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 			})
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
@@ -472,7 +486,7 @@ public final class Animations
 
 	// Axe
 	public static final AttackAnimation AXE_HEAVY_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.55F, 0.7F, 1.5F, "Tool_R", "biped/combat/axe_heavy_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -480,15 +494,15 @@ public final class Animations
 	public static final AttackAnimation[] AXE_LIGHT_ATTACK = new AttackAnimation[]
 	{
 			new AttackAnimation(0.3F, 0.0F, 0.2F, 0.35F, 1.5F, "Tool_R", "biped/combat/axe_light_attack_1", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.16F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.16F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
 			new AttackAnimation(0.2F, 0.0F, 0.15F, 0.4F, 1.25F, "Tool_R", "biped/combat/axe_light_attack_2", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.12F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.12F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM) };
 	public static final AttackAnimation AXE_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.4F, 0.5F, 1.5F, "Tool_R", "biped/combat/axe_dash_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.35F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.35F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -496,13 +510,13 @@ public final class Animations
 
 	// Hammer
 	public static final AttackAnimation HAMMER_DASH_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.6F, 1.4F, "Tool_R", "biped/combat/hammer_dash_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY);
 	public static final AttackAnimation HAMMER_HEAVY_ATTACK = new AttackAnimation(0.5F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R", "biped/combat/hammer_heavy_attack", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -510,7 +524,7 @@ public final class Animations
 	public static final AttackAnimation[] HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 	{
 			new AttackAnimation(0.5F, 0.0F, 0.28F, 0.52F, 1.2F, "Tool_R", "biped/combat/hammer_light_attack", (models) -> models.ENTITY_BIPED)
-				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.STRIKE)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 	};
@@ -557,7 +571,7 @@ public final class Animations
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 			.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM);
-	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.3F, 0.0F, 0.05F, 0.25F, 1.0F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(0.2F, 0.0F, 0.12F, 0.56F, 1.0F, "Tool_R", "biped/combat/straight_sword_dash_attack", (models) -> models.ENTITY_BIPED)
 			.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 			.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 			.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -587,7 +601,7 @@ public final class Animations
 			new Phase(2.56F, 2.76F, 2.88F, 2.88F, "Tool_R", Colliders.BROKEN_SWORD),
 			new Phase(2.88F, 3.08F, 3.2F, 4.2F, "Tool_R", Colliders.BROKEN_SWORD))
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
-					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) });
+					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) });
 	public static final AttackAnimation HOLLOW_OVERHEAD_SWING = new AttackAnimation(0.2F, 0.0F, 0.4F, 0.6F, 1.2F, Colliders.BROKEN_SWORD, "Tool_R", "hollow/overhead_swing", (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -754,7 +768,7 @@ public final class Animations
 			new AttackAnimation(1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R", "asylum_demon/light_attack_1", (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.52F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+						Event.create(0.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
 						Event.create(0.52F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -763,7 +777,7 @@ public final class Animations
 			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R", "asylum_demon/light_attack_2", (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.6F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+						Event.create(0.6F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
 						Event.create(0.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -772,7 +786,7 @@ public final class Animations
 			new AttackAnimation(1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R", "asylum_demon/light_attack_3", (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.72F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(0.72F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
 						Event.create(0.72F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -781,7 +795,7 @@ public final class Animations
 	public static final AttackAnimation STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R", "asylum_demon/heavy_attack", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(0.92F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+					Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
 					Event.create(0.92F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
 			})
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -791,8 +805,8 @@ public final class Animations
 			"Tool_R", "asylum_demon/dash_attack", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(0.04F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-					Event.create(0.8F, Side.BOTH, (cap) -> { cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get()); cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get()); }),
+					Event.create(0.04F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(0.8F, Side.CLIENT, (cap) -> { cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get()); cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get()); }),
 					Event.create(0.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
 			})
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -801,10 +815,10 @@ public final class Animations
 	public static final AttackAnimation STRAY_DEMON_GROUND_POUND = new AttackAnimation(1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root", "asylum_demon/ground_pound", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-					Event.create(1.0F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-					Event.create(1.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-					Event.create(2.76F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
+					Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(1.0F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(1.76F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+					Event.create(2.76F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
 					Event.create(2.76F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 40, 3.0F))
 			})
 			.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)

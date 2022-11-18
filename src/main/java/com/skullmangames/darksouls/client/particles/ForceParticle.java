@@ -27,7 +27,7 @@ public class ForceParticle extends TextureSheetParticle
 	@Override
 	public void tick()
 	{
-		this.quadSize += 2.0F / this.lifetime;
+		this.quadSize += 4.0F / this.lifetime;
 		if (this.age < this.lifetime * 0.7F)
 		{
 			this.alpha += 1.0F / (this.lifetime * 0.7F);

@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StandStillGoal;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -27,6 +28,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		if (!this.isClientSide() && !this.orgEntity.isNoAi())
 		{
+			this.orgEntity.goalSelector.addGoal(0, new StandStillGoal(this));
 			super.resetCombatAI();
 			WeaponCap heldItem = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 			
