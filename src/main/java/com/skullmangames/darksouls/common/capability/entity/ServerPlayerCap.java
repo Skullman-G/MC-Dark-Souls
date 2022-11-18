@@ -239,7 +239,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		if (this.isHuman() == value) return;
 		if (value)
 		{
-			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get(), -0.2F, -0.2F);
+			this.playSound(ModSoundEvents.GENERIC_HUMAN_FORM.get());
 		}
 		super.setHuman(value);
 		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCHuman(this.orgEntity.getId(), this.isHuman()), this.orgEntity);

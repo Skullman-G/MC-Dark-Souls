@@ -19,6 +19,8 @@ import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -114,5 +116,17 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 		{
 			ClientManager.INSTANCE.mainCamera.shake(duration, magnitude);
 		}
+	}
+
+	@Override
+	public void playEntitySound(Entity entity, SoundEvent sound, float volume)
+	{
+		entity.level.playSound(this.minecraft.player, entity, sound, entity.getSoundSource(), volume, 1.0F);
+	}
+
+	@Override
+	public void playSound(Entity entity, SoundEvent sound, float volume)
+	{
+		entity.level.playSound(this.minecraft.player, entity.getX(), entity.getY(), entity.getZ(), sound, entity.getSoundSource(), volume, 1.0F);
 	}
 }

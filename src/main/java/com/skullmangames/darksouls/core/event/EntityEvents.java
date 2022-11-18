@@ -274,7 +274,7 @@ public class EntityEvents
 			playerCap.onSave();
 		}
 		
-		if (entityCap.isClientSide()) entityCap.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);
+		if (entityCap.isClientSide()) entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
 		entityCap.getAnimator().playDeathAnimation();
 	}
 	

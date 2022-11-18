@@ -415,7 +415,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
 		}
 		
-		this.playSound(shield.getBlockSound(), 0.8F, 1.0F);
+		this.playSound(shield.getBlockSound());
 
 		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
 		{
@@ -578,18 +578,26 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public void playSound(SoundEvent sound)
 	{
-		this.playSound(sound, 1.0F, 1.0F);
+		this.playSound(sound, 1.0F, false);
 	}
 
-	public void playSound(SoundEvent sound, float minPitch, float maxPitch)
+	public void playSound(SoundEvent sound, boolean moves)
 	{
-		this.playSound(sound, minPitch, maxPitch, 1.0F);
+		this.playSound(sound, 1.0F, moves);
 	}
 
-	public void playSound(SoundEvent sound, float minPitch, float maxPitch, float volume)
+	public void playSound(SoundEvent sound, float volume, boolean moves)
 	{
-		this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-				orgEntity.getSoundSource(), volume, 1.0F);
+		if (this.isClientSide())
+		{
+			if (moves) ModNetworkManager.connection.playEntitySound(this.orgEntity, sound, volume);
+			else ModNetworkManager.connection.playSound(this.orgEntity, sound, volume);
+		}
+		else
+		{
+			if (moves) this.getLevel().playSound(null, this.orgEntity, sound, this.orgEntity.getSoundSource(), volume, 1.0F);
+			else this.getLevel().playSound(null, this.getX(), this.getY(), this.getZ(), sound, this.orgEntity.getSoundSource(), volume, 1.0F);
+		}
 	}
 
 	public LivingEntity getTarget()

@@ -294,7 +294,7 @@ public final class Animations
 			{
 					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
 					{
-						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get(), 0.5F, 1.0F);
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
 					}),
 					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 					{
@@ -305,7 +305,7 @@ public final class Animations
 						LightningSpear spear = LightningSpear.greatLightningSpear(cap);
 						spear.shootFromRotation(cap.getOriginalEntity(), cap.getXRot(), cap.getYRot(), 0.0F, 2.0F, 0.0F);
 						cap.getLevel().addFreshEntity(spear);
-						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get(), 0.5F, 1.0F);
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_SHOT.get());
 					})
 			};
 	
@@ -742,9 +742,9 @@ public final class Animations
 	public static final StaticAnimation STRAY_DEMON_MOVE = new StaticAnimation(0.5F, true, "asylum_demon/move", (models) -> models.ENTITY_STRAY_DEMON)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
-					Event.create(0.4F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+					Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 					Event.create(0.4F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
-					Event.create(1.2F, Side.BOTH, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+					Event.create(1.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 					Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 			});
 	public static final StaticAnimation STRAY_DEMON_DEATH = new StaticAnimation(0.5F, false, "asylum_demon/death", (models) -> models.ENTITY_STRAY_DEMON);

@@ -7,6 +7,8 @@ import com.skullmangames.darksouls.common.entity.Covenant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public interface ModPlayNetHandler
@@ -32,4 +34,8 @@ public interface ModPlayNetHandler
 	void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports);
 	
 	void shakeCam(Vec3 source, int duration, float magnitude);
+	
+	void playEntitySound(Entity entity, SoundEvent sound, float volume);
+	
+	void playSound(Entity entity, SoundEvent sound, float volume);
 }

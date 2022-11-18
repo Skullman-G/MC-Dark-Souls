@@ -100,7 +100,7 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				entityCap.playSound(this.getSwingSound(entityCap, phase), 0.0F, 0.0F, 0.5F);
+				entityCap.playSound(this.getSwingSound(entityCap, phase));
 				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
 				{
 					WeaponCap weapon = ModCapabilities.getWeaponCap(entityCap.getOriginalEntity().getMainHandItem());
