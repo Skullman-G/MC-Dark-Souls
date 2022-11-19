@@ -15,7 +15,6 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 	public void initAnimator(ClientAnimator animatorClient)
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 

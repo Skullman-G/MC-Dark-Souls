@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation.AnimConfig;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.animation.types.BlockAnimation;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.DodgingAnimation;
 import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
@@ -52,7 +53,8 @@ public final class Animations
 	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(0.08F, true, "biped/living/float", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(0.08F, true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_DEATH = new StaticAnimation(0.16F, false, "biped/living/death", (models) -> models.ENTITY_BIPED);
+	public static final DeathAnimation BIPED_DEATH = new DeathAnimation(0.05F, "biped/living/death/death", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())) });
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
 	public static final StaticAnimation BIPED_TOUCH_BONFIRE = new ActionAnimation(0.5F, "biped/living/touching_bonfire", (models) -> models.ENTITY_BIPED)
@@ -761,7 +763,7 @@ public final class Animations
 					Event.create(1.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 					Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 			});
-	public static final StaticAnimation STRAY_DEMON_DEATH = new StaticAnimation(0.5F, false, "asylum_demon/death", (models) -> models.ENTITY_STRAY_DEMON);
+	public static final DeathAnimation STRAY_DEMON_DEATH = new DeathAnimation(0.5F, "asylum_demon/death", (models) -> models.ENTITY_STRAY_DEMON);
 
 	public static final AttackAnimation[] STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
 	{

@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 public abstract class Animator
@@ -58,11 +57,6 @@ public abstract class Animator
 	public boolean isReverse()
 	{
 		return false;
-	}
-
-	public void playDeathAnimation()
-	{
-		this.playAnimation(Animations.BIPED_DEATH, 0);
 	}
 
 	public void addLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)

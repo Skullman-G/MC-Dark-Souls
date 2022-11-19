@@ -24,7 +24,6 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
 		animatorClient.setCurrentMotionsToDefault();
 	}

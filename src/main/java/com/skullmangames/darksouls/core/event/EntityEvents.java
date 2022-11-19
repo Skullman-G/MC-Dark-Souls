@@ -264,18 +264,12 @@ public class EntityEvents
 	public static void deathEvent(LivingDeathEvent event)
 	{
 		LivingCap<?> entityCap = (LivingCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entityCap == null) return;
-		if (entityCap instanceof PlayerCap<?> && !entityCap.isClientSide())
-		{
-			PlayerCap<?> playerCap = (PlayerCap<?>)entityCap;
-			playerCap.setHumanity(0);
-			playerCap.setHuman(false);
-			playerCap.setSouls(0);
-			playerCap.onSave();
-		}
 		
-		if (entityCap.isClientSide()) entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
-		entityCap.getAnimator().playDeathAnimation();
+		if (entityCap != null && !entityCap.isClientSide())
+		{
+			entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
+			entityCap.playAnimationSynchronized(entityCap.getDeathAnimation(), 0);
+		}
 	}
 	
 	@SubscribeEvent

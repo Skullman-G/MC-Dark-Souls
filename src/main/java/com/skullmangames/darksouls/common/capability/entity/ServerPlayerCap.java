@@ -68,7 +68,6 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		livingMotionMap.put(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		livingMotionMap.put(LivingMotion.FALL, Animations.BIPED_FALL);
 		livingMotionMap.put(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
-		livingMotionMap.put(LivingMotion.DEATH, Animations.BIPED_DEATH);
 
 		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())
 		{
@@ -115,6 +114,17 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 			teleportsNbt.add(tnbt);
 		}
 		nbt.put("Teleports", teleportsNbt);
+	}
+	
+	@Override
+	public void onDeath()
+	{
+		super.onDeath();
+		this.setHumanity(0);
+		this.setHuman(false);
+		this.setSouls(0);
+		this.setFP(this.getMaxFP());
+		this.onSave();
 	}
 	
 	@Override
@@ -390,9 +400,6 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	{
 		return this.orgEntity;
 	}
-
-	@Override
-	public void onDeath() {}
 
 	@Override
 	public float getEncumbrance()

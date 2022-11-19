@@ -135,8 +135,7 @@ public class ClientAnimator extends Animator
 		this.baseLayer.update(this.entityCap);
 		this.updatePose();
 		
-		if (this.baseLayer.animationPlayer.isEnd() && this.baseLayer.nextAnimation == null
-				&& this.currentMotion != LivingMotion.DEATH)
+		if (this.baseLayer.animationPlayer.isEnd() && this.baseLayer.nextAnimation == null)
 		{
 			this.entityCap.updateMotion();
 			this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion, LayerPart.FULL), this.entityCap, 0.0F);
@@ -171,13 +170,6 @@ public class ClientAnimator extends Animator
 
 		this.currentMotion = this.entityCap.currentMotion;
 		this.currentMixMotions.putAll(this.entityCap.currentMixMotions);
-	}
-
-	@Override
-	public void playDeathAnimation()
-	{
-		this.playAnimation(this.livingAnimations.get(LivingMotion.DEATH), 0);
-		this.currentMotion = LivingMotion.DEATH;
 	}
 
 	public AnimationLayer getCompositeLayer(AnimationLayer.LayerPart layerPart)

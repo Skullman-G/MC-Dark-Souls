@@ -1,4 +1,13 @@
 {
+	"entity.generic.land":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/land"
+		]
+	},
+	
 	"entity.lightning_spear.appear":
 	{
 		"category": "entity",

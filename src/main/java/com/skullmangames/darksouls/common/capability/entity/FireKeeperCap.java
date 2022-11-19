@@ -20,7 +20,6 @@ public class FireKeeperCap extends HumanoidCap<AbstractFireKeeper>
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 }

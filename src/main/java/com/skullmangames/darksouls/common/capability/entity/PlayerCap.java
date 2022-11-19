@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -253,7 +254,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.addLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
 		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
@@ -304,6 +304,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	public StaticAnimation getDeflectAnimation()
 	{
 		return Animations.HOLLOW_DEFLECTED;
+	}
+	
+	@Override
+	public DeathAnimation getDeathAnimation()
+	{
+		return Animations.BIPED_DEATH;
 	}
 	
 	@Override

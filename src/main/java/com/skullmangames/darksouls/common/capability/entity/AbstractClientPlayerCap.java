@@ -45,11 +45,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	@Override
 	public void updateMotion()
 	{
-		if (this.orgEntity.getHealth() <= 0.0F)
-		{
-			this.currentMotion = LivingMotion.DEATH;
-		}
-		else if (this.orgEntity.isFallFlying())
+		if (this.orgEntity.isFallFlying())
 		{
 			this.currentMotion = LivingMotion.FLYING;
 		}
@@ -217,11 +213,6 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			this.prevHeldItemOffHand = offHandItem;
 		}
 		super.updateOnClient();
-		
-		if(this.orgEntity.deathTime == 1)
-		{
-			this.getClientAnimator().playDeathAnimation();
-		}
 	}
 
 	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)

@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -96,6 +97,12 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();
 		return true;
+	}
+	
+	@Override
+	public DeathAnimation getDeathAnimation()
+	{
+		return Animations.BIPED_DEATH;
 	}
 	
 	@Override

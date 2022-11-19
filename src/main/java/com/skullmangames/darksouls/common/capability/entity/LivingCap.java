@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -175,8 +176,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 		if (this.canUseShield && this.getStamina() <= 0.0F) this.canUseShield = false;
 		else if (this.getStamina() >= this.getMaxStamina()) this.canUseShield = true;
-		
-		if (this.orgEntity.deathTime == 19) this.onDeath();
 	}
 
 	@Override
@@ -193,16 +192,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
 	}
 
 	protected final void commonMotionUpdate()
 	{
-		if (this.orgEntity.getHealth() <= 0.0F)
-		{
-			currentMotion = LivingMotion.DEATH;
-		}
-		else if (this.isRidingHorse())
+		if (this.isRidingHorse())
 		{
 			this.currentMotion = LivingMotion.HORSEBACK;
 		}
@@ -315,6 +309,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return this.canUseShield && this.orgEntity.getVehicle() == null;
 	}
+	
+	public void onDeath() {}
 
 	public boolean hurt(DamageSource damageSource, float amount)
 	{
@@ -476,6 +472,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return null;
 	}
+	
+	public abstract DeathAnimation getDeathAnimation();
 
 	public void gatherDamageDealt(ExtendedDamageSource source, float amount) {}
 
@@ -724,11 +722,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
 	{
 		return null;
-	}
-
-	public void onDeath()
-	{
-		this.getAnimator().playDeathAnimation();
 	}
 
 	@Override

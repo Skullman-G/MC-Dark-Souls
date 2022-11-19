@@ -63,8 +63,6 @@ public abstract class EntityCapability<T extends Entity>
 	{
 		return this.orgEntity.level.isClientSide;
 	}
-
-	public void onDeath() {}
 	
 	public PublicMatrix4f getMatrix(float partialTicks)
 	{
