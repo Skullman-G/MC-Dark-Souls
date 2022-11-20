@@ -77,30 +77,33 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		super.tick();
 		
-		if (!this.hasLinkedBonfire)
+		if (!this.level.isClientSide)
 		{
-			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
+			if (!this.hasLinkedBonfire)
 			{
-				BlockEntity t = this.level.getBlockEntity(pos);
-				if (t instanceof BonfireBlockEntity)
+				for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 				{
-					BonfireBlockEntity b = (BonfireBlockEntity)t;
-					if (b != null
-							&& !b.hasFireKeeper()
-							&& b.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+					BlockEntity t = this.level.getBlockEntity(pos);
+					if (t instanceof BonfireBlockEntity)
 					{
-						this.linkBonfire(b.getBlockPos());
-						break;
+						BonfireBlockEntity b = (BonfireBlockEntity)t;
+						if (b != null
+								&& !b.hasFireKeeper()
+								&& b.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+						{
+							this.linkBonfire(b.getBlockPos());
+							break;
+						}
 					}
 				}
 			}
-		}
-		
-		if (!this.level.isClientSide() && !this.isDeadOrDying())
-		{
-			if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+			
+			if (!this.isDeadOrDying())
 			{
-				this.hurt(DamageSource.STARVE, this.getHealth());
+				if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+				{
+					this.hurt(DamageSource.STARVE, this.getHealth());
+				}
 			}
 		}
 	}

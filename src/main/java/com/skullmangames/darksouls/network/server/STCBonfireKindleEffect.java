@@ -2,9 +2,8 @@ package com.skullmangames.darksouls.network.server;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -32,8 +31,7 @@ public class STCBonfireKindleEffect
 	{
 		ctx.get().enqueueWork(()->
 		{
-			Minecraft minecraft = Minecraft.getInstance();
-			BonfireBlock.kindleEffect(minecraft.level, msg.blockPos);
+			ModNetworkManager.connection.bonfireKindleEffect(msg.blockPos);
 		});
 		
 		ctx.get().setPacketHandled(true);

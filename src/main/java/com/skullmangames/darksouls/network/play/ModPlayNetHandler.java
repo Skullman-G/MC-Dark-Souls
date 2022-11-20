@@ -38,4 +38,6 @@ public interface ModPlayNetHandler
 	void playEntitySound(Entity entity, SoundEvent sound, float volume);
 	
 	void playSound(Entity entity, SoundEvent sound, float volume);
+	
+	void bonfireKindleEffect(BlockPos pos);
 }

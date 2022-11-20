@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.client.gui.screens.CovenantScreen;
 import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
 import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
+import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
@@ -128,5 +129,11 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	public void playSound(Entity entity, SoundEvent sound, float volume)
 	{
 		entity.level.playSound(this.minecraft.player, entity.getX(), entity.getY(), entity.getZ(), sound, entity.getSoundSource(), volume, 1.0F);
+	}
+
+	@Override
+	public void bonfireKindleEffect(BlockPos pos)
+	{
+		BonfireBlock.kindleEffect(this.minecraft.level, pos);
 	}
 }
