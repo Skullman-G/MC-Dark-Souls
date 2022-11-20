@@ -65,8 +65,8 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		GameOverlayManager.canAnimateSouls = true;
 		GameOverlayManager.lastSouls = this.getSouls();
 		GameOverlayManager.lerpSouls = this.getSouls();
-		GameOverlayManager.lastFP = this.getFP();
-		GameOverlayManager.lastStamina = this.getStamina();
+		GameOverlayManager.lastFP = this.getFP() / this.getMaxFP();
+		GameOverlayManager.lastStamina = this.getStamina() / this.getMaxStamina();
 	}
 	
 	@Override

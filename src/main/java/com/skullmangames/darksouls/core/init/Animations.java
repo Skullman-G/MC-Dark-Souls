@@ -284,7 +284,7 @@ public final class Animations
 	
 	private static final Event[] LIGHTNING_SPEAR_EVENTS = new Event[]
 			{
-					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 					{
 						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
 					}),
@@ -308,7 +308,7 @@ public final class Animations
 	
 	private static final Event[] GREAT_LIGHTNING_SPEAR_EVENTS = new Event[]
 			{
-					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 					{
 						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
 					}),
