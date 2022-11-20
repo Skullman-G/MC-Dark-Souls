@@ -113,7 +113,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	@OnlyIn(Dist.CLIENT)
 	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerCap)
 	{
-		if (playerCap.isRidingHorse())
+		if (playerCap.isMounted())
 		{
 			List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
 			int combo = animations.indexOf(playerCap.getClientAnimator().baseLayer.animationPlayer.getPlay());

@@ -41,10 +41,10 @@ public class CTSCastSpell
 			
 			if (((playerCap.getFP() >= msg.spell.getFPConsumption() && playerCap.getStats().getStatValue(Stats.FAITH) >= msg.spell.getRequiredFaith())
 					|| serverPlayer.isCreative())
-					&& (!playerCap.isRidingHorse() || msg.spell.getHorsebackAnimation() != null))
+					&& (!playerCap.isMounted() || msg.spell.getHorsebackAnimation() != null))
 			{
 				playerCap.raiseFP(-msg.spell.getFPConsumption());
-				StaticAnimation animation = playerCap.isRidingHorse() ? msg.spell.getHorsebackAnimation() : msg.spell.getCastingAnimation();
+				StaticAnimation animation = playerCap.isMounted() ? msg.spell.getHorsebackAnimation() : msg.spell.getCastingAnimation();
 				playerCap.playAnimationSynchronized(animation, 0.0F);
 			}
 		});

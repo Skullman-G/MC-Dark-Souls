@@ -152,7 +152,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		}
 		else
 		{
-			if (this.isRidingHorse())
+			if (this.isMounted())
 			{
 				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
 				int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());

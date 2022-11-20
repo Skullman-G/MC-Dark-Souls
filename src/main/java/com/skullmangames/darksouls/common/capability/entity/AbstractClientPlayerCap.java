@@ -49,9 +49,9 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			this.currentMotion = LivingMotion.FLYING;
 		}
-		else if (this.isRidingHorse())
+		else if (this.isMounted())
 		{
-			this.currentMotion = LivingMotion.HORSEBACK;
+			this.currentMotion = LivingMotion.MOUNTED;
 		}
 		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{

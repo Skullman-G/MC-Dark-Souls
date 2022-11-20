@@ -48,7 +48,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

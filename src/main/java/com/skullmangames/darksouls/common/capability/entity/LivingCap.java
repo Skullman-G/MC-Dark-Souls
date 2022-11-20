@@ -49,7 +49,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -89,9 +88,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.stamina = this.getMaxStamina();
 	}
 	
-	public boolean isRidingHorse()
+	public boolean isMounted()
 	{
-		return this.orgEntity.getVehicle() instanceof Horse;
+		return this.orgEntity.getVehicle() != null;
 	}
 	
 	public float getDamageScalingMultiplier(float baseDamage)
@@ -191,14 +190,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.HORSEBACK, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 	}
 
 	protected final void commonMotionUpdate()
 	{
-		if (this.isRidingHorse())
+		if (this.isMounted())
 		{
-			this.currentMotion = LivingMotion.HORSEBACK;
+			this.currentMotion = LivingMotion.MOUNTED;
 		}
 		else
 		{
