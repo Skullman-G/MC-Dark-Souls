@@ -220,7 +220,11 @@ public final class Animations
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_FAT_ROLL = new DodgingAnimation(0.1F, "biped/combat/fat_roll", (models) -> models.ENTITY_BIPED)
-			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+					Event.create(0.48F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.25F))
+			});
 	public static final StaticAnimation BIPED_ROLL_BACK = new DodgingAnimation(0.1F, "biped/combat/roll_back", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_ROLL_LEFT = new DodgingAnimation(0.1F, true, "biped/combat/roll_left", (models) -> models.ENTITY_BIPED)
