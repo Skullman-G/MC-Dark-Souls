@@ -67,7 +67,7 @@ public class ModItems
 	
 	
 	//Ultra Greatsword
-	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 10, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 8, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
