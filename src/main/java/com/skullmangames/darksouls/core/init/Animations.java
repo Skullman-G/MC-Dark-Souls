@@ -397,21 +397,21 @@ public final class Animations
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]
 	{
-			new AttackAnimation(0.5F, 0.0F, 0.7F, 1.0F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_1", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.3F, 0.0F, 0.48F, 0.88F, 2.8F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_1", (models) -> models.ENTITY_BIPED)
 						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
-								Event.create(0.9F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
-								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+								Event.create(0.7F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.7F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 						.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F)),
-			new AttackAnimation(0.5F, 0.0F, 0.45F, 1.05F, 3.5F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_2", (models) -> models.ENTITY_BIPED)
+			new AttackAnimation(0.2F, 0.0F, 0.44F, 0.88F, 2.4F, "Tool_R", "biped/combat/ultra_greatsword_light_attack_2", (models) -> models.ENTITY_BIPED)
 						.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
-								Event.create(0.9F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
-								Event.create(0.9F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+								Event.create(0.72F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+								Event.create(0.72F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 						})
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
