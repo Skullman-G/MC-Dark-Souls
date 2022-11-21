@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -65,7 +66,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	}
 	
 	@Override
-	public DeathAnimation getDeathAnimation()
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
 		return Animations.STRAY_DEMON_DEATH;
 	}

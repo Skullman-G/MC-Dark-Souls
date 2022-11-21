@@ -25,7 +25,6 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -307,15 +306,15 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public DeathAnimation getDeathAnimation()
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		return Animations.BIPED_DEATH;
+		return HumanoidCap.getHumanoidDeathAnimation(this, dmgSource);
 	}
 	
 	@Override
-	public boolean hurt(DamageSource damageSource, float amount)
+	public boolean onHurt(DamageSource damageSource, float amount)
 	{
-		if(super.hurt(damageSource, amount))
+		if(super.onHurt(damageSource, amount))
 		{
 			this.tickSinceLastAction = 0;
 			return true;
@@ -348,8 +347,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
-		return HumanoidCap.getHumanoidHitAnimation(this, attacker, stunType);
+		return HumanoidCap.getHumanoidHitAnimation(this, dmgSource);
 	}
 }

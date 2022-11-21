@@ -32,12 +32,12 @@ public interface ExtendedDamageSource
 		return new IndirectDamageSourceExtended("projectile", projectile, owner, stunType, poiseDamage, staminaDamage, damages);
 	}
 	
-	public static DamageSourceExtended getFrom(ExtendedDamageSource org)
+	public static DamageSourceExtended getDirectFrom(ExtendedDamageSource org)
 	{
 		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getStunType(), org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
 	}
 	
-	public static DamageSourceExtended getFrom(DamageSource org, float amount)
+	public static DamageSourceExtended getDirectFrom(DamageSource org, float amount)
 	{
 		int reqDeflection = amount > 5.0F ? Deflection.MEDIUM.getLevel() : amount > 10.0F ? Deflection.HEAVY.getLevel() : Deflection.LIGHT.getLevel();
 		StunType stunType = amount > 10.0F ? StunType.SMASH : StunType.LIGHT;
@@ -65,6 +65,13 @@ public interface ExtendedDamageSource
 	public static IndirectDamageSourceExtended getIndirectFrom(IndirectEntityDamageSource org, float amount)
 	{
 		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), StunType.LIGHT, 1.0F, 0.0F, new Damage(DamageType.REGULAR, amount));
+	}
+	
+	public static ExtendedDamageSource getFrom(DamageSource org, float amount)
+	{
+		if (org instanceof ExtendedDamageSource) return (ExtendedDamageSource)org;
+		else if (org instanceof IndirectEntityDamageSource) return getIndirectFrom((IndirectEntityDamageSource)org, amount);
+		else return getDirectFrom(org, amount);
 	}
 	
 	public float getAmount();

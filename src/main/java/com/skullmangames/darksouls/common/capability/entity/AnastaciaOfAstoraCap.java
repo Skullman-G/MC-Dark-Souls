@@ -5,9 +5,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-
-import net.minecraft.world.entity.Entity;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 
 public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 {
@@ -25,7 +23,7 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
 		return Animations.ANASTACIA_IDLE;
 	}

@@ -100,19 +100,46 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 	
 	@Override
-	public DeathAnimation getDeathAnimation()
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		return Animations.BIPED_DEATH;
+		return getHumanoidDeathAnimation(this, dmgSource);
+	}
+	
+	public static DeathAnimation getHumanoidDeathAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
+	{
+		Entity attacker = dmgSource.getSource();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
+		float yRot = entityCap.getYRot() - 180;
+		if (yRot < -180) yRot += 360F;
+		float dir = Math.abs(-yRot - attackAngle);
+		
+		if (dmgSource.getStunType() == StunType.FLY)
+		{
+			return dir <= 315 && dir >= 225 ? Animations.BIPED_DEATH_FLY_LEFT
+					: dir <= 225 && dir >= 135 ? Animations.BIPED_DEATH_FLY_BACK
+					: dir <= 135 && dir >= 45 ? Animations.BIPED_DEATH_FLY_RIGHT
+					: Animations.BIPED_DEATH_FLY_FRONT;
+		}
+		else if (dmgSource.getStunType() == StunType.SMASH)
+		{
+			return Animations.BIPED_DEATH_SMASH;
+		}
+		else
+		{
+			return Animations.BIPED_DEATH;
+		}
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
-		return getHumanoidHitAnimation(this, attacker, stunType);
+		return getHumanoidHitAnimation(this, dmgSource);
 	}
 	
-	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, Entity attacker, StunType stunType)
+	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
 	{
+		Entity attacker = dmgSource.getSource();
+		StunType stunType = dmgSource.getStunType();
 		if (attacker == null) return null;
 		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
 		{
@@ -150,7 +177,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
 							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
 							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
-							: Animations.BIPED_HIT_FLY;
+							: Animations.BIPED_HIT_FLY_FRONT;
 					
 				default:
 					return null;

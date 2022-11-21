@@ -311,7 +311,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public void onDeath() {}
 
-	public boolean hurt(DamageSource damageSource, float amount)
+	public boolean onHurt(DamageSource damageSource, float amount)
 	{
 		if (this.getEntityState().isInvincible())
 		{
@@ -334,7 +334,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		else
 		{
-			extSource = ExtendedDamageSource.getFrom(damageSource, amount);
+			extSource = ExtendedDamageSource.getDirectFrom(damageSource, amount);
 		}
 		
 		// Damage Calculation
@@ -357,25 +357,17 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return true;
 	}
 	
-	public void actuallyHurt(DamageSource damageSource)
+	public void onActuallyHurt(DamageSource damageSource)
 	{
-		boolean headshot = false;
-		float poiseDamage = 0.0F;
-		StunType stunType = StunType.LIGHT;
-		
-		ExtendedDamageSource extSource = null;
-		if(damageSource instanceof ExtendedDamageSource)
-		{
-			extSource = (ExtendedDamageSource)damageSource;
-			headshot = extSource.isHeadshot();
-			poiseDamage = extSource.getPoiseDamage();
-			stunType = extSource.getStunType();
-		}
+		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, 0);
+		boolean headshot = extSource.isHeadshot();
+		float poiseDamage = extSource.getPoiseDamage();
+		StunType stunType = extSource.getStunType();
 		
 		// Stun Animation
 		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
 		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
-		StaticAnimation hitAnimation = this.getHitAnimation(stunType, damageSource.getDirectEntity());
+		StaticAnimation hitAnimation = this.getHitAnimation(extSource);
 		
 		if(hitAnimation != null)
 		{
@@ -472,7 +464,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return null;
 	}
 	
-	public abstract DeathAnimation getDeathAnimation();
+	public abstract DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource);
 
 	public void gatherDamageDealt(ExtendedDamageSource source, float amount) {}
 
@@ -718,7 +710,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return this.<ServerAnimator>getAnimator();
 	}
 
-	public StaticAnimation getHitAnimation(StunType stunType, Entity attacker)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
 		return null;
 	}

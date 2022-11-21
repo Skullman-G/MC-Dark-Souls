@@ -26,6 +26,9 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.Side;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.core.util.DamageSourceExtended;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -37,6 +40,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,8 +57,35 @@ public final class Animations
 	public static final StaticAnimation BIPED_FLOAT = new StaticAnimation(0.08F, true, "biped/living/float", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(0.08F, true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
+	
 	public static final DeathAnimation BIPED_DEATH = new DeathAnimation(0.05F, "biped/living/death/death", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())) });
+	public static final DeathAnimation BIPED_DEATH_SMASH = new DeathAnimation(0.05F, "biped/living/death/smash", (models) -> models.ENTITY_BIPED);
+	public static final DeathAnimation BIPED_DEATH_FLY_FRONT = new DeathAnimation(0.05F, "biped/living/death/fly_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+					Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
+	public static final DeathAnimation BIPED_DEATH_FLY_BACK = new DeathAnimation(0.05F, "biped/living/death/fly_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.44F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+					Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
+	public static final DeathAnimation BIPED_DEATH_FLY_LEFT = new DeathAnimation(0.05F, "biped/living/death/fly_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+					Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
+	public static final DeathAnimation BIPED_DEATH_FLY_RIGHT = new DeathAnimation(0.05F, "biped/living/death/fly_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+					Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
+	
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
 	public static final StaticAnimation BIPED_TOUCH_BONFIRE = new ActionAnimation(0.5F, "biped/living/touching_bonfire", (models) -> models.ENTITY_BIPED)
@@ -160,10 +191,30 @@ public final class Animations
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	
 	public static final StaticAnimation BIPED_HIT_SMASH = new InvincibleAnimation(0.05F, "biped/combat/hit/smash", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_FLY = new InvincibleAnimation(0.05F, "biped/combat/hit/fly", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_FLY_BACK = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_back", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_left", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_right", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_FLY_FRONT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+							Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+					});
+	public static final StaticAnimation BIPED_HIT_FLY_BACK = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.44F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+							Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+					});
+	public static final StaticAnimation BIPED_HIT_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+							Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+					});
+	public static final StaticAnimation BIPED_HIT_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
+							Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+					});
 	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/combat/hit/land_heavy", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
@@ -268,12 +319,10 @@ public final class Animations
 									LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 									if (targetCap != null)
 									{
-										StaticAnimation hitAnim = targetCap.getHitAnimation(StunType.FLY, cap.getOriginalEntity());
-										if (hitAnim != null)
-										{
-											if (target.getVehicle() != null) target.stopRiding();
-											targetCap.playAnimationSynchronized(hitAnim, 0F);
-										}
+										DamageSourceExtended dmgSource = cap.getOriginalEntity() instanceof Player ?
+												ExtendedDamageSource.causePlayerDamage((Player)cap.getOriginalEntity(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0))
+												: ExtendedDamageSource.causeMobDamage(cap.getOriginalEntity(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0));
+										target.hurt(dmgSource, 0);
 									}
 									else cap.knockBackEntity(target, 0.5F);
 								}
