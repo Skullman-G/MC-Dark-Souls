@@ -330,7 +330,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			for (Damage damage : extSource.getDamages())
 			{
 				Attribute defAttribute = damage.getType().getDefenseAttribute();
-				damage.setAmount(this.orgEntity.getAttribute(defAttribute) != null ? damage.getAmount() - (float)this.orgEntity.getAttributeValue(defAttribute) : damage.getAmount() - 0.0F);
+				if (this.orgEntity.getAttribute(defAttribute) != null)
+				{
+					damage.setAmount(Math.max(damage.getAmount() - (float)this.orgEntity.getAttributeValue(defAttribute), damage.getAmount() * 0.5F));
+				}
 			}
 		}
 		if (this.blockingAttack(extSource))

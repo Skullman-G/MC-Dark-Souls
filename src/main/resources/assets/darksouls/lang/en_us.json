@@ -343,6 +343,7 @@
 	"attribute.darksouls.max_focus_points": "Max Focus Points",
 	"attribute.darksouls attunement_slots": "Attunement Slots",
 	"attribute.darksouls.lightning_defense": "Lightning Defense",
+	"attribute.darksouls.fire_defense": "Fire Defense",
 	
 	"command.failed": "Command failed",
 	

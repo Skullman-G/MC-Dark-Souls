@@ -50,6 +50,7 @@ public class ServerConfig
 			config.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
 			config.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
 			config.defineInRange(shieldKey+".sample_shield.physical_defense", 0.0F, 0.0F, 1.0F);
+			config.defineInRange(shieldKey+".sample_shield.fire_defense", 0.0F, 0.0F, 1.0F);
 			config.defineInRange(shieldKey+".sample_shield.lightning_defense", 0.0F, 0.0F, 1.0F);
 		}
 		
@@ -89,9 +90,10 @@ public class ServerConfig
 				ConfigValue<ShieldType> shieldType = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_type", ShieldType.NONE);
 				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_material", ShieldMat.WOOD);
 				ConfigValue<Double> physicalDef = config.defineInRange(shieldKey+"."+entry.getKey()+".physical_defense", 0.0F, 0.0F, 1.0F);
+				ConfigValue<Double> fireDef = config.defineInRange(shieldKey+"."+entry.getKey()+".fire_defense", 0.0F, 0.0F, 1.0F);
 				ConfigValue<Double> lightningDef = config.defineInRange(shieldKey+"."+entry.getKey()+".lightning_defense", 0.0F, 0.0F, 1.0F);
 				if (!entry.getKey().equals("sample_shield")) shields.add(new ShieldConfig(registryName, category,
-						reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, shieldType, shieldMat, physicalDef, lightningDef));
+						reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, shieldType, shieldMat, physicalDef, fireDef, lightningDef));
 			}
 		}
 	}
@@ -127,17 +129,19 @@ public class ServerConfig
 		public final ConfigValue<ShieldType> shieldType;
 		public final ConfigValue<ShieldMat> shieldMat;
 		public final ConfigValue<Double> physicalDef;
+		public final ConfigValue<Double> fireDef;
 		public final ConfigValue<Double> lightningDef;
 		
 		public ShieldConfig(ConfigValue<String> registryName, ConfigValue<WeaponCategory> category,
 				ConfigValue<Integer> reqStrength, ConfigValue<Integer> reqDex, ConfigValue<Integer> reqFaith,
 				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling, ConfigValue<Scaling> faithScaling,
-				ConfigValue<ShieldType> shieldType, ConfigValue<ShieldMat> shieldMat, ConfigValue<Double> physicalDef, ConfigValue<Double> lightningDef)
+				ConfigValue<ShieldType> shieldType, ConfigValue<ShieldMat> shieldMat, ConfigValue<Double> physicalDef, ConfigValue<Double> fireDef, ConfigValue<Double> lightningDef)
 		{
 			super(registryName, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 			this.shieldType = shieldType;
 			this.shieldMat = shieldMat;
 			this.physicalDef = physicalDef;
+			this.fireDef = fireDef;
 			this.lightningDef = lightningDef;
 		}
 	}

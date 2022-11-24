@@ -33,6 +33,7 @@ public class ArmorCap extends AttributeItemCap
 	protected final float strikeDef;
 	protected final float slashDef;
 	protected final float thrustDef;
+	protected final float fireDef;
 	protected final float lightningDef;
 	
 	protected float poise;
@@ -49,6 +50,7 @@ public class ArmorCap extends AttributeItemCap
 		this.slashDef = this.standardDef;
 		this.strikeDef = this.standardDef * 1.1F;
 		this.thrustDef = this.standardDef * 0.9F;
+		this.fireDef = this.standardDef * 0.5F;
 		this.lightningDef = this.standardDef * 0.5F;
 	}
 	
@@ -89,6 +91,9 @@ public class ArmorCap extends AttributeItemCap
 			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
 			
+			itemTooltip.add(new TranslatableComponent(ModAttributes.FIRE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.fireDef, 100))));
+			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.LIGHTNING_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 100))));
 			
@@ -114,6 +119,9 @@ public class ArmorCap extends AttributeItemCap
 			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.strikeDef));
 			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.slashDef));
 			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.thrustDef));
+			
+			map.put(ModAttributes.FIRE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.fireDef));
+			map.put(ModAttributes.LIGHTNING_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.lightningDef));
 		}
 		
         return map;

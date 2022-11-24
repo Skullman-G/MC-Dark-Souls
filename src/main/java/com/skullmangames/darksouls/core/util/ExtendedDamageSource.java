@@ -114,7 +114,7 @@ public interface ExtendedDamageSource
 	
 	public enum DamageType
 	{
-		REGULAR, STRIKE, SLASH, THRUST, LIGHTNING;
+		REGULAR, STRIKE, SLASH, THRUST, FIRE, LIGHTNING;
 		
 		public Attribute getDefenseAttribute()
 		{
@@ -124,6 +124,7 @@ public interface ExtendedDamageSource
 				case STRIKE: return ModAttributes.STRIKE_DEFENSE.get();
 				case SLASH: return ModAttributes.SLASH_DEFENSE.get();
 				case THRUST: return ModAttributes.THRUST_DEFENSE.get();
+				case FIRE: return ModAttributes.FIRE_DEFENSE.get();
 				case LIGHTNING: return ModAttributes.LIGHTNING_DEFENSE.get();
 			}
 		}

@@ -13,14 +13,16 @@ import net.minecraft.world.item.Item;
 public class ShieldCap extends MeleeWeaponCap
 {
 	private final float physicalDefense;
+	private final float fireDefense;
 	private final float lightningDefense;
 	private final ShieldType shieldType;
 	private final ShieldMat shieldMat;
 	
-	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float fireDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
 		super(item, WeaponCategory.SHIELD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
 		this.physicalDefense = Math.min(physicalDef, 1F);
+		this.fireDefense = Math.min(fireDef, 1F);
 		this.lightningDefense = Math.min(lightningDef, 1F);
 		this.shieldType = shieldType;
 		this.shieldMat = shieldMat;
@@ -39,6 +41,7 @@ public class ShieldCap extends MeleeWeaponCap
 	{
 		switch(damageType)
 		{
+			case FIRE: return this.fireDefense;
 			case LIGHTNING: return this.lightningDefense;
 			default: return this.physicalDefense;
 		}

@@ -39,11 +39,12 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> ATTUNEMENT_SLOTS = registerRangedAttribute("attunement_slots", 1.0D, 1.0D, 10.0D);
 	
 	// Defense
-	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> LIGHTNING_DEFENSE = registerRangedAttribute("lightning_defense", 0.0D, 0.0D, 0.99D);
+	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> FIRE_DEFENSE = registerRangedAttribute("fire_defense", 0.0F, 0.0F, 1024.0D);
+	public static final RegistryObject<Attribute> LIGHTNING_DEFENSE = registerRangedAttribute("lightning_defense", 0.0D, 0.0D, 1024.0D);
 	
 	public static final UUID[] EQUIPMENT_MODIFIER_UUIDS = new UUID[]
 	{
@@ -102,6 +103,7 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
 		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
 		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
+		event.add(entityType, ModAttributes.FIRE_DEFENSE.get());
 		event.add(entityType, ModAttributes.LIGHTNING_DEFENSE.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}

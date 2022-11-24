@@ -149,16 +149,18 @@ public class PlayerStatsScreen extends Screen
 		int fourthX = thirdX + 12;
 
 		this.font.draw(poseStack, "Defense", thirdX, y + 36, this.color);
-		this.font.draw(poseStack, "Physical: " + (int) (this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()) * 100) + "%",
+		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()), 100),
 				thirdX, y + 52, this.color);
-		this.font.draw(poseStack, "VS Strike: " + (int) (this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()) * 100) + "%",
+		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()), 100),
 				fourthX, y + 64, this.color);
-		this.font.draw(poseStack, "VS Slash: " + (int) (this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()) * 100) + "%",
+		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()), 100),
 				fourthX, y + 76, this.color);
-		this.font.draw(poseStack, "VS Thrust: " + (int) (this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()) * 100) + "%",
+		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()), 100),
 				fourthX, y + 88, this.color);
-		this.font.draw(poseStack, "Lightning: " + (int) (this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()) * 100) + "%",
+		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_DEFENSE.get()), 100),
 				thirdX, y + 100, this.color);
+		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()), 100),
+				thirdX, y + 112, this.color);
 
 		poseStack.popPose();
 
