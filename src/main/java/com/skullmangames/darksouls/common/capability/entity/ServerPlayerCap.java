@@ -38,6 +38,7 @@ import com.skullmangames.darksouls.network.server.STCStamina;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -296,8 +297,12 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	@Override
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking()) return false;
-		if (damageSource == null) return true;
+		Entity attacker = damageSource.getSource();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(this.getX() - attacker.getX(), this.getZ() - attacker.getZ())) + 360F) % 360F;
+		float yRot = this.getYRot() - 180;
+		if (yRot < -180) yRot += 360F;
+		float dir = Math.abs(-yRot - attackAngle);
+		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 
 		this.increaseStamina(-damageSource.getStaminaDamage());

@@ -82,8 +82,12 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	@Override
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking()) return false;
-		if (damageSource == null) return true;
+		Entity attacker = damageSource.getSource();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(this.getX() - attacker.getX(), this.getZ() - attacker.getZ())) + 360F) % 360F;
+		float yRot = this.getYRot() - 180;
+		if (yRot < -180) yRot += 360F;
+		float dir = Math.abs(-yRot - attackAngle);
+		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
@@ -141,46 +145,49 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		Entity attacker = dmgSource.getSource();
 		StunType stunType = dmgSource.getStunType();
 		if (attacker == null) return null;
-		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
-		{
-			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
-			return Animations.BIPED_BLOCK_HIT_MIRROR;
-		}
 		else
 		{
 			float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
 			float yRot = entityCap.getYRot() - 180;
 			if (yRot < -180) yRot += 360F;
 			float dir = Math.abs(-yRot - attackAngle);
-			switch (stunType)
+			if ((dir <= 60 || dir >= 300) && entityCap.isBlocking() && stunType != StunType.DISARMED)
 			{
-				case DISARMED:
-					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
-					return Animations.BIPED_DISARM_SHIELD_LEFT;
-					
-				case LIGHT:
-					return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
-							: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK : Animations.BIPED_HIT_LIGHT_BACK
-							: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT : Animations.BIPED_HIT_LIGHT_LEFT
-							: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT : Animations.BIPED_HIT_LIGHT_FRONT;
-					
-				case HEAVY:
-					return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT : Animations.BIPED_HIT_HEAVY_RIGHT
-							: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK : Animations.BIPED_HIT_HEAVY_BACK
-							: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
-							: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
-					
-				case SMASH:
-					return Animations.BIPED_HIT_SMASH;
-					
-				case FLY:
-					return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
-							: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
-							: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
-							: Animations.BIPED_HIT_FLY_FRONT;
-					
-				default:
-					return null;
+				if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
+				return Animations.BIPED_BLOCK_HIT_MIRROR;
+			}
+			else
+			{
+				switch (stunType)
+				{
+					case DISARMED:
+						if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
+						return Animations.BIPED_DISARM_SHIELD_LEFT;
+						
+					case LIGHT:
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK : Animations.BIPED_HIT_LIGHT_BACK
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT : Animations.BIPED_HIT_LIGHT_LEFT
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT : Animations.BIPED_HIT_LIGHT_FRONT;
+						
+					case HEAVY:
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT : Animations.BIPED_HIT_HEAVY_RIGHT
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK : Animations.BIPED_HIT_HEAVY_BACK
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
+						
+					case SMASH:
+						return Animations.BIPED_HIT_SMASH;
+						
+					case FLY:
+						return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
+								: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
+								: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
+								: Animations.BIPED_HIT_FLY_FRONT;
+						
+					default:
+						return null;
+				}
 			}
 		}
 	}

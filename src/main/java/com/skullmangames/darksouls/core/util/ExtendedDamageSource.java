@@ -86,6 +86,7 @@ public interface ExtendedDamageSource
 	public void setHeadshot(boolean value);
 	public float getStaminaDamage();
 	public void setStunType(StunType value);
+	public boolean isIndirect();
 	
 	public enum StunType
 	{
@@ -106,7 +107,8 @@ public interface ExtendedDamageSource
 		public StunType downgrade()
 		{
 			if (this.level == 3) return HEAVY;
-			else return NONE;
+			else if (this.level > 0) return NONE;
+			else return this;
 		}
 	}
 	

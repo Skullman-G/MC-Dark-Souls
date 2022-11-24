@@ -322,20 +322,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
-		
-		ExtendedDamageSource extSource = null;
-		if(damageSource instanceof ExtendedDamageSource)
-		{
-			extSource = (ExtendedDamageSource)damageSource;
-		}
-		else if (indirect)
-		{
-			extSource = ExtendedDamageSource.getIndirectFrom((IndirectEntityDamageSource)damageSource, amount);
-		}
-		else
-		{
-			extSource = ExtendedDamageSource.getDirectFrom(damageSource, amount);
-		}
+		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
 		
 		// Damage Calculation
 		if (!indirect)
@@ -392,7 +379,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		if (!this.isBlocking()) return false;
-		if (damageSource == null) return true;
 
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
@@ -404,7 +390,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		this.playSound(shield.getBlockSound());
 
-		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
+		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !damageSource.isIndirect())
 		{
 			LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (attackerCap == null) return true;

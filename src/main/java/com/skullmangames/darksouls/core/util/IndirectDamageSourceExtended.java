@@ -21,6 +21,12 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 	
 	@Override
+	public boolean isIndirect()
+	{
+		return true;
+	}
+	
+	@Override
 	public float getAmount()
 	{
 		float amount = 0;

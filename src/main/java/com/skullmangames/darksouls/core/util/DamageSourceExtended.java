@@ -23,6 +23,12 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	}
 	
 	@Override
+	public boolean isIndirect()
+	{
+		return false;
+	}
+	
+	@Override
 	public float getAmount()
 	{
 		float amount = 0;
