@@ -153,8 +153,16 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			float dir = Math.abs(-yRot - attackAngle);
 			if ((dir <= 60 || dir >= 300) && entityCap.isBlocking() && stunType != StunType.DISARMED)
 			{
-				if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
-				return Animations.BIPED_BLOCK_HIT_MIRROR;
+				if (stunType == StunType.FLY)
+				{
+					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_FLY_RIGHT;
+					return Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
+				}
+				else
+				{
+					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_RIGHT;
+					return Animations.BIPED_HIT_BLOCKED_LEFT;
+				}
 			}
 			else
 			{

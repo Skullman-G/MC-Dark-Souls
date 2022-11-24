@@ -58,28 +58,28 @@ public final class Animations
 	public static final StaticAnimation BIPED_KNEEL = new StaticAnimation(0.08F, true, "biped/living/kneel", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_FALL = new StaticAnimation(0.08F, false, "biped/living/fall", (models) -> models.ENTITY_BIPED);
 	
-	public static final DeathAnimation BIPED_DEATH = new DeathAnimation(0.05F, "biped/living/death/death", (models) -> models.ENTITY_BIPED)
+	public static final DeathAnimation BIPED_DEATH = new DeathAnimation(0.05F, "biped/death/death", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(1.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())) });
-	public static final DeathAnimation BIPED_DEATH_SMASH = new DeathAnimation(0.05F, "biped/living/death/smash", (models) -> models.ENTITY_BIPED);
-	public static final DeathAnimation BIPED_DEATH_FLY_FRONT = new DeathAnimation(0.05F, "biped/living/death/fly_front", (models) -> models.ENTITY_BIPED)
+	public static final DeathAnimation BIPED_DEATH_SMASH = new DeathAnimation(0.05F, "biped/death/smash", (models) -> models.ENTITY_BIPED);
+	public static final DeathAnimation BIPED_DEATH_FLY_FRONT = new DeathAnimation(0.05F, "biped/death/fly_front", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
 					Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 					Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 			});
-	public static final DeathAnimation BIPED_DEATH_FLY_BACK = new DeathAnimation(0.05F, "biped/living/death/fly_back", (models) -> models.ENTITY_BIPED)
+	public static final DeathAnimation BIPED_DEATH_FLY_BACK = new DeathAnimation(0.05F, "biped/death/fly_back", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
 					Event.create(0.44F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 					Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 			});
-	public static final DeathAnimation BIPED_DEATH_FLY_LEFT = new DeathAnimation(0.05F, "biped/living/death/fly_left", (models) -> models.ENTITY_BIPED)
+	public static final DeathAnimation BIPED_DEATH_FLY_LEFT = new DeathAnimation(0.05F, "biped/death/fly_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
 					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 					Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 			});
-	public static final DeathAnimation BIPED_DEATH_FLY_RIGHT = new DeathAnimation(0.05F, "biped/living/death/fly_right", (models) -> models.ENTITY_BIPED)
+	public static final DeathAnimation BIPED_DEATH_FLY_RIGHT = new DeathAnimation(0.05F, "biped/death/fly_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
 					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
@@ -132,14 +132,21 @@ public final class Animations
 			new AnimConfig(LivingMotion.RUNNING, "biped/combat/block_run_mirror", "biped/combat/block_run", true),
 			new AnimConfig(LivingMotion.KNEELING, "biped/combat/block_mirror", "biped/combat/block", true),
 			new AnimConfig(LivingMotion.SNEAKING, "biped/combat/block_mirror", "biped/combat/block", true));
-	public static final StaticAnimation BIPED_BLOCK_HIT = new BlockAnimation(0.05F, "biped/combat/block_hit_mirror", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_BLOCK_HIT_MIRROR = new BlockAnimation(0.05F, "biped/combat/block_hit", (models) -> models.ENTITY_BIPED);
+	
+	public static final StaticAnimation BIPED_HIT_BLOCKED_LEFT = new BlockAnimation(0.05F, "biped/hit/blocked_left", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_BLOCKED_RIGHT = new BlockAnimation(0.05F, "biped/hit/blocked_right", (models) -> models.ENTITY_BIPED);
+	
+	public static final StaticAnimation BIPED_HIT_BLOCKED_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/hit/blocked_fly_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+	public static final StaticAnimation BIPED_HIT_BLOCKED_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/hit/blocked_fly_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
+	
 	public static final StaticAnimation BIPED_DISARM_SHIELD_LEFT = new BlockAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new BlockAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
-	public static final StaticAnimation BIPED_HORSEBACK_IDLE = new StaticAnimation(0.2F, true, "biped/living/horseback/horseback_idle", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HORSEBACK_IDLE = new StaticAnimation(0.2F, true, "biped/horseback/horseback_idle", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_IDLE_CROSSBOW = new StaticAnimation(0.2F, true, "biped/living/idle_crossbow", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_WALK_CROSSBOW = new MovementAnimation(0.2F, true, "biped/living/walk_crossbow", (models) -> models.ENTITY_BIPED);
@@ -156,66 +163,66 @@ public final class Animations
 	public static final StaticAnimation BIPED_SPEER_AIM = new AimingAnimation(0.16F, false, "biped/combat/javelin_aim_mid", "biped/combat/javelin_aim_up", "biped/combat/javelin_aim_down", (models) -> models.ENTITY_BIPED);
 	public static final StaticAnimation BIPED_SPEER_REBOUND = new ReboundAnimation(0.08F, false, "biped/combat/javelin_throw_mid", "biped/combat/javelin_throw_up", "biped/combat/javelin_throw_down", (models) -> models.ENTITY_BIPED);
 
-	public static final StaticAnimation BIPED_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/combat/hit/light_front", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/hit/light_front", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/combat/hit/light_left", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/hit/light_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/light_right", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/hit/light_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/combat/hit/light_back", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/hit/light_back", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/combat/hit/heavy_front", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/hit/heavy_front", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/combat/hit/heavy_back", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/hit/heavy_back", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/combat/hit/heavy_left", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/hit/heavy_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/heavy_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_front", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/combat/hit/horseback_light_back", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_front", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_back", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
-	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/combat/hit/horseback_heavy_right", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/hit/heavy_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	
-	public static final StaticAnimation BIPED_HIT_SMASH = new InvincibleAnimation(0.05F, "biped/combat/hit/smash", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_FLY_FRONT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_FRONT = new HitAnimation(0.05F, "biped/hit/horseback_light_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_LEFT = new HitAnimation(0.05F, "biped/hit/horseback_light_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_RIGHT = new HitAnimation(0.05F, "biped/hit/horseback_light_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_LIGHT_BACK = new HitAnimation(0.05F, "biped/hit/horseback_light_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_FRONT = new HitAnimation(0.05F, "biped/hit/horseback_heavy_front", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_BACK = new HitAnimation(0.05F, "biped/hit/horseback_heavy_back", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_LEFT = new HitAnimation(0.05F, "biped/hit/horseback_heavy_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	public static final StaticAnimation BIPED_HORSEBACK_HIT_HEAVY_RIGHT = new HitAnimation(0.05F, "biped/hit/horseback_heavy_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
+	
+	public static final StaticAnimation BIPED_HIT_SMASH = new InvincibleAnimation(0.05F, "biped/hit/smash", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_FLY_FRONT = new InvincibleAnimation(0.05F, "biped/hit/fly", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 							Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 					});
-	public static final StaticAnimation BIPED_HIT_FLY_BACK = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_back", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_FLY_BACK = new InvincibleAnimation(0.05F, "biped/hit/fly_back", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.44F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 							Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 					});
-	public static final StaticAnimation BIPED_HIT_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_left", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/hit/fly_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 							Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 					});
-	public static final StaticAnimation BIPED_HIT_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/combat/hit/fly_right", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_HIT_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/hit/fly_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 							Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 					});
-	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/combat/hit/land_heavy", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/hit/land_heavy", (models) -> models.ENTITY_BIPED);
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
