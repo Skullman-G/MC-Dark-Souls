@@ -353,16 +353,5 @@
 		[
 			"darksouls:items/ultra_greatsword/smash"
 		]
-	},
-	
-	"entity.generic.hit":
-	{
-		"category": "entity",
-		"sounds":
-		[
-			"darksouls:entities/generic/hit_1",
-			"darksouls:entities/generic/hit_2",
-			"darksouls:entities/generic/hit_3"
-		]
 	}
 }

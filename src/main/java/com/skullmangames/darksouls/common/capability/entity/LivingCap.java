@@ -343,8 +343,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			return false;
 		}
 
-		this.orgEntity.playSound(ModSoundEvents.GENERIC_HIT.get(), 1.0F, 1.0F);
-
 		return true;
 	}
 	
