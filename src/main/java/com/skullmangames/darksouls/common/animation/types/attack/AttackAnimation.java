@@ -110,7 +110,7 @@ public class AttackAnimation extends ActionAnimation
 				{
 					((MobCap<?>)entityCap).increaseStamina(-2.5F);
 				}
-				entityCap.currentlyAttackedEntity.clear();
+				entityCap.currentlyAttackedEntities.clear();
 			}
 
 			Collider collider = this.getCollider(entityCap, elapsedTime);
@@ -118,7 +118,7 @@ public class AttackAnimation extends ActionAnimation
 			float prevPoseTime = phase.contactStart;
 			float poseTime = phase.contactEnd;
 			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
-
+			
 			if (list.size() > 0)
 			{
 				AttackResult attackResult = new AttackResult(entity, list);
@@ -127,34 +127,31 @@ public class AttackAnimation extends ActionAnimation
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
-					if (!entityCap.currentlyAttackedEntity.contains(trueEntity) && !entityCap.isTeam(e))
+					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
 					{
-						if (e instanceof LivingEntity || e instanceof PartEntity)
+						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
+										new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
+										ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
+								.getType() == HitResult.Type.MISS)
 						{
-							if (entity.level
-									.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
-											new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
-											ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
-									.getType() == HitResult.Type.MISS)
+		
+							float amount = this.getDamageAmount(entityCap, e, phase);
+							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
+							
+							if (entityCap.hurtEntity(e, phase.hand, source, amount))
 							{
-
-								float amount = this.getDamageAmount(entityCap, e, phase);
-								ExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
-								
-								if (entityCap.hurtEntity(e, phase.hand, source, amount))
+								e.invulnerableTime = 0;
+								e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(),
+										1.0F, 1.0F);
+								if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
 								{
-									e.invulnerableTime = 0;
-									e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(),
-											1.0F, 1.0F);
-									if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
-									{
-										entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
-												((PlayerCap<?>) entityCap).getOriginalEntity());
-										flag1 = false;
-									}
+									entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
+											((PlayerCap<?>) entityCap).getOriginalEntity());
+									flag1 = false;
 								}
-								entityCap.currentlyAttackedEntity.add(trueEntity);
 							}
+							entityCap.currentlyAttackedEntities.add(trueEntity);
+							entityCap.slashDelay = 3;
 						}
 					}
 				} while (attackResult.next());
@@ -172,19 +169,34 @@ public class AttackAnimation extends ActionAnimation
 		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
+		Collider collider = this.getCollider(entityCap, elapsedTime);
 		
 		if (spawner != null)
 		{
-			LivingEntity entity = entityCap.getOriginalEntity();
-			
-			Collider collider = this.getCollider(entityCap, elapsedTime);
 			collider.update(entityCap, phase.getColliderJointName());
+			LivingEntity entity = entityCap.getOriginalEntity();
 			Vec3 pos = collider.getWorldCenter();
 			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
 		}
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
 		{
 			entityCap.playSound(this.getSwingSound(entityCap, phase));
+		}
+		
+		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
+		{
+			float prevPoseTime = phase.contactStart;
+			float poseTime = phase.contactEnd;
+			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
+			for (Entity e : list)
+			{
+				Entity trueEntity = this.getTrueEntity(e);
+				if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
+				{
+					entityCap.currentlyAttackedEntities.add(trueEntity);
+					entityCap.slashDelay = 3;
+				}
+			}
 		}
 	}
 	
@@ -198,6 +210,18 @@ public class AttackAnimation extends ActionAnimation
 		this.getCollider(entitypatch, elapsedTime).draw(poseStack, buffer, entitypatch, this, prevElapsedTime, elapsedTime, partialTicks, this.getPlaySpeed(entitypatch));
 	}
 	
+	@Override
+	public float getPlaySpeed(LivingCap<?> entityCap)
+	{
+		float speed = super.getPlaySpeed(entityCap);
+		if (entityCap.slashDelay > 0)
+		{
+			speed *= 0.1F;
+			--entityCap.slashDelay;
+		}
+		return speed;
+	}
+	
 	public String getPathIndexByTime(float elapsedTime)
 	{
 		return this.getPhaseByTime(elapsedTime).jointName;
@@ -207,15 +231,14 @@ public class AttackAnimation extends ActionAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
-		entityCap.currentlyAttackedEntity.clear();
+		entityCap.currentlyAttackedEntities.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{
 			Mob entity = (Mob) entityCap.getOriginalEntity();
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
-		for (Phase phase : this.phases)
-			phase.smashed = false;
+		for (Phase phase : this.phases) phase.smashed = false;
 	}
 
 	@Override

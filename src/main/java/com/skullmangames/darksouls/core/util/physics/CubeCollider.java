@@ -178,7 +178,7 @@ public class CubeCollider extends Collider
 	public boolean collide(Entity entity)
 	{
 		CubeCollider obb = new CubeCollider(entity.getBoundingBox());
-		return isCollideWith(obb);
+		return this.isCollideWith(obb);
 	}
 
 	private static boolean collisionDetection(Vec3 seperateAxis, Vec3 toOpponent, CubeCollider box1, CubeCollider box2)

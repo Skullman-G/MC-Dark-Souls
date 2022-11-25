@@ -59,9 +59,6 @@ public abstract class Collider
 			float prevElapsedTime, float elapsedTime, String jointName, float attackSpeed)
 	{
 		this.update(entityCap, jointName);
-		List<Entity> list = entityCap.getOriginalEntity().level.getEntities(entityCap.getOriginalEntity(), this.getHitboxAABB());
-		this.filterHitEntities(list);
-
 		return this.getCollideEntities(entityCap.getOriginalEntity());
 	}
 	

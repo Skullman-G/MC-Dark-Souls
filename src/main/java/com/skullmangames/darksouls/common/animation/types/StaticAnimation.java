@@ -176,7 +176,8 @@ public class StaticAnimation extends DynamicAnimation
 	public float getPlaySpeed(LivingCap<?> entityCap)
 	{
 		float speed = super.getPlaySpeed(entityCap);
-		return entityCap.getOriginalEntity().isUnderWater() ? speed * 0.75F : speed;
+		if (entityCap.getOriginalEntity().isUnderWater()) speed *= 0.75F;
+		return speed;
 	}
 
 	public int getId()

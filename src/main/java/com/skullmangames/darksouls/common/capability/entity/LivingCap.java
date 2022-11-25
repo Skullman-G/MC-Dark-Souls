@@ -62,12 +62,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public LivingMotion currentMotion = LivingMotion.IDLE;
 	public Map<LayerPart, LivingMotion> currentMixMotions = new HashMap<>();
 	protected Animator animator;
-	public List<Entity> currentlyAttackedEntity;
+	public List<Entity> currentlyAttackedEntities;
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
 	private float stamina;
 	protected boolean canUseShield = true;
 	public Vec3 futureTeleport = Vec3.ZERO;
+	public int slashDelay;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -76,7 +77,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
-		this.currentlyAttackedEntity = new ArrayList<Entity>();
+		this.currentlyAttackedEntities = new ArrayList<Entity>();
 	}
 
 	@Override
