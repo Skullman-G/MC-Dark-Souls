@@ -5,9 +5,9 @@
 		"category": "entity",
 		"sounds":
 		[
-			"darksouls:entities/generic/hit_1",
-			"darksouls:entities/generic/hit_2",
-			"darksouls:entities/generic/hit_3"
+			"minecraft:entities/generic/hit_1",
+			"minecraft:entities/generic/hit_2",
+			"minecraft:entities/generic/hit_3"
 		]
 	},
 	
@@ -17,9 +17,9 @@
 		"category": "entity",
 		"sounds":
 		[
-			"darksouls:entities/generic/hit_1",
-			"darksouls:entities/generic/hit_2",
-			"darksouls:entities/generic/hit_3"
+			"minecraft:entities/generic/hit_1",
+			"minecraft:entities/generic/hit_2",
+			"minecraft:entities/generic/hit_3"
 		]
 	}
 }
