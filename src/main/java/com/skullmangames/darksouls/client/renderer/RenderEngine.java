@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.client.renderer.item.RenderItemBase;
 import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.StrayDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.additional.AdditionalEntityRenderer;
@@ -96,6 +96,7 @@ public class RenderEngine
 	private Map<Item, RenderItemBase> itemRendererMapByInstance;
 	private Map<Class<? extends Item>, RenderItemBase> itemRendererMapByClass;
 	private FirstPersonRenderer firstPersonRenderer;
+	private PlayerGuiRenderer playerGuiRenderer;
 	private boolean aiming;
 	private int zoomOutTimer = 0;
 	private int zoomCount;
@@ -113,6 +114,7 @@ public class RenderEngine
 		this.itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
 		this.projectionMatrix = new PublicMatrix4f();
 		this.firstPersonRenderer = new FirstPersonRenderer();
+		this.playerGuiRenderer = new PlayerGuiRenderer();
 		
 		this.minecraft.renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
 				new BufferBuilder(ModRenderTypes.getEnchantedArmor().bufferSize()));
@@ -126,7 +128,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, HollowLordranSoldierCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidCap<CrestfallenWarrior>>(DarkSouls.MOD_ID, "quest_entity/crestfallen_warrior"));
 		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, AnastaciaOfAstoraCap>(DarkSouls.MOD_ID, "quest_entity/anastacia_of_astora"));
-		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new AsylumDemonRenderer());
+		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new StrayDemonRenderer());
 		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<AbstractFireKeeper, FireKeeperCap>(DarkSouls.MOD_ID, "fire_keeper"));
 		this.entityRendererMap.put(ModEntities.PETRUS_OF_THOROLUND.get(), new SimpleHumanoidRenderer<PetrusOfThorolund, SimpleHumanoidCap<PetrusOfThorolund>>(DarkSouls.MOD_ID, "quest_entity/petrus_of_thorolund"));
 		this.entityRendererMap.put(ModEntities.FALCONER.get(), new SimpleHumanoidRenderer<Falconer, FalconerCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
@@ -197,9 +199,9 @@ public class RenderEngine
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public void renderEntityArmatureModel(LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
 	{
-		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
+		this.entityRendererMap.get(entityCap.getOriginalEntity().getType()).render(entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
 	}
 	
 	public boolean isEntityContained(Entity entity)
@@ -285,13 +287,22 @@ public class RenderEngine
 			LivingEntity livingentity = event.getEntity();
 			if (renderEngine.isEntityContained(livingentity))
 			{
-				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F) return;
+				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F)
+				{
+					LocalPlayerCap playerCap = (LocalPlayerCap)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+					if (playerCap != null)
+					{
+						renderEngine.playerGuiRenderer.render(playerCap, null, event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+						event.setCanceled(true);
+					}
+					return;
+				}
 				
-				LivingCap<?> entityCap = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				LivingCap<?> entityCap = (LivingCap<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entityCap != null)
 				{
 					event.setCanceled(true);
-					renderEngine.renderEntityArmatureModel(livingentity, entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+					renderEngine.renderEntityArmatureModel(entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
 				}
 			}
 			
@@ -341,9 +352,9 @@ public class RenderEngine
 			{
 				if (event.getItemStack().getItem() instanceof HasDarkSoulsUseAction)
 				{
-					Minecraft minecraft = Minecraft.getInstance();
 					HasDarkSoulsUseAction item = (HasDarkSoulsUseAction)event.getItemStack().getItem();
-					FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(), event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), minecraft.getEntityRenderDispatcher().getPackedLightCoords(minecraft.player, event.getPartialTicks()));
+					FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(),
+							event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
 					event.setCanceled(true);
 				}
 				return;
@@ -352,7 +363,7 @@ public class RenderEngine
 			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
-				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),
+				renderEngine.firstPersonRenderer.render(playerCap, null, event.getMultiBufferSource(),
 						event.getPoseStack(), event.getPackedLight(), event.getPartialTicks());
 			}
 			event.setCanceled(true);

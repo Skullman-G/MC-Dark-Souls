@@ -13,11 +13,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AsylumDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonCap>
+public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonCap>
 {
 	private final ResourceLocation textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
 	
-	public AsylumDemonRenderer()
+	public StrayDemonRenderer()
 	{
 		this.layers.add(new HeldItemLayer<>(StrayDemonCap.getWeaponScale(), new Vector3d(0.0D, 0.0D, 0.1D)));
 	}
@@ -29,11 +29,11 @@ public class AsylumDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemon
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemon entityIn, StrayDemonCap entityCap, float partialTicks)
+	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemonCap entityCap, float partialTicks)
 	{
 		float scale = 1.4F;
 		matStack.scale(scale, scale, scale);
-		super.applyRotations(matStack, armature, entityIn, entityCap, partialTicks);
+		super.applyRotations(matStack, armature, entityCap, partialTicks);
 		this.transformJoint(2, armature, entityCap.getHeadMatrix(partialTicks));
 	}
 }

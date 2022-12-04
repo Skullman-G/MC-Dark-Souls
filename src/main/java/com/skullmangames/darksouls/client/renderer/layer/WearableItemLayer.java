@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -41,28 +42,30 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		this.slot = slotType;
 	}
 	
-	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLightIn, boolean hasEffect, ClientModel model, float r, float g, float b, ResourceLocation armorResource, PublicMatrix4f[] poses)
+	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, ResourceLocation armorResource, PublicMatrix4f[] poses)
 	{
-		VertexConsumer ivertexbuilder = ModRenderTypes.getArmorVertexBuilder(buf, ModRenderTypes.getAnimatedArmorModel(armorResource), hasEffect);
-		model.draw(matStack, ivertexbuilder, packedLightIn, r, g, b, 1.0F, poses);
+		RenderType rt = ModRenderTypes.getAnimatedArmorModel(armorResource);
+		VertexConsumer vertexConsumer = ModRenderTypes.getArmorVertexBuilder(buf, rt, hasEffect);
+		model.draw(matStack, vertexConsumer, packedLight, r, g, b, 1.0F, poses);
 	}
 	
 	@Override
-	public void renderLayer(T entityCap, E entityliving, PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, PoseStack poseStack, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
 	{
-		ItemStack stack = entityliving.getItemBySlot(this.slot);
+		E entity = entityCap.getOriginalEntity();
+		ItemStack stack = entity.getItemBySlot(this.slot);
 		Item item = stack.getItem();
 		
-		matrixStackIn.pushPose();
-		if(this.slot == EquipmentSlot.HEAD && entityliving instanceof ZombieVillager)
+		poseStack.pushPose();
+		if(this.slot == EquipmentSlot.HEAD && entity instanceof ZombieVillager)
 		{
-			matrixStackIn.translate(0.0D, 0.1D, 0.0D);
+			poseStack.translate(0.0D, 0.1D, 0.0D);
 		}
 		
 		if (item instanceof ArmorItem)
 		{
 			ArmorItem armorItem = (ArmorItem) stack.getItem();
-			ClientModel model = this.getArmorModel(entityliving, armorItem, stack);
+			ClientModel model = this.getArmorModel(entity, armorItem, stack);
 			
 			boolean hasEffect = stack.isEnchanted();
 			if (armorItem instanceof DyeableArmorItem)
@@ -71,26 +74,26 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 				float r = (float) (i >> 16 & 255) / 255.0F;
 				float g = (float) (i >> 8 & 255) / 255.0F;
 				float b = (float) (i & 255) / 255.0F;
-				this.renderArmor(matrixStackIn, buffer, packedLightIn, hasEffect, model, r, g, b, this.getArmorTexture(stack, entityliving, armorItem.getSlot(), null), poses);
-				this.renderArmor(matrixStackIn, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entityliving, armorItem.getSlot(), "overlay"), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, r, g, b, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entity, armorItem.getSlot(), "overlay"), poses);
 			}
 			else
 			{
-				this.renderArmor(matrixStackIn, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entityliving, armorItem.getSlot(), null), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
 			}
 		}
 		else
 		{
 			if (item != Items.AIR)
 			{
-				ClientManager.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entityCap, buffer, matrixStackIn, packedLightIn, partialTicks);
+				ClientManager.INSTANCE.renderEngine.getItemRenderer(stack.getItem()).renderItemOnHead(stack, entityCap, buffer, poseStack, packedLightIn, partialTicks);
 			}
 		}
 		
-		matrixStackIn.popPose();
+		poseStack.popPose();
 	}
 	
-	private ClientModel getArmorModel(E entityliving, ArmorItem armorItem, ItemStack stack)
+	private ClientModel getArmorModel(E entity, ArmorItem armorItem, ItemStack stack)
 	{
 		ResourceLocation registryName = armorItem.getRegistryName();
 		if (ARMOR_MODEL_MAP.containsKey(registryName))

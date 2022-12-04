@@ -132,11 +132,9 @@ public class ModRenderTypes extends RenderType
 		return ARMOR_ENTITY_GLINT;
 	}
 
-	public static VertexConsumer getArmorVertexBuilder(MultiBufferSource buffer, RenderType renderType,
-			boolean withGlint)
+	public static VertexConsumer getArmorVertexBuilder(MultiBufferSource buffer, RenderType renderType, boolean withGlint)
 	{
-		return withGlint
-				? VertexMultiConsumer.create(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType))
+		return withGlint ? VertexMultiConsumer.create(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType))
 				: buffer.getBuffer(renderType);
 	}
 }

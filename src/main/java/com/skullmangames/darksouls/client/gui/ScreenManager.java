@@ -84,10 +84,10 @@ public class ScreenManager
 						((ModLoadingScreen) overlay).setCanFadeOut(true);
 					}
 				}
+				
 				if (gui instanceof TitleScreen)
 				{
-					TitleScreen screen = (TitleScreen) gui;
-					event.setScreen(new ModTitleScreen(screen.fading));
+					event.setScreen(new ModTitleScreen(((TitleScreen)gui).fading));
 				}
 				else if (gui instanceof LevelLoadingScreen)
 				{
