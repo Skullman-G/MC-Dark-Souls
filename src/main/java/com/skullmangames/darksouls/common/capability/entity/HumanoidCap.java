@@ -83,6 +83,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		Entity attacker = damageSource.getSource();
+		if (attacker == null) return false;
 		float attackAngle = ((float)Math.toDegrees(Math.atan2(this.getX() - attacker.getX(), this.getZ() - attacker.getZ())) + 360F) % 360F;
 		float yRot = this.getYRot() - 180;
 		if (yRot < -180) yRot += 360F;

@@ -403,6 +403,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
+		if (attacker == null) return false;
 		
 		for (Damage damage : damageSource.getDamages())
 		{
