@@ -170,13 +170,12 @@ public class AttackAnimation extends ActionAnimation
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
 		Collider collider = this.getCollider(entityCap, elapsedTime);
+		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		if (spawner != null)
 		{
 			collider.update(entityCap, phase.getColliderJointName());
-			LivingEntity entity = entityCap.getOriginalEntity();
-			Vec3 pos = collider.getWorldCenter();
-			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, pos);
+			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getWorldCenter());
 		}
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
 		{
@@ -195,6 +194,13 @@ public class AttackAnimation extends ActionAnimation
 				{
 					entityCap.currentlyAttackedEntities.add(trueEntity);
 					entityCap.slashDelay = 3;
+					
+					LivingCap<?> targetCap = (LivingCap<?>)trueEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+					if (targetCap != null)
+					{
+						Vec3 colPos = collider.getWorldCenter();
+						targetCap.makeImpactParticles(colPos, entity.position());
+					}
 				}
 			}
 		}

@@ -87,7 +87,7 @@ public class MathUtils
 
 	public static double getAngleBetween(Vector3f a, Vector3f b)
 	{
-		double cos = (a.x() * b.x() + a.y() * b.y() + a.z() * b.z());
+		double cos = a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
 		return Math.acos(cos);
 	}
 
@@ -159,6 +159,11 @@ public class MathUtils
 	}
 
 	public static float clamp(float value, float range)
+	{
+		return clamp(value, -range, range);
+	}
+	
+	public static double clamp(double value, double range)
 	{
 		return clamp(value, -range, range);
 	}

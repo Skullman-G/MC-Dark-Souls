@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import com.mojang.serialization.Codec;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.particles.BloodParticle;
 import com.skullmangames.darksouls.client.particles.DustCloudParticle;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
 import com.skullmangames.darksouls.client.particles.ForceParticle;
@@ -44,6 +45,7 @@ public class ModParticles
 	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> LIGHTNING_SPEAR = register("lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	public static final RegistryObject<SimpleParticleType> LIGHTNING = register("lightning", true);
+	public static final RegistryObject<SimpleParticleType> BLOOD = register("blood", true);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
 	{
@@ -79,5 +81,6 @@ public class ModParticles
 		minecraft.particleEngine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle::lightningSpear);
 		minecraft.particleEngine.register(GREAT_LIGHTNING_SPEAR.get(), LightningSpearParticle::greatLightningSpear);
 		minecraft.particleEngine.register(LIGHTNING.get(), LightningParticle.Factory::new);
+		minecraft.particleEngine.register(BLOOD.get(), BloodParticle.Factory::new);
 	}
 }

@@ -24,6 +24,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -36,7 +37,6 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
-import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -55,6 +55,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
@@ -176,6 +177,24 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 		if (this.canUseShield && this.getStamina() <= 0.0F) this.canUseShield = false;
 		else if (this.getStamina() >= this.getMaxStamina()) this.canUseShield = true;
+	}
+	
+	public void makeImpactParticles(Vec3 source, Vec3 dir)
+	{
+		if (!this.isBlocking())
+		{
+			AABB bb = this.orgEntity.getBoundingBox();
+			double x = this.getX() + MathUtils.clamp(source.x - this.getX(), bb.getXsize() / 3);
+			double y = this.getY() + MathUtils.clamp(source.y - this.getY(), bb.getYsize() / 3);
+			double z = this.getZ() + MathUtils.clamp(source.z - this.getZ(), bb.getZsize() / 3);
+			
+			for (int i = 0; i < 20; i++)
+			{
+				double xd = (dir.x - this.getX()) * 0.1F * this.orgEntity.getRandom().nextDouble();
+				double zd = (dir.z - this.getZ()) * 0.1F * this.orgEntity.getRandom().nextDouble();
+				this.getLevel().addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+			}
+		}
 	}
 
 	@Override
@@ -307,7 +326,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public boolean canBlock()
 	{
-		return this.canUseShield && this.orgEntity.getVehicle() == null;
+		return this.canUseShield && !this.isMounted();
 	}
 	
 	public void onDeath() {}
@@ -362,7 +381,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			if (stunType.getLevel() == 3)
 			{
-				if (this.orgEntity.getVehicle() != null) this.orgEntity.stopRiding();
+				if (this.isMounted()) this.orgEntity.stopRiding();
 			}
 			this.playAnimationSynchronized(hitAnimation, 0.0F);
 		}
@@ -580,15 +599,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public LivingEntity getTarget()
 	{
 		return this.orgEntity.getLastHurtMob();
-	}
-
-	public float getAttackDirectionPitch()
-	{
-		float partialTicks = DarkSouls.isPhysicalClient() ? Minecraft.getInstance().getFrameTime() : 1.0F;
-		float pitch = -this.getOriginalEntity().getViewXRot(partialTicks);
-		float correct = (pitch > 0) ? 0.03333F * (float) Math.pow(pitch, 2) : -0.03333F * (float) Math.pow(pitch, 2);
-
-		return MathUtils.clamp(correct, -30.0F, 30.0F);
 	}
 
 	public PublicMatrix4f getHeadMatrix(float partialTicks)
