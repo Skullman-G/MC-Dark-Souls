@@ -98,6 +98,18 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
+	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float p_82196_2_)

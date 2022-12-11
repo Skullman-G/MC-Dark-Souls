@@ -91,4 +91,16 @@ public class HollowLordranWarrior extends ArmoredMob
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
+	}
 }

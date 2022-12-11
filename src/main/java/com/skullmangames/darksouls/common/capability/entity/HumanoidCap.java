@@ -113,6 +113,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	public static DeathAnimation getHumanoidDeathAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
 	{
 		Entity attacker = dmgSource.getSource();
+		if (attacker == null) return Animations.BIPED_DEATH;
 		float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
 		float yRot = entityCap.getYRot() - 180;
 		if (yRot < -180) yRot += 360F;
