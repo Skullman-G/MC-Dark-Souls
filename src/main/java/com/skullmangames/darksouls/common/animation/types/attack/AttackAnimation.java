@@ -117,6 +117,7 @@ public class AttackAnimation extends ActionAnimation
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();				
 			float prevPoseTime = phase.contactStart;
 			float poseTime = phase.contactEnd;
+			Vec3 prevColPos = collider.getWorldCenter();
 			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
 			
 			if (list.size() > 0)
@@ -136,7 +137,7 @@ public class AttackAnimation extends ActionAnimation
 						{
 		
 							float amount = this.getDamageAmount(entityCap, e, phase);
-							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, e, phase, amount);
+							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, amount);
 							
 							if (entityCap.hurtEntity(e, phase.hand, source, amount))
 							{
@@ -180,29 +181,6 @@ public class AttackAnimation extends ActionAnimation
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
 		{
 			entityCap.playSound(this.getSwingSound(entityCap, phase));
-		}
-		
-		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
-		{
-			float prevPoseTime = phase.contactStart;
-			float poseTime = phase.contactEnd;
-			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
-			for (Entity e : list)
-			{
-				Entity trueEntity = this.getTrueEntity(e);
-				if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
-				{
-					entityCap.currentlyAttackedEntities.add(trueEntity);
-					entityCap.slashDelay = 3;
-					
-					LivingCap<?> targetCap = (LivingCap<?>)trueEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					if (targetCap != null)
-					{
-						Vec3 colPos = collider.getWorldCenter();
-						targetCap.makeImpactParticles(colPos, entity.position());
-					}
-				}
-			}
 		}
 	}
 	
@@ -309,13 +287,13 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(() -> entityCap.getWeaponHitSound(phase.hand)).get();
 	}
 
-	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Entity target, Phase phase, float amount)
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, float amount)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
 		float poiseDamage = (float) entityCap.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
 		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 

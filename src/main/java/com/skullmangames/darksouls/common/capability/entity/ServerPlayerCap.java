@@ -26,6 +26,7 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCCovenantProgress;
+import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
 import com.skullmangames.darksouls.network.server.STCHumanity;
@@ -42,6 +43,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -293,15 +295,22 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 
 		this.modifyLivingMotions(mainHandCap);
 	}
+	
+	@Override
+	public void makeImpactParticles(Vec3 impactPos, boolean blocked)
+	{
+		if (!this.isClientSide())
+		{
+			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
+		}
+	}
 
 	@Override
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		Entity attacker = damageSource.getSource();
-		float attackAngle = ((float)Math.toDegrees(Math.atan2(this.getX() - attacker.getX(), this.getZ() - attacker.getZ())) + 360F) % 360F;
-		float yRot = this.getYRot() - 180;
-		if (yRot < -180) yRot += 360F;
-		float dir = Math.abs(-yRot - attackAngle);
+		if (attacker == null) return false;
+		float dir = damageSource.getAttackAngle(this.orgEntity);
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 
@@ -315,6 +324,8 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
 		}
 		
+		damageSource.setWasBlocked(true);
+		this.playSound(shield.getBlockSound());
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();
 		return true;

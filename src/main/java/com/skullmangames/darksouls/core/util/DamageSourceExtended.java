@@ -2,24 +2,28 @@ package com.skullmangames.darksouls.core.util;
 
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
 {
 	private final int requiredDeflectionLevel;
 	private final float poiseDamage;
 	private final float staminaDamage;
+	private final Vec3 attackPos;
+	private boolean wasBlocked;
 	private StunType stunType;
 	private final Damage[] damages;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, int requireddeflectionlevel, float poiseDamage, float staminaDamage, Damage... damages)
+	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType, int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-		super(damageTypeIn, damageSourceEntityIn);
+		super(damageTypeIn, source);
 		
 		this.stunType = stunType;
 		this.damages = damages;
 		this.poiseDamage = poiseDamage;
-		this.requiredDeflectionLevel = requireddeflectionlevel;
+		this.requiredDeflectionLevel = requiredDeflectionLevel;
 		this.staminaDamage = staminaDamage;
+		this.attackPos = attackPos;
 	}
 	
 	@Override
@@ -97,5 +101,33 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	public Entity getSource()
 	{
 		return this.getDirectEntity();
+	}
+
+	@Override
+	public boolean wasBlocked()
+	{
+		return this.wasBlocked;
+	}
+
+	@Override
+	public void setWasBlocked(boolean value)
+	{
+		this.wasBlocked = value;
+	}
+
+	@Override
+	public float getAttackAngle(Entity target)
+	{
+		Vec3 attacker = this.getSource().position();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
+		float yRot = target.getYRot() - 180;
+		if (yRot < -180) yRot += 360F;
+		return Math.abs(-yRot - attackAngle);
+	}
+
+	@Override
+	public Vec3 getAttackPos()
+	{
+		return this.attackPos;
 	}
 }

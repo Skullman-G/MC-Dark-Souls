@@ -15,8 +15,11 @@ import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -135,5 +138,16 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	public void bonfireKindleEffect(BlockPos pos)
 	{
 		BonfireBlock.kindleEffect(this.minecraft.level, pos);
+	}
+
+	@Override
+	public void makeImpactParticles(int entityId, Vec3 impactPos, boolean blocked)
+	{
+		Entity entity = this.minecraft.level.getEntity(entityId);
+		LivingCap<?> cap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (cap != null)
+		{
+			cap.makeImpactParticles(impactPos, blocked);
+		}
 	}
 }

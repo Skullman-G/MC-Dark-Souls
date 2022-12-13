@@ -10,6 +10,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class MathUtils
 {
+	public static int dir(double value)
+	{
+		return value > 0 ? 1 : value < 0 ? -1 : 0;
+	}
+	
 	public static int lerp(int incr, int from, int to)
 	{
 		if (from == to) return from;

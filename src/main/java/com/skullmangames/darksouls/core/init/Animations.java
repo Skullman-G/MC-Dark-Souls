@@ -133,17 +133,19 @@ public final class Animations
 			new AnimConfig(LivingMotion.KNEELING, "biped/combat/block_mirror", "biped/combat/block", true),
 			new AnimConfig(LivingMotion.SNEAKING, "biped/combat/block_mirror", "biped/combat/block", true));
 	
-	public static final StaticAnimation BIPED_HIT_BLOCKED_LEFT = new BlockAnimation(0.05F, "biped/hit/blocked_left", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BIPED_HIT_BLOCKED_RIGHT = new BlockAnimation(0.05F, "biped/hit/blocked_right", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BIPED_HIT_BLOCKED_LEFT = new BlockAnimation(0.05F, "biped/hit/blocked_left", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);;
+	public static final StaticAnimation BIPED_HIT_BLOCKED_RIGHT = new BlockAnimation(0.05F, "biped/hit/blocked_right", (models) -> models.ENTITY_BIPED)
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);;
 	
 	public static final StaticAnimation BIPED_HIT_BLOCKED_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/hit/blocked_fly_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	public static final StaticAnimation BIPED_HIT_BLOCKED_FLY_RIGHT = new InvincibleAnimation(0.05F, "biped/hit/blocked_fly_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
 	
-	public static final StaticAnimation BIPED_DISARM_SHIELD_LEFT = new BlockAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_DISARM_SHIELD_LEFT = new ActionAnimation(0.05F, "biped/combat/disarmed_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
-	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new BlockAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
+	public static final StaticAnimation BIPED_DISARM_SHIELD_RIGHT = new ActionAnimation(0.05F, "biped/combat/disarmed_right", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) });
 	
 	public static final StaticAnimation BIPED_HORSEBACK_IDLE = new StaticAnimation(0.2F, true, "biped/horseback/horseback_idle", (models) -> models.ENTITY_BIPED);
@@ -331,8 +333,8 @@ public final class Animations
 									if (targetCap != null)
 									{
 										DamageSourceExtended dmgSource = cap.getOriginalEntity() instanceof Player ?
-												ExtendedDamageSource.causePlayerDamage((Player)cap.getOriginalEntity(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0))
-												: ExtendedDamageSource.causeMobDamage(cap.getOriginalEntity(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0));
+												ExtendedDamageSource.causePlayerDamage((Player)cap.getOriginalEntity(), cap.getOriginalEntity().position(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0))
+												: ExtendedDamageSource.causeMobDamage(cap.getOriginalEntity(), cap.getOriginalEntity().position(), StunType.FLY, 0, 0, 0, new Damage(DamageType.REGULAR, 0));
 										target.hurt(dmgSource, 0);
 									}
 									else cap.knockBackEntity(target, 0.5F);

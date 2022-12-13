@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
@@ -328,11 +329,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = weapon != null ? Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul : 4;
-		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
+		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 	
 	public void discard()

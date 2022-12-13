@@ -40,4 +40,6 @@ public interface ModPlayNetHandler
 	void playSound(Entity entity, SoundEvent sound, float volume);
 	
 	void bonfireKindleEffect(BlockPos pos);
+	
+	void makeImpactParticles(int entityId, Vec3 impactPos, boolean blocked);
 }

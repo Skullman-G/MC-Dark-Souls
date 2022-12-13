@@ -2,12 +2,14 @@ package com.skullmangames.darksouls.core.util;
 
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements ExtendedDamageSource
 {
 	private final float staminaDamage;
 	private final float poiseDamage;
 	private boolean headshot;
+	private boolean wasBlocked;
 	private StunType stunType;
 	private final Damage[] damages;
 
@@ -98,5 +100,33 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	public Entity getSource()
 	{
 		return this.getDirectEntity();
+	}
+
+	@Override
+	public boolean wasBlocked()
+	{
+		return this.wasBlocked;
+	}
+
+	@Override
+	public void setWasBlocked(boolean value)
+	{
+		this.wasBlocked = value;
+	}
+
+	@Override
+	public float getAttackAngle(Entity target)
+	{
+		Vec3 attacker = this.getDirectEntity().position();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
+		float yRot = target.getYRot() - 180;
+		if (yRot < -180) yRot += 360F;
+		return Math.abs(-yRot - attackAngle);
+	}
+
+	@Override
+	public Vec3 getAttackPos()
+	{
+		return this.getSource().position();
 	}
 }

@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.client.particles.LightningSpearParticle;
 import com.skullmangames.darksouls.client.particles.MiracleCircleParticle;
 import com.skullmangames.darksouls.client.particles.MiracleGlowParticle;
 import com.skullmangames.darksouls.client.particles.SoulParticle;
+import com.skullmangames.darksouls.client.particles.SparkParticle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
@@ -46,6 +47,7 @@ public class ModParticles
 	public static final RegistryObject<ParticleType<EntityboundParticleOptions>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear", EntityboundParticleOptions.DESERIALIZER, EntityboundParticleOptions::codec);
 	public static final RegistryObject<SimpleParticleType> LIGHTNING = register("lightning", true);
 	public static final RegistryObject<SimpleParticleType> BLOOD = register("blood", true);
+	public static final RegistryObject<SimpleParticleType> SPARK = register("spark", true);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
 	{
@@ -82,5 +84,6 @@ public class ModParticles
 		minecraft.particleEngine.register(GREAT_LIGHTNING_SPEAR.get(), LightningSpearParticle::greatLightningSpear);
 		minecraft.particleEngine.register(LIGHTNING.get(), LightningParticle.Factory::new);
 		minecraft.particleEngine.register(BLOOD.get(), BloodParticle.Factory::new);
+		minecraft.particleEngine.register(SPARK.get(), SparkParticle.Factory::new);
 	}
 }

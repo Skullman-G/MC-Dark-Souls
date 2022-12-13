@@ -36,7 +36,9 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -67,7 +69,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
 	private float stamina;
-	protected boolean canUseShield = true;
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;
 
@@ -174,26 +175,39 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			this.updateOnServer();
 		}
-
-		if (this.canUseShield && this.getStamina() <= 0.0F) this.canUseShield = false;
-		else if (this.getStamina() >= this.getMaxStamina()) this.canUseShield = true;
 	}
 	
-	public void makeImpactParticles(Vec3 source, Vec3 dir)
+	public void makeImpactParticles(Vec3 impactPos, boolean blocked)
 	{
-		if (!this.isBlocking())
+		if (this.isClientSide())
 		{
 			AABB bb = this.orgEntity.getBoundingBox();
-			double x = this.getX() + MathUtils.clamp(source.x - this.getX(), bb.getXsize() / 3);
-			double y = this.getY() + MathUtils.clamp(source.y - this.getY(), bb.getYsize() / 3);
-			double z = this.getZ() + MathUtils.clamp(source.z - this.getZ(), bb.getZsize() / 3);
+			double x = this.getX() + MathUtils.clamp(impactPos.x - this.getX(), bb.getXsize() / 3);
+			double y = this.getY() + MathUtils.clamp(impactPos.y - this.getY(), bb.getYsize() / 3);
+			double z = this.getZ() + MathUtils.clamp(impactPos.z - this.getZ(), bb.getZsize() / 3);
 			
-			for (int i = 0; i < 20; i++)
+			if (blocked)
 			{
-				double xd = (dir.x - this.getX()) * 0.1F * this.orgEntity.getRandom().nextDouble();
-				double zd = (dir.z - this.getZ()) * 0.1F * this.orgEntity.getRandom().nextDouble();
-				this.getLevel().addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+				for (int i = 0; i < 10; i++)
+				{
+					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.25F * this.orgEntity.getRandom().nextDouble();
+					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.25F * this.orgEntity.getRandom().nextDouble();
+					this.getLevel().addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * this.orgEntity.getRandom().nextDouble(), zd);
+				}
 			}
+			else
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.5F * this.orgEntity.getRandom().nextDouble();
+					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.5F * this.orgEntity.getRandom().nextDouble();
+					this.getLevel().addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+				}
+			}
+		}
+		else
+		{
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
 		}
 	}
 
@@ -326,7 +340,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public boolean canBlock()
 	{
-		return this.canUseShield && !this.isMounted();
+		return !this.isMounted();
 	}
 	
 	public void onDeath() {}
@@ -358,7 +372,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		if (this.blockingAttack(extSource))
 		{
-			this.orgEntity.actuallyHurt(damageSource, extSource.getAmount());
+			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
 			return false;
 		}
 
@@ -371,6 +385,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		boolean headshot = extSource.isHeadshot();
 		float poiseDamage = extSource.getPoiseDamage();
 		StunType stunType = extSource.getStunType();
+		
+		this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
 		
 		// Stun Animation
 		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
@@ -410,6 +426,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
 		}
 		
+		damageSource.setWasBlocked(true);
+		
 		this.playSound(shield.getBlockSound());
 
 		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !damageSource.isIndirect())
@@ -420,18 +438,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			StaticAnimation deflectAnimation = attackerCap.getDeflectAnimation();
 			if (deflectAnimation == null) return true;
 
-			this.playAnimationSynchronized(deflectAnimation, 0.0F);
+			attackerCap.playAnimationSynchronized(deflectAnimation, 0.0F);
 		}
-
+		
 		return true;
 	}
 
-	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmgMul, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = weapon == null ? 4F : Math.max(4F, weapon.getStaminaDamage()) * staminaDmgMul;
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 
 	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)

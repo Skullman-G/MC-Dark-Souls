@@ -14,17 +14,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.phys.Vec3;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
+	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-        return new DamageSourceExtended("player", player, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
+        return new DamageSourceExtended("player", player, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-        return new DamageSourceExtended("mob", mob, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
+        return new DamageSourceExtended("mob", mob, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
 	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
@@ -34,7 +35,7 @@ public interface ExtendedDamageSource
 	
 	public static DamageSourceExtended getDirectFrom(ExtendedDamageSource org)
 	{
-		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getStunType(), org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
+		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getAttackPos(), org.getStunType(), org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
 	}
 	
 	public static DamageSourceExtended getDirectFrom(DamageSource org, float amount)
@@ -43,6 +44,8 @@ public interface ExtendedDamageSource
 		StunType stunType = amount > 10.0F ? StunType.SMASH : StunType.LIGHT;
 		float poiseDamage = 1.0F;
 		float staminaDamage = 1.0F;
+		
+		Entity attacker = org.getDirectEntity();
 		LivingCap<?> cap = org.getDirectEntity() instanceof LivingEntity ? (LivingCap<?>)org.getDirectEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) : null;
 		if (cap != null)
 		{
@@ -54,7 +57,8 @@ public interface ExtendedDamageSource
 			}
 			
 		}
-		return new DamageSourceExtended(org.getMsgId(), org.getDirectEntity(), stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
+		
+		return new DamageSourceExtended(org.getMsgId(), attacker, attacker.position(), stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)
@@ -87,6 +91,10 @@ public interface ExtendedDamageSource
 	public float getStaminaDamage();
 	public void setStunType(StunType value);
 	public boolean isIndirect();
+	public boolean wasBlocked();
+	public void setWasBlocked(boolean value);
+	public float getAttackAngle(Entity target);
+	public Vec3 getAttackPos();
 	
 	public enum StunType
 	{

@@ -84,10 +84,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		Entity attacker = damageSource.getSource();
 		if (attacker == null) return false;
-		float attackAngle = ((float)Math.toDegrees(Math.atan2(this.getX() - attacker.getX(), this.getZ() - attacker.getZ())) + 360F) % 360F;
-		float yRot = this.getYRot() - 180;
-		if (yRot < -180) yRot += 360F;
-		float dir = Math.abs(-yRot - attackAngle);
+		float dir = damageSource.getAttackAngle(this.orgEntity);
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
@@ -99,6 +96,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
 		}
 		
+		damageSource.setWasBlocked(true);
+		this.playSound(shield.getBlockSound());
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();
 		return true;
@@ -114,10 +113,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		Entity attacker = dmgSource.getSource();
 		if (attacker == null) return Animations.BIPED_DEATH;
-		float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
-		float yRot = entityCap.getYRot() - 180;
-		if (yRot < -180) yRot += 360F;
-		float dir = Math.abs(-yRot - attackAngle);
+		float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
 		
 		if (dmgSource.getStunType() == StunType.FLY)
 		{
@@ -149,11 +145,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		if (attacker == null) return null;
 		else
 		{
-			float attackAngle = ((float)Math.toDegrees(Math.atan2(entityCap.getX() - attacker.getX(), entityCap.getZ() - attacker.getZ())) + 360F) % 360F;
-			float yRot = entityCap.getYRot() - 180;
-			if (yRot < -180) yRot += 360F;
-			float dir = Math.abs(-yRot - attackAngle);
-			if ((dir <= 60 || dir >= 300) && entityCap.isBlocking() && stunType != StunType.DISARMED)
+			float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
+			if (dmgSource.wasBlocked() && stunType != StunType.DISARMED)
 			{
 				if (stunType == StunType.FLY)
 				{

@@ -53,7 +53,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 		return ImmutableMap.builder();
 	}
 	
-	protected void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
+	protected final void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
 	{
 		builder.put(type, new Pair<Boolean, AttackAnimation[]>(repeat, animations));
 	}

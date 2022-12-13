@@ -88,7 +88,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
-					.addAttack(new AttackInstance(5, 4.0F, 5.0F, Animations.HOLLOW_JUMP_ATTACK))
+					.addAttack(new AttackInstance(5, 3.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK))
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}

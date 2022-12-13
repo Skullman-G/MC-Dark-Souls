@@ -202,7 +202,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	}
 
 	@Override
-	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> playerdata)
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> playerCap)
 	{
 		return this.animationSet;
 	}
