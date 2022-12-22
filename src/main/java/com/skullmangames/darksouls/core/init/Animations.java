@@ -26,6 +26,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.Side;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
@@ -134,9 +135,9 @@ public final class Animations
 			new AnimConfig(LivingMotion.SNEAKING, "biped/combat/block_mirror", "biped/combat/block", true));
 	
 	public static final StaticAnimation BIPED_HIT_BLOCKED_LEFT = new BlockAnimation(0.05F, "biped/hit/blocked_left", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);;
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	public static final StaticAnimation BIPED_HIT_BLOCKED_RIGHT = new BlockAnimation(0.05F, "biped/hit/blocked_right", (models) -> models.ENTITY_BIPED)
-			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);;
+			.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true);
 	
 	public static final StaticAnimation BIPED_HIT_BLOCKED_FLY_LEFT = new InvincibleAnimation(0.05F, "biped/hit/blocked_fly_left", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
@@ -246,9 +247,13 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+							Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+							{
+								LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 4.5F);
+							}),
 							Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 							{
+								cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get());
 								cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 							}),
 							Event.create(2.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
@@ -272,9 +277,13 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HEAL_AID = new ActionAnimation(0.5F, "biped/combat/cast_miracle_fast", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+						{
+							LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 3.0F);
+						}),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
+							cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get());
 							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(1.0F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
@@ -291,9 +300,13 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_HOMEWARD = new ActionAnimation(0.5F, "biped/combat/cast_miracle", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get())),
+						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+						{
+							LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 5.0F);
+						}),
 						Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 						{
+							cap.playSound(ModSoundEvents.MIRACLE_USE_PRE.get());
 							cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.FAST_MIRACLE_GLOW.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 						}),
 						Event.create(2.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.MIRACLE_USE.get())),
@@ -314,6 +327,10 @@ public final class Animations
 	public static final StaticAnimation BIPED_CAST_MIRACLE_FORCE = new ActionAnimation(0.3F, "biped/combat/cast_miracle_force", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
+						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+						{
+							LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 1.85F);
+						}),
 						Event.create(0.56F, Side.CLIENT, (cap) ->
 						{
 							cap.getLevel().addAlwaysVisibleParticle(ModParticles.FORCE.get(), cap.getX(), cap.getY() + 1.0F, cap.getZ(), 0, 0, 0);
@@ -346,12 +363,13 @@ public final class Animations
 	
 	private static final Event[] LIGHTNING_SPEAR_EVENTS = new Event[]
 			{
-					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
 					{
-						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
+						LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 1.2F);
 					}),
 					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 					{
+						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());
 						cap.getLevel().addAlwaysVisibleParticle(new EntityboundParticleOptions(ModParticles.LIGHTNING_SPEAR.get(), cap.getOriginalEntity().getId()), cap.getX(), cap.getY() + 1, cap.getZ(), 0, 0, 0);
 					}),
 					Event.create(0.9F, Side.SERVER, (cap) ->
@@ -370,6 +388,10 @@ public final class Animations
 	
 	private static final Event[] GREAT_LIGHTNING_SPEAR_EVENTS = new Event[]
 			{
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) ->
+					{
+						LightSource.setLightSource(cap.getLevel(), cap.getOriginalEntity().blockPosition(), 15, 1.2F);
+					}),
 					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) ->
 					{
 						cap.playSound(ModSoundEvents.LIGHTNING_SPEAR_APPEAR.get());

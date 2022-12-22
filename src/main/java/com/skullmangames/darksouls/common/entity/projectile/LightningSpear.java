@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.entity.projectile;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.animation.Joint;
+import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModEntities;
@@ -78,10 +79,9 @@ public class LightningSpear extends Projectile
 		this.particle = this.random.nextInt(6);
 		
 		Vec3 vec3 = this.getDeltaMovement();
-		Level level = this.level;
 		Vec3 vec31 = this.position();
 		Vec3 vec32 = vec31.add(vec3);
-		HitResult hitresult = level.clip(new ClipContext(vec31, vec32, ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, this));
+		HitResult hitresult = this.level.clip(new ClipContext(vec31, vec32, ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, this));
 		if (hitresult.getType() != HitResult.Type.MISS)
 		{
 			vec32 = hitresult.getLocation();
@@ -89,7 +89,7 @@ public class LightningSpear extends Projectile
 			else vec3.add(1, 1, 1);
 		}
 
-		HitResult hitresult1 = ProjectileUtil.getEntityHitResult(level, this, vec31, vec32, this.getBoundingBox().expandTowards(vec3).inflate(1.0D), this::canHitEntity);
+		HitResult hitresult1 = ProjectileUtil.getEntityHitResult(this.level, this, vec31, vec32, this.getBoundingBox().expandTowards(vec3).inflate(1.0D), this::canHitEntity);
 		if (hitresult1 != null)
 		{
 			hitresult = hitresult1;
@@ -97,6 +97,10 @@ public class LightningSpear extends Projectile
 		if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult))
 		{
 			this.onHit(hitresult);
+		}
+		else
+		{
+			LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.1F);
 		}
 		
         this.setPos(this.position().add(this.getDeltaMovement()));
@@ -113,6 +117,7 @@ public class LightningSpear extends Projectile
 	protected void onHit(HitResult hitresult)
 	{
 		super.onHit(hitresult);
+		LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.5F);
 		if (this.level.isClientSide)
 		{
 			Vec3 pos = this.position();

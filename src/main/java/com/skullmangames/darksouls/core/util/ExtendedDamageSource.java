@@ -58,7 +58,7 @@ public interface ExtendedDamageSource
 			
 		}
 		
-		return new DamageSourceExtended(org.getMsgId(), attacker, attacker.position(), stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
+		return new DamageSourceExtended(org.getMsgId(), attacker, attacker != null ? attacker.position() : Vec3.ZERO, stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)
