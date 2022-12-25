@@ -122,7 +122,7 @@ public interface ExtendedDamageSource
 	
 	public enum DamageType
 	{
-		REGULAR, STRIKE, SLASH, THRUST, FIRE, LIGHTNING;
+		CRITICAL, REGULAR, STRIKE, SLASH, THRUST, FIRE, LIGHTNING;
 		
 		public Attribute getDefenseAttribute()
 		{

@@ -23,6 +23,7 @@ public class UltraGreatswordCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, false, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, false, Animations.ULTRA_GREATSWORD_DASH_ATTACK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE);
 		return builder;
 	}
 	

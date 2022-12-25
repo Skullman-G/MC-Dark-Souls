@@ -26,7 +26,8 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.Side;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
-import com.skullmangames.darksouls.common.animation.types.attack.CriticalAttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -463,12 +464,19 @@ public final class Animations
 	};
 	
 	//Backstabs
-	public static final AttackAnimation BACKSTAB_THRUST_CHECK = new CriticalAttackAnimation(0.2F, 0.0F, 0.36F, 0.64F, 1.44F, "Tool_R", "biped/combat/backstab_thrust_check", (models) -> models.ENTITY_BIPED);
-	public static final StaticAnimation BACKSTAB_THRUST = new InvincibleAnimation(0.05F, "biped/combat/backstab_thrust", (models) -> models.ENTITY_BIPED)
+	public static final AttackAnimation BACKSTAB_THRUST = new CriticalCheckAnimation(0.2F, 0.0F, 0.36F, 0.64F, 1.44F, false, "Tool_R", "biped/combat/backstab_thrust_check", (models) -> models.ENTITY_BIPED,
+			new InvincibleAnimation(0.05F, "biped/combat/backstab_thrust", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 			{
 					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
-			});
+			}));
+	public static final AttackAnimation BACKSTAB_STRIKE = new CriticalCheckAnimation(0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R", "biped/combat/backstab_strike_check", (models) -> models.ENTITY_BIPED,
+			new CriticalHitAnimation(0.05F, 0.84F, "biped/combat/backstab_strike", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
+					Event.create(0.84F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+			}));
 
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]

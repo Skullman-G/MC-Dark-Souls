@@ -24,6 +24,7 @@ public class HammerCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, true, Animations.HAMMER_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, true, Animations.HAMMER_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE);
 		return builder;
 	}
 

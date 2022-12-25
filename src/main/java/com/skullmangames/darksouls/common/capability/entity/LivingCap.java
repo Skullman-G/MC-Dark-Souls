@@ -357,7 +357,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean onHurt(DamageSource damageSource, float amount)
 	{
-		if (this.getEntityState().isInvincible())
+		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
+		DamageType damageType = extSource.getDamages()[0].getType();
+		
+		if (this.getEntityState().isInvincible() && damageType != DamageType.CRITICAL)
 		{
 			if (damageSource instanceof EntityDamageSource && !damageSource.isExplosion() && !damageSource.isMagic())
 			{
@@ -366,7 +369,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
-		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
 		
 		// Damage Calculation
 		if (!indirect)

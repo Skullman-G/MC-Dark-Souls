@@ -23,6 +23,7 @@ public class AxeCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, true, Animations.AXE_DASH_ATTACK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE);
 		return builder;
 	}
 

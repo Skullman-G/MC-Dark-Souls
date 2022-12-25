@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -17,12 +18,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class CriticalAttackAnimation extends AttackAnimation
+public class CriticalCheckAnimation extends AttackAnimation
 {
-	public CriticalAttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery,
-			String index, String path, Function<Models<?>, Model> model)
+	private final StaticAnimation followUp;
+	private final boolean isWeak;
+	
+	public CriticalCheckAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
+			String index, String path, Function<Models<?>, Model> model, StaticAnimation followUp)
 	{
 		super(convertTime, antic, preDelay, contact, recovery, index, path, model);
+		this.followUp = followUp;
+		this.isWeak = isWeak;
 	}
 	
 	@Override
@@ -33,9 +39,13 @@ public class CriticalAttackAnimation extends AttackAnimation
 		if (entityCap == null || targetCap == null || !entityCap.canBackstab(target)) return false;
 		
 		double yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()));
-		double dist = 1.0D;
+		double dist = 0.5D;
 		Vec3 dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
 		target.setPos(attacker.position().add(dir));
+		yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()) - 90);
+		dist = 0.25D;
+		dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
+		target.setPos(target.position().add(dir));
 		target.yRot = attacker.yRot;
 		target.yRotO = attacker.yRot;
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(target.position(), target.getYRot(), target.getXRot(), target.getId(), true), target);
@@ -43,7 +53,9 @@ public class CriticalAttackAnimation extends AttackAnimation
 		{
 			ModNetworkManager.sendToPlayer(new STCSetPos(target.position(), target.getYRot(), target.getXRot(), target.getId()), (ServerPlayer)target);
 		}
-		entityCap.playAnimationSynchronized(Animations.BACKSTAB_THRUST, 0);
+		
+		if (this.followUp instanceof CriticalHitAnimation) ((CriticalHitAnimation)this.followUp).setTarget((LivingEntity)target);
+		entityCap.playAnimationSynchronized(this.followUp, 0);
 		if (targetCap.getOriginalEntity().getHealth() <= 0)
 		{
 			targetCap.playAnimationSynchronized(Animations.BIPED_DEATH_BACKSTAB_THRUST, 0);
@@ -57,7 +69,7 @@ public class CriticalAttackAnimation extends AttackAnimation
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target,
 			Phase phase, float amount)
 	{
-		amount *= entityCap.canBackstab(target) ? 2.0F : 0.5F;
+		amount *= entityCap.canBackstab(target) && !this.isWeak ? 2.0F : 0.1F;
 		return super.getDamageSourceExt(entityCap, attackPos, target, phase, amount);
 	}
 }

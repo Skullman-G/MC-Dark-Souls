@@ -25,6 +25,7 @@ public class GreatHammerCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, false, Animations.GREAT_HAMMER_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, false, Animations.GREAT_HAMMER_DASH_ATTACK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE);
 		return builder;
 	}
 	

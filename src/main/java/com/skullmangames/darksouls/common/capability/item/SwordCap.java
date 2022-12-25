@@ -31,7 +31,7 @@ public class SwordCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, true, Animations.STRAIGHT_SWORD_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, true, Animations.STRAIGHT_SWORD_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK);
-		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST_CHECK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST);
 		return builder;
 	}
 	
