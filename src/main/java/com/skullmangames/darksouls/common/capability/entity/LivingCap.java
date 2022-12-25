@@ -210,6 +210,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
 		}
 	}
+	
+	public boolean canBackstab(Entity target)
+	{
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - this.orgEntity.getX(), target.getZ() - this.orgEntity.getZ())) + 360F) % 360F;
+		float yRotTarget = target.getYRot() - 180;
+		if (yRotTarget < -180) yRotTarget += 360F;
+		float angleBetween = Math.abs(-yRotTarget - attackAngle);
+		HumanoidCap<?> cap = (HumanoidCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		return cap != null && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
+	}
 
 	@Override
 	protected void updateOnServer()
@@ -674,13 +684,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return PublicMatrix4f.getModelMatrixIntegrated((float) orgEntity.xOld, (float) orgEntity.getX(),
 				(float) orgEntity.yOld, (float) orgEntity.getY(), (float) orgEntity.zOld, (float) orgEntity.getZ(), 0,
 				0, prevRotYaw, rotyaw, partialTicks, scaleX, scaleY, scaleZ);
-	}
-
-	public void reserveAnimation(StaticAnimation animation)
-	{
-		this.animator.reserveAnimation(animation);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
-				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 	}
 
 	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier)

@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -120,8 +122,7 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	{
 		Vec3 attacker = this.getSource().position();
 		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
-		float yRot = target.getYRot() - 180;
-		if (yRot < -180) yRot += 360F;
+		float yRot = MathUtils.toNormalRot(target.getYRot());
 		return Math.abs(-yRot - attackAngle);
 	}
 

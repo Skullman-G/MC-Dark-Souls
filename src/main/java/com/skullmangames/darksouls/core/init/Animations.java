@@ -26,6 +26,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.Side;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalAttackAnimation;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -43,6 +44,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -85,6 +87,21 @@ public final class Animations
 			{
 					Event.create(0.48F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 					Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
+	public static final DeathAnimation BIPED_DEATH_BACKSTAB_THRUST = new DeathAnimation(0.05F, "biped/death/backstab_thrust", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.44F, Side.CLIENT, (cap) ->
+					{
+						float yRot = cap.getYRot() - 180;
+						if (yRot < -180) yRot += 360F;
+						double dist = Math.cos(Math.toRadians(yRot)) * 1D;
+						double restRot = Math.toRadians(90F - yRot);
+						float y = cap.getOriginalEntity().getBbHeight() * 0.5F;
+						Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(restRot) * dist, y, Math.sin(restRot) * dist);
+						cap.makeImpactParticles(pos, false);
+					}),
+					Event.create(1.68F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 			});
 	
 	public static final StaticAnimation BIPED_DIG = new StaticAnimation(0.2F, true, "biped/living/dig", (models) -> models.ENTITY_BIPED)
@@ -226,6 +243,22 @@ public final class Animations
 							Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 					});
 	public static final StaticAnimation BIPED_HIT_LAND_HEAVY = new HitAnimation(0.05F, "biped/hit/land_heavy", (models) -> models.ENTITY_BIPED);
+	
+	public static final StaticAnimation BIPED_HIT_BACKSTAB_THRUST = new InvincibleAnimation(0.05F, "biped/hit/backstab_thrust", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.44F, Side.CLIENT, (cap) ->
+					{
+						float yRot = cap.getYRot() - 180;
+						if (yRot < -180) yRot += 360F;
+						double dist = Math.cos(Math.toRadians(yRot)) * 1D;
+						double restRot = Math.toRadians(90F - yRot);
+						float y = cap.getOriginalEntity().getBbHeight() * 0.5F;
+						Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(restRot) * dist, y, Math.sin(restRot) * dist);
+						cap.makeImpactParticles(pos, false);
+					}),
+					Event.create(1.68F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+			});
 	
 	public static final StaticAnimation BIPED_ROLL = new DodgingAnimation(0.1F, "biped/combat/roll", (models) -> models.ENTITY_BIPED)
 			.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) });
@@ -428,6 +461,14 @@ public final class Animations
 						.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 	};
+	
+	//Backstabs
+	public static final AttackAnimation BACKSTAB_THRUST_CHECK = new CriticalAttackAnimation(0.2F, 0.0F, 0.36F, 0.64F, 1.44F, "Tool_R", "biped/combat/backstab_thrust_check", (models) -> models.ENTITY_BIPED);
+	public static final StaticAnimation BACKSTAB_THRUST = new InvincibleAnimation(0.05F, "biped/combat/backstab_thrust", (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(Event.ON_BEGIN, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+			});
 
 	// Ultra Greatsword
 	public static final AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]

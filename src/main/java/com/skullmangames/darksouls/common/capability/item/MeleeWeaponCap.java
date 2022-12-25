@@ -173,6 +173,6 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	
 	public enum AttackType
 	{
-		LIGHT, HEAVY, DASH
+		LIGHT, HEAVY, DASH, BACKSTAB
 	}
 }

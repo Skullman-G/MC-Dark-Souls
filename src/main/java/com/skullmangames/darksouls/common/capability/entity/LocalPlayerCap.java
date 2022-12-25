@@ -8,6 +8,8 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -146,6 +149,24 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	{
 		AttackAnimation animation = null;
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND));
+		
+		if (type == AttackType.LIGHT)
+		{
+			double yRot = Math.toRadians(MathUtils.toNormalRot(this.getYRot()));
+			double dist = 1.25D;
+			AABB aabb = this.orgEntity.getBoundingBox().inflate(Math.sin(yRot) * dist, 0, Math.cos(yRot) * dist);
+			List<Entity> entities = this.getLevel().getEntities(this.orgEntity, aabb);
+			for (Entity target : entities)
+			{
+				if (this.canBackstab(target))
+				{
+					type = AttackType.BACKSTAB;
+					break;
+				}
+			}
+		}
+		
+		
 		if (weapon != null)
 		{
 			weapon.performAttack(type, this);

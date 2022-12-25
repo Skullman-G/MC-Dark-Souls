@@ -1,11 +1,11 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
@@ -52,30 +52,30 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 	
 	protected void initAI()
 	{
-		resetCombatAI();
+		this.resetCombatAI();
 	}
 
 	protected void resetCombatAI()
 	{
 		Stream<WrappedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
 		Iterator<WrappedGoal> iterator = goals.iterator();
-		List<Goal> toRemove = Lists.<Goal>newArrayList();
+		List<Goal> toRemove = new ArrayList<>();
 		
 		while (iterator.hasNext())
 		{
-        	WrappedGoal goal = iterator.next();
-            Goal inner = goal.getGoal();
+			WrappedGoal goal = iterator.next();
+			Goal inner = goal.getGoal();
             
-            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
+            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
             		|| inner instanceof RangedAttackGoal || inner instanceof AttackGoal || inner instanceof RangedCrossbowAttackGoal)
             {
             	toRemove.add(inner);
             }
         }
         
-		for (Goal AI : toRemove)
+		for (Goal goal : toRemove)
 		{
-        	orgEntity.goalSelector.removeGoal(AI);
+        	this.orgEntity.goalSelector.removeGoal(goal);
         }
 	}
 	

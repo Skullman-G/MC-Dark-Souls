@@ -64,13 +64,6 @@ public class ClientAnimator extends Animator
 	}
 
 	@Override
-	public void reserveAnimation(StaticAnimation nextAnimation)
-	{
-		this.baseLayer.paused = false;
-		this.baseLayer.nextAnimation = nextAnimation;
-	}
-
-	@Override
 	public void addLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
 	{
 		if (animation != null) this.livingAnimations.put(livingMotion, animation);

@@ -10,6 +10,14 @@ import net.minecraft.world.phys.Vec3;
 
 public class MathUtils
 {
+	// Convert entity rotation into normal rotation
+	public static float toNormalRot(float rot)
+	{
+		float normalRot = -rot;
+		if (normalRot < 0) normalRot += 360F;
+		return normalRot;
+	}
+	
 	public static int dir(double value)
 	{
 		return value > 0 ? 1 : value < 0 ? -1 : 0;

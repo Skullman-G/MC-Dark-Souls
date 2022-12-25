@@ -6,6 +6,10 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
+
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
@@ -32,6 +36,10 @@ public class ImmovableAnimation extends StaticAnimation
 				entityCap.getClientAnimator().baseLayer.disableLayer(part);
 			}
 		}
+		else if (entityCap.getOriginalEntity() instanceof Mob)
+		{
+			((Mob)entityCap.getOriginalEntity()).goalSelector.disableControlFlag(Flag.MOVE);
+		}
 	}
 
 	@Override
@@ -45,6 +53,11 @@ public class ImmovableAnimation extends StaticAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
+		
+		if (entityCap.getOriginalEntity() instanceof Mob)
+		{
+			((Mob)entityCap.getOriginalEntity()).goalSelector.enableControlFlag(Flag.MOVE);
+		}
 	}
 
 	@Override

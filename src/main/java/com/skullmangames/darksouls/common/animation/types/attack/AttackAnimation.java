@@ -128,6 +128,7 @@ public class AttackAnimation extends ActionAnimation
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
+					boolean shouldBreak = false;
 					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
 					{
 						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
@@ -135,29 +136,34 @@ public class AttackAnimation extends ActionAnimation
 										ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
 								.getType() == HitResult.Type.MISS)
 						{
-		
 							float amount = this.getDamageAmount(entityCap, e, phase);
 							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, amount);
 							
 							if (entityCap.hurtEntity(e, phase.hand, source, amount))
 							{
 								e.invulnerableTime = 0;
-								e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(),
-										1.0F, 1.0F);
+								e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(), 1.0F, 1.0F);
 								if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
 								{
 									entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
 											((PlayerCap<?>) entityCap).getOriginalEntity());
 									flag1 = false;
 								}
+								shouldBreak = this.onDamageTarget(entityCap, e);
 							}
 							entityCap.currentlyAttackedEntities.add(trueEntity);
 							entityCap.slashDelay = 3;
 						}
 					}
+					if (shouldBreak) break;
 				} while (attackResult.next());
 			}
 		}
+	}
+	
+	protected boolean onDamageTarget(LivingCap<?> entityCap, Entity target)
+	{
+		return false;
 	}
 	
 	@OnlyIn(Dist.CLIENT)

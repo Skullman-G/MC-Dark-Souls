@@ -54,12 +54,9 @@ public class AnimationLayer
 		this.resume();
 		nextAnimation.onStart(entityCap);
 
-		if (!nextAnimation.isMetaAnimation())
-		{
-			this.setLinkAnimation(nextAnimation, entityCap, lastPose, convertTimeModifier);
-			this.linkAnimationStorage.putOnPlayer(this.animationPlayer);
-			this.nextAnimation = nextAnimation;
-		}
+		this.setLinkAnimation(nextAnimation, entityCap, lastPose, convertTimeModifier);
+		this.linkAnimationStorage.putOnPlayer(this.animationPlayer);
+		this.nextAnimation = nextAnimation;
 	}
 
 	public void playAnimation(DynamicAnimation nextAnimation, LivingCap<?> entityCap)

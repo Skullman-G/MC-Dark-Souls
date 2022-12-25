@@ -26,8 +26,6 @@ public abstract class Animator
 
 	public abstract void update();
 
-	public abstract void reserveAnimation(StaticAnimation nextAnimation);
-
 	public abstract EntityState getEntityState();
 
 	public abstract AnimationPlayer getPlayerFor(DynamicAnimation playingAnimation);

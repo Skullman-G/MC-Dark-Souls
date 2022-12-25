@@ -59,11 +59,11 @@ public class CTSPlayAnimation
 		ctx.get().enqueueWork(() ->
 		{
 			ServerPlayer serverPlayer = ctx.get().getSender();
-			ServerPlayerCap playerpatch = (ServerPlayerCap) serverPlayer
+			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer
 					.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (!msg.isClientSideAnimation)
 			{
-				playerpatch.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
+				playerCap.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
 			}
 
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(

@@ -396,13 +396,6 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	}
 
 	@Override
-	public void reserveAnimation(StaticAnimation animation)
-	{
-		super.reserveAnimation(animation);
-		ModNetworkManager.sendToPlayer(new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
-	}
-
-	@Override
 	public void changeYaw(float amount)
 	{
 		super.changeYaw(amount);

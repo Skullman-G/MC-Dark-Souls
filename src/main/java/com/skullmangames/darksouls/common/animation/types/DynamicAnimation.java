@@ -208,11 +208,6 @@ public class DynamicAnimation
 		return false;
 	}
 
-	public boolean isMetaAnimation()
-	{
-		return false;
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap,
 			float playTime, float partialTicks) {}
