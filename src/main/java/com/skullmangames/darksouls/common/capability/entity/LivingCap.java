@@ -71,6 +71,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	private float stamina;
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;
+	public Entity criticalTarget;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -217,7 +218,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		float yRotTarget = target.getYRot() - 180;
 		if (yRotTarget < -180) yRotTarget += 360F;
 		float angleBetween = Math.abs(-yRotTarget - attackAngle);
-		HumanoidCap<?> cap = (HumanoidCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		LivingCap<?> cap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		return cap != null && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
 	}
 

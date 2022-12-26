@@ -124,11 +124,11 @@ public class AttackAnimation extends ActionAnimation
 			{
 				AttackResult attackResult = new AttackResult(entity, list);
 				boolean flag1 = true;
+				boolean shouldBreak = false;
 				do
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
-					boolean shouldBreak = false;
 					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
 					{
 						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
@@ -139,6 +139,7 @@ public class AttackAnimation extends ActionAnimation
 							float amount = this.getDamageAmount(entityCap, e, phase);
 							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, amount);
 							
+							shouldBreak = this.onDamageTarget(entityCap, e);
 							if (entityCap.hurtEntity(e, phase.hand, source, amount))
 							{
 								e.invulnerableTime = 0;
@@ -149,7 +150,6 @@ public class AttackAnimation extends ActionAnimation
 											((PlayerCap<?>) entityCap).getOriginalEntity());
 									flag1 = false;
 								}
-								shouldBreak = this.onDamageTarget(entityCap, e);
 							}
 							entityCap.currentlyAttackedEntities.add(trueEntity);
 							entityCap.slashDelay = 3;
@@ -157,6 +157,8 @@ public class AttackAnimation extends ActionAnimation
 					}
 					if (shouldBreak) break;
 				} while (attackResult.next());
+				
+				this.onAttackFinish(entityCap, shouldBreak);
 			}
 		}
 	}
@@ -165,6 +167,8 @@ public class AttackAnimation extends ActionAnimation
 	{
 		return false;
 	}
+	
+	protected void onAttackFinish(LivingCap<?> entityCap, boolean critical) {}
 	
 	@OnlyIn(Dist.CLIENT)
 	public void onClientUpdate(LivingCap<?> entityCap)

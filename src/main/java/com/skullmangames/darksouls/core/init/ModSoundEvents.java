@@ -46,6 +46,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> GENERIC_HUMAN_FORM = register("entity.generic.human_form");
 	public static final RegistryObject<SoundEvent> GENERIC_ROLL = register("entity.generic.roll");
 	public static final RegistryObject<SoundEvent> GENERIC_LAND = register("entity.generic.land");
+	public static final RegistryObject<SoundEvent> GENERIC_KICK = register("entity.generic.kick");
 	
 	public static final RegistryObject<SoundEvent> PLAYER_SHIELD_DISARMED = register("entity.player.shield_disarmed");
 	

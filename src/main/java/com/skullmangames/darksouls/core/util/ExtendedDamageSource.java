@@ -98,7 +98,7 @@ public interface ExtendedDamageSource
 	
 	public enum StunType
 	{
-		NONE(0), DISARMED(0), LIGHT(1), HEAVY(2), SMASH(3), FLY(3);
+		NONE(0), BACKSTABBED(0), DISARMED(0), LIGHT(1), HEAVY(2), SMASH(3), FLY(3);
 		
 		private final int level;
 		

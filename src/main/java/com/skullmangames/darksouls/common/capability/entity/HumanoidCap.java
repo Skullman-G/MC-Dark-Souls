@@ -122,6 +122,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 						: Animations.BIPED_DEATH_FLY_FRONT;
 			
 			case SMASH: return Animations.BIPED_DEATH_SMASH;
+			
+			case BACKSTABBED: return Animations.BIPED_DEATH_BACKSTAB;
 				
 			default: return Animations.BIPED_DEATH;
 		}
@@ -182,6 +184,9 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 								: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
 								: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
 								: Animations.BIPED_HIT_FLY_FRONT;
+								
+					case BACKSTABBED:
+						return Animations.BIPED_HIT_BACKSTAB;
 						
 					default:
 						return null;

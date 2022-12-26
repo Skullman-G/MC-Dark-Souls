@@ -1,4 +1,13 @@
 {
+	"entity.generic.kick":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/kick"
+		]
+	},
+	
 	"entity.generic.land":
 	{
 		"category": "entity",
