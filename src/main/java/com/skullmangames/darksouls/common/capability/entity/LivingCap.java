@@ -219,7 +219,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (yRotTarget < -180) yRotTarget += 360F;
 		float angleBetween = Math.abs(-yRotTarget - attackAngle);
 		LivingCap<?> cap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		return cap != null && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
+		return cap != null && (cap instanceof HumanoidCap || cap instanceof PlayerCap) && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
 	}
 
 	@Override

@@ -1,10 +1,7 @@
 package com.skullmangames.darksouls.common.entity.projectile;
 
-import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -12,8 +9,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -40,15 +36,9 @@ public class LightningSpear extends Projectile
 		super(type, entityCap.getLevel());
 		this.setOwner(entityCap.getOriginalEntity());
 		
-		Joint joint = entityCap.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName("Tool_R");
-		
-		PublicMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F);
-		PublicMatrix4f localTransform = joint.getAnimatedTransform();
-		localTransform.mulFront(rotationTransform);
-		Vector3f jpos = localTransform.toTranslationVector();
-		jpos.mul(-1, 1, -1);
-		
-		this.setPos(jpos.x(), jpos.y(), jpos.z());
+		double yRot = Math.toRadians(MathUtils.toNormalRot(entityCap.getYRot()));
+		this.setPos(entityCap.getX() + Math.sin(yRot) * 0.5F, entityCap.getY() + 1.75F, entityCap.getZ() + Math.cos(yRot) * 1.75F);
+		this.yRot = entityCap.getYRot();
 		this.damage = baseDamage + entityCap.getDamageScalingMultiplier(baseDamage);
 	}
 	
