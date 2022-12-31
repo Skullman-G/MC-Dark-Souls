@@ -125,7 +125,7 @@ public class ModQuaternion
 		}
 		
 		PublicMatrix4f rotMat = new PublicMatrix4f();
-		PublicMatrix4f.rotate(degree, axis, rotMat, rotMat);
+		rotMat.rotate(degree, axis);
 		PublicMatrix4f.mul(quatmat, rotMat,  quatmat);
 		return ModQuaternion.fromMatrix(quatmat);
 	}

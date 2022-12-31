@@ -12,15 +12,22 @@ import com.skullmangames.darksouls.core.init.Models;
 public class DodgingAnimation extends ActionAnimation
 {
 	protected float encumbrance = 0.0F;
+	private final boolean canRotate;
 	
 	public DodgingAnimation(float convertTime, String path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, 0.0F, path, model);
+		this(convertTime, false, path, model);
 	}
 	
-	public DodgingAnimation(float convertTime, float delayTime, String path, Function<Models<?>, Model> model)
+	public DodgingAnimation(float convertTime, boolean canRotate, String path, Function<Models<?>, Model> model)
+	{
+		this(convertTime, canRotate, 0.0F, path, model);
+	}
+	
+	public DodgingAnimation(float convertTime, boolean canRotate, float delayTime, String path, Function<Models<?>, Model> model)
 	{
 		super(convertTime, delayTime, path, model);
+		this.canRotate = canRotate;
 	}
 	
 	@Override
@@ -41,22 +48,16 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public float getPlaySpeed(LivingCap<?> entityCap)
-	{
-		return 1.3F - this.encumbrance / 2;
-	}
-	
-	@Override
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
 		Vector3f vec = super.getCoordVector(entityCap, animation);
-		vec.mul(1.5F);
+		vec.mul(1.5F - this.encumbrance);
 		return vec;
 	}
 	
 	@Override
 	public EntityState getState(float time)
 	{
-		return EntityState.INVINCIBLE;
+		return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
 	}
 }

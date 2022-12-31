@@ -35,9 +35,9 @@ public class StrayDemon extends PathfinderMob
 {
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	
-	public StrayDemon(EntityType<? extends PathfinderMob> p_i48575_1_, Level p_i48575_2_)
+	public StrayDemon(EntityType<? extends PathfinderMob> type, Level level)
 	{
-		super(p_i48575_1_, p_i48575_2_);
+		super(type, level);
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class StrayDemon extends PathfinderMob
 	}
 	
 	@Override
-	protected int getExperienceReward(Player p_70693_1_)
+	protected int getExperienceReward(Player player)
 	{
 		return 100;
 	}
@@ -131,7 +131,7 @@ public class StrayDemon extends PathfinderMob
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_)
+	public boolean removeWhenFarAway(double distance)
 	{
 		return false;
 	}

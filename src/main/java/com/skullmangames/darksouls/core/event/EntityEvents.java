@@ -133,7 +133,7 @@ public class EntityEvents
 	{
 		event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY).ifPresent((targetCap) ->
 		{
-			((LivingCap<?>)targetCap).actuallyHurt(event.getSource());
+			((LivingCap<?>)targetCap).onActuallyHurt(event.getSource());
 		});
 	}
 	
@@ -151,7 +151,7 @@ public class EntityEvents
 		{
 			if (!event.getEntity().level.isClientSide && event.getEntityLiving().getHealth() > 0.0F)
 			{
-				if (!((LivingCap<?>)targetCap).hurt(event.getSource(), event.getAmount()))
+				if (!((LivingCap<?>)targetCap).onHurt(event.getSource(), event.getAmount()))
 				{
 					event.setCanceled(true);
 				}
@@ -264,24 +264,18 @@ public class EntityEvents
 	public static void deathEvent(LivingDeathEvent event)
 	{
 		LivingCap<?> entityCap = (LivingCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		if(entityCap == null) return;
-		if (entityCap instanceof PlayerCap<?> && !entityCap.isClientSide())
-		{
-			PlayerCap<?> playerdata = (PlayerCap<?>)entityCap;
-			playerdata.setHumanity(0);
-			playerdata.setHuman(false);
-			playerdata.setSouls(0);
-			playerdata.onSave();
-		}
 		
-		if (entityCap.isClientSide()) entityCap.playSound(ModSoundEvents.GENERIC_KILL.get(), 0.0F, 0.0F);
-		entityCap.getAnimator().playDeathAnimation();
+		if (entityCap != null && !entityCap.isClientSide())
+		{
+			entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
+			entityCap.playAnimationSynchronized(entityCap.getDeathAnimation(ExtendedDamageSource.getFrom(event.getSource(), 0)), 0);
+		}
 	}
 	
 	@SubscribeEvent
 	public static void fallEvent(LivingFallEvent event)
 	{
-		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		LivingCap<?> entityCap = (LivingCap<?>) event.getEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		
 		if (entityCap != null && !entityCap.isInaction())
 		{
@@ -289,7 +283,7 @@ public class EntityEvents
 
 			if (distance > 5.0F)
 			{
-				entityCap.getAnimator().playAnimation(Animations.BIPED_LAND_DAMAGE, 0);
+				entityCap.getAnimator().playAnimation(Animations.BIPED_HIT_LAND_HEAVY, 0);
 			}
 		}
 	}

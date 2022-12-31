@@ -25,11 +25,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class QuestEntity extends PathfinderMob
+public abstract class QuestEntity extends PathfinderMob
 {
 	protected static final EntityDataAccessor<QuestFlags> DATA_QUEST_FLAGS = SynchedEntityData.defineId(QuestEntity.class, QuestFlags.SERIALIZER);
 
-	public QuestEntity(EntityType<? extends PathfinderMob> type, Level level)
+	public QuestEntity(EntityType<? extends QuestEntity> type, Level level)
 	{
 		super(type, level);
 	}

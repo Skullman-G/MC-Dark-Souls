@@ -3,12 +3,15 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
+import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.HumanityEntity;
+import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -43,6 +46,10 @@ public class ModEntities
 	public static final RegistryObject<EntityType<HollowLordranSoldier>> HOLLOW_LORDRAN_SOLDIER = register("hollow_lordran_soldier",
 			EntityType.Builder.<HollowLordranSoldier>of(HollowLordranSoldier::new, MobCategory.MONSTER)
 			.sized(0.6F, 1.95F));
+	
+	public static final RegistryObject<EntityType<Falconer>> FALCONER = register("falconer",
+			EntityType.Builder.<Falconer>of(Falconer::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F));
 
 	public static final RegistryObject<EntityType<SoulEntity>> SOUL = register("soul",
 			EntityType.Builder.<SoulEntity>of(SoulEntity::new, MobCategory.MISC)
@@ -70,6 +77,22 @@ public class ModEntities
 			EntityType.Builder.<AnastaciaOfAstora>of(AnastaciaOfAstora::new, MobCategory.CREATURE)
 				.sized(0.6F, 1.95F)
 				.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<PetrusOfThorolund>> PETRUS_OF_THOROLUND = register("petrus_of_thorolund",
+			EntityType.Builder.<PetrusOfThorolund>of(PetrusOfThorolund::new, MobCategory.CREATURE)
+				.sized(0.6F, 1.95F)
+				.canSpawnFarFromPlayer());
+	
+	//Projectiles
+	public static final RegistryObject<EntityType<LightningSpear>> LIGHTNING_SPEAR = register("lightning_spear",
+			EntityType.Builder.<LightningSpear>of(LightningSpear::lightningSpear, MobCategory.MISC)
+			.sized(1.5F, 0.5F)
+			.clientTrackingRange(6)
+			.updateInterval(20));
+	
+	public static final RegistryObject<EntityType<LightningSpear>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear",
+			EntityType.Builder.<LightningSpear>of(LightningSpear::greatLightningSpear, MobCategory.MISC)
+			.sized(2.0F, 1.0F));
 	
 	public static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder)
 	{

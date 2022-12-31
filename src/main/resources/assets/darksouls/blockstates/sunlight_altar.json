@@ -1,0 +1,23 @@
+{
+    "variants": {
+        "facing=north":
+        {
+        	"model": "darksouls:block/sunlight_altar",
+        	"y": 180
+        },
+        "facing=east":
+        {
+        	"model": "darksouls:block/sunlight_altar",
+        	"y": 270
+        },
+        "facing=south":
+        {
+        	"model": "darksouls:block/sunlight_altar"
+        },
+        "facing=west":
+        {
+        	"model": "darksouls:block/sunlight_altar",
+        	"y": 90
+        }
+    }
+}

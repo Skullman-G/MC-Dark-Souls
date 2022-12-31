@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+
 import net.minecraft.sounds.SoundEvent;
 
 public interface IShield
 {
-	public float getPhysicalDefense();
+	public float getDefense(DamageType damageType);
 	public ShieldType getShieldType();
 	public SoundEvent getBlockSound();
 	

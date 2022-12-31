@@ -10,21 +10,21 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class CTSPerformDodge
 {
-	private boolean moving;
+	private DodgeType type;
 	
-	public CTSPerformDodge(boolean moving)
+	public CTSPerformDodge(DodgeType type)
 	{
-		this.moving = moving;
+		this.type = type;
 	}
 	
 	public static CTSPerformDodge fromBytes(FriendlyByteBuf buf)
 	{
-		return new CTSPerformDodge(buf.readBoolean());
+		return new CTSPerformDodge(buf.readEnum(DodgeType.class));
 	}
 	
 	public static void toBytes(CTSPerformDodge msg, FriendlyByteBuf buf)
 	{
-		buf.writeBoolean(msg.moving);
+		buf.writeEnum(msg.type);
 	}
 	
 	public static void handle(CTSPerformDodge msg, Supplier<NetworkEvent.Context> ctx)
@@ -32,11 +32,16 @@ public class CTSPerformDodge
 		ctx.get().enqueueWork(()->
 		{
 			ServerPlayer serverPlayer = ctx.get().getSender();
-			ServerPlayerCap playerdata = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-			if (playerdata == null) return;
-			playerdata.performDodge(msg.moving);
+			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+			if (playerCap == null) return;
+			playerCap.performDodge(msg.type);
 		});
 		
 		ctx.get().setPacketHandled(true);
+	}
+	
+	public enum DodgeType
+	{
+		JUMP_BACK, FORWARD, BACK, LEFT, RIGHT
 	}
 }

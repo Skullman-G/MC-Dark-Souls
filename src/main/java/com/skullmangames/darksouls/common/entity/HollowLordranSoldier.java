@@ -1,19 +1,15 @@
 package com.skullmangames.darksouls.common.entity;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -27,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 
 public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMob
 {
@@ -39,16 +34,9 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 17.5D)
+				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.24D);
-	}
-
-	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, ServerLevelAccessor level,
-			MobSpawnType spawntype, BlockPos pos, Random random)
-	{
-		return level.getDifficulty() != Difficulty.PEACEFUL
-				&& checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
 
 	@Override
@@ -148,5 +136,17 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	protected SoundEvent getDeathSound()
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
+	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
 	}
 }

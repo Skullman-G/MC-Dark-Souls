@@ -37,6 +37,7 @@ import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.FireKeeperRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.AsylumDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
@@ -45,7 +46,6 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ConfigManager;
-import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
@@ -77,7 +77,6 @@ public class DarkSouls
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
-	public static IngameConfig CLIENT_INGAME_CONFIG;
 	public static final CreativeModeTab TAB = new CreativeModeTab("darksouls")
 	{
 		@Override
@@ -205,30 +204,22 @@ public class DarkSouls
 		ModModelLayers.call();
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), FireKeeperRenderer::new);
-		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
-																							// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new); // Should find a better
-																							// solution
+		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.FALCONER.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), AsylumDemonRenderer::new);
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
+		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);
+		EntityRenderers.register(ModEntities.GREAT_LIGHTNING_SPEAR.get(), LightningSpearRenderer::greatLightningSpear);
 
 		ModItems.registerDescriptionItems();
 
-		CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
-
-		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
+		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue());
 		
 		this.animatorProvider = ClientAnimator::getAnimator;
 	}

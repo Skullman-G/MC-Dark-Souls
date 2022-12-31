@@ -1,45 +1,51 @@
 package com.skullmangames.darksouls.core.util;
 
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
 {
-	private float amount;
 	private final int requiredDeflectionLevel;
 	private final float poiseDamage;
 	private final float staminaDamage;
+	private final Vec3 attackPos;
+	private boolean wasBlocked;
 	private StunType stunType;
-	private final DamageType damageType;
+	private final Damage[] damages;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity damageSourceEntityIn, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage, float staminaDamage)
+	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType, int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damage... damages)
 	{
-		super(damageTypeIn, damageSourceEntityIn);
+		super(damageTypeIn, source);
 		
 		this.stunType = stunType;
-		this.amount = amount;
-		this.damageType = damageType;
+		this.damages = damages;
 		this.poiseDamage = poiseDamage;
-		this.requiredDeflectionLevel = requireddeflectionlevel;
+		this.requiredDeflectionLevel = requiredDeflectionLevel;
 		this.staminaDamage = staminaDamage;
+		this.attackPos = attackPos;
+	}
+	
+	@Override
+	public boolean isIndirect()
+	{
+		return false;
+	}
+	
+	@Override
+	public float getAmount()
+	{
+		float amount = 0;
+		for (Damage damage : this.getDamages()) amount += damage.getAmount();
+		return amount;
 	}
 	
 	@Override
 	public int getRequiredDeflectionLevel()
 	{
 		return this.requiredDeflectionLevel;
-	}
-	
-	@Override
-	public float getAmount()
-	{
-		return this.amount;
-	}
-	
-	@Override
-	public void setAmount(float amount)
-	{
-		this.amount = amount;
 	}
 
 	@Override
@@ -61,9 +67,9 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	}
 
 	@Override
-	public DamageType getDamageType()
+	public Damage[] getDamages()
 	{
-		return this.damageType;
+		return this.damages;
 	}
 
 	@Override
@@ -97,5 +103,32 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	public Entity getSource()
 	{
 		return this.getDirectEntity();
+	}
+
+	@Override
+	public boolean wasBlocked()
+	{
+		return this.wasBlocked;
+	}
+
+	@Override
+	public void setWasBlocked(boolean value)
+	{
+		this.wasBlocked = value;
+	}
+
+	@Override
+	public float getAttackAngle(Entity target)
+	{
+		Vec3 attacker = this.getSource().position();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
+		float yRot = MathUtils.toNormalRot(target.getYRot());
+		return Math.abs(-yRot - attackAngle);
+	}
+
+	@Override
+	public Vec3 getAttackPos()
+	{
+		return this.attackPos;
 	}
 }

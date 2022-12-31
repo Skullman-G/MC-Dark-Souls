@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -41,8 +40,8 @@ public class RenderElytra extends RenderItemBase
 		
 		LivingEntity entity = itemHolder.getOriginalEntity();
 		PublicMatrix4f modelMatrix = new PublicMatrix4f();
-		PublicMatrix4f.scale(-0.9F, -0.9F, 0.9F, modelMatrix, modelMatrix);
-		PublicMatrix4f.translate(new Vector3f(0F, -0.5F, 0.125F), modelMatrix, modelMatrix);
+		modelMatrix.scale(-0.9F, -0.9F, 0.9F);
+		modelMatrix.translate(0F, -0.5F, 0.125F);
 		PublicMatrix4f.mul(
 				itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(8).getAnimatedTransform(),
 				modelMatrix, modelMatrix);

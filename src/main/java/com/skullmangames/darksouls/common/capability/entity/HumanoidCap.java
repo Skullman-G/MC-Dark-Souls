@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -11,6 +12,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.world.InteractionHand;
@@ -78,56 +80,117 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	@Override
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
-		if (!this.isBlocking()) return false;
-		if (damageSource == null) return true;
+		Entity attacker = damageSource.getSource();
+		if (attacker == null) return false;
+		float dir = damageSource.getAttackAngle(this.orgEntity);
+		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 
 		this.increaseStamina(-damageSource.getStaminaDamage());
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
-		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
+		for (Damage damage : damageSource.getDamages())
+		{
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+		}
 		
+		damageSource.setWasBlocked(true);
+		this.playSound(shield.getBlockSound());
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();
 		return true;
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType)
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		return getHumanoidHitAnimation(this, stunType);
+		return getHumanoidDeathAnimation(this, dmgSource);
 	}
 	
-	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, StunType stunType)
+	public static DeathAnimation getHumanoidDeathAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
 	{
-		if (entityCap.getOriginalEntity().getControllingPassenger() != null)
+		Entity attacker = dmgSource.getSource();
+		if (attacker == null) return Animations.BIPED_DEATH;
+		float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
+		
+		switch (dmgSource.getStunType())
 		{
-			return Animations.BIPED_HIT_ON_MOUNT;
+			case FLY:
+				return dir <= 315 && dir >= 225 ? Animations.BIPED_DEATH_FLY_LEFT
+						: dir <= 225 && dir >= 135 ? Animations.BIPED_DEATH_FLY_BACK
+						: dir <= 135 && dir >= 45 ? Animations.BIPED_DEATH_FLY_RIGHT
+						: Animations.BIPED_DEATH_FLY_FRONT;
+			
+			case SMASH: return Animations.BIPED_DEATH_SMASH;
+			
+			case BACKSTABBED: return Animations.BIPED_DEATH_BACKSTAB;
+				
+			default: return Animations.BIPED_DEATH;
 		}
-		else if (entityCap.isBlocking() && stunType != StunType.DISARMED)
-		{
-			if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_BLOCK_HIT;
-			return Animations.BIPED_BLOCK_HIT_MIRROR;
-		}
+	}
+	
+	@Override
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
+	{
+		return getHumanoidHitAnimation(this, dmgSource);
+	}
+	
+	public static StaticAnimation getHumanoidHitAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
+	{
+		Entity attacker = dmgSource.getSource();
+		StunType stunType = dmgSource.getStunType();
+		if (attacker == null) return null;
 		else
 		{
-			switch (stunType)
+			float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
+			if (dmgSource.wasBlocked() && stunType != StunType.DISARMED)
 			{
-				case DEFAULT:
-					return Animations.BIPED_HIT_SHORT;
-					
-				case DISARMED:
-					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
-					return Animations.BIPED_DISARM_SHIELD_LEFT;
-					
-				case SMASH_FRONT:
-					return Animations.BIPED_HIT_DOWN_FRONT;
-					
-				case SMASH_BACK:
-					return Animations.BIPED_HIT_DOWN_BACK;
-					
-				default:
-					return null;
+				if (stunType == StunType.FLY)
+				{
+					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_FLY_RIGHT;
+					return Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
+				}
+				else
+				{
+					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_RIGHT;
+					return Animations.BIPED_HIT_BLOCKED_LEFT;
+				}
+			}
+			else
+			{
+				switch (stunType)
+				{
+					case DISARMED:
+						if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
+						return Animations.BIPED_DISARM_SHIELD_LEFT;
+						
+					case LIGHT:
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK : Animations.BIPED_HIT_LIGHT_BACK
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT : Animations.BIPED_HIT_LIGHT_LEFT
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT : Animations.BIPED_HIT_LIGHT_FRONT;
+						
+					case HEAVY:
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT : Animations.BIPED_HIT_HEAVY_RIGHT
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK : Animations.BIPED_HIT_HEAVY_BACK
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
+						
+					case SMASH:
+						return Animations.BIPED_HIT_SMASH;
+						
+					case FLY:
+						return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
+								: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
+								: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
+								: Animations.BIPED_HIT_FLY_FRONT;
+								
+					case BACKSTABBED:
+						return Animations.BIPED_HIT_BACKSTAB;
+						
+					default:
+						return null;
+				}
 			}
 		}
 	}

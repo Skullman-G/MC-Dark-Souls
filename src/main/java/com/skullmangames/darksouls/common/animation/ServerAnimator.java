@@ -48,13 +48,6 @@ public class ServerAnimator extends Animator
 	}
 
 	@Override
-	public void reserveAnimation(StaticAnimation nextAnimation)
-	{
-		this.pause = false;
-		this.nextPlaying = nextAnimation;
-	}
-
-	@Override
 	public void init()
 	{
 

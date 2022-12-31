@@ -62,6 +62,11 @@ public class ClientManager
 	    {
 	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
 	    });
+		
+		ItemProperties.register(ModItems.ASHEN_ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living, id) ->
+	    {
+	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
+	    });
 	}
 	
 	public void toggleCombatMode()
@@ -79,6 +84,7 @@ public class ClientManager
 		this.options.setCameraType(CameraType.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
 		this.combatModeActive = false;
+		this.getPlayerCap().removeTarget();
 	}
 	
 	public void switchToThirdPerson()

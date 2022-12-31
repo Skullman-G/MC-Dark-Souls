@@ -37,20 +37,20 @@ public class LevelUpScreen extends PlayerStatsScreen
 		int upDownButtonHeight = y + 112;
 		for (Stat stat : Stats.STATS)
 		{
-			int statValue = this.playerdata.getStats().getStatValue(stat);
+			int statValue = this.playerCap.getStats().getStatValue(stat);
 			LevelButton downButton = this.addRenderableWidget(new LevelButton(x + 93, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent("<"), (button) ->
 			{
 				this.levelDown(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			downButton.active = this.playerdata.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 10).intValue() > 10 : this.displayedStats.getOrDefault(stat, 10).intValue() > statValue;
+			downButton.active = this.playerCap.isCreativeOrSpectator() ? this.displayedStats.getOrDefault(stat, 10).intValue() > 10 : this.displayedStats.getOrDefault(stat, 10).intValue() > statValue;
 			
 			LevelButton upButton = this.addRenderableWidget(new LevelButton(x + 116, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent(">"), (button) ->
 			{
 				this.levelUp(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
+			upButton.active = this.displayedStats.getOrDefault(stat, 1).intValue() < 99 && this.playerCap.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 10;
@@ -66,10 +66,10 @@ public class LevelUpScreen extends PlayerStatsScreen
 	{
 		this.levelButtons.forEach((down, up) ->
 		{
-			int statvalue = this.playerdata.getStats().getStatValue(down.getStat());
+			int statvalue = this.playerCap.getStats().getStatValue(down.getStat());
 			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
-			down.active = this.playerdata.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
-			up.active = displayedstatvalue < 99 && this.playerdata.hasEnoughSouls(Stats.getCost(this.displayedLevel));
+			down.active = this.playerCap.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
+			up.active = displayedstatvalue < 99 && this.playerCap.hasEnoughSouls(Stats.getCost(this.displayedLevel));
 		});
 	}
 	
@@ -90,7 +90,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 		int[] additions = new int[Stats.STATS.size()];
 		for (int i = 0; i < additions.length; i++)
 		{
-			int statvalue = this.playerdata.getStats().getStatValue(i);
+			int statvalue = this.playerCap.getStats().getStatValue(i);
 			int addition = this.displayedStats.getOrDefault(Stats.STATS.get(i), statvalue) - statvalue;
 			additions[i] = addition;
 		}

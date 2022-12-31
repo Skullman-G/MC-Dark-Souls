@@ -12,10 +12,10 @@ public class RenderShield extends RenderItemMirror
 	public RenderShield()
 	{
 		super();
-		PublicMatrix4f.translate(new Vector3f(0F,0.1F,0F), this.correctionMatrix, this.correctionMatrix);
+		this.correctionMatrix.translate(new Vector3f(0F,0.1F,0F));
 		
 		this.leftHandCorrectionMatrix = new PublicMatrix4f(this.correctionMatrix);
-		PublicMatrix4f.translate(new Vector3f(0F, 0F, 0.4F), leftHandCorrectionMatrix, leftHandCorrectionMatrix);
-		PublicMatrix4f.rotate((float)Math.toRadians(180D), new Vector3f(0F,1F,0F), this.leftHandCorrectionMatrix, this.leftHandCorrectionMatrix);
+		leftHandCorrectionMatrix.translate(0F, 0F, 0.4F);
+		this.leftHandCorrectionMatrix.rotate((float)Math.toRadians(180D), Vector3f.YP);
 	}
 }

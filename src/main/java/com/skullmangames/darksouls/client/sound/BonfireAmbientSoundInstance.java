@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 {
 	private static final float VOLUME_MIN = 0.0F;
-	private static final float VOLUME_MAX = 1.2F;
+	private static final float VOLUME_MAX = 0.5F;
 	private final BonfireBlockEntity bonfire;
 
 	public BonfireAmbientSoundInstance(BonfireBlockEntity bonfire)

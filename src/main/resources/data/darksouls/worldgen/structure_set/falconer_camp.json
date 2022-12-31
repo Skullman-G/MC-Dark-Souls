@@ -1,0 +1,12 @@
+{
+  "structures" : [ {
+    "structure" : "darksouls:falconer_camp",
+    "weight" : 1
+  } ],
+  "placement" : {
+    "salt" : 1694767085,
+    "spacing" : 30,
+    "separation" : 5,
+    "type" : "minecraft:random_spread"
+  }
+}

@@ -16,9 +16,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SpearCap extends MeleeWeaponCap
 {
-	public SpearCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public SpearCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.SPEAR, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
+		super(item, WeaponCategory.SPEAR, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
 	}
 	
 	@Override
@@ -28,6 +28,7 @@ public class SpearCap extends MeleeWeaponCap
 		this.putMove(builder, AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK);
 		this.putMove(builder, AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK);
 		this.putMove(builder, AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK);
+		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST);
 		return builder;
 	}
 	

@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.core.init.ModItems;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -48,29 +47,28 @@ public class OtherEvents
 	@SubscribeEvent
 	public static void onFOVUpdate(final FOVModifierEvent event)
 	{
-		 Player player = event.getEntity();
+		Player player = event.getEntity();
 		float f = 1.0F;
-	      if (player.getAbilities().flying) {
-	         f *= 1.1F;
-	      }
+		if (player.getAbilities().flying)
+		{
+			f *= 1.1F;
+		}
 
-	      f = (float)((double)f * ((player.getAttributeValue(Attributes.MOVEMENT_SPEED) / (double)player.getAbilities().getWalkingSpeed() + 1.0D) / 2.0D));
-	      if (player.getAttributeValue(Attributes.MOVEMENT_SPEED) == 0.0D || player.getAbilities().getWalkingSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
-	         f = 1.0F;
-	      }
+		if (player.isUsingItem() && player.getUseItem().getItem() == Items.BOW)
+		{
+			int i = player.getTicksUsingItem();
+			float f1 = (float) i / 20.0F;
+			if (f1 > 1.0F)
+			{
+				f1 = 1.0F;
+			} else
+			{
+				f1 = f1 * f1;
+			}
 
-	      if (player.isUsingItem() && player.getUseItem().getItem() == Items.BOW) {
-	         int i = player.getTicksUsingItem();
-	         float f1 = (float)i / 20.0F;
-	         if (f1 > 1.0F) {
-	            f1 = 1.0F;
-	         } else {
-	            f1 = f1 * f1;
-	         }
+			f *= 1.0F - f1 * 0.15F;
+		}
 
-	         f *= 1.0F - f1 * 0.15F;
-	      }
-	      
-	     event.setNewfov(f);
+		event.setNewfov(f);
 	}
 }

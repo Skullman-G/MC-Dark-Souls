@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +13,12 @@ public class SimpleHumanoidRenderer<E extends LivingEntity, T extends LivingCap<
 	
 	public SimpleHumanoidRenderer(String texturePath)
 	{
-		this.textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/" + texturePath + ".png");
+		this.textureLocation = new ResourceLocation("textures/entity/" + texturePath + ".png");
+	}
+	
+	public SimpleHumanoidRenderer(String namespace, String texturePath)
+	{
+		this.textureLocation = new ResourceLocation(namespace, "textures/entities/" + texturePath + ".png");
 	}
 	
 	@Override

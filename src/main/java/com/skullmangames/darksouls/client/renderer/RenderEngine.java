@@ -9,7 +9,6 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.gui.EntityIndicator;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
 import com.skullmangames.darksouls.client.renderer.item.RenderBow;
 import com.skullmangames.darksouls.client.renderer.item.RenderCrossbow;
@@ -19,11 +18,13 @@ import com.skullmangames.darksouls.client.renderer.item.RenderItemBase;
 import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.AsylumDemonRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.StrayDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.additional.AdditionalEntityRenderer;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap;
+import com.skullmangames.darksouls.common.capability.entity.FalconerCap;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowLordranSoldierCap;
@@ -33,10 +34,13 @@ import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
+import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
+import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -53,6 +57,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Drowned;
+import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
@@ -89,6 +96,7 @@ public class RenderEngine
 	private Map<Item, RenderItemBase> itemRendererMapByInstance;
 	private Map<Class<? extends Item>, RenderItemBase> itemRendererMapByClass;
 	private FirstPersonRenderer firstPersonRenderer;
+	private PlayerGuiRenderer playerGuiRenderer;
 	private boolean aiming;
 	private int zoomOutTimer = 0;
 	private int zoomCount;
@@ -99,13 +107,14 @@ public class RenderEngine
 	{
 		Events.renderEngine = this;
 		RenderItemBase.renderEngine = this;
-		EntityIndicator.init();
+		AdditionalEntityRenderer.init();
 		this.minecraft = Minecraft.getInstance();
 		this.entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
 		this.itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
 		this.itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
 		this.projectionMatrix = new PublicMatrix4f();
 		this.firstPersonRenderer = new FirstPersonRenderer();
+		this.playerGuiRenderer = new PlayerGuiRenderer();
 		
 		this.minecraft.renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
 				new BufferBuilder(ModRenderTypes.getEnchantedArmor().bufferSize()));
@@ -114,13 +123,19 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
-		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowCap>("hollow/hollow"));
-		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, HollowLordranWarriorCap>("hollow/lordran_hollow"));
-		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, HollowLordranSoldierCap>("hollow/lordran_hollow"));
-		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidCap<CrestfallenWarrior>>("quest_entity/crestfallen_warrior"));
-		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, AnastaciaOfAstoraCap>("quest_entity/anastacia_of_astora"));
-		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new AsylumDemonRenderer());
-		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<AbstractFireKeeper, FireKeeperCap>("fire_keeper"));
+		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowCap>(DarkSouls.MOD_ID, "hollow/hollow"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, HollowLordranWarriorCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, HollowLordranSoldierCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.CRESTFALLEN_WARRIOR.get(), new SimpleHumanoidRenderer<CrestfallenWarrior, SimpleHumanoidCap<CrestfallenWarrior>>(DarkSouls.MOD_ID, "quest_entity/crestfallen_warrior"));
+		this.entityRendererMap.put(ModEntities.ANASTACIA_OF_ASTORA.get(), new SimpleHumanoidRenderer<AnastaciaOfAstora, AnastaciaOfAstoraCap>(DarkSouls.MOD_ID, "quest_entity/anastacia_of_astora"));
+		this.entityRendererMap.put(ModEntities.STRAY_DEMON.get(), new StrayDemonRenderer());
+		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<AbstractFireKeeper, FireKeeperCap>(DarkSouls.MOD_ID, "fire_keeper"));
+		this.entityRendererMap.put(ModEntities.PETRUS_OF_THOROLUND.get(), new SimpleHumanoidRenderer<PetrusOfThorolund, SimpleHumanoidCap<PetrusOfThorolund>>(DarkSouls.MOD_ID, "quest_entity/petrus_of_thorolund"));
+		this.entityRendererMap.put(ModEntities.FALCONER.get(), new SimpleHumanoidRenderer<Falconer, FalconerCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
+		
+		this.entityRendererMap.put(EntityType.ZOMBIE, new SimpleHumanoidRenderer<Zombie, SimpleHumanoidCap<Zombie>>("zombie/zombie"));
+		this.entityRendererMap.put(EntityType.HUSK, new SimpleHumanoidRenderer<Husk, SimpleHumanoidCap<Husk>>("zombie/husk"));
+		this.entityRendererMap.put(EntityType.DROWNED, new SimpleHumanoidRenderer<Drowned, SimpleHumanoidCap<Drowned>>("zombie/drowned"));
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();
@@ -146,6 +161,8 @@ public class RenderEngine
 		itemRendererMapByInstance.put(ModItems.HEATER_SHIELD.get(), shieldRenderer);
 		itemRendererMapByInstance.put(ModItems.CRACKED_ROUND_SHIELD.get(), shieldRenderer);
 		itemRendererMapByInstance.put(ModItems.LORDRAN_SOLDIER_SHIELD.get(), shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.KNIGHT_SHIELD.get(), shieldRenderer);
+		itemRendererMapByInstance.put(ModItems.GOLDEN_FALCON_SHIELD.get(), shieldRenderer);
 		
 		itemRendererMapByClass.put(BlockItem.class, hatRenderer);
 		itemRendererMapByClass.put(BowItem.class, bowRenderer);
@@ -182,9 +199,9 @@ public class RenderEngine
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingEntity livingEntity, LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public void renderEntityArmatureModel(LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
 	{
-		this.entityRendererMap.get(livingEntity.getType()).render(livingEntity, entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
+		this.entityRendererMap.get(entityCap.getOriginalEntity().getType()).render(entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
 	}
 	
 	public boolean isEntityContained(Entity entity)
@@ -270,24 +287,30 @@ public class RenderEngine
 			LivingEntity livingentity = event.getEntity();
 			if (renderEngine.isEntityContained(livingentity))
 			{
-				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F) return;
+				if (livingentity instanceof LocalPlayer && event.getPartialTick() == 1.0F)
+				{
+					LocalPlayerCap playerCap = (LocalPlayerCap)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+					if (playerCap != null)
+					{
+						renderEngine.playerGuiRenderer.render(playerCap, null, event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+						event.setCanceled(true);
+					}
+					return;
+				}
 				
-				LivingCap<?> entityCap = (LivingCap<?>) livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				LivingCap<?> entityCap = (LivingCap<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entityCap != null)
 				{
 					event.setCanceled(true);
-					renderEngine.renderEntityArmatureModel(livingentity, entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+					renderEngine.renderEntityArmatureModel(entityCap, event.getRenderer(), event.getMultiBufferSource(), event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
 				}
 			}
 			
-			if (!minecraft.options.hideGui)
+			for (AdditionalEntityRenderer additionalRenderer : AdditionalEntityRenderer.ADDITIONAL_ENTITY_RENDERERS)
 			{
-				for (EntityIndicator entityIndicator : EntityIndicator.ENTITY_INDICATOR_RENDERERS)
+				if (additionalRenderer.shouldDraw(event.getEntity()))
 				{
-					if (entityIndicator.shouldDraw(event.getEntity()))
-					{
-						entityIndicator.drawIndicator(event.getEntity(), event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick());
-					}
+					additionalRenderer.draw(event.getEntity(), event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick());
 				}
 			}
 		}
@@ -325,11 +348,22 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void renderHand(RenderHandEvent event)
 		{
+			if (!ClientManager.INSTANCE.isCombatModeActive())
+			{
+				if (event.getItemStack().getItem() instanceof HasDarkSoulsUseAction)
+				{
+					HasDarkSoulsUseAction item = (HasDarkSoulsUseAction)event.getItemStack().getItem();
+					FirstPersonRendererOverride.renderArmWithItem(item, event.getSwingProgress(), event.getPartialTicks(), event.getEquipProgress(), event.getHand(),
+							event.getItemStack(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
+					event.setCanceled(true);
+				}
+				return;
+			}
+			
 			LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
-			if (!DarkSouls.CLIENT_INGAME_CONFIG.firstPerson3D.getValue() && !ClientManager.INSTANCE.isCombatModeActive()) return;
 			if (event.getHand() == InteractionHand.MAIN_HAND)
 			{
-				renderEngine.firstPersonRenderer.render(minecraft.player, playerCap, null, event.getMultiBufferSource(),
+				renderEngine.firstPersonRenderer.render(playerCap, null, event.getMultiBufferSource(),
 						event.getPoseStack(), event.getPackedLight(), event.getPartialTicks());
 			}
 			event.setCanceled(true);

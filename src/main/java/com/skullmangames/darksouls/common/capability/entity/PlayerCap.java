@@ -1,37 +1,60 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.common.inventory.SpellInventory;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 
 public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 {
 	protected float yaw;
 	protected int tickSinceLastAction;
 	
-	protected Stats stats = new Stats();
+	private Stats stats = new Stats();
 	
-	protected int humanity;
-	protected boolean human;
-	protected int souls;
+	private int humanity;
+	private boolean human;
+	private int souls;
+	private float fp;
+	
+	private SpellInventory attunements;
+	
+	private Covenant covenant = Covenants.NONE;
+	private int covenantProgress;
+	private int[] covenantProgresses = new int[Covenants.COVENANTS.size()];
+	
+	@Override
+	public void onEntityConstructed(T entityIn)
+	{
+		super.onEntityConstructed(entityIn);
+		this.attunements = new SpellInventory(entityIn);
+	}
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
@@ -45,25 +68,98 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		}
 	}
 	
+	public SpellInventory getAttunements()
+	{
+		return this.attunements;
+	}
+	
+	@Override
+	public float getDamageScalingMultiplier(float baseDamage)
+	{
+		return (float)Stats.getTotalDamageMultiplier(this.orgEntity, baseDamage, this.getStatValue(Stats.STRENGTH), this.getStatValue(Stats.DEXTERITY), this.getStatValue(Stats.FAITH));
+	}
+	
 	public void onLoad(CompoundTag nbt)
 	{
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
+		if (nbt.contains("FocusPoints")) this.fp = nbt.getFloat("FocusPoints");
+		else this.fp = this.getMaxFP();
+		this.attunements.load(nbt.getList("Attunements", 10));
+		this.covenant = Covenants.COVENANTS.get(nbt.getInt("Covenant"));
+		this.covenantProgress = nbt.getInt("CovenantProgress");
+		
+		for (int i = 0; i < Covenants.COVENANTS.size(); i++)
+		{
+			this.covenantProgresses[i] = nbt.getInt(Covenants.COVENANTS.get(i).toString());
+		}
 		
 		this.stats.loadStats(this.orgEntity, nbt);
 	}
 	
-	public void onSave()
+	public final void onSave()
 	{
-		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, new CompoundTag());
-		CompoundTag nbt = this.orgEntity.getPersistentData().getCompound(DarkSouls.MOD_ID);
-		
+		CompoundTag nbt = new CompoundTag();
+		this.onSave(nbt);
+		this.orgEntity.getPersistentData().put(DarkSouls.MOD_ID, nbt);
+	}
+	
+	public void onSave(CompoundTag nbt)
+	{
 		nbt.putInt("Humanity", this.humanity);
 		nbt.putInt("Souls", this.souls);
 		nbt.putBoolean("IsHuman", this.human);
+		nbt.putFloat("FocusPoints", this.fp);
+		nbt.put("Attunements", this.attunements.save(new ListTag()));
+		nbt.putInt("Covenant", Covenants.COVENANTS.indexOf(this.covenant));
+		nbt.putInt("CovenantProgress", this.covenantProgress);
+		
+		for (int i = 0; i < Covenants.COVENANTS.size(); i++)
+		{
+			nbt.putInt(Covenants.COVENANTS.get(i).toString(), this.covenantProgresses[i]);
+		}
 		
 		this.stats.saveStats(nbt);
+	}
+	
+	public void addTeleport(BonfireBlockEntity bonfire) {}
+	
+	public Covenant getCovenant()
+	{
+		return this.covenant;
+	}
+	
+	public void setCovenant(Covenant value)
+	{
+		if (this.covenant == value) return;
+		this.covenant = value;
+		this.covenantProgress = 0;
+	}
+	
+	public int getCovenantProgress()
+	{
+		return this.covenantProgress;
+	}
+	
+	public void setCovenantProgress(int value)
+	{
+		this.covenantProgress = value;
+		int i = Covenants.COVENANTS.indexOf(this.covenant);
+		if (this.covenantProgresses[i] < value)
+		{
+			this.covenantProgresses[i] = value;
+		}
+	}
+	
+	public void raiseCovenantProgress(int raise)
+	{
+		this.setCovenantProgress(this.covenantProgress + raise);
+	}
+	
+	public int getLastProgressFor(Covenant covenant)
+	{
+		return this.covenantProgresses[Covenants.COVENANTS.indexOf(covenant)];
 	}
 	
 	public Stats getStats()
@@ -83,12 +179,32 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	
 	public void setSouls(int value)
 	{
-		this.souls = value;
+		this.souls = Math.max(0, value);
 	}
 	
 	public void raiseSouls(int value)
 	{
 		this.setSouls(this.souls + value);
+	}
+	
+	public float getFP()
+	{
+		return this.fp;
+	}
+	
+	public void setFP(float value)
+	{
+		this.fp = value;
+	}
+	
+	public void raiseFP(float value)
+	{
+		this.setFP(this.fp + value);
+	}
+	
+	public float getMaxFP()
+	{
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get());
 	}
 	
 	public boolean isHuman()
@@ -137,8 +253,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
 		animatorClient.addLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
+		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.addLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
 		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
@@ -166,6 +281,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.stats.setStatValue(this.orgEntity, index, value);
 	}
 	
+	public int getStatValue(Stat stat)
+	{
+		return this.stats.getStatValue(stat);
+	}
+	
 	@Override
 	public void updateOnServer()
 	{
@@ -180,11 +300,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		this.orgEntity.getFoodData().setFoodLevel(15);
 	}
 	
-	public float getAttackSpeed()
-	{
-		return (float)this.orgEntity.getAttributeValue(Attributes.ATTACK_SPEED);
-	}
-	
 	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
@@ -192,9 +307,15 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public boolean hurt(DamageSource damageSource, float amount)
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		if(super.hurt(damageSource, amount))
+		return HumanoidCap.getHumanoidDeathAnimation(this, dmgSource);
+	}
+	
+	@Override
+	public boolean onHurt(DamageSource damageSource, float amount)
+	{
+		if(super.onHurt(damageSource, amount))
 		{
 			this.tickSinceLastAction = 0;
 			return true;
@@ -208,11 +329,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmgMul, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
 		float staminaDmg = weapon != null ? Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul : 4;
-		return ExtendedDamageSource.causePlayerDamage(orgEntity, stunType, amount, requireddeflectionlevel, damageType, poiseDamage, staminaDmg);
+		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 	
 	public void discard()
@@ -227,8 +348,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 	}
 	
 	@Override
-	public StaticAnimation getHitAnimation(StunType stunType)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
-		return HumanoidCap.getHumanoidHitAnimation(this, stunType);
+		return HumanoidCap.getHumanoidHitAnimation(this, dmgSource);
 	}
 }

@@ -1,43 +1,47 @@
 package com.skullmangames.darksouls.core.util;
 
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements ExtendedDamageSource
 {
-	private float amount;
 	private final float staminaDamage;
 	private final float poiseDamage;
 	private boolean headshot;
+	private boolean wasBlocked;
 	private StunType stunType;
-	private final DamageType damageType;
+	private final Damage[] damages;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, float amount, StunType stunType, DamageType damageType, float poiseDamage, float staminaDamage)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
-		this.damageType = damageType;
+		this.damages = damages;
 		this.poiseDamage = poiseDamage;
-		this.amount = amount;
 		this.staminaDamage = staminaDamage;
+	}
+	
+	@Override
+	public boolean isIndirect()
+	{
+		return true;
+	}
+	
+	@Override
+	public float getAmount()
+	{
+		float amount = 0;
+		for (Damage damage : this.getDamages()) amount += damage.getAmount();
+		return amount;
 	}
 
 	@Override
 	public int getRequiredDeflectionLevel()
 	{
 		return 0;
-	}
-
-	@Override
-	public float getAmount()
-	{
-		return this.amount;
-	}
-	
-	@Override
-	public void setAmount(float amount)
-	{
-		this.amount = amount;
 	}
 
 	@Override
@@ -59,9 +63,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public DamageType getDamageType()
+	public Damage[] getDamages()
 	{
-		return this.damageType;
+		return this.damages;
 	}
 
 	@Override
@@ -98,5 +102,32 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	public Entity getSource()
 	{
 		return this.getDirectEntity();
+	}
+
+	@Override
+	public boolean wasBlocked()
+	{
+		return this.wasBlocked;
+	}
+
+	@Override
+	public void setWasBlocked(boolean value)
+	{
+		this.wasBlocked = value;
+	}
+
+	@Override
+	public float getAttackAngle(Entity target)
+	{
+		Vec3 attacker = this.getDirectEntity().position();
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
+		float yRot = MathUtils.toNormalRot(target.getYRot());
+		return Math.abs(-yRot - attackAngle);
+	}
+
+	@Override
+	public Vec3 getAttackPos()
+	{
+		return this.getSource().position();
 	}
 }

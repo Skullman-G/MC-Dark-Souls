@@ -2,8 +2,6 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.List;
 
-import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModItems;
 
@@ -46,7 +44,7 @@ public class EstusFlaskItem extends Item
 		{
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
-		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
+		    compoundnbt.putInt("Uses", 0);
 		    compoundnbt.putInt("Heal", 5);
 		}
 		
@@ -97,11 +95,11 @@ public class EstusFlaskItem extends Item
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (ClientManager.INSTANCE == null) return;
-		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) tooltip.add(new TextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
+		super.appendHoverText(stack, level, tooltip, flagIn);
+		tooltip.add(new TextComponent("\n\u00A77Increase: " + getHeal(stack)));
+		tooltip.add(new TextComponent("\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
 	}
 	
 	@Override
@@ -113,13 +111,13 @@ public class EstusFlaskItem extends Item
 	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemstack);
 	      }
 
-	      if (player != null)
+	      if (player != null) // Player
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
 		    	  if (player.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
-		    		  player.heal(getHeal(itemstack));
+		    		  this.activate(player, itemstack);
 		    	  }
 		    	  else
 		    	  {
@@ -132,16 +130,21 @@ public class EstusFlaskItem extends Item
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
 	      }
-	      else
+	      else // LivingEntity
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-	    		  livingentity.heal(getHeal(itemstack));
+	    		  this.activate(livingentity, itemstack);
 		      }
 	    	  setUses(itemstack, getUses(itemstack) - 1);
 	      }
 
 	      return itemstack;
+	}
+	
+	protected void activate(LivingEntity entity, ItemStack stack)
+	{
+		entity.heal(getHeal(stack));
 	}
 	
 	@Override

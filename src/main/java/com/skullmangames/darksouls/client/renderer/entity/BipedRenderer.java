@@ -26,9 +26,10 @@ public abstract class BipedRenderer<E extends LivingEntity, T extends LivingCap<
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, E entityIn, T entityCap, float partialTicks)
+	protected void applyRotations(PoseStack matStack, Armature armature, T entityCap, float partialTicks)
 	{
-		super.applyRotations(matStack, armature, entityIn, entityCap, partialTicks);
+		E entityIn = entityCap.getOriginalEntity();
+		super.applyRotations(matStack, armature, entityCap, partialTicks);
 		if (entityIn.isCrouching())
 		{
 			matStack.translate(0.0D, 0.15D, 0.0D);

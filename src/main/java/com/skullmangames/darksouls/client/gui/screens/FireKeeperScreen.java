@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 
@@ -23,10 +24,8 @@ public class FireKeeperScreen extends Screen
 
 	private final int color;
 
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/fire_keeper_main.png");
-	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/ds_fire_keeper_main.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/fire_keeper_main.png");
+	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private int buttonWidth = 100;
@@ -36,7 +35,7 @@ public class FireKeeperScreen extends Screen
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.fireKeeperId = firekeeperid;
-		this.color = DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
+		this.color = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
 	}
 
 	@Override
@@ -96,7 +95,7 @@ public class FireKeeperScreen extends Screen
 
 	private void renderBg(PoseStack matrixstack, float partialticks, int x, int y)
 	{
-		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
 			RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else
 			RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);

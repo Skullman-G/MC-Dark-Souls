@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class FirstPersonRendererOverride
 {
-	public static void renderArmWithItem(IHaveDarkSoulsUseAction item, float swingProgress, float partialticks,
+	public static void renderArmWithItem(HasDarkSoulsUseAction item, float swingProgress, float partialticks,
 			float equipProgress, InteractionHand hand, ItemStack itemstack, PoseStack matrixstack,
 			MultiBufferSource rendertypebuffer, int i)
 	{
@@ -28,26 +28,27 @@ public class FirstPersonRendererOverride
 		{
 			switch (item.getDarkSoulsUseAnimation())
 			{
-			case SOUL_CONTAINER:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case MIRACLE:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case DARKSIGN:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			default:
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
+				case SOUL_CONTAINER:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case MIRACLE:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case DARKSIGN:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				default:
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
 			}
-		} else
+		}
+		else
 		{
 			double f5 = -0.4F * Math.sin(Math.sqrt(swingProgress) * (float) Math.PI);
 			double f6 = 0.2F * Math.sin(Math.sqrt(swingProgress) * ((float) Math.PI * 2F));

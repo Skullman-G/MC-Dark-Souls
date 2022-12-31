@@ -1,0 +1,38 @@
+{
+	"parent": "darksouls:miracles",
+	"display": {
+    "icon": {
+      "item": "darksouls:miracle_lightning_spear"
+    },
+    "title": {
+      "translate": "advancements.darksouls.lightning_spear.title"
+    },
+    "description": {
+      "translate": "advancements.darksouls.lightning_spear.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "obtain_item": {
+      "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+			        		"darksouls:miracle_lightning_spear"
+			        	]
+                    }
+                ]
+            }
+    }
+  },
+  "requirements": [
+    [
+      "obtain_item"
+    ]
+  ]
+}

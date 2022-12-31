@@ -1,0 +1,11 @@
+{
+  "type" : "darksouls:sunlight_altar",
+  "config" :
+  {
+    "start_pool" : "darksouls:sunlight_altar/sunlight_altar",
+    "size" : 2
+  },
+  "biomes" : "#darksouls:has_structure/sunlight_altar",
+  "adapt_noise" : true,
+  "spawn_overrides": {}
+}

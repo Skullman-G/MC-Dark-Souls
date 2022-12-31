@@ -3,10 +3,10 @@ package com.skullmangames.darksouls.common.capability.entity;
 public enum EntityState
 {
 	FREE(false, false, false, false, true, 0), FREE_CAMERA(true, false, false, false, false, 1),
-	FREE_INPUT(false, false, false, false, true, 3), PRE_CONTACT(true, true, false, false, false, 1),
+	FREE_INPUT(false, false, false, false, true, 3), PRE_CONTACT(true, false, false, false, false, 1),
 	CONTACT(true, true, true, false, false, 2), POST_CONTACT(true, true, false, false, true, 3),
 	HIT(true, true, false, false, false, 2), BLOCK(true, true, true, false, false, 2),
-	INVINCIBLE(true, true, false, true, false, 2);
+	INVINCIBLE(true, true, false, true, false, 2), R_INVINCIBLE(true, false, false, true, false, 2);
 
 	private boolean movementLock;
 	private boolean rotationLock;

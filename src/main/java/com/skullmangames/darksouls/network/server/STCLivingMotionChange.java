@@ -118,7 +118,7 @@ public class STCLivingMotionChange
 				LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				ClientAnimator animator = entityCap.getClientAnimator();
 				animator.resetMotions();
-				animator.resetCompositeMotion();
+				animator.resetMixMotion();
 
 				for (int i = 0; i < msg.count; i++)
 				{

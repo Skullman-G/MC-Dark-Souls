@@ -14,11 +14,11 @@ public class RenderTrident extends RenderItemBase
 	public RenderTrident()
 	{
 		correctionMatrix = new PublicMatrix4f();
-		PublicMatrix4f.rotate((float)Math.toRadians(-80), new Vector3f(1,0,0), correctionMatrix, correctionMatrix);
-		PublicMatrix4f.translate(new Vector3f(0.0F,0.1F,0.0F), correctionMatrix, correctionMatrix);
+		correctionMatrix.rotate((float)Math.toRadians(-80), Vector3f.XP);
+		correctionMatrix.translate(0.0F, 0.1F, 0.0F);
 		
-		PublicMatrix4f.rotate((float)Math.toRadians(-80), new Vector3f(1,0,0), correctionMatrixReverse, correctionMatrixReverse);
-		PublicMatrix4f.translate(new Vector3f(0.0F,0.1F,0.0F), correctionMatrixReverse, correctionMatrixReverse);
+		correctionMatrixReverse.rotate((float)Math.toRadians(-80), Vector3f.XP);
+		correctionMatrixReverse.translate(0.0F, 0.1F, 0.0F);
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class RenderTrident extends RenderItemBase
 		else
 		{
 			PublicMatrix4f mat = new PublicMatrix4f(correctionMatrix);
-			PublicMatrix4f.translate(new Vector3f(0.0F, 0.4F, 0.0F), mat, mat);
+			mat.translate(0.0F, 0.4F, 0.0F);
 			return mat;
 		}
 	}

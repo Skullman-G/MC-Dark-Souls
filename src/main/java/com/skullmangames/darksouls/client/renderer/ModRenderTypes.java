@@ -77,18 +77,6 @@ public class ModRenderTypes extends RenderType
 				VertexFormat.Mode.TRIANGLES, 256, true, false, rendertype$state);
 	}
 
-	public static RenderType getAimHelper()
-	{
-		RenderType.CompositeState rendertype$state = RenderType.CompositeState.builder().setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-				.setDepthTestState(NO_DEPTH_TEST)
-				.setLightmapState(NO_LIGHTMAP).setOverlayState(NO_OVERLAY)
-				.setShaderState(POSITION_COLOR_SHADER)
-				.setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE).createCompositeState(true);
-
-		return create(DarkSouls.MOD_ID + ":aim_helper", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINES, 256, true,
-				false, rendertype$state);
-	}
-
 	public static RenderType getAnimatedArmorModel(ResourceLocation locationIn)
 	{
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
@@ -102,39 +90,31 @@ public class ModRenderTypes extends RenderType
 				256, true, false, state);
 	}
 
-	public static RenderType getEyes(ResourceLocation locationIn)
-	{
-		RenderType.CompositeState state = RenderType.CompositeState.builder()
-				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
-				.setTransparencyState(ADDITIVE_TRANSPARENCY).setWriteMaskState(COLOR_WRITE)
-				.setShaderState(RENDERTYPE_EYES_SHADER)
-				.createCompositeState(false);
-
-		return create(DarkSouls.MOD_ID + ":eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, false, false,
-				state);
-	}
-
-	public static RenderType getEntityCutoutNoCull(ResourceLocation locationIn)
-	{
-		RenderType.CompositeState state = RenderType.CompositeState.builder()
-				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
-				.setTransparencyState(NO_TRANSPARENCY).setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
-				.setDepthTestState(NO_DEPTH_TEST).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
-				.createCompositeState(true);
-
-		return create(DarkSouls.MOD_ID + ":entity_cutout_no_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES,
-				256, true, false, state);
-	}
-
 	public static RenderType getEntityIndicator(ResourceLocation locationIn)
 	{
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
 				.setShaderState(POSITION_TEX_SHADER)
-				.setTransparencyState(NO_TRANSPARENCY).setDepthTestState(NO_DEPTH_TEST).createCompositeState(false);
-
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setOverlayState(OVERLAY)
+				.setOutputState(OUTLINE_TARGET)
+				.createCompositeState(false);
+		
 		return create(DarkSouls.MOD_ID + ":entity_indicator", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256,
 				false, false, state);
+	}
+	
+	public static RenderType getEffectEntity(ResourceLocation locationIn)
+	{
+		RenderType.CompositeState state = RenderType.CompositeState.builder()
+				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
+				.setShaderState(POSITION_TEX_SHADER)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+				.createCompositeState(false);
+		
+		return create(DarkSouls.MOD_ID + ":effect_entity", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, state);
 	}
 
 	public static RenderType getBoundingBox()
@@ -152,11 +132,9 @@ public class ModRenderTypes extends RenderType
 		return ARMOR_ENTITY_GLINT;
 	}
 
-	public static VertexConsumer getArmorVertexBuilder(MultiBufferSource buffer, RenderType renderType,
-			boolean withGlint)
+	public static VertexConsumer getArmorVertexBuilder(MultiBufferSource buffer, RenderType renderType, boolean withGlint)
 	{
-		return withGlint
-				? VertexMultiConsumer.create(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType))
+		return withGlint ? VertexMultiConsumer.create(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType))
 				: buffer.getBuffer(renderType);
 	}
 }

@@ -24,7 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.sounds.SoundEvent;
 
-public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseAction
+public class Teleport2BonfireItem extends Item implements HasDarkSoulsUseAction
 {
 	private static final UUID SPEED_MODIFIER_CASTING_UUID = UUID.fromString("7b6eb570-5411-4c74-9b82-ce52e68c5ac5");
 	private final boolean looseAfterUse;
@@ -80,15 +80,15 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	    if (!livingentity.level.isClientSide)
 	    {
 	    	ServerPlayer serverplayerentity = (ServerPlayer)livingentity;
-	    	PlayerCap<?> playerdata = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+	    	PlayerCap<?> playerCap = (PlayerCap<?>)serverplayerentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 	    	CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemstack);
 	    	
 	    	if (serverplayerentity.getRespawnPosition() != null)
 	    	{
 	    		if (this.looseSouls)
 	    		{
-	    			playerdata.setHumanity(0);
-	    			playerdata.setSouls(0);
+	    			playerCap.setHumanity(0);
+	    			playerCap.setSouls(0);
 	    		}
 	    		serverplayerentity.teleportTo(serverplayerentity.getRespawnPosition().getX(), serverplayerentity.getRespawnPosition().getY(), serverplayerentity.getRespawnPosition().getZ());
 	    	}
@@ -132,6 +132,6 @@ public class Teleport2BonfireItem extends Item implements IHaveDarkSoulsUseActio
 	@Override
 	public SoundEvent getUseSound()
 	{
-		return ModSoundEvents.DARKSIGN_USE.get();
+		return ModSoundEvents.MIRACLE_USE.get();
 	}
 }

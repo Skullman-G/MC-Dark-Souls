@@ -47,10 +47,10 @@ public class ClientModel extends Model
 		}
 	}
 
-	public void draw(PoseStack posestack, VertexConsumer builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
+	public void draw(PoseStack posestack, VertexConsumer builderIn, int packedLight, float r, float g, float b, float a, PublicMatrix4f[] poses)
 	{
 		float[] animatedPosition = this.mesh.positionList.clone();
-		float[] animatedNormal = this.mesh.normalList.clone();		
+		float[] animatedNormal = this.mesh.normalList.clone();
 		int weightIndex = 0;
 		
 		for(int i = 0; i < this.mesh.vertexCount; i++)
@@ -93,7 +93,7 @@ public class ClientModel extends Model
 			position.transform(matrix4f);
 			normal.transform(matrix3f);
 			
-			builderIn.vertex(position.x(), position.y(), position.z(), r, g, b, a, this.mesh.textureList[im2], this.mesh.textureList[im2 + 1], OverlayTexture.NO_OVERLAY, packedLightIn, normal.x(), normal.y(), normal.z());
+			builderIn.vertex(position.x(), position.y(), position.z(), r, g, b, a, this.mesh.textureList[im2], this.mesh.textureList[im2 + 1], OverlayTexture.NO_OVERLAY, packedLight, normal.x(), normal.y(), normal.z());
 		}
 	}
 }

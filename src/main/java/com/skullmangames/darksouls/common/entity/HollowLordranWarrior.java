@@ -33,7 +33,7 @@ public class HollowLordranWarrior extends ArmoredMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 15.0D)
+				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.24D);
 	}
@@ -90,5 +90,17 @@ public class HollowLordranWarrior extends ArmoredMob
 	protected SoundEvent getDeathSound()
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
+	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
 	}
 }

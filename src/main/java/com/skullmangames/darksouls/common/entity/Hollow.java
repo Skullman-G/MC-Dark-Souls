@@ -40,7 +40,7 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D)
+				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
@@ -98,17 +98,29 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
+	}
 
 	@Override
-	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
+	public void performRangedAttack(LivingEntity target, float p_82196_2_)
 	{
 		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
 	    AbstractArrow abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
 	    if (this.getMainHandItem().getItem() instanceof BowItem)
 	       abstractarrowentity = ((BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
-	    double d0 = p_82196_1_.getX() - this.getX();
-	    double d1 = p_82196_1_.getY(0.3333333333333333D) - abstractarrowentity.getY();
-	    double d2 = p_82196_1_.getZ() - this.getZ();
+	    double d0 = target.getX() - this.getX();
+	    double d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
+	    double d2 = target.getZ() - this.getZ();
 	    double d3 = (double)Math.sqrt(d0 * d0 + d2 * d2);
 	    abstractarrowentity.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
 	    this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));

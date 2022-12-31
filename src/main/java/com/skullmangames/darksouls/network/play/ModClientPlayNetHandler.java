@@ -1,21 +1,36 @@
 package com.skullmangames.darksouls.network.play;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.mojang.datafixers.util.Pair;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.BonfireNameScreen;
 import com.skullmangames.darksouls.client.gui.screens.BonfireScreen;
+import com.skullmangames.darksouls.client.gui.screens.BonfireTeleportScreen;
+import com.skullmangames.darksouls.client.gui.screens.CovenantScreen;
+import com.skullmangames.darksouls.client.gui.screens.FireKeeperScreen;
+import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
+import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ModClientPlayNetHandler implements IModClientPlayNetHandler
+public class ModClientPlayNetHandler implements ModPlayNetHandler
 {
 	private final Minecraft minecraft;
 	
@@ -71,5 +86,68 @@ public class ModClientPlayNetHandler implements IModClientPlayNetHandler
 	public void removeBonfireAmbientSound(BlockPos blockPos)
 	{
 		this.sounds.remove(blockPos);
+	}
+
+	@Override
+	public void openFireKeeperScreen(int entityId)
+	{
+		this.minecraft.setScreen(new FireKeeperScreen(entityId));
+	}
+	
+	@Override
+	public void openJoinCovenantScreen(Covenant covenant)
+	{
+		this.minecraft.setScreen(new JoinCovenantScreen(covenant));
+	}
+
+	@Override
+	public void openCovenantScreen(Covenant covenant)
+	{
+		this.minecraft.setScreen(new CovenantScreen(covenant));
+	}
+
+	@Override
+	public void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports)
+	{
+		BonfireBlockEntity bonfire = this.minecraft.level.getBlockEntity(blockPos, ModBlockEntities.BONFIRE.get()).orElse(null);
+		if (bonfire != null) this.minecraft.setScreen(new BonfireTeleportScreen(teleports));
+	}
+
+	@Override
+	public void shakeCam(Vec3 source, int duration, float magnitude)
+	{
+		if (this.minecraft.player.distanceToSqr(source) < 1000)
+		{
+			ClientManager.INSTANCE.mainCamera.shake(duration, magnitude);
+		}
+	}
+
+	@Override
+	public void playEntitySound(Entity entity, SoundEvent sound, float volume)
+	{
+		entity.level.playSound(this.minecraft.player, entity, sound, entity.getSoundSource(), volume, 1.0F);
+	}
+
+	@Override
+	public void playSound(Entity entity, SoundEvent sound, float volume)
+	{
+		entity.level.playSound(this.minecraft.player, entity.getX(), entity.getY(), entity.getZ(), sound, entity.getSoundSource(), volume, 1.0F);
+	}
+
+	@Override
+	public void bonfireKindleEffect(BlockPos pos)
+	{
+		BonfireBlock.kindleEffect(this.minecraft.level, pos);
+	}
+
+	@Override
+	public void makeImpactParticles(int entityId, Vec3 impactPos, boolean blocked)
+	{
+		Entity entity = this.minecraft.level.getEntity(entityId);
+		LivingCap<?> cap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (cap != null)
+		{
+			cap.makeImpactParticles(impactPos, blocked);
+		}
 	}
 }

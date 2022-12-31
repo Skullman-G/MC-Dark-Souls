@@ -1,8 +1,7 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
-import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.common.inventory.ReinforceEstusFlaskMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -78,26 +77,33 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		super.tick();
 		
-		if (!this.hasLinkedBonfire)
+		if (!this.level.isClientSide)
 		{
-			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
+			if (!this.hasLinkedBonfire)
 			{
-				BonfireBlockEntity t = this.level.getBlockEntity(pos, ModBlockEntities.BONFIRE.get()).orElse(null);
-				if (t != null
-						&& !t.hasFireKeeper()
-						&& t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+				for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 				{
-					this.linkBonfire(t.getBlockPos());
-					break;
+					BlockEntity t = this.level.getBlockEntity(pos);
+					if (t instanceof BonfireBlockEntity)
+					{
+						BonfireBlockEntity b = (BonfireBlockEntity)t;
+						if (b != null
+								&& !b.hasFireKeeper()
+								&& b.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+						{
+							this.linkBonfire(b.getBlockPos());
+							break;
+						}
+					}
 				}
 			}
-		}
-		
-		if (!this.level.isClientSide() && !this.isDeadOrDying())
-		{
-			if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+			
+			if (!this.isDeadOrDying())
 			{
-				this.hurt(DamageSource.STARVE, this.getHealth());
+				if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+				{
+					this.hurt(DamageSource.STARVE, this.getHealth());
+				}
 			}
 		}
 	}
@@ -119,7 +125,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, p_235576_4_) ->
 		{
-			return new ReinforceEstusFlaskContainer(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
+			return new ReinforceEstusFlaskMenu(id, inventory, ContainerLevelAccess.create(this.level, this.blockPosition()));
 		}, new TranslatableComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}

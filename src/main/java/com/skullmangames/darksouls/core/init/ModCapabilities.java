@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
@@ -22,7 +23,13 @@ public class ModCapabilities
 	
 	public static ItemCapability getItemCapability(ItemStack stack)
 	{
-		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+		return stack.isEmpty() ? null : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+	}
+	
+	public static SpellcasterWeaponCap getSpellcasterWeaponCap(ItemStack stack)
+	{
+		ItemCapability cap = getItemCapability(stack);
+		return cap instanceof SpellcasterWeaponCap ? (SpellcasterWeaponCap)cap : null;
 	}
 	
 	public static WeaponCap getWeaponCap(ItemStack stack)

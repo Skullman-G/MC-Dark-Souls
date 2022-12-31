@@ -50,7 +50,7 @@ public class ModLoadingScreen extends Overlay
 		this.description = this.addLinebreaks(new TranslatableComponent(languagePath).getString(), 50);
 	}
 
-	public String[] addLinebreaks(String input, int maxCharInLine)
+	private String[] addLinebreaks(String input, int maxCharInLine)
 	{
 		StringTokenizer tok = new StringTokenizer(input, " ");
 		StringBuilder output = new StringBuilder(input.length());
@@ -79,7 +79,7 @@ public class ModLoadingScreen extends Overlay
 	}
 
 	@Override
-	public void render(PoseStack matStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
+	public void render(PoseStack poseStack, int p_230430_2_, int p_230430_3_, float p_230430_4_)
 	{
 		int width = this.minecraft.getWindow().getGuiScaledWidth();
 		int height = this.minecraft.getWindow().getGuiScaledHeight();
@@ -98,21 +98,21 @@ public class ModLoadingScreen extends Overlay
 		{
 			if (this.minecraft.screen != null)
 			{
-				this.minecraft.screen.render(matStack, 0, 0, p_230430_4_);
+				this.minecraft.screen.render(poseStack, 0, 0, p_230430_4_);
 			}
 
 			int l = (int)Math.ceil((1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
-			fill(matStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | l << 24);
+			fill(poseStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | l << 24);
 			alpha = 1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F);
 		} else
 		{
 			if (this.minecraft.screen != null && inf < 1.0F)
 			{
-				this.minecraft.screen.render(matStack, p_230430_2_, p_230430_3_, p_230430_4_);
+				this.minecraft.screen.render(poseStack, p_230430_2_, p_230430_3_, p_230430_4_);
 			}
 
 			int i2 = (int)Math.ceil(MathUtils.clamp((double) inf, 0.15D, 1.0D) * 255.0D);
-			fill(matStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | i2 << 24);
+			fill(poseStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | i2 << 24);
 			alpha = MathUtils.clamp(inf, 0.0F, 1.0F);
 		}
 
@@ -122,31 +122,33 @@ public class ModLoadingScreen extends Overlay
 		if ((l & -67108864) != 0)
 		{
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-			this.renderBg(matStack, width, height);
+			this.renderBg(poseStack, width, height);
 
 			RenderSystem.setShaderTexture(0, BONFIRE_LOADING);
+			poseStack.pushPose();
 			float loadingscale = 1.5F;
-			matStack.scale(loadingscale, loadingscale, 1.0F);
-			GuiComponent.blit(matStack, (int) (20 / loadingscale), (int) ((height - 40) / loadingscale), 0 + (int) (this.loadingGif++ * 0.25F) * 16, 0,
+			poseStack.scale(loadingscale, loadingscale, 1.0F);
+			GuiComponent.blit(poseStack, (int) (20 / loadingscale), (int) ((height - 40) / loadingscale), 0 + (int) (this.loadingGif++ * 0.25F) * 16, 0,
 					16, 16, 48, 16);
-			matStack.scale(1.0F / loadingscale, 1.0F / loadingscale, 1.0F);
+			poseStack.popPose();
 			if (this.loadingGif * 0.25F > 3)
 				this.loadingGif = 0;
 
 			int x = width / 2;
 			int y = height / 2;
 
-			if (alpha > 0.5F) this.renderItem(matStack, this.descriptionItem, x - 121, y - 57);
+			if (alpha > 0.5F) this.renderItem(poseStack, this.descriptionItem, x - 121, y - 57);
 
-			drawString(matStack, this.minecraft.font, this.descriptionItem.getHoverName(), x - 100, y - 50, 16755200 | l);
+			drawString(poseStack, this.minecraft.font, this.descriptionItem.getHoverName(), x - 100, y - 50, 16755200 | l);
 
+			poseStack.pushPose();
 			float scale = 0.8F;
-			matStack.scale(scale, scale, 1.0F);
+			poseStack.scale(scale, scale, 1.0F);
 			for (int i = 0; i < this.description.length; i++)
 			{
-				drawString(matStack, this.minecraft.font, description[i], (int) ((x - 100) / scale), (int) ((y - 27 + 13 * i) / scale), 16777215 | l);
+				drawString(poseStack, this.minecraft.font, description[i], (int) ((x - 100) / scale), (int) ((y - 27 + 13 * i) / scale), 16777215 | l);
 			}
-			matStack.scale(1.0F / scale, 1.0F / scale, 1.0F);
+			poseStack.popPose();
 		}
 
 		if (outf >= 2.0F)

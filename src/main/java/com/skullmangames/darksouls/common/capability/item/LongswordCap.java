@@ -7,9 +7,9 @@ import net.minecraft.world.item.Item;
 
 public class LongswordCap extends SwordCap
 {
-	public LongswordCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public LongswordCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, requiredStrength, requiredDex, strengthScaling, dexScaling);
+		super(item, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override

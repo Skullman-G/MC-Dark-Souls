@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionResultHolder;
 
 public class ItemUser
 {
-	public static InteractionResultHolder<ItemStack> startUsing(IHaveDarkSoulsUseAction item, Level level, Player playerentity, InteractionHand hand)
+	public static InteractionResultHolder<ItemStack> startUsing(HasDarkSoulsUseAction item, Level level, Player playerentity, InteractionHand hand)
 	{
 	    playerentity.startUsingItem(hand);
 	    return InteractionResultHolder.consume(playerentity.getItemInHand(hand));
@@ -22,7 +22,7 @@ public class ItemUser
 		return itemstack.getUseDuration() - durationremaining == 1;
 	}
 	
-	public static void triggerItemUseEffects(LivingEntity livingentity, ItemStack itemstack, IHaveDarkSoulsUseAction item, int durationremaining)
+	public static void triggerItemUseEffects(LivingEntity livingentity, ItemStack itemstack, HasDarkSoulsUseAction item, int durationremaining)
 	{
 	    if (shouldTriggerItemUseEffects(itemstack, durationremaining) && !itemstack.isEmpty() && livingentity.isUsingItem())
 	    {

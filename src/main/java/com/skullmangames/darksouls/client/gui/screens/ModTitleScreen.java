@@ -57,7 +57,7 @@ public class ModTitleScreen extends Screen
 	private long fadeInStart;
 	private int copyrightWidth;
 	private int copyrightX;
-	private final boolean fading;
+	public final boolean fading;
 	private Screen realmsNotificationsScreen;
 	private Button resetDemoButton;
 

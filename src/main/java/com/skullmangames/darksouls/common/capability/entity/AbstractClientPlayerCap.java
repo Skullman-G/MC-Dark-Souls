@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
@@ -18,7 +18,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,57 +31,27 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	protected float prevYaw;
 	protected float bodyYaw;
 	protected float prevBodyYaw;
-	private ItemStack prevHeldItem;
-	private ItemStack prevHeldItemOffHand;
+	private Item prevHeldItem;
+	private Item prevHeldItemOffHand;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.prevHeldItem = ItemStack.EMPTY;
-		this.prevHeldItemOffHand = ItemStack.EMPTY;
+		this.prevHeldItem = Items.AIR;
+		this.prevHeldItemOffHand = Items.AIR;
 	}
 	
 	@Override
 	public void updateMotion()
 	{
-		if (this.orgEntity.getHealth() <= 0.0F)
-		{
-			this.currentMotion = LivingMotion.DEATH;
-		}
-		else if (this.orgEntity.isUsingItem() && this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof IHaveDarkSoulsUseAction)
-		{
-			ItemStack useitem = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand());
-			if (useitem.getItem() instanceof IHaveDarkSoulsUseAction)
-			{
-				DarkSoulsUseAction useaction = ((IHaveDarkSoulsUseAction)useitem.getItem()).getDarkSoulsUseAnimation();
-				
-				switch (useaction)
-				{
-					case DARKSIGN:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					case MIRACLE:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					case SOUL_CONTAINER:
-						this.currentMotion = LivingMotion.CONSUME_SOUL;
-						break;
-						
-					default:
-						break;
-				}
-			}
-		}
-		else if (this.orgEntity.isFallFlying())
+		if (this.orgEntity.isFallFlying())
 		{
 			this.currentMotion = LivingMotion.FLYING;
 		}
-		else if (this.orgEntity.getControllingPassenger() != null)
+		else if (this.isMounted())
 		{
-			this.currentMotion = LivingMotion.MOUNT;
+			this.currentMotion = LivingMotion.MOUNTED;
 		}
 		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{
@@ -145,7 +116,16 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem() instanceof HasDarkSoulsUseAction)
+			{
+				DarkSoulsUseAction useaction = ((HasDarkSoulsUseAction)this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getItem()).getDarkSoulsUseAnimation();
+				
+				if (useaction == DarkSoulsUseAction.DARKSIGN || useaction == DarkSoulsUseAction.MIRACLE || useaction == DarkSoulsUseAction.SOUL_CONTAINER)
+				{
+					this.currentMixMotions.put(layerPart, LivingMotion.CONSUME_SOUL);
+				}
+			}
+			else if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
@@ -221,8 +201,8 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		
-		ItemStack mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND);
-		ItemStack offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND);
+		Item mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem();
+		Item offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND).getItem();
 		boolean isMainHandChanged = this.prevHeldItem != mainHandItem;
 		boolean isOffHandChanged = this.prevHeldItemOffHand != offHandItem;
 		
@@ -233,11 +213,6 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			this.prevHeldItemOffHand = offHandItem;
 		}
 		super.updateOnClient();
-		
-		if(this.orgEntity.deathTime == 1)
-		{
-			this.getClientAnimator().playDeathAnimation();
-		}
 	}
 
 	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)
@@ -296,9 +271,9 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			float yawDegree = MathUtils.interpolateRotation(orgEntity.yRotO, orgEntity.yRot, partialTick);
 			float pitchDegree = MathUtils.interpolateRotation(orgEntity.xRotO, orgEntity.xRot, partialTick) + 90.0F;
-			PublicMatrix4f.rotate((float)-Math.toRadians(yawDegree), new Vector3f(0F, 1F, 0F), mat, mat);
-			PublicMatrix4f.rotate((float)-Math.toRadians(pitchDegree), new Vector3f(1F, 0F, 0F), mat, mat);
-			PublicMatrix4f.rotate((float)Math.toRadians((orgEntity.tickCount + partialTick) * -55.0), new Vector3f(0F, 1F, 0F), mat, mat);
+			mat.rotate((float)-Math.toRadians(yawDegree), Vector3f.YP);
+			mat.rotate((float)-Math.toRadians(pitchDegree), Vector3f.XP);
+			mat.rotate((float)Math.toRadians((orgEntity.tickCount + partialTick) * -55.0), Vector3f.YP);
             
             return mat;
 		}
@@ -307,11 +282,11 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			PublicMatrix4f mat = PublicMatrix4f.getModelMatrixIntegrated((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			
-			PublicMatrix4f.rotate((float)-Math.toRadians(entity.yBodyRot), new Vector3f(0F, 1F, 0F), mat, mat);
+			mat.rotate((float)-Math.toRadians(entity.yBodyRot), Vector3f.YP);
 			
             float f = (float)orgEntity.getFallFlyingTicks() + Minecraft.getInstance().getFrameTime();
             float f1 = MathUtils.clamp(f * f / 100.0F, 0.0F, 1.0F);
-            PublicMatrix4f.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), new Vector3f(1F, 0F, 0F), mat, mat);
+            mat.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), Vector3f.XP);
             
             Vec3 vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
             Vec3 vec3d1 = orgEntity.getDeltaMovement();
@@ -324,7 +299,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
                 double d2 = (vec3d1.x * vec3d.x + vec3d1.z * vec3d.z) / (Math.sqrt(d0) * Math.sqrt(d1));
                 double d3 = vec3d1.x * vec3d.z - vec3d1.z * vec3d.x;
                 
-                PublicMatrix4f.rotate((float)Math.toRadians((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI), new Vector3f(0F, 1F, 0F), mat, mat);
+                mat.rotate((float)Math.toRadians((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI), Vector3f.YP);
             }
 			
             return mat;

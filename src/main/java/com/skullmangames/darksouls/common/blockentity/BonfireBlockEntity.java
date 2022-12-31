@@ -2,6 +2,8 @@ package com.skullmangames.darksouls.common.blockentity;
 
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -41,11 +43,6 @@ public class BonfireBlockEntity extends BlockEntity
 		this.hasFireKeeper = nbt.getBoolean("has_fire_keeper");
 		this.fireKeeperStringUUID = nbt.getString("fire_keeper_string_uuid");
 	}
-	
-	public void loadOnClient(String name)
-	{
-		this.name = name;
-	}
 
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket()
@@ -74,19 +71,13 @@ public class BonfireBlockEntity extends BlockEntity
 	public void setLit(boolean value)
 	{
 		if (this.getBlockState().getValue(BonfireBlock.LIT) == value) return;
-		if (value) this.playKindleSound();
+		if (value) this.triggerKindleEffects();
 		this.level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.LIT, value), 3);
 	}
 	
 	public boolean isLit()
 	{
 		return this.getBlockState().getValue(BonfireBlock.LIT);
-	}
-	
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
 	}
 
 	public String getName()
@@ -98,7 +89,7 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		int volumelevel = this.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL);
 		if (volumelevel >= 4) return;
-		this.playKindleSound();
+		this.triggerKindleEffects();
 		level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.ESTUS_VOLUME_LEVEL, volumelevel + 1), 3);
 	}
 	
@@ -107,8 +98,9 @@ public class BonfireBlockEntity extends BlockEntity
 		return this.getBlockState().getValue(BonfireBlock.ESTUS_VOLUME_LEVEL) < 2;
 	}
 
-	private void playKindleSound()
+	private void triggerKindleEffects()
 	{
+		ModNetworkManager.sendToAll(new STCBonfireKindleEffect(this.worldPosition));
 		this.level.playSound(null, this.worldPosition, ModSoundEvents.BONFIRE_LIT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 
@@ -116,7 +108,7 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		int heallevel = this.getBlockState().getValue(BonfireBlock.ESTUS_HEAL_LEVEL);
 		if (heallevel >= 10) return;
-		this.playKindleSound();
+		this.triggerKindleEffects();
 		this.level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.ESTUS_HEAL_LEVEL, heallevel + 1), 3);
 	}
 
@@ -129,7 +121,7 @@ public class BonfireBlockEntity extends BlockEntity
 	{
 		this.fireKeeperStringUUID = uuid;
 		this.hasFireKeeper = true;
-		this.playKindleSound();
+		this.triggerKindleEffects();
 		this.level.setBlock(this.worldPosition, this.getBlockState().setValue(BonfireBlock.LIT, true).setValue(BonfireBlock.ESTUS_VOLUME_LEVEL, 2), 3);
 		this.markDirty();
 	}

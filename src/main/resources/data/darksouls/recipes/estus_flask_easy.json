@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "darksouls:estus_shard"
+        }
+    },
+    "result": {
+        "item": "darksouls:estus_flask",
+        "count": 1
+    }
+}
