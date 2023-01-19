@@ -30,7 +30,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
 
 public class GameOverlayManager
 {
@@ -70,12 +69,12 @@ public class GameOverlayManager
 	
 	public static void registerOverlayElements()
 	{
-		OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
-		OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
-		OverlayRegistry.enableOverlay(ForgeIngameGui.FOOD_LEVEL_ELEMENT, false);
-		OverlayRegistry.enableOverlay(ForgeIngameGui.BOSS_HEALTH_ELEMENT, false);
+		ModOverlayRegistry.enablePlayerHealth(false);
+		ModOverlayRegistry.enableArmorLevel(false);
+		ModOverlayRegistry.enableFoodLevel(false);
+		ModOverlayRegistry.enableBossHealth(false);
 		
-		OverlayRegistry.registerOverlayTop("Mod Boss Health Bar", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayTop("Mod Boss Health Bar", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 			if (!minecraft.options.hideGui)
 	        {
@@ -86,7 +85,7 @@ public class GameOverlayManager
 	        }
 		});
 		
-		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Mod Player Health", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayBottom("Mod Player Health", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -95,7 +94,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player Stamina", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayBottom("Player Stamina", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -104,7 +103,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayTop("Player Humanity", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayTop("Player Humanity", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -113,7 +112,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayTop("Player Souls", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayTop("Player Souls", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -122,7 +121,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayBottom("Player FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 	        {
@@ -131,7 +130,7 @@ public class GameOverlayManager
 	        }
 	    });
 		
-		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Player Attunements", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		ModOverlayRegistry.registerOverlayBottom("Player Attunements", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui)
 	        {
