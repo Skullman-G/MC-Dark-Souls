@@ -1,24 +1,19 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Lists;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.LivingEntity;
@@ -57,30 +52,30 @@ public abstract class MobCap<T extends MobEntity> extends LivingCap<T>
 	
 	protected void initAI()
 	{
-		resetCombatAI();
+		this.resetCombatAI();
 	}
 
 	protected void resetCombatAI()
 	{
 		Stream<PrioritizedGoal> goals = this.orgEntity.goalSelector.getRunningGoals();
 		Iterator<PrioritizedGoal> iterator = goals.iterator();
-		List<Goal> toRemove = Lists.<Goal>newArrayList();
+		List<Goal> toRemove = new ArrayList<>();
 		
 		while (iterator.hasNext())
 		{
-        	PrioritizedGoal goal = iterator.next();
-            Goal inner = goal.getGoal();
+			PrioritizedGoal goal = iterator.next();
+			Goal inner = goal.getGoal();
             
-            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal  || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
+            if (inner instanceof MeleeAttackGoal || inner instanceof RangedBowAttackGoal || inner instanceof RangeAttackGoal || inner instanceof ChasingGoal
             		|| inner instanceof RangedAttackGoal || inner instanceof AttackGoal || inner instanceof RangedCrossbowAttackGoal)
             {
             	toRemove.add(inner);
             }
         }
         
-		for (Goal AI : toRemove)
+		for (Goal goal : toRemove)
 		{
-        	orgEntity.goalSelector.removeGoal(AI);
+        	this.orgEntity.goalSelector.removeGoal(goal);
         }
 	}
 	
@@ -112,26 +107,5 @@ public abstract class MobCap<T extends MobEntity> extends LivingCap<T>
 	public LivingEntity getTarget()
 	{
 		return this.orgEntity.getTarget();
-	}
-	
-	@Override
-	public float getAttackDirectionPitch()
-	{
-		Entity attackTarget = this.getTarget();
-		if (attackTarget != null)
-		{
-			float partialTicks = DarkSouls.isPhysicalClient() ? Minecraft.getInstance().getFrameTime() : 1.0F;
-			Vector3d target = attackTarget.getEyePosition(partialTicks);
-			Vector3d vector3d = this.orgEntity.getEyePosition(partialTicks);
-			double d0 = target.x - vector3d.x;
-			double d1 = target.y - vector3d.y;
-			double d2 = target.z - vector3d.z;
-			double d3 = (double) Math.sqrt(d0 * d0 + d2 * d2);
-			return MathUtils.clamp(MathHelper.wrapDegrees((float) ((Math.atan2(d1, d3) * (double) (180F / (float) Math.PI)))), -30.0F, 30.0F);
-		}
-		else
-		{
-			return super.getAttackDirectionPitch();
-		}
 	}
 }

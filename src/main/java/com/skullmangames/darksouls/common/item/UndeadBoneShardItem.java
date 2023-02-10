@@ -34,7 +34,7 @@ public class UndeadBoneShardItem extends Item
 			{
 				if (itemusecontext.getPlayer() instanceof ServerPlayerEntity)
 				{
-          ModCriteriaTriggers.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
+					ModCriteriaTriggers.MAX_ESTUS_HEAL_LEVEL_TRIGGER.trigger((ServerPlayerEntity)itemusecontext.getPlayer());
 				}
 			}
 			bonfire.raiseEstusHealLevel();

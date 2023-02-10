@@ -5,8 +5,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.BowItem;
 

@@ -16,6 +16,8 @@ public class ModConfiguredStructures
 	public static StructureFeature<?, ?> CONFIGURED_FIRE_KEEPER_RUINS = ModStructures.FIRE_KEEPER_RUINS.get().configured(IFeatureConfig.NONE);
 	public static StructureFeature<?, ?> CONFIGURED_LORDRAN_CAMP = ModStructures.LORDRAN_CAMP.get().configured(IFeatureConfig.NONE);
 	public static StructureFeature<?, ?> CONFIGURED_FIRELINK_SHRINE = ModStructures.FIRELINK_SHRINE.get().configured(IFeatureConfig.NONE);
+	public static StructureFeature<?, ?> CONFIGURED_FALCONER_CAMP = ModStructures.FALCONER_CAMP.get().configured(IFeatureConfig.NONE);
+	public static StructureFeature<?, ?> CONFIGURED_SUNLIGHT_ALTAR = ModStructures.SUNLIGHT_ALTAR.get().configured(IFeatureConfig.NONE);
 
 	public static void registerConfiguredStructures()
 	{
@@ -28,6 +30,8 @@ public class ModConfiguredStructures
         FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.FIRE_KEEPER_RUINS.get(), CONFIGURED_FIRE_KEEPER_RUINS);
         FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.LORDRAN_CAMP.get(), CONFIGURED_LORDRAN_CAMP);
         FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.FIRELINK_SHRINE.get(), CONFIGURED_FIRELINK_SHRINE);
+        FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.FALCONER_CAMP.get(), CONFIGURED_FALCONER_CAMP);
+        FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.SUNLIGHT_ALTAR.get(), CONFIGURED_SUNLIGHT_ALTAR);
     }
 	
 	public static void biomeModification(BiomeLoadingEvent event)
@@ -46,6 +50,13 @@ public class ModConfiguredStructures
     	if (event.getCategory() == Biome.Category.PLAINS)
     	{
     		event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_FIRELINK_SHRINE);
+    		event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_SUNLIGHT_ALTAR);
+    	}
+    	
+    	if (event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.TAIGA
+    			|| event.getCategory() == Biome.Category.PLAINS)
+    	{
+    		event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_FALCONER_CAMP);
     	}
     }
 }

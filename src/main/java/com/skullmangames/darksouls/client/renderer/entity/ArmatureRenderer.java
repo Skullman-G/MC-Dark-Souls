@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -16,19 +18,17 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderNameplateEvent;
@@ -38,28 +38,24 @@ import net.minecraftforge.common.MinecraftForge;
 public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingCap<E>>
 {
 	protected Minecraft minecraft = Minecraft.getInstance();
-	protected List<Layer<E, T>> layers;
+	protected List<Layer<E, T>> layers = new ArrayList<>();
 
-	public ArmatureRenderer()
+	public void render(T entityCap, EntityRenderer<E> renderer, IRenderTypeBuffer buffer, MatrixStack poseStack, int packedLight, float partialTicks)
 	{
-		this.layers = Lists.newArrayList();
-	}
-
-	public void render(E livingEntity, T entityCap, EntityRenderer<E> renderer, IRenderTypeBuffer buffer, MatrixStack poseStack, int packedLightIn, float partialTicks)
-	{
-		if (this.shouldRenderNameTag(entityCap, livingEntity))
+		E entity = entityCap.getOriginalEntity();
+		if (this.shouldRenderNameTag(entityCap))
 		{
-			RenderNameplateEvent renderNameplateEvent = new RenderNameplateEvent(livingEntity,
-					livingEntity.getDisplayName(), renderer, poseStack, buffer, packedLightIn, partialTicks);
+			RenderNameplateEvent renderNameplateEvent = new RenderNameplateEvent(entity,
+					entity.getDisplayName(), renderer, poseStack, buffer, packedLight, partialTicks);
 			MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-			this.renderNameTag(entityCap, livingEntity, renderNameplateEvent.getContent(), poseStack, buffer,
-					packedLightIn);
+			this.renderNameTag(entityCap, entity, renderNameplateEvent.getContent(), poseStack, buffer,
+					packedLight);
 		}
 
-		boolean visible = this.isVisible(livingEntity);
-		boolean visibleToPlayer = !visible && !livingEntity.isInvisibleTo(this.minecraft.player);
-		boolean glowing = this.minecraft.shouldEntityAppearGlowing(livingEntity);
-		RenderType renderType = this.getRenderType(livingEntity, entityCap, visible, visibleToPlayer, glowing);
+		boolean visible = this.isVisible(entity);
+		boolean visibleToPlayer = !visible && !entity.isInvisibleTo(this.minecraft.player);
+		boolean glowing = this.minecraft.shouldEntityAppearGlowing(entity);
+		RenderType renderType = this.getRenderType(entityCap, visible, visibleToPlayer, glowing);
 
 		if (renderType != null)
 		{
@@ -68,13 +64,13 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 			Armature armature = model.getArmature();
 			armature.initializeTransform();
 			poseStack.pushPose();
-			this.applyRotations(poseStack, armature, livingEntity, entityCap, partialTicks);
+			this.applyRotations(poseStack, armature, entityCap, partialTicks);
 			entityCap.getClientAnimator().setPoseToModel(partialTicks);
 			PublicMatrix4f[] poses = armature.getJointTransforms();
-			model.draw(poseStack, builder, packedLightIn, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : 1.0F, poses);
+			model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : 1.0F, poses);
 
-			if (!livingEntity.isSpectator())
-				renderLayer(entityCap, livingEntity, poses, buffer, poseStack, packedLightIn, partialTicks);
+			if (!entity.isSpectator())
+				this.renderLayer(entityCap, poses, buffer, poseStack, packedLight, partialTicks);
 
 			if (this.minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes())
 			{
@@ -91,9 +87,9 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 		poseStack.popPose();
 	}
 
-	public RenderType getRenderType(E entityIn, T entityCap, boolean isVisible, boolean isVisibleToPlayer,
-			boolean isGlowing)
+	public RenderType getRenderType(T entityCap, boolean isVisible, boolean isVisibleToPlayer, boolean isGlowing)
 	{
+		E entityIn = entityCap.getOriginalEntity();
 		ResourceLocation resourcelocation = this.getEntityTexture(entityIn);
 		if (isVisibleToPlayer)
 			return ModRenderTypes.getItemEntityTranslucentCull(resourcelocation);
@@ -105,11 +101,12 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 
 	protected abstract ResourceLocation getEntityTexture(E entityIn);
 
-	protected void renderLayer(T entityCap, E entityIn, PublicMatrix4f[] poses, IRenderTypeBuffer buffer,
-			MatrixStack matrixStackIn, int packedLightIn, float partialTicks)
+	protected void renderLayer(T entityCap, PublicMatrix4f[] poses, IRenderTypeBuffer buffer, MatrixStack poseStack, int packedLight, float partialTicks)
 	{
-		for (Layer<E, T> layer : this.layers)
-			layer.renderLayer(entityCap, entityIn, matrixStackIn, buffer, packedLightIn, poses, partialTicks);
+		for (Layer<E, T> layer : this.layers) 
+		{
+			layer.renderLayer(entityCap, poseStack, buffer, packedLight, poses, partialTicks);
+		}
 	}
 
 	protected boolean isVisible(E entityIn)
@@ -128,7 +125,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 		PublicMatrix4f.mul(joint.getAnimatedTransform(), mat, joint.getAnimatedTransform());
 	}
 
-	protected void applyRotations(MatrixStack matStack, Armature armature, E entityIn, T entityCap, float partialTicks)
+	protected void applyRotations(MatrixStack matStack, Armature armature, T entityCap, float partialTicks)
 	{
 		PublicMatrix4f transpose = entityCap.getModelMatrix(partialTicks).transpose();
 		matStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
@@ -136,8 +133,9 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 		PublicMatrix4f.scaleStack(matStack, transpose);
 	}
 
-	protected boolean shouldRenderNameTag(T entityCap, E entity)
+	protected boolean shouldRenderNameTag(T entityCap)
 	{
+		E entity = entityCap.getOriginalEntity();
 		boolean flag1;
 		double d0 = this.minecraft.cameraEntity.distanceToSqr(entity);
 		float f = entity.isDiscrete() ? 32.0F : 64.0F;

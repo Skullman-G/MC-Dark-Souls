@@ -7,9 +7,9 @@ import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.core.init.ModItems;
 
 import net.minecraft.util.Hand;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
 public class DrinkingEstusGoal extends Goal

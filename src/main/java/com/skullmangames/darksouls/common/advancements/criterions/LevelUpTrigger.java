@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.common.advancements.criterions;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class LevelUpTrigger extends AbstractCriterionTrigger<LevelUpTrigger.Instance>
 {

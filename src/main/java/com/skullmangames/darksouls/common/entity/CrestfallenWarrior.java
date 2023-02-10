@@ -9,11 +9,10 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -27,7 +26,7 @@ public class CrestfallenWarrior extends QuestEntity
 	private static final String DIALOGUE_1 = "dialogue.darksouls.crestfallen_warrior.1";
 	private static final String DIALOGUE_2 = "dialogue.darksouls.crestfallen_warrior.2";
 	
-	public CrestfallenWarrior(EntityType<? extends CreatureEntity> type, World level)
+	public CrestfallenWarrior(EntityType<? extends CrestfallenWarrior> type, World level)
 	{
 		super(type, level);
 	}
@@ -78,7 +77,7 @@ public class CrestfallenWarrior extends QuestEntity
 	}
 	
 	@Override
-	protected int getExperienceReward(PlayerEntity p_21511_)
+	protected int getExperienceReward(PlayerEntity player)
 	{
 		return 1000;
 	}

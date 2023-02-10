@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
@@ -13,10 +12,11 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
-import com.skullmangames.darksouls.common.animation.types.HitAnimation;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -24,9 +24,11 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -34,8 +36,9 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
@@ -43,7 +46,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
@@ -54,6 +56,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -62,20 +65,22 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public LivingMotion currentMotion = LivingMotion.IDLE;
 	public Map<LayerPart, LivingMotion> currentMixMotions = new HashMap<>();
 	protected Animator animator;
-	public List<Entity> currentlyAttackedEntity;
+	public List<Entity> currentlyAttackedEntities;
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
 	private float stamina;
-	protected boolean canUseShield = true;
+	public Vector3d futureTeleport = Vector3d.ZERO;
+	public int slashDelay;
+	public Entity criticalTarget;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-		for (LayerPart part : LayerPart.compositeLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
+		for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
-		this.currentlyAttackedEntity = new ArrayList<Entity>();
+		this.currentlyAttackedEntities = new ArrayList<Entity>();
 	}
 
 	@Override
@@ -85,6 +90,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.initAttributes();
 		this.poiseDef = this.getPoise();
 		this.stamina = this.getMaxStamina();
+	}
+	
+	public boolean isMounted()
+	{
+		return this.orgEntity.getVehicle() != null;
+	}
+	
+	public float getDamageScalingMultiplier(float baseDamage)
+	{
+		return 1.0F;
 	}
 
 	public void setStamina(float value)
@@ -161,11 +176,50 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			this.updateOnServer();
 		}
-
-		if (this.canUseShield && this.getStamina() <= 0.0F) this.canUseShield = false;
-		else if (this.getStamina() >= this.getMaxStamina()) this.canUseShield = true;
-		
-		if (this.orgEntity.deathTime == 19) this.onDeath();
+	}
+	
+	public void makeImpactParticles(Vector3d impactPos, boolean blocked)
+	{
+		if (this.isClientSide())
+		{
+			AxisAlignedBB bb = this.orgEntity.getBoundingBox();
+			double x = this.getX() + MathUtils.clamp(impactPos.x - this.getX(), bb.getXsize() / 3);
+			double y = this.getY() + MathUtils.clamp(impactPos.y - this.getY(), bb.getYsize() / 3);
+			double z = this.getZ() + MathUtils.clamp(impactPos.z - this.getZ(), bb.getZsize() / 3);
+			
+			if (blocked)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.25F * this.orgEntity.getRandom().nextDouble();
+					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.25F * this.orgEntity.getRandom().nextDouble();
+					this.getLevel().addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * this.orgEntity.getRandom().nextDouble(), zd);
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.5F * this.orgEntity.getRandom().nextDouble();
+					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.5F * this.orgEntity.getRandom().nextDouble();
+					this.getLevel().addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+				}
+			}
+		}
+		else
+		{
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
+		}
+	}
+	
+	public boolean canBackstab(Entity target)
+	{
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - this.orgEntity.getX(), target.getZ() - this.orgEntity.getZ())) + 360F) % 360F;
+		float yRotTarget = target.yRot - 180;
+		if (yRotTarget < -180) yRotTarget += 360F;
+		float angleBetween = Math.abs(-yRotTarget - attackAngle);
+		LivingCap<?> cap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		return cap != null && (cap instanceof HumanoidCap || cap instanceof PlayerCap) && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
 	}
 
 	@Override
@@ -175,32 +229,28 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator.update();
 	}
 
-	protected final void commonBipedCreatureAnimatorInit(ClientAnimator animatorClient)
+	protected final void commonBipedAnimatorInit(ClientAnimator animatorClient)
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
+		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 	}
 
-	protected final void commonCreatureUpdateMotion()
+	protected final void commonMotionUpdate()
 	{
-		if (this.orgEntity.getHealth() <= 0.0F)
+		if (this.isMounted())
 		{
-			currentMotion = LivingMotion.DEATH;
-		} else if (orgEntity.getVehicle() != null)
-		{
-			currentMotion = LivingMotion.MOUNT;
+			this.currentMotion = LivingMotion.MOUNTED;
 		}
 		else
 		{
-			if (orgEntity.getDeltaMovement().y < -0.55F)
+			if (this.orgEntity.getDeltaMovement().y < -0.55F)
 			{
 				currentMotion = LivingMotion.FALL;
 			}
-			else if (orgEntity.animationSpeed > 0.01F)
+			else if (this.orgEntity.animationSpeed > 0.01F)
 			{
 				if (this.orgEntity.isSprinting())
 					this.currentMotion = LivingMotion.RUNNING;
@@ -283,6 +333,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
 	}
+	
+	public SpellcasterWeaponCap getHeldSpellcasterWeaponCap(Hand hand)
+	{
+		return ModCapabilities.getSpellcasterWeaponCap(this.orgEntity.getItemInHand(hand));
+	}
 
 	public MeleeWeaponCap getHeldWeaponCapability(Hand hand)
 	{
@@ -296,12 +351,17 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public boolean canBlock()
 	{
-		return this.canUseShield;
+		return !this.isMounted();
 	}
+	
+	public void onDeath() {}
 
-	public boolean hurt(DamageSource damageSource, float amount)
+	public boolean onHurt(DamageSource damageSource, float amount)
 	{
-		if (this.getEntityState().isInvincible())
+		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
+		DamageType damageType = extSource.getDamages()[0].getType();
+		
+		if (this.getEntityState().isInvincible() && damageType != DamageType.CRITICAL)
 		{
 			if (damageSource instanceof EntityDamageSource && !damageSource.isExplosion() && !damageSource.isMagic())
 			{
@@ -310,73 +370,49 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
-		DamageType damageType = DamageType.REGULAR;
-		
-		ExtendedDamageSource extSource = null;
-		if(damageSource instanceof ExtendedDamageSource)
-		{
-			extSource = (ExtendedDamageSource)damageSource;
-			damageType = extSource.getDamageType();
-		}
-		else if (indirect)
-		{
-			extSource = ExtendedDamageSource.getIndirectFrom((IndirectEntityDamageSource)damageSource, amount);
-		}
-		else
-		{
-			extSource = ExtendedDamageSource.getFrom(damageSource, amount);
-		}
 		
 		// Damage Calculation
 		if (!indirect)
 		{
-			Attribute defAttribute = damageType.getDefenseAttribute();
-			amount -= this.orgEntity.getAttribute(defAttribute) != null ? this.orgEntity.getAttributeValue(defAttribute) : 0.0F;
-		}
-		if (extSource != null)
-		{
-			extSource.setAmount(amount);
-			if (this.blockingAttack(extSource))
+			for (Damage damage : extSource.getDamages())
 			{
-				this.orgEntity.actuallyHurt(damageSource, extSource.getAmount());
-				return false;
+				Attribute defAttribute = damage.getType().getDefenseAttribute();
+				if (this.orgEntity.getAttribute(defAttribute) != null)
+				{
+					damage.setAmount(Math.max(damage.getAmount() - (float)this.orgEntity.getAttributeValue(defAttribute), damage.getAmount() * 0.5F));
+				}
 			}
 		}
-
-		this.orgEntity.playSound(ModSoundEvents.GENERIC_HIT.get(), 1.0F, 1.0F);
+		if (this.blockingAttack(extSource))
+		{
+			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
+			return false;
+		}
 
 		return true;
 	}
 	
-	public void actuallyHurt(DamageSource damageSource)
+	public void onActuallyHurt(DamageSource damageSource)
 	{
-		boolean headshot = false;
-		float poiseDamage = 0.0F;
-		StunType stunType = StunType.DEFAULT;
+		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, 0);
+		boolean headshot = extSource.isHeadshot();
+		float poiseDamage = extSource.getPoiseDamage();
+		StunType stunType = extSource.getStunType();
 		
-		ExtendedDamageSource extSource = null;
-		if(damageSource instanceof ExtendedDamageSource)
-		{
-			extSource = (ExtendedDamageSource)damageSource;
-			headshot = extSource.isHeadshot();
-			poiseDamage = extSource.getPoiseDamage();
-			stunType = extSource.getStunType();
-		}
+		this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
 		
 		// Stun Animation
 		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
 		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
-		StaticAnimation hitAnimation = this.getHitAnimation(stunType);
+		StaticAnimation hitAnimation = this.getHitAnimation(extSource);
 		
 		if(hitAnimation != null)
 		{
-			float exTime = hitAnimation instanceof HitAnimation ? 0.1F : 0.0F;
-			this.getAnimator().playAnimation(hitAnimation, exTime);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), this.orgEntity);
-			if(this.orgEntity instanceof ServerPlayerEntity)
+			if (stunType.getLevel() == 3)
 			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(hitAnimation, this.orgEntity.getId(), exTime), (ServerPlayerEntity)this.orgEntity);
+				if (this.isMounted()) this.orgEntity.stopRiding();
 			}
+			this.playAnimationSynchronized(hitAnimation, 0.0F);
 		}
 	}
 
@@ -393,15 +429,21 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		if (!this.isBlocking()) return false;
-		if (damageSource == null) return true;
 
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
+		if (attacker == null) return false;
 		
-		damageSource.setAmount(damageSource.getAmount() * (1 - shield.getPhysicalDefense()));
-		this.playSound(shield.getBlockSound(), 0.8F, 1.0F);
+		for (Damage damage : damageSource.getDamages())
+		{
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+		}
+		
+		damageSource.setWasBlocked(true);
+		
+		this.playSound(shield.getBlockSound());
 
-		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !(damageSource instanceof IndirectEntityDamageSource))
+		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !damageSource.isIndirect())
 		{
 			LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (attackerCap == null) return true;
@@ -409,25 +451,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			StaticAnimation deflectAnimation = attackerCap.getDeflectAnimation();
 			if (deflectAnimation == null) return true;
 
-			float stuntime = 0.0F;
-			attackerCap.getAnimator().playAnimation(deflectAnimation, stuntime);
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), attacker);
-			if (attacker instanceof ServerPlayerEntity)
-			{
-				ModNetworkManager.sendToPlayer(new STCPlayAnimation(deflectAnimation, stuntime, attackerCap), (ServerPlayerEntity) attacker);
-			}
+			attackerCap.playAnimationSynchronized(deflectAnimation, 0.0F);
 		}
-
+		
 		return true;
 	}
 
-	public ExtendedDamageSource getDamageSource(int staminaDmgMul, StunType stunType, float amount,
+	public ExtendedDamageSource getDamageSource(Vector3d attackPos, int staminaDmgMul, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
-		float staminaDmg = Math.max(4, weapon.getStaminaDamage()) * staminaDmgMul;
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, stunType, amount, requireddeflectionlevel,
-				damageType, poiseDamage, staminaDmg);
+		float staminaDmg = weapon == null ? 4F : Math.max(4F, weapon.getStaminaDamage()) * staminaDmgMul;
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
 	}
 
 	public float getDamageToEntity(Entity targetEntity, Hand hand)
@@ -467,53 +502,60 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return null;
 	}
+	
+	public abstract DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource);
 
-	public void gatherDamageDealt(ExtendedDamageSource source, float amount)
+	public void gatherDamageDealt(ExtendedDamageSource source, float amount) {}
+
+	public void knockBackEntity(Entity entity, float power)
 	{
+		this.knockBackEntity(entity, power, power, power);
 	}
-
-	public void knockBackEntity(Entity entityIn, float power)
+	
+	public void knockBackEntity(Entity entity, float powerX, float powerY, float powerZ)
 	{
-		power *= 0.1D;
+		double dx = this.orgEntity.getX() - entity.getX();
+		double dz = this.orgEntity.getZ() - entity.getZ();
 
-		double d1 = entityIn.getX() - this.orgEntity.getX();
-		double d0;
+		this.knockback(entity, dx, dz, powerX, powerY, powerZ);
+	}
+	
+	public void knockBackFromEntity(Entity entity, float powerX, float powerY, float powerZ)
+	{
+		double dx = entity.getX() - this.orgEntity.getX();
+		double dz = entity.getZ() - this.orgEntity.getZ();
 
-		for (d0 = entityIn.getZ() - this.orgEntity.getZ(); d1 * d1
-				+ d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D)
+		this.knockback(this.orgEntity, dx, dz, powerX, powerY, powerZ);
+	}
+	
+	private void knockback(Entity entity, double dx, double dz, float powerX, float powerY, float powerZ)
+	{
+		Vector3d vec = entity.getDeltaMovement();
+
+		entity.hasImpulse = true;
+		float f = (float) Math.sqrt(dx * dx + dz * dz);
+
+		double x = vec.x;
+		double y = vec.y;
+		double z = vec.z;
+
+		x /= 2.0D;
+		z /= 2.0D;
+		x -= dx / (double) f * (double) powerX;
+		z -= dz / (double) f * (double) powerZ;
+
+		if (entity.isOnGround())
 		{
-			d1 = (Math.random() - Math.random()) * 0.01D;
-		}
+			y /= 2.0D;
+			y += (double) powerY / 2;
 
-		if (orgEntity.getRandom().nextDouble() >= orgEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
-		{
-			Vector3d vec = orgEntity.getDeltaMovement();
-
-			orgEntity.hasImpulse = true;
-			float f = (float) Math.sqrt(d1 * d1 + d0 * d0);
-
-			double x = vec.x;
-			double y = vec.y;
-			double z = vec.z;
-
-			x /= 2.0D;
-			z /= 2.0D;
-			x -= d1 / (double) f * (double) power;
-			z -= d0 / (double) f * (double) power;
-
-			if (!orgEntity.isOnGround())
+			if (y > 0.4000000059604645D)
 			{
-				y /= 2.0D;
-				y += (double) power;
-
-				if (y > 0.4000000059604645D)
-				{
-					y = 0.4000000059604645D;
-				}
+				y = 0.4000000059604645D;
 			}
-
-			orgEntity.setDeltaMovement(x, y, z);
 		}
+
+		entity.setDeltaMovement(x, y, z);
 	}
 
 	public void rotateTo(float degree, float limit, boolean partialSync)
@@ -556,47 +598,39 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void rotateTo(Entity target, float limit, boolean partialSync)
 	{
-		double d0 = target.getX() - this.orgEntity.getX();
-		double d1 = target.getZ() - this.orgEntity.getZ();
-		float degree = (float) (Math.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
+		double dx = target.getX() - this.orgEntity.getX();
+		double dz = target.getZ() - this.orgEntity.getZ();
+		float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - 90.0F;
 		this.rotateTo(degree, limit, partialSync);
 	}
 	
 	public void playSound(SoundEvent sound)
 	{
-		this.playSound(sound, 1.0F, 1.0F);
+		this.playSound(sound, 1.0F, false);
 	}
 
-	public void playSound(SoundEvent sound, float minPitch, float maxPitch)
+	public void playSound(SoundEvent sound, boolean moves)
 	{
-		this.playSound(sound, minPitch, maxPitch, 1.0F);
+		this.playSound(sound, 1.0F, moves);
 	}
 
-	public void playSound(SoundEvent sound, float minPitch, float maxPitch, float volume)
+	public void playSound(SoundEvent sound, float volume, boolean moves)
 	{
-		if (!this.isClientSide())
+		if (this.isClientSide())
 		{
-			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F);
-		} else
+			if (moves) ModNetworkManager.connection.playEntitySound(this.orgEntity, sound, volume);
+			else ModNetworkManager.connection.playSound(this.orgEntity, sound, volume);
+		}
+		else
 		{
-			this.orgEntity.level.playSound(null, orgEntity.getX(), orgEntity.getY(), orgEntity.getZ(), sound,
-					orgEntity.getSoundSource(), volume, 1.0F);
+			if (moves) this.getLevel().playSound(null, this.orgEntity, sound, this.orgEntity.getSoundSource(), volume, 1.0F);
+			else this.getLevel().playSound(null, this.getX(), this.getY(), this.getZ(), sound, this.orgEntity.getSoundSource(), volume, 1.0F);
 		}
 	}
 
 	public LivingEntity getTarget()
 	{
 		return this.orgEntity.getLastHurtMob();
-	}
-
-	public float getAttackDirectionPitch()
-	{
-		float partialTicks = DarkSouls.isPhysicalClient() ? Minecraft.getInstance().getFrameTime() : 1.0F;
-		float pitch = -this.getOriginalEntity().getViewXRot(partialTicks);
-		float correct = (pitch > 0) ? 0.03333F * (float) Math.pow(pitch, 2) : -0.03333F * (float) Math.pow(pitch, 2);
-
-		return MathUtils.clamp(correct, -30.0F, 30.0F);
 	}
 
 	public PublicMatrix4f getHeadMatrix(float partialTicks)
@@ -655,13 +689,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 				0, prevRotYaw, rotyaw, partialTicks, scaleX, scaleY, scaleZ);
 	}
 
-	public void reserveAnimation(StaticAnimation animation)
-	{
-		this.animator.reserveAnimation(animation);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntity(
-				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
-	}
-
 	public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier)
 	{
 		this.playAnimationSynchronized(animation, convertTimeModifier, STCPlayAnimation::new);
@@ -706,14 +733,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return this.<ServerAnimator>getAnimator();
 	}
 
-	public StaticAnimation getHitAnimation(StunType stunType)
+	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
 		return null;
-	}
-
-	public void onDeath()
-	{
-		this.getAnimator().playDeathAnimation();
 	}
 
 	@Override

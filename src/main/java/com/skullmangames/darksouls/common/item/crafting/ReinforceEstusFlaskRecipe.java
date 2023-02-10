@@ -8,14 +8,14 @@ import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.inventory.Inventory;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 
-public class ReinforceEstusFlaskRecipe implements IRecipe<Inventory>
+public class ReinforceEstusFlaskRecipe implements IRecipe<PlayerInventory>
 {
 	private final ResourceLocation id;
 	
@@ -25,13 +25,13 @@ public class ReinforceEstusFlaskRecipe implements IRecipe<Inventory>
 	}
 	
 	@Override
-	public boolean matches(Inventory inventory, World level)
+	public boolean matches(PlayerInventory inventory, World level)
 	{
 		return inventory.getItem(0).getItem() == ModItems.ESTUS_FLASK.get() && EstusFlaskItem.getTotalUses(inventory.getItem(0)) < 20 && inventory.getItem(1).getItem() == ModItems.ESTUS_SHARD.get();
 	}
 
 	@Override
-	public ItemStack assemble(Inventory inventory)
+	public ItemStack assemble(PlayerInventory inventory)
 	{
 		ItemStack itemstack = inventory.getItem(0).copy();
 		EstusFlaskItem.setTotalUses(itemstack, EstusFlaskItem.getTotalUses(itemstack) + 1);

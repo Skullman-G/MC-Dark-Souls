@@ -25,14 +25,12 @@ public class LinkAnimation extends DynamicAnimation
 		if (!isEnd)
 		{
 			this.nextAnimation.onFinish(entityCap, isEnd);
-		} else
+		}
+		else if (this.startsAt > 0.0F)
 		{
-			if (this.startsAt > 0.0F)
-			{
-				entityCap.getAnimator().getPlayerFor(this).setElapsedTime(this.startsAt);
-				entityCap.getAnimator().getPlayerFor(this).markToDoNotReset();
-				this.startsAt = 0.0F;
-			}
+			entityCap.getAnimator().getPlayerFor(this).setElapsedTime(this.startsAt);
+			entityCap.getAnimator().getPlayerFor(this).markToDoNotReset();
+			this.startsAt = 0.0F;
 		}
 	}
 

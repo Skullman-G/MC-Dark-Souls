@@ -1,12 +1,8 @@
 package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
-
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -24,8 +20,10 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, LocalPlayerCap>
 {
@@ -41,13 +39,14 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Lo
 	}
 	
 	@Override
-	public void render(ClientPlayerEntity entityIn, LocalPlayerCap entityCap, EntityRenderer<ClientPlayerEntity> renderer, IRenderTypeBuffer buffer, MatrixStack matStackIn, int packedLightIn, float partialTicks)
+	public void render(LocalPlayerCap entityCap, EntityRenderer<ClientPlayerEntity> renderer, IRenderTypeBuffer buffer, MatrixStack matStackIn, int packedLightIn, float partialTicks)
 	{
+		ClientPlayerEntity player = entityCap.getOriginalEntity();
 		ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
 		Vector3d projView = camera.getPosition();
-		double x = MathHelper.lerp(partialTicks, entityIn.xOld, entityIn.getX()) - projView.x();
-		double y = MathHelper.lerp(partialTicks, entityIn.yOld, entityIn.getY()) - projView.y();
-		double z = MathHelper.lerp(partialTicks, entityIn.zOld, entityIn.getZ()) - projView.z() - 0.1F;
+		double x = MathHelper.lerp(partialTicks, player.xOld, player.getX()) - projView.x();
+		double y = MathHelper.lerp(partialTicks, player.yOld, player.getY()) - projView.y();
+		double z = MathHelper.lerp(partialTicks, player.zOld, player.getZ()) - projView.z() - 0.1F;
 		ClientModel model = entityCap.getEntityModel(ClientModels.CLIENT);
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
@@ -55,14 +54,14 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Lo
 		PublicMatrix4f[] poses = armature.getJointTransforms();
 		
 		matStackIn.pushPose();
-		Vector4f headPos = new Vector4f(0, entityIn.getEyeHeight(), 0, 1.0F);
+		Vector4f headPos = new Vector4f(0, player.getEyeHeight(), 0, 1.0F);
 		PublicMatrix4f.transform(poses[9], headPos, headPos);
 		float pitch = camera.getXRot();
 		
 		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
 		boolean flag2 = false;
 		
-		for (LayerPart layerPart : LayerPart.compositeLayers())
+		for (LayerPart layerPart : LayerPart.mixLayers())
 		{
 			if (entityCap.getClientAnimator().getCompositeLayer(layerPart).animationPlayer.getPlay() instanceof AimingAnimation)
 			{
@@ -90,9 +89,9 @@ public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, Lo
 		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
 				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses);
 		
-		if(!entityIn.isSpectator())
+		if(!player.isSpectator())
 		{
-			renderLayer(entityCap, entityIn, poses, buffer, matStackIn, packedLightIn, partialTicks);
+			renderLayer(entityCap, poses, buffer, matStackIn, packedLightIn, partialTicks);
 		}
 		
 		matStackIn.popPose();

@@ -7,14 +7,12 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
@@ -27,6 +25,8 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
@@ -35,9 +35,9 @@ public class StrayDemon extends CreatureEntity
 {
 	private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 	
-	public StrayDemon(EntityType<? extends CreatureEntity> p_i48575_1_, World p_i48575_2_)
+	public StrayDemon(EntityType<? extends CreatureEntity> type, World level)
 	{
-		super(p_i48575_1_, p_i48575_2_);
+		super(type, level);
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class StrayDemon extends CreatureEntity
 	}
 	
 	@Override
-	protected int getExperienceReward(PlayerEntity p_70693_1_)
+	protected int getExperienceReward(PlayerEntity player)
 	{
 		return 100;
 	}
@@ -131,7 +131,7 @@ public class StrayDemon extends CreatureEntity
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_)
+	public boolean removeWhenFarAway(double distance)
 	{
 		return false;
 	}

@@ -13,8 +13,8 @@ public class RenderBow extends RenderShootableWeapon
 	{
 		correctionMatrix = new PublicMatrix4f();
 		
-		PublicMatrix4f.rotate((float)Math.toRadians(-90), new Vector3f(1,0,0), correctionMatrix, correctionMatrix);
-		PublicMatrix4f.rotate((float)Math.toRadians(-10), new Vector3f(0,0,1), correctionMatrix, correctionMatrix);
-		PublicMatrix4f.translate(new Vector3f(0.06F,0.1F,0), correctionMatrix, correctionMatrix);
+		correctionMatrix.rotate((float)Math.toRadians(-90), Vector3f.XP);
+		correctionMatrix.rotate((float)Math.toRadians(-10), Vector3f.ZP);
+		correctionMatrix.translate(0.06F, 0.1F, 0);
 	}
 }

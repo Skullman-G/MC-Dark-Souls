@@ -1,17 +1,18 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
+import net.minecraft.client.util.InputMappings;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,10 +23,8 @@ public class FireKeeperScreen extends Screen
 
 	private final int color;
 
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/fire_keeper_main.png");
-	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID,
-			"textures/guis/ds_fire_keeper_main.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/fire_keeper_main.png");
+	public static final ResourceLocation DS_TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/ds_fire_keeper_main.png");
 	private int imageWidth = 129;
 	private int imageHeight = 166;
 	private int buttonWidth = 100;
@@ -35,7 +34,7 @@ public class FireKeeperScreen extends Screen
 	{
 		super(NarratorChatListener.NO_TITLE);
 		this.fireKeeperId = firekeeperid;
-		this.color = DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
+		this.color = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
 	}
 
 	@Override
@@ -95,7 +94,7 @@ public class FireKeeperScreen extends Screen
 
 	private void renderBg(MatrixStack matrixstack, float partialticks, int x, int y)
 	{
-		if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
 			minecraft.getTextureManager().bind(DS_TEXTURE_LOCATION);
 		else
 			minecraft.getTextureManager().bind(TEXTURE_LOCATION);

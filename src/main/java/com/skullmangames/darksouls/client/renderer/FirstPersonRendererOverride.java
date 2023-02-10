@@ -1,21 +1,20 @@
 package com.skullmangames.darksouls.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.math.vector.Vector3f;
-import com.skullmangames.darksouls.common.item.IHaveDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.item.ItemStack;
 
 public class FirstPersonRendererOverride
 {
-	public static void renderArmWithItem(IHaveDarkSoulsUseAction item, float swingProgress, float partialticks,
+	public static void renderArmWithItem(HasDarkSoulsUseAction item, float swingProgress, float partialticks,
 			float equipProgress, Hand hand, ItemStack itemstack, MatrixStack matrixstack,
 			IRenderTypeBuffer rendertypebuffer, int i)
 	{
@@ -29,26 +28,27 @@ public class FirstPersonRendererOverride
 		{
 			switch (item.getDarkSoulsUseAnimation())
 			{
-			case SOUL_CONTAINER:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case MIRACLE:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			case DARKSIGN:
-				applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
-
-			default:
-				applyItemArmTransform(matrixstack, handside, equipProgress);
-				break;
+				case SOUL_CONTAINER:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case MIRACLE:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				case DARKSIGN:
+					applyConsumeTransform(matrixstack, partialticks, handside, itemstack);
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
+	
+				default:
+					applyItemArmTransform(matrixstack, handside, equipProgress);
+					break;
 			}
-		} else
+		}
+		else
 		{
 			double f5 = -0.4F * Math.sin(Math.sqrt(swingProgress) * (float) Math.PI);
 			double f6 = 0.2F * Math.sin(Math.sqrt(swingProgress) * ((float) Math.PI * 2F));
@@ -59,9 +59,12 @@ public class FirstPersonRendererOverride
 			applyItemArmAttackTransform(matrixstack, handside, swingProgress);
 		}
 
-		minecraft.itemInHandRenderer.renderItem(player, itemstack, flag3 ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, matrixstack, rendertypebuffer, i);
-        
-        matrixstack.popPose();
+		minecraft.getItemInHandRenderer().renderItem(player, itemstack,
+				flag3 ? TransformType.FIRST_PERSON_RIGHT_HAND
+						: TransformType.FIRST_PERSON_LEFT_HAND,
+				!flag3, matrixstack, rendertypebuffer, i);
+
+		matrixstack.popPose();
 	}
 
 	private static void applyItemArmAttackTransform(MatrixStack matrixstack, HandSide handside, float swingProgress)

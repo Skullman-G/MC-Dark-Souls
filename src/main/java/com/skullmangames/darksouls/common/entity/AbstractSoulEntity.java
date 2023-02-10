@@ -6,8 +6,6 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -15,6 +13,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.vector.Vector3d;
 
 public abstract class AbstractSoulEntity extends Entity implements IEntityAdditionalSpawnData
 {
@@ -89,7 +89,7 @@ public abstract class AbstractSoulEntity extends Entity implements IEntityAdditi
 	protected abstract void realPlayerTouch(PlayerCap<?> playerCap);
 	
 	protected abstract void makeParticles();
-	
+
 	@Override
 	protected boolean isMovementNoisy()
 	{

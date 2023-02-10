@@ -8,8 +8,8 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSPlayAnimation
@@ -59,11 +59,11 @@ public class CTSPlayAnimation
 		ctx.get().enqueueWork(() ->
 		{
 			ServerPlayerEntity serverPlayer = ctx.get().getSender();
-			ServerPlayerCap playerpatch = (ServerPlayerCap) serverPlayer
+			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer
 					.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (!msg.isClientSideAnimation)
 			{
-				playerpatch.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
+				playerCap.getAnimator().playAnimation(msg.animationId, msg.modifyTime);
 			}
 
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(

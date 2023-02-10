@@ -1,10 +1,67 @@
 {
+	"entity.generic.kick":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/kick"
+		]
+	},
+	
+	"entity.generic.land":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/land"
+		]
+	},
+	
+	"entity.lightning_spear.appear":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/appear"
+		]
+	},
+	
+	"entity.lightning_spear.shot":
+	{
+		"category": "entity",
+		"subtitle": "entity.lightning_spear.shot.sub",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/shot"
+		]
+	},
+	
+	"entity.lightning_spear.impact":
+	{
+		"category": "entity",
+		"subtitle": "entity.lightning_spear.impact.sub",
+		"sounds":
+		[
+			"darksouls:entities/lightning_spear/impact"
+		]
+	},
+	
 	"entity.generic.roll":
 	{
 		"category": "entity",
 		"sounds":
 		[
 			"darksouls:entities/generic/roll"
+		]
+	},
+	
+	"block.bonfire.teleport":
+	{
+		"category": "block",
+		"subtitle": "block.bonfire.teleport.sub",
+		"sounds":
+		[
+			"darksouls:blocks/bonfire/teleport"
 		]
 	},
 	
@@ -28,13 +85,33 @@
 		]
 	},
 	
-	"item.darksign.use":
+	"item.miracle.use":
 	{
 		"category": "item",
-		"subtitle": "item.darksign.use.sub",
+		"subtitle": "item.miracle.use.sub",
 		"sounds":
 		[
-			"darksouls:items/darksign/use"
+			"darksouls:items/miracle/use"
+		]
+	},
+	
+	"item.miracle.use_pre":
+	{
+		"category": "item",
+		"subtitle": "item.miracle.use.sub",
+		"sounds":
+		[
+			"darksouls:items/miracle/use_pre"
+		]
+	},
+	
+	"item.miracle.force":
+	{
+		"category": "item",
+		"subtitle": "item.miracle.force.sub",
+		"sounds":
+		[
+			"darksouls:items/miracle/force"
 		]
 	},
 	
@@ -284,17 +361,6 @@
 		"sounds":
 		[
 			"darksouls:items/ultra_greatsword/smash"
-		]
-	},
-	
-	"entity.generic.hit":
-	{
-		"category": "entity",
-		"sounds":
-		[
-			"darksouls:entities/generic/hit_1",
-			"darksouls:entities/generic/hit_2",
-			"darksouls:entities/generic/hit_3"
 		]
 	}
 }

@@ -5,8 +5,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.MathHelper;
 
 public class TextButton extends Button
 {
@@ -30,7 +30,7 @@ public class TextButton extends Button
 		drawCenteredString(poseStack, font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2,
 				color | MathHelper.ceil(this.alpha * 255.0F) << 24);
 
-		if (this.isHovered())
+		if (this.isHovered() || this.isFocused())
 		{
 			this.renderToolTip(poseStack, p_93747_, p_93748_);
 		}

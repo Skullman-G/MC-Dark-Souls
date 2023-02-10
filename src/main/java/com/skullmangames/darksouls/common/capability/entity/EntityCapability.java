@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
 public abstract class EntityCapability<T extends Entity>
 {
@@ -14,9 +15,7 @@ public abstract class EntityCapability<T extends Entity>
 
 	protected abstract void updateOnServer();
 
-	public void postInit()
-	{
-	}
+	public void postInit() {}
 
 	public void onEntityConstructed(T entityIn)
 	{
@@ -29,13 +28,41 @@ public abstract class EntityCapability<T extends Entity>
 	{
 		return orgEntity;
 	}
+	
+	public World getLevel()
+	{
+		return this.orgEntity.level;
+	}
+	
+	public double getX()
+	{
+		return this.orgEntity.getX();
+	}
+	
+	public double getY()
+	{
+		return this.orgEntity.getY();
+	}
+	
+	public double getZ()
+	{
+		return this.orgEntity.getZ();
+	}
+	
+	public float getXRot()
+	{
+		return this.orgEntity.xRot;
+	}
+	
+	public float getYRot()
+	{
+		return this.orgEntity.yRot;
+	}
 
 	public boolean isClientSide()
 	{
-		return orgEntity.level.isClientSide;
+		return this.orgEntity.level.isClientSide;
 	}
-
-	public void onDeath() {}
 	
 	public PublicMatrix4f getMatrix(float partialTicks)
 	{

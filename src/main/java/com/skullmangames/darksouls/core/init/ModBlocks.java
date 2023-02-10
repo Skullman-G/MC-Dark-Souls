@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
+import com.skullmangames.darksouls.common.block.LightSource;
+import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -19,6 +21,10 @@ public class ModBlocks
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DarkSouls.MOD_ID);
 	
 	public static final RegistryObject<Block> BONFIRE = BLOCKS.register("bonfire", () -> new BonfireBlock());
+	
+	public static final RegistryObject<Block> SUNLIGHT_ALTAR = BLOCKS.register("sunlight_altar", () -> new SunlightAltarBlock());
+	
+	public static final RegistryObject<Block> LIGHT_SOURCE = BLOCKS.register("light_source", () -> new LightSource());
 	
 	public static final RegistryObject<Block> BIG_ACACIA_DOOR = BLOCKS.register("big_acacia_door", () -> new BigDoorBlock(AbstractBlock.Properties
 			.of(Material.WOOD, Blocks.ACACIA_PLANKS.defaultMaterialColor())

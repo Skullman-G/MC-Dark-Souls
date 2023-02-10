@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -15,6 +14,7 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 
 public class TargetTraceJumpAnimation extends AttackAnimation
 {

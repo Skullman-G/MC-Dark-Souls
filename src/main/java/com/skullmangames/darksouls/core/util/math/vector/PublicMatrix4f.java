@@ -4,12 +4,11 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class PublicMatrix4f
 {
@@ -119,11 +118,6 @@ public class PublicMatrix4f
 		return PublicMatrix4f.load(this, buf);
 	}
 
-	public static PublicMatrix4f createTranslation(float x, float y, float z)
-	{
-		return new PublicMatrix4f().translate(new Vector3f(x, y, z));
-	}
-
 	public PublicMatrix4f transpose()
 	{
 		return transpose(this);
@@ -214,61 +208,29 @@ public class PublicMatrix4f
 
 	public PublicMatrix4f scale(Vector3f vec)
 	{
-		return scale(vec, this);
-	}
-
-	public PublicMatrix4f scale(Vector3f vec, PublicMatrix4f dest)
-	{
-		return scale(vec, this, dest);
-	}
-
-	public static PublicMatrix4f scale(Vector3f vec, PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		return scale(vec.x(), vec.y(), vec.z(), src, dest);
+		return this.scale(vec.x(), vec.y(), vec.z());
 	}
 
 	public PublicMatrix4f scale(float x, float y, float z)
 	{
-		return scale(x, y, z, this, this);
-	}
-
-	public static PublicMatrix4f scale(float x, float y, float z, PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		if (dest == null)
-			dest = new PublicMatrix4f();
-
-		dest.m00 = src.m00 * x;
-		dest.m01 = src.m01 * x;
-		dest.m02 = src.m02 * x;
-		dest.m03 = src.m03 * x;
-		dest.m10 = src.m10 * y;
-		dest.m11 = src.m11 * y;
-		dest.m12 = src.m12 * y;
-		dest.m13 = src.m13 * y;
-		dest.m20 = src.m20 * y;
-		dest.m21 = src.m21 * y;
-		dest.m22 = src.m22 * y;
-		dest.m23 = src.m23 * y;
-		return dest;
+		this.m00 = this.m00 * x;
+		this.m01 = this.m01 * x;
+		this.m02 = this.m02 * x;
+		this.m03 = this.m03 * x;
+		this.m10 = this.m10 * y;
+		this.m11 = this.m11 * y;
+		this.m12 = this.m12 * y;
+		this.m13 = this.m13 * y;
+		this.m20 = this.m20 * y;
+		this.m21 = this.m21 * y;
+		this.m22 = this.m22 * y;
+		this.m23 = this.m23 * y;
+		
+		return this;
 	}
 
 	public PublicMatrix4f rotate(float angle, Vector3f axis)
 	{
-		return this.rotate(angle, axis, this);
-	}
-
-	public PublicMatrix4f rotate(float angle, Vector3f axis, PublicMatrix4f dest)
-	{
-		return rotate(angle, axis, this, dest);
-	}
-
-	public static PublicMatrix4f rotate(float angle, Vector3f axis, PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		if (dest == null)
-		{
-			dest = new PublicMatrix4f();
-		}
-
 		float c = (float) Math.cos(angle);
 		float s = (float) Math.sin(angle);
 		float oneminusc = 1.0f - c;
@@ -291,27 +253,28 @@ public class PublicMatrix4f
 		float f21 = yz * oneminusc - xs;
 		float f22 = axis.z() * axis.z() * oneminusc + c;
 
-		float t00 = src.m00 * f00 + src.m10 * f01 + src.m20 * f02;
-		float t01 = src.m01 * f00 + src.m11 * f01 + src.m21 * f02;
-		float t02 = src.m02 * f00 + src.m12 * f01 + src.m22 * f02;
-		float t03 = src.m03 * f00 + src.m13 * f01 + src.m23 * f02;
-		float t10 = src.m00 * f10 + src.m10 * f11 + src.m20 * f12;
-		float t11 = src.m01 * f10 + src.m11 * f11 + src.m21 * f12;
-		float t12 = src.m02 * f10 + src.m12 * f11 + src.m22 * f12;
-		float t13 = src.m03 * f10 + src.m13 * f11 + src.m23 * f12;
-		dest.m20 = src.m00 * f20 + src.m10 * f21 + src.m20 * f22;
-		dest.m21 = src.m01 * f20 + src.m11 * f21 + src.m21 * f22;
-		dest.m22 = src.m02 * f20 + src.m12 * f21 + src.m22 * f22;
-		dest.m23 = src.m03 * f20 + src.m13 * f21 + src.m23 * f22;
-		dest.m00 = t00;
-		dest.m01 = t01;
-		dest.m02 = t02;
-		dest.m03 = t03;
-		dest.m10 = t10;
-		dest.m11 = t11;
-		dest.m12 = t12;
-		dest.m13 = t13;
-		return dest;
+		float t00 = this.m00 * f00 + this.m10 * f01 + this.m20 * f02;
+		float t01 = this.m01 * f00 + this.m11 * f01 + this.m21 * f02;
+		float t02 = this.m02 * f00 + this.m12 * f01 + this.m22 * f02;
+		float t03 = this.m03 * f00 + this.m13 * f01 + this.m23 * f02;
+		float t10 = this.m00 * f10 + this.m10 * f11 + this.m20 * f12;
+		float t11 = this.m01 * f10 + this.m11 * f11 + this.m21 * f12;
+		float t12 = this.m02 * f10 + this.m12 * f11 + this.m22 * f12;
+		float t13 = this.m03 * f10 + this.m13 * f11 + this.m23 * f12;
+		this.m20 = this.m00 * f20 + this.m10 * f21 + this.m20 * f22;
+		this.m21 = this.m01 * f20 + this.m11 * f21 + this.m21 * f22;
+		this.m22 = this.m02 * f20 + this.m12 * f21 + this.m22 * f22;
+		this.m23 = this.m03 * f20 + this.m13 * f21 + this.m23 * f22;
+		this.m00 = t00;
+		this.m01 = t01;
+		this.m02 = t02;
+		this.m03 = t03;
+		this.m10 = t10;
+		this.m11 = t11;
+		this.m12 = t12;
+		this.m13 = t13;
+		
+		return this;
 	}
 	
 	public PublicMatrix4f mulFront(PublicMatrix4f left)
@@ -471,25 +434,17 @@ public class PublicMatrix4f
 
 	public PublicMatrix4f translate(Vector3f vec)
 	{
-		return this.translate(vec, this);
+		return this.translate(vec.x(), vec.y(), vec.z());
 	}
-
-	public PublicMatrix4f translate(Vector3f vec, PublicMatrix4f dest)
+	
+	public PublicMatrix4f translate(float x, float y, float z)
 	{
-		return translate(vec, this, dest);
-	}
+		this.m30 += this.m00 * x + this.m10 * y + this.m20 * z;
+		this.m31 += this.m01 * x + this.m11 * y + this.m21 * z;
+		this.m32 += this.m02 * x + this.m12 * y + this.m22 * z;
+		this.m33 += this.m03 * x + this.m13 * y + this.m23 * z;
 
-	public static PublicMatrix4f translate(Vector3f vec, PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		if (dest == null)
-			dest = new PublicMatrix4f();
-
-		dest.m30 += src.m00 * vec.x() + src.m10 * vec.y() + src.m20 * vec.z();
-		dest.m31 += src.m01 * vec.x() + src.m11 * vec.y() + src.m21 * vec.z();
-		dest.m32 += src.m02 * vec.x() + src.m12 * vec.y() + src.m22 * vec.z();
-		dest.m33 += src.m03 * vec.x() + src.m13 * vec.y() + src.m23 * vec.z();
-
-		return dest;
+		return this;
 	}
 
 	public static PublicMatrix4f getModelMatrixIntegrated(float prevPosX, float posX, float prevPosY, float posY,
@@ -500,12 +455,12 @@ public class PublicMatrix4f
 		Vector3f entityPosition = new Vector3f(-(prevPosX + (posX - prevPosX) * partialTick),
 				((prevPosY + (posY - prevPosY) * partialTick)), -(prevPosZ + (posZ - prevPosZ) * partialTick));
 
-		PublicMatrix4f.translate(entityPosition, modelMatrix, modelMatrix);
+		modelMatrix.translate(entityPosition);
 		float pitchDegree = interpolateRotation(prevPitch, pitch, partialTick);
 		float yawDegree = interpolateRotation(prevYaw, yaw, partialTick);
-		PublicMatrix4f.rotate((float) -Math.toRadians(yawDegree), new Vector3f(0, 1, 0), modelMatrix, modelMatrix);
-		PublicMatrix4f.rotate((float) -Math.toRadians(pitchDegree), new Vector3f(1, 0, 0), modelMatrix, modelMatrix);
-		PublicMatrix4f.scale(scaleX, scaleY, scaleZ, modelMatrix, modelMatrix);
+		modelMatrix.rotate((float) -Math.toRadians(yawDegree), Vector3f.YP);
+		modelMatrix.rotate((float) -Math.toRadians(pitchDegree), Vector3f.XP);
+		modelMatrix.scale(scaleX, scaleY, scaleZ);
 
 		return modelMatrix;
 	}
@@ -545,7 +500,7 @@ public class PublicMatrix4f
 
 	public static PublicMatrix4f createRotatorDeg(float angle, Vector3f axis)
 	{
-		return rotate((float) Math.toRadians(angle), axis, new PublicMatrix4f(), null);
+		return new PublicMatrix4f().rotate((float)Math.toRadians(angle), axis);
 	}
 
 	public static Vector3f transform3v(PublicMatrix4f matrix, Vector3f src, Vector3f dest)

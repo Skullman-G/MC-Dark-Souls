@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.Random;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -11,7 +10,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
@@ -24,6 +22,7 @@ import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,7 +39,7 @@ public class Hollow extends ArmoredMob implements IRangedAttackMob
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D)
+				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
@@ -98,17 +97,29 @@ public class Hollow extends ArmoredMob implements IRangedAttackMob
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
 	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
+	}
 
 	@Override
-	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_)
+	public void performRangedAttack(LivingEntity target, float p_82196_2_)
 	{
 		ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileHelper.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
 	    AbstractArrowEntity abstractarrowentity = this.getArrow(itemstack, p_82196_2_);
 	    if (this.getMainHandItem().getItem() instanceof BowItem)
 	       abstractarrowentity = ((BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
-	    double d0 = p_82196_1_.getX() - this.getX();
-	    double d1 = p_82196_1_.getY(0.3333333333333333D) - abstractarrowentity.getY();
-	    double d2 = p_82196_1_.getZ() - this.getZ();
+	    double d0 = target.getX() - this.getX();
+	    double d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
+	    double d2 = target.getZ() - this.getZ();
 	    double d3 = (double)Math.sqrt(d0 * d0 + d2 * d2);
 	    abstractarrowentity.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
 	    this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));

@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.WalkAroundBonfireGoal;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
-import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenFireKeeperScreen;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;

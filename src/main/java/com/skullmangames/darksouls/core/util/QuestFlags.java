@@ -17,11 +17,11 @@ public class QuestFlags
 		public void write(PacketBuffer buf, QuestFlags questFlags)
 		{
 			buf.writeInt(questFlags.map.size());
-			for (Map.Entry<UUID, Byte> entry : questFlags.map.entrySet())
+			questFlags.map.forEach((uuid, flags) ->
 			{
-				buf.writeUUID(entry.getKey());
-				buf.writeByte(entry.getValue());
-			}
+				buf.writeUUID(uuid);
+				buf.writeByte(flags);
+			});
 		}
 
 		public QuestFlags read(PacketBuffer buf)

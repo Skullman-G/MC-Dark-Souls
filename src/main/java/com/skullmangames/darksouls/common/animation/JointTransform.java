@@ -1,9 +1,10 @@
 package com.skullmangames.darksouls.common.animation;
 
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+
+import net.minecraft.util.math.MathHelper;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 

@@ -3,10 +3,10 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.item.crafting.ReinforceEstusFlaskRecipe;
 
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class ModRecipes
 {

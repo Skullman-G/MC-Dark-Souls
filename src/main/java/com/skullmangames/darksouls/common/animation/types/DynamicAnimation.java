@@ -92,7 +92,7 @@ public class DynamicAnimation
 
 		float totalTime = convertTimeModifier >= 0.0F ? convertTimeModifier + this.convertTime : this.convertTime;
 		boolean isNeg = convertTimeModifier < 0.0F;
-		float nextStart = isNeg ? -convertTimeModifier : 0.0F;
+		float nextStart = isNeg ? -convertTimeModifier : 0.05F;
 
 		if (isNeg) dest.startsAt = nextStart;
 
@@ -204,11 +204,6 @@ public class DynamicAnimation
 	}
 
 	public boolean isReboundAnimation()
-	{
-		return false;
-	}
-
-	public boolean isMetaAnimation()
 	{
 		return false;
 	}

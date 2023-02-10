@@ -1,21 +1,15 @@
 package com.skullmangames.darksouls.common.entity;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ICrossbowUser;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
@@ -23,6 +17,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,16 +34,9 @@ public class HollowLordranSoldier extends ArmoredMob implements ICrossbowUser
 	public static AttributeModifierMap.MutableAttribute createAttributes()
 	{
 		return MobEntity.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 17.5D)
+				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.24D);
-	}
-
-	public static boolean checkSpawnRules(EntityType<Hollow> entitytype, IServerWorld level,
-			SpawnReason spawntype, BlockPos pos, Random random)
-	{
-		return level.getDifficulty() != Difficulty.PEACEFUL
-				&& checkMobSpawnRules(entitytype, level, spawntype, pos, random);
 	}
 
 	@Override
@@ -125,11 +113,11 @@ public class HollowLordranSoldier extends ArmoredMob implements ICrossbowUser
 	}
 
 	@Override
-	public ItemStack getProjectile(ItemStack crossbow)
+	public ItemStack getProjectile(ItemStack p_33038_)
 	{
-		if (crossbow.getItem() instanceof ShootableItem)
+		if (p_33038_.getItem() instanceof ShootableItem)
 		{
-			Predicate<ItemStack> predicate = ((ShootableItem) crossbow.getItem()).getSupportedHeldProjectiles();
+			Predicate<ItemStack> predicate = ((ShootableItem) p_33038_.getItem()).getSupportedHeldProjectiles();
 			ItemStack itemstack = ShootableItem.getHeldProjectile(this, predicate);
 			return itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack;
 		} else
@@ -148,5 +136,17 @@ public class HollowLordranSoldier extends ArmoredMob implements ICrossbowUser
 	protected SoundEvent getDeathSound()
 	{
 		return ModSoundEvents.HOLLOW_DEATH.get();
+	}
+	
+	@Override
+	protected float getSoundVolume()
+	{
+		return 0.5F;
+	}
+	
+	@Override
+	public int getAmbientSoundInterval()
+	{
+		return 1000;
 	}
 }

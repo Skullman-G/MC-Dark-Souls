@@ -13,9 +13,9 @@ import net.minecraft.item.Item;
 
 public class DaggerCap extends MeleeWeaponCap
 {
-	public DaggerCap(Item item, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public DaggerCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.DAGGER, requiredStrength, requiredDex, strengthScaling, dexScaling, 5F);
+		super(item, WeaponCategory.DAGGER, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 5F);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
@@ -11,6 +12,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -21,7 +23,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
-		return modelDB.ENTITY_ASYLUM_DEMON;
+		return modelDB.ENTITY_STRAY_DEMON;
 	}
 
 	@Override
@@ -29,7 +31,6 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.STRAY_DEMON_DEATH);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -60,9 +61,14 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public void updateMotion()
 	{
-		if(this.orgEntity.getHealth() <= 0.0F) this.currentMotion = LivingMotion.DEATH;
-		else if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
+		if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
 		else this.currentMotion = LivingMotion.IDLE;
+	}
+	
+	@Override
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
+	{
+		return Animations.STRAY_DEMON_DEATH;
 	}
 	
 	@Override

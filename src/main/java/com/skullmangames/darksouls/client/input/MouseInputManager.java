@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.NativeUtil;
+import net.minecraft.entity.LivingEntity;
 
 public class MouseInputManager extends MouseHelper
 {
@@ -54,7 +55,12 @@ public class MouseInputManager extends MouseHelper
 	        this.minecraft.getTutorial().onMouse(d2, d3);
 	        if (this.minecraft.player != null)
 	        {
-	        	if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
+	        	LivingEntity target = ClientManager.INSTANCE.getPlayerCap().getTarget();
+	        	if (target != null)
+	        	{
+	        		this.camera.rotatePivotTo(target, 60.0F);
+	        	}
+	        	else if (this.minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}
@@ -64,7 +70,7 @@ public class MouseInputManager extends MouseHelper
 	        		this.minecraft.player.yBodyRot = (float)((double)this.minecraft.player.yRot + d1);
 	        		this.minecraft.player.yBodyRotO = (float)((double)this.minecraft.player.yRotO + d1);
 	        	}
-	        	else this.camera.setPivotRot((float)d2, (float)d3 * i);
+	        	else this.camera.addPivotRot((float)d2, (float)d3 * i);
 	        }
 
 	     }

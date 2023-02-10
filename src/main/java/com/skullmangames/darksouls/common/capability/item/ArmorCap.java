@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
-
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -12,16 +11,16 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.init.ClientModels;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -34,6 +33,8 @@ public class ArmorCap extends AttributeItemCap
 	protected final float strikeDef;
 	protected final float slashDef;
 	protected final float thrustDef;
+	protected final float fireDef;
+	protected final float lightningDef;
 	
 	protected float poise;
 	protected float weight;
@@ -49,6 +50,8 @@ public class ArmorCap extends AttributeItemCap
 		this.slashDef = this.standardDef;
 		this.strikeDef = this.standardDef * 1.1F;
 		this.thrustDef = this.standardDef * 0.9F;
+		this.fireDef = this.standardDef * 0.5F;
+		this.lightningDef = this.standardDef * 0.5F;
 	}
 	
 	@Override
@@ -88,6 +91,12 @@ public class ArmorCap extends AttributeItemCap
 			itemTooltip.add(new TranslationTextComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
 					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
 			
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.FIRE_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.fireDef, 100))));
+			
+			itemTooltip.add(new TranslationTextComponent(ModAttributes.LIGHTNING_DEFENSE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
+					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 100))));
+			
 			itemTooltip.add(new StringTextComponent(""));
 			itemTooltip.add(new TranslationTextComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(TextFormatting.BLUE)
 					.append(new StringTextComponent(TextFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
@@ -110,6 +119,9 @@ public class ArmorCap extends AttributeItemCap
 			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.strikeDef));
 			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.slashDef));
 			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.thrustDef));
+			
+			map.put(ModAttributes.FIRE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.fireDef));
+			map.put(ModAttributes.LIGHTNING_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.lightningDef));
 		}
 		
         return map;
@@ -146,6 +158,12 @@ public class ArmorCap extends AttributeItemCap
 				case ONE_SHOE:
 					return models.ITEM_ONE_SHOE;
 					
+				case FALCONER_HELM:
+					return models.ITEM_FALCONER_HELM;
+					
+				case FALCONER_ARMOR:
+					return models.ITEM_FALCONER_ARMOR;
+					
 				default:
 					return null;
 		}
@@ -155,7 +173,8 @@ public class ArmorCap extends AttributeItemCap
 	{
 		HELMET(EquipmentSlotType.HEAD), CHESTPLATE(EquipmentSlotType.CHEST),
 		LEGGINS(EquipmentSlotType.LEGS), SKIRT(EquipmentSlotType.LEGS),
-		BOOTS(EquipmentSlotType.FEET), ONE_SHOE(EquipmentSlotType.FEET);
+		BOOTS(EquipmentSlotType.FEET), ONE_SHOE(EquipmentSlotType.FEET),
+		FALCONER_HELM(EquipmentSlotType.HEAD), FALCONER_ARMOR(EquipmentSlotType.CHEST);
 		
 		private final EquipmentSlotType slot;
 		

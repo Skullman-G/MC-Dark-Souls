@@ -32,15 +32,13 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_SOLDIER_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_SOLDIER_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNT, Animations.BIPED_MOUNT);
-		animatorClient.addLivingAnimation(LivingMotion.DEATH, Animations.BIPED_DEATH);
+		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_CROSSBOW_AIM);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
@@ -48,7 +46,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		
 		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof ICrossbowUser)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal(this));
+			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal<HollowLordranSoldier, HollowLordranSoldierCap>(this));
 		}
 		else
 		{
@@ -76,6 +74,6 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	@Override
 	public void updateMotion()
 	{
-		super.commonCreatureUpdateMotion();
+		super.commonMotionUpdate();
 	}
 }

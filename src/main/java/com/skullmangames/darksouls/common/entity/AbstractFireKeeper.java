@@ -1,7 +1,11 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.inventory.container.ReinforceEstusFlaskContainer;
+import com.skullmangames.darksouls.common.inventory.ReinforceEstusFlaskMenu;
+
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -9,9 +13,6 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 
 public abstract class AbstractFireKeeper extends QuestEntity
 {
@@ -77,25 +78,33 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		super.tick();
 		
-		if (!this.hasLinkedBonfire)
+		if (!this.level.isClientSide)
 		{
-			for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
+			if (!this.hasLinkedBonfire)
 			{
-				TileEntity tileentity = this.level.getBlockEntity(pos);
-				BonfireBlockEntity t = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
-				if (t != null && !t.hasFireKeeper() && t.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+				for (BlockPos pos : this.level.getChunk(this.blockPosition()).getBlockEntitiesPos())
 				{
-					this.linkBonfire(t.getBlockPos());
-					break;
+					TileEntity t = this.level.getBlockEntity(pos);
+					if (t instanceof BonfireBlockEntity)
+					{
+						BonfireBlockEntity b = (BonfireBlockEntity)t;
+						if (b != null
+								&& !b.hasFireKeeper()
+								&& b.getBlockPos().distSqr(this.blockPosition()) <= 1000)
+						{
+							this.linkBonfire(b.getBlockPos());
+							break;
+						}
+					}
 				}
 			}
-		}
-		
-		if (!this.level.isClientSide() && !this.isDeadOrDying())
-		{
-			if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+			
+			if (!this.isDeadOrDying())
 			{
-				this.hurt(DamageSource.STARVE, this.getHealth());
+				if (this.hasLinkedBonfire && this.getLinkedBonfire() == null)
+				{
+					this.hurt(DamageSource.STARVE, this.getHealth());
+				}
 			}
 		}
 	}
@@ -117,7 +126,7 @@ public abstract class AbstractFireKeeper extends QuestEntity
 	{
 		SimpleNamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, p_235576_4_) ->
 		{
-			return new ReinforceEstusFlaskContainer(id, inventory, IWorldPosCallable.create(this.level, this.blockPosition()));
+			return new ReinforceEstusFlaskMenu(id, inventory, IWorldPosCallable.create(this.level, this.blockPosition()));
 		}, new TranslationTextComponent("container.reinforce_estus_flask.title"));
 		serverplayer.openMenu(container);
 	}

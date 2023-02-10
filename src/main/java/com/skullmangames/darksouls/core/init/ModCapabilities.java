@@ -4,31 +4,27 @@ import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
 
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class ModCapabilities
 {
-	@SuppressWarnings("rawtypes")
-	@CapabilityInject(EntityCapability.class)
-	public static final Capability<EntityCapability> CAPABILITY_ENTITY = null;
+	public static final Capability<EntityCapability<?>> CAPABILITY_ENTITY = null;
 	
-	@CapabilityInject(ItemCapability.class)
     public static final Capability<ItemCapability> CAPABILITY_ITEM = null;
 	
-	@SuppressWarnings("rawtypes")
-	@CapabilityInject(CapabilityProjectile.class)
-    public static final Capability<CapabilityProjectile> CAPABILITY_PROJECTILE = null;
-	
-	@SuppressWarnings("rawtypes")
+    public static final Capability<CapabilityProjectile<ProjectileEntity>> CAPABILITY_PROJECTILE = null;
+    
+    @SuppressWarnings("rawtypes")
 	public static void registerCapabilities()
 	{
 		CapabilityManager.INSTANCE.register(ItemCapability.class, new IStorage<ItemCapability>()
@@ -77,7 +73,13 @@ public class ModCapabilities
 	
 	public static ItemCapability getItemCapability(ItemStack stack)
 	{
-		return stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+		return stack.isEmpty() ? null : stack.getCapability(CAPABILITY_ITEM, null).orElse(null);
+	}
+	
+	public static SpellcasterWeaponCap getSpellcasterWeaponCap(ItemStack stack)
+	{
+		ItemCapability cap = getItemCapability(stack);
+		return cap instanceof SpellcasterWeaponCap ? (SpellcasterWeaponCap)cap : null;
 	}
 	
 	public static WeaponCap getWeaponCap(ItemStack stack)

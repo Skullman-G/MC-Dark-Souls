@@ -37,6 +37,7 @@ import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
@@ -44,7 +45,6 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ConfigManager;
-import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
@@ -77,7 +77,6 @@ public class DarkSouls
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MOD_ID = "darksouls";
 	public static final String CONFIG_FILE_PATH = DarkSouls.MOD_ID + ".toml";
-	public static IngameConfig CLIENT_INGAME_CONFIG;
 	public static final ItemGroup TAB = new ItemGroup("darksouls")
 	{
 		@Override
@@ -164,6 +163,7 @@ public class DarkSouls
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
 		ModCapabilities.registerCapabilities();
+		
 		ModRecipeTypes.call();
 
 		ModNetworkManager.registerPackets();
@@ -176,12 +176,12 @@ public class DarkSouls
 
 		ModEntities.registerEntitySpawnPlacement();
 		ModCriteriaTriggers.register();
-	    
-	    event.enqueueWork(() ->
-    	{
-    		  ModStructures.setupStructures();
-    	    ModConfiguredStructures.registerConfiguredStructures();
-    	});
+		
+		event.enqueueWork(() ->
+		{
+			ModStructures.setupStructures();
+			ModConfiguredStructures.registerConfiguredStructures();
+		});
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event)
@@ -213,30 +213,22 @@ public class DarkSouls
 		RenderTypeLookup.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new); // Should find a better
-																							// solution
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new); // Should find
-																											// a better
-																											// solution
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new); // Should find a
-																										// better
-																										// solution
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.STRAY_DEMON.get(), VanillaHumanoidRenderer::new); // Should find a better
-																							// solution
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.CRESTFALLEN_WARRIOR.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.FALCONER.get(), VanillaHumanoidRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.STRAY_DEMON.get(), VanillaHumanoidRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.SOUL.get(), SoulRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.HUMANITY.get(), HumanityRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.GREAT_LIGHTNING_SPEAR.get(), LightningSpearRenderer::greatLightningSpear);
 
 		ModItems.registerDescriptionItems();
 
-		CLIENT_INGAME_CONFIG = ConfigManager.INGAME_CONFIG;
-
-		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(CLIENT_INGAME_CONFIG.darkSoulsUI.getValue());
+		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue());
 		
 		this.animatorProvider = ClientAnimator::getAnimator;
 	}

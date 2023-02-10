@@ -3,11 +3,11 @@ package com.skullmangames.darksouls.common.entity;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCNPCChat;
-import com.skullmangames.darksouls.network.server.STCOpenFireKeeperScreen;
+import com.skullmangames.darksouls.network.server.gui.STCOpenFireKeeperScreen;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;

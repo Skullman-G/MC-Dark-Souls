@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "darksouls:estus_flask"
+        }
+    },
+    "result": {
+        "item": "darksouls:ashen_estus_flask",
+        "count": 1
+    }
+}

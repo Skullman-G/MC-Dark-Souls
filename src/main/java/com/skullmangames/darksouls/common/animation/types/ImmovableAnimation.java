@@ -6,6 +6,11 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
+
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
+import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ImmovableAnimation extends StaticAnimation
@@ -23,8 +28,17 @@ public class ImmovableAnimation extends StaticAnimation
 		if (entityCap.isClientSide())
 		{
 			entityCap.getClientAnimator().startInaction();
-			entityCap.getClientAnimator().resetCompositeMotion();
-			for (LayerPart part : LayerPart.compositeLayers()) entityCap.getClientAnimator().baseLayer.disableLayer(part);
+			boolean allowAddons = this.getProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS).orElse(false);
+			for (LayerPart part : LayerPart.mixLayers())
+			{
+				if (allowAddons && entityCap.currentMixMotions.get(part).isAddon()) continue;
+				entityCap.getClientAnimator().resetMixMotionFor(part);
+				entityCap.getClientAnimator().baseLayer.disableLayer(part);
+			}
+		}
+		else if (entityCap.getOriginalEntity() instanceof MobEntity)
+		{
+			((MobEntity)entityCap.getOriginalEntity()).goalSelector.disableControlFlag(Flag.MOVE);
 		}
 	}
 
@@ -39,6 +53,11 @@ public class ImmovableAnimation extends StaticAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
+		
+		if (entityCap.getOriginalEntity() instanceof MobEntity)
+		{
+			((MobEntity)entityCap.getOriginalEntity()).goalSelector.enableControlFlag(Flag.MOVE);
+		}
 	}
 
 	@Override

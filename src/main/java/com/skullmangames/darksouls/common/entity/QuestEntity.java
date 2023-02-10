@@ -6,9 +6,6 @@ import java.util.UUID;
 
 import com.skullmangames.darksouls.core.util.QuestFlags;
 
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -24,12 +21,15 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 
-public class QuestEntity extends CreatureEntity
+public abstract class QuestEntity extends CreatureEntity
 {
 	protected static final DataParameter<QuestFlags> DATA_QUEST_FLAGS = EntityDataManager.defineId(QuestEntity.class, QuestFlags.SERIALIZER);
 
-	public QuestEntity(EntityType<? extends CreatureEntity> type, World level)
+	public QuestEntity(EntityType<? extends QuestEntity> type, World level)
 	{
 		super(type, level);
 	}

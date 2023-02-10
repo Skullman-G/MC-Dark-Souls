@@ -43,18 +43,12 @@ public class STCPlayAnimation
 		this.convertTimeModifier = convertTimeModifier;
 	}
 
-	public <T extends STCPlayAnimation> void onArrive()
+	public void onArrive()
 	{
 		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.player.level.getEntity(this.entityId);
-
-		if (entity == null)
-		{
-			return;
-		}
-
-		LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null)
-				.orElse(null);
+		if (entity == null) return;
+		LivingCap<?> entityCap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 
 		if (entityCap != null)
 		{

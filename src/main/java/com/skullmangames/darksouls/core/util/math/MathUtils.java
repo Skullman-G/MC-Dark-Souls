@@ -1,16 +1,28 @@
 package com.skullmangames.darksouls.core.util.math;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class MathUtils
 {
+	// Convert entity rotation into normal rotation
+	public static float toNormalRot(float rot)
+	{
+		float normalRot = -rot;
+		if (normalRot < 0) normalRot += 360F;
+		return normalRot;
+	}
+	
+	public static int dir(double value)
+	{
+		return value > 0 ? 1 : value < 0 ? -1 : 0;
+	}
+	
 	public static int lerp(int incr, int from, int to)
 	{
 		if (from == to) return from;
@@ -88,7 +100,7 @@ public class MathUtils
 
 	public static double getAngleBetween(Vector3f a, Vector3f b)
 	{
-		double cos = (a.x() * b.x() + a.y() * b.y() + a.z() * b.z());
+		double cos = a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
 		return Math.acos(cos);
 	}
 
@@ -160,6 +172,11 @@ public class MathUtils
 	}
 
 	public static float clamp(float value, float range)
+	{
+		return clamp(value, -range, range);
+	}
+	
+	public static double clamp(double value, double range)
 	{
 		return clamp(value, -range, range);
 	}

@@ -2,8 +2,6 @@ package com.skullmangames.darksouls.common.item;
 
 import java.util.List;
 
-import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModItems;
 
@@ -16,10 +14,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.stats.Stats;
 import net.minecraft.entity.LivingEntity;
@@ -46,7 +44,7 @@ public class EstusFlaskItem extends Item
 		{
 			compoundnbt = itemstack.getOrCreateTag();
 			compoundnbt.putInt("TotalUses", 1);
-		    compoundnbt.putInt("Uses", compoundnbt.getInt("TotalUses"));
+		    compoundnbt.putInt("Uses", 0);
 		    compoundnbt.putInt("Heal", 5);
 		}
 		
@@ -97,11 +95,11 @@ public class EstusFlaskItem extends Item
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (ClientManager.INSTANCE == null) return;
-		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) tooltip.add(new StringTextComponent("\n\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
+		super.appendHoverText(stack, level, tooltip, flagIn);
+		tooltip.add(new StringTextComponent("\n\u00A77Increase: " + getHeal(stack)));
+		tooltip.add(new StringTextComponent("\u00A77Uses: " + getUses(stack) + "/" + getTotalUses(stack)));
 	}
 	
 	@Override
@@ -113,13 +111,13 @@ public class EstusFlaskItem extends Item
 	         CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)player, itemstack);
 	      }
 
-	      if (player != null)
+	      if (player != null) // PlayerEntity
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
 		    	  if (player.inventory.contains(new ItemStack(ModItems.DARKSIGN.get())))
 		    	  {
-		    		  player.heal(getHeal(itemstack));
+		    		  this.activate(player, itemstack);
 		    	  }
 		    	  else
 		    	  {
@@ -132,16 +130,21 @@ public class EstusFlaskItem extends Item
 	    		  setUses(itemstack, getUses(itemstack) - 1);
 	    	  }
 	      }
-	      else
+	      else // LivingEntity
 	      {
 	    	  if (!worldIn.isClientSide)
 		      {
-	    		  livingentity.heal(getHeal(itemstack));
+	    		  this.activate(livingentity, itemstack);
 		      }
 	    	  setUses(itemstack, getUses(itemstack) - 1);
 	      }
 
 	      return itemstack;
+	}
+	
+	protected void activate(LivingEntity entity, ItemStack stack)
+	{
+		entity.heal(getHeal(stack));
 	}
 	
 	@Override

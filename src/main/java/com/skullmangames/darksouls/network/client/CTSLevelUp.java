@@ -15,11 +15,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CTSLevelUp
 {
-	private int[] stats;
+	private int[] addition;
 	
-	public CTSLevelUp(int[] stats)
+	public CTSLevelUp(int[] addition)
 	{
-		this.stats = stats;
+		this.addition = addition;
 	}
 	
 	public static CTSLevelUp fromBytes(PacketBuffer buf)
@@ -29,7 +29,7 @@ public class CTSLevelUp
 	
 	public static void toBytes(CTSLevelUp msg, PacketBuffer buf)
 	{
-		buf.writeVarIntArray(msg.stats);
+		buf.writeVarIntArray(msg.addition);
 	}
 	
 	public static void handle(CTSLevelUp msg, Supplier<NetworkEvent.Context> ctx)
@@ -43,29 +43,29 @@ public class CTSLevelUp
 			Stats playerstats = playerCap.getStats();
 			for (int i = 0; i < Stats.STATS.size(); i++)
 			{
-				msg.stats[i] = Math.min(msg.stats[i], 99 - playerstats.getStatValue(i));
-				if (!serverPlayer.isCreative()) msg.stats[i] = Math.max(msg.stats[i], 0);
+				msg.addition[i] = Math.min(msg.addition[i], 99 - playerstats.getStatValue(i));
+				if (!serverPlayer.isCreative()) msg.addition[i] = Math.max(msg.addition[i], 0);
 			}
 			
 			int preLevel = playerCap.getSoulLevel();
+			int postLevel = preLevel;
 			if (serverPlayer.isCreative())
 			{
-				addStatValues(serverPlayer, playerstats, msg.stats);
+				addStatValues(serverPlayer, playerstats, msg.addition);
+				postLevel = playerCap.getSoulLevel();
 			}
 			else
 			{
-				int level = playerCap.getSoulLevel();
-				for (int add : msg.stats) level += add;
-				int cost = Stats.getCost(level);
+				for (int add : msg.addition) postLevel += add;
+				int cost = Stats.getCost(postLevel);
 				
-				if (cost <= playerCap.getSouls())
+				if (preLevel < postLevel && cost <= playerCap.getSouls())
 				{
-					playerCap.raiseSouls(cost);
-					addStatValues(serverPlayer, playerstats, msg.stats);
+					playerCap.raiseSouls(-cost);
+					addStatValues(serverPlayer, playerstats, msg.addition);
 				}
 			}
 			
-			int postLevel = playerCap.getSoulLevel();
 			if (preLevel < postLevel) ModCriteriaTriggers.LEVEL_UP.trigger(serverPlayer, true);
 		});
 		

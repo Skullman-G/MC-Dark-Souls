@@ -3,16 +3,16 @@ package com.skullmangames.darksouls.common.item;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ActionResult;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class SoulContainerItem extends Item implements IHaveDarkSoulsUseAction
+public class SoulContainerItem extends Item implements HasDarkSoulsUseAction
 {
 	private final int amount;
 	

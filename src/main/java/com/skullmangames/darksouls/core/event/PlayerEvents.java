@@ -55,6 +55,9 @@ public class PlayerEvents
 	public static void respawnEvent(PlayerEvent.PlayerRespawnEvent event)
 	{
 		event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
+		PlayerCap<?> playerCap = (PlayerCap<?>) event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		if (playerCap == null) return;
+		playerCap.setFP(playerCap.getMaxFP());
 	}
 	
 	@SubscribeEvent

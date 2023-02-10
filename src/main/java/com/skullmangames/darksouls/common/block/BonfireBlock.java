@@ -7,8 +7,11 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.util.ModUtil;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
 import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
@@ -100,8 +103,7 @@ public class BonfireBlock extends Block
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
 	{
-		TileEntity tileentity = level.getBlockEntity(pos);
-		BonfireBlockEntity blockentity = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+		BonfireBlockEntity blockentity = ModUtil.getBlockEntity(level, pos, ModBlockEntities.BONFIRE.get()).orElse(null);
 		if (blockentity == null) return ActionResultType.PASS;
 		if (!state.getValue(LIT))
 		{
@@ -109,7 +111,7 @@ public class BonfireBlock extends Block
 			{
 				if (blockentity.hasFireKeeper())
 				{
-					player.sendMessage(new TranslationTextComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
+					if (player.level.isClientSide) player.sendMessage(new TranslationTextComponent("gui.darksouls.fire_keeper_absent"), Util.NIL_UUID);
 				}
 				else if (!blockentity.hasName() && !player.level.isClientSide)
 				{
@@ -122,12 +124,19 @@ public class BonfireBlock extends Block
 		else
 		{
 			Item item = player.getItemInHand(hand).getItem();
-			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
+			if (item == ModItems.ESTUS_FLASK.get() || item == ModItems.ASHEN_ESTUS_FLASK.get() || item == ModItems.UNDEAD_BONE_SHARD.get())
 			{
 				return ActionResultType.PASS;
 			}
 			
 			player.heal(player.getMaxHealth() - player.getHealth());
+			
+			PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (playerCap != null)
+			{
+				playerCap.setFP(playerCap.getMaxFP());
+				playerCap.addTeleport(blockentity);
+			}
 			
 			if (!player.level.isClientSide)
 			{
@@ -141,10 +150,13 @@ public class BonfireBlock extends Block
 				}
 			}
 			
-			Optional<Vector3d> optional = findStandUpPosition(EntityType.PLAYER, level, pos);
+			Optional<Vector3d> optional = findStandUpPosition(player.getType(), level, pos);
 			if (optional.isPresent())
 			{
-				if (player instanceof ServerPlayerEntity) ((ServerPlayerEntity)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+				if (player instanceof ServerPlayerEntity)
+				{
+					((ServerPlayerEntity)player).setRespawnPosition(level.dimension(), new BlockPos(optional.get()), 0.0F, true, true);
+				}
 			}
 			else
 			{
@@ -155,20 +167,20 @@ public class BonfireBlock extends Block
 		}
 	}
 	
-	public static Optional<Vector3d> findStandUpPosition(EntityType<?> p_235560_0_, ICollisionReader p_235560_1_, BlockPos p_235560_2_)
+	public static Optional<Vector3d> findStandUpPosition(EntityType<?> entityType, ICollisionReader collision, BlockPos blockPos)
 	{
-		Optional<Vector3d> optional = findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, true);
-	    return optional.isPresent() ? optional : findStandUpPosition(p_235560_0_, p_235560_1_, p_235560_2_, false);
+		Optional<Vector3d> optional = findStandUpPosition(entityType, collision, blockPos, true);
+	    return optional.isPresent() ? optional : findStandUpPosition(entityType, collision, blockPos, false);
 	}
 
-	private static Optional<Vector3d> findStandUpPosition(EntityType<?> p_242678_0_, ICollisionReader p_242678_1_, BlockPos p_242678_2_, boolean p_242678_3_)
+	private static Optional<Vector3d> findStandUpPosition(EntityType<?> entityType, ICollisionReader collision, BlockPos blockPos, boolean p_242678_3_)
 	{
 	    BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
 	    for(Vector3i vector3i : RESPAWN_OFFSETS)
 	    {
-	         blockpos$mutable.set(p_242678_2_).move(vector3i);
-	         Vector3d vector3d = TransportationHelper.findSafeDismountLocation(p_242678_0_, p_242678_1_, blockpos$mutable, p_242678_3_);
+	         blockpos$mutable.set(blockPos).move(vector3i);
+	         Vector3d vector3d = TransportationHelper.findSafeDismountLocation(entityType, collision, blockpos$mutable, p_242678_3_);
 	         if (vector3d != null)
 	         {
 	            return Optional.of(vector3d);
@@ -204,6 +216,23 @@ public class BonfireBlock extends Block
 		}
 	}
 	
+	public static void kindleEffect(World level, BlockPos pos)
+	{
+		int r = 4;
+		for (int i = 0; i < 180; i++)
+		{
+			if (i % 20 == 0)
+			{
+				double xd = Math.cos(Math.toRadians(i)) / r;
+				double yd = Math.sin(Math.toRadians(i)) / r;
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, xd, yd, 0);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0, yd, xd);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, 0.75D * xd, yd, 0.75D * xd);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, -0.75D * xd, yd, 0.75D * xd);
+			}
+		}
+	}
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World level, BlockPos pos, Random random)
@@ -214,35 +243,35 @@ public class BonfireBlock extends Block
 			
 			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
 			{
-				level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-		        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
+				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
+		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
 		        
 		        if (i >= 2)
 		        {
-		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
+		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
 		        }
 		        if (i >= 3)
 		        {
-		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
+		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
 		        }
 		        if (i == 4)
 		        {
-		        	level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
-			        level.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
+		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
+			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
 		        }
 			}
 		}
@@ -253,7 +282,7 @@ public class BonfireBlock extends Block
 	{
 		return true;
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{

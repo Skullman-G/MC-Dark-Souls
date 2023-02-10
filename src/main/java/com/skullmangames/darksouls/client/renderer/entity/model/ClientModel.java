@@ -4,6 +4,11 @@ import java.io.IOException;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector4fHelper;
@@ -12,10 +17,6 @@ import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
 
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,10 +48,10 @@ public class ClientModel extends Model
 		}
 	}
 
-	public void draw(MatrixStack posestack, IVertexBuilder builderIn, int packedLightIn, float r, float g, float b, float a, PublicMatrix4f[] poses)
+	public void draw(MatrixStack posestack, IVertexBuilder builderIn, int packedLight, float r, float g, float b, float a, PublicMatrix4f[] poses)
 	{
 		float[] animatedPosition = this.mesh.positionList.clone();
-		float[] animatedNormal = this.mesh.normalList.clone();		
+		float[] animatedNormal = this.mesh.normalList.clone();
 		int weightIndex = 0;
 		
 		for(int i = 0; i < this.mesh.vertexCount; i++)
@@ -93,7 +94,7 @@ public class ClientModel extends Model
 			position.transform(matrix4f);
 			normal.transform(matrix3f);
 			
-			builderIn.vertex(position.x(), position.y(), position.z(), r, g, b, a, this.mesh.textureList[im2], this.mesh.textureList[im2 + 1], OverlayTexture.NO_OVERLAY, packedLightIn, normal.x(), normal.y(), normal.z());
+			builderIn.vertex(position.x(), position.y(), position.z(), r, g, b, a, this.mesh.textureList[im2], this.mesh.textureList[im2 + 1], OverlayTexture.NO_OVERLAY, packedLight, normal.x(), normal.y(), normal.z());
 		}
 	}
 }

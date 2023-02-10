@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
@@ -34,14 +35,18 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> POISE_DAMAGE = registerRangedAttribute("poise_damage", 1.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 50.0D, 50.0D, 150.0D);
 	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 150.0D);
+	public static final RegistryObject<Attribute> MAX_FOCUS_POINTS = registerRangedAttribute("max_focus_points", 10.0D, 1.0D, 1024.0D);
+	public static final RegistryObject<Attribute> ATTUNEMENT_SLOTS = registerRangedAttribute("attunement_slots", 1.0D, 1.0D, 10.0D);
 	
 	// Defense
-	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 0.99D);
-	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 0.99D);
+	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> FIRE_DEFENSE = registerRangedAttribute("fire_defense", 0.0F, 0.0F, 1024.0D);
+	public static final RegistryObject<Attribute> LIGHTNING_DEFENSE = registerRangedAttribute("lightning_defense", 0.0D, 0.0D, 1024.0D);
 	
-	public static final UUID[] EUIPMENT_MODIFIER_UUIDS = new UUID[]
+	public static final UUID[] EQUIPMENT_MODIFIER_UUIDS = new UUID[]
 	{
 			UUID.fromString("02787320-87ac-4c4f-b057-cb79a2660041"),
 			UUID.fromString("f16541b7-8a55-4a2b-ad65-0c21a3a12028"),
@@ -65,7 +70,9 @@ public class ModAttributes
 		event.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), HollowLordranSoldier.createAttributes().build());
 		event.put(ModEntities.STRAY_DEMON.get(), StrayDemon.createAttributes().build());
 		event.put(ModEntities.CRESTFALLEN_WARRIOR.get(), QuestEntity.createAttributes().build());
+		event.put(ModEntities.PETRUS_OF_THOROLUND.get(), QuestEntity.createAttributes().build());
 		event.put(ModEntities.ANASTACIA_OF_ASTORA.get(), AnastaciaOfAstora.createAttributes().build());
+		event.put(ModEntities.FALCONER.get(), Falconer.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -75,9 +82,15 @@ public class ModAttributes
 		general(ModEntities.HOLLOW.get(), event);
 		general(ModEntities.STRAY_DEMON.get(), event);
 		general(ModEntities.FIRE_KEEPER.get(), event);
+		general(ModEntities.FALCONER.get(), event);
+		
+		general(EntityType.ZOMBIE, event);
+		general(EntityType.HUSK, event);
+		general(EntityType.DROWNED, event);
 		
 		withEquipLoad(ModEntities.CRESTFALLEN_WARRIOR.get(), event);
 		withEquipLoad(ModEntities.ANASTACIA_OF_ASTORA.get(), event);
+		withEquipLoad(ModEntities.PETRUS_OF_THOROLUND.get(), event);
 		
 		player(EntityType.PLAYER, event);
 	}
@@ -90,6 +103,8 @@ public class ModAttributes
 		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
 		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
 		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
+		event.add(entityType, ModAttributes.FIRE_DEFENSE.get());
+		event.add(entityType, ModAttributes.LIGHTNING_DEFENSE.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 	}
     
@@ -103,11 +118,13 @@ public class ModAttributes
     private static void player(EntityType<? extends PlayerEntity> entityType, EntityAttributeModificationEvent event)
     {
     	withEquipLoad(entityType, event);
+    	event.add(entityType, ModAttributes.MAX_FOCUS_POINTS.get());
+    	event.add(entityType, ModAttributes.ATTUNEMENT_SLOTS.get());
 	}
 	
 	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlotType slot, float value)
 	{
-		return new AttributeModifier(EUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(EQUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
 	}
 	
 	public static AttributeModifier getMovementSpeedModifier(EquipLoadLevel level)

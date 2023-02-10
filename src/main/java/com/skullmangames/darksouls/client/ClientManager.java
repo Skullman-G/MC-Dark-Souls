@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.MouseInputManager;
@@ -53,9 +54,15 @@ public class ClientManager
 		
 		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> IngameConfigurationScreen::new);
 		
+		GameOverlayManager.registerOverlayElements();
 		ModContainers.registerScreens();
 		
 		ItemModelsProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living) ->
+	    {
+	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
+	    });
+		
+		ItemModelsProperties.register(ModItems.ASHEN_ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living) ->
 	    {
 	    	return (float)EstusFlaskItem.getUses(stack) / (float)EstusFlaskItem.getTotalUses(stack);
 	    });
@@ -76,6 +83,7 @@ public class ClientManager
 		this.options.setCameraType(PointOfView.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().abilities.mayBuild = true;
 		this.combatModeActive = false;
+		this.getPlayerCap().removeTarget();
 	}
 	
 	public void switchToThirdPerson()

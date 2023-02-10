@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.core.util.physics;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.util.math.vector.Matrix4f;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -9,7 +10,6 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -178,7 +178,7 @@ public class CubeCollider extends Collider
 	public boolean collide(Entity entity)
 	{
 		CubeCollider obb = new CubeCollider(entity.getBoundingBox());
-		return isCollideWith(obb);
+		return this.isCollideWith(obb);
 	}
 
 	private static boolean collisionDetection(Vector3d seperateAxis, Vector3d toOpponent, CubeCollider box1, CubeCollider box2)

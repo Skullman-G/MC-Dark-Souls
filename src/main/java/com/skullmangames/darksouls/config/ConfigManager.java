@@ -5,11 +5,6 @@ import java.io.File;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
-import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -18,6 +13,7 @@ public class ConfigManager
 	public static final ForgeConfigSpec COMMON_CONFIG;
 	public static final ForgeConfigSpec CLIENT_CONFIG;
 	public static final IngameConfig INGAME_CONFIG;
+	public static final ServerConfig SERVER_CONFIG;
 	
 	static
 	{
@@ -27,33 +23,7 @@ public class ConfigManager
 		ForgeConfigSpec.Builder server = new ForgeConfigSpec.Builder();
 		
 		INGAME_CONFIG = new IngameConfig(client);
-		
-		String weaponKey = "weapon_config";
-		if(file.valueMap().get(weaponKey) == null)
-		{
-			server.define(weaponKey+".sample.registry_name", "samle");
-			server.defineEnum(weaponKey+".sample.category", WeaponCategory.STRAIGHT_SWORD);
-			server.define(weaponKey+".sample.requiredStrength", 0);
-			server.define(weaponKey+".sample.requiredDex", 0);
-			server.defineEnum(weaponKey+".sample.strengthScaling", Scaling.NONE);
-			server.defineEnum(weaponKey+".sample.dexScaling", Scaling.NONE);
-		}
-		
-		String shieldKey = "shield_config";
-		if(file.valueMap().get(shieldKey) == null)
-		{
-			server.define(shieldKey+".sample_shield.registry_name", "sample_shield");
-			server.defineEnum(shieldKey+".sample_shield.category", WeaponCategory.SHIELD);
-			server.define(shieldKey+".sample_shield.requiredStrength", 0);
-			server.define(shieldKey+".sample_shield.requiredDex", 0);
-			server.defineEnum(shieldKey+".sample_shield.strengthScaling", Scaling.NONE);
-			server.defineEnum(shieldKey+".sample_shield.dexScaling", Scaling.NONE);
-			server.defineEnum(shieldKey+".sample_shield.shield_type", ShieldType.NORMAL);
-			server.defineEnum(shieldKey+".sample_shield.shield_material", ShieldMat.WOOD);
-			server.defineInRange(shieldKey+".sample_shield.physicalDefense", 0.0F, 0.0F, 1.0F);
-		}
-		
-		CapabilityConfig.init(server, file.valueMap());
+		SERVER_CONFIG = new ServerConfig(server, file.valueMap());
 		
 		CLIENT_CONFIG = client.build();
 		COMMON_CONFIG = server.build();

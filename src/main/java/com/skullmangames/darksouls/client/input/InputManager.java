@@ -13,6 +13,8 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -22,6 +24,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.Entity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
@@ -72,6 +75,9 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.VISIBLE_HITBOXES, this::toggleRenderCollision);
 		this.keyFunctionMap.put(ModKeys.OPEN_STAT_SCREEN, this::openPlayerStatScreen);
 		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
+		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_UP, this::onAttunementSlotUp);
+		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
+		this.keyFunctionMap.put(this.options.keyPickItem, this::onTrySelectTarget);
 		
 		try
 		{
@@ -104,21 +110,52 @@ public class InputManager
 	{
 		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
 	}
-	
-	public boolean movingKeysDown()
-	{
-		return this.isKeyDown(this.options.keyUp) || this.isKeyDown(this.options.keyDown) || this.isKeyDown(this.options.keyLeft) || this.isKeyDown(this.options.keyRight);
-	}
 
 	public boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
-				&& !this.player.isUnderWater()
-				&& this.player.isOnGround()
+				&& (!this.player.isUnderWater() || this.player.isOnGround())
+				&& (this.player.isOnGround() || this.playerCap.isMounted())
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	public boolean playerCanDodge(EntityState playerState)
+	{
+		return !this.player.isSpectator()
+				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
+				&& !this.player.isUnderWater()
+				&& this.player.isOnGround()
+				&& this.player.getVehicle() == null
+				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
+				&& this.minecraft.screen == null;
+	}
+	
+	private void onTrySelectTarget(int key, int action)
+	{
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive() && !this.options.getCameraType().isFirstPerson())
+		{
+			this.playerCap.updateTarget();
+		}
+	}
+	
+	private void onAttunementSlotUp(int key, int action)
+	{
+		if (action == 1 && this.playerCap.getAttunements().selected > 0)
+		{
+			this.playerCap.getAttunements().selected--;
+		}
+	}
+	
+	private void onAttunementSlotDown(int key, int action)
+	{
+		if (action == 1 && this.playerCap.getAttunements().selected < this.playerCap.getAttunements().getContainerSize() - 1)
+		{
+			this.playerCap.getAttunements().selected++;
+		}
 	}
 	
 	private void toggleRenderCollision(int key, int action)
@@ -252,7 +289,22 @@ public class InputManager
 		else
 		{
 			this.sprintToggle = false;
-			if (this.sprintPressCounter < 5 && this.playerCanAttack(playerState)) this.playerCap.performDodge(this.movingKeysDown());
+			if (this.sprintPressCounter < 5 && this.playerCanDodge(playerState))
+			{
+				DodgeType dodgeType = DodgeType.JUMP_BACK;
+				if (this.playerCap.getTarget() != null)
+				{
+					if (this.isKeyDown(this.options.keyUp)) dodgeType = DodgeType.FORWARD;
+					else if (this.isKeyDown(this.options.keyDown)) dodgeType = DodgeType.BACK;
+					else if (this.isKeyDown(this.options.keyLeft)) dodgeType = DodgeType.LEFT;
+					else if (this.isKeyDown(this.options.keyRight)) dodgeType = DodgeType.RIGHT;
+				}
+				else if (this.isKeyDown(this.options.keyUp)
+						|| this.isKeyDown(this.options.keyDown)
+						|| this.isKeyDown(this.options.keyLeft)
+						|| this.isKeyDown(this.options.keyRight)) dodgeType = DodgeType.FORWARD;
+				this.playerCap.performDodge(dodgeType);
+			}
 			this.sprintPressCounter = 0;
 		}
 	}
@@ -277,7 +329,7 @@ public class InputManager
 		}
 		else
 		{
-			if (this.rightHandPressCounter > DarkSouls.CLIENT_INGAME_CONFIG.longPressCount.getValue())
+			if (this.rightHandPressCounter > ConfigManager.INGAME_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
 				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;
@@ -300,7 +352,7 @@ public class InputManager
 			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
 			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
-		else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.LIGHT;
+		else if ((this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;
@@ -335,16 +387,25 @@ public class InputManager
 		@SubscribeEvent
 		public static void onClickInputCancelable(InputEvent.ClickInputEvent event)
 		{
-			if (!event.isAttack()) return;
-			if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+			if (event.isAttack())
 			{
-				event.setSwingHand(false);
+				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				{
+					event.setSwingHand(false);
+				}
+				
+				if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
+						|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+				{
+					event.setCanceled(true);
+				}
 			}
-			
-			if (minecraft.hitResult.getType() == RayTraceResult.Type.ENTITY
-					|| (minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+			else if (event.isPickBlock())
 			{
-				event.setCanceled(true);
+				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				{
+					event.setCanceled(true);
+				}
 			}
 		}
 		
@@ -398,39 +459,117 @@ public class InputManager
 			if(inputManager.playerCap == null) return;
 			EntityState playerState = inputManager.playerCap.getEntityState();
 			
-			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
+			// Mouse Movement
+			if (minecraft.options.getCameraType() == PointOfView.FIRST_PERSON && playerState.isRotationLocked() && inputManager.player.isAlive())
 			{
-				if (minecraft.options.getCameraType() == PointOfView.FIRST_PERSON)
-				{
-					GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
-					minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
-					minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
-				}
-				else
-				{
-					inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
-					inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
-					minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
-				}
-				
-				event.getMovementInput().forwardImpulse = 0.0F;
-				event.getMovementInput().leftImpulse = 0.0F;
-				event.getMovementInput().up = false;
-				event.getMovementInput().down = false;
-				event.getMovementInput().left = false;
-				event.getMovementInput().right = false;
-				event.getMovementInput().jumping = false;
-				event.getMovementInput().shiftKeyDown = false;
-				((ClientPlayerEntity)event.getPlayer()).sprintTime = -1;
+				GLFW.glfwSetCursorPosCallback(minecraft.getWindow().getWindow(), inputManager.callback);
+				minecraft.mouseHandler.xpos = inputManager.tracingMouseX;
+				minecraft.mouseHandler.ypos = inputManager.tracingMouseY;
 			}
 			else
 			{
 				inputManager.tracingMouseX = minecraft.mouseHandler.xpos();
 				inputManager.tracingMouseY = minecraft.mouseHandler.ypos();
 				minecraft.mouseHandler.setup(minecraft.getWindow().getWindow());
+			}
+			
+			// Keyboard Movement
+			if (inputManager.playerCap.getTarget() != null)
+			{
+				float forward = event.getMovementInput().forwardImpulse;
+				float left = event.getMovementInput().leftImpulse;
+				float rot = 0.0F;
 				
-				if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON
-						&& !ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+				if (!inputManager.playerCap.getClientAnimator().isAiming()
+					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
+				{
+					boolean w = event.getMovementInput().up;
+					boolean s = event.getMovementInput().down;
+					boolean a = event.getMovementInput().left;
+					boolean d = event.getMovementInput().right;
+					
+					rot = w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
+							: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
+							: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
+							: w && !s && !a && d ? 315 : 0;
+					
+					forward = rot == 0.0F ? event.getMovementInput().forwardImpulse
+							: rot == 180.0F ? -event.getMovementInput().forwardImpulse
+							: rot == 90.0F ? event.getMovementInput().leftImpulse
+							: rot == 270.0F ? -event.getMovementInput().leftImpulse
+							: rot == 45.0F ? event.getMovementInput().forwardImpulse * 10
+							: rot == 135.0F ? -event.getMovementInput().forwardImpulse * 10
+							: rot == 225.0F ? -event.getMovementInput().forwardImpulse * 10
+							: rot == 315.0F ? event.getMovementInput().forwardImpulse * 10
+							: 0.0F;
+					
+					left = rot == 45.0F ? event.getMovementInput().leftImpulse
+							: rot == 135.0F ? -event.getMovementInput().leftImpulse
+							: rot == 225.0F ? -event.getMovementInput().leftImpulse
+							: rot == 315.0F ? event.getMovementInput().leftImpulse
+							: 0.0F;
+				}
+				
+				Entity target = inputManager.playerCap.getTarget();
+				double dx = target.getX() - inputManager.player.getX();
+				double dz = target.getZ() - inputManager.player.getZ();
+				double dy = target.getY() + 0.6D * target.getBbHeight() - inputManager.player.getY() - inputManager.player.getEyeHeight();
+				float degree = (float) (Math.atan2(dz, dx) * (180D / Math.PI)) - rot - 90.0F;
+				float xDegree = (float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * (180D / Math.PI)) - 90.0F;
+				if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null)
+				{
+					inputManager.playerCap.rotateTo(degree, 60, false);
+					inputManager.player.xRot = xDegree;
+				}
+				event.getMovementInput().forwardImpulse = forward;
+				event.getMovementInput().leftImpulse = left;
+				
+			}
+			else if (!inputManager.playerCap.getClientAnimator().isAiming() && minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
+			{
+				if (inputManager.player.getVehicle() != null)
+				{
+					float forward = event.getMovementInput().forwardImpulse;
+					float left = event.getMovementInput().leftImpulse;
+					float rot = inputManager.player.yRot;
+					
+					boolean w = event.getMovementInput().up;
+					boolean s = event.getMovementInput().down;
+					boolean a = event.getMovementInput().left;
+					boolean d = event.getMovementInput().right;
+					
+					float pivot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
+					
+					if (w || a || s || d)
+					{
+						rot = pivot;
+						rot -= w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
+								: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
+								: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
+								: w && !s && !a && d ? 315 : 0;
+					}
+					
+					forward = rot == pivot ? event.getMovementInput().forwardImpulse
+							: rot == pivot - 180.0F ? -event.getMovementInput().forwardImpulse
+							: rot == pivot - 90.0F ? event.getMovementInput().leftImpulse
+							: rot == pivot - 270.0F ? -event.getMovementInput().leftImpulse
+							: rot == pivot - 45.0F ? event.getMovementInput().forwardImpulse * 10
+							: rot == pivot - 135.0F ? -event.getMovementInput().forwardImpulse * 10
+							: rot == pivot - 225.0F ? -event.getMovementInput().forwardImpulse * 10
+							: rot == pivot - 315.0F ? event.getMovementInput().forwardImpulse * 10
+							: 0.0F;
+					
+					left = rot == pivot - 45.0F ? event.getMovementInput().leftImpulse
+							: rot == pivot - 135.0F ? -event.getMovementInput().leftImpulse
+							: rot == pivot - 225.0F ? -event.getMovementInput().leftImpulse
+							: rot == pivot - 315.0F ? event.getMovementInput().leftImpulse
+							: 0.0F;
+					
+					if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null) inputManager.playerCap.rotateTo(rot, 60, false);
+					event.getMovementInput().forwardImpulse = forward;
+					event.getMovementInput().leftImpulse = left;
+				}
+				else if (!inputManager.playerCap.getClientAnimator().isAiming())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -471,16 +610,37 @@ public class InputManager
 						left *= 2.0F;
 					}
 					
-					inputManager.player.yRot = rot;
-					event.getMovementInput().forwardImpulse = forward;
-					event.getMovementInput().leftImpulse = left;
-					
-					if (inputManager.playerCap.isBlocking())
+					if (!playerState.isRotationLocked()) inputManager.player.yRot = rot;
+					if (inputManager.playerCanMove(playerState))
 					{
-						event.getMovementInput().leftImpulse *= 20F;
-						event.getMovementInput().forwardImpulse *= 20F;
+						event.getMovementInput().forwardImpulse = forward;
+						event.getMovementInput().leftImpulse = left;
 					}
 				}
+			}
+			else if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON && !playerState.isRotationLocked())
+			{
+				inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
+				inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
+			}
+			
+			if (inputManager.playerCap.isBlocking())
+			{
+				event.getMovementInput().leftImpulse *= 20F;
+				event.getMovementInput().forwardImpulse *= 20F;
+			}
+			
+			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())
+			{
+				event.getMovementInput().forwardImpulse = 0.0F;
+				event.getMovementInput().leftImpulse = 0.0F;
+				event.getMovementInput().up = false;
+				event.getMovementInput().down = false;
+				event.getMovementInput().left = false;
+				event.getMovementInput().right = false;
+				event.getMovementInput().jumping = false;
+				event.getMovementInput().shiftKeyDown = false;
+				((ClientPlayerEntity)event.getPlayer()).sprintTime = -1;
 			}
 		}
 		

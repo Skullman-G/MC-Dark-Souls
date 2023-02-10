@@ -3,10 +3,8 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.Map;
 import java.util.function.Function;
 
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
-
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -23,18 +21,19 @@ import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class ActionAnimation extends ImmovableAnimation
 {
@@ -96,12 +95,11 @@ public class ActionAnimation extends ImmovableAnimation
 		if (entityCap.isClientSide())
 		{
 			if (!(livingentity instanceof ClientPlayerEntity)) return;
-		} else
+		}
+		else
 		{
 			if ((livingentity instanceof ServerPlayerEntity)) return;
 		}
-
-		if (!this.validateMovement(entityCap, animation)) return;
 
 		if (entityCap.isInaction())
 		{
@@ -119,7 +117,7 @@ public class ActionAnimation extends ImmovableAnimation
 					: 1.0F;
 			livingentity.move(MoverType.SELF, new Vector3d(vec3.x() * moveMultiplier * speedFactor, vec3.y(), vec3.z() * moveMultiplier * speedFactor));
 			
-			if (animation instanceof LinkAnimation && this.getProperty(ActionAnimationProperty.ROTATE_TO_TARGET).orElse(true) && livingentity instanceof MobEntity)
+			if (animation instanceof LinkAnimation && livingentity instanceof MobEntity)
 			{
 				MobEntity mob = (MobEntity)livingentity;
 				LivingEntity target = mob.getTarget();
@@ -133,45 +131,14 @@ public class ActionAnimation extends ImmovableAnimation
 		}
 	}
 
-	private boolean validateMovement(LivingCap<?> entityCap, DynamicAnimation animation)
-	{
-		if (animation instanceof LinkAnimation)
-		{
-			if (!this.getProperty(ActionAnimationProperty.MOVE_ON_LINK).orElse(true))
-			{
-				return false;
-			}
-			else
-			{
-				return this.checkMovementTime(0.0F);
-			}
-		} else
-		{
-			return this.checkMovementTime(entityCap.getAnimator().getPlayerFor(animation).getElapsedTime());
-		}
-	}
-
-	private boolean checkMovementTime(float currentTime)
-	{
-		if (this.properties.containsKey(ActionAnimationProperty.ACTION_TIME))
-		{
-			ActionTime[] actionTimes = this.getProperty(ActionAnimationProperty.ACTION_TIME).get();
-			for (ActionTime actionTime : actionTimes)
-			{
-				if (currentTime <= actionTime.end && actionTime.onStart <= currentTime) return true;
-			}
-			return false;
-		}
-		else return true;
-	}
-
 	@Override
 	public EntityState getState(float time)
 	{
 		if (time <= this.delayTime)
 		{
 			return EntityState.PRE_CONTACT;
-		} else
+		}
+		else
 		{
 			return EntityState.FREE;
 		}
@@ -200,7 +167,7 @@ public class ActionAnimation extends ImmovableAnimation
 	public void setLinkAnimation(Pose lastPose, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
 	{
 		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : this.convertTime;
-		float nextStart = 0.0F;
+		float nextStart = 0.05F;
 		
 		if (convertTimeModifier < 0.0F)
 		{
@@ -235,8 +202,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
-		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER)
-				.orElse(null);
+		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse(null);
 		TransformSheet rootTransforms = (coordFunction == null || animation instanceof LinkAnimation)
 				? animation.jointTransforms.get("Root")
 				: entityCap.getAnimator().getPlayerFor(this).getMovementAnimation();
@@ -274,23 +240,6 @@ public class ActionAnimation extends ImmovableAnimation
 		} else
 		{
 			return new Vector3f(0, 0, 0);
-		}
-	}
-
-	public static class ActionTime
-	{
-		private float onStart;
-		private float end;
-
-		private ActionTime(float onStart, float end)
-		{
-			this.onStart = onStart;
-			this.end = end;
-		}
-
-		public static ActionTime crate(float onStart, float end)
-		{
-			return new ActionTime(onStart, end);
 		}
 	}
 }

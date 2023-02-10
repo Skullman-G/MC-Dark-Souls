@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
-
 import net.minecraft.util.math.MathHelper;
 
 public class AttackInstance

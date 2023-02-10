@@ -1,0 +1,25 @@
+{
+	"entity.generic.hurt":
+	{
+		"replace": true,
+		"category": "entity",
+		"sounds":
+		[
+			"minecraft:entities/generic/hit_1",
+			"minecraft:entities/generic/hit_2",
+			"minecraft:entities/generic/hit_3"
+		]
+	},
+	
+	"entity.player.hurt":
+	{
+		"replace": true,
+		"category": "entity",
+		"sounds":
+		[
+			"minecraft:entities/generic/hit_1",
+			"minecraft:entities/generic/hit_2",
+			"minecraft:entities/generic/hit_3"
+		]
+	}
+}

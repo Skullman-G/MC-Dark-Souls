@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
@@ -72,7 +73,7 @@ public class ScreenManager
 		{
 			Screen gui = event.getGui();
 
-			if (DarkSouls.CLIENT_INGAME_CONFIG.darkSoulsUI.getValue())
+			if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
 			{
 				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{
@@ -82,10 +83,10 @@ public class ScreenManager
 						((ModLoadingScreen) overlay).setCanFadeOut(true);
 					}
 				}
+				
 				if (gui instanceof MainMenuScreen)
 				{
-					MainMenuScreen screen = (MainMenuScreen) gui;
-					event.setGui(new ModTitleScreen(screen.fading));
+					event.setGui(new ModTitleScreen(((MainMenuScreen)gui).fading));
 				}
 				else if (gui instanceof WorldLoadProgressScreen)
 				{
@@ -97,7 +98,7 @@ public class ScreenManager
 			{
 				if (gui instanceof ModTitleScreen)
 				{
-					MainMenuScreen screen = (MainMenuScreen) gui;
+					ModTitleScreen screen = (ModTitleScreen) gui;
 					event.setGui(new MainMenuScreen(screen.fading));
 				}
 			}

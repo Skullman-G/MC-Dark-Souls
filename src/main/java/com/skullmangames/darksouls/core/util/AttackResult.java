@@ -31,7 +31,7 @@ public class AttackResult
 	{
 		for(Entity entity : entities)
 		{
-			addNewEntity(entity);
+			this.addNewEntity(entity);
 		}
 	}
 	
@@ -62,6 +62,6 @@ public class AttackResult
 	public boolean next()
 	{
 		index++;
-		return hitEntites.size() > index ? true : false;
+		return hitEntites.size() > index;
 	}
 }

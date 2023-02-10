@@ -8,11 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.SoundEvent;
 
-public class HumanityItem extends Item implements IHaveDarkSoulsUseAction
+public class HumanityItem extends Item implements HasDarkSoulsUseAction
 {
 	private final int amount;
 	

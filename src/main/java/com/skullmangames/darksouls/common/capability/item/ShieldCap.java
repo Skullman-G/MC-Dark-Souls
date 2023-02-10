@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 
 import net.minecraft.util.SoundEvent;
 import net.minecraft.item.Item;
@@ -12,13 +13,17 @@ import net.minecraft.item.Item;
 public class ShieldCap extends MeleeWeaponCap
 {
 	private final float physicalDefense;
+	private final float fireDefense;
+	private final float lightningDefense;
 	private final ShieldType shieldType;
 	private final ShieldMat shieldMat;
 	
-	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDefense, int requiredStrength, int requiredDex, Scaling strengthScaling, Scaling dexScaling)
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float fireDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.SHIELD, requiredStrength, requiredDex, strengthScaling, dexScaling, 20F);
-		this.physicalDefense = Math.min(physicalDefense, 1F);
+		super(item, WeaponCategory.SHIELD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
+		this.physicalDefense = Math.min(physicalDef, 1F);
+		this.fireDefense = Math.min(fireDef, 1F);
+		this.lightningDefense = Math.min(lightningDef, 1F);
 		this.shieldType = shieldType;
 		this.shieldMat = shieldMat;
 	}
@@ -32,9 +37,14 @@ public class ShieldCap extends MeleeWeaponCap
 	}
 	
 	@Override
-	public float getPhysicalDefense()
+	public float getDefense(DamageType damageType)
 	{
-		return this.physicalDefense;
+		switch(damageType)
+		{
+			case FIRE: return this.fireDefense;
+			case LIGHTNING: return this.lightningDefense;
+			default: return this.physicalDefense;
+		}
 	}
 
 	@Override
@@ -63,11 +73,12 @@ public class ShieldCap extends MeleeWeaponCap
 			default:
 			case WOOD: return ModSoundEvents.WOODEN_SHIELD_BLOCK.get();
 			case METAL: return ModSoundEvents.IRON_SHIELD_BLOCK.get();
+			case GOLD: return ModSoundEvents.IRON_SHIELD_BLOCK.get();
 		}
 	}
 	
 	public enum ShieldMat
 	{
-		WOOD, METAL
+		WOOD, METAL, GOLD
 	}
 }

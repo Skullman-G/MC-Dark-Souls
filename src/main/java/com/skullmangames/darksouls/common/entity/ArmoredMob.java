@@ -4,10 +4,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -37,7 +37,7 @@ public abstract class ArmoredMob extends CreatureEntity
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty)
 	{
-		int percentage = this.random.nextInt(100) + 1;
+		int percentage = this.random.nextInt(100);
 		boolean drop = false;
 		
 		for (EquipmentSlotType slot : EquipmentSlotType.values())

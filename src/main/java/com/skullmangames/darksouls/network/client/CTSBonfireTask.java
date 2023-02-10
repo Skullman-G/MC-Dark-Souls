@@ -5,12 +5,13 @@ import java.util.function.Supplier;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
+import com.skullmangames.darksouls.core.util.ModUtil;
+import com.skullmangames.darksouls.core.init.ModBlockEntities;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -47,8 +48,7 @@ public class CTSBonfireTask
 			ServerPlayerCap playerCap = (ServerPlayerCap) serverplayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerCap == null) return;
 			
-			TileEntity tileentity = serverplayer.level.getBlockEntity(msg.bonfirePos);
-			BonfireBlockEntity bonfire = tileentity instanceof BonfireBlockEntity ? (BonfireBlockEntity)tileentity : null;
+			BonfireBlockEntity bonfire = ModUtil.getBlockEntity(serverplayer.level, msg.bonfirePos, ModBlockEntities.BONFIRE.get()).orElse(null);
 			if (bonfire == null) return;
 			
 			switch(msg.task)

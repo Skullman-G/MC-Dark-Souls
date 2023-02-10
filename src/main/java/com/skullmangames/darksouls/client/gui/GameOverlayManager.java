@@ -7,41 +7,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
-import com.skullmangames.darksouls.common.capability.entity.AbstractClientPlayerCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ClientBossInfo;
 import net.minecraft.client.gui.overlay.BossOverlayGui;
-import net.minecraft.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraft.world.BossInfo;
 
-@EventBusSubscriber(modid = DarkSouls.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class GameOverlayManager
 {
 	private static final Minecraft minecraft = Minecraft.getInstance();
 	
 	private static final ResourceLocation LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png");
 	private static final ResourceLocation BOSS_BARS_LOCATION = new ResourceLocation("textures/gui/bars.png");
+	private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/widgets.png");
 	
 	private static final Timer damageCooldown = new Timer();
 	private static final Timer damageTimer = new Timer();
@@ -50,10 +45,16 @@ public class GameOverlayManager
 	private static int saveLastHealth;
 	public static boolean isHealing = false;
 	
+	public static float lastFP;
+	private static float saveLastFP;
+	private static final Timer fpDrainCooldown = new Timer();
+	private static final Timer fpDrainTimer = new Timer();
+	private static final Timer fpRiseTimer = new Timer();
+	
 	private static final Timer staminaTimer = new Timer();
 	private static final Timer staminaDrainTimer = new Timer();
 	private static final Timer stamiaDrainCooldownTimer = new Timer();
-	private static float lastStamina;
+	public static float lastStamina;
 	private static float saveLastStamina;
 	private static float saveLastStamina2;
 	
@@ -65,52 +66,208 @@ public class GameOverlayManager
 	
 	private static final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
 	
-	@SubscribeEvent
-	public static void onRenderGameOverlayPre(final RenderGameOverlayEvent.Pre event)
+	public static void registerOverlayElements()
 	{
-		MainWindow window = event.getWindow();
-		MatrixStack matStack = event.getMatrixStack();
-		int width = window.getGuiScaledWidth();
-		int height = window.getGuiScaledHeight();
-
-		switch (event.getType())
+		ModOverlayRegistry.enablePlayerHealth(false);
+		ModOverlayRegistry.enableArmorLevel(false);
+		ModOverlayRegistry.enableFoodLevel(false);
+		ModOverlayRegistry.enableBossHealth(false);
+		
+		ModOverlayRegistry.registerOverlayTop("Mod Boss Health Bar", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
-			case HEALTH:
-				event.setCanceled(true);
-				renderHealth(width, height, matStack);
-				break;
+			if (!minecraft.options.hideGui)
+	        {
+	            gui.setBlitOffset(-90);
+	            renderBossHealthBars(gui, poseStack);
+	        }
+		});
+		
+		ModOverlayRegistry.registerOverlayBottom("Mod PlayerEntity Health", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && isSurvival())
+	        {
+	            renderHealth(gui, screenWidth, screenHeight, poseStack);
+	        }
+	    });
+		
+		ModOverlayRegistry.registerOverlayBottom("PlayerEntity Stamina", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && isSurvival())
+	        {
+	            renderStamina(gui, screenWidth, screenHeight, poseStack);
+	        }
+	    });
+		
+		ModOverlayRegistry.registerOverlayTop("PlayerEntity Humanity", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && isSurvival())
+	        {
+	            renderHumanity(gui, screenWidth, screenHeight, poseStack);
+	        }
+	    });
+		
+		ModOverlayRegistry.registerOverlayTop("PlayerEntity Souls", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && isSurvival())
+	        {
+	            renderSouls(screenWidth, screenHeight, poseStack);
+	        }
+	    });
+		
+		ModOverlayRegistry.registerOverlayBottom("PlayerEntity FP", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui && isSurvival())
+	        {
+	            renderFP(gui, screenWidth, screenHeight, poseStack);
+	        }
+	    });
+		
+		ModOverlayRegistry.registerOverlayBottom("PlayerEntity Attunements", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui)
+	        {
+	            renderAttunements(gui, screenWidth, screenHeight, poseStack, partialTicks);
+	        }
+	    });
+	}
 	
-			case FOOD:
-				if (!(minecraft.getCameraEntity() instanceof LivingEntity)) break;
-				event.setCanceled(true);
-				renderStamina(width, height, matStack);
-				break;
-				
-			case BOSSHEALTH:
-				event.setCanceled(true);
-				renderBossHealthBars(matStack);
-				break;
-	
-			case ALL:
-				if (getCameraPlayer().isCreative() || getCameraPlayer().isSpectator()) return;
-				renderHumanity(width, height, matStack);
-				renderSouls(width, height, matStack);
-				break;
-	
-			default:
-				minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
-				break;
-		}
+	private static boolean isSurvival()
+	{
+		return !minecraft.player.isCreative() && !minecraft.player.isSpectator();
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static void renderBossHealthBars(MatrixStack poseStack)
+	private static void renderAttunements(ForgeIngameGui gui, int width, int height, MatrixStack poseStack, float partialTicks)
+	{
+		LocalPlayerCap playerCap = getCameraPlayerCap();
+		if (playerCap == null) return;
+		ClientPlayerEntity player = playerCap.getOriginalEntity();
+
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bind(WIDGETS_LOCATION);
+		int middle = height / 2;
+		int j = gui.getBlitOffset();
+		int k = 182;
+		gui.setBlitOffset(-90);
+		gui.blit(poseStack, 0, middle - k / 2, 234, 74, 22, k);
+		gui.blit(poseStack, 0, middle - k / 2 + playerCap.getAttunements().selected * 20, 0, 22, 24, 24);
+
+		gui.setBlitOffset(j);
+		RenderSystem.enableRescaleNormal();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+
+		for (int j1 = 0; j1 < 9; ++j1)
+		{
+			renderSlot(3, middle - k / 2 + j1 * 20 + 3, partialTicks, player, playerCap.getAttunements().getItem(j1));
+		}
+
+		RenderSystem.disableRescaleNormal();
+		RenderSystem.disableBlend();
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static void renderSlot(int x, int y, float partialTicks, PlayerEntity player, ItemStack itemStack)
+	{
+		if (!itemStack.isEmpty())
+		{
+			RenderSystem.pushMatrix();
+			float f = (float) itemStack.getPopTime() - partialTicks;
+			if (f > 0.0F)
+			{
+				float f1 = 1.0F + f / 5.0F;
+				RenderSystem.translatef((float) (x + 8), (float) (y + 12), 0F);
+				RenderSystem.scalef(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+				RenderSystem.translatef((float) (-(x + 8)), (float) (-(y + 12)), 0F);
+			}
+
+			ItemRenderer itemRenderer = minecraft.getItemRenderer();
+			itemRenderer.renderAndDecorateItem(player, itemStack, x, y);
+			RenderSystem.popMatrix();
+
+			itemRenderer.renderGuiItemDecorations(minecraft.font, itemStack, x, y);
+		}
+	}
+	
+	private static void renderFP(ForgeIngameGui gui, int width, int height, MatrixStack poseStack)
+	{
+		LocalPlayerCap player = getCameraPlayerCap();
+		if (player == null) return;
+		
+		RenderSystem.enableBlend();
+		int y = height - 49;
+		int x = width / 2 + 7;
+		ForgeIngameGui.right_height += 10;
+		
+		minecraft.getTextureManager().bind(LOCATION);
+		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		float fpPercentage = player.getFP() / player.getMaxFP();
+		
+		// Drain Animation
+		if (lastFP > fpPercentage)
+		{
+			if (!fpDrainCooldown.isTicking())
+			{
+				saveLastFP = lastFP;
+			}
+
+			fpDrainCooldown.start(50);
+		}
+
+		float visibleFP = saveLastFP - fpDrainTimer.getPastTime() * 0.01F;
+
+		if (fpDrainCooldown.isTicking())
+		{
+			fpRiseTimer.stop();
+			boolean flag = false;
+			if (visibleFP <= fpPercentage)
+			{
+				visibleFP = saveLastFP;
+				flag = true;
+			}
+			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			fpDrainCooldown.drain(1);
+			if (!fpDrainCooldown.isTicking() && (!fpDrainTimer.isTicking() || flag))
+				fpDrainTimer.start((int)(visibleFP * 200));
+		} else if (fpDrainTimer.isTicking())
+		{
+			fpRiseTimer.stop();
+			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			fpDrainTimer.drain(1);
+		}
+
+		// Rise Animation
+		if (lastFP < fpPercentage || fpRiseTimer.isTicking())
+		{
+			fpDrainTimer.stop();
+			if (!fpRiseTimer.isTicking())
+			{
+				saveLastFP = lastFP;
+				fpRiseTimer.start((int)((fpPercentage - saveLastFP) * 100));
+			}
+			float risecentage = saveLastFP + fpRiseTimer.getPastTime() * 0.01F;
+			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(risecentage * 88), 7); // Blue
+			fpRiseTimer.drain(1);
+		}
+
+		// Default
+		else
+		{
+			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(fpPercentage * 88), 7); // Blue
+		}
+
+		lastFP = fpPercentage;
+		RenderSystem.disableBlend();
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static void renderBossHealthBars(ForgeIngameGui gui, MatrixStack poseStack)
 	{
 		minecraft.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
 		RenderSystem.defaultBlendFunc();
 		minecraft.getProfiler().push("bossHealth");
 
-		Map<UUID, ClientBossInfo> events = minecraft.gui.getBossOverlay().events;
+		Map<UUID, ClientBossInfo> events = gui.getBossOverlay().events;
 
 		if (!events.isEmpty())
 		{
@@ -132,12 +289,13 @@ public class GameOverlayManager
 			{
 				int k = i / 2 - 91;
 				net.minecraftforge.client.event.RenderGameOverlayEvent.BossInfo event = net.minecraftforge.client.ForgeHooksClient
-						.bossBarRenderPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, j, 10 + minecraft.font.lineHeight);
+						.bossBarRenderPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, j,
+								10 + minecraft.font.lineHeight);
 				if (!event.isCanceled())
 				{
 					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 					minecraft.getTextureManager().bind(BOSS_BARS_LOCATION);
-					drawBossBar(minecraft.gui.getBossOverlay(), poseStack, k, j, lerpingbossevent);
+					drawBossBar(gui.getBossOverlay(), poseStack, k, j, lerpingbossevent);
 					ITextComponent component = lerpingbossevent.getName();
 					int l = minecraft.font.width(component);
 					int i1 = i / 2 - l / 2;
@@ -146,7 +304,10 @@ public class GameOverlayManager
 				}
 				j += event.getIncrement();
 				net.minecraftforge.client.ForgeHooksClient.bossBarRenderPost(poseStack, minecraft.getWindow());
-				if (j >= minecraft.getWindow().getGuiScaledHeight() / 3) break;
+				if (j >= minecraft.getWindow().getGuiScaledHeight() / 3)
+				{
+					break;
+				}
 			}
 
 		}
@@ -159,7 +320,7 @@ public class GameOverlayManager
 		gui.blit(poseStack, x, y, 0, bossEvent.getColor().ordinal() * 5 * 2, 182, 5); // Background
 		if (bossEvent.getOverlay() != BossInfo.Overlay.PROGRESS)
 		{
-			gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2, 182, 5); // Background LoadingGui
+			gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2, 182, 5); // Background Overlay
 		}
 
 		int progress = (int) (bossEvent.getPercent() * 183.0F);
@@ -203,7 +364,7 @@ public class GameOverlayManager
 			gui.blit(poseStack, x, y, 0, bossEvent.getColor().ordinal() * 5 * 2 + 5, progress, 5); // Foreground
 			if (bossEvent.getOverlay() != BossInfo.Overlay.PROGRESS)
 			{
-				gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2 + 5, progress, 5); // Foreground LoadingGui
+				gui.blit(poseStack, x, y, 0, 80 + (bossEvent.getOverlay().ordinal() - 1) * 5 * 2 + 5, progress, 5); // Foreground Overlay
 			}
 		}
 	}
@@ -216,7 +377,7 @@ public class GameOverlayManager
 		private int saveLastHealth;
 	}
 	
-	private static void renderHealth(int width, int height, MatrixStack poseStack)
+	private static void renderHealth(ForgeIngameGui gui, int width, int height, MatrixStack poseStack)
 	{
 		RenderSystem.enableBlend();
 		int x = width / 2 - 96;
@@ -284,9 +445,9 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderStamina(int width, int height, MatrixStack poseStack)
+	private static void renderStamina(ForgeIngameGui gui, int width, int height, MatrixStack poseStack)
 	{
-		AbstractClientPlayerCap<?> player = getCameraPlayerData();
+		LocalPlayerCap player = getCameraPlayerCap();
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
@@ -349,7 +510,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderHumanity(int width, int height, MatrixStack poseStack)
+	private static void renderHumanity(ForgeIngameGui gui, int width, int height, MatrixStack poseStack)
 	{
 		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
 		int x = width / 2;
@@ -418,7 +579,7 @@ public class GameOverlayManager
 	    return minecraft.player;
 	}
 	
-	private static LocalPlayerCap getCameraPlayerData()
+	private static LocalPlayerCap getCameraPlayerCap()
 	{
 		ClientPlayerEntity player = getCameraPlayer();
 		if (player == null) return null;

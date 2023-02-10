@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class STCOpenBonfireNameScreen

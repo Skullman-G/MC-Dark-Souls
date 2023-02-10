@@ -16,10 +16,11 @@ public class ModKeys
 {
 	private static final List<KeyBinding> keyBindings = new ArrayList<KeyBinding>();
 	
-	
 	public static final KeyBinding SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
 	public static final KeyBinding TOGGLE_COMBAT_MODE = makeKeyBinding("toggle_combat_mode", 82, "combat");
 	public static final KeyBinding OPEN_STAT_SCREEN = makeKeyBinding("open_stat_screen", 77, "gui");
+	public static final KeyBinding ATTUNEMENT_SLOT_UP = makeKeyBinding("attunement_slot_up", 265, "gui");
+	public static final KeyBinding ATTUNEMENT_SLOT_DOWN = makeKeyBinding("attunement_slot_down", 264, "gui");
 	
 	// For temporary use
 	public static final KeyBinding VISIBLE_HITBOXES = new KeyBinding("visible_hitboxes", 79, "debug");
