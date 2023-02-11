@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 public class Stats
 {
 	public static final int STANDARD_LEVEL = 10;
+	public static final int MAX_LEVEL = 99;
 	public static final List<Stat> STATS = new ArrayList<>();
 	
 	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)

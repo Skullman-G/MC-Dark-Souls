@@ -12,7 +12,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
@@ -23,6 +26,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.Minecraft;
@@ -204,12 +208,15 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = height - 49;
-		int x = width / 2 + 7;
-		gui.right_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 30 : width / 2 + 7;
+		int y = dsLayout ? 28 : height - 49;
+		if (!dsLayout) gui.right_height += 10;
+		int length = dsLayout ? (int)(player.getMaxFP() / Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
 		float fpPercentage = player.getFP() / player.getMaxFP();
 		
 		// Drain Animation
@@ -234,14 +241,14 @@ public class GameOverlayManager
 				visibleFP = saveLastFP;
 				flag = true;
 			}
-			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
 			fpDrainCooldown.drain(1);
 			if (!fpDrainCooldown.isTicking() && (!fpDrainTimer.isTicking() || flag))
 				fpDrainTimer.start((int)(visibleFP * 200));
 		} else if (fpDrainTimer.isTicking())
 		{
 			fpRiseTimer.stop();
-			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
 			fpDrainTimer.drain(1);
 		}
 
@@ -255,14 +262,14 @@ public class GameOverlayManager
 				fpRiseTimer.start((int)((fpPercentage - saveLastFP) * 100));
 			}
 			float risecentage = saveLastFP + fpRiseTimer.getPastTime() * 0.01F;
-			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(risecentage * 88), 7); // Blue
+			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(risecentage * length)); // Blue
 			fpRiseTimer.drain(1);
 		}
 
 		// Default
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(fpPercentage * 88), 7); // Blue
+			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(fpPercentage * length)); // Blue
 		}
 
 		lastFP = fpPercentage;
@@ -279,8 +286,8 @@ public class GameOverlayManager
 
 		if (!events.isEmpty())
 		{
-			int i = minecraft.getWindow().getGuiScaledWidth();
-			int j = 12;
+			int width = minecraft.getWindow().getGuiScaledWidth();
+			int y = minecraft.getWindow().getGuiScaledHeight() / 2 + 70;
 			
 			List<UUID> unused = new ArrayList<>();
 			for (UUID uuid : bossHealthInfoMap.keySet())
@@ -295,24 +302,24 @@ public class GameOverlayManager
 
 			for (LerpingBossEvent lerpingbossevent : events.values())
 			{
-				int k = i / 2 - 91;
+				int k = width / 2 - 91;
 				net.minecraftforge.client.event.RenderGameOverlayEvent.BossInfo event = net.minecraftforge.client.ForgeHooksClient
-						.renderBossEventPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, j,
+						.renderBossEventPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, y,
 								10 + minecraft.font.lineHeight);
 				if (!event.isCanceled())
 				{
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 					RenderSystem.setShaderTexture(0, BOSS_BARS_LOCATION);
-					drawBossBar(gui.getBossOverlay(), poseStack, k, j, lerpingbossevent);
+					drawBossBar(gui.getBossOverlay(), poseStack, k, y, lerpingbossevent);
 					Component component = lerpingbossevent.getName();
 					int l = minecraft.font.width(component);
-					int i1 = i / 2 - l / 2;
-					int j1 = j - 9;
+					int i1 = width / 2 - l / 2;
+					int j1 = y - 9;
 					minecraft.font.drawShadow(poseStack, component, (float) i1, (float) j1, 16777215);
 				}
-				j += event.getIncrement();
+				y += event.getIncrement();
 				net.minecraftforge.client.ForgeHooksClient.renderBossEventPost(poseStack, minecraft.getWindow());
-				if (j >= minecraft.getWindow().getGuiScaledHeight() / 3)
+				if (y >= minecraft.getWindow().getGuiScaledHeight() / 3)
 				{
 					break;
 				}
@@ -388,13 +395,16 @@ public class GameOverlayManager
 	private static void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
-		int x = width / 2 - 96;
-		int y = height - 39;
-		gui.left_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 30 : width / 2 - 96;
+		int y = dsLayout ? 20 : height - 39;
+		if (!dsLayout) gui.left_height += 10;
+		int length = dsLayout ? (int)(getCameraPlayer().getMaxHealth() / Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7); // Black
-		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 88);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
+		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * length);
 		
 		// Damage Animation
 		if (lastHealth > healthpercentage)
@@ -418,14 +428,14 @@ public class GameOverlayManager
 				damagedHealth = saveLastHealth;
 				flag = true;
 			}
-			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
 			damageCooldown.drain(1);
 			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth * 2);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
-			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
 			damageTimer.drain(1);
 		}
 		
@@ -439,14 +449,14 @@ public class GameOverlayManager
 				healTimer.start(healthpercentage - saveLastHealth);
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
-			minecraft.gui.blit(poseStack, x, y, 0, 7, healcentage, 7); // Red
+			drawBar(poseStack, x, y, 0, 7, 256, 7, length, healcentage); // Red
 			healTimer.drain(1);
 		}
 		
 		// Default
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 7, healthpercentage, 7); // Red
+			drawBar(poseStack, x, y, 0, 7, 256, 7, length, healthpercentage); // Red
 		}
 		
 		lastHealth = healthpercentage;
@@ -459,12 +469,15 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = height - 39;
-		int x = width / 2 + 7;
-		gui.right_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 30 : width / 2 + 7;
+		int y = dsLayout ? 36 : height - 39;
+		if (!dsLayout) gui.right_height += 10;
+		int length = dsLayout ? (int)(player.getMaxStamina() / Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
 		float staminaPercentage = player.getStamina() / player.getMaxStamina();
 		
 		// Yellow Bar
@@ -494,7 +507,7 @@ public class GameOverlayManager
 		}
 		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(1);
 		
-		minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(drainedStamina * 88), 7); // Yellow
+		drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(drainedStamina * length)); // Yellow
 		
 		
 		// Green Bar
@@ -506,12 +519,12 @@ public class GameOverlayManager
 				staminaTimer.start((int)((staminaPercentage - saveLastStamina2) * 100));
 			}
 			float percentage = saveLastStamina2 + (staminaTimer.getPastTime() * 0.01F);
-			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(percentage * 88), 7);
+			drawBar(poseStack, x, y, 0, 21, 256, 7, length, (int)(percentage * length)); // Green
 			staminaTimer.drain(1);
 		}
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(staminaPercentage * 88), 7);
+			drawBar(poseStack, x, y, 0, 21, 256, 7, length, (int)(staminaPercentage * length)); // Green
 		}
 		
 		lastStamina = staminaPercentage;
@@ -580,6 +593,14 @@ public class GameOverlayManager
 		}
 		
 		RenderSystem.disableBlend();
+	}
+	
+	private static void drawBar(PoseStack poseStack, int x, int y, int u, int v, int uSize, int vSize, int length, int shown)
+	{
+		int end = 10;
+		boolean exceeds = shown > length - end;
+		minecraft.gui.blit(poseStack, x, y, u, v, exceeds ? length - end : shown, vSize);
+		if (exceeds) minecraft.gui.blit(poseStack, x + length - end, y, u + uSize - end, v, shown - (length - end), vSize);
 	}
 	
 	private static LocalPlayer getCameraPlayer()

@@ -198,6 +198,7 @@ public class DarkSouls
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
 
+		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), VanillaHumanoidRenderer::new);
@@ -205,6 +206,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.ANASTACIA_OF_ASTORA.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.FALCONER.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);

@@ -19,6 +19,7 @@ public class IngameConfig
 	
 	public final Option<Boolean> showHealthIndicator;
 	public final Option<Boolean> darkSoulsUI;
+	public final Option<Boolean> darkSoulsHUDLayout;
 	
 	public IngameConfig(ForgeConfigSpec.Builder config)
 	{
@@ -28,6 +29,7 @@ public class IngameConfig
 		
 		this.showHealthIndicator = this.registerBoolean("show_health_indicator", true);
 		this.darkSoulsUI = this.registerBoolean("dark_souls_ui", true);
+		this.darkSoulsHUDLayout = this.registerBoolean("dark_souls_hud_layout", false);
 	}
 	
 	public void populateDefaultValues()
