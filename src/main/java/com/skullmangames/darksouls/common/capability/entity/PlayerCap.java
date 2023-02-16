@@ -68,6 +68,13 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T>
 		}
 	}
 	
+	@Override
+	protected void initAttributes()
+	{
+		super.initAttributes();
+		this.orgEntity.getAttribute(ModAttributes.MAX_EQUIP_LOAD.get()).setBaseValue(25.0D);
+	}
+	
 	public SpellInventory getAttunements()
 	{
 		return this.attunements;

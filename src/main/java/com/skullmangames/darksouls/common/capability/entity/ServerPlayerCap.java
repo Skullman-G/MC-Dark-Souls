@@ -178,24 +178,28 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 		boolean fat = e >= 0.5F;
 		StaticAnimation animation = null;
 		
-		switch (type)
+		if (e >= 1F) animation = Animations.BIPED_ROLL_TOO_FAT;
+		else
 		{
-		default:
-		case JUMP_BACK:
-			animation = Animations.BIPED_JUMP_BACK;
-			break;
-		case FORWARD:
-			animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
-			break;
-		case BACK:
-			animation = Animations.BIPED_ROLL_BACK;
-			break;
-		case LEFT:
-			animation = Animations.BIPED_ROLL_LEFT;
-			break;
-		case RIGHT:
-			animation = Animations.BIPED_ROLL_RIGHT;
-			break;
+			switch (type)
+			{
+				default:
+				case JUMP_BACK:
+					animation = Animations.BIPED_JUMP_BACK;
+					break;
+				case FORWARD:
+					animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+					break;
+				case BACK:
+					animation = Animations.BIPED_ROLL_BACK;
+					break;
+				case LEFT:
+					animation = Animations.BIPED_ROLL_LEFT;
+					break;
+				case RIGHT:
+					animation = Animations.BIPED_ROLL_RIGHT;
+					break;
+			}
 		}
 
 		this.animator.playAnimation(animation, 0.0F);

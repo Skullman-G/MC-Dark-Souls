@@ -30,7 +30,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, Attribute attribute, int value)
 				{
-					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
+					return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 				}
 			});
 	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
@@ -38,7 +38,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, Attribute attribute, int value)
 				{
-					return -0.0065D * (value - STANDARD_LEVEL) * (value - 188);
+					return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 				}
 			});
 	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
@@ -46,7 +46,7 @@ public class Stats
 				@Override
 				public double getModifyValue(Player player, Attribute attribute, int value)
 				{
-					return -0.019D * (value - STANDARD_LEVEL) * (value - 188);
+					return -0.019D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 				}
 			});
 	public static final ModifyingStat ATTUNEMENT = register(new ModifyingStat("attunement", "25c989d7-9585-4f9d-be78-fc1e3aba4fc6", ModAttributes.MAX_FOCUS_POINTS, ModAttributes.ATTUNEMENT_SLOTS)
@@ -72,9 +72,9 @@ public class Stats
 				{
 					if (attribute == ModAttributes.ATTUNEMENT_SLOTS.get())
 					{
-						return (int)(-0.001262468 * (value - STANDARD_LEVEL) * (value - 188));
+						return (int)(-0.001262468 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL));
 					}
-					else return -0.0076 * (value - STANDARD_LEVEL) * (value - 188);
+					else return -0.0076 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 				}
 			});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
