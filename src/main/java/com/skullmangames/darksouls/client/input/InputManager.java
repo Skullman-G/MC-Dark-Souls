@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
@@ -239,10 +240,11 @@ public class InputManager
 		
 		if (this.sprintToggle)
 		{
-			if (!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F)
+			boolean overencumbered = this.playerCap.getEquipLoadLevel() == EquipLoadLevel.OVERENCUMBERED;
+			if ((!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F) || overencumbered)
 			{
 				this.player.setSprinting(false);
-				this.sprintToggle = false;
+				if (!overencumbered) this.sprintToggle = false;
 			}
 		}
 		else if (this.isKeyDown(this.options.keySprint) && (this.playerCap.getStamina() / this.playerCap.getMaxStamina()) >= 0.7F)
@@ -275,7 +277,8 @@ public class InputManager
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& !this.player.hasEffect(MobEffects.BLINDNESS)
-				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
+				&& (vector2f.x != 0.0F || vector2f.y != 0.0F)
+				&& this.playerCap.getEquipLoadLevel() != EquipLoadLevel.OVERENCUMBERED;
 	}
 	
 	private void handleSprintAction(EntityState playerState)
