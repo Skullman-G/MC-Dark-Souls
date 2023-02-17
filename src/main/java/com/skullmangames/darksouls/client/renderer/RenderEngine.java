@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
@@ -44,9 +42,6 @@ import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
-
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -68,9 +63,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.TridentItem;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -86,7 +78,6 @@ import net.minecraftforge.fml.common.Mod;
 @OnlyIn(Dist.CLIENT)
 public class RenderEngine
 {
-	private static final Vector3f AIMING_CORRECTION = new Vector3f(-1.5F, 0.0F, 1.25F);
 	public static final ResourceLocation NULL_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/gui/null.png");
 	public AimHelperRenderer aimHelper;
 	private Minecraft minecraft;
@@ -221,54 +212,6 @@ public class RenderEngine
 		aiming = false;
 		zoomOutTimer = timer;
 	}
-	
-	private void updateCamera(CameraSetup event, PointOfView pov, double partialTicks)
-	{
-		ActiveRenderInfo camera = event.getInfo();
-		Entity entity = minecraft.getCameraEntity();
-		
-		Vector3d camPos = camera.getPosition();
-		
-		if (pov == PointOfView.THIRD_PERSON_BACK && zoomCount > 0 && this.aiming)
-		{
-			double posX = camPos.x;
-			double posY = camPos.y;
-			double posZ = camPos.z;
-			
-			double entityPosX = entity.xOld + (entity.getX() - entity.xOld) * partialTicks;
-			double entityPosY = entity.yOld + (entity.getY() - entity.yOld) * partialTicks + entity.getEyeHeight();
-			double entityPosZ = entity.zOld + (entity.getZ() - entity.zOld) * partialTicks;
-			
-			float interpolation = (float)zoomCount / (float)zoomMaxCount;
-			Vector3f interpolatedCorrection = Vector3fHelper.scale(AIMING_CORRECTION, interpolation);
-			PublicMatrix4f rotationMatrix = ClientManager.INSTANCE.getPlayerCap().getMatrix((float)partialTicks);
-			Vector4f scaleVec = new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F);
-			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, scaleVec);
-			
-			double d3 = Math.sqrt((rotateVec.x() * rotateVec.x()) + (rotateVec.y() * rotateVec.y()) + (rotateVec.z() * rotateVec.z()));
-			double smallest = d3;
-			
-			double d00 = posX + rotateVec.x();
-			double d11 = posY - rotateVec.y();
-			double d22 = posZ + rotateVec.z();
-			for (int i = 0; i < 8; ++i)
-			{
-				float f = (float) ((i & 1) * 2 - 1);
-				float f1 = (float) ((i >> 1 & 1) * 2 - 1);
-				float f2 = (float) ((i >> 2 & 1) * 2 - 1);
-				f = f * 0.1F;
-				f1 = f1 * 0.1F;
-				f2 = f2 * 0.1F;
-				RayTraceResult raytraceresult = minecraft.level.clip(new RayTraceContext(new Vector3d(entityPosX + f, entityPosY + f1, entityPosZ + f2),
-							new Vector3d(d00 + f + f2, d11 + f1, d22 + f2), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
-				if (raytraceresult != null)
-				{
-					double d7 = raytraceresult.getLocation().distanceTo(new Vector3d(entityPosX, entityPosY, entityPosZ));
-					if (d7 < smallest) smallest = d7;
-				}
-			}
-		}
-	}
 
 	public PublicMatrix4f getCurrentProjectionMatrix()
 	{
@@ -330,7 +273,6 @@ public class RenderEngine
 		@SubscribeEvent
 		public static void cameraSetupEvent(CameraSetup event)
 		{
-			renderEngine.updateCamera(event, minecraft.options.getCameraType(), event.getRenderPartialTicks());
 			if (renderEngine.zoomCount > 0)
 			{
 				if (renderEngine.zoomOutTimer > 0)

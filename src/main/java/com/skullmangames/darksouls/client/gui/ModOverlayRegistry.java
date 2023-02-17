@@ -24,6 +24,9 @@ public class ModOverlayRegistry
 	private static boolean renderArmor = true;
 	private static boolean renderFood = true;
 	private static boolean renderBossHealth = true;
+	private static boolean renderHotbar = true;
+	private static boolean renderExpBar = true;
+	private static boolean renderJumpMeter = true;
 	
 	public static void enablePlayerHealth(boolean value)
 	{
@@ -43,6 +46,21 @@ public class ModOverlayRegistry
 	public static void enableBossHealth(boolean value)
 	{
 		renderBossHealth = value;
+	}
+	
+	public static void enableHotbar(boolean value)
+	{
+		renderHotbar = value;
+	}
+
+	public static void enableExpBar(boolean value)
+	{
+		renderExpBar = value;
+	}
+
+	public static void enableJumpMeter(boolean value)
+	{
+		renderJumpMeter = value;
 	}
 	
 	public static void registerOverlayTop(String name, ModIngameOverlay overlay)
@@ -82,6 +100,17 @@ public class ModOverlayRegistry
 			case BOSSHEALTH:
 				if (!renderBossHealth) event.setCanceled(true);
 				break;
+				
+			case HOTBAR:
+				if (!renderHotbar) event.setCanceled(true);
+				break;
+				
+			case EXPERIENCE:
+				if (!renderExpBar) event.setCanceled(true);
+				break;
+				
+			case JUMPBAR:
+				if (!renderJumpMeter) event.setCanceled(true);
 	
 			case ALL:
 				for (int i = 0; i < overlays.size(); i++) overlays.get(i).render((ForgeIngameGui)minecraft.gui, matStack, partialTicks, width, height);

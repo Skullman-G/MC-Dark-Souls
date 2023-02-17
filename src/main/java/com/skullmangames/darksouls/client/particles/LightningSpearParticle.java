@@ -62,7 +62,7 @@ public class LightningSpearParticle extends EntityboundParticle
 	    		jpos.mul(-1, 1, -1);
 	    		
 	    		this.setPos(jpos.x(), jpos.y(), jpos.z());
-	    		this.rot = localTransform.transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion();
+	    		this.rot = localTransform.transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion().vanilla();
 				this.rot.mul(Vector3f.YP.rotationDegrees(90));
 				this.rot2 = this.rot.copy();
 				this.rot2.mul(Vector3f.ZN.rotationDegrees(45));
@@ -101,7 +101,7 @@ public class LightningSpearParticle extends EntityboundParticle
 			jpos.mul(-1, 1, -1);
 			
 			this.setPos(jpos.x(), jpos.y(), jpos.z());
-			this.rot = localTransform.transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion();
+			this.rot = localTransform.transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion().vanilla();
 			this.rot.mul(Vector3f.YP.rotationDegrees(90));
 			this.rot2 = this.rot.copy();
 			this.rot2.mul(Vector3f.ZN.rotationDegrees(45));

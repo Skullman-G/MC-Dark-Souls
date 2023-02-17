@@ -8,9 +8,9 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.Minecraft;
@@ -30,7 +30,7 @@ public class HealthBarIndicator extends EntityIndicator
 	public boolean shouldDraw(LivingEntity entityIn)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		if (!DarkSouls.CLIENT_INGAME_CONFIG.showHealthIndicator.getValue()
+		if (!ConfigManager.INGAME_CONFIG.showHealthIndicator.getValue()
 				|| (entityIn.isInvisible() || entityIn == minecraft.player.getControllingPassenger())
 				|| entityIn.distanceToSqr(minecraft.getCameraEntity()) >= 400
 				|| entityIn.deathTime >= 19)

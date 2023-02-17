@@ -15,7 +15,6 @@ import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProp
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IResourceManager;
 
@@ -81,9 +80,7 @@ public class AimingAnimation extends StaticAnimation
 			float yawOffset = entityCap.getOriginalEntity().getVehicle() != null
 					? entityCap.getOriginalEntity().yRot
 					: entityCap.getOriginalEntity().yBodyRot;
-			MathUtils.mulQuaternion(
-					Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().yRot) * ratio),
-					head.rotation(), head.rotation());
+			head.rotation().mulLeft(Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().yRot) * ratio));
 		}
 	}
 

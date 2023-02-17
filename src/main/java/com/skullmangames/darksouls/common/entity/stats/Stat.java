@@ -20,5 +20,6 @@ public class Stat
 	}
 	
 	public void onChange(PlayerEntity player, int value) {}
+	
 	public void init(PlayerEntity player, int value) {}
 }
