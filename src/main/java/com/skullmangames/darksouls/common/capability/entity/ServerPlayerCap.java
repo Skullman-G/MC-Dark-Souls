@@ -17,7 +17,6 @@ import com.skullmangames.darksouls.common.entity.Covenant;
 import com.skullmangames.darksouls.common.entity.Covenant.Reward;
 import com.skullmangames.darksouls.common.inventory.AttunementsMenu;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
@@ -50,7 +49,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoaded
+public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 {
 	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
 	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
@@ -174,28 +173,32 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 
 	public void performDodge(DodgeType type)
 	{
-		float e = this.getEncumbrance();
-		boolean fat = e >= 0.5F;
+		EquipLoadLevel e = this.getEquipLoadLevel();
+		boolean fat = e == EquipLoadLevel.HEAVY;
 		StaticAnimation animation = null;
 		
-		switch (type)
+		if (e == EquipLoadLevel.OVERENCUMBERED) animation = Animations.BIPED_ROLL_TOO_FAT;
+		else
 		{
-		default:
-		case JUMP_BACK:
-			animation = Animations.BIPED_JUMP_BACK;
-			break;
-		case FORWARD:
-			animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
-			break;
-		case BACK:
-			animation = Animations.BIPED_ROLL_BACK;
-			break;
-		case LEFT:
-			animation = Animations.BIPED_ROLL_LEFT;
-			break;
-		case RIGHT:
-			animation = Animations.BIPED_ROLL_RIGHT;
-			break;
+			switch (type)
+			{
+				default:
+				case JUMP_BACK:
+					animation = Animations.BIPED_JUMP_BACK;
+					break;
+				case FORWARD:
+					animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+					break;
+				case BACK:
+					animation = Animations.BIPED_ROLL_BACK;
+					break;
+				case LEFT:
+					animation = Animations.BIPED_ROLL_LEFT;
+					break;
+				case RIGHT:
+					animation = Animations.BIPED_ROLL_RIGHT;
+					break;
+			}
 		}
 
 		this.animator.playAnimation(animation, 0.0F);
@@ -408,29 +411,5 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer> implements EquipLoa
 	public ServerPlayer getOriginalEntity()
 	{
 		return this.orgEntity;
-	}
-
-	@Override
-	public float getEncumbrance()
-	{
-		return (float) (this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get())
-				/ this.orgEntity.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()));
-	}
-
-	@Override
-	public EquipLoadLevel getEquipLoadLevel()
-	{
-		float e = this.getEncumbrance();
-
-		if (e <= 0.0F)
-			return EquipLoadLevel.NONE;
-		else if (e <= 0.25F)
-			return EquipLoadLevel.LIGHT;
-		else if (e <= 0.50F)
-			return EquipLoadLevel.MEDIUM;
-		else if (e <= 1.00F)
-			return EquipLoadLevel.HEAVY;
-		else
-			return EquipLoadLevel.OVERENCUMBERED;
 	}
 }

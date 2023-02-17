@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -32,6 +33,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -208,6 +210,12 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 			this.animator.playAnimation(animation, 0.0F);
 			ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 		}
+	}
+	
+	public boolean shouldShoulderSurf()
+	{
+    	return this.getClientAnimator().isAiming()
+    			|| (!ConfigManager.INGAME_CONFIG.onlyShoulderSurfWhenAiming.getValue() && this.orgEntity.getMainHandItem().getItem() instanceof ProjectileWeaponItem);
 	}
 	
 	@Override

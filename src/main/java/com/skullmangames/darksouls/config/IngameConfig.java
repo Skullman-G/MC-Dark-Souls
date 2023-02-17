@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.ScreenManager;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -19,6 +20,8 @@ public class IngameConfig
 	
 	public final Option<Boolean> showHealthIndicator;
 	public final Option<Boolean> darkSoulsUI;
+	public final Option<Boolean> darkSoulsHUDLayout;
+	public final Option<Boolean> onlyShoulderSurfWhenAiming;
 	
 	public IngameConfig(ForgeConfigSpec.Builder config)
 	{
@@ -28,6 +31,8 @@ public class IngameConfig
 		
 		this.showHealthIndicator = this.registerBoolean("show_health_indicator", true);
 		this.darkSoulsUI = this.registerBoolean("dark_souls_ui", true);
+		this.darkSoulsHUDLayout = this.registerBoolean("dark_souls_hud_layout", false);
+		this.onlyShoulderSurfWhenAiming = this.registerBoolean("only_shouldersurf_when_aiming", false);
 	}
 	
 	public void populateDefaultValues()
@@ -44,6 +49,7 @@ public class IngameConfig
 	{
 		for (Option<?> option : OPTIONS) option.save();
 		ScreenManager.onDarkSoulsUIChanged(this.darkSoulsUI.getValue());
+		GameOverlayManager.reloadOverlayElements();
 	}
 	
 	private Option<Boolean> registerBoolean(String name, boolean defaultValue)

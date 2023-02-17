@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
@@ -45,9 +43,6 @@ import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
-
-import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -68,16 +63,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TridentItem;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,7 +78,6 @@ import net.minecraftforge.fml.common.Mod;
 @OnlyIn(Dist.CLIENT)
 public class RenderEngine
 {
-	private static final Vector3f AIMING_CORRECTION = new Vector3f(-1.5F, 0.0F, 1.25F);
 	public static final ResourceLocation NULL_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/gui/null.png");
 	public AimHelperRenderer aimHelper;
 	private Minecraft minecraft;
@@ -224,50 +215,6 @@ public class RenderEngine
 	
 	private void updateCamera(CameraSetup event, CameraType pov, double partialTicks)
 	{
-		Camera camera = event.getCamera();
-		Entity entity = minecraft.getCameraEntity();
-		
-		Vec3 camPos = camera.getPosition();
-		
-		if (pov == CameraType.THIRD_PERSON_BACK && zoomCount > 0 && this.aiming)
-		{
-			double posX = camPos.x;
-			double posY = camPos.y;
-			double posZ = camPos.z;
-			
-			double entityPosX = entity.xOld + (entity.getX() - entity.xOld) * partialTicks;
-			double entityPosY = entity.yOld + (entity.getY() - entity.yOld) * partialTicks + entity.getEyeHeight();
-			double entityPosZ = entity.zOld + (entity.getZ() - entity.zOld) * partialTicks;
-			
-			float interpolation = (float)zoomCount / (float)zoomMaxCount;
-			Vector3f interpolatedCorrection = Vector3fHelper.scale(AIMING_CORRECTION, interpolation);
-			PublicMatrix4f rotationMatrix = ClientManager.INSTANCE.getPlayerCap().getMatrix((float)partialTicks);
-			Vector4f scaleVec = new Vector4f(interpolatedCorrection.x(), interpolatedCorrection.y(), interpolatedCorrection.z(), 1.0F);
-			Vector4f rotateVec = PublicMatrix4f.transform(rotationMatrix, scaleVec);
-			
-			double d3 = Math.sqrt((rotateVec.x() * rotateVec.x()) + (rotateVec.y() * rotateVec.y()) + (rotateVec.z() * rotateVec.z()));
-			double smallest = d3;
-			
-			double d00 = posX + rotateVec.x();
-			double d11 = posY - rotateVec.y();
-			double d22 = posZ + rotateVec.z();
-			for (int i = 0; i < 8; ++i)
-			{
-				float f = (float) ((i & 1) * 2 - 1);
-				float f1 = (float) ((i >> 1 & 1) * 2 - 1);
-				float f2 = (float) ((i >> 2 & 1) * 2 - 1);
-				f = f * 0.1F;
-				f1 = f1 * 0.1F;
-				f2 = f2 * 0.1F;
-				HitResult raytraceresult = minecraft.level.clip(new ClipContext(new Vec3(entityPosX + f, entityPosY + f1, entityPosZ + f2),
-							new Vec3(d00 + f + f2, d11 + f1, d22 + f2), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
-				if (raytraceresult != null)
-				{
-					double d7 = raytraceresult.getLocation().distanceTo(new Vec3(entityPosX, entityPosY, entityPosZ));
-					if (d7 < smallest) smallest = d7;
-				}
-			}
-		}
 	}
 
 	public PublicMatrix4f getCurrentProjectionMatrix()
@@ -370,7 +317,7 @@ public class RenderEngine
 		}
 		
 		@SubscribeEvent
-		public static void renderWorldLast(RenderLevelLastEvent event)
+		public static void renderWorldLast(RenderLevelStageEvent event)
 		{
 			if (minecraft.options.getCameraType() == CameraType.THIRD_PERSON_BACK && ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
 			{

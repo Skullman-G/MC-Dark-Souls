@@ -52,7 +52,7 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 		VertexConsumer vertexBuilder = bufferSource.getBuffer(RENDER_TYPE);
 		Quaternion rot = PublicMatrix4f.getModelMatrixIntegrated((float) entity.xOld, (float) entity.getX(),
 				(float) entity.yOld, (float) entity.getY(), (float) entity.zOld, (float) entity.getZ(), -entity.xRotO,
-				-entity.xRot, entity.yRotO, entity.yRot, 1.0F, 1.0F, 1.0F, 1.0F).transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion();
+				-entity.xRot, entity.yRotO, entity.yRot, 1.0F, 1.0F, 1.0F, 1.0F).transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion().vanilla();
 		rot.mul(Vector3f.YP.rotationDegrees(90));
 		
 		poseStack.scale(this.scale, this.scale, this.scale);

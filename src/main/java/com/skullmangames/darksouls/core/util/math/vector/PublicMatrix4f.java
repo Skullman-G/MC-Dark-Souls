@@ -5,7 +5,6 @@ import org.lwjgl.BufferUtils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.world.phys.Vec3;
@@ -484,7 +483,7 @@ public class PublicMatrix4f
 
 	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
 	{
-		mStack.mulPose(toQuaternion(mat));
+		mStack.mulPose(toQuaternion(mat).vanilla());
 	}
 
 	public static void scaleStack(PoseStack mStack, PublicMatrix4f mat)
@@ -563,13 +562,13 @@ public class PublicMatrix4f
 		return new Matrix4f(arr);
 	}
 
-	public static PublicMatrix4f fromQuaternion(Quaternion quaternion)
+	public static PublicMatrix4f fromQuaternion(ModQuaternion quaternion)
 	{
 		PublicMatrix4f matrix = new PublicMatrix4f();
-		float x = quaternion.i();
-		float y = quaternion.j();
-		float z = quaternion.k();
-		float w = quaternion.r();
+		float x = quaternion.x;
+		float y = quaternion.y;
+		float z = quaternion.z;
+		float w = quaternion.w;
 		float xy = x * y;
 		float xz = x * z;
 		float xw = x * w;
@@ -601,12 +600,12 @@ public class PublicMatrix4f
 		return new Vector3f(matrix.m30, matrix.m31, matrix.m32);
 	}
 
-	public Quaternion toQuaternion()
+	public ModQuaternion toQuaternion()
 	{
 		return PublicMatrix4f.toQuaternion(this);
 	}
 
-	public static Quaternion toQuaternion(PublicMatrix4f matrix)
+	public static ModQuaternion toQuaternion(PublicMatrix4f matrix)
 	{
 		float w, x, y, z;
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
@@ -639,7 +638,7 @@ public class PublicMatrix4f
 			y = (matrix.m12 + matrix.m21) / z4;
 			z = z4 / 4f;
 		}
-		return new Quaternion(x, y, z, w);
+		return new ModQuaternion(x, y, z, w);
 	}
 
 	public Vector3f toScaleVector()

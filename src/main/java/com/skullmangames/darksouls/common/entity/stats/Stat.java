@@ -20,5 +20,6 @@ public class Stat
 	}
 	
 	public void onChange(Player player, int value) {}
+	
 	public void init(Player player, int value) {}
 }

@@ -12,7 +12,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
@@ -23,6 +26,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.Minecraft;
@@ -73,6 +77,11 @@ public class GameOverlayManager
 		ModOverlayRegistry.enableArmorLevel(false);
 		ModOverlayRegistry.enableFoodLevel(false);
 		ModOverlayRegistry.enableBossHealth(false);
+		
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		ModOverlayRegistry.enableHotbar(!dsLayout);
+		ModOverlayRegistry.enableExpBar(!dsLayout);
+		ModOverlayRegistry.enableJumpMeter(!dsLayout);
 		
 		ModOverlayRegistry.registerOverlayTop("Mod Boss Health Bar", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
@@ -130,6 +139,15 @@ public class GameOverlayManager
 	        }
 	    });
 		
+		ModOverlayRegistry.registerOverlayBottom("Player Items", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
+		{
+	        if (!minecraft.options.hideGui)
+	        {
+	            gui.setupOverlayRenderState(true, false);
+	            renderItems(gui, screenWidth, screenHeight, poseStack, partialTicks);
+	        }
+	    });
+		
 		ModOverlayRegistry.registerOverlayBottom("Player Attunements", (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
 		{
 	        if (!minecraft.options.hideGui)
@@ -140,8 +158,131 @@ public class GameOverlayManager
 	    });
 	}
 	
+	public static void reloadOverlayElements()
+	{
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		ModOverlayRegistry.enableHotbar(!dsLayout);
+		ModOverlayRegistry.enableExpBar(!dsLayout);
+		ModOverlayRegistry.enableJumpMeter(!dsLayout);
+		
+	}
+	
+	private static void renderItems(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
+	{
+		if (!ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
+		
+		LocalPlayerCap playerCap = getCameraPlayerCap();
+		if (playerCap == null) return;
+		LocalPlayer player = playerCap.getOriginalEntity();
+		
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+		
+		int x = 50;
+		int y = height - 50; 
+		
+		poseStack.pushPose();
+		float scale = 1.2F;
+		poseStack.scale(scale, scale, scale);
+		gui.blit(poseStack, (int)((x - 22 / 2 - 24) / scale), (int)((y - 22 / 2) / scale), 24, 23, 22, 22);
+		gui.blit(poseStack, (int)((x - 22 / 2) / scale), (int)((y - 22 / 2 + 24) / scale), 24, 23, 22, 22);
+		gui.blit(poseStack, (int)((x - 22 / 2 + 24) / scale), (int)((y - 22 / 2) / scale), 24, 23, 22, 22);
+		poseStack.popPose();
+		
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		renderSlot(x + 24 - 15 / 2, y - 15 / 2, partialTicks, player, player.getMainHandItem(), 1);
+		renderSlot(x - 24 - 15 / 2, y - 15 / 2, partialTicks, player, player.getOffhandItem(), 2);
+		renderSlot(x - 15 / 2, y + 24 - 15 / 2, partialTicks, player, playerCap.getAttunements().getSelected(), 3);
+		RenderSystem.disableBlend();
+		
+		if (minecraft.player.isRidingJumpable()) renderJumpMeter(gui, poseStack, x, width, height);
+		else renderExperience(gui, x, width, height, poseStack);
+	}
+	
+	private static void renderExperience(ForgeIngameGui gui, int x, int width, int height, PoseStack poseStack)
+    {
+		RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
+
+        if (minecraft.gameMode.hasExperience())
+        {
+			minecraft.getProfiler().push("expBar");
+			int i = minecraft.player.getXpNeededForNextLevel();
+			if (i > 0)
+			{
+				poseStack.pushPose();
+				float scaleX = 0.4F;
+				float scaleY = 0.5F;
+				poseStack.scale(scaleX, scaleY, 1);
+				int k = (int) (minecraft.player.experienceProgress * 183.0F);
+				int l = height - 50 - 15;
+				gui.blit(poseStack, (int)((x - 35) / scaleX), (int)((l - 5 / 2) / scaleY), 0, 64, 182, 5);
+				if (k > 0)
+				{
+					gui.blit(poseStack, (int)((x - 35) / scaleX), (int)((l - 5 / 2) / scaleY), 0, 69, k, 5);
+				}
+				poseStack.popPose();
+			}
+
+			minecraft.getProfiler().pop();
+			if (minecraft.player.experienceLevel > 0)
+			{
+				minecraft.getProfiler().push("expLevel");
+				poseStack.pushPose();
+				float scale = 0.75F;
+				poseStack.scale(scale, scale, scale);
+				String s = "" + minecraft.player.experienceLevel;
+				int i1 = x - gui.getFont().width(s) + 10;
+				int j1 = height - 50 - 24;
+				gui.getFont().draw(poseStack, s, (float) (i1 + 1) / scale, (float) j1 / scale, 0);
+				gui.getFont().draw(poseStack, s, (float) (i1 - 1) / scale, (float) j1 / scale, 0);
+				gui.getFont().draw(poseStack, s, (float) i1 / scale, (float) (j1 + 1) / scale, 0);
+				gui.getFont().draw(poseStack, s, (float) i1 / scale, (float) (j1 - 1) / scale, 0);
+				gui.getFont().draw(poseStack, s, (float) i1 / scale, (float) j1 / scale, 8453920);
+				poseStack.popPose();
+				minecraft.getProfiler().pop();
+            }
+        }
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    private static void renderJumpMeter(ForgeIngameGui gui, PoseStack poseStack, int x, int width, int height)
+    {
+    	RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
+
+		minecraft.getProfiler().push("jumpBar");
+		
+		poseStack.pushPose();
+		float scaleX = 0.4F;
+		float scaleY = 0.5F;
+		poseStack.scale(scaleX, scaleY, 1);
+		float f = minecraft.player.getJumpRidingScale();
+		int j = (int) (f * 183.0F);
+		int k = height - 50 - 15;
+		gui.blit(poseStack, (int)((x - 35) / scaleX), (int)(k / scaleY), 0, 84, 182, 5);
+		if (j > 0)
+		{
+			gui.blit(poseStack, (int)((x - 35) / scaleX), (int)(k / scaleY), 0, 89, j, 5);
+		}
+		poseStack.popPose();
+
+		minecraft.getProfiler().pop();
+
+        RenderSystem.enableBlend();
+        minecraft.getProfiler().pop();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+	
 	private static void renderAttunements(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
 	{
+		if (ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
+		
 		LocalPlayerCap playerCap = getCameraPlayerCap();
 		if (playerCap == null) return;
 		LocalPlayer player = playerCap.getOriginalEntity();
@@ -204,12 +345,15 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = height - 49;
-		int x = width / 2 + 7;
-		gui.right_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 10 : width / 2 + 7;
+		int y = dsLayout ? 18 : height - 49;
+		if (!dsLayout) gui.right_height += 10;
+		int length = dsLayout ? (int)(player.getMaxFP() / Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
 		float fpPercentage = player.getFP() / player.getMaxFP();
 		
 		// Drain Animation
@@ -234,14 +378,14 @@ public class GameOverlayManager
 				visibleFP = saveLastFP;
 				flag = true;
 			}
-			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
 			fpDrainCooldown.drain(1);
 			if (!fpDrainCooldown.isTicking() && (!fpDrainTimer.isTicking() || flag))
 				fpDrainTimer.start((int)(visibleFP * 200));
 		} else if (fpDrainTimer.isTicking())
 		{
 			fpRiseTimer.stop();
-			minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(visibleFP * 88), 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
 			fpDrainTimer.drain(1);
 		}
 
@@ -255,14 +399,14 @@ public class GameOverlayManager
 				fpRiseTimer.start((int)((fpPercentage - saveLastFP) * 100));
 			}
 			float risecentage = saveLastFP + fpRiseTimer.getPastTime() * 0.01F;
-			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(risecentage * 88), 7); // Blue
+			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(risecentage * length)); // Blue
 			fpRiseTimer.drain(1);
 		}
 
 		// Default
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 28, (int)(fpPercentage * 88), 7); // Blue
+			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(fpPercentage * length)); // Blue
 		}
 
 		lastFP = fpPercentage;
@@ -279,8 +423,9 @@ public class GameOverlayManager
 
 		if (!events.isEmpty())
 		{
-			int i = minecraft.getWindow().getGuiScaledWidth();
-			int j = 12;
+			boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+			int width = minecraft.getWindow().getGuiScaledWidth();
+			int y = dsLayout ? minecraft.getWindow().getGuiScaledHeight() / 2 + 100 : minecraft.getWindow().getGuiScaledHeight() / 2 - 90;
 			
 			List<UUID> unused = new ArrayList<>();
 			for (UUID uuid : bossHealthInfoMap.keySet())
@@ -295,24 +440,24 @@ public class GameOverlayManager
 
 			for (LerpingBossEvent lerpingbossevent : events.values())
 			{
-				int k = i / 2 - 91;
+				int k = width / 2 - 91;
 				net.minecraftforge.client.event.RenderGameOverlayEvent.BossInfo event = net.minecraftforge.client.ForgeHooksClient
-						.renderBossEventPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, j,
+						.renderBossEventPre(poseStack, minecraft.getWindow(), lerpingbossevent, k, y,
 								10 + minecraft.font.lineHeight);
 				if (!event.isCanceled())
 				{
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 					RenderSystem.setShaderTexture(0, BOSS_BARS_LOCATION);
-					drawBossBar(gui.getBossOverlay(), poseStack, k, j, lerpingbossevent);
+					drawBossBar(gui.getBossOverlay(), poseStack, k, y, lerpingbossevent);
 					Component component = lerpingbossevent.getName();
 					int l = minecraft.font.width(component);
-					int i1 = i / 2 - l / 2;
-					int j1 = j - 9;
+					int i1 = width / 2 - l / 2;
+					int j1 = y - 9;
 					minecraft.font.drawShadow(poseStack, component, (float) i1, (float) j1, 16777215);
 				}
-				j += event.getIncrement();
+				y += event.getIncrement();
 				net.minecraftforge.client.ForgeHooksClient.renderBossEventPost(poseStack, minecraft.getWindow());
-				if (j >= minecraft.getWindow().getGuiScaledHeight() / 3)
+				if (y >= minecraft.getWindow().getGuiScaledHeight() / 3)
 				{
 					break;
 				}
@@ -388,13 +533,16 @@ public class GameOverlayManager
 	private static void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
-		int x = width / 2 - 96;
-		int y = height - 39;
-		gui.left_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 10 : width / 2 - 96;
+		int y = dsLayout ? 10 : height - 39;
+		if (!dsLayout) gui.left_height += 10;
+		int length = dsLayout ? (int)(getCameraPlayer().getMaxHealth() / Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7); // Black
-		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * 88);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
+		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * length);
 		
 		// Damage Animation
 		if (lastHealth > healthpercentage)
@@ -418,14 +566,14 @@ public class GameOverlayManager
 				damagedHealth = saveLastHealth;
 				flag = true;
 			}
-			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
 			damageCooldown.drain(1);
 			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth * 2);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
-			minecraft.gui.blit(poseStack, x, y, 0, 14, damagedHealth, 7); // Yellow
+			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
 			damageTimer.drain(1);
 		}
 		
@@ -439,14 +587,14 @@ public class GameOverlayManager
 				healTimer.start(healthpercentage - saveLastHealth);
 			}
 			int healcentage = saveLastHealth + healTimer.getPastTime();
-			minecraft.gui.blit(poseStack, x, y, 0, 7, healcentage, 7); // Red
+			drawBar(poseStack, x, y, 0, 7, 256, 7, length, healcentage); // Red
 			healTimer.drain(1);
 		}
 		
 		// Default
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 7, healthpercentage, 7); // Red
+			drawBar(poseStack, x, y, 0, 7, 256, 7, length, healthpercentage); // Red
 		}
 		
 		lastHealth = healthpercentage;
@@ -459,12 +607,15 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		int y = height - 39;
-		int x = width / 2 + 7;
-		gui.right_height += 10;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 10 : width / 2 + 7;
+		int y = dsLayout ? 26 : height - 39;
+		if (!dsLayout) gui.right_height += 10;
+		int length = dsLayout ? (int)(player.getMaxStamina() / Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL) * 150)
+				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
-		minecraft.gui.blit(poseStack, x, y, 0, 0, 88, 7);
+		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
 		float staminaPercentage = player.getStamina() / player.getMaxStamina();
 		
 		// Yellow Bar
@@ -494,7 +645,7 @@ public class GameOverlayManager
 		}
 		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(1);
 		
-		minecraft.gui.blit(poseStack, x, y, 0, 14, (int)(drainedStamina * 88), 7); // Yellow
+		drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(drainedStamina * length)); // Yellow
 		
 		
 		// Green Bar
@@ -506,12 +657,12 @@ public class GameOverlayManager
 				staminaTimer.start((int)((staminaPercentage - saveLastStamina2) * 100));
 			}
 			float percentage = saveLastStamina2 + (staminaTimer.getPastTime() * 0.01F);
-			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(percentage * 88), 7);
+			drawBar(poseStack, x, y, 0, 21, 256, 7, length, (int)(percentage * length)); // Green
 			staminaTimer.drain(1);
 		}
 		else
 		{
-			minecraft.gui.blit(poseStack, x, y, 0, 21, (int)(staminaPercentage * 88), 7);
+			drawBar(poseStack, x, y, 0, 21, 256, 7, length, (int)(staminaPercentage * length)); // Green
 		}
 		
 		lastStamina = staminaPercentage;
@@ -521,8 +672,9 @@ public class GameOverlayManager
 	private static void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
-		int x = width / 2;
-		int y = height - 45;
+		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		int x = dsLayout ? 52 : width / 2;
+		int y = dsLayout ? height - 52 :  height - 45;
 		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
 		
 		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
@@ -580,6 +732,14 @@ public class GameOverlayManager
 		}
 		
 		RenderSystem.disableBlend();
+	}
+	
+	private static void drawBar(PoseStack poseStack, int x, int y, int u, int v, int uSize, int vSize, int length, int shown)
+	{
+		int end = 10;
+		boolean exceeds = shown > length - end;
+		minecraft.gui.blit(poseStack, x, y, u, v, exceeds ? length - end : shown, vSize);
+		if (exceeds) minecraft.gui.blit(poseStack, x + length - end, y, u + uSize - end, v, shown - (length - end), vSize);
 	}
 	
 	private static LocalPlayer getCameraPlayer()

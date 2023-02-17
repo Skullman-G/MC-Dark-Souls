@@ -26,6 +26,21 @@ public class ModOverlayRegistry
 		OverlayRegistry.enableOverlay(ForgeIngameGui.BOSS_HEALTH_ELEMENT, value);
 	}
 	
+	public static void enableHotbar(boolean value)
+	{
+		OverlayRegistry.enableOverlay(ForgeIngameGui.HOTBAR_ELEMENT, value);
+	}
+	
+	public static void enableExpBar(boolean value)
+	{
+		OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, value);
+	}
+	
+	public static void enableJumpMeter(boolean value)
+	{
+		OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, value);
+	}
+	
 	public static void registerOverlayTop(String name, ModIngameOverlay overlay)
 	{
 		OverlayRegistry.registerOverlayTop(name, overlay);
