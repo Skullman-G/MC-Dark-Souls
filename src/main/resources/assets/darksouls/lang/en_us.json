@@ -321,6 +321,7 @@
 	"ingame.show_health_indicator": "Show Health Bar Indicator",
 	"ingame.dark_souls_ui": "Dark Souls UI",
 	"ingame.dark_souls_hud_layout": "Dark Souls HUD Layout",
+	"ingame.only_shouldersurf_when_aiming": "Only Shouldersurf Camera when aiming",
 	
 	"stat.darksouls.vigor": "Vigor",
 	"stat.darksouls.endurance": "Endurance",

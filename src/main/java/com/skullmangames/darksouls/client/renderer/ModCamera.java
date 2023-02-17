@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.client.renderer;
 import java.util.Random;
 
 import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
 import net.minecraft.client.Camera;
@@ -17,7 +18,10 @@ public class ModCamera extends Camera
 {
 	private Vector2f pivotRot = Vector2f.ZERO;
 	private Vector2f pivotRotOld = Vector2f.ZERO;
-	private double aimZ = 0.0D;
+	private double xo;
+	private double yo;
+	private double zo;
+	private float anim;
 	private int shakeDuration;
 	private float shakeMagnitude;
 	private final Random random = new Random();
@@ -35,30 +39,32 @@ public class ModCamera extends Camera
 	    
 	    if (detached)
 	    {
-	    	if (ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+	    	if (ClientManager.INSTANCE.getPlayerCap().shouldShoulderSurf())
 	    	{
-	    		this.move(-this.getMaxZoom(4.0D), 0.25D, this.aimZ);
+	    		this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
 	    		
 	    		this.pivotRotOld.y = entity.xRotO;
 	    		this.pivotRotOld.x = entity.yRotO;
 	    		this.pivotRot.y = entity.xRot;
 	    		this.pivotRot.x = entity.yRot;
 	    		
-	    		if (this.aimZ > -2D) this.aimZ = Math.max(this.aimZ - 0.1D * partialTick, -2D);
+	    		if (this.zo > 0D) this.anim = 0;
+	    		this.updatePosO(3.0D, 0.25D, -1D, partialTick);
 	    	}
 	    	else
 	    	{
 	    		float xRot = this.getPivotXRot(partialTick);
 	    		float yRot = this.getPivotYRot(partialTick);
 	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
-		    	this.move(-this.getMaxZoom(4.0D), 0.25D, this.aimZ);
+		    	this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
 		    	
 		    	entity.xRotO = 0;
 		    	entity.xRot = 0;
 		    	this.pivotRotOld.x = xRot;
 		    	this.pivotRotOld.y = yRot;
 		    	
-		    	if (this.aimZ < 0D) this.aimZ = Math.min(this.aimZ + 0.1D * partialTick, 0D);
+		    	if (this.zo < 0D) this.anim = 0;
+		    	this.updatePosO(4.0D, 0.25D, 0D, partialTick);
 	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
@@ -74,6 +80,23 @@ public class ModCamera extends Camera
 	    	this.move(0, y, 0);
 	    	this.shakeDuration--;
 	    }
+	}
+	
+	private void updatePosO(double x, double y, double z, float partialTick)
+	{
+		if (this.anim < 1)
+		{
+			this.anim = MathUtils.clamp(this.anim + 0.05F * partialTick, 0, 1);
+			this.xo = Mth.lerp(this.anim, this.xo, x);
+			this.yo = Mth.lerp(this.anim, this.yo, y);
+			this.zo = Mth.lerp(this.anim, this.zo, z);
+		}
+		else
+		{
+			this.xo = x;
+			this.yo = y;
+			this.zo = z;
+		}
 	}
 	
 	public void shake(int duration, float magnitude)

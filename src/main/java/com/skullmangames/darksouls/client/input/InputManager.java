@@ -295,7 +295,7 @@ public class InputManager
 			if (this.sprintPressCounter < 5 && this.playerCanDodge(playerState))
 			{
 				DodgeType dodgeType = DodgeType.JUMP_BACK;
-				if (this.playerCap.getTarget() != null)
+				if (this.playerCap.getTarget() != null || this.playerCap.shouldShoulderSurf())
 				{
 					if (this.isKeyDown(this.options.keyUp)) dodgeType = DodgeType.FORWARD;
 					else if (this.isKeyDown(this.options.keyDown)) dodgeType = DodgeType.BACK;
@@ -483,7 +483,7 @@ public class InputManager
 				float left = event.getInput().leftImpulse;
 				float rot = 0.0F;
 				
-				if (!inputManager.playerCap.getClientAnimator().isAiming()
+				if (!inputManager.playerCap.shouldShoulderSurf()
 					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
 				{
 					boolean w = event.getInput().up;
@@ -528,7 +528,7 @@ public class InputManager
 				event.getInput().leftImpulse = left;
 				
 			}
-			else if (!inputManager.playerCap.getClientAnimator().isAiming() && minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
+			else if (!inputManager.playerCap.shouldShoulderSurf() && minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
 			{
 				if (inputManager.player.getVehicle() != null)
 				{
@@ -572,7 +572,7 @@ public class InputManager
 					event.getInput().forwardImpulse = forward;
 					event.getInput().leftImpulse = left;
 				}
-				else if (!inputManager.playerCap.getClientAnimator().isAiming())
+				else if (!inputManager.playerCap.shouldShoulderSurf())
 				{
 					float forward = 0.0F;
 					float left = 0.0F;
@@ -620,11 +620,6 @@ public class InputManager
 						event.getInput().leftImpulse = left;
 					}
 				}
-			}
-			else if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON && !playerState.isRotationLocked())
-			{
-				inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
-				inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
 			}
 			
 			if (inputManager.playerCap.isBlocking())

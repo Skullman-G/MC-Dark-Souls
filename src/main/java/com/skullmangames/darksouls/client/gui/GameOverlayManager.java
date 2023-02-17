@@ -346,8 +346,8 @@ public class GameOverlayManager
 		
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
-		int x = dsLayout ? 30 : width / 2 + 7;
-		int y = dsLayout ? 28 : height - 49;
+		int x = dsLayout ? 10 : width / 2 + 7;
+		int y = dsLayout ? 18 : height - 49;
 		if (!dsLayout) gui.right_height += 10;
 		int length = dsLayout ? (int)(player.getMaxFP() / Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL) * 150)
 				: 88;
@@ -534,8 +534,8 @@ public class GameOverlayManager
 	{
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
-		int x = dsLayout ? 30 : width / 2 - 96;
-		int y = dsLayout ? 20 : height - 39;
+		int x = dsLayout ? 10 : width / 2 - 96;
+		int y = dsLayout ? 10 : height - 39;
 		if (!dsLayout) gui.left_height += 10;
 		int length = dsLayout ? (int)(getCameraPlayer().getMaxHealth() / Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL) * 150)
 				: 88;
@@ -608,8 +608,8 @@ public class GameOverlayManager
 		
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
-		int x = dsLayout ? 30 : width / 2 + 7;
-		int y = dsLayout ? 36 : height - 39;
+		int x = dsLayout ? 10 : width / 2 + 7;
+		int y = dsLayout ? 26 : height - 39;
 		if (!dsLayout) gui.right_height += 10;
 		int length = dsLayout ? (int)(player.getMaxStamina() / Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL) * 150)
 				: 88;
