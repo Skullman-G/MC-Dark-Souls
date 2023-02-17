@@ -131,7 +131,8 @@ public class PlayerStatsScreen extends Screen
 		
 		float maxEquipLoad = this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, null, this.displayedStats.get(Stats.VITALITY).intValue());
 		int maxEquipLoadColor = (float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Max Equip Load: " + MathUtils.round(maxEquipLoad, 100), secondX, y + 88, maxEquipLoadColor);
+		double equipLoad = this.player.getAttributeValue(ModAttributes.EQUIP_LOAD.get());
+		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 10) + " / " + MathUtils.round(maxEquipLoad, 10), secondX, y + 88, maxEquipLoadColor);
 		
 		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT).intValue());
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;

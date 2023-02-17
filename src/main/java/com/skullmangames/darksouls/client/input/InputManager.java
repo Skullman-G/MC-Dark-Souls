@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
@@ -239,10 +240,11 @@ public class InputManager
 		
 		if (this.sprintToggle)
 		{
-			if (!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F)
+			boolean overencumbered = this.playerCap.getEquipLoadLevel() == EquipLoadLevel.OVERENCUMBERED;
+			if ((!this.player.isCreative() && this.playerCap.getStamina() <= 0.0F) || overencumbered)
 			{
 				this.player.setSprinting(false);
-				this.sprintToggle = false;
+				if (!overencumbered) this.sprintToggle = false;
 			}
 		}
 		else if (this.isKeyDown(this.options.keySprint) && (this.playerCap.getStamina() / this.playerCap.getMaxStamina()) >= 0.7F)
@@ -275,7 +277,8 @@ public class InputManager
 				&& (float)this.player.getFoodData().getFoodLevel() > 6.0F
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& !this.player.hasEffect(Effects.BLINDNESS)
-				&& (vector2f.x != 0.0F || vector2f.y != 0.0F);
+				&& (vector2f.x != 0.0F || vector2f.y != 0.0F)
+				&& this.playerCap.getEquipLoadLevel() != EquipLoadLevel.OVERENCUMBERED;
 	}
 	
 	private void handleSprintAction(EntityState playerState)
@@ -292,7 +295,7 @@ public class InputManager
 			if (this.sprintPressCounter < 5 && this.playerCanDodge(playerState))
 			{
 				DodgeType dodgeType = DodgeType.JUMP_BACK;
-				if (this.playerCap.getTarget() != null)
+				if (this.playerCap.getTarget() != null || this.playerCap.shouldShoulderSurf())
 				{
 					if (this.isKeyDown(this.options.keyUp)) dodgeType = DodgeType.FORWARD;
 					else if (this.isKeyDown(this.options.keyDown)) dodgeType = DodgeType.BACK;
@@ -480,7 +483,7 @@ public class InputManager
 				float left = event.getMovementInput().leftImpulse;
 				float rot = 0.0F;
 				
-				if (!inputManager.playerCap.getClientAnimator().isAiming()
+				if (!inputManager.playerCap.shouldShoulderSurf()
 					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
 				{
 					boolean w = event.getMovementInput().up;
@@ -525,7 +528,7 @@ public class InputManager
 				event.getMovementInput().leftImpulse = left;
 				
 			}
-			else if (!inputManager.playerCap.getClientAnimator().isAiming() && minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
+			else if (!inputManager.playerCap.shouldShoulderSurf() && minecraft.options.getCameraType() != PointOfView.FIRST_PERSON)
 			{
 				if (inputManager.player.getVehicle() != null)
 				{
@@ -617,11 +620,6 @@ public class InputManager
 						event.getMovementInput().leftImpulse = left;
 					}
 				}
-			}
-			else if (minecraft.options.getCameraType() != PointOfView.FIRST_PERSON && !playerState.isRotationLocked())
-			{
-				inputManager.player.yRot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
-				inputManager.player.xRot = ClientManager.INSTANCE.mainCamera.getPivotYRot(1.0F);
 			}
 			
 			if (inputManager.playerCap.isBlocking())

@@ -32,7 +32,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 
-public abstract class PlayerCap<T extends PlayerEntity> extends LivingCap<T>
+public abstract class PlayerCap<T extends PlayerEntity> extends LivingCap<T> implements EquipLoaded
 {
 	protected float yaw;
 	protected int tickSinceLastAction;
@@ -67,6 +67,13 @@ public abstract class PlayerCap<T extends PlayerEntity> extends LivingCap<T>
 		{
 			this.orgEntity.inventory.add(new ItemStack(ModItems.DARKSIGN.get()));
 		}
+	}
+	
+	@Override
+	protected void initAttributes()
+	{
+		super.initAttributes();
+		this.orgEntity.getAttribute(ModAttributes.MAX_EQUIP_LOAD.get()).setBaseValue(25.0D);
 	}
 	
 	public SpellInventory getAttunements()
@@ -352,5 +359,29 @@ public abstract class PlayerCap<T extends PlayerEntity> extends LivingCap<T>
 	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
 		return HumanoidCap.getHumanoidHitAnimation(this, dmgSource);
+	}
+	
+	@Override
+	public float getEncumbrance()
+	{
+		return (float) (this.orgEntity.getAttributeValue(ModAttributes.EQUIP_LOAD.get())
+				/ this.orgEntity.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()));
+	}
+
+	@Override
+	public EquipLoadLevel getEquipLoadLevel()
+	{
+		float e = this.getEncumbrance();
+
+		if (e <= 0.0F)
+			return EquipLoadLevel.NONE;
+		else if (e <= 0.25F)
+			return EquipLoadLevel.LIGHT;
+		else if (e <= 0.50F)
+			return EquipLoadLevel.MEDIUM;
+		else if (e <= 1.00F)
+			return EquipLoadLevel.HEAVY;
+		else
+			return EquipLoadLevel.OVERENCUMBERED;
 	}
 }

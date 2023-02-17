@@ -1,6 +1,9 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
@@ -50,7 +53,7 @@ public class AimHelperRenderer
 		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.lineWidth(3.0F);
-		bufferBuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(matrix, pos1.x(), pos1.y(), pos1.z()).color(f1, f2, f3, 0.5F).endVertex();
 		bufferBuilder.vertex(matrix, pos2.x(), pos2.y(), pos2.z()).color(f1, f2, f3, 0.5F).endVertex();
 		tesselator.end();

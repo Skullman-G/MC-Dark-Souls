@@ -2,9 +2,9 @@ package com.skullmangames.darksouls.common.animation;
 
 import java.util.List;
 
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
@@ -86,12 +86,11 @@ public class TransformSheet
 		return vec3f;
 	}
 
-	public Quaternion getInterpolatedRotation(float currentTime)
+	public ModQuaternion getInterpolatedRotation(float currentTime)
 	{
 		InterpolationInfo interpolInfo = this.getInterpolationInfo(currentTime);
-		Quaternion quat = MathUtils.lerpQuaternion(this.keyframes[interpolInfo.prev].transform().rotation(),
+		return ModQuaternion.lerp(this.keyframes[interpolInfo.prev].transform().rotation(),
 				this.keyframes[interpolInfo.next].transform().rotation(), interpolInfo.zero2One);
-		return quat;
 	}
 
 	public JointTransform getInterpolatedTransform(float currentTime)

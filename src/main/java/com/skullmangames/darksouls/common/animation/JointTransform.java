@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.common.animation;
 
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+
+import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.util.math.MathHelper;
@@ -12,9 +13,9 @@ public class JointTransform
 {
 	private Vector3f translation;
 	private Vector3f scale;
-	private Quaternion rotation;
+	private ModQuaternion rotation;
 
-	public JointTransform(Vector3f position, Quaternion rotation, Vector3f scale)
+	public JointTransform(Vector3f position, ModQuaternion rotation, Vector3f scale)
 	{
 		this.translation = position;
 		this.rotation = rotation;
@@ -26,7 +27,7 @@ public class JointTransform
 		return translation;
 	}
 
-	public Quaternion rotation()
+	public ModQuaternion rotation()
 	{
 		return rotation;
 	}
@@ -44,10 +45,10 @@ public class JointTransform
 	public JointTransform copyFrom(JointTransform jt)
 	{
 		Vector3f newV = jt.translation();
-		Quaternion newQ = jt.rotation();
+		ModQuaternion newQ = jt.rotation();
 		Vector3f newS = jt.scale;
 		this.translation.set(newV.x(), newV.y(), newV.z());
-		this.rotation.set(newQ.i(), newQ.j(), newQ.k(), newQ.r());
+		this.rotation.set(newQ);
 		this.scale.set(newS.x(), newS.y(), newS.z());
 
 		return this;
@@ -74,7 +75,7 @@ public class JointTransform
 	private static JointTransform interpolateSimple(JointTransform prev, JointTransform next, float progression)
 	{
 		return new JointTransform(MathUtils.lerpVector(prev.translation, next.translation, progression),
-				MathUtils.lerpQuaternion(prev.rotation, next.rotation, progression),
+				ModQuaternion.lerp(prev.rotation, next.rotation, progression),
 				MathUtils.lerpVector(prev.scale, next.scale, progression));
 	}
 
@@ -95,17 +96,17 @@ public class JointTransform
 
 	public static JointTransform getTranslation(Vector3f vec)
 	{
-		return JointTransform.translationRotation(vec, new Quaternion(0.0F, 0.0F, 0.0F, 1.0F));
+		return JointTransform.translationRotation(vec, new ModQuaternion(0.0F, 0.0F, 0.0F, 1.0F));
 	}
 
-	public static JointTransform getRotation(Quaternion quat)
+	public static JointTransform getRotation(ModQuaternion quat)
 	{
 		return JointTransform.translationRotation(new Vector3f(0.0F, 0.0F, 0.0F), quat);
 	}
 
 	public static JointTransform getScale(Vector3f vec)
 	{
-		return new JointTransform(new Vector3f(1.0F, 1.0F, 1.0F), new Quaternion(0.0F, 0.0F, 0.0F, 1.0F), vec);
+		return new JointTransform(new Vector3f(1.0F, 1.0F, 1.0F), new ModQuaternion(0.0F, 0.0F, 0.0F, 1.0F), vec);
 	}
 
 	public static JointTransform fromMatrix(PublicMatrix4f matrix)
@@ -113,14 +114,14 @@ public class JointTransform
 		return new JointTransform(matrix.toTranslationVector(), matrix.toQuaternion(), matrix.toScaleVector());
 	}
 
-	public static JointTransform translationRotation(Vector3f vec, Quaternion quat)
+	public static JointTransform translationRotation(Vector3f vec, ModQuaternion quat)
 	{
 		return new JointTransform(vec, quat, new Vector3f(1.0F, 1.0F, 1.0F));
 	}
 
 	public static JointTransform empty()
 	{
-		return new JointTransform(new Vector3f(0.0F, 0.0F, 0.0F), new Quaternion(0.0F, 0.0F, 0.0F, 1.0F),
+		return new JointTransform(new Vector3f(0.0F, 0.0F, 0.0F), new ModQuaternion(0.0F, 0.0F, 0.0F, 1.0F),
 				new Vector3f(1.0F, 1.0F, 1.0F));
 	}
 }

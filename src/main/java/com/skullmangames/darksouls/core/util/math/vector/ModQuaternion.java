@@ -1,10 +1,11 @@
 package com.skullmangames.darksouls.core.util.math.vector;
 
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class ModQuaternion
 {
-	private float x, y, z, w;
+	public float x, y, z, w;
 
 	public ModQuaternion(float x, float y, float z, float w)
 	{
@@ -13,6 +14,19 @@ public class ModQuaternion
 		this.z = z;
 		this.w = w;
 		normalize();
+	}
+	
+	public void set(ModQuaternion q)
+	{
+		this.set(q.x, q.y, q.z, q.w);
+	}
+
+	public void set(float x, float y, float z, float w)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 	}
 
 	public void normalize()
@@ -23,6 +37,37 @@ public class ModQuaternion
 		y /= mag;
 		z /= mag;
 	}
+	
+	public ModQuaternion mulRight(ModQuaternion right)
+	{
+		this.x = this.w * right.x + this.x * right.w + this.y * right.z - this.z * right.y;
+		this.y = this.w * right.y - this.x * right.z + this.y * right.w + this.z * right.x;
+		this.z = this.w * right.z + this.x * right.y - this.y * right.x + this.z * right.w;
+		this.w = this.w * right.w - this.x * right.x - this.y * right.y - this.z * right.z;
+
+		return this;
+	}
+
+	public ModQuaternion mulRight(Quaternion right)
+	{
+		return this.mulRight(new ModQuaternion(right.i(), right.j(), right.k(), right.r()));
+	}
+
+	public ModQuaternion mulLeft(ModQuaternion left)
+	{
+		this.x = left.w * this.x + left.x * this.w + left.y * this.z - left.z * this.y;
+		this.y = left.w * this.y - left.x * this.z + left.y * this.w + left.z * this.x;
+		this.z = left.w * this.z + left.x * this.y - left.y * this.x + left.z * this.w;
+		this.w = left.w * this.w - left.x * this.x - left.y * this.y - left.z * this.z;
+
+		return this;
+	}
+
+	public ModQuaternion mulLeft(Quaternion left)
+	{
+		return this.mulLeft(new ModQuaternion(left.i(), left.j(), left.k(), left.r()));
+	}
+
 
 	public PublicMatrix4f toRotationMatrix()
 	{
@@ -87,7 +132,7 @@ public class ModQuaternion
 		return new ModQuaternion(x, y, z, w);
 	}
 
-	public static ModQuaternion interpolate(ModQuaternion a, ModQuaternion b, float blend)
+	public static ModQuaternion lerp(ModQuaternion a, ModQuaternion b, float blend)
 	{
 		ModQuaternion result = new ModQuaternion(0, 0, 0, 1);
 		float dot = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
@@ -128,6 +173,11 @@ public class ModQuaternion
 		rotMat.rotate(degree, axis);
 		PublicMatrix4f.mul(quatmat, rotMat,  quatmat);
 		return ModQuaternion.fromMatrix(quatmat);
+	}
+	
+	public Quaternion vanilla()
+	{
+		return new Quaternion(this.x, this.y, this.z, this.w);
 	}
 	
 	@Override

@@ -64,7 +64,7 @@ public class MouseInputManager extends MouseHelper
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        	}
-	        	else if (ClientManager.INSTANCE.getPlayerCap().getClientAnimator().isAiming())
+	        	else if (ClientManager.INSTANCE.getPlayerCap().shouldShoulderSurf())
 	        	{
 	        		this.minecraft.player.turn(d2, d3 * (double)i);
 	        		this.minecraft.player.yBodyRot = (float)((double)this.minecraft.player.yRot + d1);

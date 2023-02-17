@@ -33,7 +33,7 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> MAX_STAMINA = registerRangedAttribute("max_stamina", 20.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> POISE = registerRangedAttribute("poise", 0.0D, 0.0D, 1024.0D);
 	public static final RegistryObject<Attribute> POISE_DAMAGE = registerRangedAttribute("poise_damage", 1.0D, 1.0D, 1024.0D);
-	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 50.0D, 50.0D, 150.0D);
+	public static final RegistryObject<Attribute> MAX_EQUIP_LOAD = registerRangedAttribute("max_equip_load", 25.0D, 25.0D, 100.0D);
 	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 150.0D);
 	public static final RegistryObject<Attribute> MAX_FOCUS_POINTS = registerRangedAttribute("max_focus_points", 10.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> ATTUNEMENT_SLOTS = registerRangedAttribute("attunement_slots", 1.0D, 1.0D, 10.0D);
