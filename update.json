@@ -17,7 +17,8 @@
     	
     	"0.3.2": "See changelog of MC: Dark Souls 1.18.2 0.3.2 (Legends of Lordran)",
     	"0.3.3": "See changelog of MC: Dark Souls 1.18.2 0.3.3 (Legends of Lordran)",
-    	"0.4.0": "See changelog og MC: Dark Souls 1.18.2 0.4.0 (Miracles of the Gods)"
+    	"0.4.0": "See changelog og MC: Dark Souls 1.18.2 0.4.0 (Miracles of the Gods)",
+    	"0.4.1": "See changelog og MC: Dark Souls 1.18.2 0.4.1 (Miracles of the Gods)"
     },
     "1.18.2":
     { 
@@ -25,15 +26,16 @@
     	"0.3.1": "-Bonfire ambient sound is now on loop\n-Humanity and souls containers spawn particles\n-Removed weak attack animation\n-Added jump back dodge animation for player and some enemies\n-Added skirt model\n-Made the player able to toggle combat mode on and off in first person\n-Fixed advancements not loading\n-Stray demon no longer gets fall damage from jumping attack\n-Synchronized blocking animation to walking and running animations\n-Removed shield clipping into the player from most animations\n-Fixed a bug where the loading screen would not disappear when starting with Optifine (#9)\n-Fixed a bug where the mod would crash when starting with the epic fight mod (#9)\n-Player can fight when standing in water now\n-Player cannot change weapon while attacking anymore\n-Enemy animations are now synchronized with their movement to look less wonky\n-Fixed size of the sword collider\n-Fixed networking issues",
     	"0.3.2": "-Updated health bar indicator\n-Updated player gui bars\n-Updated Boss bars\n-Added an animation to the soul display\n-Some enemies can use Estus Flasks now\n-Updated enemy AI\n-Added a sitting animation for Anastacia\n-NPC dialogues can now be skipped by clicking\n-Attack presses get reserved now\n-Shortened the distance between Lordran camps and fire keeper ruins\n-Fixed looping digging animation\n-Fixed the enemy drop rate\n-Replaced the hit sound during shield block with new block sound\n-Fixed texture bug on hollow soldier armor\n-Fixed health not max when respawned",
       	"0.3.3": "-Added new advancement 'Level Up'\n-Physical Defense for shields and weapons gets displayed in the tooltip\n-Fixed shield block not working for vanilla mobs",
-    	"0.4.0": "-FP bar\n-Attunement stat\n-Faith stat\n-Bonfire activate particle\n-Bonfire teleport\n-Lock on system\n-Riding Animations\n-Fighting on Horseback\n-Immersive hit/death animations\n-Camera shake\n-Blood particles\n-Spark particles\n-Backstab\n-Ashen Estus Flask\n-Talisman\n-Miracle: Heal Aid\n-Miracle: Heal\n-Miracle: Homeward\n-Miracle: Force\n-Miracle: Lightning Spear\n-Miracle: Great Lightning Spear\n-Thorolund Talisman\n-Elite Cleric Set\n-Knight Shield\n-Mace\n-Sunlight Medal\n-Falconer Set\n-Golden Falcon Shield\n-Sunlight Altar\n-Petrus of Thorolund\n-Hollow Falconer\n-Souls command: Lets the player manipulate the amount of souls an entity has\n-Humanity command: Lets the player manipulate the amount of humanity an entity has"
+    	"0.4.0": "-FP bar\n-Attunement stat\n-Faith stat\n-Bonfire activate particle\n-Bonfire teleport\n-Lock on system\n-Riding Animations\n-Fighting on Horseback\n-Immersive hit/death animations\n-Camera shake\n-Blood particles\n-Spark particles\n-Backstab\n-Ashen Estus Flask\n-Talisman\n-Miracle: Heal Aid\n-Miracle: Heal\n-Miracle: Homeward\n-Miracle: Force\n-Miracle: Lightning Spear\n-Miracle: Great Lightning Spear\n-Thorolund Talisman\n-Elite Cleric Set\n-Knight Shield\n-Mace\n-Sunlight Medal\n-Falconer Set\n-Golden Falcon Shield\n-Sunlight Altar\n-Petrus of Thorolund\n-Hollow Falconer\n-Souls command: Lets the player manipulate the amount of souls an entity has\n-Humanity command: Lets the player manipulate the amount of humanity an entity has",
+    	"0.4.1": "-Dark Souls style HUD (can be enabled in the ingame config)\n-Player can no longer roll when overencumbered\n-Lowered the start amount of max equip load\n-Camera always enters shoulder surfing mode when equipping a bow (can be disabled in the ingame config)\n-Updated to newest forge version\n-Removed the lag when aiming\n-Player can roll in different directions when aiming"
     },
     
     "promos":
     {
-      "1.16.5-latest": "0.4.0",
-      "1.16.5-recommended": "0.4.0",
+      "1.16.5-latest": "0.4.1",
+      "1.16.5-recommended": "0.4.1",
       
-      "1.18.2-latest": "0.4.0",
-      "1.18.2-recommended": "0.4.0"
+      "1.18.2-latest": "0.4.1",
+      "1.18.2-recommended": "0.4.1"
     }
   }
