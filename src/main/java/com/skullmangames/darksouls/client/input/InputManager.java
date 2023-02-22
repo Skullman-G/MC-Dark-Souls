@@ -125,7 +125,8 @@ public class InputManager
 	
 	public boolean playerCanDodge(EntityState playerState)
 	{
-		return !this.player.isSpectator()
+		return ClientManager.INSTANCE.isCombatModeActive() 
+				&&!this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isUnderWater()
@@ -137,7 +138,7 @@ public class InputManager
 	
 	private void onTrySelectTarget(int key, int action)
 	{
-		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive() && !this.options.getCameraType().isFirstPerson())
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
 		{
 			this.playerCap.updateTarget();
 		}
@@ -182,7 +183,7 @@ public class InputManager
 	
 	private void onAttackKeyPressed(int key, int action)
 	{
-		if (action == 1 && (ClientManager.INSTANCE.isCombatModeActive() || !this.options.getCameraType().isFirstPerson()))
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
 		{
 			this.setKeyBind(options.keyAttack, false);
 			while(options.keyAttack.consumeClick()) {}
@@ -392,20 +393,20 @@ public class InputManager
 		{
 			if (event.isAttack())
 			{
-				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				if (ClientManager.INSTANCE.isCombatModeActive())
 				{
 					event.setSwingHand(false);
 				}
 				
 				if (minecraft.hitResult.getType() == HitResult.Type.ENTITY
-						|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && (ClientManager.INSTANCE.isCombatModeActive())))
+						|| (minecraft.hitResult.getType() == HitResult.Type.BLOCK && ClientManager.INSTANCE.isCombatModeActive()))
 				{
 					event.setCanceled(true);
 				}
 			}
 			else if (event.isPickBlock())
 			{
-				if (!minecraft.options.getCameraType().isFirstPerson() || ClientManager.INSTANCE.isCombatModeActive())
+				if (ClientManager.INSTANCE.isCombatModeActive())
 				{
 					event.setCanceled(true);
 				}

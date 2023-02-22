@@ -23,6 +23,7 @@ public class ServerConfig
 	
 	public ServerConfig(ForgeConfigSpec.Builder config, Map<String, Object> values)
 	{
+		// Default Config
 		String weaponKey = "weapon_config";
 		if(values.get(weaponKey) == null)
 		{
@@ -54,6 +55,7 @@ public class ServerConfig
 			config.defineInRange(shieldKey+".sample_shield.lightning_defense", 0.0F, 0.0F, 1.0F);
 		}
 		
+		// Init
 		if (values.get(weaponKey) != null)
 		{
 			List<Map.Entry<String, Object>> entries = new LinkedList<>(((AbstractCommentedConfig)values.get(weaponKey)).valueMap().entrySet());
@@ -78,14 +80,14 @@ public class ServerConfig
 		    Collections.sort(entries, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));
 			for (Map.Entry<String, Object> entry : entries)
 			{
-				ConfigValue<String> registryName = config.define(weaponKey+"."+entry.getKey()+".registry_name", "null");
-				ConfigValue<WeaponCategory> category = config.defineEnum(weaponKey+"."+entry.getKey()+".category", WeaponCategory.NONE_WEAON);
-				ConfigValue<Integer> reqStrength = config.define(weaponKey+"."+entry.getKey()+".required_strength", 0);
-				ConfigValue<Integer> reqDex = config.define(weaponKey+"."+entry.getKey()+".required_dexterity", 0);
-				ConfigValue<Integer> reqFaith = config.define(weaponKey+"."+entry.getKey()+".required_faith", 0);
-				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
-				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
-				ConfigValue<Scaling> faithScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
+				ConfigValue<String> registryName = config.define(shieldKey+"."+entry.getKey()+".registry_name", "null");
+				ConfigValue<WeaponCategory> category = config.defineEnum(shieldKey+"."+entry.getKey()+".category", WeaponCategory.NONE_WEAON);
+				ConfigValue<Integer> reqStrength = config.define(shieldKey+"."+entry.getKey()+".required_strength", 0);
+				ConfigValue<Integer> reqDex = config.define(shieldKey+"."+entry.getKey()+".required_dexterity", 0);
+				ConfigValue<Integer> reqFaith = config.define(shieldKey+"."+entry.getKey()+".required_faith", 0);
+				ConfigValue<Scaling> strengthScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
+				ConfigValue<Scaling> dexScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
+				ConfigValue<Scaling> faithScaling = config.defineEnum(shieldKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
 				
 				ConfigValue<ShieldType> shieldType = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_type", ShieldType.NONE);
 				ConfigValue<ShieldMat> shieldMat = config.defineEnum(shieldKey+"."+entry.getKey()+".shield_material", ShieldMat.WOOD);

@@ -71,7 +71,7 @@ public class ClientManager
 	
 	public void toggleCombatMode()
 	{
-		this.combatModeActive = !this.combatModeActive;
+		this.setCombatModeActive(!this.combatModeActive);
 	}
 	
 	public boolean isCombatModeActive()
@@ -79,11 +79,16 @@ public class ClientManager
 		return this.combatModeActive;
 	}
 	
+	public void setCombatModeActive(boolean value)
+	{
+		this.combatModeActive = value;
+	}
+	
 	public void switchToFirstPerson()
 	{
 		this.options.setCameraType(CameraType.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
-		this.combatModeActive = false;
+		this.setCombatModeActive(false);
 		this.getPlayerCap().removeTarget();
 	}
 	
@@ -96,7 +101,7 @@ public class ClientManager
 		this.playerCap.getOriginalEntity().xRotO = 0.0F;
 		float x = this.playerCap.getOriginalEntity().yRot;
 		this.playerCap.rotateTo(x, 180.0F, true);
-		this.combatModeActive = true;
+		this.setCombatModeActive(true);
 	}
 	
 	public void setPlayerCap(LocalPlayerCap playerCap)

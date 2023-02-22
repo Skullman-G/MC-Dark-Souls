@@ -172,8 +172,7 @@ public class DarkSouls
 
 	private void doClientStuff(final FMLClientSetupEvent event)
 	{
-		if (FMLEnvironment.dist.isDedicatedServer())
-			return;
+		if (FMLEnvironment.dist.isDedicatedServer()) return;
 
 		new ClientManager();
 

@@ -143,7 +143,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	
 	public void performDodge(DodgeType type)
 	{
-		if (this.isFirstPerson()) return;
 		ModNetworkManager.sendToServer(new CTSPerformDodge(type));
 	}
 	
