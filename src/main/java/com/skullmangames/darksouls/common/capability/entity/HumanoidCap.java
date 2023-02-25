@@ -3,10 +3,15 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
+import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
+
+import javax.annotation.Nullable;
+
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -33,7 +38,12 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			
 			if(!(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob) && this.isArmed())
 			{
-				this.setAttackGoals(heldItem.getWeaponCategory());
+				WeaponMoveset moveset = null;
+				if (heldItem instanceof MeleeWeaponCap)
+				{
+					moveset = ((MeleeWeaponCap)heldItem).getWeaponMoveset();
+				}
+				this.setAttackGoals(heldItem.getWeaponCategory(), moveset);
 			}
 		}
 	}
@@ -45,7 +55,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setAttackGoals(WeaponCategory category)
+	public void setAttackGoals(WeaponCategory category, @Nullable WeaponMoveset moveset)
 	{
 		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
 		{
@@ -73,7 +83,13 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		
 		if(!isMount && this.isArmed())
 		{
-			this.setAttackGoals(ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem()).getWeaponCategory());
+			WeaponCap heldItem = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
+			WeaponMoveset moveset = null;
+			if (heldItem instanceof MeleeWeaponCap)
+			{
+				moveset = ((MeleeWeaponCap)heldItem).getWeaponMoveset();
+			}
+			this.setAttackGoals(heldItem.getWeaponCategory(), moveset);
 		}
 	}
 	

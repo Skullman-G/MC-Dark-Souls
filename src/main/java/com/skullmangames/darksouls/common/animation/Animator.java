@@ -38,13 +38,13 @@ public abstract class Animator
 
 	public final void playAnimation(int id, float convertTimeModifier)
 	{
-		this.playAnimation(DarkSouls.getInstance().animationManager.findAnimationById(id),
+		this.playAnimation(DarkSouls.getInstance().animationManager.getById(id),
 				convertTimeModifier);
 	}
 
 	public final void playAnimationInstantly(int id)
 	{
-		this.playAnimationInstantly(DarkSouls.getInstance().animationManager.findAnimationById(id));
+		this.playAnimationInstantly(DarkSouls.getInstance().animationManager.getById(id));
 	}
 
 	public Pose getPose(float partialTicks)

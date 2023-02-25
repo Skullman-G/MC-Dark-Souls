@@ -21,7 +21,7 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 	private final Map<ResourceLocation, StaticAnimation> animationByName = new HashMap<>();
 	private int counter = 0;
 
-	public StaticAnimation findAnimationById(int animationId)
+	public StaticAnimation getById(int animationId)
 	{
 		if (this.animationById.containsKey(animationId))
 		{
@@ -31,7 +31,7 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 		throw new IllegalArgumentException("Unable to find animation with id: " + animationId);
 	}
 
-	public StaticAnimation findAnimationByResourceLocation(String resourceLocation)
+	public StaticAnimation getByLocation(String resourceLocation)
 	{
 		ResourceLocation rl = new ResourceLocation(resourceLocation);
 

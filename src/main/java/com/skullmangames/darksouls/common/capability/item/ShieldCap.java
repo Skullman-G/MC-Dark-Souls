@@ -1,10 +1,8 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.google.common.collect.ImmutableMap.Builder;
-import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 
 import net.minecraft.sounds.SoundEvent;
@@ -20,20 +18,12 @@ public class ShieldCap extends MeleeWeaponCap
 	
 	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float fireDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.SHIELD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
+		super(item, WeaponMovesets.SHIELD, Colliders.FIST, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 		this.physicalDefense = Math.min(physicalDef, 1F);
 		this.fireDefense = Math.min(fireDef, 1F);
 		this.lightningDefense = Math.min(lightningDef, 1F);
 		this.shieldType = shieldType;
 		this.shieldMat = shieldMat;
-	}
-	
-	@Override
-	protected Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
-	{
-		Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder = super.initMoveset();
-		this.putMove(builder, AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK);
-		return builder;
 	}
 	
 	@Override

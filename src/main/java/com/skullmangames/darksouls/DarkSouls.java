@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -43,6 +45,7 @@ import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.data.WeaponMovesetProvider;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
@@ -61,6 +64,7 @@ import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.QuestFlags;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -85,6 +89,7 @@ public class DarkSouls
 
 	private static DarkSouls instance;
 	public final AnimationManager animationManager;
+	public final WeaponMovesets weaponMovesets;
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
 	public static DarkSouls getInstance()
@@ -95,6 +100,7 @@ public class DarkSouls
 	public DarkSouls()
 	{
 		this.animationManager = new AnimationManager();
+		this.weaponMovesets = new WeaponMovesets();
 		instance = this;
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_CONFIG, CONFIG_FILE_PATH);
@@ -114,6 +120,7 @@ public class DarkSouls
 		modBus.addListener(this::doServerStuff);
 		modBus.addListener(ModAttributes::createAttributeMap);
 		modBus.addListener(ModAttributes::modifyAttributeMap);
+		modBus.addListener(this::onGatherData);
 
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 		
@@ -141,6 +148,16 @@ public class DarkSouls
 		ConfigManager.INGAME_CONFIG.populateDefaultValues();
 		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
+	}
+	
+	private void onGatherData(GatherDataEvent event)
+	{
+		DataGenerator generator = event.getGenerator();
+
+        if (event.includeServer())
+        {
+            generator.addProvider(new WeaponMovesetProvider(generator));
+        }
 	}
 	
 	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)
@@ -191,6 +208,7 @@ public class DarkSouls
 
 		// Register ReloadListeners
 		((ReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
+		((ReloadableResourceManager) resourceManager).registerReloadListener(this.weaponMovesets);
 
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
