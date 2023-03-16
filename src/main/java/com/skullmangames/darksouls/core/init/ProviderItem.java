@@ -24,7 +24,6 @@ import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.capability.item.WingedSpearCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.ServerConfig.ShieldConfig;
@@ -138,8 +137,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
 			Item item = ForgeRegistries.ITEMS.getValue(name);
 			if (!(item instanceof SwordItem || item instanceof DiggerItem)) continue;
-			WeaponMoveset moveset = WeaponMovesets.WEAPON_MOVESETS.getOrDefault(configWeapon.moveset.get(), WeaponMovesets.FIST);
-			putCap(new MeleeWeaponCap(item, moveset, Colliders.SHORTSWORD,
+			putCap(new MeleeWeaponCap(item, new ResourceLocation(configWeapon.moveset.get()), Colliders.SHORTSWORD,
 					configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
 					configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
 		}
@@ -193,7 +191,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		return cap == ModCapabilities.CAPABILITY_ITEM ? optional.cast() : LazyOptional.empty();
+		return cap == ModCapabilities.CAPABILITY_ITEM ? this.optional.cast() : LazyOptional.empty();
 	}
 
 	@Override

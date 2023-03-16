@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -19,6 +20,7 @@ import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,19 +35,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class MeleeWeaponCap extends WeaponCap implements IShield
+public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 {
-	private final WeaponMoveset moveset;
+	private final ResourceLocation movesetId;
+	private WeaponMoveset moveset;
 	private final Collider collider;
 	private final float staminaDamage;
 	
-	public MeleeWeaponCap(Item item, WeaponMoveset moveset, Collider collider, int reqStrength, int reqDex, int reqFaith,
+	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, int reqStrength, int reqDex, int reqFaith,
 			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
 		super(item, WeaponCategory.MELEE_WEAPON, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
-		this.moveset = moveset;
+		this.movesetId = moveset;
+		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.staminaDamage = this.weight * 2;
 		this.collider = collider;
+	}
+	
+	public void reload()
+	{
+		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 	}
 	
 	@Override
@@ -143,9 +152,9 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 		return this.collider;
 	}
 	
-	public WeaponMoveset getWeaponMoveset()
+	public ResourceLocation getWeaponMovesetId()
 	{
-		return this.moveset;
+		return this.movesetId;
 	}
 	
 	@Override
@@ -192,7 +201,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield
 		{
 			for (AttackType type : AttackType.values())
 			{
-				if (type.id == id) return type;
+				if (type.id.equals(id)) return type;
 			}
 			return null;
 		}

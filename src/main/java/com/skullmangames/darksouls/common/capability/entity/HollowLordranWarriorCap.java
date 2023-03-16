@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
@@ -12,6 +11,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
+
+import net.minecraft.resources.ResourceLocation;
 
 public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 {
@@ -41,11 +42,11 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	}
 	
 	@Override
-	public void setAttackGoals(WeaponCategory category, WeaponMoveset moveset)
+	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
-		if (moveset == WeaponMovesets.getByName("straight_sword").get())
+		if (moveset == WeaponMovesets.STRAIGHT_SWORD)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
@@ -54,7 +55,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK))
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
-		else if (moveset == WeaponMovesets.getByName("axe").get())
+		else if (moveset == WeaponMovesets.AXE)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))

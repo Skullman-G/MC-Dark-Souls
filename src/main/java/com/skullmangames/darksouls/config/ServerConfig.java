@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.core.init.Colliders;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.electronwill.nightconfig.core.AbstractCommentedConfig;
 
 import net.minecraft.resources.ResourceLocation;
@@ -29,14 +28,6 @@ public class ServerConfig
 		if(values.get(weaponKey) == null)
 		{
 			config.define(weaponKey+".sample.registry_name", "sample");
-			
-			String movesetComment = "Default Movesets:";
-			for (ResourceLocation r : WeaponMovesets.WEAPON_MOVESETS.keySet())
-			{
-				movesetComment += ", " + r;
-			}
-			config.comment(movesetComment);
-			
 			config.define(weaponKey+".sample.moveset", "darksouls:straight_sword");
 			
 			String colliderComment = "Default Colliders:";
@@ -59,14 +50,6 @@ public class ServerConfig
 		if(values.get(shieldKey) == null)
 		{
 			config.define(shieldKey+".sample_shield.registry_name", "sample_shield");
-			
-			String movesetComment = "Default Movesets:";
-			for (ResourceLocation r : WeaponMovesets.WEAPON_MOVESETS.keySet())
-			{
-				movesetComment += ", " + r;
-			}
-			config.comment(movesetComment);
-			
 			config.define(shieldKey+".sample_shield.moveset", "darksouls:shield");
 			
 			String colliderComment = "Default Colliders:";

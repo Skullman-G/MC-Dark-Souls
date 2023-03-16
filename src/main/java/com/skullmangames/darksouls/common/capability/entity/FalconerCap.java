@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -14,6 +13,7 @@ import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class FalconerCap extends HumanoidCap<Falconer>
@@ -41,7 +41,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 	}
 
 	@Override
-	public void setAttackGoals(WeaponCategory category, WeaponMoveset moveset)
+	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
@@ -51,7 +51,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		}
 		else
 		{
-			if (moveset != WeaponMovesets.getByName("straight_sword").get()) return;
+			if (moveset != WeaponMovesets.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_SWINGS))
 					.addDodge(Animations.BIPED_JUMP_BACK));

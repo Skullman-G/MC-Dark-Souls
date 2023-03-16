@@ -10,7 +10,7 @@ public class AxeCap extends MeleeWeaponCap
 {
 	public AxeCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.getByName("axe").get(), Colliders.TOOL, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.AXE, Colliders.TOOL, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 
 	@Override

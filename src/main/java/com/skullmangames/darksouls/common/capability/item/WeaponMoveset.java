@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -21,10 +19,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class WeaponMoveset
 {
+	public static final WeaponMoveset EMPTY = new WeaponMoveset();
+	
 	private final ResourceLocation name;
 	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
 	
-	public WeaponMoveset(ResourceLocation name, ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset)
+	private WeaponMoveset()
+	{
+		this.name = new ResourceLocation("empty");
+		this.moveset = ImmutableMap.of();
+	}
+	
+	private WeaponMoveset(ResourceLocation name, ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset)
 	{
 		this.name = name;
 		this.moveset = moveset;
@@ -115,21 +121,21 @@ public class WeaponMoveset
 				JsonObject entryObj = entry.getValue().getAsJsonObject();
 				boolean repeating = entryObj.get("repeating").getAsBoolean();
 				JsonArray animations = entryObj.get("animations").getAsJsonArray();
-				List<AttackAnimation> animList = new ArrayList<>();
+				AttackAnimation[] animList = new AttackAnimation[animations.size()];
+				boolean cancel = false;
 				
-				for (JsonElement a : animations)
+				for (int i = 0; i < animations.size(); i++)
 				{
+					JsonElement a = animations.get(i);
 					StaticAnimation anim = DarkSouls.getInstance().animationManager.getByLocation(a.getAsString());
 					if (anim instanceof AttackAnimation)
 					{
-						animList.add((AttackAnimation)anim);
+						animList[i] = (AttackAnimation)anim;
 					}
+					else cancel = true;
 				}
 				
-				if (!animList.isEmpty())
-				{
-					builder.putMove(type, repeating, (AttackAnimation[])animList.toArray());
-				}
+				if (!cancel) builder.putMove(type, repeating, animList);
 			}
 			
 			return builder;

@@ -1,0 +1,29 @@
+{
+  "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:biped/combat/straight_sword_light_attack_1",
+        "darksouls:biped/combat/straight_sword_light_attack_2"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:biped/combat/backstab_thrust_check"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:biped/combat/straight_sword_heavy_attack"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:biped/combat/straight_sword_dash_attack"
+      ]
+    }
+  }
+}

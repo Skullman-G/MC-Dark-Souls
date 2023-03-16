@@ -15,7 +15,7 @@ public class SpearCap extends MeleeWeaponCap
 {
 	public SpearCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.getByName("spear").get(), Colliders.SPEAR, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.SPEAR, Colliders.SPEAR, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@OnlyIn(Dist.CLIENT)

@@ -53,19 +53,17 @@ public class AnimationManager extends SimplePreparableReloadListener<Map<Integer
 	}
 
 	@Override
-	protected Map<Integer, StaticAnimation> prepare(ResourceManager resourceManager,
-			ProfilerFiller profilerIn)
+	protected Map<Integer, StaticAnimation> prepare(ResourceManager resourceManager, ProfilerFiller profiler)
 	{
 		Animations.buildClient();
 		return this.animationById;
 	}
 
 	@Override
-	protected void apply(Map<Integer, StaticAnimation> objectIn, ResourceManager resourceManager,
-			ProfilerFiller profilerIn)
+	protected void apply(Map<Integer, StaticAnimation> objects, ResourceManager resourceManager, ProfilerFiller profiler)
 	{
 		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-		objectIn.values().forEach((animation) ->
+		objects.values().forEach((animation) ->
 		{
 			animation.loadAnimation(resourceManager, models);
 		});

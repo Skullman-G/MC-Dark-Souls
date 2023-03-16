@@ -12,6 +12,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.item.ItemCapability;
+import com.skullmangames.darksouls.common.capability.item.ReloadableCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -29,79 +31,23 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 		super(GSON, "weapon_movesets");
 	}
 	
-	/*public static final WeaponMoveset FIST = register("fist")
-			.putMove(AttackType.LIGHT, true, Animations.FIST_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.FIST_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.FIST_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
-			.build();
+	public static final ResourceLocation FIST = new ResourceLocation(DarkSouls.MOD_ID, "fist");
 	
-	public static final WeaponMoveset STRAIGHT_SWORD = register("straight_sword")
-			.putMove(AttackType.LIGHT, true, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.STRAIGHT_SWORD_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
-			.build();
+	public static final ResourceLocation STRAIGHT_SWORD = new ResourceLocation(DarkSouls.MOD_ID, "straight_sword");
 	
-	public static final WeaponMoveset AXE = register("axe")
-			.putMove(AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.AXE_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
-			.build();
+	public static final ResourceLocation AXE = new ResourceLocation(DarkSouls.MOD_ID, "axe");
 	
-	public static final WeaponMoveset ULTRA_GREATSWORD = register("ultra_greatsword")
-			.putMove(AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.ULTRA_GREATSWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
-			.build();
+	public static final ResourceLocation ULTRA_GREATSWORD = new ResourceLocation(DarkSouls.MOD_ID, "ultra_greatsword");
 	
-	public static final WeaponMoveset SHIELD = register("shield")
-			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK)
-			.build();
+	public static final ResourceLocation SHIELD = new ResourceLocation(DarkSouls.MOD_ID, "shield");
 	
-	public static final WeaponMoveset SPEAR = register("spear")
-			.putMove(AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
-			.build();
+	public static final ResourceLocation SPEAR = new ResourceLocation(DarkSouls.MOD_ID, "spear");
 	
-	public static final WeaponMoveset HAMMER = register("hammer")
-			.putMove(AttackType.LIGHT, true, Animations.HAMMER_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.HAMMER_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
-			.build();
+	public static final ResourceLocation HAMMER = new ResourceLocation(DarkSouls.MOD_ID, "hammer");
 	
-	public static final WeaponMoveset DAGGER = register("dagger")
-			.putMove(AttackType.LIGHT, true, Animations.DAGGER_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.DAGGER_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
-			.build();
+	public static final ResourceLocation DAGGER = new ResourceLocation(DarkSouls.MOD_ID, "dagger");
 	
-	public static final WeaponMoveset GREAT_HAMMER = register("great_hammer")
-			.putMove(AttackType.LIGHT, true, Animations.GREAT_HAMMER_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
-			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
-			.build();
-	
-	
-	private static WeaponMoveset register(String name)
-	{
-		return register(DarkSouls.MOD_ID, name);
-	}
-	
-	private static WeaponMoveset register(String namespace, String name)
-	{
-		ResourceLocation location = new ResourceLocation(namespace, name);
-		WeaponMoveset weaponType = new WeaponMoveset(location);
-		WEAPON_MOVESETS.put(location, weaponType);
-		return weaponType;
-	}*/
+	public static final ResourceLocation GREAT_HAMMER = new ResourceLocation(DarkSouls.MOD_ID, "great_hammer");
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
@@ -120,6 +66,13 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 			}
 		});
 		this.movesets = builder.build();
+		
+		for (ItemCapability cap : ProviderItem.CAPABILITIES.values())
+		{
+			if (cap instanceof ReloadableCap) ((ReloadableCap)cap).reload();
+		}
+		
+		LOGGER.info("Loaded "+this.movesets.size()+" weapon movesets");
 	}
 	
 	public static Optional<WeaponMoveset> getByLocation(ResourceLocation location)

@@ -51,7 +51,7 @@ public class StaticAnimation extends DynamicAnimation
 		AnimationManager animationManager = DarkSouls.getInstance().animationManager;
 		this.animationId = animationManager.getIdCounter();
 		animationManager.getIdMap().put(this.animationId, this);
-		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID, "animations/" + path);
+		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID, path);
 		animationManager.getNameMap().put(new ResourceLocation(DarkSouls.MOD_ID, path), this);
 		this.model = model;
 	}
@@ -61,8 +61,7 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		super(convertTime, repeatPlay);
 		this.animationId = -1;
-		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID,
-				"animations/" + path);
+		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID, path);
 		this.model = model;
 	}
 	
@@ -103,7 +102,7 @@ public class StaticAnimation extends DynamicAnimation
 	public static void load(ResourceManager resourceManager, Models<?> models, StaticAnimation animation)
 	{
 		ResourceLocation extenderPath = new ResourceLocation(animation.resourceLocation.getNamespace(),
-				animation.resourceLocation.getPath() + ".dae");
+				"animations/" + animation.resourceLocation.getPath() + ".dae");
 		AnimationDataExtractor.extractAnimation(extenderPath, animation, animation.model.apply(models).getArmature());
 	}
 	

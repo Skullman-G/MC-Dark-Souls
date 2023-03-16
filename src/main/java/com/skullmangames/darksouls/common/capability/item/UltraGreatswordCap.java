@@ -8,7 +8,7 @@ public class UltraGreatswordCap extends MeleeWeaponCap
 {
 	public UltraGreatswordCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.getByName("ultra_greatsword").get(), Colliders.ULTRA_GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.ULTRA_GREATSWORD, Colliders.ULTRA_GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override

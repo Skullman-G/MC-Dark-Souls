@@ -9,10 +9,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -25,44 +25,44 @@ public class WeaponMovesetProvider implements DataProvider
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private final DataGenerator generator;
 	private final List<WeaponMoveset.Builder> defaultMovesets = ImmutableList.of(
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "fist"))
+			new WeaponMoveset.Builder(WeaponMovesets.FIST)
 			.putMove(AttackType.LIGHT, true, Animations.FIST_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.FIST_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.FIST_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "straight_sword"))
+			new WeaponMoveset.Builder(WeaponMovesets.STRAIGHT_SWORD)
 			.putMove(AttackType.LIGHT, true, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.STRAIGHT_SWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "axe"))
+			new WeaponMoveset.Builder(WeaponMovesets.AXE)
 			.putMove(AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.AXE_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "ultra_greatsword"))
+			new WeaponMoveset.Builder(WeaponMovesets.ULTRA_GREATSWORD)
 			.putMove(AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.ULTRA_GREATSWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "shield"))
+			new WeaponMoveset.Builder(WeaponMovesets.SHIELD)
 			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "spear"))
+			new WeaponMoveset.Builder(WeaponMovesets.SPEAR)
 			.putMove(AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "hammer"))
+			new WeaponMoveset.Builder(WeaponMovesets.HAMMER)
 			.putMove(AttackType.LIGHT, true, Animations.HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "dagger"))
+			new WeaponMoveset.Builder(WeaponMovesets.DAGGER)
 			.putMove(AttackType.LIGHT, true, Animations.DAGGER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.DAGGER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
-			new WeaponMoveset.Builder(new ResourceLocation(DarkSouls.MOD_ID, "great_hammer"))
+			new WeaponMoveset.Builder(WeaponMovesets.GREAT_HAMMER)
 			.putMove(AttackType.LIGHT, true, Animations.GREAT_HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
