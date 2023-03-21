@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 
@@ -17,9 +18,9 @@ public class CriticalHitAnimation extends InvincibleAnimation
 {
 	private final float hit;
 	
-	public CriticalHitAnimation(float convertTime, float hit, String path, Function<Models<?>, Model> model)
+	public CriticalHitAnimation(ResourceLocation id, float convertTime, float hit, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, path, model);
+		super(id, convertTime, path, model);
 		this.hit = hit;
 	}
 	

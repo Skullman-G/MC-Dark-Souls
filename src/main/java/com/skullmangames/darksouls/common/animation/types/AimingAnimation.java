@@ -16,24 +16,24 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.ResourceLocation;
 
 public class AimingAnimation extends StaticAnimation
 {
 	public StaticAnimation lookUp;
 	public StaticAnimation lookDown;
 
-	public AimingAnimation(float convertTime, boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
+	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3, Function<Models<?>, Model> model)
 	{
-		super(convertTime, repeatPlay, path1, model);
-		this.lookUp = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
-		this.lookDown = new StaticAnimation(convertTime, repeatPlay, path3, model, true);
+		super(id, convertTime, repeatPlay, path1, model);
+		this.lookUp = new StaticAnimation(null, convertTime, repeatPlay, path2, model);
+		this.lookDown = new StaticAnimation(null, convertTime, repeatPlay, path3, model);
 		this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
 	}
 
-	public AimingAnimation(boolean repeatPlay, String path1, String path2, String path3, Function<Models<?>, Model> model)
+	public AimingAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3, Function<Models<?>, Model> model)
 	{
-		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
 	}
 
 	@Override
@@ -94,10 +94,10 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	public void loadAnimation(Models<?> models)
 	{
-		load(resourceManager, models, this);
-		load(resourceManager, models, this.lookUp);
-		load(resourceManager, models, this.lookDown);
+		load(models, this);
+		load(models, this.lookUp);
+		load(models, this.lookDown);
 	}
 }

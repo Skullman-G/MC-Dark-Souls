@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,10 +27,10 @@ public class CriticalCheckAnimation extends AttackAnimation
 	private final StaticAnimation followUp;
 	private final boolean isWeak;
 	
-	public CriticalCheckAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
-			String index, String path, Function<Models<?>, Model> model, StaticAnimation followUp)
+	public CriticalCheckAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
+			String index, ResourceLocation path, Function<Models<?>, Model> model, StaticAnimation followUp)
 	{
-		super(convertTime, antic, preDelay, contact, recovery, index, path, model);
+		super(id, convertTime, antic, preDelay, contact, recovery, index, path, model);
 		this.followUp = followUp;
 		this.isWeak = isWeak;
 	}

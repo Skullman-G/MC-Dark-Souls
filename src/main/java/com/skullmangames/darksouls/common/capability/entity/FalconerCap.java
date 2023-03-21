@@ -53,7 +53,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		{
 			if (moveset != WeaponMovesets.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_SWINGS))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_LIGHT_ATTACKS))
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}

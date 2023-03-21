@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public abstract class Models<T extends Model>
 {
-	protected final List<T> ARMATURES = new ArrayList<T>();
+	protected final List<T> animatedModels = new ArrayList<T>();
 	public static final ServerModels SERVER = new ServerModels();
 	
 	public T ENTITY_BIPED;
@@ -26,15 +26,21 @@ public abstract class Models<T extends Model>
 	protected abstract T registerMeshOnly(String name);
 	
 	@Nullable
+	public T findModel(String name)
+	{
+		for (T model : this.animatedModels) if (model.getName() == name) return model;
+		return null;
+	}
+	
+	@Nullable
 	public Armature findArmature(String name)
 	{
-		for (T model : this.ARMATURES) if (model.getName() == name) return model.getArmature();
-		return null;
+		return this.findModel(name).getArmature();
 	}
 	
 	public void buildArmatureData()
 	{
-		for (T model : this.ARMATURES) model.loadArmatureData();
+		for (T model : this.animatedModels) model.loadArmatureData();
 	}
 	
 	public static class ServerModels extends Models<Model>
@@ -51,7 +57,7 @@ public abstract class Models<T extends Model>
 		protected Model register(String name)
 		{
 			Model model = new Model(new ResourceLocation(DarkSouls.MOD_ID, name));
-			this.ARMATURES.add(model);
+			this.animatedModels.add(model);
 			return model;
 		}
 		
@@ -60,7 +66,7 @@ public abstract class Models<T extends Model>
 		{
 			Model model = new Model(new ResourceLocation(DarkSouls.MOD_ID, name));
 			model.setArmatureLocation(new ResourceLocation(DarkSouls.MOD_ID, armaturePath));
-			this.ARMATURES.add(model);
+			this.animatedModels.add(model);
 			return model;
 		}
 		

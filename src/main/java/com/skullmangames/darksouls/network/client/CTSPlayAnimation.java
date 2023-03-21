@@ -9,19 +9,20 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 public class CTSPlayAnimation
 {
-	private int animationId;
+	private ResourceLocation animationId;
 	private float modifyTime;
 	private boolean isClientSideAnimation;
 	private boolean resendToSender;
 
 	public CTSPlayAnimation()
 	{
-		this.animationId = 0;
+		this.animationId = null;
 		this.modifyTime = 0;
 		this.resendToSender = false;
 	}
@@ -31,7 +32,7 @@ public class CTSPlayAnimation
 		this(animation.getId(), modifyTime, clientOnly, resendToSender);
 	}
 
-	public CTSPlayAnimation(int animationId, float modifyTime, boolean clientOnly,
+	public CTSPlayAnimation(ResourceLocation animationId, float modifyTime, boolean clientOnly,
 			boolean resendToSender)
 	{
 		this.animationId = animationId;
@@ -42,13 +43,13 @@ public class CTSPlayAnimation
 
 	public static CTSPlayAnimation fromBytes(FriendlyByteBuf buf)
 	{
-		return new CTSPlayAnimation(buf.readInt(), buf.readFloat(), buf.readBoolean(),
+		return new CTSPlayAnimation(buf.readResourceLocation(), buf.readFloat(), buf.readBoolean(),
 				buf.readBoolean());
 	}
 
 	public static void toBytes(CTSPlayAnimation msg, FriendlyByteBuf buf)
 	{
-		buf.writeInt(msg.animationId);
+		buf.writeResourceLocation(msg.animationId);
 		buf.writeFloat(msg.modifyTime);
 		buf.writeBoolean(msg.isClientSideAnimation);
 		buf.writeBoolean(msg.resendToSender);

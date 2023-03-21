@@ -2,16 +2,19 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap.Builder;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class DeathAnimation extends InvincibleAnimation
 {
-	public DeathAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public DeathAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, path, model);
+		super(id, convertTime, path, model);
 	}
 	
 	@Override
@@ -40,5 +43,11 @@ public class DeathAnimation extends InvincibleAnimation
 	public <V> DeathAnimation addProperty(Property<V> propertyType, V value)
 	{
 		return (DeathAnimation)super.addProperty(propertyType, value);
+	}
+	
+	@Override
+	public DeathAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	{
+		return (DeathAnimation)super.register(builder);
 	}
 }

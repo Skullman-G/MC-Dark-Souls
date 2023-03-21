@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.particles.spawner.ParticleSpawner;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -16,6 +17,7 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -43,6 +45,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,27 +55,27 @@ public class AttackAnimation extends ActionAnimation
 {
 	public final Phase[] phases;
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, String index, String path,
+	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
 			Function<Models<?>, Model> model)
 	{
-		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery,
-			@Nullable Collider collider, String index, String path, Function<Models<?>, Model> model)
+	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
-	public AttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
-			@Nullable Collider collider, String index, String path, Function<Models<?>, Model> model)
+	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
+			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 
-	public AttackAnimation(float convertTime, String path, Function<Models<?>, Model> model, Phase... phases)
+	public AttackAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
 	{
-		super(convertTime, path, model);
+		super(id, convertTime, path, model);
 		this.phases = phases;
 	}
 
@@ -338,6 +341,12 @@ public class AttackAnimation extends ActionAnimation
 			}
 		}
 		return currentPhase;
+	}
+	
+	@Override
+	public AttackAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	{
+		return (AttackAnimation)super.register(builder);
 	}
 
 	public static class Phase

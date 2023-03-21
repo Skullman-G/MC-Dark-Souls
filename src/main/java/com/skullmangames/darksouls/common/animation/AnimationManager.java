@@ -1,86 +1,212 @@
 package com.skullmangames.darksouls.common.animation;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
+import org.slf4j.Logger;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.mojang.logging.LogUtils;
+import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public class AnimationManager extends SimplePreparableReloadListener<Map<Integer, StaticAnimation>>
+public class AnimationManager extends SimpleJsonResourceReloadListener
 {
-	private final Map<Integer, StaticAnimation> animationById = new HashMap<>();
-	private final Map<ResourceLocation, StaticAnimation> animationByName = new HashMap<>();
-	private int counter = 0;
-
-	public StaticAnimation getById(int animationId)
+	private static final Logger LOGGER = LogUtils.getLogger();
+	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	
+	private Map<ResourceLocation, StaticAnimation> defaultAnimations = ImmutableMap.of();
+	private Map<ResourceLocation, StaticAnimation> additionalAnimations = ImmutableMap.of();
+	
+	public AnimationManager()
 	{
-		if (this.animationById.containsKey(animationId))
-		{
-			return this.animationById.get(animationId);
-		}
-		
-		throw new IllegalArgumentException("Unable to find animation with id: " + animationId);
+		super(GSON, "animations");
 	}
 
-	public StaticAnimation getByLocation(String resourceLocation)
+	public StaticAnimation getAnimation(ResourceLocation resourceLocation)
 	{
-		ResourceLocation rl = new ResourceLocation(resourceLocation);
-
-		if (this.animationByName.containsKey(rl))
+		if (this.additionalAnimations.containsKey(resourceLocation))
 		{
-			return this.animationByName.get(rl);
+			return this.additionalAnimations.get(resourceLocation);
+		}
+
+		if (this.defaultAnimations.containsKey(resourceLocation))
+		{
+			return this.defaultAnimations.get(resourceLocation);
 		}
 
 		throw new IllegalArgumentException("Unable to find animation with path: " + resourceLocation);
 	}
 
-	public void loadAnimationsInit(ResourceManager resourceManager)
-	{
-		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-		this.animationById.values().forEach((animation) ->
-		{
-			animation.loadAnimation(resourceManager, models);
-		});
-	}
-
 	@Override
-	protected Map<Integer, StaticAnimation> prepare(ResourceManager resourceManager, ProfilerFiller profiler)
+	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
 	{
-		Animations.buildClient();
-		return this.animationById;
-	}
-
-	@Override
-	protected void apply(Map<Integer, StaticAnimation> objects, ResourceManager resourceManager, ProfilerFiller profiler)
-	{
-		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-		objects.values().forEach((animation) ->
+		//Init default animations
+		this.defaultAnimations = Animations.init().build();
+		
+		//Load additional from json
+		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
+		objects.forEach((location, json) ->
 		{
-			animation.loadAnimation(resourceManager, models);
+			try
+			{
+				StaticAnimation animation = AnimBuilder.fromJson(location, json.getAsJsonObject()).build();
+				builder.put(location, animation);
+			}
+			catch (IllegalArgumentException | JsonParseException jsonparseexception)
+			{
+				LOGGER.error("Parsing error loading additional animation {}", location, jsonparseexception);
+			}
 		});
+		
+		this.additionalAnimations = builder.build();
+		LOGGER.info("Loaded "+this.additionalAnimations.size()+" additional animations");
+		
+		//Load collada data
+		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
+		
+		for (StaticAnimation animation : this.defaultAnimations.values())
+		{
+			animation.loadAnimation(models);
+		}
+		for (StaticAnimation animation : this.additionalAnimations.values())
+		{
+			animation.loadAnimation(models);
+		}
 	}
-
-	public int getIdCounter()
+	
+	private static class AnimBuilder
 	{
-		return this.counter++;
+		protected final ResourceLocation id;
+		protected final ResourceLocation location;
+		protected final float convertTime;
+		protected final boolean isRepeat;
+		protected final Function<Models<?>, Model> model;
+		
+		protected AnimBuilder(ResourceLocation location, JsonObject json)
+		{
+			this.id = location;
+			this.location = new ResourceLocation(json.get("location").getAsString());
+			
+			this.convertTime = json.get("convertTime").getAsFloat();
+			this.isRepeat = json.get("isRepeat").getAsBoolean();
+			
+			this.model = (models) ->
+			{
+				return models.findModel(json.get("model").getAsString());
+			};
+		}
+		
+		public StaticAnimation build()
+		{
+			return new StaticAnimation(this.id, this.convertTime, this.isRepeat, this.location, this.model);
+		}
+		
+		public static AnimBuilder fromJson(ResourceLocation location, JsonObject json)
+		{
+			AnimationType type = AnimationType.fromString(json.get("animationType").getAsString());
+			switch(type)
+			{
+				default: case STATIC: return new AnimBuilder(location, json);
+				case ATTACK: return new AttackAnimBuilder(location, json);
+				case CRITICAL: return new CriticalAnimBuilder(location, json);
+			}
+		}
 	}
-
-	public Map<Integer, StaticAnimation> getIdMap()
+	
+	private static class AttackAnimBuilder extends AnimBuilder
 	{
-		return this.animationById;
+		protected final float antic;
+		protected final float preDelay;
+		protected final float contact;
+		protected final float recovery;
+		protected final String weaponBoneName;
+		
+		protected AttackAnimBuilder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.antic = json.get("antic").getAsFloat();
+			this.preDelay = json.get("preDelay").getAsFloat();
+			this.contact = json.get("contact").getAsFloat();
+			this.recovery = json.get("recovery").getAsFloat();
+			
+			this.weaponBoneName = json.get("weaponBoneName").getAsString();
+		}
+		
+		@Override
+		public StaticAnimation build()
+		{
+			return new AttackAnimation(this.id, this.convertTime, this.antic, this.preDelay, this.contact, this.recovery,
+					this.weaponBoneName, this.location, this.model);
+		}
 	}
-
-	public Map<ResourceLocation, StaticAnimation> getNameMap()
+	
+	private static class CriticalAnimBuilder extends AttackAnimBuilder
 	{
-		return this.animationByName;
+		protected final boolean isWeak;
+		protected final AnimBuilder followUp;
+		
+		protected CriticalAnimBuilder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.isWeak = json.get("isWeak").getAsBoolean();
+			
+			JsonObject followUpJson = json.get("followUp").getAsJsonObject();
+			ResourceLocation followUpLocation = new ResourceLocation(followUpJson.get("location").getAsString());
+			
+			this.followUp = new AnimBuilder(followUpLocation, followUpJson);
+		}
+		
+		@Override
+		public StaticAnimation build()
+		{
+			return new CriticalCheckAnimation(this.id, this.convertTime, this.antic, this.preDelay, this.contact, this.recovery,
+					this.isWeak, this.weaponBoneName, this.location, this.model, this.followUp.build());
+		}
+	}
+	
+	private static enum AnimationType
+	{
+		STATIC("static"), ATTACK("attack"), CRITICAL("critical");
+		
+		private final String id;
+		
+		private AnimationType(String id)
+		{
+			this.id = id;
+		}
+		
+		private static AnimationType fromString(String id)
+		{
+			for (AnimationType type : AnimationType.values())
+			{
+				if (type.id.equals(id)) return type;
+			}
+			return null;
+		}
+		
+		public String toString()
+		{
+			return this.id;
+		}
 	}
 }

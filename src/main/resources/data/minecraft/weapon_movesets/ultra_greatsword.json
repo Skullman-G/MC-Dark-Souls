@@ -3,27 +3,27 @@
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/ultra_greatsword_light_attack_1",
-        "darksouls:biped/combat/ultra_greatsword_light_attack_2"
+        "darksouls:ultra_greatsword_light_attack_1",
+        "darksouls:ultra_greatsword_light_attack_2"
       ]
     },
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/backstab_strike_check"
+        "darksouls:backstab_strike_check"
       ]
     },
     "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/ultra_greatsword_heavy_attack_1",
-        "darksouls:biped/combat/ultra_greatsword_heavy_attack_2"
+        "darksouls:ultra_greatsword_heavy_attack",
+        "darksouls:ultra_greatsword_heavy_attack_2"
       ]
     },
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/ultra_greatsword_heavy_attack_1"
+        "darksouls:ultra_greatsword_heavy_attack_1"
       ]
     }
   }

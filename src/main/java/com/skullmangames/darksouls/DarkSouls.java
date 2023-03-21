@@ -1,12 +1,9 @@
 package com.skullmangames.darksouls;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,7 +45,6 @@ import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -139,7 +135,7 @@ public class DarkSouls
 		forgeBus.register(CapabilityEvents.class);
 		forgeBus.register(PlayerEvents.class);
 		forgeBus.addListener(ModEntities::addEntitySpawns);
-		forgeBus.addListener(this::registerReloadListeners);
+		forgeBus.addListener(this::registerDataReloadListeners);
 
 		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
@@ -148,8 +144,14 @@ public class DarkSouls
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
 	}
 	
-	private void registerReloadListeners(AddReloadListenerEvent event)
+	public static ResourceLocation rl(String path)
 	{
+		return new ResourceLocation(DarkSouls.MOD_ID, path);
+	}
+	
+	private void registerDataReloadListeners(AddReloadListenerEvent event)
+	{
+		event.addListener(this.animationManager);
 		event.addListener(this.weaponMovesets);
 	}
 	
@@ -160,7 +162,6 @@ public class DarkSouls
 
 	private void doServerStuff(final FMLDedicatedServerSetupEvent event)
 	{
-		this.animationManager.loadAnimationsInit(null);
 		this.animatorProvider = ServerAnimator::getAnimator;
 	}
 
@@ -186,10 +187,7 @@ public class DarkSouls
 
 		new ClientManager();
 
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		ClientModels.CLIENT.buildMeshData();
-		this.animationManager.loadAnimationsInit(resourceManager);
-		Animations.buildClient();
 		ClientManager.INSTANCE.renderEngine.buildRenderer();
 
 		ProviderEntity.makeMapClient();
@@ -198,9 +196,6 @@ public class DarkSouls
 		MinecraftForge.EVENT_BUS.register(InputManager.Events.class);
 		MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
-
-		// Register ReloadListeners
-		((ReloadableResourceManager)resourceManager).registerReloadListener(this.animationManager);
 
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());

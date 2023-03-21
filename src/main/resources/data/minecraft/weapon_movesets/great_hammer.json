@@ -3,26 +3,26 @@
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/great_hammer_light_attack_1",
-        "darksouls:biped/combat/great_hammer_light_attack_2"
+        "darksouls:great_hammer_light_attack_1",
+        "darksouls:great_hammer_light_attack_2"
       ]
     },
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/backstab_strike_check"
+        "darksouls:backstab_strike_check"
       ]
     },
     "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/great_hammer_heavy_attack"
+        "darksouls:great_hammer_heavy_attack"
       ]
     },
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/great_hammer_light_attack_1"
+        "darksouls:great_hammer_dash_attack"
       ]
     }
   }

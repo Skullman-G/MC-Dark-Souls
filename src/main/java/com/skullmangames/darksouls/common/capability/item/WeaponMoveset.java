@@ -98,7 +98,7 @@ public class WeaponMoveset
 				entry.add("animations", animations);
 				for (AttackAnimation a : pair.getSecond())
 				{
-					animations.add(a.getLocation().toString());
+					animations.add(a.getId().toString());
 				}
 			});
 			
@@ -127,12 +127,16 @@ public class WeaponMoveset
 				for (int i = 0; i < animations.size(); i++)
 				{
 					JsonElement a = animations.get(i);
-					StaticAnimation anim = DarkSouls.getInstance().animationManager.getByLocation(a.getAsString());
+					StaticAnimation anim = DarkSouls.getInstance().animationManager.getAnimation(new ResourceLocation(a.getAsString()));
 					if (anim instanceof AttackAnimation)
 					{
 						animList[i] = (AttackAnimation)anim;
 					}
-					else cancel = true;
+					else
+					{
+						LOGGER.error("AttackAnimation with id "+a.getAsString()+" not found. Skipping attacks for AttackType "+type+"...");
+						cancel = true;
+					}
 				}
 				
 				if (!cancel) builder.putMove(type, repeating, animList);

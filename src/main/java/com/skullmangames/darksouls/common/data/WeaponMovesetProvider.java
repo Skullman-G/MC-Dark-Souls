@@ -24,7 +24,35 @@ public class WeaponMovesetProvider implements DataProvider
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private final DataGenerator generator;
-	private final List<WeaponMoveset.Builder> defaultMovesets = ImmutableList.of(
+	
+	public WeaponMovesetProvider(DataGenerator generator)
+	{
+		this.generator = generator;
+	}
+	
+	@Override
+	public void run(HashCache cache) throws IOException
+	{
+		Animations.init();
+		Path path = this.generator.getOutputFolder();
+		
+		for (WeaponMoveset.Builder builder : defaultMovesets())
+		{
+			Path path1 = createPath(path, builder.getLocation());
+			try
+			{
+				DataProvider.save(GSON, cache, builder.toJson(), path1);
+			}
+			catch (IOException ioexception)
+			{
+				LOGGER.error("Couldn't save weapon moveset {}", path1, ioexception);
+			}
+		}
+	}
+	
+	private static List<WeaponMoveset.Builder> defaultMovesets()
+	{
+		return ImmutableList.of(
 			new WeaponMoveset.Builder(WeaponMovesets.FIST)
 			.putMove(AttackType.LIGHT, true, Animations.FIST_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.FIST_HEAVY_ATTACK)
@@ -67,29 +95,6 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE));
-	
-	public WeaponMovesetProvider(DataGenerator generator)
-	{
-		this.generator = generator;
-	}
-	
-	@Override
-	public void run(HashCache cache) throws IOException
-	{
-		Path path = this.generator.getOutputFolder();
-		
-		for (WeaponMoveset.Builder builder : this.defaultMovesets)
-		{
-			Path path1 = createPath(path, builder.getLocation());
-			try
-			{
-				DataProvider.save(GSON, cache, builder.toJson(), path1);
-			}
-			catch (IOException ioexception)
-			{
-				LOGGER.error("Couldn't save weapon moveset {}", path1, ioexception);
-			}
-		}
 	}
 	
 	private static Path createPath(Path path, ResourceLocation location)

@@ -6,21 +6,21 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 
 public class STCPlayAnimation
 {
-	protected int animationId;
+	protected ResourceLocation animationId;
 	protected int entityId;
 	protected float convertTimeModifier;
 
 	public STCPlayAnimation()
 	{
-		this.animationId = 0;
+		this.animationId = null;
 		this.entityId = 0;
 		this.convertTimeModifier = 0;
 	}
@@ -36,7 +36,7 @@ public class STCPlayAnimation
 		this(animation.getId(), entityId, convertTimeModifier);
 	}
 
-	public STCPlayAnimation(int animation, int entityId, float convertTimeModifier)
+	public STCPlayAnimation(ResourceLocation animation, int entityId, float convertTimeModifier)
 	{
 		this.animationId = animation;
 		this.entityId = entityId;
@@ -58,12 +58,12 @@ public class STCPlayAnimation
 
 	public static STCPlayAnimation fromBytes(FriendlyByteBuf buf)
 	{
-		return new STCPlayAnimation(buf.readInt(), buf.readInt(), buf.readFloat());
+		return new STCPlayAnimation(buf.readResourceLocation(), buf.readInt(), buf.readFloat());
 	}
 
-	public static void toBytes(STCPlayAnimation msg, ByteBuf buf)
+	public static void toBytes(STCPlayAnimation msg, FriendlyByteBuf buf)
 	{
-		buf.writeInt(msg.animationId);
+		buf.writeResourceLocation(msg.animationId);
 		buf.writeInt(msg.entityId);
 		buf.writeFloat(msg.convertTimeModifier);
 	}

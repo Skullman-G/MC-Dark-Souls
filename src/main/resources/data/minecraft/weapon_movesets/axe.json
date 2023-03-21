@@ -3,26 +3,26 @@
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/axe_light_attack_1",
-        "darksouls:biped/combat/axe_light_attack_2"
+        "darksouls:axe_light_attack_1",
+        "darksouls:axe_light_attack_2"
       ]
     },
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/backstab_strike_check"
+        "darksouls:backstab_strike_check"
       ]
     },
     "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/axe_heavy_attack"
+        "darksouls:axe_heavy_attack"
       ]
     },
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/axe_dash_attack"
+        "darksouls:axe_dash_attack"
       ]
     }
   }

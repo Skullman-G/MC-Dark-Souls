@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap.Builder;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -10,21 +11,21 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.ResourceLocation;
 
 public class MirrorAnimation extends StaticAnimation
 {
 	public StaticAnimation mirror;
 	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, String path1, String path2, Function<Models<?>, Model> model)
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
 	{
-		this(convertTime, repeatPlay, true, path1, path2, model);
+		this(id, convertTime, repeatPlay, true, path1, path2, model);
 	}
 	
-	public MirrorAnimation(float convertTime, boolean repeatPlay, boolean applyLayerParts, String path1, String path2, Function<Models<?>, Model> model)
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, boolean applyLayerParts, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
 	{
-		super(convertTime, repeatPlay, path1, model);
-		this.mirror = new StaticAnimation(convertTime, repeatPlay, path2, model, true);
+		super(id, convertTime, repeatPlay, path1, model);
+		this.mirror = new StaticAnimation(null, convertTime, repeatPlay, path2, model);
 		
 		if (applyLayerParts)
 		{
@@ -57,9 +58,15 @@ public class MirrorAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	public void loadAnimation(Models<?> models)
 	{
-		load(resourceManager, models, this);
-		load(resourceManager, models, this.mirror);
+		load(models, this);
+		load(models, this.mirror);
+	}
+	
+	@Override
+	public MirrorAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	{
+		return (MirrorAnimation)super.register(builder);
 	}
 }

@@ -3,7 +3,7 @@
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:biped/combat/shield_attack"
+        "darksouls:shield_attack"
       ]
     }
   }

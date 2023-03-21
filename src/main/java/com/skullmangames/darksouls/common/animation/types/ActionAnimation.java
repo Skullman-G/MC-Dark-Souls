@@ -23,6 +23,7 @@ import com.skullmangames.darksouls.network.server.STCSetPos;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,14 +40,14 @@ public class ActionAnimation extends ImmovableAnimation
 {
 	protected float delayTime;
 
-	public ActionAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public ActionAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, Float.MAX_VALUE, path, model);
+		this(id, convertTime, Float.MAX_VALUE, path, model);
 	}
 
-	public ActionAnimation(float convertTime, float postDelay, String path, Function<Models<?>, Model> model)
+	public ActionAnimation(ResourceLocation id, float convertTime, float postDelay, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, path, model);
+		super(id, convertTime, path, model);
 		this.delayTime = postDelay;
 	}
 

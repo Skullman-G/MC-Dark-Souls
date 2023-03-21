@@ -31,23 +31,23 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 		super(GSON, "weapon_movesets");
 	}
 	
-	public static final ResourceLocation FIST = new ResourceLocation(DarkSouls.MOD_ID, "fist");
+	public static final ResourceLocation FIST = new ResourceLocation("fist");
 	
-	public static final ResourceLocation STRAIGHT_SWORD = new ResourceLocation(DarkSouls.MOD_ID, "straight_sword");
+	public static final ResourceLocation STRAIGHT_SWORD = new ResourceLocation("straight_sword");
 	
-	public static final ResourceLocation AXE = new ResourceLocation(DarkSouls.MOD_ID, "axe");
+	public static final ResourceLocation AXE = new ResourceLocation("axe");
 	
-	public static final ResourceLocation ULTRA_GREATSWORD = new ResourceLocation(DarkSouls.MOD_ID, "ultra_greatsword");
+	public static final ResourceLocation ULTRA_GREATSWORD = new ResourceLocation("ultra_greatsword");
 	
-	public static final ResourceLocation SHIELD = new ResourceLocation(DarkSouls.MOD_ID, "shield");
+	public static final ResourceLocation SHIELD = new ResourceLocation("shield");
 	
-	public static final ResourceLocation SPEAR = new ResourceLocation(DarkSouls.MOD_ID, "spear");
+	public static final ResourceLocation SPEAR = new ResourceLocation("spear");
 	
-	public static final ResourceLocation HAMMER = new ResourceLocation(DarkSouls.MOD_ID, "hammer");
+	public static final ResourceLocation HAMMER = new ResourceLocation("hammer");
 	
-	public static final ResourceLocation DAGGER = new ResourceLocation(DarkSouls.MOD_ID, "dagger");
+	public static final ResourceLocation DAGGER = new ResourceLocation("dagger");
 	
-	public static final ResourceLocation GREAT_HAMMER = new ResourceLocation(DarkSouls.MOD_ID, "great_hammer");
+	public static final ResourceLocation GREAT_HAMMER = new ResourceLocation("great_hammer");
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)

@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ClientModels extends Models<ClientModel>
 {
-	protected final List<ClientModel> MESHES = new ArrayList<ClientModel>();
+	protected final List<ClientModel> clientModels = new ArrayList<ClientModel>();
 	public static final ClientModels CLIENT = new ClientModels();
 	
 	public final ClientModel ENTITY_BIPED_FIRST_PERSON;
@@ -48,8 +48,8 @@ public class ClientModels extends Models<ClientModel>
 	protected ClientModel register(String name)
 	{
 		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		this.ARMATURES.add(model);
-		this.MESHES.add(model);
+		this.animatedModels.add(model);
+		this.clientModels.add(model);
 		return model;
 	}
 	
@@ -58,8 +58,8 @@ public class ClientModels extends Models<ClientModel>
 	{
 		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
 		model.setArmatureLocation(new ResourceLocation(DarkSouls.MOD_ID, armaturePath));
-		this.ARMATURES.add(model);
-		this.MESHES.add(model);
+		this.animatedModels.add(model);
+		this.clientModels.add(model);
 		return model;
 	}
 	
@@ -67,12 +67,12 @@ public class ClientModels extends Models<ClientModel>
 	protected ClientModel registerMeshOnly(String name)
 	{
 		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		this.MESHES.add(model);
+		this.clientModels.add(model);
 		return model;
 	}
 	
 	public void buildMeshData()
 	{
-		for (ClientModel model : this.MESHES) model.loadMeshData();
+		for (ClientModel model : this.clientModels) model.loadMeshData();
 	}
 }

@@ -80,7 +80,7 @@ public class STCLivingMotionChange
 
 		for (int i = 0; i < msg.count; i++)
 		{
-			animationList.add(DarkSouls.getInstance().animationManager.getById(buf.readInt()));
+			animationList.add(DarkSouls.getInstance().animationManager.getAnimation(buf.readResourceLocation()));
 		}
 
 		msg.motionList = motionList;
@@ -102,7 +102,7 @@ public class STCLivingMotionChange
 
 		for (StaticAnimation anim : msg.animationList)
 		{
-			buf.writeInt(anim.getId());
+			buf.writeResourceLocation(anim.getId());
 		}
 	}
 
