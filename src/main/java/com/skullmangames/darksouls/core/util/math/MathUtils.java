@@ -30,9 +30,16 @@ public class MathUtils
 		return from < to ? from + incr : from - incr;
 	}
 	
-	public static double round(double value, int multiply)
+	public static double round(double value, int decimalAmount)
 	{
+		int multiply = (int)Math.pow(10, decimalAmount);
 		return (double) Math.round(value * multiply) / multiply;
+	}
+	
+	public static float round(float value, int decimalAmount)
+	{
+		int multiply = (int)Math.pow(10, decimalAmount);
+		return (float) Math.round(value * multiply) / multiply;
 	}
 	
 	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)

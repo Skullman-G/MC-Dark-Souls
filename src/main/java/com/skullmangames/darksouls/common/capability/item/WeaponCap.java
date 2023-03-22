@@ -136,7 +136,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 2))));
 		}
 	}
 

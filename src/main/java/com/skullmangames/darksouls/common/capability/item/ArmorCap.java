@@ -80,28 +80,28 @@ public class ArmorCap extends AttributeItemCap
 		{
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.standardDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.standardDef, 2))));
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 2))));
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.slashDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.slashDef, 2))));
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 2))));
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.FIRE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.fireDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.fireDef, 2))));
 			
 			itemTooltip.add(new TranslatableComponent(ModAttributes.LIGHTNING_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 2))));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.poise, 2))));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 2))));
 		}
 	}
 	

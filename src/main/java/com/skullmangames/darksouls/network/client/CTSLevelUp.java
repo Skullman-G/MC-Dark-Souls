@@ -57,7 +57,12 @@ public class CTSLevelUp
 			else
 			{
 				for (int add : msg.addition) postLevel += add;
-				int cost = Stats.getCost(postLevel);
+				
+				int cost = 0;
+				for (int i = preLevel; i < postLevel; i++)
+				{
+					cost += Stats.getCost(i);
+				}
 				
 				if (preLevel < postLevel && cost <= playerCap.getSouls())
 				{

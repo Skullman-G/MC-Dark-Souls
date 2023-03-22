@@ -89,7 +89,7 @@ public class Stats
 	
 	public static int getCost(int level)
 	{
-		return level * (10 + level);
+		return (int)(0.02F * Math.pow(level, 3) + 3.06F * Math.pow(level, 2) + 105.6F * level);
 	}
 	
 	public static double getTotalDamageMultiplier(Player player, int strength, int dex, int faith)
