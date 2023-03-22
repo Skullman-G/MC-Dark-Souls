@@ -28,6 +28,7 @@ public class ClientManager
 {
 	public static ClientManager INSTANCE;
 	public final Minecraft minecraft;
+	public final GameOverlayManager gui;
 	public final RenderEngine renderEngine;
 	public final InputManager inputManager;
 	public final ModCamera mainCamera;
@@ -41,6 +42,7 @@ public class ClientManager
 	{
 		INSTANCE = this;
 		this.minecraft = Minecraft.getInstance();
+		this.gui = new GameOverlayManager();
 		this.renderEngine = new RenderEngine();
 		this.inputManager = new InputManager();
 		this.npcChat = new NPCChat();
@@ -55,7 +57,7 @@ public class ClientManager
 		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
 				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));
 		
-		GameOverlayManager.registerOverlayElements();
+		this.gui.registerOverlayElements();
 		ModContainers.registerScreens();
 		
 		ItemProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living, id) ->

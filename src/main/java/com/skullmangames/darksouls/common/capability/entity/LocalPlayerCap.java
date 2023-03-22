@@ -67,11 +67,12 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void onLoad(CompoundTag nbt)
 	{
 		super.onLoad(nbt);
-		GameOverlayManager.canAnimateSouls = true;
-		GameOverlayManager.lastSouls = this.getSouls();
-		GameOverlayManager.lerpSouls = this.getSouls();
-		GameOverlayManager.lastFP = this.getFP() / this.getMaxFP();
-		GameOverlayManager.lastStamina = this.getStamina() / this.getMaxStamina();
+		GameOverlayManager gui = ClientManager.INSTANCE.gui;
+		gui.canAnimateSouls = true;
+		gui.lastSouls = this.getSouls();
+		gui.lastCurrentSouls = this.getSouls();
+		gui.lastFP = this.getFP() / this.getMaxFP();
+		gui.lastStamina = this.getStamina() / this.getMaxStamina();
 	}
 	
 	@Override
