@@ -403,7 +403,6 @@ public class GameOverlayManager
 			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(risecentage * length)); // Blue
 			fpRiseTimer.drain(1);
 		}
-
 		// Default
 		else
 		{
