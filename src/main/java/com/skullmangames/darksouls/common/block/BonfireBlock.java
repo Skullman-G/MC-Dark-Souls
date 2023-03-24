@@ -64,20 +64,10 @@ public class BonfireBlock extends Block implements EntityBlock
 	private static final ImmutableList<Vec3i> RESPAWN_OFFSETS = (new Builder<Vec3i>()).addAll(RESPAWN_HORIZONTAL_OFFSETS).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vec3i::below).iterator()).addAll(RESPAWN_HORIZONTAL_OFFSETS.stream().map(Vec3i::above).iterator()).add(new Vec3i(0, 1, 0)).build();
 	
 	private static final Optional<VoxelShape> SHAPE = Stream.of(
-			Block.box(2, 0, 2, 14, 1, 14),
-			Block.box(4, 0.5, 4, 12, 2.5, 12),
-			Block.box(6, 2.4, 6, 10, 3.4, 10),
-			Block.box(7.5, 3, 7.5, 9.5, 15, 8.5),
-			Block.box(6.5, 14, 7.5, 7.5, 15, 8.5),
-			Block.box(9.5, 14, 7.5, 10.5, 15, 8.5),
-			Block.box(3, 1, 9, 7, 4, 13),
-			Block.box(8, 15, 7.5, 9, 19, 8.5),
-			Block.box(7, 1, 3, 8, 3, 6),
-			Block.box(8.5, 2, 4.5, 9.5, 4, 7.5),
-			Block.box(9.5, 0.10000000000000009, 11.5, 10.5, 1.3000000000000003, 14.5),
-			Block.box(12, 1, 7, 14, 1.5, 8),
-			Block.box(3, 1, 8, 6, 3, 9)
+			Block.box(1, 0, 1, 15, 5, 15)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
+	
+	
 	
 	public BonfireBlock()
 	{
@@ -241,39 +231,24 @@ public class BonfireBlock extends Block implements EntityBlock
 		if (state.getValue(LIT))
 		{
 			ModNetworkManager.connection.tryPlayBonfireAmbientSound(pos);
+			double yOffset = 0.35D;
+			double xOffset = 0.5D;
+			double zOffset = 0.5D;
 			
-			for (int i = 0; i < state.getValue(ESTUS_VOLUME_LEVEL); i++)
+			double r = 0.1D;
+			for (int s = state.getValue(ESTUS_VOLUME_LEVEL) - 1; s >= 0; s--)
 			{
-				level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.4D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.6D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.4D, 0.0D, 0.0D, 0.0D);
-		        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)i * 0.1D), (double)pos.getZ() + 0.6D, 0.0D, 0.0D, 0.0D);
-		        
-		        if (i >= 2)
-		        {
-		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.35D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.65D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.35D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 2) * 0.1D), (double)pos.getZ() + 0.65D, 0.0D, 0.0D, 0.0D);
-		        }
-		        if (i >= 3)
-		        {
-		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.3D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.7D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.3D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 3) * 0.1D), (double)pos.getZ() + 0.7D, 0.0D, 0.0D, 0.0D);
-		        }
-		        if (i == 4)
-		        {
-		        	level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.25D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.75D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.25D, 0.0D, 0.0D, 0.0D);
-			        level.addAlwaysVisibleParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.3D + ((double)(i - 4) * 0.1D), (double)pos.getZ() + 0.75D, 0.0D, 0.0D, 0.0D);
-		        }
+				for (int i = 0; i < 359; i++)
+				{
+					if (i % 40 == 0)
+					{
+						double xd = Math.cos(Math.toRadians(i)) * r;
+						double yd = Math.sin(Math.toRadians(i)) * r;
+						level.addAlwaysVisibleParticle(ParticleTypes.FLAME, pos.getX() + xOffset + xd, pos.getY() + yOffset + s * 0.1D, pos.getZ() + zOffset + yd,
+								0, 0, 0);
+					}
+				}
+				r += 0.1D;
 			}
 		}
 	}
