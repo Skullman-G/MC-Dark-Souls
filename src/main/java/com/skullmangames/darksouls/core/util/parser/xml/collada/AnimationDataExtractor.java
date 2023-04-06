@@ -2,14 +2,13 @@ package com.skullmangames.darksouls.core.util.parser.xml.collada;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -20,6 +19,7 @@ import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.phys.Vec3;
 
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -74,21 +74,15 @@ public class AnimationDataExtractor
 		return sheet;
 	}
 
-	private static BufferedInputStream getInputStream(ResourceLocation resourceLocation) throws FileNotFoundException
-	{
-		BufferedInputStream inputStream = new BufferedInputStream(DarkSouls.class
-				.getResourceAsStream("/assets/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath()));
-		return inputStream;
-	}
-
-	public static void extractAnimation(ResourceLocation location, StaticAnimation data, Armature armature)
+	public static void extractAnimation(ResourceManager resourceManager, ResourceLocation location, StaticAnimation data, Armature armature)
 	{
 		BufferedReader bufreader = null;
-
 		try
 		{
-			bufreader = new BufferedReader(new InputStreamReader(getInputStream(location)));
-		} catch (FileNotFoundException e)
+			BufferedInputStream inputStream = new BufferedInputStream(resourceManager.getResource(location).getInputStream());
+			bufreader = new BufferedReader(new InputStreamReader(inputStream));
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}

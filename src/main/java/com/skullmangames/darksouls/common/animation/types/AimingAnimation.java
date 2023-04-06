@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 
 public class AimingAnimation extends StaticAnimation
 {
@@ -94,10 +95,10 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void loadAnimation(Models<?> models)
+	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
 	{
-		load(models, this);
-		load(models, this.lookUp);
-		load(models, this.lookDown);
+		load(resourceManager, models, this);
+		load(resourceManager, models, this.lookUp);
+		load(resourceManager, models, this.lookDown);
 	}
 }

@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 
 public class MirrorAnimation extends StaticAnimation
 {
@@ -58,10 +59,10 @@ public class MirrorAnimation extends StaticAnimation
 	}
 	
 	@Override
-	public void loadAnimation(Models<?> models)
+	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
 	{
-		load(models, this);
-		load(models, this.mirror);
+		load(resourceManager, models, this);
+		load(resourceManager, models, this.mirror);
 	}
 	
 	@Override

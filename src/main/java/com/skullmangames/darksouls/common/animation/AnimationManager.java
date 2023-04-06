@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -37,7 +38,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	
 	public AnimationManager()
 	{
-		super(GSON, "animations");
+		super(GSON, "animation_data");
 	}
 
 	public StaticAnimation getAnimation(ResourceLocation resourceLocation)
@@ -84,11 +85,11 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		
 		for (StaticAnimation animation : this.defaultAnimations.values())
 		{
-			animation.loadAnimation(models);
+			animation.loadAnimation(resourceManager, models);
 		}
 		for (StaticAnimation animation : this.additionalAnimations.values())
 		{
-			animation.loadAnimation(models);
+			animation.loadAnimation(resourceManager, models);
 		}
 	}
 	
@@ -110,7 +111,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 			
 			this.model = (models) ->
 			{
-				return models.findModel(json.get("model").getAsString());
+				return models.findModel(new ResourceLocation(json.get("model").getAsString()));
 			};
 		}
 		
@@ -121,7 +122,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		
 		public static AnimBuilder fromJson(ResourceLocation location, JsonObject json)
 		{
-			AnimationType type = AnimationType.fromString(json.get("animationType").getAsString());
+			AnimationType type = AnimationType.fromString(json.get("animation_type").getAsString());
 			switch(type)
 			{
 				default: case STATIC: return new AnimBuilder(location, json);
@@ -133,29 +134,33 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	
 	private static class AttackAnimBuilder extends AnimBuilder
 	{
-		protected final float antic;
-		protected final float preDelay;
-		protected final float contact;
-		protected final float recovery;
-		protected final String weaponBoneName;
+		protected final AttackAnimation.Phase[] phases;
 		
 		protected AttackAnimBuilder(ResourceLocation location, JsonObject json)
 		{
 			super(location, json);
+			JsonArray jsonPhases = json.get("phases").getAsJsonArray();
+			int phasesLength = jsonPhases.size();
+			AttackAnimation.Phase[] ps = new AttackAnimation.Phase[phasesLength];
 			
-			this.antic = json.get("antic").getAsFloat();
-			this.preDelay = json.get("preDelay").getAsFloat();
-			this.contact = json.get("contact").getAsFloat();
-			this.recovery = json.get("recovery").getAsFloat();
+			for (int i = 0; i < phasesLength; i++)
+			{
+				JsonObject jsonPhase = jsonPhases.get(i).getAsJsonObject();
+				float start = jsonPhase.get("start").getAsFloat();
+				float preDelay = jsonPhase.get("pre_delay").getAsFloat();
+				float contact = jsonPhase.get("contact").getAsFloat();
+				float end = jsonPhase.get("end").getAsFloat();
+				String weaponBoneName = jsonPhase.get("weapon_bone_name").getAsString();
+				ps[i] = new AttackAnimation.Phase(start, preDelay, contact, end, weaponBoneName);
+			}
 			
-			this.weaponBoneName = json.get("weaponBoneName").getAsString();
+			this.phases = ps;
 		}
 		
 		@Override
 		public StaticAnimation build()
 		{
-			return new AttackAnimation(this.id, this.convertTime, this.antic, this.preDelay, this.contact, this.recovery,
-					this.weaponBoneName, this.location, this.model);
+			return new AttackAnimation(this.id, this.convertTime, this.location, this.model, this.phases);
 		}
 	}
 	
@@ -179,8 +184,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		@Override
 		public StaticAnimation build()
 		{
-			return new CriticalCheckAnimation(this.id, this.convertTime, this.antic, this.preDelay, this.contact, this.recovery,
-					this.isWeak, this.weaponBoneName, this.location, this.model, this.followUp.build());
+			return new CriticalCheckAnimation(this.id, this.convertTime, this.isWeak, this.location, this.model, this.followUp.build(), this.phases);
 		}
 	}
 	

@@ -1343,9 +1343,9 @@ public final class Animations
 		
 
 		// Stray Demon
-		STRAY_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("stray_demon_idle"), 1.0F, true, DarkSouls.rl("asylum_demon/idle"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("stray_demon_idle"), 1.0F, true, DarkSouls.rl("stray_demon/idle"), (models) -> models.ENTITY_STRAY_DEMON)
 				.register(builder);
-		STRAY_DEMON_MOVE = new StaticAnimation(DarkSouls.rl("stray_demon_move"), 0.5F, true, DarkSouls.rl("asylum_demon/move"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_MOVE = new StaticAnimation(DarkSouls.rl("stray_demon_move"), 0.5F, true, DarkSouls.rl("stray_demon/move"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
@@ -1353,13 +1353,13 @@ public final class Animations
 						Event.create(1.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 						Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 				}).register(builder);
-		STRAY_DEMON_DEATH = new DeathAnimation(DarkSouls.rl("stray_demon_death"), 0.5F, DarkSouls.rl("asylum_demon/death"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_DEATH = new DeathAnimation(DarkSouls.rl("stray_demon_death"), 0.5F, DarkSouls.rl("stray_demon/death"), (models) -> models.ENTITY_STRAY_DEMON)
 				.register(builder);
 
 		STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
 		{
 				new AttackAnimation(DarkSouls.rl("stray_demon_light_attack_1"), 1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R",
-					DarkSouls.rl("asylum_demon/light_attack_1"), (models) -> models.ENTITY_STRAY_DEMON)
+					DarkSouls.rl("stray_demon/light_attack_1"), (models) -> models.ENTITY_STRAY_DEMON)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
@@ -1370,7 +1370,7 @@ public final class Animations
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("stray_demon_light_attack_2"), 1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R",
-					DarkSouls.rl("asylum_demon/light_attack_2"), (models) -> models.ENTITY_STRAY_DEMON)
+					DarkSouls.rl("stray_demon/light_attack_2"), (models) -> models.ENTITY_STRAY_DEMON)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.6F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
@@ -1381,7 +1381,7 @@ public final class Animations
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("stray_demon_light_attacks_3"), 1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R",
-					DarkSouls.rl("asylum_demon/light_attack_3"), (models) -> models.ENTITY_STRAY_DEMON)
+					DarkSouls.rl("stray_demon/light_attack_3"), (models) -> models.ENTITY_STRAY_DEMON)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
 							Event.create(0.72F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
@@ -1393,7 +1393,7 @@ public final class Animations
 					.register(builder)
 		};
 		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_heavy_attack"), 1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R",
-				DarkSouls.rl("asylum_demon/heavy_attack"), (models) -> models.ENTITY_STRAY_DEMON)
+				DarkSouls.rl("stray_demon/heavy_attack"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.92F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
@@ -1404,7 +1404,7 @@ public final class Animations
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 				.register(builder);
 		STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(DarkSouls.rl("stray_demon_jump_attack"), 1.0F, 0.0F, 0.6F, 1.2F, 2.0F,
-				"Tool_R", DarkSouls.rl("asylum_demon/dash_attack"), (models) -> models.ENTITY_STRAY_DEMON)
+				"Tool_R", DarkSouls.rl("stray_demon/dash_attack"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.04F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
@@ -1416,7 +1416,7 @@ public final class Animations
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 				.register(builder);
 		STRAY_DEMON_GROUND_POUND = new AttackAnimation(DarkSouls.rl("stray_demon_ground_pound"), 1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root",
-				DarkSouls.rl("asylum_demon/ground_pound"), (models) -> models.ENTITY_STRAY_DEMON)
+				DarkSouls.rl("stray_demon/ground_pound"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),

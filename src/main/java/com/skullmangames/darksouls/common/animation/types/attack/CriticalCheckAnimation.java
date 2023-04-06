@@ -35,6 +35,14 @@ public class CriticalCheckAnimation extends AttackAnimation
 		this.isWeak = isWeak;
 	}
 	
+	public CriticalCheckAnimation(ResourceLocation id, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
+			StaticAnimation followUp, AttackAnimation.Phase... phases)
+	{
+		super(id, convertTime, path, model, phases);
+		this.followUp = followUp;
+		this.isWeak = isWeak;
+	}
+	
 	@Override
 	protected boolean onDamageTarget(LivingCap<?> entityCap, Entity target)
 	{

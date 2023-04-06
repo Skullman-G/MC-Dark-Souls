@@ -150,6 +150,10 @@ public class ActionAnimation extends ImmovableAnimation
 	{
 		JointTransform rootTransform = pose.getTransformByName("Root");
 		Vector3f rootPosition = rootTransform.translation();
+		Models.SERVER.serverModels.forEach((l, m) ->
+		{
+			System.out.print("\n"+l+" "+(m.getArmature() == null));
+		});
 		PublicMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
 				.searchJointByName("Root").getLocalTransform().removeTranslation();
 		PublicMatrix4f toOrigin = PublicMatrix4f.invert(toRootTransformApplied, null);

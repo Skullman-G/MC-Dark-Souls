@@ -1,7 +1,11 @@
 package com.skullmangames.darksouls.core.init;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
@@ -9,7 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ClientModels extends Models<ClientModel>
 {
-	protected final List<ClientModel> clientModels = new ArrayList<ClientModel>();
+	protected final Map<ResourceLocation, ClientModel> clientModels = new HashMap<>();
+	protected final List<ClientModel> meshes = new ArrayList<>();
 	public static final ClientModels CLIENT = new ClientModels();
 	
 	public final ClientModel ENTITY_BIPED_FIRST_PERSON;
@@ -31,7 +36,7 @@ public class ClientModels extends Models<ClientModel>
 		this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
 		this.ENTITY_BIPED_FIRST_PERSON = this.registerMeshOnly("biped_firstperson");
 		this.ENTITY_BIPED_OUTER_LAYER = this.registerMeshOnly("biped_outer_layer");
-		this.ENTITY_STRAY_DEMON = this.register("asylum_demon");
+		this.ENTITY_STRAY_DEMON = this.register("stray_demon");
 		
 		this.ITEM_HELMET = this.registerMeshOnly("armor_helmet");
 		this.ITEM_CHESTPLATE = this.registerMeshOnly("armor_chestplate");
@@ -47,32 +52,45 @@ public class ClientModels extends Models<ClientModel>
 	@Override
 	protected ClientModel register(String name)
 	{
-		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		this.animatedModels.add(model);
-		this.clientModels.add(model);
+		ResourceLocation id = DarkSouls.rl(name);
+		ClientModel model = new ClientModel(id);
+		this.clientModels.put(id, model);
+		this.meshes.add(model);
 		return model;
 	}
 	
 	@Override
 	protected ClientModel register(String name, String armaturePath)
 	{
-		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		model.setArmatureLocation(new ResourceLocation(DarkSouls.MOD_ID, armaturePath));
-		this.animatedModels.add(model);
-		this.clientModels.add(model);
+		ResourceLocation id = DarkSouls.rl(name);
+		ClientModel model = new ClientModel(id);
+		model.setArmatureLocation(DarkSouls.rl(armaturePath));
+		this.clientModels.put(id, model);
+		this.meshes.add(model);
 		return model;
 	}
 	
 	@Override
 	protected ClientModel registerMeshOnly(String name)
 	{
-		ClientModel model = new ClientModel(new ResourceLocation(DarkSouls.MOD_ID, name));
-		this.clientModels.add(model);
+		ClientModel model = new ClientModel(DarkSouls.rl(name));
+		this.meshes.add(model);
 		return model;
+	}
+	
+	@Nullable
+	public ClientModel findModel(ResourceLocation id)
+	{
+		return this.clientModels.get(id);
+	}
+	
+	public void buildArmatureData()
+	{
+		for (ClientModel model : this.clientModels.values()) model.loadArmatureData();
 	}
 	
 	public void buildMeshData()
 	{
-		for (ClientModel model : this.clientModels) model.loadMeshData();
+		for (ClientModel model : this.meshes) model.loadMeshData();
 	}
 }
