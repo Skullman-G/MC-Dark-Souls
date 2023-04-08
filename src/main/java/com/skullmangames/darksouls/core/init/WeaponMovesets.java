@@ -25,29 +25,30 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private Map<ResourceLocation, WeaponMoveset> movesets = ImmutableMap.of();
+	private static WeaponMoveset fistMoveset = WeaponMoveset.EMPTY;
 	
 	public WeaponMovesets()
 	{
 		super(GSON, "weapon_movesets");
 	}
 	
-	public static final ResourceLocation FIST = new ResourceLocation("fist");
+	public static final ResourceLocation FIST = DarkSouls.rl("fist");
 	
-	public static final ResourceLocation STRAIGHT_SWORD = new ResourceLocation("straight_sword");
+	public static final ResourceLocation STRAIGHT_SWORD = DarkSouls.rl("straight_sword");
 	
-	public static final ResourceLocation AXE = new ResourceLocation("axe");
+	public static final ResourceLocation AXE = DarkSouls.rl("axe");
 	
-	public static final ResourceLocation ULTRA_GREATSWORD = new ResourceLocation("ultra_greatsword");
+	public static final ResourceLocation ULTRA_GREATSWORD = DarkSouls.rl("ultra_greatsword");
 	
-	public static final ResourceLocation SHIELD = new ResourceLocation("shield");
+	public static final ResourceLocation SHIELD = DarkSouls.rl("shield");
 	
-	public static final ResourceLocation SPEAR = new ResourceLocation("spear");
+	public static final ResourceLocation SPEAR = DarkSouls.rl("spear");
 	
-	public static final ResourceLocation HAMMER = new ResourceLocation("hammer");
+	public static final ResourceLocation HAMMER = DarkSouls.rl("hammer");
 	
-	public static final ResourceLocation DAGGER = new ResourceLocation("dagger");
+	public static final ResourceLocation DAGGER = DarkSouls.rl("dagger");
 	
-	public static final ResourceLocation GREAT_HAMMER = new ResourceLocation("great_hammer");
+	public static final ResourceLocation GREAT_HAMMER = DarkSouls.rl("great_hammer");
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
@@ -67,12 +68,18 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 		});
 		this.movesets = builder.build();
 		
+		fistMoveset = getByLocation(FIST).orElse(WeaponMoveset.EMPTY);
 		for (ItemCapability cap : ProviderItem.CAPABILITIES.values())
 		{
 			if (cap instanceof ReloadableCap) ((ReloadableCap)cap).reload();
 		}
 		
 		LOGGER.info("Loaded "+this.movesets.size()+" weapon movesets");
+	}
+	
+	public static WeaponMoveset getFistMoveset()
+	{
+		return fistMoveset;
 	}
 	
 	public static Optional<WeaponMoveset> getByLocation(ResourceLocation location)

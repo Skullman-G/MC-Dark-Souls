@@ -1,5 +1,11 @@
 {
   "moveset": {
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:axe_heavy_attack"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
@@ -11,12 +17,6 @@
       "repeating": true,
       "animations": [
         "darksouls:backstab_strike_check"
-      ]
-    },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:axe_heavy_attack"
       ]
     },
     "dash": {

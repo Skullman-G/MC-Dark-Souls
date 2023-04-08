@@ -827,7 +827,7 @@ public final class Animations
 		
 		ULTRA_GREATSWORD_HEAVY_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("ultra_greatsword_heavy_attack"), 0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("ultra_greatsword_heavy_attack_1"), 0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
 					DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -853,7 +853,7 @@ public final class Animations
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 					.register(builder)
 		};
-		ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("ultra_greatsword_heavy_attack_1"), 0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
+		ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("ultra_greatsword_dash_attack"), 0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
 				DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_1"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{

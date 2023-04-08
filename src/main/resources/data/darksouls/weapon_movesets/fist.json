@@ -1,9 +1,16 @@
 {
   "moveset": {
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:fist_heavy_attack"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_light_attack"
+        "darksouls:fist_light_attack_1",
+        "darksouls:fist_light_attack_2"
       ]
     },
     "backstab": {
@@ -12,16 +19,10 @@
         "darksouls:backstab_strike_check"
       ]
     },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:hammer_heavy_attack"
-      ]
-    },
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_dash_attack"
+        "darksouls:fist_dash_attack"
       ]
     }
   }
