@@ -786,7 +786,7 @@ public final class Animations
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
 						Event.create(0.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
-				})).register(builder);
+				}).register(builder)).register(builder);
 		BACKSTAB_STRIKE = new CriticalCheckAnimation(DarkSouls.rl("backstab_strike_check"), 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_strike_check"), (models) -> models.ENTITY_BIPED,
 				new CriticalHitAnimation(DarkSouls.rl("backstab_strike"), 0.05F, 0.84F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
@@ -794,7 +794,7 @@ public final class Animations
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
 						Event.create(0.84F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
-				})).register(builder);
+				}).register(builder)).register(builder);
 
 		// Ultra Greatsword
 		ULTRA_GREATSWORD_LIGHT_ATTACK = new AttackAnimation[]

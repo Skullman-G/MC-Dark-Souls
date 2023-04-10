@@ -60,6 +60,7 @@ public class TransformSheet
 
 	public TransformSheet readFrom(TransformSheet opponent)
 	{
+		if (opponent == null) return this;
 		if (opponent.keyframes.length != this.keyframes.length)
 		{
 			this.keyframes = new Keyframe[opponent.keyframes.length];
