@@ -283,9 +283,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		this.stats.setStatValue(this.orgEntity, stat, value);
 	}
 	
-	public void setStatValue(int index, int value)
+	public void setStatValue(String name, int value)
 	{
-		this.stats.setStatValue(this.orgEntity, index, value);
+		this.stats.setStatValue(this.orgEntity, name, value);
 	}
 	
 	public int getStatValue(Stat stat)

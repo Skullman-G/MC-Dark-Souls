@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.network.client;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
@@ -15,21 +16,21 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class CTSLevelUp
 {
-	private int[] addition;
+	private Map<String, Integer> addition;
 	
-	public CTSLevelUp(int[] addition)
+	public CTSLevelUp(Map<String, Integer> addition)
 	{
 		this.addition = addition;
 	}
 	
 	public static CTSLevelUp fromBytes(FriendlyByteBuf buf)
 	{
-		return new CTSLevelUp(buf.readVarIntArray());
+		return new CTSLevelUp(buf.readMap((b) -> b.readUtf(), (b) -> b.readInt()));
 	}
 	
 	public static void toBytes(CTSLevelUp msg, FriendlyByteBuf buf)
 	{
-		buf.writeVarIntArray(msg.addition);
+		buf.writeMap(msg.addition, (b, s) -> b.writeUtf(s), (b, i) -> b.writeInt(i));
 	}
 	
 	public static void handle(CTSLevelUp msg, Supplier<NetworkEvent.Context> ctx)
@@ -41,10 +42,10 @@ public class CTSLevelUp
 			if (playerCap == null) return;
 			
 			Stats playerstats = playerCap.getStats();
-			for (int i = 0; i < Stats.STATS.size(); i++)
+			for (String stat : Stats.STATS.keySet())
 			{
-				msg.addition[i] = Math.min(msg.addition[i], 99 - playerstats.getStatValue(i));
-				if (!serverPlayer.isCreative()) msg.addition[i] = Math.max(msg.addition[i], 0);
+				msg.addition.put(stat, Math.min(msg.addition.get(stat), 99 - playerstats.getStatValue(stat)));
+				if (!serverPlayer.isCreative()) msg.addition.put(stat, Math.max(msg.addition.get(stat), 0));
 			}
 			
 			int preLevel = playerCap.getSoulLevel();
@@ -56,7 +57,7 @@ public class CTSLevelUp
 			}
 			else
 			{
-				for (int add : msg.addition) postLevel += add;
+				for (int add : msg.addition.values()) postLevel += add;
 				
 				int cost = 0;
 				for (int i = preLevel; i < postLevel; i++)
@@ -77,13 +78,13 @@ public class CTSLevelUp
 		ctx.get().setPacketHandled(true);
 	}
 	
-	public static void addStatValues(ServerPlayer player, Stats stats, int[] addition)
+	public static void addStatValues(ServerPlayer player, Stats stats, Map<String, Integer> addition)
 	{
-		for (int i = 0; i < Stats.STATS.size(); i++)
+		for (String stat : Stats.STATS.keySet())
 		{
-			int value = stats.getStatValue(i) + addition[i];
-			stats.setStatValue(player, i, value);
-			ModNetworkManager.sendToPlayer(new STCStat(player.getId(), i, value), player);
+			int value = stats.getStatValue(stat) + addition.get(stat);
+			stats.setStatValue(player, stat, value);
+			ModNetworkManager.sendToPlayer(new STCStat(player.getId(), stat, value), player);
 		}
 	}
 }

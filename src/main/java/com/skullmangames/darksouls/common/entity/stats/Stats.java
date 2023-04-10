@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -16,7 +17,7 @@ public class Stats
 {
 	public static final int STANDARD_LEVEL = 10;
 	public static final int MAX_LEVEL = 99;
-	public static final List<Stat> STATS = new ArrayList<>();
+	public static final Map<String, Stat> STATS = new LinkedHashMap<>();
 	
 	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
 	{
@@ -99,7 +100,7 @@ public class Stats
 	
 	private static <T extends Stat> T register(T stat)
 	{
-		STATS.add(stat);
+		STATS.put(stat.toString(), stat);
 		return stat;
 	}
 	
@@ -122,58 +123,58 @@ public class Stats
 				+ FAITH.getModifyValue(player, null, baseDamage, faith);
 	}
 	
-	private final int[] statValues = new int[STATS.size()];
+	private final Map<String, Integer> statValues = new HashMap<>();
 	
 	public int getStatValue(Stat stat)
 	{
-		return this.getStatValue(STATS.indexOf(stat));
+		return this.getStatValue(stat.getName());
 	}
 	
-	public int getStatValue(int index)
+	public int getStatValue(String name)
 	{
-		return this.statValues[index];
+		return this.statValues.get(name);
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)
 	{
-		this.setStatValue(player, STATS.indexOf(stat), value);
+		this.setStatValue(player, stat.getName(), value);
 	}
 	
-	public void setStatValue(Player player, int index, int value)
+	public void setStatValue(Player player, String name, int value)
 	{
-		this.statValues[index] = value;
-		STATS.get(index).onChange(player, value);
+		this.statValues.put(name, value);
+		STATS.get(name).onChange(player, value);
 	}
 	
 	public void loadStats(Player player, CompoundTag nbt)
 	{
-		for (int i = 0; i < STATS.size(); i++)
+		for (String name : STATS.keySet())
 		{
-			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(STATS.get(i).toString()), 99));
-			this.initStatValue(player, i, value);
+			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(name), 99));
+			this.initStatValue(player, name, value);
 		}
 	}
 	
-	public void initStatValue(Player player, int index, int value)
+	public void initStatValue(Player player, String name, int value)
 	{
-		this.statValues[index] = value;
-		STATS.get(index).init(player, value);
+		this.statValues.put(name, value);
+		STATS.get(name).init(player, value);
 	}
 	
 	public void saveStats(CompoundTag nbt)
 	{
-		for (int i = 0; i < STATS.size(); i++)
+		STATS.forEach((name, stat) ->
 		{
-			nbt.putInt(STATS.get(i).toString(), this.statValues[i]);
-		}
+			nbt.putInt(stat.getName(), this.statValues.get(name));
+		});
 	}
 	
 	public int getLevel()
 	{
 		int level = 1;
-		for (Stat stat : STATS)
+		for (Stat stat : STATS.values())
 		{
-			level += this.getStatValue(stat) - 10;
+			level += this.getStatValue(stat) - STANDARD_LEVEL;
 		}
 		
 		return level;

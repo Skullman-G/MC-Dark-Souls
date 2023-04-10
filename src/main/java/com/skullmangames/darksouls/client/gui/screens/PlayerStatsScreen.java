@@ -60,7 +60,7 @@ public class PlayerStatsScreen extends Screen
 		this.playerCap = ClientManager.INSTANCE.getPlayerCap();
 		this.player = this.playerCap.getOriginalEntity();
 		this.displayedLevel = this.playerCap.getSoulLevel();
-		for (Stat stat : Stats.STATS)
+		for (Stat stat : Stats.STATS.values())
 			this.displayedStats.put(stat, this.playerCap.getStats().getStatValue(stat));
 
 		this.imageWidth = 418;
@@ -117,7 +117,7 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(poseStack, "Attributes", firstX, y + 128, this.color);
 
 		int textheight = y + 143;
-		for (Stat stat : Stats.STATS)
+		for (Stat stat : Stats.STATS.values())
 		{
 			this.font.draw(poseStack, new TranslatableComponent(stat.toString()), firstX, textheight, this.color);
 
