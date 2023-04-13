@@ -7,14 +7,17 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -67,11 +70,12 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public void onLoad(CompoundTag nbt)
 	{
 		super.onLoad(nbt);
-		GameOverlayManager.canAnimateSouls = true;
-		GameOverlayManager.lastSouls = this.getSouls();
-		GameOverlayManager.lerpSouls = this.getSouls();
-		GameOverlayManager.lastFP = this.getFP() / this.getMaxFP();
-		GameOverlayManager.lastStamina = this.getStamina() / this.getMaxStamina();
+		GameOverlayManager gui = ClientManager.INSTANCE.gui;
+		gui.canAnimateSouls = true;
+		gui.lastSouls = this.getSouls();
+		gui.lastCurrentSouls = this.getSouls();
+		gui.lastFP = this.getFP() / this.getMaxFP();
+		gui.lastStamina = this.getStamina() / this.getMaxStamina();
 	}
 	
 	@Override
@@ -143,7 +147,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	
 	public void performDodge(DodgeType type)
 	{
-		if (this.isFirstPerson()) return;
 		ModNetworkManager.sendToServer(new CTSPerformDodge(type));
 	}
 	
@@ -168,7 +171,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 			}
 		}
 		
-		
 		if (weapon != null)
 		{
 			weapon.performAttack(type, this);
@@ -185,24 +187,19 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 			}
 			else
 			{
-				switch (type)
+				WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
+				Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
+				if (move != null)
 				{
-					default:
-					case LIGHT:
-						List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.FIST_LIGHT_ATTACK));
-						int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-						if (combo + 1 < animations.size()) combo += 1;
-						else combo = 0;
-						animation = animations.get(combo);
-						break;
-						
-					case DASH:
-						animation = Animations.FIST_DASH_ATTACK;
-						break;
-						
-					case HEAVY:
-						animation = Animations.FIST_HEAVY_ATTACK;
-						break;
+					AttackAnimation[] animations = move.getSecond();
+					if (animations != null)
+					{
+						List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
+						int combo = animationList.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+						if (combo + 1 < animations.length) combo += 1;
+						else if (move.getFirst()) combo = 0;
+						animation = animations[combo];
+					}
 				}
 			}
 			

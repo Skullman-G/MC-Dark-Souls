@@ -11,14 +11,16 @@ import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjec
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class ModCapabilities
 {
-	public static final Capability<EntityCapability<?>> CAPABILITY_ENTITY = null;
+	public static final Capability<EntityCapability<?>> CAPABILITY_ENTITY = CapabilityManager.get(new CapabilityToken<>(){});
 	
-    public static final Capability<ItemCapability> CAPABILITY_ITEM = null;
+    public static final Capability<ItemCapability> CAPABILITY_ITEM = CapabilityManager.get(new CapabilityToken<>(){});
 	
-    public static final Capability<CapabilityProjectile<Projectile>> CAPABILITY_PROJECTILE = null;
+    public static final Capability<CapabilityProjectile<Projectile>> CAPABILITY_PROJECTILE = CapabilityManager.get(new CapabilityToken<>(){});
 	
 	
 	public static ItemCapability getItemCapability(ItemStack stack)

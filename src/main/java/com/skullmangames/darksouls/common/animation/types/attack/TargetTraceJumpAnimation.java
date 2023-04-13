@@ -14,23 +14,26 @@ import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 
 public class TargetTraceJumpAnimation extends AttackAnimation
 {
-	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
+	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+			@Nullable Collider collider, String index, float weaponOffset, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, collider, index, weaponOffset, path, model);
+		this(id, convertTime, antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, collider, index, weaponOffset, path, model);
 	}
 	
-	public TargetTraceJumpAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, InteractionHand hand, @Nullable Collider collider, String index, float weaponOffset, String path, Function<Models<?>, Model> model)
+	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+			InteractionHand hand, @Nullable Collider collider, String index, float weaponOffset, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
+		this(id, convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
 	}
 	
-	public TargetTraceJumpAnimation(float convertTime, String path, Function<Models<?>, Model> model, TargetTracePhase... phases)
+	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, TargetTracePhase... phases)
 	{
-		super(convertTime, path, model, phases);
+		super(id, convertTime, path, model, phases);
 	}
 	
 	@Override

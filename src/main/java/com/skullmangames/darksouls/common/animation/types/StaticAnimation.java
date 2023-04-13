@@ -7,11 +7,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import com.skullmangames.darksouls.DarkSouls;
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
@@ -27,43 +28,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class StaticAnimation extends DynamicAnimation
 {
+	protected final ResourceLocation animationId;
 	protected final Map<Property<?>, Object> properties = new HashMap<>();
 	protected final Function<Models<?>, Model> model;
-	protected final ResourceLocation resourceLocation;
-	protected final int animationId;
+	protected final ResourceLocation path;
 
 	public StaticAnimation()
 	{
 		super(0.0F, false);
-		this.animationId = -1;
-		this.resourceLocation = null;
+		this.animationId = null;
+		this.path = null;
 		this.model = null;
 	}
 
-	public StaticAnimation(boolean repeatPlay, String path, Function<Models<?>, Model> model)
+	public StaticAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
 	}
 
-	public StaticAnimation(float convertTime, boolean isRepeat, String path, Function<Models<?>, Model> model)
+	public StaticAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 	{
 		super(convertTime, isRepeat);
-		AnimationManager animationManager = DarkSouls.getInstance().animationManager;
-		this.animationId = animationManager.getIdCounter();
-		animationManager.getIdMap().put(this.animationId, this);
-		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID, "animations/" + path);
-		animationManager.getNameMap().put(new ResourceLocation(DarkSouls.MOD_ID, path), this);
+		this.animationId = id;
+		this.path = path;
 		this.model = model;
 	}
-
-	public StaticAnimation(float convertTime, boolean repeatPlay, String path, Function<Models<?>, Model> model,
-			boolean doNotRegister)
+	
+	public StaticAnimation register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder)
 	{
-		super(convertTime, repeatPlay);
-		this.animationId = -1;
-		this.resourceLocation = new ResourceLocation(DarkSouls.MOD_ID,
-				"animations/" + path);
-		this.model = model;
+		builder.put(this.getId(), this);
+		return this;
 	}
 	
 	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
@@ -83,9 +77,9 @@ public class StaticAnimation extends DynamicAnimation
 		return this;
 	}
 
-	public ResourceLocation getLocation()
+	public ResourceLocation getPath()
 	{
-		return this.resourceLocation;
+		return this.path;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -102,9 +96,9 @@ public class StaticAnimation extends DynamicAnimation
 
 	public static void load(ResourceManager resourceManager, Models<?> models, StaticAnimation animation)
 	{
-		ResourceLocation extenderPath = new ResourceLocation(animation.resourceLocation.getNamespace(),
-				animation.resourceLocation.getPath() + ".dae");
-		AnimationDataExtractor.extractAnimation(extenderPath, animation, animation.model.apply(models).getArmature());
+		ResourceLocation extenderPath = new ResourceLocation(animation.path.getNamespace(),
+				"animations/" + animation.path.getPath() + ".dae");
+		AnimationDataExtractor.extractAnimation(resourceManager, extenderPath, animation, animation.model.apply(models).getArmature());
 	}
 	
 	@Override
@@ -180,7 +174,8 @@ public class StaticAnimation extends DynamicAnimation
 		return speed;
 	}
 
-	public int getId()
+	@Nullable
+	public ResourceLocation getId()
 	{
 		return this.animationId;
 	}
@@ -188,7 +183,7 @@ public class StaticAnimation extends DynamicAnimation
 	@Override
 	public String toString()
 	{
-		return this.resourceLocation.toString();
+		return this.animationId.toString();
 	}
 
 	public static class Event implements Comparable<Event>

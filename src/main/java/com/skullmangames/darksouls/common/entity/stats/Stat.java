@@ -13,6 +13,11 @@ public class Stat
 		this.name = "stat."+DarkSouls.MOD_ID+"."+name;
 	}
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
 	@Override
 	public String toString()
 	{

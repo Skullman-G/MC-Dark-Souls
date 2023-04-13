@@ -13,7 +13,6 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
@@ -38,12 +37,13 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public abstract class WeaponCap extends AttributeItemCap
 {
 	private final WeaponCategory weaponCategory;
-	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<LivingMotion, StaticAnimation>();
+	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<>();
 	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
 	public final float poiseDamage;
 	public final float weight;
 
-	public WeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling, float poiseDamage)
+	public WeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith,
+			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
 		super(item);
 		this.weaponCategory = category;
@@ -52,8 +52,8 @@ public abstract class WeaponCap extends AttributeItemCap
 				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(reqDex, 0, 99), dexScaling))
 				.put(Stats.FAITH, new Pair<Integer, Scaling>(MathUtils.clamp(reqFaith, 0, 99), faithScaling))
 				.build();
-		this.poiseDamage = poiseDamage;
 		this.weight = Math.max(((float)reqStrength - 4F) / 2F, 0F);
+		this.poiseDamage = this.weight * 15;
 	}
 	
 	@Override
@@ -136,7 +136,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 100))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 2))));
 		}
 	}
 
@@ -153,24 +153,6 @@ public abstract class WeaponCap extends AttributeItemCap
 	public WeaponCategory getWeaponCategory()
 	{
 		return this.weaponCategory;
-	}
-
-	public WieldStyle getStyle(LivingCap<?> entityCap)
-	{
-		if (this.isTwoHanded())
-		{
-			return WieldStyle.TWO_HAND;
-		} else
-		{
-			if (this.isMainhandOnly())
-			{
-				return entityCap.getOriginalEntity().getMainHandItem().isEmpty() ? WieldStyle.TWO_HAND
-						: WieldStyle.ONE_HAND;
-			} else
-			{
-				return WieldStyle.ONE_HAND;
-			}
-		}
 	}
 
 	@Override
@@ -216,17 +198,12 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public enum WeaponCategory
 	{
-		NONE_WEAON, AXE, FIST, STRAIGHT_SWORD, SHIELD, GREAT_HAMMER, DAGGER, HAMMER, SPEAR, ULTRA_GREATSWORD, BOW, CROSSBOW, TALISMAN
+		NONE_WEAON, MELEE_WEAPON, BOW, CROSSBOW, TALISMAN
 	}
 
 	public enum HandProperty
 	{
 		TWO_HANDED, MAINHAND_ONLY, GENERAL
-	}
-
-	public enum WieldStyle
-	{
-		ONE_HAND, TWO_HAND, SHEATH, MOUNT
 	}
 	
 	public enum Scaling

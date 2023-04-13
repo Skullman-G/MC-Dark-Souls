@@ -1,0 +1,30 @@
+{
+  "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:ultra_greatsword_light_attack_1",
+        "darksouls:ultra_greatsword_light_attack_2"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_strike_check"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:ultra_greatsword_dash_attack"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:ultra_greatsword_heavy_attack_1",
+        "darksouls:ultra_greatsword_heavy_attack_2"
+      ]
+    }
+  }
+}

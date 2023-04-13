@@ -91,7 +91,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		this.humanity = nbt.getInt("Humanity");
 		this.souls = nbt.getInt("Souls");
 		this.human = nbt.getBoolean("IsHuman");
-		if (nbt.contains("FocusPoints")) this.fp = nbt.getFloat("FocusPoints");
+		if (nbt.contains("FocusPoints")) this.fp = Math.min(nbt.getFloat("FocusPoints"), this.getMaxFP());
 		else this.fp = this.getMaxFP();
 		this.attunements.load(nbt.getList("Attunements", 10));
 		this.covenant = Covenants.COVENANTS.get(nbt.getInt("Covenant"));
@@ -283,9 +283,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		this.stats.setStatValue(this.orgEntity, stat, value);
 	}
 	
-	public void setStatValue(int index, int value)
+	public void setStatValue(String name, int value)
 	{
-		this.stats.setStatValue(this.orgEntity, index, value);
+		this.stats.setStatValue(this.orgEntity, name, value);
 	}
 	
 	public int getStatValue(Stat stat)

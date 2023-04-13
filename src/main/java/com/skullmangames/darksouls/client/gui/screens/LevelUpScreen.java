@@ -35,7 +35,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 		int buttonheight2 = 10;
 		
 		int upDownButtonHeight = y + 112;
-		for (Stat stat : Stats.STATS)
+		for (Stat stat : Stats.STATS.values())
 		{
 			int statValue = this.playerCap.getStats().getStatValue(stat);
 			LevelButton downButton = this.addRenderableWidget(new LevelButton(x + 93, upDownButtonHeight, buttonwidth2, buttonheight2, new TextComponent("<"), (button) ->
@@ -51,7 +51,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 				this.levelUp(stat);
 				this.refreshLevelButtons();
 		    }, stat));
-			upButton.active = this.displayedStats.getOrDefault(stat, Stats.STANDARD_LEVEL).intValue() < Stats.MAX_LEVEL && this.playerCap.hasEnoughSouls(Stats.getCost(this.displayedLevel));
+			upButton.active = this.displayedStats.getOrDefault(stat, Stats.STANDARD_LEVEL).intValue() < Stats.MAX_LEVEL && this.canUpgrade();
 			this.levelButtons.put(downButton, upButton);
 			
 			upDownButtonHeight += 10;
@@ -70,7 +70,7 @@ public class LevelUpScreen extends PlayerStatsScreen
 			int statvalue = this.playerCap.getStats().getStatValue(down.getStat());
 			int displayedstatvalue = this.displayedStats.get(down.getStat()).intValue();
 			down.active = this.playerCap.isCreativeOrSpectator() ? displayedstatvalue > 1 : displayedstatvalue > statvalue;
-			up.active = displayedstatvalue < 99 && this.playerCap.hasEnoughSouls(Stats.getCost(this.displayedLevel));
+			up.active = displayedstatvalue < 99 && this.canUpgrade();
 		});
 	}
 	
@@ -88,13 +88,13 @@ public class LevelUpScreen extends PlayerStatsScreen
 	
 	private void accept()
 	{
-		int[] additions = new int[Stats.STATS.size()];
-		for (int i = 0; i < additions.length; i++)
+		Map<String, Integer> additions = new HashMap<>();
+		Stats.STATS.forEach((name, stat) ->
 		{
-			int statvalue = this.playerCap.getStats().getStatValue(i);
-			int addition = this.displayedStats.getOrDefault(Stats.STATS.get(i), statvalue) - statvalue;
-			additions[i] = addition;
-		}
+			int statvalue = this.playerCap.getStats().getStatValue(name);
+			int addition = this.displayedStats.getOrDefault(stat, statvalue) - statvalue;
+			additions.put(name, addition);
+		});
 		ModNetworkManager.sendToServer(new CTSLevelUp(additions));
 		super.onClose();
 	}

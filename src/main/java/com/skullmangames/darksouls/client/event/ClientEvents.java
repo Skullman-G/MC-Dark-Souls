@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.client.event;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.screens.AttunementScreen;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -47,7 +46,7 @@ public class ClientEvents
 		Minecraft minecraft = Minecraft.getInstance();
 		if (event.getEntityLiving() instanceof Player && event.getEntityLiving().getUUID() == minecraft.player.getUUID() && !event.getEntityLiving().isSpectator())
 		{
-			GameOverlayManager.isHealing = true;
+			ClientManager.INSTANCE.gui.isHealing = true;
 		}
 	}
 	

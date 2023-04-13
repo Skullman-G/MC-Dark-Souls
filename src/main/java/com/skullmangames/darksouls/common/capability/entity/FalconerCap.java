@@ -9,9 +9,11 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class FalconerCap extends HumanoidCap<Falconer>
@@ -39,7 +41,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 	}
 
 	@Override
-	public void setAttackGoals(WeaponCategory category)
+	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
@@ -49,9 +51,9 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		}
 		else
 		{
-			if (category != WeaponCategory.STRAIGHT_SWORD) return;
+			if (moveset != WeaponMovesets.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_SWINGS))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_LIGHT_ATTACKS))
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}

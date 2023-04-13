@@ -1,16 +1,14 @@
 package com.skullmangames.darksouls;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -47,7 +45,6 @@ import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.event.CapabilityEvents;
 import com.skullmangames.darksouls.core.event.EntityEvents;
 import com.skullmangames.darksouls.core.event.PlayerEvents;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -61,6 +58,7 @@ import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.QuestFlags;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -85,6 +83,7 @@ public class DarkSouls
 
 	private static DarkSouls instance;
 	public final AnimationManager animationManager;
+	public final WeaponMovesets weaponMovesets;
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
 	public static DarkSouls getInstance()
@@ -95,6 +94,7 @@ public class DarkSouls
 	public DarkSouls()
 	{
 		this.animationManager = new AnimationManager();
+		this.weaponMovesets = new WeaponMovesets();
 		instance = this;
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_CONFIG, CONFIG_FILE_PATH);
@@ -135,12 +135,24 @@ public class DarkSouls
 		forgeBus.register(CapabilityEvents.class);
 		forgeBus.register(PlayerEvents.class);
 		forgeBus.addListener(ModEntities::addEntitySpawns);
+		forgeBus.addListener(this::registerDataReloadListeners);
 
 		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
 		ConfigManager.INGAME_CONFIG.populateDefaultValues();
 		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
+	}
+	
+	public static ResourceLocation rl(String path)
+	{
+		return new ResourceLocation(DarkSouls.MOD_ID, path);
+	}
+	
+	private void registerDataReloadListeners(AddReloadListenerEvent event)
+	{
+		event.addListener(this.animationManager);
+		event.addListener(this.weaponMovesets);
 	}
 	
 	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)
@@ -150,7 +162,6 @@ public class DarkSouls
 
 	private void doServerStuff(final FMLDedicatedServerSetupEvent event)
 	{
-		this.animationManager.loadAnimationsInit(null);
 		this.animatorProvider = ServerAnimator::getAnimator;
 	}
 
@@ -172,15 +183,11 @@ public class DarkSouls
 
 	private void doClientStuff(final FMLClientSetupEvent event)
 	{
-		if (FMLEnvironment.dist.isDedicatedServer())
-			return;
+		if (FMLEnvironment.dist.isDedicatedServer()) return;
 
 		new ClientManager();
 
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		ClientModels.CLIENT.buildMeshData();
-		this.animationManager.loadAnimationsInit(resourceManager);
-		Animations.buildClient();
 		ClientManager.INSTANCE.renderEngine.buildRenderer();
 
 		ProviderEntity.makeMapClient();
@@ -190,13 +197,11 @@ public class DarkSouls
 		MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
 
-		// Register ReloadListeners
-		((ReloadableResourceManager) resourceManager).registerReloadListener(this.animationManager);
-
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_ACACIA_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_OAK_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIG_JUNGLE_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BONFIRE.get(), RenderType.cutout());
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);

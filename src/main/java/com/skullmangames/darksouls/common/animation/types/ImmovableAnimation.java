@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
@@ -15,9 +16,9 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ImmovableAnimation extends StaticAnimation
 {
-	public ImmovableAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public ImmovableAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, false, path, model);
+		super(id, convertTime, false, path, model);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
@@ -9,24 +10,26 @@ import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class DodgingAnimation extends ActionAnimation
 {
 	protected float encumbrance = 0.0F;
 	private final boolean canRotate;
 	
-	public DodgingAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, false, path, model);
+		this(id, convertTime, false, path, model);
 	}
 	
-	public DodgingAnimation(float convertTime, boolean canRotate, String path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(convertTime, canRotate, 0.0F, path, model);
+		this(id, convertTime, canRotate, 0.0F, path, model);
 	}
 	
-	public DodgingAnimation(float convertTime, boolean canRotate, float delayTime, String path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, delayTime, path, model);
+		super(id, convertTime, delayTime, path, model);
 		this.canRotate = canRotate;
 	}
 	
@@ -59,5 +62,11 @@ public class DodgingAnimation extends ActionAnimation
 	public EntityState getState(float time)
 	{
 		return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
+	}
+	
+	@Override
+	public DodgingAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	{
+		return (DodgingAnimation)super.register(builder);
 	}
 }

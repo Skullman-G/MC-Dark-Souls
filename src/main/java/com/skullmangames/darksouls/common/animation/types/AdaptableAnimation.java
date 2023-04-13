@@ -13,17 +13,20 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class AdaptableAnimation extends StaticAnimation
 {
 	private final Map<LivingMotion, MirrorAnimation> animations;
 	
-	public AdaptableAnimation(float convertTime, boolean repeatPlay, Function<Models<?>, Model> model, AnimConfig... configs)
+	public AdaptableAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, Function<Models<?>, Model> model, AnimConfig... configs)
 	{
 		super();
-		Builder<LivingMotion, MirrorAnimation> builder = ImmutableMap.builder();
+		ImmutableMap.Builder<LivingMotion, MirrorAnimation> builder = ImmutableMap.builder();
 		for (AnimConfig config : configs)
 		{
-			MirrorAnimation anim = new MirrorAnimation(convertTime, repeatPlay, config.applyLayerParts, config.path1, config.path2, model);
+			MirrorAnimation anim = new MirrorAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+config.motion.toString().toLowerCase()),
+					convertTime, repeatPlay, config.applyLayerParts, config.path1, config.path2, model);
 			if (config.applyLayerParts)
 			{
 				anim.addProperty(StaticAnimationProperty.SHOULD_SYNC, true);
@@ -42,14 +45,21 @@ public class AdaptableAnimation extends StaticAnimation
 		else return Animations.DUMMY_ANIMATION;
 	}
 	
+	@Override
+	public StaticAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	{
+		for (MirrorAnimation a : this.animations.values()) a.register(builder);
+		return this;
+	}
+	
 	public static class AnimConfig
 	{
 		private LivingMotion motion;
-		private String path1;
-		private String path2;
+		private ResourceLocation path1;
+		private ResourceLocation path2;
 		private boolean applyLayerParts;
 		
-		public AnimConfig(LivingMotion motion, String path1, String path2, boolean applyLayerParts)
+		public AnimConfig(LivingMotion motion, ResourceLocation path1, ResourceLocation path2, boolean applyLayerParts)
 		{
 			this.motion = motion;
 			this.path1 = path1;

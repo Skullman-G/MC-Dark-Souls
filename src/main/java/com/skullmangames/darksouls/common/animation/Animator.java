@@ -12,6 +12,8 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
+import net.minecraft.resources.ResourceLocation;
+
 public abstract class Animator
 {
 	protected Pose prevPose = new Pose();
@@ -36,15 +38,15 @@ public abstract class Animator
 
 	public abstract void updatePose();
 
-	public final void playAnimation(int id, float convertTimeModifier)
+	public final void playAnimation(ResourceLocation id, float convertTimeModifier)
 	{
-		this.playAnimation(DarkSouls.getInstance().animationManager.findAnimationById(id),
+		this.playAnimation(DarkSouls.getInstance().animationManager.getAnimation(id),
 				convertTimeModifier);
 	}
 
-	public final void playAnimationInstantly(int id)
+	public final void playAnimationInstantly(ResourceLocation id)
 	{
-		this.playAnimationInstantly(DarkSouls.getInstance().animationManager.findAnimationById(id));
+		this.playAnimationInstantly(DarkSouls.getInstance().animationManager.getAnimation(id));
 	}
 
 	public Pose getPose(float partialTicks)

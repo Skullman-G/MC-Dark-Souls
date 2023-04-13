@@ -13,10 +13,10 @@ import net.minecraftforge.network.NetworkEvent;
 public class STCStat
 {
 	private int entityId;
-	private int stat;
+	private String stat;
 	private int value;
 	
-	public STCStat(int entityid, int stat, int value)
+	public STCStat(int entityid, String stat, int value)
 	{
 		this.entityId = entityid;
 		this.stat = stat;
@@ -25,13 +25,13 @@ public class STCStat
 	
 	public static STCStat fromBytes(FriendlyByteBuf buf)
 	{
-		return new STCStat(buf.readInt(), buf.readInt(), buf.readInt());
+		return new STCStat(buf.readInt(), buf.readUtf(), buf.readInt());
 	}
 	
 	public static void toBytes(STCStat msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
-		buf.writeInt(msg.stat);
+		buf.writeUtf(msg.stat);
 		buf.writeInt(msg.value);
 	}
 	

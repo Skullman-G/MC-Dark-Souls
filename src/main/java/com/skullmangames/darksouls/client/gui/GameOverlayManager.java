@@ -17,7 +17,6 @@ import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.timer.Timer;
 
 import net.minecraft.client.player.LocalPlayer;
@@ -25,6 +24,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -37,41 +37,42 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class GameOverlayManager
 {
-	private static final Minecraft minecraft = Minecraft.getInstance();
+	private final Minecraft minecraft = Minecraft.getInstance();
 	
 	private static final ResourceLocation LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/health_bar.png");
 	private static final ResourceLocation BOSS_BARS_LOCATION = new ResourceLocation("textures/gui/bars.png");
 	private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/widgets.png");
 	
-	private static final Timer damageCooldown = new Timer();
-	private static final Timer damageTimer = new Timer();
-	private static final Timer healTimer = new Timer();
-	private static int lastHealth;
-	private static int saveLastHealth;
-	public static boolean isHealing = false;
+	private final Timer damageCooldown = new Timer();
+	private final Timer damageTimer = new Timer();
+	private final Timer healTimer = new Timer();
+	private int lastHealth;
+	private int saveLastHealth;
+	public boolean isHealing = false;
 	
-	public static float lastFP;
-	private static float saveLastFP;
-	private static final Timer fpDrainCooldown = new Timer();
-	private static final Timer fpDrainTimer = new Timer();
-	private static final Timer fpRiseTimer = new Timer();
+	public float lastFP;
+	private float saveLastFP;
+	private final Timer fpDrainCooldown = new Timer();
+	private final Timer fpDrainTimer = new Timer();
+	private final Timer fpRiseTimer = new Timer();
 	
-	private static final Timer staminaTimer = new Timer();
-	private static final Timer staminaDrainTimer = new Timer();
-	private static final Timer stamiaDrainCooldownTimer = new Timer();
-	public static float lastStamina;
-	private static float saveLastStamina;
-	private static float saveLastStamina2;
+	private final Timer staminaTimer = new Timer();
+	private final Timer staminaDrainTimer = new Timer();
+	private final Timer stamiaDrainCooldownTimer = new Timer();
+	public float lastStamina;
+	private float saveLastStamina;
+	private float saveLastStamina2;
 	
-	public static int lastSouls;
-	private static int soulIncr;
-	public static int lerpSouls;
-	private static final Timer soulGetTimer = new Timer();
-	public static boolean canAnimateSouls = false;
+	public int lastCurrentSouls;
+	public int lastSouls;
+	private int soulIncr;
+	private float lerpSouls = 1;
+	private final Timer soulGetTimer = new Timer();
+	public boolean canAnimateSouls = false;
 	
-	private static final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
+	private final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
 	
-	public static void registerOverlayElements()
+	public void registerOverlayElements()
 	{
 		ModOverlayRegistry.enablePlayerHealth(false);
 		ModOverlayRegistry.enableArmorLevel(false);
@@ -158,7 +159,7 @@ public class GameOverlayManager
 	    });
 	}
 	
-	public static void reloadOverlayElements()
+	public void reloadOverlayElements()
 	{
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
 		ModOverlayRegistry.enableHotbar(!dsLayout);
@@ -167,7 +168,7 @@ public class GameOverlayManager
 		
 	}
 	
-	private static void renderItems(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
+	private void renderItems(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
 	{
 		if (!ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
 		
@@ -201,7 +202,7 @@ public class GameOverlayManager
 		else renderExperience(gui, x, width, height, poseStack);
 	}
 	
-	private static void renderExperience(ForgeIngameGui gui, int x, int width, int height, PoseStack poseStack)
+	private void renderExperience(ForgeIngameGui gui, int x, int width, int height, PoseStack poseStack)
     {
 		RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -250,7 +251,7 @@ public class GameOverlayManager
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private static void renderJumpMeter(ForgeIngameGui gui, PoseStack poseStack, int x, int width, int height)
+    private void renderJumpMeter(ForgeIngameGui gui, PoseStack poseStack, int x, int width, int height)
     {
     	RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -279,7 +280,7 @@ public class GameOverlayManager
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 	
-	private static void renderAttunements(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
+	private void renderAttunements(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
 	{
 		if (ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
 		
@@ -310,7 +311,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderSlot(int x, int y, float partialTicks, Player player, ItemStack itemStack, int p_168683_)
+	private void renderSlot(int x, int y, float partialTicks, Player player, ItemStack itemStack, int p_168683_)
 	{
 		if (!itemStack.isEmpty())
 		{
@@ -339,7 +340,7 @@ public class GameOverlayManager
 		}
 	}
 	
-	private static void renderFP(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	private void renderFP(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap player = getCameraPlayerCap();
 		if (player == null) return;
@@ -402,7 +403,6 @@ public class GameOverlayManager
 			drawBar(poseStack, x, y, 0, 28, 256, 7, length, (int)(risecentage * length)); // Blue
 			fpRiseTimer.drain(1);
 		}
-
 		// Default
 		else
 		{
@@ -413,7 +413,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderBossHealthBars(ForgeIngameGui gui, PoseStack poseStack)
+	private void renderBossHealthBars(ForgeIngameGui gui, PoseStack poseStack)
 	{
 		RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 		RenderSystem.defaultBlendFunc();
@@ -457,10 +457,7 @@ public class GameOverlayManager
 				}
 				y += event.getIncrement();
 				net.minecraftforge.client.ForgeHooksClient.renderBossEventPost(poseStack, minecraft.getWindow());
-				if (y >= minecraft.getWindow().getGuiScaledHeight() / 3)
-				{
-					break;
-				}
+				if (y >= minecraft.getWindow().getGuiScaledHeight() / 3) break;
 			}
 
 		}
@@ -468,7 +465,7 @@ public class GameOverlayManager
 		minecraft.getProfiler().pop();
 	}
 	
-	private static void drawBossBar(BossHealthOverlay gui, PoseStack poseStack, int x, int y, LerpingBossEvent bossEvent)
+	private void drawBossBar(BossHealthOverlay gui, PoseStack poseStack, int x, int y, LerpingBossEvent bossEvent)
 	{
 		gui.blit(poseStack, x, y, 0, bossEvent.getColor().ordinal() * 5 * 2, 182, 5); // Background
 		if (bossEvent.getOverlay() != BossEvent.BossBarOverlay.PROGRESS)
@@ -530,7 +527,7 @@ public class GameOverlayManager
 		private int saveLastHealth;
 	}
 	
-	private static void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	private void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
@@ -601,7 +598,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	private void renderStamina(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap player = getCameraPlayerCap();
 		if (player == null) return;
@@ -669,7 +666,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
+	private void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
@@ -680,7 +677,7 @@ public class GameOverlayManager
 		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
 	}
 
-	private static void renderSouls(int width, int height, PoseStack poseStack)
+	private void renderSouls(int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
 		int x = width - 76;
@@ -700,8 +697,8 @@ public class GameOverlayManager
 		
 		if (canAnimateSouls)
 		{
-			int displaySouls = MathUtils.lerp(5, lerpSouls, currentSouls);
-			if (!soulGetTimer.isTicking() && currentSouls != lastSouls)
+			int displaySouls = (int) Mth.lerp(this.lerpSouls, this.lastSouls, currentSouls);
+			if ((!soulGetTimer.isTicking() || this.soulGetTimer.getPastTime() > 50) && currentSouls != this.lastCurrentSouls)
 			{
 				soulIncr = currentSouls - lastSouls;
 				soulGetTimer.start(200);
@@ -717,13 +714,16 @@ public class GameOverlayManager
 				ForgeIngameGui.drawCenteredString(ps, minecraft.font, soulIncr > 0 ? "+" + String.valueOf(soulIncr) : String.valueOf(soulIncr),
 						Math.round(x / scale), Math.round((y - 12) / scale), new Color(255, 255, 255, alpha).getRGB());
 			}
+			
 			ForgeIngameGui.drawCenteredString(ps, minecraft.font, String.valueOf(displaySouls), Math.round(x / scale), Math.round(y / scale), Color.WHITE.getRGB());
 			
-			if (!minecraft.isPaused())
+			if (!this.minecraft.isPaused())
 			{
-				soulGetTimer.drain(1);
-				lastSouls = currentSouls;
-				lerpSouls = displaySouls;
+				this.soulGetTimer.drain(1);
+				this.lerpSouls = Math.min(this.lerpSouls + 0.01F, 1);
+				if (currentSouls != this.lastCurrentSouls) this.lerpSouls = 0;
+				if (this.lerpSouls == 1) this.lastSouls = currentSouls;
+				this.lastCurrentSouls = currentSouls;
 			}
 		}
 		else
@@ -734,7 +734,7 @@ public class GameOverlayManager
 		RenderSystem.disableBlend();
 	}
 	
-	private static void drawBar(PoseStack poseStack, int x, int y, int u, int v, int uSize, int vSize, int length, int shown)
+	private void drawBar(PoseStack poseStack, int x, int y, int u, int v, int uSize, int vSize, int length, int shown)
 	{
 		int end = 10;
 		boolean exceeds = shown > length - end;
@@ -742,12 +742,12 @@ public class GameOverlayManager
 		if (exceeds) minecraft.gui.blit(poseStack, x + length - end, y, u + uSize - end, v, shown - (length - end), vSize);
 	}
 	
-	private static LocalPlayer getCameraPlayer()
+	private LocalPlayer getCameraPlayer()
 	{
 	    return minecraft.player;
 	}
 	
-	private static LocalPlayerCap getCameraPlayerCap()
+	private LocalPlayerCap getCameraPlayerCap()
 	{
 		LocalPlayer player = getCameraPlayer();
 		if (player == null) return null;

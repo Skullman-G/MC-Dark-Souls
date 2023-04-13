@@ -8,16 +8,18 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class MovementAnimation extends StaticAnimation
 {
-	public MovementAnimation(float convertTime, boolean isRepeat, String path, Function<Models<?>, Model> model)
+	public MovementAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, isRepeat, path, model);
+		super(id, convertTime, isRepeat, path, model);
 	}
 
-	public MovementAnimation(boolean repeatPlay, String path, Function<Models<?>, Model> model)
+	public MovementAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
+		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
 	}
 	
 	@Override

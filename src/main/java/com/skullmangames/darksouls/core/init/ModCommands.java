@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.command.HumanityCommand;
 import com.skullmangames.darksouls.common.command.SoulsCommand;
+import com.skullmangames.darksouls.common.command.StatCommand;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,5 +18,6 @@ public class ModCommands
 	{
 		SoulsCommand.register(event.getDispatcher());
 		HumanityCommand.register(event.getDispatcher());
+		StatCommand.register(event.getDispatcher());
 	}
 }

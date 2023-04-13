@@ -6,11 +6,13 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Models;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class HitAnimation extends ActionAnimation
 {
-	public HitAnimation(float convertTime, String path, Function<Models<?>, Model> model)
+	public HitAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		super(convertTime, path, model);
+		super(id, convertTime, path, model);
 	}
 
 	@Override

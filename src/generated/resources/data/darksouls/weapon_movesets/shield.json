@@ -1,0 +1,10 @@
+{
+  "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_attack"
+      ]
+    }
+  }
+}

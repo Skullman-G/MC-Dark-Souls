@@ -3,9 +3,6 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
@@ -13,9 +10,9 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -23,6 +20,7 @@ import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,25 +35,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public abstract class MeleeWeaponCap extends WeaponCap implements IShield
+public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 {
-	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
+	private final ResourceLocation movesetId;
+	private WeaponMoveset moveset;
+	private final Collider collider;
+	private final float staminaDamage;
 	
-	public MeleeWeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith,
-			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling, float poiseDamage)
+	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, int reqStrength, int reqDex, int reqFaith,
+			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, category, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, poiseDamage);
-		this.moveset = this.initMoveset().build();
+		super(item, WeaponCategory.MELEE_WEAPON, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		this.movesetId = moveset;
+		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
+		this.staminaDamage = this.weight * 2;
+		this.collider = collider;
 	}
 	
-	protected ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
+	public void reload()
 	{
-		return ImmutableMap.builder();
-	}
-	
-	protected final void putMove(ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder, AttackType type, boolean repeat, AttackAnimation... animations)
-	{
-		builder.put(type, new Pair<Boolean, AttackAnimation[]>(repeat, animations));
+		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 	}
 	
 	@Override
@@ -97,7 +96,7 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	
 	public AttackAnimation[] getAttacks(AttackType type)
 	{
-		return this.moveset.get(type).getSecond();
+		return this.moveset.getAttacks(type);
 	}
 	
 	@Override
@@ -150,13 +149,24 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 
 	public Collider getWeaponCollider()
 	{
-		return Colliders.FIST;
+		return this.collider;
+	}
+	
+	public ResourceLocation getWeaponMovesetId()
+	{
+		return this.movesetId;
 	}
 	
 	@Override
 	public SoundEvent getBlockSound()
 	{
 		return ModSoundEvents.WEAPON_BLOCK.get();
+	}
+	
+	@Override
+	public float getStaminaDamage()
+	{
+		return this.staminaDamage;
 	}
 	
 	@Override
@@ -173,6 +183,27 @@ public abstract class MeleeWeaponCap extends WeaponCap implements IShield
 	
 	public enum AttackType
 	{
-		LIGHT, HEAVY, DASH, BACKSTAB
+		LIGHT("light"), HEAVY("heavy"), DASH("dash"), BACKSTAB("backstab");
+		
+		private String id;
+		
+		private AttackType(String id)
+		{
+			this.id = id;
+		}
+		
+		public String toString()
+		{
+			return this.id;
+		}
+		
+		public static AttackType fromString(String id)
+		{
+			for (AttackType type : AttackType.values())
+			{
+				if (type.id.equals(id)) return type;
+			}
+			return null;
+		}
 	}
 }

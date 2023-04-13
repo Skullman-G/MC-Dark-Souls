@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
@@ -16,80 +17,96 @@ public class Stats
 {
 	public static final int STANDARD_LEVEL = 10;
 	public static final int MAX_LEVEL = 99;
-	public static final List<Stat> STATS = new ArrayList<>();
+	public static final Map<String, Stat> STATS = new LinkedHashMap<>();
 	
 	public static final ModifyingStat VIGOR = register(new ModifyingStat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
-			{
-				@Override		
-				public void onChange(Player player, int value)
-				{
-					super.onChange(player, value);
-					player.setHealth(player.getMaxHealth());
-				}
-				
-				@Override
-				public double getModifyValue(Player player, Attribute attribute, int value)
-				{
-					return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
-				}
-			});
+	{
+		@Override
+		public void onChange(Player player, int value)
+		{
+			super.onChange(player, value);
+			player.setHealth(player.getMaxHealth());
+		}
+
+		@Override
+		public double getModifyValue(Player player, Attribute attribute, int value)
+		{
+			return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+		}
+	});
 	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
-			{
-				@Override
-				public double getModifyValue(Player player, Attribute attribute, int value)
-				{
-					return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
-				}
-			});
+	{
+		@Override
+		public void onChange(Player player, int value)
+		{
+			super.onChange(player, value);
+			PlayerCap<?> cap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (cap != null) cap.setStamina(cap.getMaxStamina());
+		}
+
+		@Override
+		public double getModifyValue(Player player, Attribute attribute, int value)
+		{
+			return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+		}
+	});
 	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
-			{
-				@Override
-				public double getModifyValue(Player player, Attribute attribute, int value)
-				{
-					return -0.019D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
-				}
-			});
+	{
+		@Override
+		public double getModifyValue(Player player, Attribute attribute, int value)
+		{
+			return -0.019D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+		}
+	});
 	public static final ModifyingStat ATTUNEMENT = register(new ModifyingStat("attunement", "25c989d7-9585-4f9d-be78-fc1e3aba4fc6", ModAttributes.MAX_FOCUS_POINTS, ModAttributes.ATTUNEMENT_SLOTS)
+	{
+		@Override
+		public void onChange(Player player, int value)
+		{
+			super.onChange(player, value);
+			PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (playerCap != null)
 			{
-				@Override
-				public void onChange(Player player, int value)
-				{
-					super.onChange(player, value);
-					PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					playerCap.getAttunements().updateSize();
-				}
-				
-				@Override
-				public void init(Player player, int value)
-				{
-					super.init(player, value);
-					PlayerCap<?> playerCap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					playerCap.getAttunements().updateSize();
-				}
-				
-				@Override
-				public double getModifyValue(Player player, Attribute attribute, int value)
-				{
-					if (attribute == ModAttributes.ATTUNEMENT_SLOTS.get())
-					{
-						return (int)(-0.001262468 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL));
-					}
-					else return -0.0076 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
-				}
-			});
+				playerCap.getAttunements().updateSize();
+				playerCap.setFP(playerCap.getMaxFP());
+			}
+		}
+
+		@Override
+		public void init(Player player, int value)
+		{
+			super.init(player, value);
+			PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (playerCap != null)
+			{
+				playerCap.getAttunements().updateSize();
+				playerCap.setFP(playerCap.getMaxFP());
+			}
+		}
+
+		@Override
+		public double getModifyValue(Player player, Attribute attribute, int value)
+		{
+			if (attribute == ModAttributes.ATTUNEMENT_SLOTS.get())
+			{
+				return (int) (-0.001262468 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL));
+			}
+			else return -0.0076 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+		}
+	});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
 	public static final ScalingStat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2"));
 	public static final ScalingStat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472"));
 	
 	private static <T extends Stat> T register(T stat)
 	{
-		STATS.add(stat);
+		STATS.put(stat.toString(), stat);
 		return stat;
 	}
 	
 	public static int getCost(int level)
 	{
-		return level * (10 + level);
+		return (int)(0.02F * Math.pow(level, 3) + 3.06F * Math.pow(level, 2) + 105.6F * level);
 	}
 	
 	public static double getTotalDamageMultiplier(Player player, int strength, int dex, int faith)
@@ -106,58 +123,58 @@ public class Stats
 				+ FAITH.getModifyValue(player, null, baseDamage, faith);
 	}
 	
-	private final int[] statValues = new int[STATS.size()];
+	private final Map<String, Integer> statValues = new HashMap<>();
 	
 	public int getStatValue(Stat stat)
 	{
-		return this.getStatValue(STATS.indexOf(stat));
+		return this.getStatValue(stat.getName());
 	}
 	
-	public int getStatValue(int index)
+	public int getStatValue(String name)
 	{
-		return this.statValues[index];
+		return this.statValues.get(name);
 	}
 	
 	public void setStatValue(Player player, Stat stat, int value)
 	{
-		this.setStatValue(player, STATS.indexOf(stat), value);
+		this.setStatValue(player, stat.getName(), value);
 	}
 	
-	public void setStatValue(Player player, int index, int value)
+	public void setStatValue(Player player, String name, int value)
 	{
-		this.statValues[index] = value;
-		STATS.get(index).onChange(player, value);
+		this.statValues.put(name, value);
+		STATS.get(name).onChange(player, value);
 	}
 	
 	public void loadStats(Player player, CompoundTag nbt)
 	{
-		for (int i = 0; i < STATS.size(); i++)
+		for (String name : STATS.keySet())
 		{
-			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(STATS.get(i).toString()), 99));
-			this.initStatValue(player, i, value);
+			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(name), 99));
+			this.initStatValue(player, name, value);
 		}
 	}
 	
-	public void initStatValue(Player player, int index, int value)
+	public void initStatValue(Player player, String name, int value)
 	{
-		this.statValues[index] = value;
-		STATS.get(index).init(player, value);
+		this.statValues.put(name, value);
+		STATS.get(name).init(player, value);
 	}
 	
 	public void saveStats(CompoundTag nbt)
 	{
-		for (int i = 0; i < STATS.size(); i++)
+		STATS.forEach((name, stat) ->
 		{
-			nbt.putInt(STATS.get(i).toString(), this.statValues[i]);
-		}
+			nbt.putInt(stat.getName(), this.statValues.get(name));
+		});
 	}
 	
 	public int getLevel()
 	{
 		int level = 1;
-		for (Stat stat : STATS)
+		for (Stat stat : STATS.values())
 		{
-			level += this.getStatValue(stat) - 10;
+			level += this.getStatValue(stat) - STANDARD_LEVEL;
 		}
 		
 		return level;

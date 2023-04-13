@@ -114,6 +114,9 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
+		this.entityRendererMap.put(EntityType.ZOMBIE, new SimpleHumanoidRenderer<Zombie, SimpleHumanoidCap<Zombie>>("zombie/zombie"));
+		this.entityRendererMap.put(EntityType.HUSK, new SimpleHumanoidRenderer<Husk, SimpleHumanoidCap<Husk>>("zombie/husk"));
+		this.entityRendererMap.put(EntityType.DROWNED, new SimpleHumanoidRenderer<Drowned, SimpleHumanoidCap<Drowned>>("zombie/drowned"));
 		this.entityRendererMap.put(ModEntities.HOLLOW.get(), new SimpleHumanoidRenderer<Hollow, HollowCap>(DarkSouls.MOD_ID, "hollow/hollow"));
 		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), new SimpleHumanoidRenderer<HollowLordranWarrior, HollowLordranWarriorCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.HOLLOW_LORDRAN_SOLDIER.get(), new SimpleHumanoidRenderer<HollowLordranSoldier, HollowLordranSoldierCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
@@ -123,10 +126,6 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.FIRE_KEEPER.get(), new SimpleHumanoidRenderer<AbstractFireKeeper, FireKeeperCap>(DarkSouls.MOD_ID, "fire_keeper"));
 		this.entityRendererMap.put(ModEntities.PETRUS_OF_THOROLUND.get(), new SimpleHumanoidRenderer<PetrusOfThorolund, SimpleHumanoidCap<PetrusOfThorolund>>(DarkSouls.MOD_ID, "quest_entity/petrus_of_thorolund"));
 		this.entityRendererMap.put(ModEntities.FALCONER.get(), new SimpleHumanoidRenderer<Falconer, FalconerCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
-		
-		this.entityRendererMap.put(EntityType.ZOMBIE, new SimpleHumanoidRenderer<Zombie, SimpleHumanoidCap<Zombie>>("zombie/zombie"));
-		this.entityRendererMap.put(EntityType.HUSK, new SimpleHumanoidRenderer<Husk, SimpleHumanoidCap<Husk>>("zombie/husk"));
-		this.entityRendererMap.put(EntityType.DROWNED, new SimpleHumanoidRenderer<Drowned, SimpleHumanoidCap<Drowned>>("zombie/drowned"));
 		
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();

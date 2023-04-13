@@ -28,6 +28,7 @@ public class ClientManager
 {
 	public static ClientManager INSTANCE;
 	public final Minecraft minecraft;
+	public final GameOverlayManager gui;
 	public final RenderEngine renderEngine;
 	public final InputManager inputManager;
 	public final ModCamera mainCamera;
@@ -41,6 +42,7 @@ public class ClientManager
 	{
 		INSTANCE = this;
 		this.minecraft = Minecraft.getInstance();
+		this.gui = new GameOverlayManager();
 		this.renderEngine = new RenderEngine();
 		this.inputManager = new InputManager();
 		this.npcChat = new NPCChat();
@@ -55,7 +57,7 @@ public class ClientManager
 		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
 				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));
 		
-		GameOverlayManager.registerOverlayElements();
+		this.gui.registerOverlayElements();
 		ModContainers.registerScreens();
 		
 		ItemProperties.register(ModItems.ESTUS_FLASK.get(), new ResourceLocation(DarkSouls.MOD_ID, "usage"), (stack, level, living, id) ->
@@ -71,7 +73,7 @@ public class ClientManager
 	
 	public void toggleCombatMode()
 	{
-		this.combatModeActive = !this.combatModeActive;
+		this.setCombatModeActive(!this.combatModeActive);
 	}
 	
 	public boolean isCombatModeActive()
@@ -79,11 +81,16 @@ public class ClientManager
 		return this.combatModeActive;
 	}
 	
+	public void setCombatModeActive(boolean value)
+	{
+		this.combatModeActive = value;
+	}
+	
 	public void switchToFirstPerson()
 	{
 		this.options.setCameraType(CameraType.FIRST_PERSON);
 		this.playerCap.getOriginalEntity().getAbilities().mayBuild = true;
-		this.combatModeActive = false;
+		this.setCombatModeActive(false);
 		this.getPlayerCap().removeTarget();
 	}
 	
@@ -96,7 +103,7 @@ public class ClientManager
 		this.playerCap.getOriginalEntity().xRotO = 0.0F;
 		float x = this.playerCap.getOriginalEntity().yRot;
 		this.playerCap.rotateTo(x, 180.0F, true);
-		this.combatModeActive = true;
+		this.setCombatModeActive(true);
 	}
 	
 	public void setPlayerCap(LocalPlayerCap playerCap)

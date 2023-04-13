@@ -214,6 +214,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public boolean canBackstab(Entity target)
 	{
+		if (!(target instanceof LivingEntity)) return false;
 		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - this.orgEntity.getX(), target.getZ() - this.orgEntity.getZ())) + 360F) % 360F;
 		float yRotTarget = target.getYRot() - 180;
 		if (yRotTarget < -180) yRotTarget += 360F;

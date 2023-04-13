@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.LongswordCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
@@ -23,7 +24,6 @@ import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.UltraGreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.capability.item.WingedSpearCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.ServerConfig.ShieldConfig;
@@ -32,7 +32,6 @@ import com.skullmangames.darksouls.config.ServerConfig.WeaponConfig;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -137,60 +136,16 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());
 			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
 			Item item = ForgeRegistries.ITEMS.getValue(name);
-			if (!(item instanceof SwordItem || item instanceof DiggerItem || item instanceof ProjectileWeaponItem)) continue;
-			switch (configWeapon.category.get())
-			{
-			default: break;
-			case GREAT_HAMMER:
-				putCap(new GreatHammerCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case AXE:
-				putCap(new AxeCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case HAMMER:
-				putCap(new HammerCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case STRAIGHT_SWORD:
-				putCap(new SwordCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case SPEAR:
-				putCap(new SpearCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case ULTRA_GREATSWORD:
-				putCap(new UltraGreatswordCap(item,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			
-			case BOW:
-				putCap(new BowCap(item, 3,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			case CROSSBOW:
-				putCap(new CrossbowCap(item, 4,
-						configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-						configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-				break;
-			}
+			if (!(item instanceof SwordItem || item instanceof DiggerItem)) continue;
+			putCap(new MeleeWeaponCap(item, new ResourceLocation(configWeapon.moveset.get()), Colliders.SHORTSWORD,
+					configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
+					configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
 		}
 		
 		for (ShieldConfig configShield : ConfigManager.SERVER_CONFIG.shields)
 		{
 			ResourceLocation name = new ResourceLocation(configShield.registryName.get());
-			if (!ForgeRegistries.ITEMS.containsKey(name)
-					|| configShield.category.get() != WeaponCategory.SHIELD
-					|| configShield.shieldType.get() == ShieldType.NONE) continue;
+			if (!ForgeRegistries.ITEMS.containsKey(name) || configShield.shieldType.get() == ShieldType.NONE) continue;
 			Item item = ForgeRegistries.ITEMS.getValue(name);
 			putCap(new ShieldCap(item, configShield.shieldType.get(), configShield.shieldMat.get(), (float)((double)configShield.physicalDef.get()),
 					(float)((double)configShield.fireDef.get()),
@@ -236,7 +191,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		return cap == ModCapabilities.CAPABILITY_ITEM ? optional.cast() : LazyOptional.empty();
+		return cap == ModCapabilities.CAPABILITY_ITEM ? this.optional.cast() : LazyOptional.empty();
 	}
 
 	@Override

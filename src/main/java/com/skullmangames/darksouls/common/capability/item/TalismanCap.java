@@ -7,6 +7,6 @@ public class TalismanCap extends SpellcasterWeaponCap
 	public TalismanCap(Item item, int reqStrength, int reqDex, int reqFaith,
 			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.TALISMAN, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 0);
+		super(item, WeaponCategory.TALISMAN, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 }

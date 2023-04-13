@@ -347,6 +347,7 @@
 	"attribute.darksouls.fire_defense": "Fire Defense",
 	
 	"command.failed": "Command failed",
+	"argument.stat.notfound": "No Stat with matching name found",
 	
 	"covenant.darksouls.none": "None",
 	"covenant.darksouls.warriors_of_sunlight": "Warriors of Sunlight",

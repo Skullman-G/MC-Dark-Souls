@@ -60,7 +60,7 @@ public class PlayerStatsScreen extends Screen
 		this.playerCap = ClientManager.INSTANCE.getPlayerCap();
 		this.player = this.playerCap.getOriginalEntity();
 		this.displayedLevel = this.playerCap.getSoulLevel();
-		for (Stat stat : Stats.STATS)
+		for (Stat stat : Stats.STATS.values())
 			this.displayedStats.put(stat, this.playerCap.getStats().getStatValue(stat));
 
 		this.imageWidth = 418;
@@ -74,6 +74,21 @@ public class PlayerStatsScreen extends Screen
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
 		this.attackDamageMods = Stats.getTotalDamageMultiplier(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH));
+	}
+	
+	protected int upgradeCost()
+	{
+		int upgradeCost = 0;
+		for (int i = this.playerCap.getSoulLevel(); i < this.displayedLevel; i++)
+		{
+			upgradeCost += Stats.getCost(i);
+		}
+		return upgradeCost;
+	}
+	
+	protected boolean canUpgrade()
+	{
+		return this.playerCap.hasEnoughSouls(this.upgradeCost() + Stats.getCost(this.displayedLevel));
 	}
 
 	@Override
@@ -95,13 +110,14 @@ public class PlayerStatsScreen extends Screen
 
 		int firstX = x + 19;
 		this.font.draw(poseStack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
-		this.font.draw(poseStack, "Souls: " + (this.playerCap.isCreativeOrSpectator() ? "INFINITE" : this.playerCap.getSouls()), firstX, y + 60,
-				this.color);
+		int soulsColor = !this.canUpgrade() ? 0xde2f18 : this.color;
+		this.font.draw(poseStack, "Souls: " + (this.playerCap.isCreativeOrSpectator() ? "INFINITE" : this.playerCap.getSouls() - this.upgradeCost()), firstX, y + 60,
+				soulsColor);
 		this.font.draw(poseStack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);
 		this.font.draw(poseStack, "Attributes", firstX, y + 128, this.color);
 
 		int textheight = y + 143;
-		for (Stat stat : Stats.STATS)
+		for (Stat stat : Stats.STATS.values())
 		{
 			this.font.draw(poseStack, new TranslatableComponent(stat.toString()), firstX, textheight, this.color);
 
@@ -117,24 +133,24 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Base Power", secondX, y + 36, this.color);
 		
-		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, null, this.displayedStats.get(Stats.VIGOR).intValue());
+		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, null, this.displayedStats.get(Stats.VIGOR));
 		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
 		
-		int maxfp = this.maxFPBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.MAX_FOCUS_POINTS.get(), this.displayedStats.get(Stats.ATTUNEMENT).intValue());
+		int maxfp = this.maxFPBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.MAX_FOCUS_POINTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxfpcolor = (int)this.player.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get()) != maxfp ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Focus Points: " + maxfp, secondX, y + 64, maxfpcolor);
 
-		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, null, this.displayedStats.get(Stats.ENDURANCE).intValue());
+		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, null, this.displayedStats.get(Stats.ENDURANCE));
 		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Stamina: " + maxstamina, secondX, y + 76, maxstaminacolor);
 		
-		float maxEquipLoad = this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, null, this.displayedStats.get(Stats.VITALITY).intValue());
-		int maxEquipLoadColor = (float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()) != maxEquipLoad ? 0x8cc9ff : this.color;
+		float maxEquipLoad = MathUtils.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, null, this.displayedStats.get(Stats.VITALITY)), 1);
+		int maxEquipLoadColor = MathUtils.round((float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()), 1) != maxEquipLoad ? 0x8cc9ff : this.color;
 		double equipLoad = this.player.getAttributeValue(ModAttributes.EQUIP_LOAD.get());
-		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 10) + " / " + MathUtils.round(maxEquipLoad, 10), secondX, y + 88, maxEquipLoadColor);
+		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 88, maxEquipLoadColor);
 		
-		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT).intValue());
+		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Attunement Slots: " + maxAttunementSlots, secondX, y + 100, maxAttunementSlotsColor);
 		
@@ -142,25 +158,25 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
 		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
-				+ Stats.getTotalDamageMultiplier(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH)), 100);
-		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 100) != attackdamage ? 0x8cc9ff : this.color;
+				+ Stats.getTotalDamageMultiplier(this.player, this.displayedStats.get(Stats.STRENGTH), this.displayedStats.get(Stats.DEXTERITY), this.displayedStats.get(Stats.FAITH)), 2);
+		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 2) != attackdamage ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Mainhand: " + attackdamage, secondX, y + 160, attackdamagecolor);
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;
 
 		this.font.draw(poseStack, "Defense", thirdX, y + 36, this.color);
-		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()), 2),
 				thirdX, y + 52, this.color);
-		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()), 2),
 				fourthX, y + 64, this.color);
-		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()), 2),
 				fourthX, y + 76, this.color);
-		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()), 2),
 				fourthX, y + 88, this.color);
-		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_DEFENSE.get()), 2),
 				thirdX, y + 100, this.color);
-		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()), 100),
+		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()), 2),
 				thirdX, y + 112, this.color);
 
 		poseStack.popPose();

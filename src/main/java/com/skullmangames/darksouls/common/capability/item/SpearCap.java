@@ -1,14 +1,11 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.google.common.collect.ImmutableMap.Builder;
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.util.physics.Collider;
-
+import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,43 +15,20 @@ public class SpearCap extends MeleeWeaponCap
 {
 	public SpearCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponCategory.SPEAR, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, 20F);
-	}
-	
-	@Override
-	protected Builder<AttackType, Pair<Boolean, AttackAnimation[]>> initMoveset()
-	{
-		Builder<AttackType, Pair<Boolean, AttackAnimation[]>> builder = super.initMoveset();
-		this.putMove(builder, AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK);
-		this.putMove(builder, AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK);
-		this.putMove(builder, AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK);
-		this.putMove(builder, AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST);
-		return builder;
+		super(item, WeaponMovesets.SPEAR, Colliders.SPEAR, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerdata)
+	public AttackAnimation getAttack(AttackType type, LocalPlayerCap playerCap)
 	{
-		if (type == AttackType.LIGHT && playerdata.isBlocking()) return Animations.SPEAR_LIGHT_BLOCKING_ATTACK;
-		return super.getAttack(type, playerdata);
-	}
-	
-	@Override
-	public Collider getWeaponCollider()
-	{
-		return Colliders.SPEAR;
+		if (type == AttackType.LIGHT && playerCap.isBlocking()) return Animations.SPEAR_LIGHT_BLOCKING_ATTACK;
+		return super.getAttack(type, playerCap);
 	}
 	
 	@Override
 	public SoundEvent getSwingSound()
 	{
 		return ModSoundEvents.SPEAR_SWING.get();
-	}
-
-	@Override
-	public float getStaminaDamage()
-	{
-		return 4.0F;
 	}
 }
