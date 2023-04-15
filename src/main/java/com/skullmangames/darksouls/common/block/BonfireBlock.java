@@ -67,8 +67,6 @@ public class BonfireBlock extends Block implements EntityBlock
 			Block.box(1, 0, 1, 15, 5, 15)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
 	
-	
-	
 	public BonfireBlock()
 	{
 		super(BlockBehaviour.Properties.of(Material.DIRT)

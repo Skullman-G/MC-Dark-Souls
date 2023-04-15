@@ -245,6 +245,15 @@ public class ModItems
 	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(ModBlocks.IRON_BAR_DOOR.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> OAK_PLATFORM = ITEMS.register("oak_platform", () -> new BlockItem(ModBlocks.OAK_PLATFORM.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> STONE_BRICK_WINDOW = ITEMS.register("stone_brick_window", () -> new BlockItem(ModBlocks.STONE_BRICK_WINDOW.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> TERRACOTTA_POT = ITEMS.register("terracotta_pot", () -> new BlockItem(ModBlocks.TERRACOTTA_POT.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()
