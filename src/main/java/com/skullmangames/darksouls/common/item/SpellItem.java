@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.common.item;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -7,18 +9,18 @@ import net.minecraft.world.item.Item;
 
 public class SpellItem extends Item
 {
-	private final StaticAnimation castingAnim;
+	private final Supplier<StaticAnimation> castingAnim;
 	@Nullable
-	private final StaticAnimation horsebackAnim;
+	private final Supplier<StaticAnimation> horsebackAnim;
 	private final int reqFaith;
 	private final float fpConsumption;
 	
-	public SpellItem(StaticAnimation castingAnim, int reqFaith, float fpConsumption, Properties properties)
+	public SpellItem(Supplier<StaticAnimation> castingAnim, int reqFaith, float fpConsumption, Properties properties)
 	{
 		this(castingAnim, null, reqFaith, fpConsumption, properties);
 	}
 	
-	public SpellItem(StaticAnimation castingAnim, StaticAnimation horsebackAnim, int reqFaith, float fpConsumption, Properties properties)
+	public SpellItem(Supplier<StaticAnimation> castingAnim, Supplier<StaticAnimation> horsebackAnim, int reqFaith, float fpConsumption, Properties properties)
 	{
 		super(properties.stacksTo(1));
 		this.castingAnim = castingAnim;
@@ -29,13 +31,13 @@ public class SpellItem extends Item
 
 	public StaticAnimation getCastingAnimation()
 	{
-		return this.castingAnim;
+		return this.castingAnim.get();
 	}
 	
 	@Nullable
 	public StaticAnimation getHorsebackAnimation()
 	{
-		return this.horsebackAnim;
+		return this.horsebackAnim.get();
 	}
 	
 	public int getRequiredFaith()
