@@ -27,7 +27,7 @@ public class ServerConfig
 		String weaponKey = "weapon_config";
 		if(values.get(weaponKey) == null)
 		{
-			config.define(weaponKey+".sample.registry_name", "sample");
+			config.define(weaponKey+".sample.registry_name", "modid:weapon_name");
 			config.define(weaponKey+".sample.moveset", "darksouls:straight_sword");
 			
 			String colliderComment = "Default Colliders:";
