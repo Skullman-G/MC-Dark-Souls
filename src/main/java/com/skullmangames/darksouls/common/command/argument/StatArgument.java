@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.command.argument;
 
 import java.util.concurrent.CompletableFuture;
 
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,6 +14,8 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class StatArgument implements ArgumentType<Stat>
@@ -48,5 +51,20 @@ public class StatArgument implements ArgumentType<Stat>
 			builder.suggest(statName);
 		}
 		return builder.buildFuture();
+	}
+	
+	public static class Serializer implements ArgumentSerializer<StatArgument>
+	{
+		@Override
+		public void serializeToNetwork(StatArgument arg, FriendlyByteBuf buf) {}
+
+		@Override
+		public StatArgument deserializeFromNetwork(FriendlyByteBuf buf)
+		{
+			return new StatArgument();
+		}
+
+		@Override
+		public void serializeToJson(StatArgument arg, JsonObject buf) {}
 	}
 }

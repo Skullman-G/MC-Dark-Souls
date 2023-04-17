@@ -48,6 +48,7 @@ import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.core.init.ModArgumentTypes;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModEntities;
@@ -167,6 +168,8 @@ public class DarkSouls
 
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
+		ModArgumentTypes.bootstrap();
+		
 		ModRecipeTypes.call();
 
 		ModNetworkManager.registerPackets();
