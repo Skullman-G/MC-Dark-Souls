@@ -28,6 +28,9 @@ public class ClientModels extends Models<ClientModel>
 	public final ClientModel ITEM_ONE_SHOE;
 	public final ClientModel ITEM_FALCONER_HELM;
 	public final ClientModel ITEM_FALCONER_ARMOR;
+	public final ClientModel BLACK_KNIGHT_HELM;
+	public final ClientModel BLACK_KNIGHT_ARMOR;
+	public final ClientModel BLACK_KNIGHT_LEGGINGS;
 	
 	public ClientModels()
 	{
@@ -47,6 +50,10 @@ public class ClientModels extends Models<ClientModel>
 		this.ITEM_ONE_SHOE = this.registerMeshOnly("armor_one_shoe");
 		this.ITEM_FALCONER_HELM = this.registerMeshOnly("armor_falconer_helm");
 		this.ITEM_FALCONER_ARMOR = this.registerMeshOnly("armor_falconer_armor");
+		this.BLACK_KNIGHT_HELM = this.registerMeshOnly("black_knight_helm");
+		this.BLACK_KNIGHT_ARMOR = this.registerMeshOnly("black_knight_armor");
+		this.BLACK_KNIGHT_LEGGINGS = this.registerMeshOnly("black_knight_leggings");
+		
 	}
 	
 	@Override

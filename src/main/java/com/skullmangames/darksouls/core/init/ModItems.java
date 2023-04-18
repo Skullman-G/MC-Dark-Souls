@@ -170,6 +170,13 @@ public class ModItems
 	public static final RegistryObject<Item> FALCONER_BOOTS = ITEMS.register("falconer_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "falconer_set_layer_2", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BLACK_KNIGHT_HELM = ITEMS.register("black_knight_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "black_knight_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BLACK_KNIGHT_ARMOR = ITEMS.register("black_knight_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "black_knight_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BLACK_KNIGHT_LEGGINGS = ITEMS.register("black_knight_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "black_knight_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Other
 	public static final RegistryObject<Item> ESTUS_FLASK = ITEMS.register("estus_flask", () -> new EstusFlaskItem(new Item.Properties()

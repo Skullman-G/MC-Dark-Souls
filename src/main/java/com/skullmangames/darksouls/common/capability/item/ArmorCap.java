@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
+import java.util.function.Function;
+
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -27,7 +29,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ArmorCap extends AttributeItemCap
 {
-	private final ArmorPart armorPart;
+	private final EquipmentSlot equipSlot;
+	private Function<ClientModels, ClientModel> customModel;
 	
 	protected final float standardDef;
 	protected final float strikeDef;
@@ -39,11 +42,17 @@ public class ArmorCap extends AttributeItemCap
 	protected float poise;
 	protected float weight;
 	
-	public ArmorCap(Item item, ArmorPart armorPart)
+	public ArmorCap(Item item)
+	{
+		this(item, null);
+	}
+	
+	public ArmorCap(Item item, Function<ClientModels, ClientModel> customModel)
 	{
 		super(item);
-		ArmorItem armorItem = (ArmorItem) item;
-		this.armorPart = armorPart.slot == armorItem.getSlot() ? armorPart : ArmorPart.getFrom(armorItem.getSlot());
+		ArmorItem armorItem = this.getOriginalItem();
+		this.equipSlot = armorItem.getSlot();
+		this.customModel = customModel;
 		this.poise = armorItem.getDefense() * 2.0F;
 		
 		this.standardDef = armorItem.getDefense() * 0.5F;
@@ -110,18 +119,18 @@ public class ArmorCap extends AttributeItemCap
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		
-		if (slot == this.armorPart.slot)
+		if (this.equipSlot == slot)
 		{
-			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.poise));
-			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.weight));
+			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.poise));
+			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.weight));
 			
-			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.standardDef));
-			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.strikeDef));
-			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.slashDef));
-			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.thrustDef));
+			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.standardDef));
+			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.strikeDef));
+			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.slashDef));
+			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.thrustDef));
 			
-			map.put(ModAttributes.FIRE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.fireDef));
-			map.put(ModAttributes.LIGHTNING_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.armorPart.slot, this.lightningDef));
+			map.put(ModAttributes.FIRE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.fireDef));
+			map.put(ModAttributes.LIGHTNING_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.lightningDef));
 		}
 		
         return map;
@@ -130,82 +139,30 @@ public class ArmorCap extends AttributeItemCap
 	@OnlyIn(Dist.CLIENT)
 	public ClientModel getArmorModel()
 	{
-		return getDefaultArmorModel(this.armorPart);
+		return this.customModel != null ? this.customModel.apply(ClientModels.CLIENT) : getDefaultArmorModel(this.equipSlot);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static ClientModel getDefaultArmorModel(ArmorPart armorPart)
+	public static ClientModel getDefaultArmorModel(EquipmentSlot slot)
 	{
 		ClientModels models = ClientModels.CLIENT;
 		
-		switch (armorPart)
+		switch (slot)
 		{
-				case HELMET:
+				case HEAD:
 					return models.ITEM_HELMET;
 					
-				case CHESTPLATE:
+				case CHEST:
 					return models.ITEM_CHESTPLATE;
 					
-				case LEGGINS:
+				case LEGS:
 					return models.ITEM_LEGGINS;
 					
-				case SKIRT:
-					return models.ITEM_SKIRT;
-					
-				case BOOTS:
+				case FEET:
 					return models.ITEM_BOOTS;
-					
-				case ONE_SHOE:
-					return models.ITEM_ONE_SHOE;
-					
-				case FALCONER_HELM:
-					return models.ITEM_FALCONER_HELM;
-					
-				case FALCONER_ARMOR:
-					return models.ITEM_FALCONER_ARMOR;
 					
 				default:
 					return null;
-		}
-	}
-	
-	public enum ArmorPart
-	{
-		HELMET(EquipmentSlot.HEAD), CHESTPLATE(EquipmentSlot.CHEST),
-		LEGGINS(EquipmentSlot.LEGS), SKIRT(EquipmentSlot.LEGS),
-		BOOTS(EquipmentSlot.FEET), ONE_SHOE(EquipmentSlot.FEET),
-		FALCONER_HELM(EquipmentSlot.HEAD), FALCONER_ARMOR(EquipmentSlot.CHEST);
-		
-		private final EquipmentSlot slot;
-		
-		private ArmorPart(EquipmentSlot slot)
-		{
-			this.slot = slot;
-		}
-		
-		public static ArmorPart getFrom(EquipmentSlot slot)
-		{
-			switch (slot)
-			{
-				default:	
-				case HEAD:
-					return HELMET;
-					
-				case CHEST:
-					return CHESTPLATE;
-					
-				case LEGS:
-					return LEGGINS;
-					
-				case FEET:
-					return BOOTS;
-			}
-		}
-		
-		public static ArmorPart getFrom(Item item)
-		{
-			if (item instanceof ArmorItem) return getFrom(((ArmorItem)item).getSlot());
-			else return ArmorPart.HELMET;
 		}
 	}
 }

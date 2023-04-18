@@ -68,6 +68,9 @@
 	"item.darksouls.oak_platform": "Oak Platform",
 	"item.darksouls.stone_brick_window": "Stone Brick Window",
 	"item.darksouls.terracotta_pot": "Terracotta Block",
+	"item.darksouls.black_knight_helm": "Black Knight Helm",
+	"item.darksouls.black_knight_armor": "Black Knight Armor",
+	"item.darksouls.black_knight_leggings": "Black Knight Leggings",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -194,6 +197,9 @@
 	"tooltip.darksouls.falconer_leggings.extended": "Leggings worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
 	"tooltip.darksouls.falconer_boots.extended": "Boots worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
 	"tooltip.darksouls.golden_falcon_shield.extended": "Small shield used by Volgen Falconers. Appears like a glistening gold falcon from afar. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. The falconers are rumored to be untrusting of others, and demanding of prompt, full payment. But no wonder; they deliver much more than they are paid, and are well aware of it.",
+	"tooltip.darksouls.black_knight_helm.extended": "Helm of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
+	"tooltip.darksouls.black_knight_leggings.extended": "Leggings of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
+	"tooltip.darksouls.black_knight_armor.extended": "Armor of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

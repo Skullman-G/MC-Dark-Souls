@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.common.capability.item.ArmorCap;
-import com.skullmangames.darksouls.common.capability.item.ArmorCap.ArmorPart;
 import com.skullmangames.darksouls.common.capability.item.AxeCap;
 import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
@@ -122,13 +121,16 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new TalismanCap(ModItems.THOROLUND_TALISMAN.get(), 4, 0, 10, Scaling.C, Scaling.NONE, Scaling.D));
 		
 		//ARMOR
-		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), ArmorPart.SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), ArmorPart.SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), ArmorPart.SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), ArmorPart.ONE_SHOE));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), ArmorPart.SKIRT));
-		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), ArmorPart.FALCONER_HELM));
-		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), ArmorPart.FALCONER_ARMOR));
+		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), (models) -> models.ITEM_SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), (models) -> models.ITEM_ONE_SHOE));
+		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT));
+		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM));
+		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS));
 		
 		//CONFIG
 		for (WeaponConfig configWeapon : ConfigManager.SERVER_CONFIG.weapons)
