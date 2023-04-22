@@ -67,7 +67,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	protected Animator animator;
 	public List<Entity> currentlyAttackedEntities;
 	private float poiseDef;
-	private EventTimer poiseTimer = new EventTimer((past) -> poiseDef = this.getPoise());
+	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());
 	private float stamina;
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;
@@ -129,8 +129,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean decreasePoiseDef(float decr)
 	{
-		this.poiseDef -= decr;
-		this.poiseTimer.start(5);
+		this.poiseDef = Math.max(0, this.poiseDef - decr);
+		this.poiseTimer.start(10);
 		return this.poiseDef <= 0.0F;
 	}
 
