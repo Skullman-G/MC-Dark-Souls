@@ -84,6 +84,7 @@ public class ModAttributes
 		general(ModEntities.FIRE_KEEPER.get(), event);
 		general(ModEntities.FALCONER.get(), event);
 		
+		general(EntityType.ARMOR_STAND, event);
 		general(EntityType.ZOMBIE, event);
 		general(EntityType.HUSK, event);
 		general(EntityType.DROWNED, event);

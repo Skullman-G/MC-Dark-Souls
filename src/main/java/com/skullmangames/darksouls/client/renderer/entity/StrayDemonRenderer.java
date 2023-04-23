@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonCap>
 {
-	private final ResourceLocation textureLocation = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
 	
 	public StrayDemonRenderer()
 	{
@@ -25,7 +25,7 @@ public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonC
 	@Override
 	protected ResourceLocation getEntityTexture(StrayDemon entityIn)
 	{
-		return this.textureLocation;
+		return TEXTURE;
 	}
 	
 	@Override

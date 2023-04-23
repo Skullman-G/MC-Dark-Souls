@@ -17,6 +17,7 @@ public abstract class Models<T extends Model>
 	public T ENTITY_BIPED;
 	public T ENTITY_BIPED_64_32_TEX;
 	public T ENTITY_BIPED_SLIM_ARM;
+	public T ENTITY_ARMOR_STAND;
 	public T ENTITY_STRAY_DEMON;
 	
 	protected abstract T register(String name);
@@ -37,6 +38,7 @@ public abstract class Models<T extends Model>
 			this.ENTITY_BIPED = this.register("biped");
 			this.ENTITY_BIPED_64_32_TEX = this.register("biped_old_texture", "biped");
 			this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
+			this.ENTITY_ARMOR_STAND = this.register("armor_stand", "biped");
 			this.ENTITY_STRAY_DEMON = this.register("stray_demon");
 		}
 		

@@ -236,9 +236,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	}
 	
 	@Override
-	public void onDeath() {}
-	
-	@Override
 	public LivingEntity getTarget()
 	{
 		return this.rayTarget;

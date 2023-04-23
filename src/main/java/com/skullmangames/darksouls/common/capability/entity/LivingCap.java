@@ -504,7 +504,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return null;
 	}
 	
-	public abstract DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource);
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
+	{
+		return null;
+	}
 
 	public void gatherDamageDealt(ExtendedDamageSource source, float amount) {}
 

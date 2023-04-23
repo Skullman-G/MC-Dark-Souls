@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
@@ -268,7 +269,9 @@ public class EntityEvents
 		if (entityCap != null && !entityCap.isClientSide())
 		{
 			entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
-			entityCap.playAnimationSynchronized(entityCap.getDeathAnimation(ExtendedDamageSource.getFrom(event.getSource(), 0)), 0);
+			DeathAnimation animation = entityCap.getDeathAnimation(ExtendedDamageSource.getFrom(event.getSource(), 0));
+			if (animation == null) entityCap.onDeath();
+			else entityCap.playAnimationSynchronized(animation, 0);
 		}
 	}
 	

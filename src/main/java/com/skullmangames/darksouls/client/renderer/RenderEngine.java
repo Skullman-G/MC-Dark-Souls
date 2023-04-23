@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.client.renderer.item.RenderItemBase;
 import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.ArmorStandRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.StrayDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
@@ -114,6 +115,7 @@ public class RenderEngine
 	public void buildRenderer()
 	{
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
+		this.entityRendererMap.put(EntityType.ARMOR_STAND, new ArmorStandRenderer());
 		this.entityRendererMap.put(EntityType.ZOMBIE, new SimpleHumanoidRenderer<Zombie, SimpleHumanoidCap<Zombie>>("zombie/zombie"));
 		this.entityRendererMap.put(EntityType.HUSK, new SimpleHumanoidRenderer<Husk, SimpleHumanoidCap<Husk>>("zombie/husk"));
 		this.entityRendererMap.put(EntityType.DROWNED, new SimpleHumanoidRenderer<Drowned, SimpleHumanoidCap<Drowned>>("zombie/drowned"));
