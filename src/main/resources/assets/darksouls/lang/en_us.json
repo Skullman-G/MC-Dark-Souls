@@ -71,7 +71,9 @@
 	"item.darksouls.black_knight_helm": "Black Knight Helm",
 	"item.darksouls.black_knight_armor": "Black Knight Armor",
 	"item.darksouls.black_knight_leggings": "Black Knight Leggings",
+	"item.darksouls.balder_helm": "Balder Helm",
 	"item.darksouls.balder_armor": "Balder Armor",
+	"item.darksouls.balder_boots": "Balder Boots",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -201,7 +203,9 @@
 	"tooltip.darksouls.black_knight_helm.extended": "Helm of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
 	"tooltip.darksouls.black_knight_leggings.extended": "Leggings of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
 	"tooltip.darksouls.black_knight_armor.extended": "Armor of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
+	"tooltip.darksouls.balder_helm.extended": "Helm worn by the knights of the ancient kingdom of Balder. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
 	"tooltip.darksouls.balder_armor.extended": "Armor worn by the knights of the ancient kingdom of Balder. It is made from thick iron plates. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
+	"tooltip.darksouls.balder_boots.extended": "Boots worn by the knights of the ancient kingdom of Balder. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

@@ -131,7 +131,9 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM));
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR));
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS));
+		putCap(new ArmorCap(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM));
 		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR));
+		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS));
 		
 		//CONFIG
 		for (WeaponConfig configWeapon : ConfigManager.SERVER_CONFIG.weapons)
