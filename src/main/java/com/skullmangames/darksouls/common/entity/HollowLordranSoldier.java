@@ -58,20 +58,17 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	{
 		if (percentage <= 75)
 		{
-			if (slot == EquipmentSlot.MAINHAND)
-				return ModItems.LONGSWORD.get();
-			else if (slot == EquipmentSlot.OFFHAND)
-				return ModItems.LORDRAN_SOLDIER_SHIELD.get();
-		} else if (percentage <= 90)
+			if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
+			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
+		}
+		else if (percentage <= 90)
 		{
-			if (slot == EquipmentSlot.MAINHAND)
-				return ModItems.SPEAR.get();
-			else if (slot == EquipmentSlot.OFFHAND)
-				return ModItems.LORDRAN_SOLDIER_SHIELD.get();
-		} else
+			if (slot == EquipmentSlot.MAINHAND) return ModItems.SPEAR.get();
+			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
+		}
+		else
 		{
-			if (slot == EquipmentSlot.MAINHAND)
-				return Items.CROSSBOW;
+			if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
 		}
 
 		switch (slot)

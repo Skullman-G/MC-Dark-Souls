@@ -25,6 +25,8 @@
 	"item.darksouls.heater_shield": "Heater Shield",
 	"item.darksouls.soul_of_a_lost_undead": "Soul of a Lost Undead",
 	"item.darksouls.large_soul_of_a_lost_undead": "Large Soul of a Lost Undead",
+	"item.darksouls.soul_of_a_nameless_soldier": "Soul of a Nameless Soldier",
+	"item.darksouls.large_soul_of_a_nameless_soldier": "Large Soul of a Nameless Soldier",
 	"item.darksouls.dingy_hood": "Dingy Hood",
 	"item.darksouls.dingy_robe": "Dingy Robe",
 	"item.darksouls.blood_stained_skirt": "Blood Stained Skirt",
@@ -206,6 +208,10 @@
 	"tooltip.darksouls.balder_helm.extended": "Helm worn by the knights of the ancient kingdom of Balder. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
 	"tooltip.darksouls.balder_armor.extended": "Armor worn by the knights of the ancient kingdom of Balder. It is made from thick iron plates. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
 	"tooltip.darksouls.balder_boots.extended": "Boots worn by the knights of the ancient kingdom of Balder. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
+	"tooltip.darksouls.soul_of_a_nameless_soldier": "Use to acquire 800 souls.",
+	"tooltip.darksouls.soul_of_a_nameless_soldier.extended": "Soul of a nameless Undead soldier who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
+	"tooltip.darksouls.large_soul_of_a_nameless_soldier": "Use to acquire 1000 souls.",
+	"tooltip.darksouls.large_soul_of_a_nameless_soldier.extended": "Large soul of a nameless Undead soldier who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

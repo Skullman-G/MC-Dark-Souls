@@ -218,6 +218,12 @@ public class ModItems
 	public static final RegistryObject<Item> LARGE_SOUL_OF_A_LOST_UNDEAD = ITEMS.register("large_soul_of_a_lost_undead", () -> new SoulContainerItem(400, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> SOUL_OF_A_NAMELESS_SOLDIER = ITEMS.register("soul_of_a_nameless_soldier", () -> new SoulContainerItem(800, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> LARGE_SOUL_OF_A_NAMELESS_SOLDIER = ITEMS.register("large_soul_of_a_nameless_soldier", () -> new SoulContainerItem(1000, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	public static final RegistryObject<Item> HUMANITY = ITEMS.register("humanity", () -> new HumanityItem(1, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	

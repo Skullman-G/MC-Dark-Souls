@@ -2,6 +2,6 @@
 	"parent": "item/generated",
 	"textures":
 	{
-		"layer0": "darksouls:items/soul_of_a_lost_undead"
+		"layer0": "darksouls:items/large_soul_of_a_lost_undead"
 	}
 }
