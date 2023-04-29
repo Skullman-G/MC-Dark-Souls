@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
@@ -82,6 +83,11 @@ public class ModEntities
 			EntityType.Builder.<PetrusOfThorolund>of(PetrusOfThorolund::new, MobCategory.CREATURE)
 				.sized(0.6F, 1.95F)
 				.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<BlackKnight>> BLACK_KNIGHT = register("black_knight",
+			EntityType.Builder.<BlackKnight>of(BlackKnight::new, MobCategory.MONSTER)
+			.sized(0.7F, 2.05F)
+			.canSpawnFarFromPlayer());
 	
 	//Projectiles
 	public static final RegistryObject<EntityType<LightningSpear>> LIGHTNING_SPEAR = register("lightning_spear",

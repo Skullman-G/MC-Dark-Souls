@@ -36,7 +36,7 @@ import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
-import com.skullmangames.darksouls.client.renderer.entity.model.vanilla.VanillaHumanoidRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.VanillaHumanoidRenderer;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
@@ -215,6 +215,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.PETRUS_OF_THOROLUND.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.FALCONER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.STRAY_DEMON.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.BLACK_KNIGHT.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.SOUL.get(), SoulRenderer::new);
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);

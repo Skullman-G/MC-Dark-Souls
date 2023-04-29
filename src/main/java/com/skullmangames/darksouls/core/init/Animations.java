@@ -273,6 +273,11 @@ public final class Animations
 	public static StaticAnimation FALCONER_RUN;
 	
 	public static AttackAnimation[] FALCONER_LIGHT_ATTACKS;
+	
+	// Black Knight
+	public static StaticAnimation BLACK_KNIGHT_IDLE;
+	
+	public static AttackAnimation[] BLACK_KNIGHT_SWORD_LA;
 
 	// Stray Demon
 	public static StaticAnimation STRAY_DEMON_IDLE;
@@ -1343,7 +1348,31 @@ public final class Animations
 		};
 		
 		
-
+		// Black Knight
+		BLACK_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("black_knight_idle"), 1.0F, true, DarkSouls.rl("black_knight/idle"), (models) -> models.ENTITY_BIPED)
+				.register(builder);
+		
+		BLACK_KNIGHT_SWORD_LA = new AttackAnimation[]
+				{
+						new AttackAnimation(DarkSouls.rl("black_knight_sword_la_1"), 0.2F, 0.0F, 0.56F, 0.8F, 1.4F, "Tool_R",
+							DarkSouls.rl("black_knight/black_knight_sword_la_1"), (models) -> models.ENTITY_BIPED)
+							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.register(builder),
+						new AttackAnimation(DarkSouls.rl("black_knight_sword_la_2"), 0.1F, 0.0F, 0.44F, 0.64F, 1.4F, "Tool_R",
+							DarkSouls.rl("black_knight/black_knight_sword_la_2"), (models) -> models.ENTITY_BIPED)
+							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.register(builder),
+						new AttackAnimation(DarkSouls.rl("black_knight_sword_la_3"), 0.1F, 0.0F, 0.28F, 0.48F, 2.2F, "Tool_R",
+							DarkSouls.rl("black_knight/black_knight_sword_la_3"), (models) -> models.ENTITY_BIPED)
+							.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+							.register(builder)
+				};
+		
+		
 		// Stray Demon
 		STRAY_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("stray_demon_idle"), 1.0F, true, DarkSouls.rl("stray_demon/idle"), (models) -> models.ENTITY_STRAY_DEMON)
 				.register(builder);

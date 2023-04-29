@@ -76,6 +76,7 @@
 	"item.darksouls.balder_helm": "Balder Helm",
 	"item.darksouls.balder_armor": "Balder Armor",
 	"item.darksouls.balder_boots": "Balder Boots",
+	"item.darksouls.black_knight_spawn_egg": "Black Knight Spawn Egg",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -105,6 +106,7 @@
 	"entity.darksouls.great_lightning_spear": "Great Lightning Spear",
 	"entity.darksouls.petrus_of_thorolund": "Petrus of Thorolund",
 	"entity.darksouls.falconer": "Falconer",
+	"entity.darksouls.black_knight": "Black Knight",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -376,5 +378,5 @@
 	"covenant.darksouls.none": "None",
 	"covenant.darksouls.warriors_of_sunlight": "Warriors of Sunlight",
 	
-	"covenant.darksouls.warriors_of_sunlight.description": "The warriors of sunlight are watched over by the god of war. They help those in need and slay mighty creatures in battle. Warriors of sunlight get rewarded with Sunlight Medals, which can be used to deepen your allegiance to the covenant at a sunlight altar."
+	"covenant.darksouls.warriors_of_sunlight.description": "The warriors of sunlight are being watched over by the old god of war. They help those in need and slay mighty creatures in battle. Warriors of sunlight get rewarded with Sunlight Medals, which can be used to deepen your allegiance to the covenant at a sunlight altar."
 }
