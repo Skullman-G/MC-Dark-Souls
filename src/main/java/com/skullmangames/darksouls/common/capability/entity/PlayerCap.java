@@ -201,7 +201,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	
 	public void setFP(float value)
 	{
-		this.fp = value;
+		this.fp = MathUtils.clamp(value, 0, this.getMaxFP());
 	}
 	
 	public void raiseFP(float value)
