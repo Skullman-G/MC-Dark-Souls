@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
@@ -32,10 +31,8 @@ public class BlackKnight extends ArmoredMob
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, StrayDemon.class, true));
 	}
 	
 	@Override
