@@ -165,7 +165,7 @@ public class Stats
 	{
 		STATS.forEach((name, stat) ->
 		{
-			nbt.putInt(stat.getName(), this.statValues.get(name));
+			nbt.putInt(stat.getName(), this.statValues.getOrDefault(name, STANDARD_LEVEL));
 		});
 	}
 	
