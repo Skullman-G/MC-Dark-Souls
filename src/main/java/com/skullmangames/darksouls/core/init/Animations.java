@@ -922,7 +922,7 @@ public final class Animations
 		};
 
 		// Great Hammer
-		GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_heavy_attack"), 0.5F, 0.0F, 1.57F, 1.9F, 3.75F, "Tool_R",
+		GREAT_HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_heavy_attack"), 0.5F, 0.0F, 1.45F, 1.9F, 3.75F, "Tool_R",
 				DarkSouls.rl("biped/combat/great_hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
@@ -937,7 +937,7 @@ public final class Animations
 				.register(builder);
 		GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), 0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), 0.5F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -949,7 +949,7 @@ public final class Animations
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 					.register(builder),
-				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_2"), 0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_2"), 0.5F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -962,7 +962,7 @@ public final class Animations
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 					.register(builder)
 		};
-		GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_dash_attack"), 0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
+		GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_dash_attack"), 0.1F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
 				DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{

@@ -48,6 +48,11 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
+	//Greatswords
+	public static final RegistryObject<Item> BLACK_KNIGHT_SWORD = ITEMS.register("black_knight_sword", () -> new SwordItem(Tiers.IRON, 7, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
 	//Axes
 	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 6.5F, -3.1F, new Item.Properties()
 			.tab(DarkSouls.TAB)));

@@ -53,7 +53,7 @@ public abstract class WeaponCap extends AttributeItemCap
 				.put(Stats.FAITH, new Pair<Integer, Scaling>(MathUtils.clamp(reqFaith, 0, 99), faithScaling))
 				.build();
 		this.weight = Math.max(((float)reqStrength - 4F) / 2F, 0F);
-		this.poiseDamage = this.weight * 15;
+		this.poiseDamage = this.weight * 0.5F;
 	}
 	
 	@Override

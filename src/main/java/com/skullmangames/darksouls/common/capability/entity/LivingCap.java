@@ -404,7 +404,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		// Stun Animation
 		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
-		if (!poiseBroken && !headshot) stunType = stunType.downgrade();
+		if (!poiseBroken && !headshot) extSource.setStunType(stunType.downgrade());
 		StaticAnimation hitAnimation = this.getHitAnimation(extSource);
 		
 		if(hitAnimation != null)

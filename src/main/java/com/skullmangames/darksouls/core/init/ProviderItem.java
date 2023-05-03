@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
 import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
+import com.skullmangames.darksouls.common.capability.item.GreatswordCap;
 import com.skullmangames.darksouls.common.capability.item.HammerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.SwordCap;
@@ -92,6 +93,9 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new SwordCap(ModItems.STRAIGHT_SWORD_HILT.get(), 6, 6, 0, Scaling.E, Scaling.E, Scaling.NONE));
 		putCap(new LongswordCap(ModItems.LONGSWORD.get(), 10, 10, 0, Scaling.C, Scaling.C, Scaling.NONE));
 		
+		//Greatswords
+		putCap(new GreatswordCap(ModItems.BLACK_KNIGHT_SWORD.get(), 20, 18, 0, Scaling.C, Scaling.E, Scaling.NONE));
+		
 		//Spears
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, 0, Scaling.D, Scaling.C, Scaling.NONE));
 		putCap(new WingedSpearCap(ModItems.WINGED_SPEAR.get(), 13, 15, 0, Scaling.E, Scaling.C, Scaling.NONE));
@@ -128,9 +132,9 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT));
 		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM));
 		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM, 5F, 8F));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR, 13F, 21F));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS, 7F, 17F));
 		putCap(new ArmorCap(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM));
 		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR));
 		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS));

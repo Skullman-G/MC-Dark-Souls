@@ -33,6 +33,7 @@ public class BlackKnight extends ArmoredMob
 	{
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, StrayDemon.class, true));
 	}
 	
 	@Override
@@ -44,7 +45,7 @@ public class BlackKnight extends ArmoredMob
 	@Override
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
-		if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
+		if (slot == EquipmentSlot.MAINHAND) return ModItems.BLACK_KNIGHT_SWORD.get();
 		else if (slot == EquipmentSlot.OFFHAND) return null;
 
 		switch (slot)

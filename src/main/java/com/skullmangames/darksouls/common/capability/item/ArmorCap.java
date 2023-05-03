@@ -49,11 +49,17 @@ public class ArmorCap extends AttributeItemCap
 	
 	public ArmorCap(Item item, Function<ClientModels, ClientModel> customModel)
 	{
+		this(item, customModel, 0F, ((ArmorItem)item).getDefense() * 2.0F);
+	}
+	
+	public ArmorCap(Item item, Function<ClientModels, ClientModel> customModel, float weight, float poise)
+	{
 		super(item);
 		ArmorItem armorItem = this.getOriginalItem();
 		this.equipSlot = armorItem.getSlot();
 		this.customModel = customModel;
-		this.poise = armorItem.getDefense() * 2.0F;
+		this.poise = poise;
+		this.weight = weight;
 		
 		this.standardDef = armorItem.getDefense() * 0.5F;
 		this.slashDef = this.standardDef;
