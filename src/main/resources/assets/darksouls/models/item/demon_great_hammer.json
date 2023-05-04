@@ -22,6 +22,7 @@
     		}
   		}
 	},
+	"gui_light": "front",
 	"perspectives":
 	{
 		"ground":
@@ -38,8 +39,7 @@
 			"textures":
 			{
 				"layer0": "darksouls:items/demon_great_hammer"
-			},
-			"gui_light": "front"
+			}
 		},
 		"fixed":
 		{

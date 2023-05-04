@@ -1,23 +1,53 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "item/handheld",
-	"textures": {
-		"layer0": "darksouls:items/winged_spear"
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"loader": "forge:obj",
+  		"model": "darksouls:models/item/obj/winged_spear.obj",
+  		"flip-v": true,
+  		"materialLibraryOverride": "winged_spear.mtl",
+		"display":
+  		{
+    		"thirdperson_righthand":
+    		{
+      			"translation": [9, -5, -8],
+      			"rotation": [0, 90, 0],
+      			"scale": [1.2, 1.2, 1.2]
+    		},
+    		"firstperson_righthand":
+    		{
+      			"translation": [60, -20, 0],
+      			"rotation": [0, 0, 0],
+      			"scale": [5.0, 5.0, 5.0]
+    		}
+  		}
 	},
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [0, 90, 45],
-			"translation": [0, 9, 1.5],
-			"scale": [2, 2, 1]
+	"gui_light": "front",
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/winged_spear"
+			}
 		},
-		"thirdperson_lefthand": {
-			"rotation": [0, 90, -45],
-			"translation": [0, 9, 2.5],
-			"scale": [2, 2, 1]
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/winged_spear"
+			}
 		},
-		"ground": {
-			"translation": [0, 0.5, 0],
-			"scale": [0.5, 0.5, 0.5]
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/winged_spear"
+			}
 		}
 	}
 }
