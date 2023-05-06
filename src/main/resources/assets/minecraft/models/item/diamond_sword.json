@@ -1,187 +1,39 @@
 {
-	"credit": "Made with Blockbench",
-	"texture_size": [32, 32],
-	"textures": {
-		"0": "darksouls:items/diamond_sword",
-		"particle": "darksouls:items/diamond_sword"
-	},
-	"elements": [
-		{
-			"from": [7.15, 2.9, 7.15],
-			"to": [7.85, 7.1, 7.85],
-			"faces": {
-				"north": {"uv": [5.5, 0, 6, 2], "texture": "#0"},
-				"east": {"uv": [0.5, 5.5, 1, 7.5], "texture": "#0"},
-				"south": {"uv": [1, 5.5, 1.5, 7.5], "texture": "#0"},
-				"west": {"uv": [1.5, 5.5, 2, 7.5], "texture": "#0"},
-				"up": {"uv": [6.5, 6, 6, 5.5], "texture": "#0"},
-				"down": {"uv": [7, 0.5, 6.5, 1], "texture": "#0"}
-			}
-		},
-		{
-			"from": [5.64, 6.89, 7.14],
-			"to": [9.36, 7.61, 7.86],
-			"faces": {
-				"north": {"uv": [2, 5.5, 4, 6], "texture": "#0"},
-				"east": {"uv": [6.5, 1, 7, 1.5], "texture": "#0"},
-				"south": {"uv": [5.5, 2, 7.5, 2.5], "texture": "#0"},
-				"west": {"uv": [6.5, 3.5, 7, 4], "texture": "#0"},
-				"up": {"uv": [7.5, 3, 5.5, 2.5], "texture": "#0"},
-				"down": {"uv": [7.5, 3, 5.5, 3.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.75, 7.5, 7.25],
-			"to": [8.25, 18.5, 7.75],
-			"faces": {
-				"north": {"uv": [0, 0, 1, 5.5], "texture": "#0"},
-				"east": {"uv": [4, 0, 4.5, 5.5], "texture": "#0"},
-				"south": {"uv": [1, 0, 2, 5.5], "texture": "#0"},
-				"west": {"uv": [4.5, 0, 5, 5.5], "texture": "#0"},
-				"up": {"uv": [6.5, 5, 5.5, 4.5], "texture": "#0"},
-				"down": {"uv": [6, 5.5, 5, 6], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.5, 7.5, 7.4],
-			"to": [8.5, 18.5, 7.6],
-			"faces": {
-				"north": {"uv": [2, 0, 3, 5.5], "texture": "#0"},
-				"east": {"uv": [5, 0, 5.5, 5.5], "texture": "#0"},
-				"south": {"uv": [3, 0, 4, 5.5], "texture": "#0"},
-				"west": {"uv": [0, 5.5, 0.5, 11], "texture": "#0"},
-				"up": {"uv": [6.5, 5.5, 5.5, 5], "texture": "#0"},
-				"down": {"uv": [7, 0, 6, 0.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.9, 6.9, 6.9],
-			"to": [8.1, 7.85, 8.1],
-			"faces": {
-				"north": {"uv": [4, 6.5, 4.5, 7], "texture": "#0"},
-				"east": {"uv": [6.5, 4, 7, 4.5], "texture": "#0"},
-				"south": {"uv": [4.5, 6.5, 5, 7], "texture": "#0"},
-				"west": {"uv": [6.5, 4.5, 7, 5], "texture": "#0"},
-				"up": {"uv": [7, 5.5, 6.5, 5], "texture": "#0"},
-				"down": {"uv": [6, 6.5, 5.5, 7], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.65, 1.95, 6.95],
-			"to": [7.75, 3.05, 8.05],
-			"rotation": {"angle": 45, "axis": "z", "origin": [7, 3, 7]},
-			"faces": {
-				"north": {"uv": [6.5, 5.5, 7, 6], "texture": "#0"},
-				"east": {"uv": [6, 6.5, 6.5, 7], "texture": "#0"},
-				"south": {"uv": [6.5, 6, 7, 6.5], "texture": "#0"},
-				"west": {"uv": [6.5, 6.5, 7, 7], "texture": "#0"},
-				"up": {"uv": [7.5, 0.5, 7, 0], "texture": "#0"},
-				"down": {"uv": [7.5, 0.5, 7, 1], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7, 18.5, 7.25],
-			"to": [8, 20.5, 7.75],
-			"faces": {
-				"north": {"uv": [6, 0.5, 6.5, 1.5], "texture": "#0"},
-				"east": {"uv": [2, 6, 2.5, 7], "texture": "#0"},
-				"south": {"uv": [2.5, 6, 3, 7], "texture": "#0"},
-				"west": {"uv": [3, 6, 3.5, 7], "texture": "#0"},
-				"up": {"uv": [7.5, 1.5, 7, 1], "texture": "#0"},
-				"down": {"uv": [7.5, 1.5, 7, 2], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7.25, 20.5, 7.25],
-			"to": [7.75, 21.5, 7.75],
-			"faces": {
-				"north": {"uv": [2, 7, 2.5, 7.5], "texture": "#0"},
-				"east": {"uv": [2.5, 7, 3, 7.5], "texture": "#0"},
-				"south": {"uv": [3, 7, 3.5, 7.5], "texture": "#0"},
-				"west": {"uv": [3.5, 7, 4, 7.5], "texture": "#0"},
-				"up": {"uv": [7.5, 4, 7, 3.5], "texture": "#0"},
-				"down": {"uv": [4.5, 7, 4, 7.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7.25, 21.5, 7.4],
-			"to": [7.75, 21.8, 7.6],
-			"faces": {
-				"north": {"uv": [7, 4, 7.5, 4.5], "texture": "#0"},
-				"east": {"uv": [4.5, 7, 5, 7.5], "texture": "#0"},
-				"south": {"uv": [7, 4.5, 7.5, 5], "texture": "#0"},
-				"west": {"uv": [5, 7, 5.5, 7.5], "texture": "#0"},
-				"up": {"uv": [7.5, 5.5, 7, 5], "texture": "#0"},
-				"down": {"uv": [6, 7, 5.5, 7.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.75, 18.5, 7.4],
-			"to": [8.25, 20.5, 7.6],
-			"faces": {
-				"north": {"uv": [5.5, 3.5, 6.5, 4.5], "texture": "#0"},
-				"east": {"uv": [3.5, 6, 4, 7], "texture": "#0"},
-				"south": {"uv": [4, 5.5, 5, 6.5], "texture": "#0"},
-				"west": {"uv": [5, 6, 5.5, 7], "texture": "#0"},
-				"up": {"uv": [7, 2, 6, 1.5], "texture": "#0"},
-				"down": {"uv": [6.5, 6, 5.5, 6.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7, 20.5, 7.4],
-			"to": [8, 21.5, 7.6],
-			"faces": {
-				"north": {"uv": [7, 5.5, 7.5, 6], "texture": "#0"},
-				"east": {"uv": [6, 7, 6.5, 7.5], "texture": "#0"},
-				"south": {"uv": [7, 6, 7.5, 6.5], "texture": "#0"},
-				"west": {"uv": [6.5, 7, 7, 7.5], "texture": "#0"},
-				"up": {"uv": [7.5, 7, 7, 6.5], "texture": "#0"},
-				"down": {"uv": [7.5, 7, 7, 7.5], "texture": "#0"}
-			}
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"parent": "item/shortsword_3d",
+		"textures": {
+			"0": "darksouls:items/diamond_sword",
+			"particle": "darksouls:items/diamond_sword"
 		}
-	],
+	},
 	"gui_light": "front",
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [0, -90, 0],
-			"translation": [-0.5, 1.75, 1.75],
-			"scale": [1.3, 1.3, 1.3]
-		},
-		"thirdperson_lefthand": {
-			"rotation": [0, 90, 0],
-			"translation": [0.75, 1.75, 1.75],
-			"scale": [1.3, 1.3, 1.3]
-		},
-		"firstperson_righthand": {
-			"rotation": [0, -90, 0],
-			"translation": [1, 0, 0]
-		},
-		"firstperson_lefthand": {
-			"rotation": [0, 90, 0],
-			"translation": [2.5, 0, 0]
-		},
-		"ground": {
-			"rotation": [0, 0, 45],
-			"translation": [2.25, 1.75, 0],
-			"scale": [0.75, 0.75, 0.75]
-		},
-		"gui": {
-			"rotation": [0, 180, 45],
-			"translation": [-3.5, -2.75, 0],
-			"scale": [1.1, 1.1, 1.1]
-		},
-		"fixed": {
-			"rotation": [0, 0, 45],
-			"translation": [3.75, -3, 1.5],
-			"scale": [1.3, 1.3, 1.3]
-		}
-	},
-	"groups": [
+	"perspectives":
+	{
+		"ground":
 		{
-			"name": "group",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "item/diamond_sword"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "item/diamond_sword"
+			}
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "item/diamond_sword"
+			}
 		}
-	]
+	}
 }
