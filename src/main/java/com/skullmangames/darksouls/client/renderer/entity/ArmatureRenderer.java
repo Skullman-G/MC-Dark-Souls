@@ -67,6 +67,8 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 			this.applyRotations(poseStack, armature, entityCap, partialTicks);
 			entityCap.getClientAnimator().setPoseToModel(partialTicks);
 			PublicMatrix4f[] poses = armature.getJointTransforms();
+			float scale = 0.95F;
+			poseStack.scale(scale, scale, scale);
 			model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : 1.0F, poses);
 
 			if (!entity.isSpectator())
