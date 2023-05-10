@@ -1,5 +1,11 @@
 {
   "moveset": {
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:fist_dash_attack"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
@@ -11,12 +17,6 @@
       "repeating": true,
       "animations": [
         "darksouls:backstab_strike_check"
-      ]
-    },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:fist_dash_attack"
       ]
     },
     "heavy": {

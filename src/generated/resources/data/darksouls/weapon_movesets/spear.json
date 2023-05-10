@@ -1,5 +1,11 @@
 {
   "moveset": {
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:spear_dash_attack"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
@@ -10,12 +16,6 @@
       "repeating": true,
       "animations": [
         "darksouls:backstab_thrust_check"
-      ]
-    },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:spear_dash_attack"
       ]
     },
     "heavy": {

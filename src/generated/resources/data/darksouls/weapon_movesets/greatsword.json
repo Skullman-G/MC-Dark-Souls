@@ -3,13 +3,14 @@
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_dash_attack"
+        "darksouls:greatsword_dash_attack"
       ]
     },
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_light_attack"
+        "darksouls:greatsword_light_attack_1",
+        "darksouls:greatsword_light_attack_2"
       ]
     },
     "backstab": {
@@ -21,7 +22,7 @@
     "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_heavy_attack"
+        "darksouls:greatsword_heavy_attack"
       ]
     }
   }
