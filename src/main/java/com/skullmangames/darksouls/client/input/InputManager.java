@@ -78,7 +78,7 @@ public class InputManager
 		this.keyFunctionMap.put(this.options.keyTogglePerspective, this::onTogglePerspectiveKeyPressed);
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_UP, this::onAttunementSlotUp);
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
-		this.keyFunctionMap.put(this.options.keyPickItem, this::onTrySelectTarget);
+		this.keyFunctionMap.put(ModKeys.TARGET_LOCK_ON, this::onTrySelectTarget);
 		
 		try
 		{
@@ -138,7 +138,7 @@ public class InputManager
 	
 	private void onTrySelectTarget(int key, int action)
 	{
-		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive() && !this.options.getCameraType().isFirstPerson())
 		{
 			this.playerCap.updateTarget();
 		}

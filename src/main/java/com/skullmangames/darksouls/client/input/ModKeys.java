@@ -3,6 +3,8 @@ package com.skullmangames.darksouls.client.input;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.skullmangames.darksouls.DarkSouls;
 
 import net.minecraft.client.KeyMapping;
@@ -16,11 +18,12 @@ public class ModKeys
 {
 	private static final List<KeyMapping> keyBindings = new ArrayList<KeyMapping>();
 	
-	public static final KeyMapping SHOW_ITEM_INFO = makeKeyBinding("show_item_info", 71, "gui");
-	public static final KeyMapping TOGGLE_COMBAT_MODE = makeKeyBinding("toggle_combat_mode", 82, "combat");
-	public static final KeyMapping OPEN_STAT_SCREEN = makeKeyBinding("open_stat_screen", 77, "gui");
-	public static final KeyMapping ATTUNEMENT_SLOT_UP = makeKeyBinding("attunement_slot_up", 265, "gui");
-	public static final KeyMapping ATTUNEMENT_SLOT_DOWN = makeKeyBinding("attunement_slot_down", 264, "gui");
+	public static final KeyMapping SHOW_ITEM_INFO = makeKeyBinding("show_item_info", Type.KEYSYM, 71, "gui");
+	public static final KeyMapping TOGGLE_COMBAT_MODE = makeKeyBinding("toggle_combat_mode", Type.KEYSYM, 82, "combat");
+	public static final KeyMapping OPEN_STAT_SCREEN = makeKeyBinding("open_stat_screen", Type.KEYSYM, 77, "gui");
+	public static final KeyMapping ATTUNEMENT_SLOT_UP = makeKeyBinding("attunement_slot_up", Type.KEYSYM, 265, "gui");
+	public static final KeyMapping ATTUNEMENT_SLOT_DOWN = makeKeyBinding("attunement_slot_down", Type.KEYSYM, 264, "gui");
+	public static final KeyMapping TARGET_LOCK_ON = makeKeyBinding("target_lock_on", Type.MOUSE, 2, "combat");
 	
 	// For temporary use
 	public static final KeyMapping VISIBLE_HITBOXES = new KeyMapping("visible_hitboxes", 79, "debug");
@@ -36,12 +39,12 @@ public class ModKeys
 		for (KeyMapping key : keyBindings) ClientRegistry.registerKeyBinding(key);
 	}
 	
-	public static KeyMapping makeKeyBinding(String name, int defaultKey, String category)
+	public static KeyMapping makeKeyBinding(String name, InputConstants.Type type, int defaultKey, String category)
 	{
 		name = "key."+DarkSouls.MOD_ID+"."+name;
 		category = "key."+DarkSouls.MOD_ID+"."+category;
 		
-		KeyMapping key = new KeyMapping(name, defaultKey, category);
+		KeyMapping key = new KeyMapping(name, type, defaultKey, category);
 		keyBindings.add(key);
 		return key;
 	}

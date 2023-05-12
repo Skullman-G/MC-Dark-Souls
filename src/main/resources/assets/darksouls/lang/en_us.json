@@ -344,6 +344,7 @@
 	"key.darksouls.open_stat_screen": "Open Status Screen",
 	"key.darksouls.attunement_slot_up": "Attunement Slot Up",
 	"key.darksouls.attunement_slot_down": "Attunement Slot Down",
+	"key.darksouls.target_lock_on": "Target Lock On",
 	
 	"ingame.long_press_count": "Button Long Press Count",
 	"ingame.show_health_indicator": "Show Health Bar Indicator",
