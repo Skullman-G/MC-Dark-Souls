@@ -185,8 +185,10 @@ public final class Animations
 	
 	// Greatsword
 	public static AttackAnimation[] GREATSWORD_LIGHT_ATTACK;
-	public static AttackAnimation GREATSWORD_HEAVY_ATTACK;
+	public static AttackAnimation GREATSWORD_THRUST;
 	public static AttackAnimation GREATSWORD_DASH_ATTACK;
+	public static AttackAnimation GREATSWORD_UPWARD_SLASH;
+	public static AttackAnimation GREATSWORD_STYLISH_THRUST;
 
 	// Ultra Greatsword
 	public static AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK;
@@ -823,8 +825,24 @@ public final class Animations
 						.register(builder)
 		};
 		
-		GREATSWORD_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("greatsword_heavy_attack"), 0.3F, 0.0F, 0.28F, 0.68F, 1.6F, "Tool_R",
+		GREATSWORD_THRUST = new AttackAnimation(DarkSouls.rl("greatsword_thrust"), 0.3F, 0.0F, 0.28F, 0.68F, 1.6F, "Tool_R",
 				DarkSouls.rl("biped/combat/greatsword_heavy_attack"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+				.register(builder);
+		
+		GREATSWORD_UPWARD_SLASH = new AttackAnimation(DarkSouls.rl("greatsword_upward_slash"), 0.3F, 0.0F, 0.28F, 0.56F, 2.4F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatsword_upward_slash"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
+				.register(builder);
+		
+		GREATSWORD_STYLISH_THRUST = new AttackAnimation(DarkSouls.rl("greatsword_stylish_thrust"), 0.3F, 0.0F, 0.64F, 0.76F, 2.8F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatsword_stylish_thrust"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)

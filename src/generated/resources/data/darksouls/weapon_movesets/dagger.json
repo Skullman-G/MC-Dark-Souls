@@ -6,17 +6,17 @@
         "darksouls:straight_sword_dash_attack"
       ]
     },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_thrust_check"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:dagger_light_attack_1",
         "darksouls:dagger_light_attack_2"
-      ]
-    },
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_thrust_check"
       ]
     },
     "heavy": {

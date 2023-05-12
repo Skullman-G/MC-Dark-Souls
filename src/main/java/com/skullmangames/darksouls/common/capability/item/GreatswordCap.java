@@ -2,17 +2,16 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
-
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 
 public class GreatswordCap extends MeleeWeaponCap
 {
-	public GreatswordCap(Item item, int reqStrength, int reqDex,
+	public GreatswordCap(Item item, ResourceLocation moveset, int reqStrength, int reqDex,
 			int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.GREATSWORD, Colliders.GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, moveset, Colliders.GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override

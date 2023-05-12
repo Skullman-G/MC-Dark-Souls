@@ -6,17 +6,17 @@
         "darksouls:ultra_greatsword_dash_attack"
       ]
     },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_strike_check"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:ultra_greatsword_light_attack_1",
         "darksouls:ultra_greatsword_light_attack_2"
-      ]
-    },
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_strike_check"
       ]
     },
     "heavy": {

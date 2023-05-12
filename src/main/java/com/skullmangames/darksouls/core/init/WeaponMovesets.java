@@ -38,7 +38,7 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	
 	public static final ResourceLocation AXE = DarkSouls.rl("axe");
 	
-	public static final ResourceLocation GREATSWORD = DarkSouls.rl("greatsword");
+	public static final ResourceLocation BLACK_KNIGHT_SWORD = DarkSouls.rl("black_knight_sword");
 	
 	public static final ResourceLocation ULTRA_GREATSWORD = DarkSouls.rl("ultra_greatsword");
 	
