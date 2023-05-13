@@ -95,6 +95,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		//Greatswords
 		putCap(new GreatswordCap(ModItems.BLACK_KNIGHT_SWORD.get(), WeaponMovesets.BLACK_KNIGHT_SWORD, 20, 18, 0, Scaling.C, Scaling.E, Scaling.NONE));
+		putCap(new GreatswordCap(ModItems.CLAYMORE.get(), WeaponMovesets.CLAYMORE, 16, 10, 0, Scaling.C, Scaling.C, Scaling.NONE));
 		
 		//Spears
 		putCap(new SpearCap(ModItems.SPEAR.get(), 11, 10, 0, Scaling.D, Scaling.C, Scaling.NONE));

@@ -845,7 +845,7 @@ public final class Animations
 				DarkSouls.rl("biped/combat/greatsword_stylish_thrust"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DAMAGE_TYPE, DamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.STAMINA_DMG_MUL, 2)
 				.register(builder);
 		

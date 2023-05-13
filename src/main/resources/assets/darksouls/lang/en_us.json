@@ -78,6 +78,7 @@
 	"item.darksouls.balder_boots": "Balder Boots",
 	"item.darksouls.black_knight_spawn_egg": "Black Knight Spawn Egg",
 	"item.darksouls.black_knight_sword": "Black Knight Sword",
+	"item.darksouls.claymore": "Claymore",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -216,6 +217,7 @@
 	"tooltip.darksouls.large_soul_of_a_nameless_soldier": "Use to acquire 1000 souls.",
 	"tooltip.darksouls.large_soul_of_a_nameless_soldier.extended": "Large soul of a nameless Undead soldier who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
 	"tooltip.darksouls.black_knight_sword.extended": "Greatsword of the Black Knights. Used to face chaos demons. The Large motion that puts the weight of the body into the attack reflects the great size of their adversaries long ago.",
+	"tooltip.darksouls.claymore.extended": "This larger type of greatsword is normally wielded with two hands due to its weight. A highly flexible greatsword that can be used to attack in swings or thrusts.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

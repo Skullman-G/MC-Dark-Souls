@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
@@ -71,6 +72,11 @@ public class WeaponMovesetProvider implements DataProvider
 			new WeaponMoveset.Builder(WeaponMovesets.BLACK_KNIGHT_SWORD)
 			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREATSWORD_STYLISH_THRUST)
+			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
+			new WeaponMoveset.Builder(WeaponMovesets.CLAYMORE)
+			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
+			.putMove(AttackType.HEAVY, true, new AttackAnimation[] {Animations.GREATSWORD_THRUST, Animations.GREATSWORD_UPWARD_SLASH})
 			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
 			new WeaponMoveset.Builder(WeaponMovesets.ULTRA_GREATSWORD)

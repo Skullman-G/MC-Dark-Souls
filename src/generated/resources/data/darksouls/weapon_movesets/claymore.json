@@ -3,25 +3,27 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike_check"
+        "darksouls:backstab_thrust_check"
       ]
     },
     "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_heavy_attack"
+        "darksouls:greatsword_thrust",
+        "darksouls:greatsword_upward_slash"
       ]
     },
     "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_dash_attack"
+        "darksouls:greatsword_dash_attack"
       ]
     },
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_light_attack"
+        "darksouls:greatsword_light_attack_1",
+        "darksouls:greatsword_light_attack_2"
       ]
     }
   }
