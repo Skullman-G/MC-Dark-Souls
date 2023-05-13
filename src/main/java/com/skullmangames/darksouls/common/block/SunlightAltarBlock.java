@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.common.entity.Covenant.Reward;
-import com.skullmangames.darksouls.common.entity.Covenants;
+import com.skullmangames.darksouls.common.entity.covenant.Covenants;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;

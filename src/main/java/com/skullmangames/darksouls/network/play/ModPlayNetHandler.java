@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.network.play;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

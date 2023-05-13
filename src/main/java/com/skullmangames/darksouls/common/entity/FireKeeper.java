@@ -34,7 +34,9 @@ public class FireKeeper extends AbstractFireKeeper
 
 	public static AttributeSupplier.Builder createAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15D);
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 100D)
+				.add(Attributes.MOVEMENT_SPEED, 0.15D);
 	}
 	
 	@Override

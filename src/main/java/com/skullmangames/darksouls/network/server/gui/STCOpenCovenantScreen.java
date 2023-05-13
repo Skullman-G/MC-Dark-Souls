@@ -2,8 +2,8 @@ package com.skullmangames.darksouls.network.server.gui;
 
 import java.util.function.Supplier;
 
-import com.skullmangames.darksouls.common.entity.Covenant;
-import com.skullmangames.darksouls.common.entity.Covenants;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.network.FriendlyByteBuf;

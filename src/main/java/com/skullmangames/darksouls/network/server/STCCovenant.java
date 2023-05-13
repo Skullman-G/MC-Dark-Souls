@@ -3,8 +3,8 @@ package com.skullmangames.darksouls.network.server;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.common.entity.Covenant;
-import com.skullmangames.darksouls.common.entity.Covenants;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 

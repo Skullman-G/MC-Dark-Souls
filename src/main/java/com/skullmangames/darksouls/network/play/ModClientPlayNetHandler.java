@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 

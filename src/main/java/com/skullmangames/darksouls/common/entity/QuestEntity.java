@@ -44,7 +44,10 @@ public abstract class QuestEntity extends PathfinderMob
 	
 	public static AttributeSupplier.Builder createAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 1.0D);
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 793D)
+				.add(Attributes.MOVEMENT_SPEED, 0.2D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 	
 	@Override

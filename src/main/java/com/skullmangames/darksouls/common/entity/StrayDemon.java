@@ -123,7 +123,7 @@ public class StrayDemon extends PathfinderMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 80.0D)
+				.add(Attributes.MAX_HEALTH, 825D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)

@@ -1,9 +1,9 @@
-package com.skullmangames.darksouls.common.entity;
+package com.skullmangames.darksouls.common.entity.covenant;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skullmangames.darksouls.common.entity.Covenant.Reward;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
 import com.skullmangames.darksouls.core.init.ModItems;
 
 public class Covenants

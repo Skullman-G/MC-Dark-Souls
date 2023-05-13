@@ -38,49 +38,49 @@ public class ModItems
 	
 	
 	//Straight Swords
-	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 1, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> BROKEN_STRAIGHT_SWORD = ITEMS.register("broken_straight_sword", () -> new SwordItem(Tiers.WOOD, 40, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new SwordItem(Tiers.WOOD, 0, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> STRAIGHT_SWORD_HILT = ITEMS.register("straight_sword_hilt", () -> new SwordItem(Tiers.WOOD, 20, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(Tiers.IRON, 80, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Greatswords
-	public static final RegistryObject<Item> BLACK_KNIGHT_SWORD = ITEMS.register("black_knight_sword", () -> new SwordItem(Tiers.IRON, 7, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> BLACK_KNIGHT_SWORD = ITEMS.register("black_knight_sword", () -> new SwordItem(Tiers.IRON, 220, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> CLAYMORE = ITEMS.register("claymore", () -> new SwordItem(Tiers.IRON, 6, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> CLAYMORE = ITEMS.register("claymore", () -> new SwordItem(Tiers.IRON, 103, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Axes
-	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 6.5F, -3.1F, new Item.Properties()
+	public static final RegistryObject<Item> BATTLE_AXE = ITEMS.register("battle_axe", () -> new AxeItem(Tiers.IRON, 95F, -3.1F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Hammers
-	public static final RegistryObject<Item> MACE = ITEMS.register("mace", () -> new SwordItem(Tiers.IRON, 4, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> MACE = ITEMS.register("mace", () -> new SwordItem(Tiers.IRON, 91, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Spears
-	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(Tiers.IRON, 2, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> WINGED_SPEAR = ITEMS.register("winged_spear", () -> new SwordItem(Tiers.IRON, 86, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> SPEAR = ITEMS.register("spear", () -> new SwordItem(Tiers.IRON, 3, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> SPEAR = ITEMS.register("spear", () -> new SwordItem(Tiers.IRON, 80, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Ultra Greatsword
-	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 8, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 130, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
 	//Great Hammer
-	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 11, -2.4F, new Item.Properties()
+	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 138, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

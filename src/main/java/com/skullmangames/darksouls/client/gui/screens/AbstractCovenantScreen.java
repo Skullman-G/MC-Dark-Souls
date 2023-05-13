@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
-import com.skullmangames.darksouls.common.entity.Covenant;
-import com.skullmangames.darksouls.common.entity.Covenant.Reward;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
 import com.skullmangames.darksouls.config.ConfigManager;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;

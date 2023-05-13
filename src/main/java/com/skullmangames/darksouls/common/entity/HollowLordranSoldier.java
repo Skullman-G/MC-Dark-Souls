@@ -34,7 +34,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MAX_HEALTH, 85D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.24D);
 	}

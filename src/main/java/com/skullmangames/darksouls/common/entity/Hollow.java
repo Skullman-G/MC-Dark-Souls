@@ -40,10 +40,8 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MAX_HEALTH, 53D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
-				.add(Attributes.ATTACK_SPEED, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 	

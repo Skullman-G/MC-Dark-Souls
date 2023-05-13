@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.minecraftforge.net/' }
         mavenCentral()
     }
     dependencies {
@@ -12,6 +12,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 
 
@@ -30,7 +31,6 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-			
             mods {
                 darksouls {
                     source sourceSets.main
@@ -40,7 +40,6 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            
             mods {
                 darksouls {
                     source sourceSets.main
@@ -50,7 +49,6 @@ minecraft {
         
         gameTestServer {
             workingDirectory project.file('run')
-			
             mods {
                 darksouls {
                     source sourceSets.main

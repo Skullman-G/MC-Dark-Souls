@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skullmangames.darksouls.common.entity.Covenant;
+import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSCovenant;
 

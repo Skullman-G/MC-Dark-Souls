@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.entity;
+package com.skullmangames.darksouls.common.entity.covenant;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 
