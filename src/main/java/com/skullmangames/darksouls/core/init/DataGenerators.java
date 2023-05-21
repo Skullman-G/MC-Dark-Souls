@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.data.MeleeWeaponConfigProvider;
 import com.skullmangames.darksouls.common.data.WeaponMovesetProvider;
 
 import net.minecraft.data.DataGenerator;
@@ -19,6 +20,7 @@ public class DataGenerators
 			DataGenerator generator = event.getGenerator();
 			//ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 			generator.addProvider(new WeaponMovesetProvider(generator));
+			generator.addProvider(new MeleeWeaponConfigProvider(generator));
         }
 	}
 }

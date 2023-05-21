@@ -31,7 +31,7 @@ public class Stats
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
 		{
-			return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+			return (int)(1500 * Math.pow(-1.09D, -value) + 1500);
 		}
 	});
 	public static final ModifyingStat ENDURANCE = register(new ModifyingStat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
@@ -47,7 +47,7 @@ public class Stats
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
 		{
-			return -0.0065D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
+			return (int)Math.min(2 * value, 80);
 		}
 	});
 	public static final ModifyingStat VITALITY = register(new ModifyingStat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
@@ -96,6 +96,7 @@ public class Stats
 	});
 	public static final ScalingStat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8"));
 	public static final ScalingStat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2"));
+	public static final ScalingStat INTELLIGENCE = register(new ScalingStat("intelligence", "39d35885-78e0-4be3-b72f-7c3b4876ad8d"));
 	public static final ScalingStat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472"));
 	
 	private static <T extends Stat> T register(T stat)
@@ -104,22 +105,29 @@ public class Stats
 		return stat;
 	}
 	
+	public static final Stat[] SCALING_STATS = new Stat[]
+	{
+			STRENGTH, DEXTERITY, INTELLIGENCE, FAITH
+	};
+	
 	public static int getCost(int level)
 	{
 		return (int)(0.02F * Math.pow(level, 3) + 3.06F * Math.pow(level, 2) + 105.6F * level);
 	}
 	
-	public static double getTotalDamageMultiplier(Player player, int strength, int dex, int faith)
+	public static double getTotalDamageMultiplier(Player player, int strength, int dex, int intelligence, int faith)
 	{
 		return STRENGTH.getModifyValue(player, null, strength)
 				+ DEXTERITY.getModifyValue(player, null, dex)
+				+ INTELLIGENCE.getModifyValue(player, null, intelligence)
 				+ FAITH.getModifyValue(player, null, faith);
 	}
 	
-	public static double getTotalDamageMultiplier(Player player, float baseDamage, int strength, int dex, int faith)
+	public static double getTotalDamageMultiplier(Player player, float baseDamage, int strength, int dex, int intelligence, int faith)
 	{
 		return STRENGTH.getModifyValue(player, null, baseDamage, strength)
 				+ DEXTERITY.getModifyValue(player, null, baseDamage, dex)
+				+ INTELLIGENCE.getModifyValue(player, null, baseDamage, intelligence)
 				+ FAITH.getModifyValue(player, null, baseDamage, faith);
 	}
 	

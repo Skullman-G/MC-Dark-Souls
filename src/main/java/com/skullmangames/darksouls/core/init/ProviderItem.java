@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.LongswordCap;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap;
 import com.skullmangames.darksouls.common.capability.item.ShieldCap.ShieldMat;
 import com.skullmangames.darksouls.common.capability.item.SpearCap;
@@ -27,16 +26,12 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.capability.item.WingedSpearCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.config.ServerConfig.ShieldConfig;
-import com.skullmangames.darksouls.config.ServerConfig.WeaponConfig;
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,6 +41,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCapability>
 {
 	public static final Map<Item, ItemCapability> CAPABILITIES = new HashMap<Item, ItemCapability>();
+	public static final Map<Item, ItemCapability> DEFAULT_CAPABILITIES = new HashMap<Item, ItemCapability>();
 	private static final Map<Class<? extends Item>, Function<Item, ItemCapability>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, ItemCapability>>();
 
 	private ItemCapability capability;
@@ -141,17 +137,6 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS));
 		
 		//CONFIG
-		for (WeaponConfig configWeapon : ConfigManager.SERVER_CONFIG.weapons)
-		{
-			ResourceLocation name = new ResourceLocation(configWeapon.registryName.get());
-			if (!ForgeRegistries.ITEMS.containsKey(name)) continue;
-			Item item = ForgeRegistries.ITEMS.getValue(name);
-			if (!(item instanceof SwordItem || item instanceof DiggerItem)) continue;
-			putCap(new MeleeWeaponCap(item, new ResourceLocation(configWeapon.moveset.get()), Colliders.SHORTSWORD,
-					configWeapon.reqStrength.get(), configWeapon.reqDex.get(), configWeapon.reqFaith.get(),
-					configWeapon.strengthScaling.get(), configWeapon.dexScaling.get(), configWeapon.faithScaling.get()));
-		}
-		
 		for (ShieldConfig configShield : ConfigManager.SERVER_CONFIG.shields)
 		{
 			ResourceLocation name = new ResourceLocation(configShield.registryName.get());
@@ -160,6 +145,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 			putCap(new ShieldCap(item, configShield.shieldType.get(), configShield.shieldMat.get(), (float)((double)configShield.physicalDef.get()),
 					(float)((double)configShield.fireDef.get()),
 					(float)((double)configShield.lightningDef.get()),
+					configShield.staminaDamage.get(),
 					configShield.reqStrength.get(), configShield.reqDex.get(), configShield.reqFaith.get(),
 					configShield.strengthScaling.get(), configShield.dexScaling.get(), configShield.faithScaling.get()));
 		}
@@ -167,18 +153,20 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		CAPABILITY_BY_CLASS.put(ArmorItem.class, VanillaArmorCap::new);
+		
+		CAPABILITIES = DEFAULT_CAPABILITIES;
 	}
 	
 	private static void putCap(ItemCapability cap)
 	{
-		CAPABILITIES.put(cap.getOriginalItem(), cap);
+		DEFAULT_CAPABILITIES.put(cap.getOriginalItem(), cap);
 	}
 
 	public static void registerCapabilityItems()
 	{
 		for (Item item : ForgeRegistries.ITEMS.getValues())
 		{
-			if (!CAPABILITIES.containsKey(item))
+			if (!DEFAULT_CAPABILITIES.containsKey(item))
 			{
 				Class<?> clazz = item.getClass();
 				ItemCapability capability = null;
@@ -188,7 +176,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 					capability = CAPABILITY_BY_CLASS.getOrDefault(clazz, (argIn) -> null).apply(item);
 				}
 
-				if (capability != null) CAPABILITIES.put(item, capability);
+				if (capability != null) DEFAULT_CAPABILITIES.put(item, capability);
 			}
 		}
 	}

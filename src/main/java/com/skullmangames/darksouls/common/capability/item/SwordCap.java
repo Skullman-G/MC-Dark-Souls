@@ -10,7 +10,7 @@ public class SwordCap extends MeleeWeaponCap
 {
 	public SwordCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.STRAIGHT_SWORD, Colliders.SHORTSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.STRAIGHT_SWORD, Colliders.SHORTSWORD, 44, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override

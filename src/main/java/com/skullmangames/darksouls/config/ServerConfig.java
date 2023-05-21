@@ -38,6 +38,7 @@ public class ServerConfig
 			config.comment(colliderComment);
 			
 			config.define(weaponKey+".sample.collider", "darksouls:shortsword");
+			config.defineInRange(weaponKey+".sample.stamina_damage", 25, 0, 100);
 			config.define(weaponKey+".sample.required_strength", 0);
 			config.define(weaponKey+".sample.required_dexterity", 0);
 			config.define(weaponKey+".sample.required_faith", 0);
@@ -60,6 +61,7 @@ public class ServerConfig
 			config.comment(colliderComment);
 			
 			config.define(shieldKey+".sample_shield.collider", "darksouls:fist");
+			config.defineInRange(shieldKey+".sample_shield.stamina_damage", 25, 0, 100);
 			config.define(shieldKey+".sample_shield.required_strength", 0);
 			config.define(shieldKey+".sample_shield.required_dexterity", 0);
 			config.define(shieldKey+".sample_shield.required_faith", 0);
@@ -83,13 +85,14 @@ public class ServerConfig
 				ConfigValue<String> registryName = config.define(weaponKey+"."+entry.getKey()+".registry_name", "null");
 				ConfigValue<String> moveset = config.define(weaponKey+"."+entry.getKey()+".moveset", "darksouls:fist");
 				ConfigValue<String> collider = config.define(weaponKey+"."+entry.getKey()+".collider", "darksouls:fist");
+				ConfigValue<Integer> staminaDamage = config.defineInRange(weaponKey+"."+entry.getKey()+".stamina_damage", 25, 0, 100);
 				ConfigValue<Integer> reqStrength = config.define(weaponKey+"."+entry.getKey()+".required_strength", 0);
 				ConfigValue<Integer> reqDex = config.define(weaponKey+"."+entry.getKey()+".required_dexterity", 0);
 				ConfigValue<Integer> reqFaith = config.define(weaponKey+"."+entry.getKey()+".required_faith", 0);
 				ConfigValue<Scaling> strengthScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".strength_scaling", Scaling.NONE);
 				ConfigValue<Scaling> dexScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".dexterity_scaling", Scaling.NONE);
 				ConfigValue<Scaling> faithScaling = config.defineEnum(weaponKey+"."+entry.getKey()+".faith_scaling", Scaling.NONE);
-				if (!entry.getKey().equals("sample")) weapons.add(new WeaponConfig(registryName, moveset, collider, reqStrength, reqDex, reqFaith,
+				if (!entry.getKey().equals("sample")) weapons.add(new WeaponConfig(registryName, moveset, collider, staminaDamage, reqStrength, reqDex, reqFaith,
 						strengthScaling, dexScaling, faithScaling));
 			}
 		}
@@ -102,6 +105,7 @@ public class ServerConfig
 				ConfigValue<String> registryName = config.define(shieldKey+"."+entry.getKey()+".registry_name", "null");
 				ConfigValue<String> moveset = config.define(shieldKey+"."+entry.getKey()+".moveset", "darksouls:shield");
 				ConfigValue<String> collider = config.define(shieldKey+"."+entry.getKey()+".collider", "darksouls:fist");
+				ConfigValue<Integer> staminaDamage = config.defineInRange(shieldKey+"."+entry.getKey()+".stamina_damage", 25, 0, 100);
 				ConfigValue<Integer> reqStrength = config.define(shieldKey+"."+entry.getKey()+".required_strength", 0);
 				ConfigValue<Integer> reqDex = config.define(shieldKey+"."+entry.getKey()+".required_dexterity", 0);
 				ConfigValue<Integer> reqFaith = config.define(shieldKey+"."+entry.getKey()+".required_faith", 0);
@@ -114,7 +118,7 @@ public class ServerConfig
 				ConfigValue<Double> physicalDef = config.defineInRange(shieldKey+"."+entry.getKey()+".physical_defense", 0.0F, 0.0F, 1.0F);
 				ConfigValue<Double> fireDef = config.defineInRange(shieldKey+"."+entry.getKey()+".fire_defense", 0.0F, 0.0F, 1.0F);
 				ConfigValue<Double> lightningDef = config.defineInRange(shieldKey+"."+entry.getKey()+".lightning_defense", 0.0F, 0.0F, 1.0F);
-				if (!entry.getKey().equals("sample_shield")) shields.add(new ShieldConfig(registryName, moveset, collider,
+				if (!entry.getKey().equals("sample_shield")) shields.add(new ShieldConfig(registryName, moveset, collider, staminaDamage,
 						reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling, shieldType, shieldMat, physicalDef, fireDef, lightningDef));
 			}
 		}
@@ -125,6 +129,7 @@ public class ServerConfig
 		public final ConfigValue<String> registryName;
 		public final ConfigValue<String> moveset;
 		public final ConfigValue<String> collider;
+		public final ConfigValue<Integer> staminaDamage;
 		public final ConfigValue<Integer> reqStrength;
 		public final ConfigValue<Integer> reqDex;
 		public final ConfigValue<Integer> reqFaith;
@@ -132,13 +137,14 @@ public class ServerConfig
 		public final ConfigValue<Scaling> dexScaling;
 		public final ConfigValue<Scaling> faithScaling;
 		
-		public WeaponConfig(ConfigValue<String> registryName, ConfigValue<String> moveset, ConfigValue<String> collider,
+		public WeaponConfig(ConfigValue<String> registryName, ConfigValue<String> moveset, ConfigValue<String> collider, ConfigValue<Integer> staminaDamage,
 				ConfigValue<Integer> reqStrength, ConfigValue<Integer> reqDex, ConfigValue<Integer> reqFaith,
 				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling, ConfigValue<Scaling> faithScaling)
 		{
 			this.registryName = registryName;
 			this.moveset = moveset;
 			this.collider = collider;
+			this.staminaDamage = staminaDamage;
 			this.reqStrength = reqStrength;
 			this.reqDex = reqDex;
 			this.reqFaith = reqFaith;
@@ -156,12 +162,12 @@ public class ServerConfig
 		public final ConfigValue<Double> fireDef;
 		public final ConfigValue<Double> lightningDef;
 		
-		public ShieldConfig(ConfigValue<String> registryName, ConfigValue<String> moveset, ConfigValue<String> collider,
+		public ShieldConfig(ConfigValue<String> registryName, ConfigValue<String> moveset, ConfigValue<String> collider, ConfigValue<Integer> staminaDamage,
 				ConfigValue<Integer> reqStrength, ConfigValue<Integer> reqDex, ConfigValue<Integer> reqFaith,
 				ConfigValue<Scaling> strengthScaling, ConfigValue<Scaling> dexScaling, ConfigValue<Scaling> faithScaling,
 				ConfigValue<ShieldType> shieldType, ConfigValue<ShieldMat> shieldMat, ConfigValue<Double> physicalDef, ConfigValue<Double> fireDef, ConfigValue<Double> lightningDef)
 		{
-			super(registryName, moveset, collider, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+			super(registryName, moveset, collider, staminaDamage, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 			this.shieldType = shieldType;
 			this.shieldMat = shieldMat;
 			this.physicalDef = physicalDef;

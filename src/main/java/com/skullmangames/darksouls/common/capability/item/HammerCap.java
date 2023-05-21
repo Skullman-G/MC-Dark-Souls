@@ -9,6 +9,6 @@ public class HammerCap extends MeleeWeaponCap
 	public HammerCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling,
 			Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.HAMMER, Colliders.TOOL, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.HAMMER, Colliders.TOOL, 56, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 }

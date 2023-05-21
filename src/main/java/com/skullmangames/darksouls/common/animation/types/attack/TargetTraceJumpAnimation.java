@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
@@ -19,21 +20,21 @@ import net.minecraft.world.InteractionHand;
 
 public class TargetTraceJumpAnimation extends AttackAnimation
 {
-	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+	public TargetTraceJumpAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery,
 			@Nullable Collider collider, String index, float weaponOffset, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, convertTime, antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, collider, index, weaponOffset, path, model);
+		this(id, attackType, convertTime, antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, collider, index, weaponOffset, path, model);
 	}
 	
-	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+	public TargetTraceJumpAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery,
 			InteractionHand hand, @Nullable Collider collider, String index, float weaponOffset, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
+		this(id, attackType, convertTime, path, model, new TargetTracePhase(antic, preDelay, contact, recovery, hand, index, collider, weaponOffset));
 	}
 	
-	public TargetTraceJumpAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, TargetTracePhase... phases)
+	public TargetTraceJumpAnimation(ResourceLocation id, AttackType attackType, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, TargetTracePhase... phases)
 	{
-		super(id, convertTime, path, model, phases);
+		super(id, attackType, convertTime, path, model, phases);
 	}
 	
 	@Override

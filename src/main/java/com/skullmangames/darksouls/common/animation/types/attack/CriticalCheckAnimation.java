@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
@@ -27,18 +28,18 @@ public class CriticalCheckAnimation extends AttackAnimation
 	private final StaticAnimation followUp;
 	private final boolean isWeak;
 	
-	public CriticalCheckAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
+	public CriticalCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
 			String index, ResourceLocation path, Function<Models<?>, Model> model, StaticAnimation followUp)
 	{
-		super(id, convertTime, antic, preDelay, contact, recovery, index, path, model);
+		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model);
 		this.followUp = followUp;
 		this.isWeak = isWeak;
 	}
 	
-	public CriticalCheckAnimation(ResourceLocation id, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
+	public CriticalCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
 			StaticAnimation followUp, AttackAnimation.Phase... phases)
 	{
-		super(id, convertTime, path, model, phases);
+		super(id, attackType, convertTime, path, model, phases);
 		this.followUp = followUp;
 		this.isWeak = isWeak;
 	}

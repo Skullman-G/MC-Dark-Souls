@@ -109,7 +109,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void increaseStamina(float increment)
 	{
-		this.setStamina(MathUtils.clamp(this.stamina + increment, -5F, this.getMaxStamina()));
+		this.setStamina(MathUtils.clamp(this.stamina + increment, -5, this.getMaxStamina()));
 	}
 
 	public float getStamina()
@@ -138,10 +138,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return (float) this.orgEntity.getAttributeValue(ModAttributes.POISE.get());
 	}
-
-	public float getPoiseDamage()
+	
+	public boolean isTwohanding()
 	{
-		return (float) this.orgEntity.getAttributeValue(ModAttributes.POISE_DAMAGE.get());
+		return false;
 	}
 
 	public abstract void initAnimator(ClientAnimator animatorClient);
@@ -754,14 +754,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (cap == null)
 			return null;
 		return cap.getHitSound();
-	}
-
-	public SoundEvent getWeaponSmashSound(InteractionHand hand)
-	{
-		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
-		if (cap == null)
-			return null;
-		return cap.getSmashSound();
 	}
 
 	public SoundEvent getSwingSound(InteractionHand hand)

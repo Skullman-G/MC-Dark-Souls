@@ -120,9 +120,27 @@ public interface ExtendedDamageSource
 		}
 	}
 	
+	public enum CoreDamageType
+	{
+		PHYSICAL, MAGIC, FIRE, LIGHTNING
+	}
+	
 	public enum DamageType
 	{
-		CRITICAL, REGULAR, STRIKE, SLASH, THRUST, FIRE, LIGHTNING;
+		CRITICAL(CoreDamageType.PHYSICAL), REGULAR(CoreDamageType.PHYSICAL), STRIKE(CoreDamageType.PHYSICAL), SLASH(CoreDamageType.PHYSICAL),
+		THRUST(CoreDamageType.PHYSICAL), FIRE(CoreDamageType.FIRE), LIGHTNING(CoreDamageType.LIGHTNING);
+		
+		private final CoreDamageType coreType;
+		
+		private DamageType(CoreDamageType coreType)
+		{
+			this.coreType = coreType;
+		}
+		
+		public CoreDamageType getCoreType()
+		{
+			return this.coreType;
+		}
 		
 		public Attribute getDefenseAttribute()
 		{

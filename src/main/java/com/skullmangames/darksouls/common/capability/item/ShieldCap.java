@@ -18,7 +18,12 @@ public class ShieldCap extends MeleeWeaponCap
 	
 	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float fireDef, float lightningDef, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.SHIELD, Colliders.FIST, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		this(item, shieldType, shieldMat, physicalDef, fireDef, lightningDef, 40, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+	}
+	
+	public ShieldCap(Item item, ShieldType shieldType, ShieldMat shieldMat, float physicalDef, float fireDef, float lightningDef, int staminaDamage, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
+	{
+		super(item, WeaponMovesets.SHIELD, Colliders.FIST, 40, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 		this.physicalDefense = Math.min(physicalDef, 1F);
 		this.fireDefense = Math.min(fireDef, 1F);
 		this.lightningDefense = Math.min(lightningDef, 1F);
@@ -41,12 +46,6 @@ public class ShieldCap extends MeleeWeaponCap
 	public ShieldType getShieldType()
 	{
 		return this.shieldType;
-	}
-
-	@Override
-	public float getStaminaDamage()
-	{
-		return 6.0F;
 	}
 	
 	@Override

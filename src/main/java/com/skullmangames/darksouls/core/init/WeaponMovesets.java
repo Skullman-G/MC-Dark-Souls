@@ -73,7 +73,7 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 		this.movesets = builder.build();
 		
 		fistMoveset = getByLocation(FIST).orElse(WeaponMoveset.EMPTY);
-		for (ItemCapability cap : ProviderItem.CAPABILITIES.values())
+		for (ItemCapability cap : ProviderItem.DEFAULT_CAPABILITIES.values())
 		{
 			if (cap instanceof ReloadableCap) ((ReloadableCap)cap).reload();
 		}

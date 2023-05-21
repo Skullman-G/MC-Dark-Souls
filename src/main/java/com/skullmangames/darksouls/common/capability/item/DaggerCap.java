@@ -10,7 +10,7 @@ public class DaggerCap extends MeleeWeaponCap
 {
 	public DaggerCap(Item item, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, WeaponMovesets.DAGGER, Colliders.DAGGER, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponMovesets.DAGGER, Colliders.DAGGER, 25, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override

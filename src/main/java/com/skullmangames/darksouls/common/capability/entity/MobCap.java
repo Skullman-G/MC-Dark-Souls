@@ -43,8 +43,8 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 		EntityState state = this.getEntityState();
 		if (state.canAct() || state.getContactLevel() == 3)
 		{
-			float staminaIncr = 0.2F;
-			if (this.isBlocking() || this.orgEntity.onClimbable()) staminaIncr *= 0.2F;
+			float staminaIncr = 2F;
+			if (this.isBlocking() || this.orgEntity.onClimbable()) staminaIncr *= 0.5F;
 			
 			this.increaseStamina(staminaIncr);
 		}

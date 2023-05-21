@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public class Colliders
 {
 	public static final Map<ResourceLocation, Collider> COLLIDERS = new HashMap<>();
+	public static final Map<Collider, ResourceLocation> IDS = new HashMap<>();
 	
 	public static final Collider FIST = register("fist", new CubeCollider(0.4F, 0.4F, 0.4F, 0F, 0F, 0F));
 	public static final Collider SHORTSWORD = register("shortsword", new CubeCollider(0.4F, 0.3F, 0.7F, 0F, 0F, -0.5F));
@@ -32,7 +33,19 @@ public class Colliders
 	
 	private static Collider register(String name, Collider collider)
 	{
-		COLLIDERS.put(new ResourceLocation(DarkSouls.MOD_ID, name), collider);
+		ResourceLocation id = DarkSouls.rl(name);
+		COLLIDERS.put(id, collider);
+		IDS.put(collider, id);
 		return collider;
+	}
+	
+	public static Collider getCollider(ResourceLocation id)
+	{
+		return COLLIDERS.get(id);
+	}
+	
+	public static ResourceLocation getId(Collider collider)
+	{
+		return IDS.get(collider);
 	}
 }

@@ -43,7 +43,6 @@ public interface IShield
 		CRACKED_ROUND_SHIELD(Deflection.NONE),
 		IRON_ROUND_SHIELD(Deflection.HEAVY);
 		
-		
 		private final Deflection deflection;
 		
 		private ShieldType(Deflection deflection)

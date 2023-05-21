@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 
 import net.minecraft.world.item.Item;
@@ -18,8 +19,14 @@ public class BowCap extends RangedWeaponCap
 	}
 
 	@Override
-	public float getStaminaDamage()
+	public int getStaminaDamage()
 	{
-		return 4.0F;
+		return 0;
+	}
+
+	@Override
+	public int getStaminaUsage(AttackType type, boolean twohanded)
+	{
+		return 25;
 	}
 }

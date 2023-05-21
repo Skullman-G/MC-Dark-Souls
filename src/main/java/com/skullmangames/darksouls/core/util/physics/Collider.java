@@ -10,10 +10,12 @@ import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -31,6 +33,12 @@ public abstract class Collider
 		this.modelCenter = center;
 		this.outerAABB = outerAABB;
 		this.worldCenter = new Vec3(0, 0, 0);
+	}
+	
+	@Nullable
+	public ResourceLocation getId()
+	{
+		return Colliders.getId(this);
 	}
 	
 	public Vec3 getWorldCenter()

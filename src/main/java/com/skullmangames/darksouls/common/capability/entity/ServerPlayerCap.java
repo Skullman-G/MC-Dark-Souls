@@ -154,14 +154,14 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		EntityState state = this.getEntityState();
 		if (!this.isCreativeOrSpectator() && (state.canAct() || state.getContactLevel() == 3))
 		{
-			float staminaIncr = 0.3F;
+			float staminaIncr = 1.8F;
 			if (this.orgEntity.isSprinting())
-				staminaIncr = -0.1F;
+				staminaIncr = -1;
 			else
 			{
-				if (this.getEncumbrance() > 1F)
+				if (this.getEquipLoadLevel() == EquipLoadLevel.OVERENCUMBERED)
 					staminaIncr *= 0.7F;
-				else if (this.getEncumbrance() > 0.5F)
+				else if (this.getEquipLoadLevel() == EquipLoadLevel.HEAVY)
 					staminaIncr *= 0.8F;
 				if (this.isBlocking() || this.orgEntity.onClimbable())
 					staminaIncr *= 0.2F;

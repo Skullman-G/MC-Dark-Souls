@@ -48,6 +48,7 @@ import com.skullmangames.darksouls.core.event.PlayerEvents;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModBlocks;
 import com.skullmangames.darksouls.core.init.ClientModels;
+import com.skullmangames.darksouls.core.init.MeleeWeaponConfigs;
 import com.skullmangames.darksouls.core.init.ModArgumentTypes;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
@@ -85,6 +86,7 @@ public class DarkSouls
 	private static DarkSouls instance;
 	public final AnimationManager animationManager;
 	public final WeaponMovesets weaponMovesets;
+	public final MeleeWeaponConfigs meleeWeaponConfigs;
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
 	public static DarkSouls getInstance()
@@ -96,6 +98,7 @@ public class DarkSouls
 	{
 		this.animationManager = new AnimationManager();
 		this.weaponMovesets = new WeaponMovesets();
+		this.meleeWeaponConfigs = new MeleeWeaponConfigs();
 		instance = this;
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_CONFIG, CONFIG_FILE_PATH);
@@ -154,6 +157,7 @@ public class DarkSouls
 	{
 		event.addListener(this.animationManager);
 		event.addListener(this.weaponMovesets);
+		event.addListener(this.meleeWeaponConfigs);
 	}
 	
 	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)

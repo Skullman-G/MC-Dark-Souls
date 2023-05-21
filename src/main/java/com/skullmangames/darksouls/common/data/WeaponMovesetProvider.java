@@ -53,7 +53,8 @@ public class WeaponMovesetProvider implements DataProvider
 	
 	private static List<WeaponMoveset.Builder> defaultMovesets()
 	{
-		return ImmutableList.of(
+		return ImmutableList.of
+		(
 			new WeaponMoveset.Builder(WeaponMovesets.FIST)
 			.putMove(AttackType.LIGHT, true, Animations.FIST_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.FIST_HEAVY_ATTACK)
@@ -105,7 +106,8 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.LIGHT, true, Animations.GREAT_HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE));
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
+		);
 	}
 	
 	private static Path createPath(Path path, ResourceLocation location)

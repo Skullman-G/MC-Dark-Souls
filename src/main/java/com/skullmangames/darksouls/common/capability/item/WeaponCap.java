@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
-import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
@@ -38,22 +37,17 @@ public abstract class WeaponCap extends AttributeItemCap
 {
 	private final WeaponCategory weaponCategory;
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<>();
-	private final Map<Stat, Pair<Integer, Scaling>> statInfo;
-	public final float poiseDamage;
+	private final ImmutableMap<Stat, Integer> statRequirements;
+	private final ImmutableMap<Stat, Scaling> statScaling;
 	public final float weight;
 
-	public WeaponCap(Item item, WeaponCategory category, int reqStrength, int reqDex, int reqFaith,
-			Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
+	public WeaponCap(Item item, WeaponCategory category, float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item);
 		this.weaponCategory = category;
-		this.statInfo = ImmutableMap.<Stat, Pair<Integer, Scaling>>builder()
-				.put(Stats.STRENGTH, new Pair<Integer, Scaling>(MathUtils.clamp(reqStrength, 0, 99), strengthScaling))
-				.put(Stats.DEXTERITY, new Pair<Integer, Scaling>(MathUtils.clamp(reqDex, 0, 99), dexScaling))
-				.put(Stats.FAITH, new Pair<Integer, Scaling>(MathUtils.clamp(reqFaith, 0, 99), faithScaling))
-				.build();
-		this.weight = Math.max(((float)reqStrength - 4F) / 2F, 0F);
-		this.poiseDamage = this.weight * 0.5F;
+		this.statRequirements = statRequirements;
+		this.statScaling = statScaling;
+		this.weight = weight;
 	}
 	
 	@Override
@@ -61,15 +55,16 @@ public abstract class WeaponCap extends AttributeItemCap
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
-		if (slot == EquipmentSlot.MAINHAND) map.put(ModAttributes.POISE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.poiseDamage));
 		return map;
 	}
 	
-	public abstract float getStaminaDamage();
+	public abstract int getStaminaDamage();
+	
+	public abstract int getStaminaUsage(AttackType type, boolean twohanded);
 	
 	public Scaling getScaling(Stat stat)
 	{
-		return this.statInfo.get(stat).getSecond();
+		return this.statScaling.get(stat);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -77,7 +72,7 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public boolean meetRequirements(PlayerCap<?> playerCap)
 	{
-		for (Stat stat : this.statInfo.keySet())
+		for (Stat stat : this.statRequirements.keySet())
 			if (!this.meetsRequirement(stat, playerCap))
 				return false;
 		return true;
@@ -85,7 +80,7 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.statInfo.get(stat).getFirst() <= playerCap.getStats().getStatValue(stat);
+		return this.statRequirements.get(stat) <= playerCap.getStatValue(stat);
 	}
 
 	@Nullable
@@ -122,17 +117,19 @@ public abstract class WeaponCap extends AttributeItemCap
 					+ this.getStatStringValue(Stats.STRENGTH, playerCap)));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
 					+ this.getStatStringValue(Stats.DEXTERITY, playerCap)));
+			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.INTELLIGENCE.toString()).getString() + ": "
+					+ this.getStatStringValue(Stats.INTELLIGENCE, playerCap)));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
 					+ this.getStatStringValue(Stats.FAITH, playerCap)));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Scaling:"));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
-					+ this.statInfo.get(Stats.STRENGTH).getSecond()));
+					+ this.getScaling(Stats.STRENGTH)));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
-					+ this.statInfo.get(Stats.DEXTERITY).getSecond()));
+					+ this.getScaling(Stats.DEXTERITY)));
 			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
-					+ this.statInfo.get(Stats.FAITH).getSecond()));
+					+ this.getScaling(Stats.FAITH)));
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
@@ -142,7 +139,7 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	private String getStatStringValue(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.getStatColor(stat, playerCap) + this.statInfo.get(stat).getFirst();
+		return this.getStatColor(stat, playerCap) + this.statRequirements.get(stat);
 	}
 
 	private String getStatColor(Stat stat, PlayerCap<?> playerCap)
@@ -208,12 +205,14 @@ public abstract class WeaponCap extends AttributeItemCap
 	
 	public enum Scaling
 	{
-		S(1.5F), A(1F), B(0.8F), C(0.5F), D(0.3F), E(0.1F), NONE(0F);
+		S("S", 1.5F), A("A", 1F), B("B", 0.8F), C("C", 0.5F), D("D", 0.3F), E("E", 0.1F), NONE("-", 0F);
 		
+		private final String name;
 		private final float percentage;
 		
-		private Scaling(float per)
+		private Scaling(String name, float per)
 		{
+			this.name = name;
 			this.percentage = per;
 		}
 		
@@ -225,16 +224,16 @@ public abstract class WeaponCap extends AttributeItemCap
 		@Override
 		public String toString()
 		{
-			switch (this)
+			return this.name;
+		}
+		
+		public static Scaling fromString(String id)
+		{
+			for (Scaling scaling : Scaling.values())
 			{
-				case S: return "S";
-				case A: return "A";
-				case B: return "B";
-				case C: return "C";
-				case D: return "D";
-				case E: return "E";
-				default: return "-";
+				if (scaling.name == id) return scaling;
 			}
+			return null;
 		}
 	}
 }

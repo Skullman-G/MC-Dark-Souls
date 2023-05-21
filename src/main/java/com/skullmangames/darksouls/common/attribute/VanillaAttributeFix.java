@@ -35,7 +35,7 @@ public class VanillaAttributeFix
 	
 	private static final Map<ResourceLocation, Integer> maxHealth = ImmutableMap.of
 	(
-			new ResourceLocation("player"), 572
+			new ResourceLocation("player"), 400
 	);
 	
 	private static final Map<String, Integer> attackDamage = ImmutableMap.of

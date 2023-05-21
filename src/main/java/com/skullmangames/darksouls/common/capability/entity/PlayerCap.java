@@ -83,7 +83,11 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	@Override
 	public float getDamageScalingMultiplier(float baseDamage)
 	{
-		return (float)Stats.getTotalDamageMultiplier(this.orgEntity, baseDamage, this.getStatValue(Stats.STRENGTH), this.getStatValue(Stats.DEXTERITY), this.getStatValue(Stats.FAITH));
+		return (float)Stats.getTotalDamageMultiplier(this.orgEntity, baseDamage,
+				this.getStatValue(Stats.STRENGTH),
+				this.getStatValue(Stats.DEXTERITY),
+				this.getStatValue(Stats.INTELLIGENCE),
+				this.getStatValue(Stats.FAITH));
 	}
 	
 	public void onLoad(CompoundTag nbt)

@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
@@ -134,11 +135,16 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	
 	private static class AttackAnimBuilder extends AnimBuilder
 	{
+		protected final AttackType attackType;
 		protected final AttackAnimation.Phase[] phases;
 		
 		protected AttackAnimBuilder(ResourceLocation location, JsonObject json)
 		{
 			super(location, json);
+			
+			String attackTypeString = json.get("attackType").getAsString();
+			this.attackType = AttackType.fromString(attackTypeString);
+			
 			JsonArray jsonPhases = json.get("phases").getAsJsonArray();
 			int phasesLength = jsonPhases.size();
 			AttackAnimation.Phase[] ps = new AttackAnimation.Phase[phasesLength];
@@ -160,7 +166,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		@Override
 		public StaticAnimation build()
 		{
-			return new AttackAnimation(this.id, this.convertTime, this.location, this.model, this.phases);
+			return new AttackAnimation(this.id, this.attackType, this.convertTime, this.location, this.model, this.phases);
 		}
 	}
 	
@@ -184,7 +190,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		@Override
 		public StaticAnimation build()
 		{
-			return new CriticalCheckAnimation(this.id, this.convertTime, this.isWeak, this.location, this.model, this.followUp.build(), this.phases);
+			return new CriticalCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model, this.followUp.build(), this.phases);
 		}
 	}
 	

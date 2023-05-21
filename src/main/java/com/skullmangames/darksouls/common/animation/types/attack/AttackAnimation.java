@@ -25,9 +25,9 @@ import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
@@ -53,29 +53,35 @@ import net.minecraftforge.entity.PartEntity;
 
 public class AttackAnimation extends ActionAnimation
 {
+	private final AttackType attackType;
 	public final Phase[] phases;
 
-	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
+	public AttackAnimation(ResourceLocation id, AttackType attackType,
+			float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
 			Function<Models<?>, Model> model)
 	{
-		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 
-	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery,
+	public AttackAnimation(ResourceLocation id, AttackType attackType,
+			float convertTime, float antic, float preDelay, float contact, float recovery,
 			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
-	public AttackAnimation(ResourceLocation id, float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
+	public AttackAnimation(ResourceLocation id, AttackType attackType,
+			float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
 			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 
-	public AttackAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
+	public AttackAnimation(ResourceLocation id, AttackType attackType,
+			float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
 	{
 		super(id, convertTime, path, model);
+		this.attackType = attackType;
 		this.phases = phases;
 	}
 
@@ -106,12 +112,12 @@ public class AttackAnimation extends ActionAnimation
 				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
 				{
 					WeaponCap weapon = ModCapabilities.getWeaponCap(entityCap.getOriginalEntity().getMainHandItem());
-					float incr = weapon == null ? -4.0F : Math.min(-weapon.weight / 3, -4.0F);
+					int incr = weapon == null ? -25 : Math.min(-weapon.getStaminaUsage(this.attackType, entityCap.isTwohanding()), -25);
 					((ServerPlayerCap)entityCap).increaseStamina(incr);
 				}
 				else if (entityCap instanceof MobCap)
 				{
-					((MobCap<?>)entityCap).increaseStamina(-2.5F);
+					((MobCap<?>)entityCap).increaseStamina(-20);
 				}
 				entityCap.currentlyAttackedEntities.clear();
 			}
@@ -304,7 +310,7 @@ public class AttackAnimation extends ActionAnimation
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
-		float poiseDamage = (float) entityCap.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
+		int poiseDamage = entityCap.getHeldWeaponCapability(phase.hand).getPoiseDamage(this.attackType, entityCap.isTwohanding());
 		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
 		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;

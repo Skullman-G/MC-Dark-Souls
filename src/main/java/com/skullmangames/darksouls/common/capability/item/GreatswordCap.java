@@ -11,7 +11,7 @@ public class GreatswordCap extends MeleeWeaponCap
 	public GreatswordCap(Item item, ResourceLocation moveset, int reqStrength, int reqDex,
 			int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
 	{
-		super(item, moveset, Colliders.GREATSWORD, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, moveset, Colliders.GREATSWORD, 56, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
 	}
 	
 	@Override
