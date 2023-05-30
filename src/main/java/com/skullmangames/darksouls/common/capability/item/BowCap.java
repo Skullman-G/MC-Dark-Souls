@@ -1,15 +1,18 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.google.common.collect.ImmutableMap;
+import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
 import net.minecraft.world.item.Item;
 
 public class BowCap extends RangedWeaponCap
 {
-	public BowCap(Item item, float damage, int reqStrength, int reqDex, int reqFaith, Scaling strengthScaling, Scaling dexScaling, Scaling faithScaling)
+	public BowCap(Item item, ImmutableMap<CoreDamageType, Integer> damage, float critical, float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.BOW, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND, damage, reqStrength, reqDex, reqFaith, strengthScaling, dexScaling, faithScaling);
+		super(item, WeaponCategory.BOW, null, Animations.BIPED_BOW_AIM, Animations.BIPED_BOW_REBOUND, damage, critical,
+				weight, statRequirements, statScaling);
 	}
 	
 	@Override
@@ -17,16 +20,44 @@ public class BowCap extends RangedWeaponCap
 	{
 		return HandProperty.TWO_HANDED;
 	}
-
-	@Override
-	public int getStaminaDamage()
+	
+	public static Builder builder(Item item, float critical, float weight)
 	{
-		return 0;
+		return new Builder(item, critical, weight);
 	}
-
-	@Override
-	public int getStaminaUsage(AttackType type, boolean twohanded)
+	
+	public static class Builder
 	{
-		return 25;
+		private Item item;
+		private float critical;
+		private float weight;
+		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
+		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
+		
+		private Builder(Item item, float critical, float weight)
+		{
+			this.item = item;
+			this.critical = critical;
+			this.weight = weight;
+		}
+		
+		public Builder putDamage(CoreDamageType type, int value)
+		{
+			this.damage.put(type, value);
+			return this;
+		}
+		
+		public Builder putStatInfo(Stat stat, int requirement, Scaling scaling)
+		{
+			this.statRequirements.put(stat, requirement);
+			this.statScaling.put(stat, scaling);
+			return this;
+		}
+		
+		public BowCap build()
+		{
+			return new BowCap(this.item, this.damage.build(), this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
+		}
 	}
 }

@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:black_knight_sword",
+  "moveset": "darksouls:black_knight_sword",
+  "collider": "darksouls:greatsword",
+  "weight": 10.0,
+  "hold_on_shoulder": true,
+  "stability": 0.4,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 173,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 20,
+    "stat.darksouls.dexterity": 18,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "D",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.45,
+    "MAGIC": 0.4,
+    "FIRE": 0.4,
+    "LIGHTNING": 0.35,
+    "DARK": 0.4
+  }
+}

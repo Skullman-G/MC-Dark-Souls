@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.entity.stats;
 
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,7 +24,7 @@ public class ScalingStat extends ModifyingStat
 		{
 			float weaponBonus = weapon.getScaling(this).getPercentage();
 			float scale = -0.000127F * (value - Stats.STANDARD_LEVEL) * (value - 188F);
-			addition = weapon.getDamage() * weaponBonus * scale;
+			addition = weapon.getDamage(CoreDamageType.PHYSICAL) * weaponBonus * scale;
 		}
 		return addition;
 	}

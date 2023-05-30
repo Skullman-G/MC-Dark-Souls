@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
-import com.skullmangames.darksouls.common.capability.item.GreatHammerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -43,7 +42,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
-		if (cap instanceof GreatHammerCap) return Colliders.STRAY_DEMON_GREAT_HAMMER;
+		if (cap.getWeaponCollider() == Colliders.GREAT_HAMMER) return Colliders.STRAY_DEMON_GREAT_HAMMER;
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 	

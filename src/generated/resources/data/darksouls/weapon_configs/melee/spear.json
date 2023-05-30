@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:spear",
+  "moveset": "darksouls:spear",
+  "collider": "darksouls:spear",
+  "weight": 4.5,
+  "hold_on_shoulder": false,
+  "stability": 0.3,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 104,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 11,
+    "stat.darksouls.dexterity": 10,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "C",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.4,
+    "MAGIC": 0.25,
+    "FIRE": 0.2,
+    "LIGHTNING": 0.2,
+    "DARK": 0.25
+  }
+}

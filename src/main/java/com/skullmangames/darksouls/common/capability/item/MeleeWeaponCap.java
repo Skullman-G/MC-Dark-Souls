@@ -50,47 +50,32 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	private final ResourceLocation movesetId;
 	private WeaponMoveset moveset;
 	private final Collider collider;
-	private final ImmutableMap<AttackType, Pair<Integer, Integer>> staminaUsage;
-	private final ImmutableMap<AttackType, Pair<Integer, Integer>> poiseDamage;
-	private final int staminaDamage;
 	private final boolean holdOnShoulder;
 	
 	private final ShieldType shieldType;
 	private final WeaponMaterial weaponMaterial;
 	private final ImmutableMap<CoreDamageType, Float> defense;
+	private final float stability;
 	
-	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, int staminaDamage, boolean holdOnShoulder, float weight,
-			ShieldType shieldType, WeaponMaterial weaponMaterial, ImmutableMap<CoreDamageType, Float> defense,
-			ImmutableMap<AttackType, Pair<Integer, Integer>> staminaUsage, ImmutableMap<AttackType, Pair<Integer, Integer>> poiseDamage,
+	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage,
+			float critical, boolean holdOnShoulder, float weight,
+			ShieldType shieldType, WeaponMaterial weaponMaterial, ImmutableMap<CoreDamageType, Float> defense, float stability,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.MELEE_WEAPON, weight, statRequirements, statScaling);
+		super(item, WeaponCategory.MELEE_WEAPON, damage, critical, weight, statRequirements, statScaling);
 		this.movesetId = moveset;
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
-		this.staminaDamage = staminaDamage;
-		this.poiseDamage = poiseDamage;
 		this.collider = collider;
-		this.staminaUsage = staminaUsage;
 		this.holdOnShoulder = holdOnShoulder;
 		this.weaponMaterial = weaponMaterial;
 		this.shieldType = shieldType;
 		this.defense = defense;
+		this.stability = stability;
 	}
 	
 	public void reload()
 	{
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
-	}
-	
-	public int getPoiseDamage(AttackType type, boolean twohanded)
-	{
-		Pair<Integer, Integer> value = this.poiseDamage.get(type);
-		if (value != null)
-		{
-			if (!twohanded) return value.getFirst();
-			else return value.getSecond();
-		}
-		return 0;
 	}
 	
 	@Override
@@ -118,7 +103,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		{
 			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
 			instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage()));
+			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.PHYSICAL)));
 		}
 	}
 	
@@ -129,11 +114,14 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		return InteractionResult.CONSUME;
 	}
 	
-	public float getDamage()
+	public int getDamage(CoreDamageType type)
 	{
-		return this.orgItem instanceof SwordItem ? ((SwordItem) this.orgItem).getDamage()
+		int value = super.getDamage(type);
+		if (type != CoreDamageType.PHYSICAL || value != 0) return value;
+		float defaultValue = this.orgItem instanceof SwordItem ? ((SwordItem) this.orgItem).getDamage()
 				: this.orgItem instanceof DiggerItem ? ((DiggerItem) this.orgItem).getAttackDamage()
 				: 0.0F;
+		return (int)(defaultValue * 65);
 	}
 	
 	public AttackAnimation[] getAttacks(AttackType type)
@@ -201,24 +189,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	}
 	
 	@Override
-	public int getStaminaUsage(AttackType type, boolean twohanded)
-	{
-		Pair<Integer, Integer> value = this.staminaUsage.get(type);
-		if (value != null)
-		{
-			if (!twohanded) return value.getFirst();
-			else return value.getSecond();
-		}
-		return 0;
-	}
-	
-	@Override
-	public int getStaminaDamage()
-	{
-		return this.staminaDamage;
-	}
-	
-	@Override
 	public float getDefense(DamageType damageType)
 	{
 		return this.defense.get(damageType.getCoreType());
@@ -230,9 +200,9 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		return this.shieldType;
 	}
 	
-	public static Builder builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, int staminaDamage, float weight)
+	public static Builder builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 	{
-		return new Builder(item, movesetId, colliderId, staminaDamage, weight);
+		return new Builder(item, movesetId, colliderId, weight);
 	}
 	
 	public enum AttackType
@@ -303,11 +273,11 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		private Item item;
 		private ResourceLocation movesetId;
 		private ResourceLocation colliderId;
-		private int staminaDamage;
+		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		private float critical = 1.00F;
 		private boolean holdOnShoulder;
 		private float weight;
-		private ImmutableMap.Builder<AttackType, Pair<Integer, Integer>> staminaUsage = ImmutableMap.builder();
-		private ImmutableMap.Builder<AttackType, Pair<Integer, Integer>> poiseDamage = ImmutableMap.builder();
+		private float stability = 0.25F;
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
@@ -315,12 +285,11 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		private WeaponMaterial weaponMaterial = WeaponMaterial.METAL_WEAPON;
 		private ImmutableMap.Builder<CoreDamageType, Float> defense = ImmutableMap.builder();
 		
-		private Builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, int staminaDamage, float weight)
+		private Builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 		{
 			this.item = item;
 			this.movesetId = movesetId;
 			this.colliderId = colliderId;
-			this.staminaDamage = staminaDamage;
 			this.weight = weight;
 		}
 		
@@ -329,8 +298,21 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			return this.item.getRegistryName();
 		}
 		
-		public Builder putDefense(CoreDamageType damageType, float defense)
+		public Builder setCritical(float critical)
 		{
+			this.critical = critical;
+			return this;
+		}
+		
+		public Builder setStability(float value)
+		{
+			this.stability = value;
+			return this;
+		}
+		
+		public Builder putDamageInfo(CoreDamageType damageType, int damage, float defense)
+		{
+			this.damage.put(damageType, damage);
 			this.defense.put(damageType, defense);
 			return this;
 		}
@@ -344,18 +326,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		public Builder setShieldType(ShieldType value)
 		{
 			this.shieldType = value;
-			return this;
-		}
-		
-		public Builder putStaminaUsage(AttackType attackType, int onehanded, int twohanded)
-		{
-			this.staminaUsage.put(attackType, new Pair<Integer, Integer>(onehanded, twohanded));
-			return this;
-		}
-		
-		public Builder putPoiseDamage(AttackType attackType, int onehanded, int twohanded)
-		{
-			this.poiseDamage.put(attackType, new Pair<Integer, Integer>(onehanded, twohanded));
 			return this;
 		}
 		
@@ -378,28 +348,16 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			root.addProperty("registry_name", this.item.getRegistryName().toString());
 			root.addProperty("moveset", this.movesetId.toString());
 			root.addProperty("collider", this.colliderId.toString());
-			root.addProperty("stamina_damage", this.staminaDamage);
 			root.addProperty("weight", this.weight);
 			root.addProperty("hold_on_shoulder", this.holdOnShoulder);
+			root.addProperty("stability", this.stability);
+			root.addProperty("critical", this.critical);
 			
-			JsonObject staminaUsage = new JsonObject();
-			root.add("stamina_usage", staminaUsage);
-			this.staminaUsage.build().forEach((type, pair) ->
+			JsonObject damage = new JsonObject();
+			root.add("damage", damage);
+			this.damage.build().forEach((type, dam) ->
 			{
-				JsonObject typeUsage = new JsonObject();
-				staminaUsage.add(type.toString(), typeUsage);
-				typeUsage.addProperty("one_handed", pair.getFirst());
-				typeUsage.addProperty("two_handed", pair.getSecond());
-			});
-			
-			JsonObject poiseDamage = new JsonObject();
-			root.add("poise_damage", poiseDamage);
-			this.poiseDamage.build().forEach((type, pair) ->
-			{
-				JsonObject typeUsage = new JsonObject();
-				poiseDamage.add(type.toString(), typeUsage);
-				typeUsage.addProperty("one_handed", pair.getFirst());
-				typeUsage.addProperty("two_handed", pair.getSecond());
+				damage.addProperty(type.toString(), dam);
 			});
 			
 			JsonObject statRequirements = new JsonObject();
@@ -437,31 +395,18 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			
 			ResourceLocation colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
 			
-			int staminaDamage = json.get("stamina_damage").getAsInt();
 			float weight = json.get("weight").getAsFloat();
 			
-			Builder builder = new Builder(item, movesetId, colliderId, staminaDamage, weight);
+			Builder builder = new Builder(item, movesetId, colliderId, weight);
 			
 			JsonElement holdOnShoulder = json.get("hold_on_shoulder");
 			if (holdOnShoulder != null && holdOnShoulder.getAsBoolean()) builder.shouldHoldOnShoulder();
 			
-			JsonObject staminaUsage = json.get("stamina_usage").getAsJsonObject();
-			for (AttackType type : AttackType.values())
-			{
-				JsonObject typeUsage = staminaUsage.get(type.toString()).getAsJsonObject();
-				int onehanded = typeUsage.get("one_handed").getAsInt();
-				int twohanded = typeUsage.get("two_handed").getAsInt();
-				builder.putStaminaUsage(type, onehanded, twohanded);
-			}
+			JsonElement criticalJson = json.get("critical");
+			if (criticalJson != null) builder.setCritical(criticalJson.getAsFloat());
 			
-			JsonObject poiseDamage = json.get("poise_damage").getAsJsonObject();
-			for (AttackType type : AttackType.values())
-			{
-				JsonObject typeUsage = poiseDamage.get(type.toString()).getAsJsonObject();
-				int onehanded = typeUsage.get("one_handed").getAsInt();
-				int twohanded = typeUsage.get("two_handed").getAsInt();
-				builder.putPoiseDamage(type, onehanded, twohanded);
-			}
+			JsonElement stabilityJson = json.get("stability");
+			if (stabilityJson != null) builder.setStability(stabilityJson.getAsFloat());
 			
 			JsonObject statRequirements = json.get("stat_requirements").getAsJsonObject();
 			JsonObject statScaling = json.get("stat_scaling").getAsJsonObject();
@@ -486,11 +431,13 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 				if (weaponMaterial != null) builder.setWeaponMaterial(weaponMaterial);
 			}
 			
+			JsonObject damage = json.get("damage").getAsJsonObject();
 			JsonObject defense = json.get("defense").getAsJsonObject();
 			for (CoreDamageType type : CoreDamageType.values())
 			{
-				float value = defense.get(type.toString()).getAsFloat();
-				builder.putDefense(type, value);
+				int dam = damage.get(type.toString()).getAsInt();
+				float def = defense.get(type.toString()).getAsFloat();
+				builder.putDamageInfo(type, dam, def);
 			}
 			
 			return builder;
@@ -499,9 +446,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		public MeleeWeaponCap build()
 		{
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.staminaDamage, this.holdOnShoulder, this.weight,
-					this.shieldType, this.weaponMaterial, this.defense.build(), this.staminaUsage.build(),
-					this.poiseDamage.build(), this.statRequirements.build(), this.statScaling.build());
+			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.damage.build(), this.critical, this.holdOnShoulder, this.weight,
+					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability, this.statRequirements.build(), this.statScaling.build());
 		}
 	}
 }

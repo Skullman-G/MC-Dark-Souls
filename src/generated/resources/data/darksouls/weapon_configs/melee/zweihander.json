@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:zweihander",
+  "moveset": "darksouls:ultra_greatsword",
+  "collider": "darksouls:ultra_greatsword",
+  "weight": 10.0,
+  "hold_on_shoulder": true,
+  "stability": 0.4,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 145,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 19,
+    "stat.darksouls.dexterity": 11,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "D",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.5,
+    "MAGIC": 0.4,
+    "FIRE": 0.35,
+    "LIGHTNING": 0.35,
+    "DARK": 0.4
+  }
+}

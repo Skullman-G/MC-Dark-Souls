@@ -41,7 +41,9 @@ public abstract class Property<T>
 		public static final AttackProperty<DamageType> DAMAGE_TYPE = new AttackProperty<DamageType>();
 		public static final AttackProperty<StunType> STUN_TYPE = new AttackProperty<StunType>();
 		public static final AttackProperty<Deflection> DEFLECTION = new AttackProperty<Deflection>();
-		public static final AttackProperty<Integer> STAMINA_DMG_MUL = new AttackProperty<Integer>();
+		public static final AttackProperty<Integer> STAMINA_USAGE = new AttackProperty<Integer>();
+		public static final AttackProperty<Integer> STAMINA_DAMAGE = new AttackProperty<Integer>();
+		public static final AttackProperty<Integer> POISE_DAMAGE = new AttackProperty<Integer>();
 
 		public static final AttackProperty<Supplier<SoundEvent>> SWING_SOUND = new AttackProperty<Supplier<SoundEvent>>();
 		public static final AttackProperty<Supplier<SoundEvent>> HIT_SOUND = new AttackProperty<Supplier<SoundEvent>>();

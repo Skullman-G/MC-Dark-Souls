@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:straight_sword_hilt",
+  "moveset": "darksouls:straight_sword",
+  "collider": "darksouls:broken_sword",
+  "weight": 1.0,
+  "hold_on_shoulder": false,
+  "stability": 0.1,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 20,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 6,
+    "stat.darksouls.dexterity": 6,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "E",
+    "stat.darksouls.dexterity": "E",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.2,
+    "MAGIC": 0.05,
+    "FIRE": 0.15,
+    "LIGHTNING": 0.15,
+    "DARK": 0.15
+  }
+}

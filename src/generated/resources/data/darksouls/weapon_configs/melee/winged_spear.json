@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:winged_spear",
+  "moveset": "darksouls:spear",
+  "collider": "darksouls:winged_spear",
+  "weight": 6.0,
+  "hold_on_shoulder": false,
+  "stability": 0.2,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 95,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 12,
+    "stat.darksouls.dexterity": 15,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "C",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.4,
+    "MAGIC": 0.25,
+    "FIRE": 0.2,
+    "LIGHTNING": 0.2,
+    "DARK": 0.25
+  }
+}

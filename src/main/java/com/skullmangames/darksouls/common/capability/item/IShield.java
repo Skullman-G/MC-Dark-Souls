@@ -37,7 +37,7 @@ public interface IShield
 	{
 		NONE(Deflection.NONE),
 		SMALL(Deflection.LIGHT),
-		NORMAL(Deflection.MEDIUM),
+		STANDARD(Deflection.MEDIUM),
 		GREAT(Deflection.HEAVY),
 		UNIQUE(Deflection.LIGHT),
 		CRACKED_ROUND_SHIELD(Deflection.NONE),

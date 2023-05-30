@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -83,9 +82,9 @@ public class CriticalCheckAnimation extends AttackAnimation
 		amount *= canBackstab && !this.isWeak ? 2.0F : 0.1F;
 		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = canBackstab ? DamageType.CRITICAL : phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
-		float poiseDamage = (float) entityCap.getOriginalEntity().getAttributeValue(ModAttributes.POISE_DAMAGE.get());
-		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
+		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 }

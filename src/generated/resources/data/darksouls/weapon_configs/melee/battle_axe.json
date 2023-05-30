@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:battle_axe",
+  "moveset": "darksouls:axe",
+  "collider": "darksouls:tool",
+  "weight": 4.0,
+  "hold_on_shoulder": false,
+  "stability": 0.3,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 125,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 12,
+    "stat.darksouls.dexterity": 8,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "D",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.45,
+    "MAGIC": 0.3,
+    "FIRE": 0.25,
+    "LIGHTNING": 0.25,
+    "DARK": 0.3
+  }
+}

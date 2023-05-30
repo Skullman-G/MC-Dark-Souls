@@ -1,0 +1,37 @@
+{
+  "registry_name": "darksouls:heater_shield",
+  "moveset": "darksouls:shield",
+  "collider": "darksouls:fist",
+  "weight": 2.0,
+  "hold_on_shoulder": false,
+  "stability": 0.55,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 60,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 8,
+    "stat.darksouls.dexterity": 0,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "STANDARD",
+  "weapon_material": "metal_shield",
+  "defense": {
+    "PHYSICAL": 1.0,
+    "MAGIC": 0.3,
+    "FIRE": 0.6,
+    "LIGHTNING": 0.5,
+    "DARK": 0.3
+  }
+}

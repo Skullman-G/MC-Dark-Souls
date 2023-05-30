@@ -458,12 +458,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return true;
 	}
 
-	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmgMul, StunType stunType, float amount,
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType, float amount,
 			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
 	{
-		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
-		float staminaDmg = weapon == null ? 4F : Math.max(4F, weapon.getStaminaDamage()) * staminaDmgMul;
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, new Damage(damageType, amount));
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, new Damage(damageType, amount));
 	}
 
 	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)

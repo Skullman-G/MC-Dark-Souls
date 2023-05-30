@@ -1,12 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
-import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -46,17 +41,6 @@ public interface ExtendedDamageSource
 		float staminaDamage = 1.0F;
 		
 		Entity attacker = org.getDirectEntity();
-		LivingCap<?> cap = org.getDirectEntity() instanceof LivingEntity ? (LivingCap<?>)org.getDirectEntity().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null) : null;
-		if (cap != null)
-		{
-			MeleeWeaponCap weapon = cap.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
-			if (weapon != null)
-			{
-				poiseDamage = weapon.poiseDamage;
-				staminaDamage = weapon.getStaminaDamage();
-			}
-			
-		}
 		
 		return new DamageSourceExtended(org.getMsgId(), attacker, attacker != null ? attacker.position() : Vec3.ZERO, stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
 	}
@@ -122,13 +106,13 @@ public interface ExtendedDamageSource
 	
 	public enum CoreDamageType
 	{
-		PHYSICAL, MAGIC, FIRE, LIGHTNING
+		PHYSICAL, MAGIC, FIRE, LIGHTNING, DARK
 	}
 	
 	public enum DamageType
 	{
 		CRITICAL(CoreDamageType.PHYSICAL), REGULAR(CoreDamageType.PHYSICAL), STRIKE(CoreDamageType.PHYSICAL), SLASH(CoreDamageType.PHYSICAL),
-		THRUST(CoreDamageType.PHYSICAL), FIRE(CoreDamageType.FIRE), LIGHTNING(CoreDamageType.LIGHTNING);
+		THRUST(CoreDamageType.PHYSICAL), FIRE(CoreDamageType.FIRE), LIGHTNING(CoreDamageType.LIGHTNING), DARK(CoreDamageType.DARK);
 		
 		private final CoreDamageType coreType;
 		

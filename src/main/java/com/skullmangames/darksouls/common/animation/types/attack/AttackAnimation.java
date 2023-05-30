@@ -27,8 +27,6 @@ import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.IngameConfig;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -111,8 +109,7 @@ public class AttackAnimation extends ActionAnimation
 			{
 				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
 				{
-					WeaponCap weapon = ModCapabilities.getWeaponCap(entityCap.getOriginalEntity().getMainHandItem());
-					int incr = weapon == null ? -25 : Math.min(-weapon.getStaminaUsage(this.attackType, entityCap.isTwohanding()), -25);
+					int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(25), -25);
 					((ServerPlayerCap)entityCap).increaseStamina(incr);
 				}
 				else if (entityCap instanceof MobCap)
@@ -310,9 +307,9 @@ public class AttackAnimation extends ActionAnimation
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
-		int poiseDamage = entityCap.getHeldWeaponCapability(phase.hand).getPoiseDamage(this.attackType, entityCap.isTwohanding());
-		int staminaDmgMul = phase.getProperty(AttackProperty.STAMINA_DMG_MUL).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmgMul, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
+		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
 		return extDmgSource;
 	}
 

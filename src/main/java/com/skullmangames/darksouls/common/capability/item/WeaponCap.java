@@ -18,8 +18,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
-
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -36,15 +35,20 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public abstract class WeaponCap extends AttributeItemCap
 {
 	private final WeaponCategory weaponCategory;
+	private final ImmutableMap<CoreDamageType, Integer> damage;
 	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<>();
 	private final ImmutableMap<Stat, Integer> statRequirements;
 	private final ImmutableMap<Stat, Scaling> statScaling;
-	public final float weight;
+	private final float weight;
+	private final float critical;
 
-	public WeaponCap(Item item, WeaponCategory category, float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
+	public WeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, float critical, float weight,
+			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item);
 		this.weaponCategory = category;
+		this.damage = damage;
+		this.critical = critical;
 		this.statRequirements = statRequirements;
 		this.statScaling = statScaling;
 		this.weight = weight;
@@ -57,10 +61,6 @@ public abstract class WeaponCap extends AttributeItemCap
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
 		return map;
 	}
-	
-	public abstract int getStaminaDamage();
-	
-	public abstract int getStaminaUsage(AttackType type, boolean twohanded);
 	
 	public Scaling getScaling(Stat stat)
 	{
@@ -89,7 +89,10 @@ public abstract class WeaponCap extends AttributeItemCap
 		return false;
 	}
 	
-	public abstract float getDamage();
+	public int getDamage(CoreDamageType type)
+	{
+		return this.damage.getOrDefault(type, 0);
+	}
 
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
@@ -109,7 +112,11 @@ public abstract class WeaponCap extends AttributeItemCap
 		}
 		else
 		{
-			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage()));
+			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage(CoreDamageType.PHYSICAL)));
+			itemTooltip.add(new TextComponent("\u00A72Magic Damage: " + this.getDamage(CoreDamageType.MAGIC)));
+			itemTooltip.add(new TextComponent("\u00A72Fire Damage: " + this.getDamage(CoreDamageType.FIRE)));
+			itemTooltip.add(new TextComponent("\u00A72Lightning Damage: " + this.getDamage(CoreDamageType.LIGHTNING)));
+			itemTooltip.add(new TextComponent("\u00A72Dark Damage: " + this.getDamage(CoreDamageType.DARK)));
 
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Requirements:"));
@@ -133,7 +140,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.weight, 2))));
+					.append(new TextComponent(ChatFormatting.BLUE+": "+this.weight)));
 		}
 	}
 

@@ -1,0 +1,37 @@
+{
+  "registry_name": "minecraft:stone_pickaxe",
+  "moveset": "darksouls:hammer",
+  "collider": "darksouls:tool",
+  "weight": 5.0,
+  "hold_on_shoulder": false,
+  "stability": 0.4,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 140,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0
+  },
+  "stat_requirements": {
+    "stat.darksouls.strength": 18,
+    "stat.darksouls.dexterity": 9,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "C",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "stone_weapon",
+  "defense": {
+    "PHYSICAL": 0.5,
+    "MAGIC": 0.35,
+    "FIRE": 0.3,
+    "LIGHTNING": 0.3,
+    "DARK": 0.35
+  }
+}
