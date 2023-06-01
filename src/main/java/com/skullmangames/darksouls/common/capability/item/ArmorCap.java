@@ -94,22 +94,22 @@ public class ArmorCap extends AttributeItemCap
 		else
 		{
 			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.STANDARD_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.standardDef, 2))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.STRIKE_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.strikeDef, 2))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.SLASH_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.slashDef, 2))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.THRUST_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.thrustDef, 2))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.FIRE_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.FIRE_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.fireDef, 2))));
 			
-			itemTooltip.add(new TranslatableComponent(ModAttributes.LIGHTNING_DEFENSE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
+			itemTooltip.add(new TranslatableComponent(ModAttributes.LIGHTNING_PROTECTION.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)
 					.append(new TextComponent(ChatFormatting.BLUE+": "+MathUtils.round(this.lightningDef, 2))));
 			
 			itemTooltip.add(new TextComponent(""));
@@ -130,13 +130,13 @@ public class ArmorCap extends AttributeItemCap
 			map.put(ModAttributes.POISE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.poise));
 			map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.weight));
 			
-			map.put(ModAttributes.STANDARD_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.standardDef));
-			map.put(ModAttributes.STRIKE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.strikeDef));
-			map.put(ModAttributes.SLASH_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.slashDef));
-			map.put(ModAttributes.THRUST_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.thrustDef));
+			map.put(ModAttributes.STANDARD_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.standardDef));
+			map.put(ModAttributes.STRIKE_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.strikeDef));
+			map.put(ModAttributes.SLASH_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.slashDef));
+			map.put(ModAttributes.THRUST_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.thrustDef));
 			
-			map.put(ModAttributes.FIRE_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.fireDef));
-			map.put(ModAttributes.LIGHTNING_DEFENSE.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.lightningDef));
+			map.put(ModAttributes.FIRE_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.fireDef));
+			map.put(ModAttributes.LIGHTNING_PROTECTION.get(), ModAttributes.getAttributeModifierForSlot(this.equipSlot, this.lightningDef));
 		}
 		
         return map;

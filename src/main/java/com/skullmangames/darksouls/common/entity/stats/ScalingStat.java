@@ -1,44 +1,31 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import java.util.function.Supplier;
+
+import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 
-public class ScalingStat extends ModifyingStat
+public abstract class ScalingStat extends Stat
 {
-	public ScalingStat(String name, String uuid)
+	@SafeVarargs
+	public ScalingStat(String name, String uuid, Supplier<Attribute>... attributes)
 	{
-		super(name, uuid, () -> Attributes.ATTACK_DAMAGE);
-	}
-
-	@Override
-	public double getModifyValue(Player player, Attribute attribute, int value)
-	{
-		float addition = 0F;
-		MeleeWeaponCap weapon = ModCapabilities.getMeleeWeaponCap(player.getMainHandItem());
-		if (weapon != null)
-		{
-			float weaponBonus = weapon.getScaling(this).getPercentage();
-			float scale = -0.000127F * (value - Stats.STANDARD_LEVEL) * (value - 188F);
-			addition = weapon.getDamage(CoreDamageType.PHYSICAL) * weaponBonus * scale;
-		}
-		return addition;
+		super(name, uuid, attributes);
 	}
 	
-	public double getModifyValue(Player player, Attribute attribute, float baseDamage, int value)
+	@Override
+	public Operation getOperation(Attribute attribute)
 	{
-		float addition = 0F;
-		MeleeWeaponCap weapon = ModCapabilities.getMeleeWeaponCap(player.getMainHandItem());
-		if (weapon != null)
+		if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
+				|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get()
+				|| attribute == ModAttributes.FIRE_PROTECTION.get() || attribute == ModAttributes.DARK_PROTECTION.get()
+				|| attribute == ModAttributes.LIGHTNING_PROTECTION.get() || attribute == ModAttributes.MAGIC_PROTECTION.get()
+				|| attribute == ModAttributes.HOLY_PROTECTION.get())
 		{
-			float weaponBonus = weapon.getScaling(this).getPercentage();
-			float scale = -0.000127F * (value - Stats.STANDARD_LEVEL) * (value - 188F);
-			addition = baseDamage * weaponBonus * scale;
+			return Operation.ADDITION;
 		}
-		return addition;
+		else return Operation.MULTIPLY_TOTAL;
 	}
 }

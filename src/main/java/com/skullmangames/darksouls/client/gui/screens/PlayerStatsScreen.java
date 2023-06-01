@@ -45,7 +45,7 @@ public class PlayerStatsScreen extends Screen
 	protected final int maxFPBase;
 	protected final float maxEquipLoadBase;
 	protected final int maxAttunementSlotsBase;
-	protected final double attackDamageMods;
+	protected final double physDmgMod;
 
 	protected final int color;
 
@@ -73,11 +73,7 @@ public class PlayerStatsScreen extends Screen
 		this.maxFPBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_FOCUS_POINTS.get());
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
-		this.attackDamageMods = Stats.getTotalDamageMultiplier(this.player,
-				this.displayedStats.get(Stats.STRENGTH),
-				this.displayedStats.get(Stats.DEXTERITY),
-				this.displayedStats.get(Stats.INTELLIGENCE),
-				this.displayedStats.get(Stats.FAITH));
+		this.physDmgMod = Stats.getDamageMultiplier(this.player, Attributes.ATTACK_DAMAGE, (stat) -> this.displayedStats.get(stat));
 	}
 	
 	protected int upgradeCost()
@@ -161,31 +157,32 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 112, this.color);
 		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
-		double attackdamage = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) - this.attackDamageMods
-				+ Stats.getTotalDamageMultiplier(this.player,
-						this.displayedStats.get(Stats.STRENGTH),
-						this.displayedStats.get(Stats.DEXTERITY),
-						this.displayedStats.get(Stats.INTELLIGENCE),
-						this.displayedStats.get(Stats.FAITH)), 2);
-		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 2) != attackdamage ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Mainhand: " + attackdamage, secondX, y + 160, attackdamagecolor);
+		double physDmg = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.physDmgMod
+				* Stats.getDamageMultiplier(this.player, Attributes.ATTACK_DAMAGE, (stat) -> this.displayedStats.get(stat)), 2);
+		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 2) != physDmg ? 0x8cc9ff : this.color;
+		this.font.draw(poseStack, "Mainhand:", secondX, y + 160, attackdamagecolor);
+		this.font.draw(poseStack, "Physical: " + physDmg, secondX, y + 172, attackdamagecolor);
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;
 
 		this.font.draw(poseStack, "Defense", thirdX, y + 36, this.color);
-		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_PROTECTION.get()), 2),
 				thirdX, y + 52, this.color);
-		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_PROTECTION.get()), 2),
 				fourthX, y + 64, this.color);
-		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_PROTECTION.get()), 2),
 				fourthX, y + 76, this.color);
-		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_PROTECTION.get()), 2),
 				fourthX, y + 88, this.color);
-		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "Magic: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.MAGIC_PROTECTION.get()), 2),
 				thirdX, y + 100, this.color);
-		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_DEFENSE.get()), 2),
+		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_PROTECTION.get()), 2),
 				thirdX, y + 112, this.color);
+		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_PROTECTION.get()), 2),
+				thirdX, y + 124, this.color);
+		this.font.draw(poseStack, "Dark: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.DARK_DAMAGE.get()), 2),
+				thirdX, y + 136, this.color);
 
 		poseStack.popPose();
 

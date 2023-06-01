@@ -106,13 +106,14 @@ public interface ExtendedDamageSource
 	
 	public enum CoreDamageType
 	{
-		PHYSICAL, MAGIC, FIRE, LIGHTNING, DARK
+		PHYSICAL, MAGIC, FIRE, LIGHTNING, DARK, HOLY
 	}
 	
 	public enum DamageType
 	{
 		CRITICAL(CoreDamageType.PHYSICAL), REGULAR(CoreDamageType.PHYSICAL), STRIKE(CoreDamageType.PHYSICAL), SLASH(CoreDamageType.PHYSICAL),
-		THRUST(CoreDamageType.PHYSICAL), FIRE(CoreDamageType.FIRE), LIGHTNING(CoreDamageType.LIGHTNING), DARK(CoreDamageType.DARK);
+		THRUST(CoreDamageType.PHYSICAL), MAGIC(CoreDamageType.MAGIC), FIRE(CoreDamageType.FIRE),
+		LIGHTNING(CoreDamageType.LIGHTNING), DARK(CoreDamageType.DARK), HOLY(CoreDamageType.HOLY);
 		
 		private final CoreDamageType coreType;
 		
@@ -130,12 +131,15 @@ public interface ExtendedDamageSource
 		{
 			switch (this)
 			{
-				default: return ModAttributes.STANDARD_DEFENSE.get();
-				case STRIKE: return ModAttributes.STRIKE_DEFENSE.get();
-				case SLASH: return ModAttributes.SLASH_DEFENSE.get();
-				case THRUST: return ModAttributes.THRUST_DEFENSE.get();
-				case FIRE: return ModAttributes.FIRE_DEFENSE.get();
-				case LIGHTNING: return ModAttributes.LIGHTNING_DEFENSE.get();
+				default: return ModAttributes.STANDARD_PROTECTION.get();
+				case STRIKE: return ModAttributes.STRIKE_PROTECTION.get();
+				case SLASH: return ModAttributes.SLASH_PROTECTION.get();
+				case THRUST: return ModAttributes.THRUST_PROTECTION.get();
+				case MAGIC: return ModAttributes.MAGIC_PROTECTION.get();
+				case FIRE: return ModAttributes.FIRE_PROTECTION.get();
+				case LIGHTNING: return ModAttributes.LIGHTNING_PROTECTION.get();
+				case DARK: return ModAttributes.DARK_PROTECTION.get();
+				case HOLY: return ModAttributes.HOLY_PROTECTION.get();
 			}
 		}
 	}

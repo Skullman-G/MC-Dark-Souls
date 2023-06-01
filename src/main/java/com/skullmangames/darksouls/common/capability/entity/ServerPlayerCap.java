@@ -317,10 +317,9 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 
-		this.increaseStamina(-damageSource.getStaminaDamage());
-		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
-		
 		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
+		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
 		for (Damage damage : damageSource.getDamages())
 		{

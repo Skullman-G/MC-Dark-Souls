@@ -99,10 +99,10 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		float dir = damageSource.getAttackAngle(this.orgEntity);
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 
-		this.increaseStamina(-damageSource.getStaminaDamage());
+		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
-		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		for (Damage damage : damageSource.getDamages())
 		{
 			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));

@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
@@ -78,8 +79,9 @@ public class CriticalCheckAnimation extends AttackAnimation
 	@Override
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, float amount)
 	{
+		MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(phase.hand);
 		boolean canBackstab = entityCap.canBackstab(target);
-		amount *= canBackstab && !this.isWeak ? 2.0F : 0.1F;
+		amount *= canBackstab && !this.isWeak ? weapon.getCritical() : 0.1F;
 		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = canBackstab ? DamageType.CRITICAL : phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);

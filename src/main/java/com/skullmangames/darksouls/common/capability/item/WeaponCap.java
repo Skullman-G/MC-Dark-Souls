@@ -54,6 +54,11 @@ public abstract class WeaponCap extends AttributeItemCap
 		this.weight = weight;
 	}
 	
+	public float getCritical()
+	{
+		return this.critical;
+	}
+	
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
 	{

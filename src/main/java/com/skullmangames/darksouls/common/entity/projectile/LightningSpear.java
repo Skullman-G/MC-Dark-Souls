@@ -39,7 +39,7 @@ public class LightningSpear extends Projectile
 		double yRot = Math.toRadians(MathUtils.toNormalRot(entityCap.getYRot()));
 		this.setPos(entityCap.getX() + Math.sin(yRot) * 0.5F, entityCap.getY() + 1.75F, entityCap.getZ() + Math.cos(yRot) * 1.75F);
 		this.yRot = entityCap.getYRot();
-		this.damage = baseDamage + entityCap.getDamageScalingMultiplier(baseDamage);
+		this.damage = baseDamage;
 	}
 	
 	public static LightningSpear lightningSpear(EntityType<? extends LightningSpear> type, Level level)

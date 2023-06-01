@@ -85,6 +85,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	}
 	
 	@Override
+	public float getStability()
+	{
+		return this.stability;
+	}
+	
+	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;

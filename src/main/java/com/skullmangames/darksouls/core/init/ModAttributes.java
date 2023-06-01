@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.core.init;
 
 import java.util.UUID;
-
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
@@ -38,13 +37,23 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> MAX_FOCUS_POINTS = registerRangedAttribute("max_focus_points", 10.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> ATTUNEMENT_SLOTS = registerRangedAttribute("attunement_slots", 1.0D, 1.0D, 10.0D);
 	
+	// Damage
+	public static final RegistryObject<Attribute> MAGIC_DAMAGE = registerRangedAttribute("magic_damage", 0D, 0D, 100_000_000D);
+	public static final RegistryObject<Attribute> FIRE_DAMAGE = registerRangedAttribute("fire_damage", 0D, 0D, 100_000_000D);
+	public static final RegistryObject<Attribute> LIGHTNING_DAMAGE = registerRangedAttribute("lightning_damage", 0D, 0D, 100_000_000D);
+	public static final RegistryObject<Attribute> DARK_DAMAGE = registerRangedAttribute("dark_damage", 0D, 0D, 100_000_000D);
+	public static final RegistryObject<Attribute> HOLY_DAMAGE = registerRangedAttribute("holy_damage", 0D, 0D, 100_000_000D);
+	
 	// Defense
-	public static final RegistryObject<Attribute> STANDARD_DEFENSE = registerRangedAttribute("standard_defense", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerRangedAttribute("strike_defense", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> SLASH_DEFENSE = registerRangedAttribute("slash_defense", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> THRUST_DEFENSE = registerRangedAttribute("thrust_defense", 0.0D, 0.0D, 1024.0D);
-	public static final RegistryObject<Attribute> FIRE_DEFENSE = registerRangedAttribute("fire_defense", 0.0F, 0.0F, 1024.0D);
-	public static final RegistryObject<Attribute> LIGHTNING_DEFENSE = registerRangedAttribute("lightning_defense", 0.0D, 0.0D, 1024.0D);
+	public static final RegistryObject<Attribute> STANDARD_PROTECTION = registerRangedAttribute("standard_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> STRIKE_PROTECTION = registerRangedAttribute("strike_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> SLASH_PROTECTION = registerRangedAttribute("slash_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> THRUST_PROTECTION = registerRangedAttribute("thrust_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> MAGIC_PROTECTION = registerRangedAttribute("magic_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> FIRE_PROTECTION = registerRangedAttribute("fire_protection", 0.0F, 0.0F, 100_000_000D);
+	public static final RegistryObject<Attribute> LIGHTNING_PROTECTION = registerRangedAttribute("lightning_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> DARK_PROTECTION = registerRangedAttribute("dark_protection", 0.0D, 0.0D, 100_000_000D);
+	public static final RegistryObject<Attribute> HOLY_PROTECTION = registerRangedAttribute("holy_protection", 0.0D, 0.0D, 100_000_000D);
 	
 	public static final UUID[] EQUIPMENT_MODIFIER_UUIDS = new UUID[]
 	{
@@ -101,13 +110,21 @@ public class ModAttributes
     private static void general(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)
     {
     	event.add(entityType, ModAttributes.POISE.get());
-    	event.add(entityType, ModAttributes.STANDARD_DEFENSE.get());
-		event.add(entityType, ModAttributes.STRIKE_DEFENSE.get());
-		event.add(entityType, ModAttributes.SLASH_DEFENSE.get());
-		event.add(entityType, ModAttributes.THRUST_DEFENSE.get());
-		event.add(entityType, ModAttributes.FIRE_DEFENSE.get());
-		event.add(entityType, ModAttributes.LIGHTNING_DEFENSE.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
+		
+		event.add(entityType, ModAttributes.MAGIC_DAMAGE.get());
+		event.add(entityType, ModAttributes.FIRE_DAMAGE.get());
+		event.add(entityType, ModAttributes.LIGHTNING_DAMAGE.get());
+		event.add(entityType, ModAttributes.DARK_DAMAGE.get());
+		
+		event.add(entityType, ModAttributes.STANDARD_PROTECTION.get());
+		event.add(entityType, ModAttributes.STRIKE_PROTECTION.get());
+		event.add(entityType, ModAttributes.SLASH_PROTECTION.get());
+		event.add(entityType, ModAttributes.THRUST_PROTECTION.get());
+		event.add(entityType, ModAttributes.MAGIC_PROTECTION.get());
+		event.add(entityType, ModAttributes.FIRE_PROTECTION.get());
+		event.add(entityType, ModAttributes.LIGHTNING_PROTECTION.get());
+		event.add(entityType, ModAttributes.DARK_PROTECTION.get());
 	}
     
     public static void withEquipLoad(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)

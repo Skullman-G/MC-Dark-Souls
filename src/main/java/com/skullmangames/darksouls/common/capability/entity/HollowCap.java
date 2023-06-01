@@ -25,10 +25,10 @@ public class HollowCap extends HumanoidCap<Hollow>
 	{
 		super.initAttributes();
 		
-		this.orgEntity.getAttribute(ModAttributes.STANDARD_DEFENSE.get()).setBaseValue(0.1D);
-		this.orgEntity.getAttribute(ModAttributes.STRIKE_DEFENSE.get()).setBaseValue(0.1D);
-		this.orgEntity.getAttribute(ModAttributes.SLASH_DEFENSE.get()).setBaseValue(0.1D);
-		this.orgEntity.getAttribute(ModAttributes.THRUST_DEFENSE.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.STANDARD_PROTECTION.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.STRIKE_PROTECTION.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.SLASH_PROTECTION.get()).setBaseValue(0.1D);
+		this.orgEntity.getAttribute(ModAttributes.THRUST_PROTECTION.get()).setBaseValue(0.1D);
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ public interface IShield
 	public float getDefense(DamageType damageType);
 	public ShieldType getShieldType();
 	public SoundEvent getBlockSound();
+	public float getStability();
 	
 	public default int getDeflectionLevel()
 	{

@@ -96,11 +96,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return this.orgEntity.getVehicle() != null;
 	}
-	
-	public float getDamageScalingMultiplier(float baseDamage)
-	{
-		return 1.0F;
-	}
 
 	public void setStamina(float value)
 	{
