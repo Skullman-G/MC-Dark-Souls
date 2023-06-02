@@ -1,6 +1,10 @@
 package com.skullmangames.darksouls.core.init;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
+
+import com.google.common.collect.ImmutableList;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
@@ -18,6 +22,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -69,6 +74,35 @@ public class ModAttributes
 	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
 	{
 		return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute."+DarkSouls.MOD_ID+"."+name, defaultValue, minValue, maxValue).setSyncable(true));
+	}
+	
+	public static List<Supplier<Attribute>> damageAttributes()
+	{
+		return ImmutableList.of
+		(
+			() -> Attributes.ATTACK_DAMAGE,
+			ModAttributes.MAGIC_DAMAGE,
+			ModAttributes.FIRE_DAMAGE,
+			ModAttributes.LIGHTNING_DAMAGE,
+			ModAttributes.HOLY_DAMAGE,
+			ModAttributes.DARK_DAMAGE
+		);
+	}
+	
+	public static List<Supplier<Attribute>> protectionAttributes()
+	{
+		return ImmutableList.of
+		(
+			ModAttributes.STANDARD_PROTECTION,
+			ModAttributes.SLASH_PROTECTION,
+			ModAttributes.STRIKE_PROTECTION,
+			ModAttributes.THRUST_PROTECTION,
+			ModAttributes.MAGIC_PROTECTION,
+			ModAttributes.FIRE_PROTECTION,
+			ModAttributes.LIGHTNING_PROTECTION,
+			ModAttributes.HOLY_PROTECTION,
+			ModAttributes.DARK_PROTECTION
+		);
 	}
 	
 	public static void createAttributeMap(EntityAttributeCreationEvent event)

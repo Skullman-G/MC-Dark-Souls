@@ -5,11 +5,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
 import com.google.common.base.Function;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.common.entity.stats.Stat.AttributeList;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
@@ -24,7 +23,7 @@ public class Stats
 	public static final int MAX_LEVEL = 99;
 	public static final Map<String, Stat> STATS = new LinkedHashMap<>();
 	
-	public static final Stat VIGOR = register(new Stat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", () -> Attributes.MAX_HEALTH)
+	public static final Stat VIGOR = register(new Stat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", AttributeList.of(() -> Attributes.MAX_HEALTH))
 	{
 		@Override
 		public void onChange(Player player, int value)
@@ -39,7 +38,7 @@ public class Stats
 			return (int)(1500 * Math.pow(-1.09D, -value) + 1500);
 		}
 	});
-	public static final Stat ENDURANCE = register(new Stat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", ModAttributes.MAX_STAMINA)
+	public static final Stat ENDURANCE = register(new Stat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", AttributeList.of(ModAttributes.MAX_STAMINA))
 	{
 		@Override
 		public void onChange(Player player, int value)
@@ -55,7 +54,7 @@ public class Stats
 			return (int)Math.min(2 * value, 80);
 		}
 	});
-	public static final Stat VITALITY = register(new Stat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", ModAttributes.MAX_EQUIP_LOAD)
+	public static final Stat VITALITY = register(new Stat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", AttributeList.of(ModAttributes.MAX_EQUIP_LOAD))
 	{
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
@@ -63,7 +62,8 @@ public class Stats
 			return -0.019D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 		}
 	});
-	public static final Stat ATTUNEMENT = register(new Stat("attunement", "25c989d7-9585-4f9d-be78-fc1e3aba4fc6", ModAttributes.MAX_FOCUS_POINTS, ModAttributes.ATTUNEMENT_SLOTS)
+	public static final Stat ATTUNEMENT = register(new Stat("attunement", "25c989d7-9585-4f9d-be78-fc1e3aba4fc6", AttributeList.of(
+			ModAttributes.MAX_FOCUS_POINTS, ModAttributes.ATTUNEMENT_SLOTS))
 	{
 		@Override
 		public void onChange(Player player, int value)
@@ -99,10 +99,8 @@ public class Stats
 			else return -0.0076 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 		}
 	});
-	public static final Stat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8", () -> Attributes.ATTACK_DAMAGE,
-			ModAttributes.STANDARD_PROTECTION, ModAttributes.STRIKE_PROTECTION, ModAttributes.SLASH_PROTECTION, ModAttributes.THRUST_PROTECTION,
-			ModAttributes.MAGIC_PROTECTION, ModAttributes.FIRE_PROTECTION, ModAttributes.LIGHTNING_PROTECTION, ModAttributes.DARK_PROTECTION,
-			ModAttributes.HOLY_PROTECTION, ModAttributes.FIRE_DAMAGE)
+	public static final Stat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8", AttributeList.of(() -> Attributes.ATTACK_DAMAGE,
+			ModAttributes.FIRE_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
@@ -143,8 +141,8 @@ public class Stats
 			return 0D;
 		}
 	});
-	public static final Stat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2", () -> Attributes.ATTACK_DAMAGE,
-			ModAttributes.FIRE_DAMAGE, ModAttributes.LIGHTNING_DAMAGE)
+	public static final Stat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2", AttributeList.of(() -> Attributes.ATTACK_DAMAGE,
+			ModAttributes.FIRE_DAMAGE, ModAttributes.LIGHTNING_DAMAGE))
 	{
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
@@ -179,10 +177,8 @@ public class Stats
 			return 0D;
 		}
 	});
-	public static final Stat INTELLIGENCE = register(new ScalingStat("intelligence", "39d35885-78e0-4be3-b72f-7c3b4876ad8d", ModAttributes.MAGIC_DAMAGE,
-			ModAttributes.STANDARD_PROTECTION, ModAttributes.STRIKE_PROTECTION, ModAttributes.SLASH_PROTECTION, ModAttributes.THRUST_PROTECTION,
-			ModAttributes.FIRE_PROTECTION, ModAttributes.DARK_PROTECTION, ModAttributes.LIGHTNING_PROTECTION, ModAttributes.HOLY_PROTECTION,
-			ModAttributes.MAGIC_PROTECTION)
+	public static final Stat INTELLIGENCE = register(new ScalingStat("intelligence", "39d35885-78e0-4be3-b72f-7c3b4876ad8d", AttributeList.of(
+			ModAttributes.MAGIC_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
@@ -210,10 +206,8 @@ public class Stats
 			return 0D;
 		}
 	});
-	public static final Stat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472", ModAttributes.HOLY_DAMAGE, ModAttributes.LIGHTNING_DAMAGE,
-			ModAttributes.STANDARD_PROTECTION, ModAttributes.STRIKE_PROTECTION, ModAttributes.SLASH_PROTECTION, ModAttributes.THRUST_PROTECTION,
-			ModAttributes.FIRE_PROTECTION, ModAttributes.DARK_PROTECTION, ModAttributes.LIGHTNING_PROTECTION, ModAttributes.HOLY_PROTECTION,
-			ModAttributes.MAGIC_PROTECTION)
+	public static final Stat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472", AttributeList.of(
+			ModAttributes.HOLY_DAMAGE, ModAttributes.LIGHTNING_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
@@ -277,10 +271,7 @@ public class Stats
 		List<Stat> list = new ArrayList<>();
 		for (Stat stat : STATS.values())
 		{
-			for (Supplier<Attribute> a : stat.getAttributes())
-			{
-				if (attribute == a.get()) list.add(stat);
-			}
+			if (stat.getAttributes().contains(attribute)) list.add(stat);
 		}
 		Stat[] array = new Stat[list.size()];
 		return list.toArray(array);

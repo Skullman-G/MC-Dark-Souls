@@ -2,7 +2,9 @@ package com.skullmangames.darksouls.client.gui.screens;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,6 +24,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,7 +48,8 @@ public class PlayerStatsScreen extends Screen
 	protected final int maxFPBase;
 	protected final float maxEquipLoadBase;
 	protected final int maxAttunementSlotsBase;
-	protected final double physDmgMod;
+	
+	protected final ImmutableMap<Attribute, Double> damageMod;
 
 	protected final int color;
 
@@ -73,7 +77,13 @@ public class PlayerStatsScreen extends Screen
 		this.maxFPBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_FOCUS_POINTS.get());
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
-		this.physDmgMod = Stats.getDamageMultiplier(this.player, Attributes.ATTACK_DAMAGE, (stat) -> this.displayedStats.get(stat));
+		
+		ImmutableMap.Builder<Attribute, Double> damageModBuilder = ImmutableMap.builder();
+		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
+		{
+			damageModBuilder.put(attribute.get(), Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat)));
+		}
+		this.damageMod = damageModBuilder.build();
 	}
 	
 	protected int upgradeCost()
@@ -156,12 +166,24 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 112, this.color);
 		
+		Map<Attribute, Double> damageValues = new HashMap<>();
+		Map<Attribute, Integer> damageColors = new HashMap<>();
+		this.damageMod.forEach((attribute, mod) ->
+		{
+			double value = MathUtils.round(this.player.getAttributeValue(attribute) / mod
+					* Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat)), 2);
+			damageValues.put(attribute, value);
+			damageColors.put(attribute, MathUtils.round(this.player.getAttributeValue(attribute), 2) != value ? 0x8cc9ff : this.color);
+		});
+		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
-		double physDmg = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.physDmgMod
-				* Stats.getDamageMultiplier(this.player, Attributes.ATTACK_DAMAGE, (stat) -> this.displayedStats.get(stat)), 2);
-		int attackdamagecolor = MathUtils.round(this.player.getAttributeValue(Attributes.ATTACK_DAMAGE), 2) != physDmg ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Mainhand:", secondX, y + 160, attackdamagecolor);
-		this.font.draw(poseStack, "Physical: " + physDmg, secondX, y + 172, attackdamagecolor);
+		this.font.draw(poseStack, "Mainhand:", secondX, y + 160, this.color);
+		this.font.draw(poseStack, "Physical: " + damageValues.get(Attributes.ATTACK_DAMAGE), secondX, y + 172, damageColors.get(Attributes.ATTACK_DAMAGE));
+		this.font.draw(poseStack, "Magic: " + damageValues.get(ModAttributes.MAGIC_DAMAGE.get()), secondX, y + 184, damageColors.get(ModAttributes.MAGIC_DAMAGE.get()));
+		this.font.draw(poseStack, "Fire: " + damageValues.get(ModAttributes.FIRE_DAMAGE.get()), secondX, y + 196, damageColors.get(ModAttributes.FIRE_DAMAGE.get()));
+		this.font.draw(poseStack, "Lightning: " + damageValues.get(ModAttributes.LIGHTNING_DAMAGE.get()), secondX, y + 208, damageColors.get(ModAttributes.LIGHTNING_DAMAGE.get()));
+		this.font.draw(poseStack, "Holy: " + damageValues.get(ModAttributes.HOLY_DAMAGE.get()), secondX, y + 220, damageColors.get(ModAttributes.HOLY_DAMAGE.get()));
+		this.font.draw(poseStack, "Dark: " + damageValues.get(ModAttributes.DARK_DAMAGE.get()), secondX, y + 232, damageColors.get(ModAttributes.DARK_DAMAGE.get()));
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;
@@ -181,8 +203,10 @@ public class PlayerStatsScreen extends Screen
 				thirdX, y + 112, this.color);
 		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_PROTECTION.get()), 2),
 				thirdX, y + 124, this.color);
-		this.font.draw(poseStack, "Dark: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.DARK_DAMAGE.get()), 2),
+		this.font.draw(poseStack, "Holy: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.HOLY_PROTECTION.get()), 2),
 				thirdX, y + 136, this.color);
+		this.font.draw(poseStack, "Dark: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.DARK_PROTECTION.get()), 2),
+				thirdX, y + 148, this.color);
 
 		poseStack.popPose();
 

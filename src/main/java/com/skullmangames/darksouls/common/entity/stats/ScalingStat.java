@@ -1,7 +1,5 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import java.util.function.Supplier;
-
 import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -9,8 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 
 public abstract class ScalingStat extends Stat
 {
-	@SafeVarargs
-	public ScalingStat(String name, String uuid, Supplier<Attribute>... attributes)
+	public ScalingStat(String name, String uuid, AttributeList attributes)
 	{
 		super(name, uuid, attributes);
 	}
