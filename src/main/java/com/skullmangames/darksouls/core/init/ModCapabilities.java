@@ -31,24 +31,24 @@ public class ModCapabilities
 	public static SpellcasterWeaponCap getSpellcasterWeaponCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof SpellcasterWeaponCap ? (SpellcasterWeaponCap)cap : null;
+		return cap instanceof SpellcasterWeaponCap weaponCap ? weaponCap : null;
 	}
 	
 	public static WeaponCap getWeaponCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof WeaponCap ? (WeaponCap)cap : null;
+		return cap instanceof WeaponCap weaponCap ? weaponCap : null;
 	}
 	
 	public static MeleeWeaponCap getMeleeWeaponCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof MeleeWeaponCap ? (MeleeWeaponCap)cap : null;
+		return cap instanceof MeleeWeaponCap weaponCap ? weaponCap : null;
 	}
 	
 	public static AttributeItemCap getAttributeItemCap(ItemStack stack)
 	{
 		ItemCapability cap = getItemCapability(stack);
-		return cap instanceof AttributeItemCap ? (AttributeItemCap)cap : null;
+		return cap instanceof AttributeItemCap attributeCap ? attributeCap : null;
 	}
 }

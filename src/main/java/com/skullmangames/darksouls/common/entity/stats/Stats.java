@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 
 import com.google.common.base.Function;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat.AttributeList;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -55,7 +54,7 @@ public class Stats
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
 		{
-			return (int)Math.min(2 * value, 80);
+			return Math.min(value * (80D / 40D), 80D);
 		}
 	});
 	public static final Stat VITALITY = register(new Stat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", AttributeList.of(ModAttributes.MAX_EQUIP_LOAD))
@@ -91,6 +90,7 @@ public class Stats
 			else return -0.0076 * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 		}
 	});
+	
 	public static final Stat STRENGTH = register(new ScalingStat("strength", "c16888c7-e522-4260-8492-0a2da90482b8", AttributeList.of(() -> Attributes.ATTACK_DAMAGE,
 			ModAttributes.FIRE_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
@@ -99,38 +99,24 @@ public class Stats
 		{
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.75D / 40D);
-				else if (value <= 60) percentage = value * (0.85D / 60D);
-				else if (value <= 99) percentage = value * (1.00D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.55D / 40D);
-				else if (value <= 60) percentage = value * (0.65D / 60D);
-				else if (value <= 99) percentage = value * (0.75D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.55D, 0.65D, 0.75D);
 			}
 			if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
 					|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get())
 			{
 				return 0.73D * value;
 			}
-			if (attribute == ModAttributes.MAGIC_PROTECTION.get() || attribute == ModAttributes.DARK_PROTECTION.get()
-					|| attribute == ModAttributes.LIGHTNING_PROTECTION.get()
-					|| attribute == ModAttributes.HOLY_PROTECTION.get())
-			{
-				return 0.4D * value;
-			}
 			if (attribute == ModAttributes.FIRE_PROTECTION.get())
 			{
 				return 1.1D * value;
+			}
+			if (ModAttributes.isProtectionAttribute(attribute))
+			{
+				return 0.4D * value;
 			}
 			return super.getModifyValue(player, attribute, value);
 		}
@@ -143,33 +129,15 @@ public class Stats
 		{
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.75D / 40D);
-				else if (value <= 60) percentage = value * (0.85D / 60D);
-				else if (value <= 99) percentage = value * (1.00D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.05D / 40D);
-				else if (value <= 60) percentage = value * (0.15D / 60D);
-				else if (value <= 99) percentage = value * (0.25D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.05D, 0.15D, 0.25D);
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.25D / 40D);
-				else if (value <= 60) percentage = value * (0.35D / 60D);
-				else if (value <= 99) percentage = value * (0.45D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.25D, 0.35D, 0.45D);
 			}
 			return super.getModifyValue(player, attribute, value);
 		}
@@ -182,22 +150,13 @@ public class Stats
 		{
 			if (attribute == ModAttributes.MAGIC_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.75D / 40D);
-				else if (value <= 60) percentage = value * (0.85D / 60D);
-				else if (value <= 99) percentage = value * (1.00D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.MAGIC_PROTECTION.get())
 			{
 				return value * 1.1D;
 			}
-			if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
-					|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get()
-					|| attribute == ModAttributes.FIRE_PROTECTION.get() || attribute == ModAttributes.DARK_PROTECTION.get()
-					|| attribute == ModAttributes.LIGHTNING_PROTECTION.get() || attribute == ModAttributes.HOLY_PROTECTION.get())
+			if (ModAttributes.isProtectionAttribute(attribute))
 			{
 				return 0.4D * value;
 			}
@@ -212,32 +171,17 @@ public class Stats
 		{
 			if (attribute == ModAttributes.HOLY_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.75D / 40D);
-				else if (value <= 60) percentage = value * (0.85D / 60D);
-				else if (value <= 99) percentage = value * (1.00D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
-				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
-				if (weapon == null) return 1D;
-				double percentage = 0D;
-				if (value <= 40) percentage = value * (0.25D / 40D);
-				else if (value <= 60) percentage = value * (0.35D / 60D);
-				else if (value <= 99) percentage = value * (0.45D / 99D);
-				return weapon.getScaling(this).getPercentage() * percentage;
+				return this.scalingPercentage(player, value, 0.25D, 0.35D, 0.45D);
 			}
 			if (attribute == ModAttributes.HOLY_PROTECTION.get())
 			{
 				return value * 1.1D;
 			}
-			if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
-					|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get()
-					|| attribute == ModAttributes.FIRE_PROTECTION.get() || attribute == ModAttributes.DARK_PROTECTION.get()
-					|| attribute == ModAttributes.LIGHTNING_PROTECTION.get() || attribute == ModAttributes.MAGIC_PROTECTION.get())
+			if (ModAttributes.isProtectionAttribute(attribute))
 			{
 				return 0.4D * value;
 			}

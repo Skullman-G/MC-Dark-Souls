@@ -619,9 +619,9 @@ public final class Animations
 									List<Entity> targets = cap.getLevel().getEntities(null, new AABB(cap.getX() - 3.0F, cap.getY() - 3.0F, cap.getZ() - 3.0F, cap.getX() + 3.0F, cap.getY() + 3.0F, cap.getZ() + 3.0F));
 									for (Entity target : targets)
 									{
-										if (target instanceof LivingEntity)
+										if (target instanceof LivingEntity livingTarget)
 										{
-											((LivingEntity)target).heal(5);
+											livingTarget.heal(300 * cap.getSpellBuff());
 										}
 									}
 								})
@@ -647,7 +647,7 @@ public final class Animations
 							}),
 							Event.create(1.1F, Side.SERVER, (cap) ->
 							{
-								cap.getOriginalEntity().heal(2.5F);
+								cap.getOriginalEntity().heal(150 * cap.getSpellBuff());
 							})
 						}).register(builder);
 		

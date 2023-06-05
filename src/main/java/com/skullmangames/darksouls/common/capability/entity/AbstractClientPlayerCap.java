@@ -1,7 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.mojang.math.Vector3f;
@@ -18,8 +17,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,15 +28,11 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	protected float prevYaw;
 	protected float bodyYaw;
 	protected float prevBodyYaw;
-	private Item prevHeldItem;
-	private Item prevHeldItemOffHand;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		this.prevHeldItem = Items.AIR;
-		this.prevHeldItemOffHand = Items.AIR;
 	}
 	
 	@Override
@@ -200,24 +193,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevYaw = this.yaw;
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
-		
-		Item mainHandItem = this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem();
-		Item offHandItem = this.orgEntity.getItemInHand(InteractionHand.OFF_HAND).getItem();
-		boolean isMainHandChanged = this.prevHeldItem != mainHandItem;
-		boolean isOffHandChanged = this.prevHeldItemOffHand != offHandItem;
-		
-		if(isMainHandChanged || isOffHandChanged)
-		{
-			this.onHeldItemChange(this.getHeldItemCapability(InteractionHand.MAIN_HAND), this.getHeldItemCapability(InteractionHand.OFF_HAND));
-			this.prevHeldItem = mainHandItem;
-			this.prevHeldItemOffHand = offHandItem;
-		}
 		super.updateOnClient();
-	}
-
-	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)
-	{
-		this.cancelUsingItem();
 	}
 
 	protected void playReboundAnimation()

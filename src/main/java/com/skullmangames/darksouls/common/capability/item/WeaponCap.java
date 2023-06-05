@@ -25,7 +25,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -65,21 +64,6 @@ public abstract class WeaponCap extends AttributeItemCap
 	public void onHeld(PlayerCap<?> playerCap)
 	{
 		super.onHeld(playerCap);
-		if (playerCap.isClientSide())
-		{
-			ModAttributes.damageAttributes().forEach((attribute) ->
-			{
-				AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute.get());
-				instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-			});
-			
-			playerCap.addAttributeModifierForSlot(Attributes.ATTACK_DAMAGE, EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.PHYSICAL) - ModAttributes.PLAYER_FIST_DAMAGE);
-			playerCap.addAttributeModifierForSlot(ModAttributes.MAGIC_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.MAGIC));
-			playerCap.addAttributeModifierForSlot(ModAttributes.FIRE_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.FIRE));
-			playerCap.addAttributeModifierForSlot(ModAttributes.LIGHTNING_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.LIGHTNING));
-			playerCap.addAttributeModifierForSlot(ModAttributes.HOLY_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.HOLY));
-			playerCap.addAttributeModifierForSlot(ModAttributes.DARK_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.DARK));
-		}
 		Stats.changeWeaponScalingAttributes(playerCap.getOriginalEntity());
 	}
 	

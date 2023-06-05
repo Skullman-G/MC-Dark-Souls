@@ -41,6 +41,7 @@ public class ModAttributes
 	public static final RegistryObject<Attribute> EQUIP_LOAD = registerRangedAttribute("equip_load", 0.0D, 0.0D, 139.0D);
 	public static final RegistryObject<Attribute> MAX_FOCUS_POINTS = registerRangedAttribute("max_focus_points", 10.0D, 1.0D, 1024.0D);
 	public static final RegistryObject<Attribute> ATTUNEMENT_SLOTS = registerRangedAttribute("attunement_slots", 1.0D, 1.0D, 10.0D);
+	public static final RegistryObject<Attribute> SPELL_BUFF = registerRangedAttribute("spell_buff", 0.0D, 0.0D, 100_000_000D);
 	
 	// Damage
 	public static final RegistryObject<Attribute> MAGIC_DAMAGE = registerRangedAttribute("magic_damage", 0D, 0D, 100_000_000D);
@@ -115,6 +116,26 @@ public class ModAttributes
 		);
 	}
 	
+	public static boolean isDamageAttribute(Attribute attribute)
+	{
+		boolean flag = false;
+		for (Supplier<Attribute> supplier : ModAttributes.damageAttributes())
+		{
+			if (attribute == supplier.get()) flag = true;
+		}
+		return flag;
+	}
+	
+	public static boolean isProtectionAttribute(Attribute attribute)
+	{
+		boolean flag = false;
+		for (Supplier<Attribute> supplier : ModAttributes.protectionAttributes())
+		{
+			if (attribute == supplier.get()) flag = true;
+		}
+		return flag;
+	}
+	
 	public static void createAttributeMap(EntityAttributeCreationEvent event)
 	{
 		event.put(ModEntities.FIRE_KEEPER.get(), FireKeeper.createAttributes().build());
@@ -155,6 +176,7 @@ public class ModAttributes
     {
     	event.add(entityType, ModAttributes.POISE.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
+		event.add(entityType, ModAttributes.SPELL_BUFF.get());
 		
 		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
 		{

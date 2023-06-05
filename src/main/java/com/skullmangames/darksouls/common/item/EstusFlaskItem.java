@@ -60,7 +60,7 @@ public class EstusFlaskItem extends Item
 	public static void setHeal(ItemStack itemstack, int heallevel)
 	{
 		CompoundTag compoundnbt = getOrCreateNBT(itemstack);
-		compoundnbt.putInt("Heal", 5 + heallevel - 1);
+		compoundnbt.putInt("Heal", 300 + heallevel * 100);
 	}
 	
 	public static int getTotalUses(ItemStack itemstack)

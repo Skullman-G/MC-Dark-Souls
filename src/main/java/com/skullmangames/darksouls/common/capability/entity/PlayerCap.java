@@ -77,6 +77,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		super.initAttributes();
 		this.orgEntity.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ModAttributes.PLAYER_FIST_DAMAGE);
 		this.orgEntity.getAttribute(ModAttributes.MAX_EQUIP_LOAD.get()).setBaseValue(25.0D);
+		this.orgEntity.getAttribute(ModAttributes.MAX_STAMINA.get()).setBaseValue(80.0D);
 	}
 	
 	public SpellInventory getAttunements()

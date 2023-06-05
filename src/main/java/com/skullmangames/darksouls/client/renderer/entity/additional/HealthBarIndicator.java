@@ -56,8 +56,8 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		if (entity.getHealth() >= entity.getMaxHealth())
 		{
 			HealthInfo info = this.healthInfoMap.get(entity.getId());
-			info.saveLastHealth = info.lastHealth;
-			info.lastHealth = entity.getHealth() / entity.getMaxHealth();
+			info.saveLastHealthPercentage = info.lastHealthPercentage;
+			info.lastHealthPercentage = entity.getHealth() / entity.getMaxHealth();
 			return false;
 		}
 		return true;
@@ -77,17 +77,17 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		float healthpercentage = entity.getHealth() / maxHealth;
 		
 		// Damage Animation
-		if (info.lastHealth > healthpercentage)
+		if (info.lastHealthPercentage > healthpercentage)
 		{
 			if (!info.damageCooldown.isTicking())
 			{
-				info.saveLastHealth = info.lastHealth;
+				info.saveLastHealthPercentage = info.lastHealthPercentage;
 			}
 			
 			info.damageCooldown.start(40);
 		}
 		
-		float damagedHealth = info.saveLastHealth - (info.damageTimer.getPastTime() * 0.01F);
+		float damagedHealth = info.saveLastHealthPercentage - (info.damageTimer.getPastTime() * 0.01F);
 		
 		if (info.damageCooldown.isTicking())
 		{
@@ -95,7 +95,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 			boolean flag = false;
 			if (damagedHealth <= healthpercentage)
 			{
-				damagedHealth = info.saveLastHealth;
+				damagedHealth = info.saveLastHealthPercentage;
 				flag = true;
 			}
 			blackStart = damagedHealth;
@@ -110,15 +110,15 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		}
 		
 		// Heal Animation
-		if ((info.lastHealth < healthpercentage) || info.healTimer.isTicking())
+		if ((info.lastHealthPercentage < healthpercentage) || info.healTimer.isTicking())
 		{
 			info.damageTimer.stop();
 			if (!info.healTimer.isTicking())
 			{
-				info.saveLastHealth = info.lastHealth;
-				info.healTimer.start((int)((healthpercentage - info.saveLastHealth) * 100));
+				info.saveLastHealthPercentage = info.lastHealthPercentage;
+				info.healTimer.start((int)((healthpercentage - info.saveLastHealthPercentage) * 100));
 			}
-			redStop = info.saveLastHealth + (info.healTimer.getPastTime() * 0.01F);
+			redStop = info.saveLastHealthPercentage + (info.healTimer.getPastTime() * 0.01F);
 			info.healTimer.drain(1);
 		}
 		
@@ -134,10 +134,10 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		this.drawTextured2DPlane(mvMatrix, vertexBuilder, -0.5F, -0.05F, redStop - 0.5F, 0.05F, 1, 5, 2 + (int)(redStop * 60), 10); // Red
 		this.drawTextured2DPlane(mvMatrix, vertexBuilder, blackStart - 0.5F, -0.05F, 0.5F, 0.05F, 2 + (int)(blackStart * 60), 0, 62, 5); // Black
 		
-		if (healthpercentage < info.lastHealth)
+		if (healthpercentage < info.lastHealthPercentage)
 		{
-			info.damage = info.damageNumberTimer > 0 ? (info.lastHealth - healthpercentage) * 100 + info.damage
-							: (info.lastHealth - healthpercentage) * 100;
+			info.damage = info.damageNumberTimer > 0 ? info.lastHealth - entity.getHealth() + info.damage
+							: info.lastHealth - entity.getHealth();
 			info.damageNumberTimer = 100;
 		}
 		
@@ -155,14 +155,15 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 			--info.damageNumberTimer;
 		}
 
-		info.lastHealth = healthpercentage;
+		info.lastHealthPercentage = healthpercentage;
+		info.lastHealth = entity.getHealth();
 	}
 
 	public void renderDamageNumber(PoseStack matrix, float damage, double x, double y)
 	{
 		int i = Math.abs(Math.round(damage));
 		if (i == 0) return;
-		String s = "-"+String.valueOf(i)+"%";
+		String s = "-"+String.valueOf(i);
 		Minecraft minecraft = Minecraft.getInstance();
 		int color = 16777215;
 		minecraft.font.draw(matrix, s, (int) x - 6 * (s.length() - 1), (int) y, color);
@@ -175,7 +176,8 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		private final Timer healTimer = new Timer();
 		
 		private float lastHealth;
-		private float saveLastHealth;
+		private float lastHealthPercentage;
+		private float saveLastHealthPercentage;
 		
 		private float damage;
 		private int damageNumberTimer;

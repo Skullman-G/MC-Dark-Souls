@@ -350,7 +350,8 @@ public class GameOverlayManager
 		int x = dsLayout ? 10 : width / 2 + 7;
 		int y = dsLayout ? 18 : height - 49;
 		if (!dsLayout) gui.right_height += 10;
-		int length = dsLayout ? (int)(player.getMaxFP() / Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL) * 150)
+		int length = dsLayout ?
+				(int)(player.getMaxFP() / (player.getMaxFP() + Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
@@ -534,7 +535,8 @@ public class GameOverlayManager
 		int x = dsLayout ? 10 : width / 2 - 96;
 		int y = dsLayout ? 10 : height - 39;
 		if (!dsLayout) gui.left_height += 10;
-		int length = dsLayout ? (int)(getCameraPlayer().getMaxHealth() / Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL) * 150)
+		int length = dsLayout ?
+				(int)(getCameraPlayer().getMaxHealth() / (getCameraPlayer().getMaxHealth() + Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
@@ -608,7 +610,8 @@ public class GameOverlayManager
 		int x = dsLayout ? 10 : width / 2 + 7;
 		int y = dsLayout ? 26 : height - 39;
 		if (!dsLayout) gui.right_height += 10;
-		int length = dsLayout ? (int)(player.getMaxStamina() / Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL) * 150)
+		int length = dsLayout ?
+				(int)(player.getMaxStamina() / (player.getMaxStamina() + Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
@@ -668,13 +671,13 @@ public class GameOverlayManager
 	
 	private void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
-		LocalPlayerCap playerdata = ClientManager.INSTANCE.getPlayerCap();
+		LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
 		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 52 : width / 2;
 		int y = dsLayout ? height - 52 :  height - 45;
-		int color = playerdata.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
+		int color = playerCap.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();
 		
-		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerdata.getHumanity()), x, y, color);
+		ForgeIngameGui.drawCenteredString(poseStack, minecraft.font, String.valueOf(playerCap.getHumanity()), x, y, color);
 	}
 
 	private void renderSouls(int width, int height, PoseStack poseStack)

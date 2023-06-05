@@ -289,8 +289,10 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	@Override
 	public void updateMotion() {}
 
+	@Override
 	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
+		super.onHeldItemChange(toChange, stack, hand);
 		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
 				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if (mainHandCap != null) mainHandCap.onHeld(this);

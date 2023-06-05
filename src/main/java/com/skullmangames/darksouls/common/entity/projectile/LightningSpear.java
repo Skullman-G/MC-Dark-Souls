@@ -44,22 +44,22 @@ public class LightningSpear extends Projectile
 	
 	public static LightningSpear lightningSpear(EntityType<? extends LightningSpear> type, Level level)
 	{
-		return new LightningSpear(type, level, 15.0F);
+		return new LightningSpear(type, level, 0F);
 	}
 	
 	public static LightningSpear lightningSpear(LivingCap<?> entityCap)
 	{
-		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap, 15.0F);
+		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap, 145 * entityCap.getSpellBuff());
 	}
 	
 	public static LightningSpear greatLightningSpear(EntityType<? extends LightningSpear> type, Level level)
 	{
-		return new LightningSpear(type, level, 20.0F);
+		return new LightningSpear(type, level, 0F);
 	}
 	
 	public static LightningSpear greatLightningSpear(LivingCap<?> entityCap)
 	{
-		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap, 20.0F);
+		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap, 185 * entityCap.getSpellBuff());
 	}
 	
 	@Override

@@ -92,6 +92,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.stamina = this.getMaxStamina();
 	}
 	
+	public float getSpellBuff()
+	{
+		return (float)this.orgEntity.getAttributeValue(ModAttributes.SPELL_BUFF.get());
+	}
+	
+	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
+	{
+		this.cancelUsingItem();
+	}
+	
 	public boolean isMounted()
 	{
 		return this.orgEntity.getVehicle() != null;

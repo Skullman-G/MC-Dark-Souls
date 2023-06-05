@@ -36,6 +36,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -75,6 +76,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		gui.lastSouls = this.getSouls();
 		gui.lastCurrentSouls = this.getSouls();
 		gui.lastFP = this.getFP() / this.getMaxFP();
+		this.setStamina(this.getMaxStamina());
 		gui.lastStamina = this.getStamina() / this.getMaxStamina();
 	}
 	
@@ -229,9 +231,11 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	}
 	
 	@Override
-	public void onHeldItemChange(ItemCapability mainHandCap, ItemCapability offHandCap)
+	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
-		super.onHeldItemChange(mainHandCap, offHandCap);
+		super.onHeldItemChange(toChange, stack, hand);
+		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
+				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if (mainHandCap != null) mainHandCap.onHeld(this);
 	}
 	

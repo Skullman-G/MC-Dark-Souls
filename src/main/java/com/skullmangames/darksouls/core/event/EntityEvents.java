@@ -20,6 +20,7 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCChangeEquipment;
 import com.skullmangames.darksouls.network.server.STCPotion;
 import com.skullmangames.darksouls.network.server.STCPotion.Action;
 
@@ -33,6 +34,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -203,12 +205,7 @@ public class EntityEvents
 		}
 		else
 		{
-			entityCap.cancelUsingItem();
-			if (entityCap instanceof ServerPlayerCap)
-			{
-				((ServerPlayerCap)entityCap).onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND
-						: InteractionHand.OFF_HAND);
-			}
+			entityCap.onHeldItemChange(toCap, event.getTo(), event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 		}
 		
 		if (entityCap instanceof EquipLoaded)
@@ -216,6 +213,11 @@ public class EntityEvents
 			AttributeInstance speed = entityCap.getOriginalEntity().getAttribute(Attributes.MOVEMENT_SPEED);
 			speed.removeModifier(ModAttributes.MOVEMENT_SPEED_MODIFIER_UUID);
 			speed.addTransientModifier(ModAttributes.getMovementSpeedModifier(((EquipLoaded)entityCap).getEquipLoadLevel()));
+		}
+		
+		if (event.getEntityLiving() instanceof ServerPlayer player)
+		{
+			ModNetworkManager.sendToPlayer(new STCChangeEquipment(event.getEntityLiving().getId(), event.getFrom(), event.getTo(), event.getSlot()), player);
 		}
 	}
 	

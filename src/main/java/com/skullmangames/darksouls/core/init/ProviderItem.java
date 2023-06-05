@@ -72,14 +72,14 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 				.build());
 		
 		//Talismans
-		putCap(SpellcasterWeaponCap.builder(ModItems.TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 0.5F)
+		putCap(SpellcasterWeaponCap.builder(ModItems.TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 1.00F, 0.5F)
 				.putDamage(CoreDamageType.PHYSICAL, 52)
 				.putStatInfo(Stats.STRENGTH, 4, Scaling.E)
 				.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 				.putStatInfo(Stats.FAITH, 10, Scaling.B)
 				.build());
-		putCap(SpellcasterWeaponCap.builder(ModItems.THOROLUND_TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 0.3F)
+		putCap(SpellcasterWeaponCap.builder(ModItems.THOROLUND_TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 1.15F, 0.3F)
 				.putDamage(CoreDamageType.PHYSICAL, 52)
 				.putStatInfo(Stats.STRENGTH, 4, Scaling.E)
 				.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)

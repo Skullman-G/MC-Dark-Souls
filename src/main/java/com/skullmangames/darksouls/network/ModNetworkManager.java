@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.network.client.CTSTeleportPlayer;
 import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
 import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
+import com.skullmangames.darksouls.network.server.STCChangeEquipment;
 import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCCovenantProgress;
 import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
@@ -129,5 +130,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCOpenBonfireTeleportScreen.class, STCOpenBonfireTeleportScreen::toBytes, STCOpenBonfireTeleportScreen::fromBytes, STCOpenBonfireTeleportScreen::handle);
 		INSTANCE.registerMessage(id++, STCBonfireKindleEffect.class, STCBonfireKindleEffect::toBytes, STCBonfireKindleEffect::fromBytes, STCBonfireKindleEffect::handle);
 		INSTANCE.registerMessage(id++, STCEntityImpactParticles.class, STCEntityImpactParticles::toBytes, STCEntityImpactParticles::fromBytes, STCEntityImpactParticles::handle);
+		INSTANCE.registerMessage(id++, STCChangeEquipment.class, STCChangeEquipment::toBytes, STCChangeEquipment::fromBytes, STCChangeEquipment::handle);
 	}
 }

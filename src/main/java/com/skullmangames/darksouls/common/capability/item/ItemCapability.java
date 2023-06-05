@@ -10,14 +10,9 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.SpellItem;
-import com.skullmangames.darksouls.core.init.ModAttributes;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -95,12 +90,5 @@ public class ItemCapability
 		if (!description.contains(languagePath)) itemTooltip.add(index++, new TextComponent("\u00A77\n" + description));
 	}
 	
-	public void onHeld(PlayerCap<?> playerCap)
-	{
-		if (playerCap.isClientSide())
-		{
-			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-			instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-		}
-	}
+	public void onHeld(PlayerCap<?> playerCap) {}
 }

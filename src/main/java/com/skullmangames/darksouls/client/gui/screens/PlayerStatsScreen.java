@@ -49,8 +49,8 @@ public class PlayerStatsScreen extends Screen
 	protected final float maxEquipLoadBase;
 	protected final int maxAttunementSlotsBase;
 	
-	protected final ImmutableMap<Attribute, Integer> damageMod;
-	protected final ImmutableMap<Attribute, Integer> defMod;
+	protected final ImmutableMap<Attribute, Double> damageMod;
+	protected final ImmutableMap<Attribute, Double> defMod;
 
 	protected final int color;
 	protected final String motdColor;
@@ -81,14 +81,14 @@ public class PlayerStatsScreen extends Screen
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
 		
-		ImmutableMap.Builder<Attribute, Integer> damageModBuilder = ImmutableMap.builder();
+		ImmutableMap.Builder<Attribute, Double> damageModBuilder = ImmutableMap.builder();
 		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
 		{
-			damageModBuilder.put(attribute.get(), (int)Math.round(Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat))));
+			damageModBuilder.put(attribute.get(), Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat)));
 		}
 		this.damageMod = damageModBuilder.build();
 		
-		ImmutableMap.Builder<Attribute, Integer> defModBuilder = ImmutableMap.builder();
+		ImmutableMap.Builder<Attribute, Double> defModBuilder = ImmutableMap.builder();
 		for (Supplier<Attribute> attribute : ModAttributes.protectionAttributes())
 		{
 			double mod = 0D;
@@ -96,7 +96,7 @@ public class PlayerStatsScreen extends Screen
 			{
 				mod += stat.getModifyValue(this.player, attribute.get(), this.displayedStats.get(stat));
 			}
-			defModBuilder.put(attribute.get(), (int)Math.round(mod));
+			defModBuilder.put(attribute.get(), mod);
 		}
 		this.defMod = defModBuilder.build();
 	}
@@ -213,8 +213,8 @@ public class PlayerStatsScreen extends Screen
 				mod2 += stat.getModifyValue(this.player, attribute, this.displayedStats.get(stat));
 			}
 			
-			int value = (int)Math.round(this.player.getAttributeValue(attribute) / mod
-					* (int)Math.round(mod2));
+			int value = (int)Math.round(this.player.getAttributeValue(attribute) - mod
+					+ mod2);
 			
 			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.motdColor;
 			
