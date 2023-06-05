@@ -49,9 +49,11 @@ public class PlayerStatsScreen extends Screen
 	protected final float maxEquipLoadBase;
 	protected final int maxAttunementSlotsBase;
 	
-	protected final ImmutableMap<Attribute, Double> damageMod;
+	protected final ImmutableMap<Attribute, Integer> damageMod;
+	protected final ImmutableMap<Attribute, Integer> defMod;
 
 	protected final int color;
+	protected final String motdColor;
 
 	public PlayerStatsScreen()
 	{
@@ -71,6 +73,7 @@ public class PlayerStatsScreen extends Screen
 		this.imageHeight = 240;
 
 		this.color = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
+		this.motdColor = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? "\u00A7f" : "\u00A70";
 		
 		this.maxHealthBase = (int)this.player.getAttributeBaseValue(Attributes.MAX_HEALTH);
 		this.maxStaminaBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_STAMINA.get());
@@ -78,12 +81,24 @@ public class PlayerStatsScreen extends Screen
 		this.maxEquipLoadBase = (float)this.player.getAttributeBaseValue(ModAttributes.MAX_EQUIP_LOAD.get());
 		this.maxAttunementSlotsBase = (int)this.player.getAttributeBaseValue(ModAttributes.ATTUNEMENT_SLOTS.get());
 		
-		ImmutableMap.Builder<Attribute, Double> damageModBuilder = ImmutableMap.builder();
+		ImmutableMap.Builder<Attribute, Integer> damageModBuilder = ImmutableMap.builder();
 		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
 		{
-			damageModBuilder.put(attribute.get(), Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat)));
+			damageModBuilder.put(attribute.get(), (int)Math.round(Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat))));
 		}
 		this.damageMod = damageModBuilder.build();
+		
+		ImmutableMap.Builder<Attribute, Integer> defModBuilder = ImmutableMap.builder();
+		for (Supplier<Attribute> attribute : ModAttributes.protectionAttributes())
+		{
+			double mod = 0D;
+			for (Stat stat : Stats.getForAttribute(attribute.get()))
+			{
+				mod += stat.getModifyValue(this.player, attribute.get(), this.displayedStats.get(stat));
+			}
+			defModBuilder.put(attribute.get(), (int)Math.round(mod));
+		}
+		this.defMod = defModBuilder.build();
 	}
 	
 	protected int upgradeCost()
@@ -166,46 +181,63 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 112, this.color);
 		
-		Map<Attribute, Double> damageValues = new HashMap<>();
-		Map<Attribute, Integer> damageColors = new HashMap<>();
+		Map<Attribute, String> damageValues = new HashMap<>();
 		this.damageMod.forEach((attribute, mod) ->
 		{
-			double value = MathUtils.round(this.player.getAttributeValue(attribute) / mod
-					* Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat)), 2);
-			damageValues.put(attribute, value);
-			damageColors.put(attribute, MathUtils.round(this.player.getAttributeValue(attribute), 2) != value ? 0x8cc9ff : this.color);
+			int value = (int)Math.round(this.player.getAttributeValue(attribute) / mod
+					* Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat)));
+			
+			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.motdColor;
+			
+			damageValues.put(attribute, color + value);
 		});
-		
 		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
 		this.font.draw(poseStack, "Mainhand:", secondX, y + 160, this.color);
-		this.font.draw(poseStack, "Physical: " + damageValues.get(Attributes.ATTACK_DAMAGE), secondX, y + 172, damageColors.get(Attributes.ATTACK_DAMAGE));
-		this.font.draw(poseStack, "Magic: " + damageValues.get(ModAttributes.MAGIC_DAMAGE.get()), secondX, y + 184, damageColors.get(ModAttributes.MAGIC_DAMAGE.get()));
-		this.font.draw(poseStack, "Fire: " + damageValues.get(ModAttributes.FIRE_DAMAGE.get()), secondX, y + 196, damageColors.get(ModAttributes.FIRE_DAMAGE.get()));
-		this.font.draw(poseStack, "Lightning: " + damageValues.get(ModAttributes.LIGHTNING_DAMAGE.get()), secondX, y + 208, damageColors.get(ModAttributes.LIGHTNING_DAMAGE.get()));
-		this.font.draw(poseStack, "Holy: " + damageValues.get(ModAttributes.HOLY_DAMAGE.get()), secondX, y + 220, damageColors.get(ModAttributes.HOLY_DAMAGE.get()));
-		this.font.draw(poseStack, "Dark: " + damageValues.get(ModAttributes.DARK_DAMAGE.get()), secondX, y + 232, damageColors.get(ModAttributes.DARK_DAMAGE.get()));
+		this.font.draw(poseStack, "\u00A77Physical: " + damageValues.get(Attributes.ATTACK_DAMAGE), secondX, y + 172, this.color);
+		this.font.draw(poseStack, "\u00A73Magic: " + damageValues.get(ModAttributes.MAGIC_DAMAGE.get()), secondX, y + 184, this.color);
+		this.font.draw(poseStack, "\u00A7cFire: " + damageValues.get(ModAttributes.FIRE_DAMAGE.get()), secondX, y + 196, this.color);
+		this.font.draw(poseStack, "\u00A7eLightning: " + damageValues.get(ModAttributes.LIGHTNING_DAMAGE.get()), secondX, y + 208, this.color);
+		this.font.draw(poseStack, "\u00A76Holy: " + damageValues.get(ModAttributes.HOLY_DAMAGE.get()), secondX, y + 220, this.color);
+		this.font.draw(poseStack, "\u00A75Dark: " + damageValues.get(ModAttributes.DARK_DAMAGE.get()), secondX, y + 232, this.color);
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;
 
+		
+		Map<Attribute, String> defValues = new HashMap<>();
+		this.defMod.forEach((attribute, mod) ->
+		{
+			double mod2 = 0D;
+			for (Stat stat : Stats.getForAttribute(attribute))
+			{
+				mod2 += stat.getModifyValue(this.player, attribute, this.displayedStats.get(stat));
+			}
+			
+			int value = (int)Math.round(this.player.getAttributeValue(attribute) / mod
+					* (int)Math.round(mod2));
+			
+			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.motdColor;
+			
+			defValues.put(attribute, color + value);
+		});
 		this.font.draw(poseStack, "Defense", thirdX, y + 36, this.color);
-		this.font.draw(poseStack, "Physical: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STANDARD_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A77Physical: " + defValues.get(ModAttributes.STANDARD_PROTECTION.get()),
 				thirdX, y + 52, this.color);
-		this.font.draw(poseStack, "VS Strike: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.STRIKE_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A77VS Strike: " + defValues.get(ModAttributes.STRIKE_PROTECTION.get()),
 				fourthX, y + 64, this.color);
-		this.font.draw(poseStack, "VS Slash: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.SLASH_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A77VS Slash: " + defValues.get(ModAttributes.SLASH_PROTECTION.get()),
 				fourthX, y + 76, this.color);
-		this.font.draw(poseStack, "VS Thrust: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.THRUST_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A77VS Thrust: " + defValues.get(ModAttributes.THRUST_PROTECTION.get()),
 				fourthX, y + 88, this.color);
-		this.font.draw(poseStack, "Magic: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.MAGIC_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A73Magic: " + defValues.get(ModAttributes.MAGIC_PROTECTION.get()),
 				thirdX, y + 100, this.color);
-		this.font.draw(poseStack, "Fire: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.FIRE_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A7cFire: " + defValues.get(ModAttributes.FIRE_PROTECTION.get()),
 				thirdX, y + 112, this.color);
-		this.font.draw(poseStack, "Lightning: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.LIGHTNING_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A7eLightning: " + defValues.get(ModAttributes.LIGHTNING_PROTECTION.get()),
 				thirdX, y + 124, this.color);
-		this.font.draw(poseStack, "Holy: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.HOLY_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A76Holy: " + defValues.get(ModAttributes.HOLY_PROTECTION.get()),
 				thirdX, y + 136, this.color);
-		this.font.draw(poseStack, "Dark: " + MathUtils.round(this.player.getAttributeValue(ModAttributes.DARK_PROTECTION.get()), 2),
+		this.font.draw(poseStack, "\u00A75Dark: " + defValues.get(ModAttributes.DARK_PROTECTION.get()),
 				thirdX, y + 148, this.color);
 
 		poseStack.popPose();

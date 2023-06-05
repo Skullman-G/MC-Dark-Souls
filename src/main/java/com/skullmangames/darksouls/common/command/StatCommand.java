@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.command.argument.StatArgument;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
+import com.skullmangames.darksouls.common.entity.stats.StatHolder.ChangeRequest;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -51,8 +52,9 @@ public class StatCommand
 				ServerPlayerCap playerCap = (ServerPlayerCap) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				if (playerCap != null)
 				{
-					playerCap.setStatValue(stat, value);
-					ModNetworkManager.sendToPlayer(new STCStat(player.getId(), stat.getName(), value), player);
+					ChangeRequest changes = playerCap.getStats().requestChange();
+					changes.set(stat, value);
+					ModNetworkManager.sendToPlayer(new STCStat(player.getId(), changes), player);
 					i++;
 				}
 			}

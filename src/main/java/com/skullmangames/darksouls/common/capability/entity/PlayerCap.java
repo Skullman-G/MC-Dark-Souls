@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.common.entity.stats.StatHolder;
 import com.skullmangames.darksouls.common.inventory.SpellInventory;
 
 import com.skullmangames.darksouls.DarkSouls;
@@ -23,6 +23,10 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -34,7 +38,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	protected float yaw;
 	protected int tickSinceLastAction;
 	
-	private Stats stats = new Stats();
+	private StatHolder stats;
 	
 	private int humanity;
 	private boolean human;
@@ -51,6 +55,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
+		this.stats = new StatHolder(this.orgEntity);
 		this.attunements = new SpellInventory(entityIn);
 	}
 	
@@ -70,6 +75,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	protected void initAttributes()
 	{
 		super.initAttributes();
+		this.orgEntity.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(ModAttributes.PLAYER_FIST_DAMAGE);
 		this.orgEntity.getAttribute(ModAttributes.MAX_EQUIP_LOAD.get()).setBaseValue(25.0D);
 	}
 	
@@ -94,7 +100,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 			this.covenantProgresses[i] = nbt.getInt(Covenants.COVENANTS.get(i).toString());
 		}
 		
-		this.stats.loadStats(this.orgEntity, nbt);
+		this.stats.loadStats(nbt);
 	}
 	
 	public final void onSave()
@@ -120,6 +126,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		}
 		
 		this.stats.saveStats(nbt);
+	}
+	
+	public void addAttributeModifierForSlot(Attribute attribute, EquipmentSlot slot, float value)
+	{
+		AttributeInstance instance = this.orgEntity.getAttribute(attribute);
+		instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(slot, value));
 	}
 	
 	public void addTeleport(BonfireBlockEntity bonfire) {}
@@ -161,7 +173,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		return this.covenantProgresses[Covenants.COVENANTS.indexOf(covenant)];
 	}
 	
-	public Stats getStats()
+	public StatHolder getStats()
 	{
 		return this.stats;
 	}
@@ -268,16 +280,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void changeYaw(float amount)
 	{
 		this.yaw = amount;
-	}
-	
-	public void setStatValue(Stat stat, int value)
-	{
-		this.stats.setStatValue(this.orgEntity, stat, value);
-	}
-	
-	public void setStatValue(String name, int value)
-	{
-		this.stats.setStatValue(this.orgEntity, name, value);
 	}
 	
 	public int getStatValue(Stat stat)

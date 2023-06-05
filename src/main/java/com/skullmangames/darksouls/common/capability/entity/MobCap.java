@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ChasingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
@@ -15,7 +14,6 @@ import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -85,9 +83,6 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 	}
 
 	public void clientInitialSettings(ByteBuf buf) {}
-	
-	@Override
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
 	
 	@Override
 	public boolean isTeam(Entity entity)

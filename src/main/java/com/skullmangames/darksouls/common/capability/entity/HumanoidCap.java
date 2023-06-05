@@ -105,7 +105,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		
 		for (Damage damage : damageSource.getDamages())
 		{
-			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType().getCoreType())));
 		}
 		
 		damageSource.setWasBlocked(true);

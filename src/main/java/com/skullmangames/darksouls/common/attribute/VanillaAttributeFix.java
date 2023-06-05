@@ -38,16 +38,6 @@ public class VanillaAttributeFix
 			new ResourceLocation("player"), 400
 	);
 	
-	private static final Map<String, Integer> attackDamage = ImmutableMap.of
-	(
-			"wooden_sword", 35,
-			"stone_sword", 52,
-			"iron_sword", 78,
-			"golden_sword", 49,
-			"diamond_sword", 85,
-			"netherite_sword", 110
-	);
-	
 	@SubscribeEvent
     public static void onLoadComplete(FMLLoadCompleteEvent event)
 	{
@@ -106,8 +96,7 @@ public class VanillaAttributeFix
 		{
 			if (item instanceof SwordItem sword)
 			{
-				String id = sword.getRegistryName().getPath();
-				float value = attackDamage.getOrDefault(id, (int)(sword.getDamage() * 25));
+				float value = 0;
 				sword.attackDamage = value;
 				Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 				AttributeModifier[] modifiers = new AttributeModifier[sword.defaultModifiers.get(Attributes.ATTACK_DAMAGE).size()];
@@ -123,8 +112,7 @@ public class VanillaAttributeFix
 			}
 			else if (item instanceof DiggerItem tool)
 			{
-				String id = tool.getRegistryName().getPath();
-				float value = attackDamage.getOrDefault(id, (int)(tool.getAttackDamage() * 25));
+				float value = 0;
 				tool.attackDamageBaseline = value;
 				Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 				AttributeModifier[] modifiers = new AttributeModifier[tool.defaultModifiers.get(Attributes.ATTACK_DAMAGE).size()];

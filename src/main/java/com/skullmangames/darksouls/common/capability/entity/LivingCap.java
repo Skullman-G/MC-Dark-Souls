@@ -432,7 +432,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		for (Damage damage : damageSource.getDamages())
 		{
-			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType().getCoreType())));
 		}
 		
 		damageSource.setWasBlocked(true);
@@ -710,9 +710,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.getClientAnimator().playReboundAnimation();
 	}
 
-	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType)
-	{
-	}
+	public void onArmorSlotChanged(AttributeItemCap fromCap, AttributeItemCap toCap, EquipmentSlot slotType) {}
 
 	@SuppressWarnings("unchecked")
 	public <A extends Animator> A getAnimator()

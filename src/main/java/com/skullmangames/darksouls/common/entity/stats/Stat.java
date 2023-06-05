@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -50,7 +51,14 @@ public abstract class Stat
 		this.modifyAttributes(player, value);
 	}
 	
-	public abstract double getModifyValue(Player player, Attribute attribute, int value);
+	public double getModifyValue(Player player, Attribute attribute, int value)
+	{
+		for (Supplier<Attribute> s : ModAttributes.damageAttributes())
+		{
+			if (attribute == s.get()) return 1D;
+		}
+		return 0D;
+	}
 	
 	public Operation getOperation(Attribute attribute)
 	{
@@ -61,17 +69,17 @@ public abstract class Stat
 	{
 		for (Attribute attribute : this.attributes)
 		{
-			AttributeInstance instance = player.getAttribute(attribute);
-			instance.removeModifier(this.getModifierUUID());
-			instance.addPermanentModifier(
-					new AttributeModifier(this.getModifierUUID(), this.toString(),
-							this.getModifyValue(player, attribute, value), this.getOperation(attribute)));
+			this.modifyAttribute(player, attribute, value);
 		}
 	}
 	
-	public void init(Player player, int value)
+	protected void modifyAttribute(Player player, Attribute attribute, int value)
 	{
-		this.modifyAttributes(player, value);
+		AttributeInstance instance = player.getAttribute(attribute);
+		instance.removeModifier(this.getModifierUUID());
+		instance.addPermanentModifier(
+				new AttributeModifier(this.getModifierUUID(), this.toString(),
+						this.getModifyValue(player, attribute, value), this.getOperation(attribute)));
 	}
 	
 	public UUID getModifierUUID()

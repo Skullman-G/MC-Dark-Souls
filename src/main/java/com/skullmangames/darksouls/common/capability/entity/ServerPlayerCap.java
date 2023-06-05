@@ -293,8 +293,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	{
 		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
 				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
-		if (mainHandCap != null)
-			mainHandCap.onHeld(this);
+		if (mainHandCap != null) mainHandCap.onHeld(this);
 
 		this.modifyLivingMotions(mainHandCap);
 	}
@@ -323,7 +322,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		
 		for (Damage damage : damageSource.getDamages())
 		{
-			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType())));
+			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType().getCoreType())));
 		}
 		
 		damageSource.setWasBlocked(true);

@@ -11,7 +11,8 @@
     "MAGIC": 0,
     "FIRE": 0,
     "LIGHTNING": 0,
-    "DARK": 0
+    "DARK": 0,
+    "HOLY": 0
   },
   "stat_requirements": {
     "stat.darksouls.strength": 10,
@@ -32,6 +33,7 @@
     "MAGIC": 0.3,
     "FIRE": 0.25,
     "LIGHTNING": 0.25,
-    "DARK": 0.3
+    "DARK": 0.3,
+    "HOLY": 0.3
   }
 }

@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
+import com.skullmangames.darksouls.common.entity.stats.StatHolder;
+import com.skullmangames.darksouls.common.entity.stats.StatHolder.ChangeRequest;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -41,7 +43,7 @@ public class CTSLevelUp
 			ServerPlayerCap playerCap = (ServerPlayerCap) serverPlayer.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (playerCap == null) return;
 			
-			Stats playerstats = playerCap.getStats();
+			StatHolder playerstats = playerCap.getStats();
 			for (String stat : Stats.STATS.keySet())
 			{
 				msg.addition.put(stat, Math.min(msg.addition.get(stat), 99 - playerstats.getStatValue(stat)));
@@ -78,13 +80,15 @@ public class CTSLevelUp
 		ctx.get().setPacketHandled(true);
 	}
 	
-	public static void addStatValues(ServerPlayer player, Stats stats, Map<String, Integer> addition)
+	public static void addStatValues(ServerPlayer player, StatHolder stats, Map<String, Integer> addition)
 	{
+		ChangeRequest request = stats.requestChange();
 		for (String stat : Stats.STATS.keySet())
 		{
 			int value = stats.getStatValue(stat) + addition.get(stat);
-			stats.setStatValue(player, stat, value);
-			ModNetworkManager.sendToPlayer(new STCStat(player.getId(), stat, value), player);
+			request.set(stat, value);
 		}
+		ModNetworkManager.sendToPlayer(new STCStat(player.getId(), request), player);
+		request.finish();
 	}
 }

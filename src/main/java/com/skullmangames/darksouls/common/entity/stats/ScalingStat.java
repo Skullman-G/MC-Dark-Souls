@@ -1,9 +1,11 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
-import com.skullmangames.darksouls.core.init.ModAttributes;
+import java.util.List;
+import java.util.function.Supplier;
 
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.player.Player;
 
 public abstract class ScalingStat extends Stat
 {
@@ -13,16 +15,13 @@ public abstract class ScalingStat extends Stat
 	}
 	
 	@Override
-	public Operation getOperation(Attribute attribute)
+	protected void modifyAttribute(Player player, Attribute attribute, int value)
 	{
-		if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
-				|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get()
-				|| attribute == ModAttributes.FIRE_PROTECTION.get() || attribute == ModAttributes.DARK_PROTECTION.get()
-				|| attribute == ModAttributes.LIGHTNING_PROTECTION.get() || attribute == ModAttributes.MAGIC_PROTECTION.get()
-				|| attribute == ModAttributes.HOLY_PROTECTION.get())
+		List<Supplier<Attribute>> dmgAttributes = ModAttributes.damageAttributes();
+		for (Supplier<Attribute> s : dmgAttributes)
 		{
-			return Operation.ADDITION;
+			if (s.get() == attribute) return;
 		}
-		else return Operation.MULTIPLY_TOTAL;
+		super.modifyAttribute(player, attribute, value);
 	}
 }

@@ -25,7 +25,9 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,10 +62,38 @@ public abstract class WeaponCap extends AttributeItemCap
 	}
 	
 	@Override
+	public void onHeld(PlayerCap<?> playerCap)
+	{
+		super.onHeld(playerCap);
+		if (playerCap.isClientSide())
+		{
+			ModAttributes.damageAttributes().forEach((attribute) ->
+			{
+				AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute.get());
+				instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
+			});
+			
+			playerCap.addAttributeModifierForSlot(Attributes.ATTACK_DAMAGE, EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.PHYSICAL) - ModAttributes.PLAYER_FIST_DAMAGE);
+			playerCap.addAttributeModifierForSlot(ModAttributes.MAGIC_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.MAGIC));
+			playerCap.addAttributeModifierForSlot(ModAttributes.FIRE_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.FIRE));
+			playerCap.addAttributeModifierForSlot(ModAttributes.LIGHTNING_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.LIGHTNING));
+			playerCap.addAttributeModifierForSlot(ModAttributes.HOLY_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.HOLY));
+			playerCap.addAttributeModifierForSlot(ModAttributes.DARK_DAMAGE.get(), EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.DARK));
+		}
+		Stats.changeWeaponScalingAttributes(playerCap.getOriginalEntity());
+	}
+	
+	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot)
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
+		map.put(Attributes.ATTACK_DAMAGE, ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.PHYSICAL) - ModAttributes.PLAYER_FIST_DAMAGE));
+		map.put(ModAttributes.MAGIC_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.MAGIC)));
+		map.put(ModAttributes.FIRE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.FIRE)));
+		map.put(ModAttributes.LIGHTNING_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.LIGHTNING)));
+		map.put(ModAttributes.HOLY_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.HOLY)));
+		map.put(ModAttributes.DARK_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.DARK)));
 		return map;
 	}
 	
@@ -117,11 +147,12 @@ public abstract class WeaponCap extends AttributeItemCap
 		}
 		else
 		{
-			itemTooltip.add(new TextComponent("\u00A72Physical Damage: " + this.getDamage(CoreDamageType.PHYSICAL)));
-			itemTooltip.add(new TextComponent("\u00A72Magic Damage: " + this.getDamage(CoreDamageType.MAGIC)));
-			itemTooltip.add(new TextComponent("\u00A72Fire Damage: " + this.getDamage(CoreDamageType.FIRE)));
-			itemTooltip.add(new TextComponent("\u00A72Lightning Damage: " + this.getDamage(CoreDamageType.LIGHTNING)));
-			itemTooltip.add(new TextComponent("\u00A72Dark Damage: " + this.getDamage(CoreDamageType.DARK)));
+			itemTooltip.add(new TextComponent("\u00A77Physical Damage: " + this.getDamage(CoreDamageType.PHYSICAL)));
+			itemTooltip.add(new TextComponent("\u00A73Magic Damage: " + this.getDamage(CoreDamageType.MAGIC)));
+			itemTooltip.add(new TextComponent("\u00A7cFire Damage: " + this.getDamage(CoreDamageType.FIRE)));
+			itemTooltip.add(new TextComponent("\u00A7eLightning Damage: " + this.getDamage(CoreDamageType.LIGHTNING)));
+			itemTooltip.add(new TextComponent("\u00A76Holy Damage: " + this.getDamage(CoreDamageType.HOLY)));
+			itemTooltip.add(new TextComponent("\u00A75Dark Damage: " + this.getDamage(CoreDamageType.DARK)));
 
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Requirements:"));
@@ -243,7 +274,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		{
 			for (Scaling scaling : Scaling.values())
 			{
-				if (scaling.name == id) return scaling;
+				if (scaling.name.equals(id)) return scaling;
 			}
 			return null;
 		}

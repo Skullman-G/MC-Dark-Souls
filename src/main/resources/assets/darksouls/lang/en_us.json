@@ -360,8 +360,10 @@
 	"stat.darksouls.dexterity": "Dexterity",
 	"stat.darksouls.vitality": "Vitality",
 	"stat.darksouls.attunement": "Attunement",
+	"stat.darksouls.intelligence": "Intelligence",
 	"stat.darksouls.faith": "Faith",
 	
+	"attribute.darksouls.weight": "Weight",
 	"attribute.darksouls.max_stamina": "Max Stamina",
 	"attribute.darksouls.poise": "Poise",
 	"attribute.darksouls.max_equip_load": "Max Equip Load",

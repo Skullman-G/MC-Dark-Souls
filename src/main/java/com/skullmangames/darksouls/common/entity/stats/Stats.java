@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.common.entity.stats;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Supplier;
+
 import com.google.common.base.Function;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
@@ -13,9 +15,11 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
 
 public class Stats
 {
@@ -29,7 +33,7 @@ public class Stats
 		public void onChange(Player player, int value)
 		{
 			super.onChange(player, value);
-			player.setHealth(player.getMaxHealth());
+			if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
 		}
 
 		@Override
@@ -45,7 +49,7 @@ public class Stats
 		{
 			super.onChange(player, value);
 			PlayerCap<?> cap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (cap != null) cap.setStamina(cap.getMaxStamina());
+			if (cap != null && cap.getStamina() > cap.getMaxStamina()) cap.setStamina(cap.getMaxStamina());
 		}
 
 		@Override
@@ -73,19 +77,7 @@ public class Stats
 			if (playerCap != null)
 			{
 				playerCap.getAttunements().updateSize();
-				playerCap.setFP(playerCap.getMaxFP());
-			}
-		}
-
-		@Override
-		public void init(Player player, int value)
-		{
-			super.init(player, value);
-			PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (playerCap != null)
-			{
-				playerCap.getAttunements().updateSize();
-				playerCap.setFP(playerCap.getMaxFP());
+				if (playerCap.getFP() > playerCap.getMaxFP()) playerCap.setFP(playerCap.getMaxFP());
 			}
 		}
 
@@ -108,19 +100,21 @@ public class Stats
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (75D / 40D);
-				else if (value <= 60) percentage = value * (85D / 60D);
-				else if (value <= 99) percentage = value * (100D / 99D);
+				if (value <= 40) percentage = value * (0.75D / 40D);
+				else if (value <= 60) percentage = value * (0.85D / 60D);
+				else if (value <= 99) percentage = value * (1.00D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (55D / 40D);
-				else if (value <= 60) percentage = value * (65D / 60D);
-				else if (value <= 99) percentage = value * (75D / 99D);
+				if (value <= 40) percentage = value * (0.55D / 40D);
+				else if (value <= 60) percentage = value * (0.65D / 60D);
+				else if (value <= 99) percentage = value * (0.75D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
@@ -138,7 +132,7 @@ public class Stats
 			{
 				return 1.1D * value;
 			}
-			return 0D;
+			return super.getModifyValue(player, attribute, value);
 		}
 	});
 	public static final Stat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2", AttributeList.of(() -> Attributes.ATTACK_DAMAGE,
@@ -150,31 +144,34 @@ public class Stats
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (75D / 40D);
-				else if (value <= 60) percentage = value * (85D / 60D);
-				else if (value <= 99) percentage = value * (100D / 99D);
+				if (value <= 40) percentage = value * (0.75D / 40D);
+				else if (value <= 60) percentage = value * (0.85D / 60D);
+				else if (value <= 99) percentage = value * (1.00D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (5D / 40D);
-				else if (value <= 60) percentage = value * (15D / 60D);
-				else if (value <= 99) percentage = value * (25D / 99D);
+				if (value <= 40) percentage = value * (0.05D / 40D);
+				else if (value <= 60) percentage = value * (0.15D / 60D);
+				else if (value <= 99) percentage = value * (0.25D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (25D / 40D);
-				else if (value <= 60) percentage = value * (35D / 60D);
-				else if (value <= 99) percentage = value * (45D / 99D);
+				if (value <= 40) percentage = value * (0.25D / 40D);
+				else if (value <= 60) percentage = value * (0.35D / 60D);
+				else if (value <= 99) percentage = value * (0.45D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
-			return 0D;
+			return super.getModifyValue(player, attribute, value);
 		}
 	});
 	public static final Stat INTELLIGENCE = register(new ScalingStat("intelligence", "39d35885-78e0-4be3-b72f-7c3b4876ad8d", AttributeList.of(
@@ -186,10 +183,11 @@ public class Stats
 			if (attribute == ModAttributes.MAGIC_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (75D / 40D);
-				else if (value <= 60) percentage = value * (85D / 60D);
-				else if (value <= 99) percentage = value * (100D / 99D);
+				if (value <= 40) percentage = value * (0.75D / 40D);
+				else if (value <= 60) percentage = value * (0.85D / 60D);
+				else if (value <= 99) percentage = value * (1.00D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.MAGIC_PROTECTION.get())
@@ -203,7 +201,7 @@ public class Stats
 			{
 				return 0.4D * value;
 			}
-			return 0D;
+			return super.getModifyValue(player, attribute, value);
 		}
 	});
 	public static final Stat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472", AttributeList.of(
@@ -215,19 +213,21 @@ public class Stats
 			if (attribute == ModAttributes.HOLY_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (75D / 40D);
-				else if (value <= 60) percentage = value * (85D / 60D);
-				else if (value <= 99) percentage = value * (100D / 99D);
+				if (value <= 40) percentage = value * (0.75D / 40D);
+				else if (value <= 60) percentage = value * (0.85D / 60D);
+				else if (value <= 99) percentage = value * (1.00D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
 				WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+				if (weapon == null) return 1D;
 				double percentage = 0D;
-				if (value <= 40) percentage = value * (25D / 40D);
-				else if (value <= 60) percentage = value * (35D / 60D);
-				else if (value <= 99) percentage = value * (45D / 99D);
+				if (value <= 40) percentage = value * (0.25D / 40D);
+				else if (value <= 60) percentage = value * (0.35D / 60D);
+				else if (value <= 99) percentage = value * (0.45D / 99D);
 				return weapon.getScaling(this).getPercentage() * percentage;
 			}
 			if (attribute == ModAttributes.HOLY_PROTECTION.get())
@@ -241,7 +241,7 @@ public class Stats
 			{
 				return 0.4D * value;
 			}
-			return 0D;
+			return super.getModifyValue(player, attribute, value);
 		}
 	});
 	
@@ -261,7 +261,7 @@ public class Stats
 		double mul = 0D;
 		for (Stat stat : getForAttribute(attribute))
 		{
-			mul *= stat.getModifyValue(player, attribute, value.apply(stat));
+			mul += stat.getModifyValue(player, attribute, value.apply(stat));
 		}
 		return mul;
 	}
@@ -277,65 +277,26 @@ public class Stats
 		return list.toArray(array);
 	}
 	
+	public static void changeWeaponScalingAttributes(Player player)
+	{
+		PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (playerCap != null)
+		{
+			List<Supplier<Attribute>> dmgAttributes = ModAttributes.damageAttributes();
+			for (int i = 0; i < dmgAttributes.size(); i++)
+			{
+				Attribute attribute = dmgAttributes.get(i).get();
+				UUID uuid = ModAttributes.WEAPON_SCALING_MODIFIER_UUIDS[i];
+				double mul = Stats.getDamageMultiplier(playerCap.getOriginalEntity(), attribute, (stat) -> playerCap.getStatValue(stat));
+				AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute);
+				if (instance.getModifier(uuid) != null) instance.removeModifier(uuid);
+				instance.addTransientModifier(new AttributeModifier(uuid, "weapon scaling", mul, Operation.MULTIPLY_TOTAL));
+			}
+		}
+	}
+	
 	public static int getCost(int level)
 	{
 		return (int)(0.02F * Math.pow(level, 3) + 3.06F * Math.pow(level, 2) + 105.6F * level);
-	}
-	
-	private final Map<String, Integer> statValues = new HashMap<>();
-	
-	public int getStatValue(Stat stat)
-	{
-		return this.getStatValue(stat.getName());
-	}
-	
-	public int getStatValue(String name)
-	{
-		return this.statValues.get(name);
-	}
-	
-	public void setStatValue(Player player, Stat stat, int value)
-	{
-		this.setStatValue(player, stat.getName(), value);
-	}
-	
-	public void setStatValue(Player player, String name, int value)
-	{
-		this.statValues.put(name, value);
-		STATS.get(name).onChange(player, value);
-	}
-	
-	public void loadStats(Player player, CompoundTag nbt)
-	{
-		for (String name : STATS.keySet())
-		{
-			int value = Math.max(STANDARD_LEVEL, Math.min(nbt.getInt(name), 99));
-			this.initStatValue(player, name, value);
-		}
-	}
-	
-	public void initStatValue(Player player, String name, int value)
-	{
-		this.statValues.put(name, value);
-		STATS.get(name).init(player, value);
-	}
-	
-	public void saveStats(CompoundTag nbt)
-	{
-		STATS.forEach((name, stat) ->
-		{
-			nbt.putInt(stat.getName(), this.statValues.getOrDefault(name, STANDARD_LEVEL));
-		});
-	}
-	
-	public int getLevel()
-	{
-		int level = 1;
-		for (Stat stat : STATS.values())
-		{
-			level += this.getStatValue(stat) - STANDARD_LEVEL;
-		}
-		
-		return level;
 	}
 }

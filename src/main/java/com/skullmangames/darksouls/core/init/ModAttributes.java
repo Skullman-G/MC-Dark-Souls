@@ -69,7 +69,17 @@ public class ModAttributes
 			UUID.fromString("26c0477e-664b-44cd-9108-140699ad6807"),
 			UUID.fromString("868429ef-4804-4cb8-b253-c89ac4af6c73")
 	};
+	public static final UUID[] WEAPON_SCALING_MODIFIER_UUIDS = new UUID[]
+	{
+			UUID.fromString("a6110f39-31d9-4576-94ff-26bcd9291836"),
+			UUID.fromString("614056cb-20de-41dd-b7a0-6d9726c68239"),
+			UUID.fromString("74eaf54d-7947-4da7-9ec9-9cdfd87a21ac"),
+			UUID.fromString("1634c7de-7f16-4540-843b-9d7be08c5a21"),
+			UUID.fromString("211fc8f4-ab23-4dd8-a8fd-9718f670d80e"),
+			UUID.fromString("3affa15e-37f4-4b02-9b61-4f8051b27cc4")
+	};
 	public static final UUID MOVEMENT_SPEED_MODIFIER_UUID = UUID.fromString("1cdc2c63-da86-47bb-a6ea-ff0a06dab01e");
+	public static final int PLAYER_FIST_DAMAGE = 20;
     
 	private static RegistryObject<Attribute> registerRangedAttribute(String name, double defaultValue, double minValue, double maxValue)
 	{
@@ -146,19 +156,14 @@ public class ModAttributes
     	event.add(entityType, ModAttributes.POISE.get());
 		event.add(entityType, ModAttributes.MAX_STAMINA.get());
 		
-		event.add(entityType, ModAttributes.MAGIC_DAMAGE.get());
-		event.add(entityType, ModAttributes.FIRE_DAMAGE.get());
-		event.add(entityType, ModAttributes.LIGHTNING_DAMAGE.get());
-		event.add(entityType, ModAttributes.DARK_DAMAGE.get());
-		
-		event.add(entityType, ModAttributes.STANDARD_PROTECTION.get());
-		event.add(entityType, ModAttributes.STRIKE_PROTECTION.get());
-		event.add(entityType, ModAttributes.SLASH_PROTECTION.get());
-		event.add(entityType, ModAttributes.THRUST_PROTECTION.get());
-		event.add(entityType, ModAttributes.MAGIC_PROTECTION.get());
-		event.add(entityType, ModAttributes.FIRE_PROTECTION.get());
-		event.add(entityType, ModAttributes.LIGHTNING_PROTECTION.get());
-		event.add(entityType, ModAttributes.DARK_PROTECTION.get());
+		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
+		{
+			event.add(entityType, attribute.get());
+		}
+		for (Supplier<Attribute> attribute : ModAttributes.protectionAttributes())
+		{
+			event.add(entityType, attribute.get());
+		}
 	}
     
     public static void withEquipLoad(EntityType<? extends LivingEntity> entityType, EntityAttributeModificationEvent event)

@@ -3,12 +3,15 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
@@ -18,11 +21,9 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
-import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -33,13 +34,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -97,19 +93,19 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		super.modifyItemTooltip(itemTooltip, playerCap, stack);
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
-			itemTooltip.add(2, new TextComponent("\u00A72Physical Defense: " + (int)(this.getDefense(DamageType.REGULAR) * 100) + "%"));
-		}
-	}
-	
-	@Override
-	public void onHeld(PlayerCap<?> playerCap)
-	{
-		super.onHeld(playerCap);
-		if (playerCap.isClientSide())
-		{
-			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(Attributes.ATTACK_DAMAGE);
-			instance.removeModifier(ModAttributes.EQUIPMENT_MODIFIER_UUIDS[EquipmentSlot.MAINHAND.ordinal()]);
-			instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(EquipmentSlot.MAINHAND, this.getDamage(CoreDamageType.PHYSICAL)));
+			int i = 1;
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A77Physical Defense: " + (int)(this.getDefense(CoreDamageType.PHYSICAL) * 100) + "%"));
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A73Magic Defense: " + (int)(this.getDefense(CoreDamageType.MAGIC) * 100) + "%"));
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A7cFire Defense: " + (int)(this.getDefense(CoreDamageType.FIRE) * 100) + "%"));
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A7eLightning Defense: " + (int)(this.getDefense(CoreDamageType.LIGHTNING) * 100) + "%"));
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A76Holy Defense: " + (int)(this.getDefense(CoreDamageType.HOLY) * 100) + "%"));
+			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()
+					+ "  |  \u00A75Dark Defense: " + (int)(this.getDefense(CoreDamageType.DARK) * 100) + "%"));
 		}
 	}
 	
@@ -118,16 +114,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		if (!playerCap.canBlock()) return InteractionResult.PASS;
 		playerCap.getOriginalEntity().startUsingItem(hand);
 		return InteractionResult.CONSUME;
-	}
-	
-	public int getDamage(CoreDamageType type)
-	{
-		int value = super.getDamage(type);
-		if (type != CoreDamageType.PHYSICAL || value != 0) return value;
-		float defaultValue = this.orgItem instanceof SwordItem ? ((SwordItem) this.orgItem).getDamage()
-				: this.orgItem instanceof DiggerItem ? ((DiggerItem) this.orgItem).getAttackDamage()
-				: 0.0F;
-		return (int)(defaultValue * 65);
 	}
 	
 	public AttackAnimation[] getAttacks(AttackType type)
@@ -195,9 +181,9 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	}
 	
 	@Override
-	public float getDefense(DamageType damageType)
+	public float getDefense(CoreDamageType damageType)
 	{
-		return this.defense.get(damageType.getCoreType());
+		return this.defense.get(damageType);
 	}
 
 	@Override
@@ -419,7 +405,13 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			for (Stat stat : Stats.SCALING_STATS)
 			{
 				int requirement = statRequirements.get(stat.getName()).getAsInt();
-				Scaling scaling = Scaling.fromString(statScaling.get(stat.getName()).getAsString());
+				String statName = statScaling.get(stat.getName()).getAsString();
+				Scaling scaling = Scaling.fromString(statName);
+				if (scaling == null)
+				{
+					DarkSouls.LOGGER.error("Error while reading weapon config for "+location+". Could not find scaling for "+stat.getName()+" with name "+statName);
+					continue;
+				}
 				builder.putStatInfo(stat, requirement, scaling);
 			}
 			
@@ -441,8 +433,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			JsonObject defense = json.get("defense").getAsJsonObject();
 			for (CoreDamageType type : CoreDamageType.values())
 			{
-				int dam = damage.get(type.toString()).getAsInt();
-				float def = defense.get(type.toString()).getAsFloat();
+				int dam = Optional.ofNullable(damage.get(type.toString())).orElse(new JsonPrimitive(0)).getAsInt();
+				float def = Optional.ofNullable(defense.get(type.toString())).orElse(new JsonPrimitive(0)).getAsFloat();
 				builder.putDamageInfo(type, dam, def);
 			}
 			
