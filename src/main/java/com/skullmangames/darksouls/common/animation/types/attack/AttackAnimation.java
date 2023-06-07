@@ -30,7 +30,10 @@ import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
@@ -142,11 +145,11 @@ public class AttackAnimation extends ActionAnimation
 										ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
 								.getType() == HitResult.Type.MISS)
 						{
-							float amount = this.getDamageAmount(entityCap, e, phase);
-							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, amount);
+							Damages damages = this.getDamageAmount(entityCap, e, phase);
+							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, damages);
 							
 							shouldBreak = this.onDamageTarget(entityCap, e);
-							if (entityCap.hurtEntity(e, phase.hand, source, amount))
+							if (entityCap.hurtEntity(e, phase.hand, source))
 							{
 								e.invulnerableTime = 0;
 								e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(), 1.0F, 1.0F);
@@ -283,7 +286,7 @@ public class AttackAnimation extends ActionAnimation
 		return entity;
 	}
 
-	protected float getDamageAmount(LivingCap<?> entityCap, Entity target, Phase phase)
+	protected Damages getDamageAmount(LivingCap<?> entityCap, Entity target, Phase phase)
 	{
 		return entityCap.getDamageToEntity(target, phase.hand);
 	}
@@ -303,13 +306,14 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(() -> entityCap.getWeaponHitSound(phase.hand)).get();
 	}
 
-	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, float amount)
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
-		DamageType damageType = phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
+		DamageType movDamageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
+		damages.replace(CoreDamageType.PHYSICAL, movDamageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflectionLevel(phase), poiseDamage, damages);
 		return extDmgSource;
 	}
 

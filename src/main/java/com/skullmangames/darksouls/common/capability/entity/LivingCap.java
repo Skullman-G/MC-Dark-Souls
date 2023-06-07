@@ -28,8 +28,8 @@ import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
@@ -48,9 +48,7 @@ import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -365,14 +363,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean onHurt(DamageSource damageSource, float amount)
 	{
 		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
-		DamageType damageType = extSource.getDamages()[0].getType();
 		
-		if (this.getEntityState().isInvincible() && damageType != DamageType.CRITICAL)
+		if (damageSource instanceof EntityDamageSource && !damageSource.isExplosion() && !damageSource.isMagic())
 		{
-			if (damageSource instanceof EntityDamageSource && !damageSource.isExplosion() && !damageSource.isMagic())
-			{
-				return false;
-			}
+			return false;
 		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
@@ -380,14 +374,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		// Damage Calculation
 		if (!indirect)
 		{
-			for (Damage damage : extSource.getDamages())
+			extSource.getDamages().foreach((type, dmgAmount) ->
 			{
-				Attribute defAttribute = damage.getType().getDefenseAttribute();
+				Attribute defAttribute = type.getDefenseAttribute();
 				if (this.orgEntity.getAttribute(defAttribute) != null)
 				{
-					damage.setAmount(Math.max(damage.getAmount() - (float)this.orgEntity.getAttributeValue(defAttribute), damage.getAmount() * 0.5F));
+					extSource.getDamages().put(type, Math.max(dmgAmount - (float)this.orgEntity.getAttributeValue(defAttribute), dmgAmount * 0.1F));
 				}
-			}
+			});
 		}
 		if (this.blockingAttack(extSource))
 		{
@@ -440,10 +434,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		Entity attacker = damageSource.getOwner();
 		if (attacker == null) return false;
 		
-		for (Damage damage : damageSource.getDamages())
+		damageSource.getDamages().foreach((type, amount) ->
 		{
-			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType().getCoreType())));
-		}
+			damageSource.getDamages().put(type, amount * (1 - shield.getDefense(type.coreType())));
+		});
 		
 		damageSource.setWasBlocked(true);
 		
@@ -463,30 +457,20 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return true;
 	}
 
-	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType, float amount,
-			int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType,
+			int requireddeflectionlevel, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, new Damage(damageType, amount));
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages);
 	}
 
-	public float getDamageToEntity(Entity targetEntity, InteractionHand hand)
+	public Damages getDamageToEntity(Entity targetEntity, InteractionHand hand)
 	{
-		float damage = (float) this.orgEntity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		if (targetEntity instanceof LivingEntity)
-		{
-			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand),
-					((LivingEntity) targetEntity).getMobType());
-		} else
-		{
-			damage += EnchantmentHelper.getDamageBonus(this.orgEntity.getItemInHand(hand), MobType.UNDEFINED);
-		}
-
-		return damage;
+		return Damages.create().putAll(CoreDamageType.damages(this.orgEntity));
 	}
 
-	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source, float amount)
+	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
-		boolean succed = hitTarget.hurt((DamageSource) source, amount);
+		boolean succed = hitTarget.hurt((DamageSource) source, source.getAmount());
 
 		if (succed)
 		{

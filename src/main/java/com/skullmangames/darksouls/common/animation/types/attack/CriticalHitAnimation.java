@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.resources.ResourceLocation;
@@ -36,9 +36,9 @@ public class CriticalHitAnimation extends InvincibleAnimation
 		if (time >= this.hit && prevTime < this.hit)
 		{
 			MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
-			float amount = entityCap.getDamageToEntity(target, InteractionHand.MAIN_HAND) * weapon.getCritical();
-			ExtendedDamageSource extDmgSource = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE, amount, 0, DamageType.CRITICAL, 0);
-			entityCap.hurtEntity(target, InteractionHand.MAIN_HAND, extDmgSource, amount);
+			Damages damages = entityCap.getDamageToEntity(target, InteractionHand.MAIN_HAND).mul(weapon.getCritical());
+			ExtendedDamageSource extDmgSource = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE, 0, 0, damages);
+			entityCap.hurtEntity(target, InteractionHand.MAIN_HAND, extDmgSource);
 			entityCap.criticalTarget = null;
 		}
 	}

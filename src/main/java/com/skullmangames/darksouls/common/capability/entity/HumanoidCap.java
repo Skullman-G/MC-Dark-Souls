@@ -14,7 +14,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
 import net.minecraft.resources.ResourceLocation;
@@ -103,10 +102,10 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
-		for (Damage damage : damageSource.getDamages())
+		damageSource.getDamages().foreach((type, amount) ->
 		{
-			damage.setAmount(damage.getAmount() * (1 - shield.getDefense(damage.getType().getCoreType())));
-		}
+			damageSource.getDamages().put(type, amount * (1 - shield.getDefense(type.coreType())));
+		});
 		
 		damageSource.setWasBlocked(true);
 		this.playSound(shield.getBlockSound());

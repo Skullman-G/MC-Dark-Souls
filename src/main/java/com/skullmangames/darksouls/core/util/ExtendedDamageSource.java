@@ -1,5 +1,9 @@
 package com.skullmangames.darksouls.core.util;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -7,23 +11,24 @@ import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
+	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("player", player, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damage... damages)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("mob", mob, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
+	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damages damages)
 	{
 		return new IndirectDamageSourceExtended("projectile", projectile, owner, stunType, poiseDamage, staminaDamage, damages);
 	}
@@ -42,7 +47,8 @@ public interface ExtendedDamageSource
 		
 		Entity attacker = org.getDirectEntity();
 		
-		return new DamageSourceExtended(org.getMsgId(), attacker, attacker != null ? attacker.position() : Vec3.ZERO, stunType, reqDeflection, poiseDamage, staminaDamage, new Damage(DamageType.REGULAR, amount));
+		return new DamageSourceExtended(org.getMsgId(), attacker, attacker != null ? attacker.position() : Vec3.ZERO,
+				stunType, reqDeflection, poiseDamage, staminaDamage, Damages.create().put(CoreDamageType.PHYSICAL, amount));
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)
@@ -52,7 +58,8 @@ public interface ExtendedDamageSource
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(IndirectEntityDamageSource org, float amount)
 	{
-		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(), StunType.LIGHT, 1.0F, 0.0F, new Damage(DamageType.REGULAR, amount));
+		return new IndirectDamageSourceExtended(org.getMsgId(), org.getDirectEntity(), org.getEntity(),
+				StunType.LIGHT, 1.0F, 0.0F, Damages.create().put(CoreDamageType.PHYSICAL, amount));
 	}
 	
 	public static ExtendedDamageSource getFrom(DamageSource org, float amount)
@@ -68,7 +75,7 @@ public interface ExtendedDamageSource
 	public Entity getSource();
 	public String getType();
 	public int getRequiredDeflectionLevel();
-	public Damage[] getDamages();
+	public Damages getDamages();
 	public float getPoiseDamage();
 	public boolean isHeadshot();
 	public void setHeadshot(boolean value);
@@ -104,29 +111,54 @@ public interface ExtendedDamageSource
 		}
 	}
 	
-	public enum CoreDamageType
+	public static interface DamageType
 	{
-		PHYSICAL, MAGIC, FIRE, LIGHTNING, DARK, HOLY
+		public Attribute getDefenseAttribute();
+		public CoreDamageType coreType();
 	}
 	
-	public enum DamageType
+	public enum CoreDamageType implements DamageType
 	{
-		CRITICAL(CoreDamageType.PHYSICAL), REGULAR(CoreDamageType.PHYSICAL), STRIKE(CoreDamageType.PHYSICAL), SLASH(CoreDamageType.PHYSICAL),
-		THRUST(CoreDamageType.PHYSICAL), MAGIC(CoreDamageType.MAGIC), FIRE(CoreDamageType.FIRE),
-		LIGHTNING(CoreDamageType.LIGHTNING), DARK(CoreDamageType.DARK), HOLY(CoreDamageType.HOLY);
+		PHYSICAL, MAGIC, FIRE, LIGHTNING, HOLY, DARK;
 		
-		private final CoreDamageType coreType;
-		
-		private DamageType(CoreDamageType coreType)
+		public static Map<DamageType, Float> damages(LivingEntity entity)
 		{
-			this.coreType = coreType;
+			Map<DamageType, Float> map = new HashMap<>();
+			map.put(PHYSICAL, (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
+			map.put(MAGIC, (float)entity.getAttributeValue(ModAttributes.MAGIC_DAMAGE.get()));
+			map.put(FIRE, (float)entity.getAttributeValue(ModAttributes.FIRE_DAMAGE.get()));
+			map.put(LIGHTNING, (float)entity.getAttributeValue(ModAttributes.LIGHTNING_DAMAGE.get()));
+			map.put(HOLY, (float)entity.getAttributeValue(ModAttributes.HOLY_DAMAGE.get()));
+			map.put(DARK, (float)entity.getAttributeValue(ModAttributes.DARK_DAMAGE.get()));
+			return map;
 		}
-		
-		public CoreDamageType getCoreType()
+
+		@Override
+		public Attribute getDefenseAttribute()
 		{
-			return this.coreType;
+			switch (this)
+			{
+				default: return ModAttributes.STANDARD_PROTECTION.get();
+				case MAGIC: return ModAttributes.MAGIC_PROTECTION.get();
+				case FIRE: return ModAttributes.FIRE_PROTECTION.get();
+				case LIGHTNING: return ModAttributes.LIGHTNING_PROTECTION.get();
+				case DARK: return ModAttributes.DARK_PROTECTION.get();
+				case HOLY: return ModAttributes.HOLY_PROTECTION.get();
+			}
 		}
+
+		@Override
+		public CoreDamageType coreType()
+		{
+			return this;
+		}
+	}
+	
+	public enum MovementDamageType implements DamageType
+	{
+		REGULAR, STRIKE, SLASH, THRUST;
 		
+		@Override
 		public Attribute getDefenseAttribute()
 		{
 			switch (this)
@@ -135,39 +167,71 @@ public interface ExtendedDamageSource
 				case STRIKE: return ModAttributes.STRIKE_PROTECTION.get();
 				case SLASH: return ModAttributes.SLASH_PROTECTION.get();
 				case THRUST: return ModAttributes.THRUST_PROTECTION.get();
-				case MAGIC: return ModAttributes.MAGIC_PROTECTION.get();
-				case FIRE: return ModAttributes.FIRE_PROTECTION.get();
-				case LIGHTNING: return ModAttributes.LIGHTNING_PROTECTION.get();
-				case DARK: return ModAttributes.DARK_PROTECTION.get();
-				case HOLY: return ModAttributes.HOLY_PROTECTION.get();
 			}
+		}
+
+		@Override
+		public CoreDamageType coreType()
+		{
+			return CoreDamageType.PHYSICAL;
 		}
 	}
 	
-	public class Damage
+	public class Damages
 	{
-		private DamageType type;
-		private float amount;
+		private Map<DamageType, Float> damages = new HashMap<>();
 		
-		public Damage(DamageType type, float amount)
+		public static Damages create()
 		{
-			this.type = type;
-			this.amount = amount;
+			return new Damages();
 		}
 		
-		public DamageType getType()
+		public Damages put(DamageType type, float amount)
 		{
-			return this.type;
+			this.damages.put(type, amount);
+			return this;
 		}
 		
-		public float getAmount()
+		public Damages putAll(Map<DamageType, Float> entries)
 		{
-			return this.amount;
+			this.damages.putAll(entries);
+			return this;
 		}
 		
-		public void setAmount(float value)
+		public float get(DamageType type)
 		{
-			this.amount = value;
+			return this.damages.get(type);
+		}
+		
+		public void replace(DamageType org, DamageType replacer)
+		{
+			float amount = this.damages.get(org);
+			this.damages.remove(org);
+			this.damages.put(replacer, amount);
+		}
+		
+		public float getFullAmount()
+		{
+			float amount = 0F;
+			for (float f : this.damages.values())
+			{
+				amount += f;
+			}
+			return amount;
+		}
+		
+		public void foreach(BiConsumer<DamageType, Float> consumer)
+		{
+			this.damages.forEach(consumer);
+		}
+		
+		public Damages mul(float multiplier)
+		{
+			this.damages.forEach((type, amount) ->
+			{
+				this.damages.put(type, amount * multiplier);
+			});
+			return this;
 		}
 	}
 }

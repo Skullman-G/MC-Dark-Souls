@@ -14,9 +14,9 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	private final Vec3 attackPos;
 	private boolean wasBlocked;
 	private StunType stunType;
-	private final Damage[] damages;
+	private final Damages damages;
 	
-	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType, int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damage... damages)
+	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType, int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damages damages)
 	{
 		super(damageTypeIn, source);
 		
@@ -37,9 +37,7 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	@Override
 	public float getAmount()
 	{
-		float amount = 0;
-		for (Damage damage : this.getDamages()) amount += damage.getAmount();
-		return amount;
+		return this.damages.getFullAmount();
 	}
 	
 	@Override
@@ -67,7 +65,7 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	}
 
 	@Override
-	public Damage[] getDamages()
+	public Damages getDamages()
 	{
 		return this.damages;
 	}

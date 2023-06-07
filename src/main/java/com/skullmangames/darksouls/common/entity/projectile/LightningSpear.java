@@ -6,8 +6,8 @@ import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.ProjectileUtil;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -130,7 +130,8 @@ public class LightningSpear extends Projectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(), StunType.LIGHT, 1.0F, 1.0F, new Damage(DamageType.LIGHTNING, this.damage)), this.damage);
+		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(),
+				StunType.LIGHT, 1.0F, 1.0F, Damages.create().put(CoreDamageType.LIGHTNING, this.damage)), this.damage);
 	}
 	
 	public int getParticle()

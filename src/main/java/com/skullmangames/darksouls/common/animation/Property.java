@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import net.minecraft.sounds.SoundEvent;
 
@@ -38,7 +38,7 @@ public abstract class Property<T>
 
 	public static class AttackProperty<T> extends Property<T>
 	{
-		public static final AttackProperty<DamageType> DAMAGE_TYPE = new AttackProperty<DamageType>();
+		public static final AttackProperty<MovementDamageType> MOVEMENT_DAMAGE_TYPE = new AttackProperty<MovementDamageType>();
 		public static final AttackProperty<StunType> STUN_TYPE = new AttackProperty<StunType>();
 		public static final AttackProperty<Deflection> DEFLECTION = new AttackProperty<Deflection>();
 		public static final AttackProperty<Integer> STAMINA_USAGE = new AttackProperty<Integer>();

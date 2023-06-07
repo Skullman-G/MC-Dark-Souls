@@ -13,9 +13,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	private boolean headshot;
 	private boolean wasBlocked;
 	private StunType stunType;
-	private final Damage[] damages;
+	private final Damages damages;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damage... damages)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damages damages)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
@@ -33,9 +33,7 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	@Override
 	public float getAmount()
 	{
-		float amount = 0;
-		for (Damage damage : this.getDamages()) amount += damage.getAmount();
-		return amount;
+		return this.damages.getFullAmount();
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public Damage[] getDamages()
+	public Damages getDamages()
 	{
 		return this.damages;
 	}

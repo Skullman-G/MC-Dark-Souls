@@ -18,8 +18,7 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damage;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
@@ -331,10 +330,10 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	}
 	
 	@Override
-	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmg, StunType stunType, float amount, int requireddeflectionlevel, DamageType damageType, float poiseDamage)
+	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmg,
+			StunType stunType, int requireddeflectionlevel, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg,
-				new Damage(damageType, amount));
+		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, damages);
 	}
 	
 	public void discard()

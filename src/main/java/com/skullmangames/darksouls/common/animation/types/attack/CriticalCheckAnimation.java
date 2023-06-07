@@ -11,7 +11,10 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -77,16 +80,18 @@ public class CriticalCheckAnimation extends AttackAnimation
 	}
 	
 	@Override
-	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, float amount)
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(phase.hand);
 		boolean canBackstab = entityCap.canBackstab(target);
-		amount *= canBackstab && !this.isWeak ? weapon.getCritical() : 0.1F;
+		damages.mul(canBackstab && !this.isWeak ? weapon.getCritical() : 0.1F);
 		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
-		DamageType damageType = canBackstab ? DamageType.CRITICAL : phase.getProperty(AttackProperty.DAMAGE_TYPE).orElse(DamageType.REGULAR);
+		DamageType damageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
+		damages.replace(CoreDamageType.PHYSICAL, damageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, amount, this.getRequiredDeflectionLevel(phase), damageType, poiseDamage);
+		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType,
+				this.getRequiredDeflectionLevel(phase), poiseDamage, damages);
 		return extDmgSource;
 	}
 }
