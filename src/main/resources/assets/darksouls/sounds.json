@@ -231,6 +231,16 @@
 		]
 	},
 	
+	"item.sword.thrust":
+	{
+		"category": "item",
+		"subtitle": "item.sword.thrust.sub",
+		"sounds":
+		[
+			"darksouls:items/sword/thrust"
+		]
+	},
+	
 	"item.great_hammer.smash":
 	{
 		"category": "item",

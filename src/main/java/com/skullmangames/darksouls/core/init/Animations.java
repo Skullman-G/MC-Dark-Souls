@@ -820,12 +820,20 @@ public final class Animations
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+						.addProperty(AttackProperty.STAMINA_USAGE, 56)
+						.addProperty(AttackProperty.POISE_DAMAGE, 23)
 						.register(builder),
 				new AttackAnimation(DarkSouls.rl("greatsword_light_attack_2"), AttackType.LIGHT, 0.3F, 0.0F, 0.32F, 0.68F, 2.24F, "Tool_R",
 						DarkSouls.rl("biped/combat/greatsword_light_attack_2"), (models) -> models.ENTITY_BIPED)
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+						.addProperty(AttackProperty.STAMINA_USAGE, 56)
+						.addProperty(AttackProperty.POISE_DAMAGE, 23)
 						.register(builder)
 		};
 		
@@ -834,7 +842,10 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUSH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_USAGE, 70)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		
 		GREATSWORD_UPWARD_SLASH = new AttackAnimation(DarkSouls.rl("greatsword_upward_slash"), AttackType.HEAVY, 0.3F, 0.0F, 0.28F, 0.56F, 2.4F, "Tool_R",
@@ -842,7 +853,10 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		
 		GREATSWORD_STYLISH_THRUST = new AttackAnimation(DarkSouls.rl("greatsword_stylish_thrust"), AttackType.HEAVY, 0.3F, 0.0F, 0.64F, 0.76F, 2.8F, "Tool_R",
@@ -850,7 +864,10 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUSH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_USAGE, 70)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		
 		GREATSWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.4F, 0.72F, 1.6F, "Tool_R",
@@ -858,7 +875,10 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_USAGE, 40)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 
 		// Ultra Greatsword
@@ -875,6 +895,9 @@ public final class Animations
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 							.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+							.addProperty(AttackProperty.STAMINA_USAGE, 45)
+							.addProperty(AttackProperty.POISE_DAMAGE, 28)
 							.register(builder),
 				new AttackAnimation(DarkSouls.rl("ultra_greatsword_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.44F, 0.88F, 2.4F, "Tool_R",
 							DarkSouls.rl("biped/combat/ultra_greatsword_light_attack_2"), (models) -> models.ENTITY_BIPED)
@@ -887,6 +910,9 @@ public final class Animations
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 							.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+							.addProperty(AttackProperty.STAMINA_USAGE, 45)
+							.addProperty(AttackProperty.POISE_DAMAGE, 28)
 							.register(builder)
 		};
 		
@@ -899,11 +925,13 @@ public final class Animations
 							Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 							Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 					})
-					.addProperty(AttackProperty.STAMINA_USAGE, 2)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+					.addProperty(AttackProperty.STAMINA_USAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("ultra_greatsword_heavy_attack_2"), AttackType.HEAVY, 0.5F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
 					DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_2"), (models) -> models.ENTITY_BIPED)
@@ -916,6 +944,9 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+					.addProperty(AttackProperty.STAMINA_USAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder)
 		};
 		ULTRA_GREATSWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("ultra_greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
@@ -925,45 +956,60 @@ public final class Animations
 						Event.create(1.6F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
 						Event.create(1.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 
 		// Spear
 		SPEAR_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("spear_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.15F, 0.3F, 1.0F, "Tool_R",
 				DarkSouls.rl("biped/combat/spear_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+				.addProperty(AttackProperty.STAMINA_USAGE, 30)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		SPEAR_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("spear_heavy_attack"), AttackType.HEAVY, 0.35F, 0.0F, 0.65F, 0.8F, 1.75F, "Tool_R",
 				DarkSouls.rl("biped/combat/spear_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+				.addProperty(AttackProperty.STAMINA_USAGE, 55)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		SPEAR_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("spear_light_attack"), AttackType.LIGHT, 0.15F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R",
 				DarkSouls.rl("biped/combat/spear_light_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		SPEAR_LIGHT_BLOCKING_ATTACK = new AttackAnimation(DarkSouls.rl("spear_light_blocking_attack"), AttackType.LIGHT, 0.2F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R",
 				DarkSouls.rl("biped/combat/spear_light_blocking_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 				.addProperty(AttackProperty.BLOCKING, true)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 
 		// Dagger
 		DAGGER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("dagger_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.68F, 0.96F, 1.6F, "Tool_R",
 				DarkSouls.rl("biped/combat/dagger_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 				.register(builder);
@@ -990,10 +1036,12 @@ public final class Animations
 						Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+				.addProperty(AttackProperty.STAMINA_USAGE, 74)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 		GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
@@ -1008,6 +1056,9 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.STAMINA_USAGE, 35)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_2"), AttackType.LIGHT, 0.5F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_2"), (models) -> models.ENTITY_BIPED)
@@ -1020,6 +1071,9 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.STAMINA_USAGE, 35)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder)
 		};
 		GREAT_HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
@@ -1030,10 +1084,12 @@ public final class Animations
 						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+				.addProperty(AttackProperty.STAMINA_USAGE, 45)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 
 		// Axe
@@ -1041,9 +1097,12 @@ public final class Animations
 				DarkSouls.rl("biped/combat/axe_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		AXE_LIGHT_ATTACK = new AttackAnimation[]
 		{
@@ -1052,21 +1111,32 @@ public final class Animations
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.16F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.STAMINA_USAGE, 25)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("axe_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.15F, 0.4F, 1.25F, "Tool_R",
 						DarkSouls.rl("biped/combat/axe_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.12F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.STAMINA_USAGE, 25)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder)
 		};
 		AXE_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("axe_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.5F, 1.5F, "Tool_R",
 				DarkSouls.rl("biped/combat/axe_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.35F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+				.addProperty(AttackProperty.STAMINA_USAGE, 30)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 
 		// Hammer
@@ -1074,17 +1144,23 @@ public final class Animations
 				DarkSouls.rl("biped/combat/hammer_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+				.addProperty(AttackProperty.STAMINA_USAGE, 30)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 		HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
@@ -1093,6 +1169,10 @@ public final class Animations
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+					.addProperty(AttackProperty.STAMINA_USAGE, 25)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder)
 		};
 
@@ -1102,25 +1182,39 @@ public final class Animations
 				new AttackAnimation(DarkSouls.rl("fist_light_attack_1"), AttackType.LIGHT, 0.2F, 0.0F, 0.3F, 0.4F, 1.25F, "Tool_R",
 						DarkSouls.rl("biped/combat/fist_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
+					.addProperty(AttackProperty.STAMINA_USAGE, 18)
+					.addProperty(AttackProperty.POISE_DAMAGE, 15)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("fist_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.15F, 0.3F, 1.25F, "Tool_R",
 						DarkSouls.rl("biped/combat/fist_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
+					.addProperty(AttackProperty.STAMINA_USAGE, 18)
+					.addProperty(AttackProperty.POISE_DAMAGE, 15)
 					.register(builder)
 		};
 		FIST_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("fist_dash_attack"), AttackType.DASH, 0.3F, 0.0F, 0.15F, 0.3F, 1.0F, "Tool_R",
 				DarkSouls.rl("biped/combat/fist_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
+				.addProperty(AttackProperty.STAMINA_USAGE, 27)
+				.addProperty(AttackProperty.POISE_DAMAGE, 15)
 				.register(builder);
 		FIST_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("fist_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.35F, 0.5F, 1.25F, "Tool_R",
 				DarkSouls.rl("biped/combat/fist_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
+				.addProperty(AttackProperty.STAMINA_USAGE, 36)
+				.addProperty(AttackProperty.POISE_DAMAGE, 15)
 				.register(builder);
 
 		// Shield
@@ -1129,7 +1223,10 @@ public final class Animations
 				new AttackAnimation(DarkSouls.rl("shield_attack"), AttackType.LIGHT, 0.3F, 0.0F, 0.12F, 0.32F, 0.8F, "Tool_R",
 						DarkSouls.rl("biped/combat/shield_attack"), (models) -> models.ENTITY_BIPED).addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-					.addProperty(AttackProperty.STAMINA_USAGE, 2)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.STAMINA_USAGE, 20)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 
@@ -1140,26 +1237,40 @@ public final class Animations
 						DarkSouls.rl("biped/combat/straight_sword_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.STAMINA_USAGE, 20)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("straight_sword_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.08F, 0.3F, 0.8F, "Tool_R",
 						DarkSouls.rl("biped/combat/straight_sword_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.STAMINA_USAGE, 20)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 		STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("straight_sword_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.36F, 0.52F, 1.0F, "Tool_R",
 				DarkSouls.rl("biped/combat/straight_sword_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+				.addProperty(AttackProperty.STAMINA_USAGE, 45)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		STRAIGHT_SWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("straight_sword_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.16F, 0.36F, 0.8F, "Tool_R",
 				DarkSouls.rl("biped/combat/straight_sword_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 
 		// Hollow
@@ -1179,14 +1290,23 @@ public final class Animations
 				new AttackAnimation(DarkSouls.rl("hollow_light_attack_1"), AttackType.LIGHT, 0.2F, 0.0F, 0.56F, 1.05F, 2.5F, Colliders.BROKEN_SWORD, "Tool_R",
 						DarkSouls.rl("hollow/swing_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.48F, 1.0F, 2.0F, Colliders.BROKEN_SWORD, "Tool_R",
 						DarkSouls.rl("hollow/swing_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_light_attack_3"), AttackType.LIGHT, 0.2F, 0.0F, 0.16F, 0.4F, 2.0F, Colliders.BROKEN_SWORD, "Tool_R",
 						DarkSouls.rl("hollow/swing_3"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 		HOLLOW_BARRAGE = new AttackAnimation(DarkSouls.rl("hollow_barrage"), AttackType.LIGHT, 0.2F,
@@ -1199,18 +1319,25 @@ public final class Animations
 				new Phase(2.88F, 3.08F, 3.2F, 4.2F, "Tool_R", Colliders.BROKEN_SWORD))
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 						.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.04F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.HOLLOW_PREPARE.get())) })
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder);
 		HOLLOW_OVERHEAD_SWING = new AttackAnimation(DarkSouls.rl("hollow_overhead_swing"), AttackType.HEAVY, 0.2F, 0.0F, 0.4F, 0.6F, 1.2F, Colliders.BROKEN_SWORD, "Tool_R",
 				DarkSouls.rl("hollow/overhead_swing"), (models) -> models.ENTITY_BIPED)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
-						.addProperty(AttackProperty.STAMINA_USAGE, 2)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder);
 		HOLLOW_JUMP_ATTACK = new AttackAnimation(DarkSouls.rl("hollow_jump_attack"), AttackType.DASH, 0.05F, 0.0F, 0.52F, 0.72F, 1.6F, Colliders.BROKEN_SWORD, "Tool_R",
 				DarkSouls.rl("hollow/jump_attack"), (models) -> models.ENTITY_BIPED)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
-						.addProperty(AttackProperty.STAMINA_USAGE, 2)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder);
 
 		// Hollow Lordran Warrior
@@ -1225,11 +1352,17 @@ public final class Animations
 						DarkSouls.rl("hollow_lordran_warrior/sword_th_la_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_warrior_th_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.68F, 1.08F, 1.6F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_warrior/sword_th_la_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 
@@ -1237,9 +1370,11 @@ public final class Animations
 						0.2F, 0.0F, 0.44F, 0.88F, 1.8F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_warrior/dash_attack"), (models) -> models.ENTITY_BIPED)
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
-						.addProperty(AttackProperty.STAMINA_USAGE, 2)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder);
 
 		HOLLOW_LORDRAN_WARRIOR_AXE_LA = new AttackAnimation[]
@@ -1248,11 +1383,17 @@ public final class Animations
 						DarkSouls.rl("hollow_lordran_warrior/axe_la_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_warrior_axe_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 1.12F, 1.36F, 2.8F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_warrior/axe_la_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder)
 		};
 
@@ -1261,16 +1402,20 @@ public final class Animations
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_warrior_axe_th_la_1"), AttackType.LIGHT, 0.2F, 0.0F, 0.56F, 1.0F, 2.8F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_warrior/axe_th_la_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
-					.addProperty(AttackProperty.STAMINA_USAGE, 2)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_warrior_axe_th_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.68F, 1.0F, 2.0F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_warrior/axe_th_la_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
-					.addProperty(AttackProperty.STAMINA_USAGE, 2)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.AXE_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder)
 		};
 
@@ -1291,33 +1436,46 @@ public final class Animations
 					DarkSouls.rl("hollow_lordran_soldier/sword_la_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_sword_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.16F, 0.56F, 1.0F, "Tool_R",
 					DarkSouls.rl("hollow_lordran_soldier/sword_la_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_sword_la_3"), AttackType.LIGHT, 0.2F, 0.0F, 0.44F, 0.6F, 1.6F, "Tool_R",
 					DarkSouls.rl("hollow_lordran_soldier/sword_la_3"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+					.addProperty(AttackProperty.POISE_DAMAGE, 23)
 					.register(builder)
 		};
 
 		HOLLOW_LORDRAN_SOLDIER_SWORD_DA = new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_sword_da"), AttackType.DASH, 0.2F, 0.0F, 0.35F, 0.5F, 3.0F, "Tool_R",
 				DarkSouls.rl("hollow_lordran_soldier/sword_da"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
-				.addProperty(AttackProperty.STAMINA_USAGE, 2)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
 
 		HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST = new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_sword_heavy_thrust"), AttackType.HEAVY, 0.2F, 0.0F,
 				1.0F, 1.16F, 2.0F, "Tool_R", DarkSouls.rl("hollow_lordran_soldier/sword_heavy_thrust"),
 				(models) -> models.ENTITY_BIPED).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
-						.addProperty(AttackProperty.STAMINA_USAGE, 2)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+						.addProperty(AttackProperty.POISE_DAMAGE, 23)
 						.register(builder);
 
 		HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO = new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_sword_thrust_combo"), AttackType.LIGHT, 0.2F,
@@ -1326,6 +1484,9 @@ public final class Animations
 				new Phase(0.72F, 1.2F, 1.4F, 2.0F, "Tool_R", null))
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
+						.addProperty(AttackProperty.POISE_DAMAGE, 23)
 						.register(builder);
 
 		HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS = new AttackAnimation[]
@@ -1334,22 +1495,34 @@ public final class Animations
 						DarkSouls.rl("hollow_lordran_soldier/spear_swing_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_spear_swing_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.16F, 0.56F, 1.0F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_soldier/spear_swing_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_spear_swing_3"), AttackType.LIGHT, 0.2F, 0.0F, 0.6F, 0.72F, 1.6F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_soldier/spear_swing_3"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_spear_swing_4"), AttackType.LIGHT, 0.2F, 0.0F, 0.44F, 0.6F, 1.6F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_soldier/spear_swing_4"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 
@@ -1359,17 +1532,26 @@ public final class Animations
 						DarkSouls.rl("hollow_lordran_soldier/spear_thrust_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_spear_thrust_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.72F, 0.88F, 1.6F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_soldier/spear_thrust_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("hollow_lordran_soldier_spear_thrust_3"), AttackType.LIGHT, 0.2F, 0.0F, 0.88F, 1.04F, 1.6F, "Tool_R",
 						DarkSouls.rl("hollow_lordran_soldier/spear_thrust_3"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 
@@ -1377,10 +1559,11 @@ public final class Animations
 					0.2F, 0.0F, 0.6F, 0.8F, 1.6F, "Tool_L",
 					DarkSouls.rl("hollow_lordran_soldier/shield_bash"), (models) -> models.ENTITY_BIPED)
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
-						.addProperty(AttackProperty.STAMINA_USAGE, 2)
 						.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 						.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder);
 		
 		// Falconer
@@ -1396,17 +1579,26 @@ public final class Animations
 					DarkSouls.rl("falconer/swing_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("falconer_light_attack_2"), AttackType.LIGHT, 0.1F, 0.0F, 0.72F, 1.04F, 1.88F, "Tool_R",
 					DarkSouls.rl("falconer/swing_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("falconer_light_attack_3"), AttackType.LIGHT, 0.1F, 0.0F, 0.52F, 0.68F, 1.88F, "Tool_R",
 					DarkSouls.rl("falconer/swing_3"), (models) -> models.ENTITY_BIPED)
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+					.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
 		
@@ -1421,17 +1613,26 @@ public final class Animations
 							DarkSouls.rl("black_knight/black_knight_sword_la_1"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),
 						new AttackAnimation(DarkSouls.rl("black_knight_sword_la_2"), AttackType.LIGHT, 0.1F, 0.0F, 0.44F, 0.64F, 1.4F, "Tool_R",
 							DarkSouls.rl("black_knight/black_knight_sword_la_2"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),
 						new AttackAnimation(DarkSouls.rl("black_knight_sword_la_3"), AttackType.LIGHT, 0.1F, 0.0F, 0.28F, 0.48F, 2.2F, "Tool_R",
 							DarkSouls.rl("black_knight/black_knight_sword_la_3"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+							.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder)
 				};
 		
@@ -1462,6 +1663,8 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("stray_demon_light_attack_2"), AttackType.LIGHT, 1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R",
 					DarkSouls.rl("stray_demon/light_attack_2"), (models) -> models.ENTITY_STRAY_DEMON)
@@ -1473,6 +1676,8 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
 				new AttackAnimation(DarkSouls.rl("stray_demon_light_attacks_3"), AttackType.LIGHT, 1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R",
 					DarkSouls.rl("stray_demon/light_attack_3"), (models) -> models.ENTITY_STRAY_DEMON)
@@ -1484,6 +1689,8 @@ public final class Animations
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
 					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder)
 		};
 		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_heavy_attack"), AttackType.HEAVY, 1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R",
@@ -1496,6 +1703,8 @@ public final class Animations
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 		STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(DarkSouls.rl("stray_demon_jump_attack"), AttackType.DASH, 1.0F, 0.0F, 0.6F, 1.2F, 2.0F,
 				"Tool_R", DarkSouls.rl("stray_demon/dash_attack"), (models) -> models.ENTITY_STRAY_DEMON)
@@ -1508,6 +1717,8 @@ public final class Animations
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 		STRAY_DEMON_GROUND_POUND = new AttackAnimation(DarkSouls.rl("stray_demon_ground_pound"), AttackType.HEAVY, 1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root",
 				DarkSouls.rl("stray_demon/ground_pound"), (models) -> models.ENTITY_STRAY_DEMON)
@@ -1522,6 +1733,8 @@ public final class Animations
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
 		
 		// Anastacia of Astora

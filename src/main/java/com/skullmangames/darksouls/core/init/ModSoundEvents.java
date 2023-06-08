@@ -27,6 +27,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> FIST_SWING = register("item.fist.swing");
 	public static final RegistryObject<SoundEvent> AXE_SWING = register("item.axe.swing");
 	public static final RegistryObject<SoundEvent> SPEAR_SWING = register("item.spear.swing");
+	public static final RegistryObject<SoundEvent> SWORD_THRUSH = register("item.sword.thrust");
 	public static final RegistryObject<SoundEvent> GREAT_HAMMER_SMASH = register("item.great_hammer.smash");
 	public static final RegistryObject<SoundEvent> ULTRA_GREATSWORD_SMASH = register("item.ultra_greatsword.smash");
 	
