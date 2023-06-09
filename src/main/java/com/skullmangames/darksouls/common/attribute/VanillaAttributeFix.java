@@ -60,6 +60,15 @@ public class VanillaAttributeFix
         });
     }
 	
+	private static boolean containsMaxHealth(ResourceLocation id)
+	{
+		for (ResourceLocation rl : maxHealth.keySet())
+		{
+			if (id.compareTo(rl) == 0) return true;
+		}
+		return false;
+	}
+	
 	@SubscribeEvent
 	public static void modifyAttributes(EntityAttributeModificationEvent event)
 	{
@@ -72,9 +81,9 @@ public class VanillaAttributeFix
 				@SuppressWarnings("unchecked")
 				EntityType<LivingEntity> entity = (EntityType<LivingEntity>)entry;
 				ResourceLocation id = entity.getRegistryName();
-				if (id.getNamespace() != DarkSouls.MOD_ID)
+				if (!id.getNamespace().equals(DarkSouls.MOD_ID))
 				{
-					if (maxHealth.containsKey(id))
+					if (containsMaxHealth(id))
 					{
 						event.add(entity, Attributes.MAX_HEALTH, maxHealth.get(id));
 					}

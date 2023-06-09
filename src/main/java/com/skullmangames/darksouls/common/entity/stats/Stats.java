@@ -38,7 +38,21 @@ public class Stats
 		@Override
 		public double getModifyValue(Player player, Attribute attribute, int value)
 		{
-			return (int)(1500 * Math.pow(-1.09D, -value) + 1500);
+			double modValue = 0D;
+			for (int i = 1; i <= 16 && i <= value; i++)
+			{
+				modValue += 6.3379D * Math.pow(1.1266D, i);
+			}
+			for (int i = 17; i <= 29 && i <= value; i++)
+			{
+				modValue += -0.1642D * Math.pow(i, 2) + 5.4785D * i - 1.6962D;
+			}
+			for (int i = 30; i <= value; i++)
+			{
+				modValue += 66.8716D * Math.pow(0.9564D, i);
+			}
+			
+			return modValue;
 		}
 	});
 	public static final Stat ENDURANCE = register(new Stat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", AttributeList.of(ModAttributes.MAX_STAMINA))

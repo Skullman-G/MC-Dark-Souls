@@ -43,7 +43,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -363,11 +362,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean onHurt(DamageSource damageSource, float amount)
 	{
 		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
-		
-		if (damageSource instanceof EntityDamageSource && !damageSource.isExplosion() && !damageSource.isMagic())
-		{
-			return false;
-		}
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
 		

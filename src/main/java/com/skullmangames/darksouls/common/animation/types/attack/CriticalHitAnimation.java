@@ -36,7 +36,8 @@ public class CriticalHitAnimation extends InvincibleAnimation
 		if (time >= this.hit && prevTime < this.hit)
 		{
 			MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(InteractionHand.MAIN_HAND);
-			Damages damages = entityCap.getDamageToEntity(target, InteractionHand.MAIN_HAND).mul(weapon.getCritical());
+			Damages damages = entityCap.getDamageToEntity(target, InteractionHand.MAIN_HAND);
+			if (weapon != null) damages.mul(weapon.getCritical());
 			ExtendedDamageSource extDmgSource = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE, 0, 0, damages);
 			entityCap.hurtEntity(target, InteractionHand.MAIN_HAND, extDmgSource);
 			entityCap.criticalTarget = null;
