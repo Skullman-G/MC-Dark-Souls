@@ -922,8 +922,8 @@ public final class Animations
 					DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
-							Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							Event.create(1.3F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+							Event.create(1.3F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 					})
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -937,8 +937,8 @@ public final class Animations
 					DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
-							Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							Event.create(1.3F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.ULTRA_GREATSWORD_SMASH.get())),
+							Event.create(1.3F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 					})
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -1032,8 +1032,8 @@ public final class Animations
 				DarkSouls.rl("biped/combat/great_hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.8F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
-						Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+						Event.create(1.6F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -1049,8 +1049,8 @@ public final class Animations
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
-							Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							Event.create(1.3F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+							Event.create(1.3F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 					})
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -1064,8 +1064,8 @@ public final class Animations
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
-							Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							Event.create(1.3F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+							Event.create(1.3F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 					})
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -1080,8 +1080,8 @@ public final class Animations
 				DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(1.5F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
-						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+						Event.create(1.3F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(1.3F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
 				})
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
