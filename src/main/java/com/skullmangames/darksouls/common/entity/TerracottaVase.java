@@ -33,14 +33,19 @@ public class TerracottaVase extends Entity
 		super.tick();
 		if (this.level.isClientSide) return;
 		
-		if (this.itemInside.isEmpty())
+		AABB inputCheck = new AABB(new BlockPos(this.position()).above(2));
+		List<ItemEntity> items = this.level.getEntitiesOfClass(ItemEntity.class, inputCheck);
+		if (!items.isEmpty())
 		{
-			AABB inputCheck = new AABB(new BlockPos(this.position()).above(2));
-			List<ItemEntity> items = this.level.getEntitiesOfClass(ItemEntity.class, inputCheck);
-			if (!items.isEmpty())
+			ItemEntity item = items.get(0);
+			if (this.itemInside.isEmpty())
 			{
-				ItemEntity item = items.get(0);
 				this.itemInside = item.getItem();
+				item.discard();
+			}
+			else if (this.itemInside.getItem() == item.getItem().getItem())
+			{
+				this.itemInside.grow(item.getItem().getCount());
 				item.discard();
 			}
 		}
@@ -105,13 +110,16 @@ public class TerracottaVase extends Entity
 	@Override
 	protected void readAdditionalSaveData(CompoundTag nbt)
 	{
-		this.itemInside = ItemStack.of(nbt);
+		this.itemInside = ItemStack.of(nbt.getCompound("item_inside"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt)
 	{
-		this.itemInside.save(nbt);
+		if (!this.itemInside.isEmpty())
+		{
+			nbt.put("item_inside", this.itemInside.save(new CompoundTag()));
+		}
 	}
 
 	@Override

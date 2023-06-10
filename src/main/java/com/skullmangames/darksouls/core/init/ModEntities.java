@@ -66,7 +66,10 @@ public class ModEntities
 				.updateInterval(20));
 	
 	public static final RegistryObject<EntityType<TerracottaVase>> TERRACOTTA_VASE = register("terracotta_vase",
-			EntityType.Builder.<TerracottaVase>of(TerracottaVase::new, MobCategory.MISC));
+			EntityType.Builder.<TerracottaVase>of(TerracottaVase::new, MobCategory.MISC)
+				.sized(1.0F, 1.9F)
+				.setUpdateInterval(20)
+				.clientTrackingRange(6));
 
 	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
 			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)
