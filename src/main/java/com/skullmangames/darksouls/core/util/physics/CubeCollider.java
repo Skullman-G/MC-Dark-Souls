@@ -70,32 +70,6 @@ public class CubeCollider extends Collider
 	}
 
 	/**
-	 * make 2d obb
-	 * 
-	 * @param pos1        left
-	 * @param pos2        right
-	 * @param modelCenter central position
-	 */
-	public CubeCollider(AABB entityCallAABB, double pos1_x, double pos1_y, double pos1_z, double pos2_x, double pos2_y,
-			double pos2_z, double norm1_x, double norm1_y, double norm1_z, double norm2_x, double norm2_y,
-			double norm2_z, double center_x, double center_y, double center_z)
-	{
-		super(new Vec3(center_x, center_y, center_z), entityCallAABB);
-		this.modelVertex = new Vec3[2];
-		this.modelNormal = new Vec3[2];
-		this.rotatedVertex = new Vec3[2];
-		this.rotatedNormal = new Vec3[2];
-		this.modelVertex[0] = new Vec3(pos1_x, pos1_y, pos1_z);
-		this.modelVertex[1] = new Vec3(pos2_x, pos2_y, pos2_z);
-		this.modelNormal[0] = new Vec3(norm1_x, norm1_y, norm1_z);
-		this.modelNormal[1] = new Vec3(norm2_x, norm2_y, norm2_z);
-		this.rotatedVertex[0] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedVertex[1] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedNormal[0] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedNormal[1] = new Vec3(0.0D, 0.0D, 0.0D);
-	}
-
-	/**
 	 * make obb from aabb
 	 * 
 	 * @param aabbCopy

@@ -15,14 +15,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BloodParticle extends TextureSheetParticle
 {
-	public BloodParticle(ClientLevel world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
+	private BloodParticle(ClientLevel level, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
 	{
-		super(world, posX, posY, posZ, speedX, speedY, speedZ);
+		super(level, posX, posY, posZ, speedX, speedY, speedZ);
 
 		this.xd = speedX;
 		this.yd = speedY;
 		this.zd = speedZ;
-		this.rCol = (float)MathUtils.clamp(world.random.nextDouble(), 0.8D, 0.9D);
+		this.rCol = (float)MathUtils.clamp(level.random.nextDouble(), 0.8D, 0.9D);
 		this.lifetime = 5;
 		this.quadSize = 0.05F;
 	}
@@ -57,10 +57,10 @@ public class BloodParticle extends TextureSheetParticle
 		}
 
 		@Override
-		public Particle createParticle(SimpleParticleType particleType, ClientLevel world, double posX, double posY, double posZ, double speedX,
+		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double posX, double posY, double posZ, double speedX,
 				double speedY, double speedZ)
 		{
-			BloodParticle particle = new BloodParticle(world, posX, posY, posZ, speedX, speedY, speedZ);
+			BloodParticle particle = new BloodParticle(level, posX, posY, posZ, speedX, speedY, speedZ);
 			particle.pickSprite(this.sprite);
 			return particle;
 		}

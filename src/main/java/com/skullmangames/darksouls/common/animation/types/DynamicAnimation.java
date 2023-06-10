@@ -213,6 +213,5 @@ public class DynamicAnimation
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap,
-			float playTime, float partialTicks) {}
+	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks) {}
 }

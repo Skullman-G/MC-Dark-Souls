@@ -464,9 +464,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
-		boolean succed = hitTarget.hurt((DamageSource) source, source.getAmount());
+		boolean succeed = hitTarget.hurt((DamageSource) source, source.getAmount());
 
-		if (succed)
+		if (succeed)
 		{
 			int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT,
 					this.orgEntity.getItemInHand(handIn));
@@ -477,7 +477,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			}
 		}
 
-		return succed;
+		return succeed;
 	}
 
 	public StaticAnimation getDeflectAnimation()

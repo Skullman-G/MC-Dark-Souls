@@ -35,6 +35,8 @@ public class ClientModels extends Models<ClientModel>
 	public final ClientModel BALDER_ARMOR;
 	public final ClientModel BALDER_BOOTS;
 	
+	public final ClientModel TERRACOTTA_VASE;
+	
 	public ClientModels()
 	{
 		this.ENTITY_BIPED = this.register("biped");
@@ -60,6 +62,8 @@ public class ClientModels extends Models<ClientModel>
 		this.BALDER_HELM = this.registerMeshOnly("balder_helm");
 		this.BALDER_ARMOR = this.registerMeshOnly("balder_armor");
 		this.BALDER_BOOTS = this.registerMeshOnly("balder_boots");
+		
+		this.TERRACOTTA_VASE = this.registerMeshOnly("terracotta_vase");
 	}
 	
 	@Override

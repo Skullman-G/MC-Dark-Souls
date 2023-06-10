@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.Animator;
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -51,22 +50,21 @@ public abstract class Collider
 		this.worldCenter = PublicMatrix4f.transform(mat, this.modelCenter);
 	}
 	
-	public void update(LivingCap<?> entityCap, String jointName)
+	public void update(LivingCap<?> entityCap, String jointName, float partialTicks)
 	{
 		PublicMatrix4f transformMatrix;
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
 		int pathIndex = armature.searchPathIndex(jointName);
 
 		if (pathIndex == -1) transformMatrix = new PublicMatrix4f();
-		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(1.0F), armature, pathIndex);
-		transformMatrix.mulFront(entityCap.getModelMatrix(1.0F));
+		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
+		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks));
 		this.transform(transformMatrix);
 	}
 
-	public List<Entity> updateAndFilterCollideEntity(LivingCap<?> entityCap, AttackAnimation attackAnimation,
-			float prevElapsedTime, float elapsedTime, String jointName, float attackSpeed)
+	public List<Entity> updateAndFilterCollideEntity(LivingCap<?> entityCap, String jointName, float partialTicks)
 	{
-		this.update(entityCap, jointName);
+		this.update(entityCap, jointName, partialTicks);
 		return this.getCollideEntities(entityCap.getOriginalEntity());
 	}
 	
@@ -83,11 +81,10 @@ public abstract class Collider
 	public abstract void drawInternal(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, boolean red);
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack matrixStackIn, MultiBufferSource buffer, LivingCap<?> entityCap,
-			AttackAnimation animation, float prevElapsedTime, float elapsedTime, float partialTicks, float attackSpeed)
+	public void draw(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, String boneName, float partialTicks)
 	{
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
-		int pathIndex = armature.searchPathIndex(animation.getPathIndexByTime(elapsedTime));
+		int pathIndex = armature.searchPathIndex(boneName);
 		boolean red = entityCap.getEntityState() == EntityState.CONTACT;
 		PublicMatrix4f mat = null;
 
@@ -99,7 +96,7 @@ public abstract class Collider
 			mat = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
 		}
 
-		this.drawInternal(matrixStackIn, buffer, mat, red);
+		this.drawInternal(poseStack, buffer, mat, red);
 	}
 
 	protected abstract boolean collide(Entity opponent);

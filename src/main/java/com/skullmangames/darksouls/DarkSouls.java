@@ -36,6 +36,7 @@ import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.TerracottaVaseRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.VanillaHumanoidRenderer;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.Animator;
@@ -224,6 +225,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.HUMANITY.get(), HumanityRenderer::new);
 		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);
 		EntityRenderers.register(ModEntities.GREAT_LIGHTNING_SPEAR.get(), LightningSpearRenderer::greatLightningSpear);
+		EntityRenderers.register(ModEntities.TERRACOTTA_VASE.get(), TerracottaVaseRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

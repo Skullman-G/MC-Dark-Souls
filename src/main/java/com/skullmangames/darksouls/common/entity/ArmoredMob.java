@@ -26,6 +26,12 @@ public abstract class ArmoredMob extends PathfinderMob
 	}
 	
 	@Override
+	public boolean isPushable()
+	{
+		return false;
+	}
+	
+	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData data, CompoundTag nbt)
 	{
 		data = super.finalizeSpawn(level, difficulty, type, data, nbt);

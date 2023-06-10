@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.TerracottaVase;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
@@ -60,9 +61,12 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<HumanityEntity>> HUMANITY = register("humanity",
 			EntityType.Builder.<HumanityEntity>of(HumanityEntity::new, MobCategory.MISC)
-				.sized(0.5F, 0.5F)
+				.sized(1.0F, 2.0F)
 				.clientTrackingRange(6)
 				.updateInterval(20));
+	
+	public static final RegistryObject<EntityType<TerracottaVase>> TERRACOTTA_VASE = register("terracotta_vase",
+			EntityType.Builder.<TerracottaVase>of(TerracottaVase::new, MobCategory.MISC));
 
 	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
 			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)

@@ -15,7 +15,7 @@ public class LightningParticle extends TextureSheetParticle
 {
 	private final SpriteSet sprites;
 	
-	protected LightningParticle(ClientLevel level, SpriteSet sprites, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
+	private LightningParticle(ClientLevel level, SpriteSet sprites, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
 	{
 		super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 		this.lifetime = 10;

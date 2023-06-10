@@ -39,11 +39,11 @@ public class ClientModel extends Model
 	{
 		try
 		{
-			this.mesh = ColladaParser.getMeshData(location);
+			this.mesh = ColladaParser.getMeshData(this.location);
 		}
 		catch (IOException e)
 		{
-			DarkSouls.LOGGER.error(location.getNamespace() + " failed to load!");
+			DarkSouls.LOGGER.error(this.location.getNamespace() + " failed to load!");
 		}
 	}
 

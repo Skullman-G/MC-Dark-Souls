@@ -13,9 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SparkParticle extends TextureSheetParticle
 {
-	public SparkParticle(ClientLevel world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
+	private SparkParticle(ClientLevel level, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
 	{
-		super(world, posX, posY, posZ, speedX, speedY, speedZ);
+		super(level, posX, posY, posZ, speedX, speedY, speedZ);
 
 		this.xd = speedX;
 		this.yd = speedY;
@@ -48,10 +48,10 @@ public class SparkParticle extends TextureSheetParticle
 		}
 
 		@Override
-		public Particle createParticle(SimpleParticleType particleType, ClientLevel world, double posX, double posY, double posZ, double speedX,
+		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double posX, double posY, double posZ, double speedX,
 				double speedY, double speedZ)
 		{
-			SparkParticle particle = new SparkParticle(world, posX, posY, posZ, speedX, speedY, speedZ);
+			SparkParticle particle = new SparkParticle(level, posX, posY, posZ, speedX, speedY, speedZ);
 			particle.pickSprite(this.sprite);
 			return particle;
 		}

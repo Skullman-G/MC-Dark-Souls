@@ -1,4 +1,14 @@
 {
+	"block.vase.break":
+	{
+		"category": "block",
+		"subtitle": "block.vase.break.sub",
+		"sounds":
+		[
+			"darksouls:blocks/vase/break" 
+		]
+	},
+	
 	"entity.generic.kick":
 	{
 		"category": "entity",

@@ -11,40 +11,24 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ForceParticle extends TextureSheetParticle
+public class VaseShardParticle extends TextureSheetParticle
 {
-	private ForceParticle(ClientLevel level, double posX, double posY, double posZ)
+	private VaseShardParticle(ClientLevel level, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
 	{
-		super(level, posX, posY, posZ, 0, 0, 0);
-		this.quadSize = 0;
-		this.xd = 0;
-		this.yd = 0;
-		this.zd = 0;
-		this.lifetime = 10;
-		this.alpha = 0;
-	}
-	
-	@Override
-	public void tick()
-	{
-		this.quadSize += 4.0F / this.lifetime;
-		if (this.age < this.lifetime * 0.7F)
-		{
-			this.alpha += 1.0F / (this.lifetime * 0.7F);
-		}
-		else
-		{
-			this.alpha = Math.max(0, this.alpha - 1.0F / (this.lifetime * 0.3F));
-		}
-		super.tick();
+		super(level, posX, posY, posZ, speedX, speedY, speedZ);
+
+		this.xd = speedX;
+		this.yd = speedY;
+		this.zd = speedZ;
+		this.lifetime = 40;
 	}
 
 	@Override
 	public ParticleRenderType getRenderType()
 	{
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_LIT;
 	}
-
+	
 	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements ParticleProvider<SimpleParticleType>
 	{
@@ -56,10 +40,10 @@ public class ForceParticle extends TextureSheetParticle
 		}
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double posX, double posY, double posZ, double speedX,
+		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double posX, double posY, double posZ, double speedX,
 				double speedY, double speedZ)
 		{
-			ForceParticle particle = new ForceParticle(level, posX, posY, posZ);
+			VaseShardParticle particle = new VaseShardParticle(level, posX, posY, posZ, speedX, speedY, speedZ);
 			particle.pickSprite(this.sprite);
 			return particle;
 		}

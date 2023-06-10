@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.common.block.CustomShapedBlock;
 import com.skullmangames.darksouls.common.block.DirectionalCustomShapedBlock;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
@@ -143,32 +142,5 @@ public class ModBlocks
 				Block.box(1, 3, 7, 15, 13, 9),
 				Block.box(0, 0, 14, 16, 16, 16)
 			}
-			));
-	
-	public static final RegistryObject<Block> TERRACOTTA_POT = BLOCKS.register("terracotta_pot", () -> new CustomShapedBlock(BlockBehaviour.Properties
-			.of(Material.STONE)
-			.strength(2.0F)
-			.noOcclusion(),
-			Block.box(3, 0, 3, 13, 2, 13),
-			Block.box(3, 11, 3, 13, 12, 4),
-			Block.box(3, 11, 12, 13, 12, 13),
-			Block.box(12, 11, 4, 13, 12, 12),
-			Block.box(3, 11, 4, 4, 12, 12),
-			Block.box(12, 12, 2.5, 13.5, 13, 13.5),
-			Block.box(2.5, 12, 2.5, 4, 13, 13.5),
-			Block.box(4, 12, 12, 12, 13, 13.5),
-			Block.box(4, 12, 2.5, 12, 13, 4),
-			Block.box(2, 2, 3, 14, 11, 13),
-			Block.box(3, 2, 13, 13, 11, 14),
-			Block.box(3, 2, 2, 13, 11, 3),
-			Block.box(4, 3, 1, 12, 9, 2),
-			Block.box(4, 3, 14, 12, 9, 15),
-			Block.box(14, 3, 4, 15, 9, 12),
-			Block.box(1, 3, 4, 2, 9, 12),
-			Block.box(4, 11, 4, 12, 13, 12),
-			Block.box(3.3, 13, 3.3, 12.7, 13.7, 12.7),
-			Block.box(4.3, 13.4, 4.3, 11.7, 14.1, 11.7),
-			Block.box(7.3, 14, 6, 8.7, 15, 7),
-			Block.box(7.3, 14, 9, 8.7, 15, 10),
-			Block.box(7.3, 15, 6, 8.7, 16, 10)));
+	));
 }

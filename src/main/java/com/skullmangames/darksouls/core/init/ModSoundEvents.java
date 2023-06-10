@@ -58,6 +58,8 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> LIGHTNING_SPEAR_APPEAR = register("entity.lightning_spear.appear");
 	public static final RegistryObject<SoundEvent> LIGHTNING_SPEAR_SHOT = register("entity.lightning_spear.shot");
 	public static final RegistryObject<SoundEvent> LIGHTNING_SPEAR_IMPACT = register("entity.lightning_spear.impact");
+	
+	public static final RegistryObject<SoundEvent> VASE_BREAK = register("block.vase.break");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

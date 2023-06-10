@@ -7,15 +7,14 @@ import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class Model
+public class Model extends AbstractModel
 {
 	protected Armature armature;
-	protected ResourceLocation location;
 	protected ResourceLocation armatureLocation;
 
 	public Model(ResourceLocation location)
 	{
-		this.location = location;
+		super(location);
 	}
 	
 	public String getName()

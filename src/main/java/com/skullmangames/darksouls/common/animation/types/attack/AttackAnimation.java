@@ -26,6 +26,7 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.common.entity.TerracottaVase;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
@@ -123,11 +124,9 @@ public class AttackAnimation extends ActionAnimation
 			}
 
 			Collider collider = this.getCollider(entityCap, elapsedTime);
-			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();				
-			float prevPoseTime = phase.contactStart;
-			float poseTime = phase.contactEnd;
+			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 			Vec3 prevColPos = collider.getWorldCenter();
-			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, this, prevPoseTime, poseTime, phase.getColliderJointName(), this.getPlaySpeed(entityCap));
+			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, phase.getColliderJointName(), 1.0F);
 			
 			if (list.size() > 0)
 			{
@@ -138,7 +137,8 @@ public class AttackAnimation extends ActionAnimation
 				{
 					Entity e = attackResult.getEntity();
 					Entity trueEntity = this.getTrueEntity(e);
-					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof LivingEntity)
+					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && (trueEntity instanceof LivingEntity
+						|| trueEntity instanceof TerracottaVase))
 					{
 						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
 										new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
@@ -194,7 +194,7 @@ public class AttackAnimation extends ActionAnimation
 		
 		if (spawner != null)
 		{
-			collider.update(entityCap, phase.getColliderJointName());
+			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
 			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getWorldCenter());
 		}
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
@@ -205,12 +205,11 @@ public class AttackAnimation extends ActionAnimation
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entitypatch, float playTime, float partialTicks)
+	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
 	{
-		AnimationPlayer animPlayer = entitypatch.getAnimator().getPlayerFor(this);
-		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
-		this.getCollider(entitypatch, elapsedTime).draw(poseStack, buffer, entitypatch, this, prevElapsedTime, elapsedTime, partialTicks, this.getPlaySpeed(entitypatch));
+		this.getCollider(entityCap, elapsedTime).draw(poseStack, buffer, entityCap, this.getPathIndexByTime(elapsedTime), partialTicks);
 	}
 	
 	@Override

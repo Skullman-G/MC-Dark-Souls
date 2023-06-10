@@ -11,7 +11,7 @@ public abstract class EntityboundParticle extends TextureSheetParticle
 {
 	protected final Entity entity;
 	
-	public EntityboundParticle(ClientLevel level, int entityId, double posX, double posY, double posZ,
+	protected EntityboundParticle(ClientLevel level, int entityId, double posX, double posY, double posZ,
 			double speedX, double speedY, double speedZ)
 	{
 		super(level, posX, posY, posZ, speedX, speedY, speedZ);

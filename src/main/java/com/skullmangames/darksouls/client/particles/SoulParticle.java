@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SoulParticle extends TextureSheetParticle
 {
-	protected SoulParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
+	private SoulParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed)
 	{
 		super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 	    this.quadSize = 0.05F;

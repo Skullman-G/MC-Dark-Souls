@@ -186,6 +186,7 @@ public class GameOverlayManager
 		poseStack.pushPose();
 		float scale = 1.2F;
 		poseStack.scale(scale, scale, scale);
+		poseStack.translate(-0.7D, -0.7D, 0);
 		gui.blit(poseStack, (int)((x - 22 / 2 - 24) / scale), (int)((y - 22 / 2) / scale), 24, 23, 22, 22);
 		gui.blit(poseStack, (int)((x - 22 / 2) / scale), (int)((y - 22 / 2 + 24) / scale), 24, 23, 22, 22);
 		gui.blit(poseStack, (int)((x - 22 / 2 + 24) / scale), (int)((y - 22 / 2) / scale), 24, 23, 22, 22);

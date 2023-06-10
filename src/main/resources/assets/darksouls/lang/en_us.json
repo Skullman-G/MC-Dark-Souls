@@ -69,7 +69,7 @@
 	"item.darksouls.falconer_spawn_egg": "Falconer Spawn Egg",
 	"item.darksouls.oak_platform": "Oak Platform",
 	"item.darksouls.stone_brick_window": "Stone Brick Window",
-	"item.darksouls.terracotta_pot": "Terracotta Block",
+	"item.darksouls.terracotta_vase": "Terracotta Vase",
 	"item.darksouls.black_knight_helm": "Black Knight Helm",
 	"item.darksouls.black_knight_armor": "Black Knight Armor",
 	"item.darksouls.black_knight_leggings": "Black Knight Leggings",
@@ -93,7 +93,6 @@
 	"block.darksouls.sunlight_altar": "Sunlight Altar",
 	"block.darksouls.oak_platform": "Oak Platform",
 	"block.darksouls.stone_brick_window": "Stone Brick Window",
-	"block.darksouls.terracotta_pot": "Terracotta Block",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
 	"entity.darksouls.hollow": "Hollow",
@@ -109,6 +108,7 @@
 	"entity.darksouls.petrus_of_thorolund": "Petrus of Thorolund",
 	"entity.darksouls.falconer": "Falconer",
 	"entity.darksouls.black_knight": "Black Knight",
+	"entity.darksouls.terracotta_vase": "Terracotta Vase",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -258,6 +258,7 @@
 	"block.bonfire.lit.sub": "Bonfire lit",
 	"block.bonfire.ambient.sub": "Bonfire burning",
 	"block.bonfire.teleport.sub": "Bonfire teleports player",
+	"block.vase.break.sub": "Vase breaks",
 	
 	"item.darksign.use.sub": "Darksign flickers",
 	"item.soul_container.use.sub": "Soul Container crumbles",

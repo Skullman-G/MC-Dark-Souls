@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.client.particles.MiracleCircleParticle;
 import com.skullmangames.darksouls.client.particles.MiracleGlowParticle;
 import com.skullmangames.darksouls.client.particles.SoulParticle;
 import com.skullmangames.darksouls.client.particles.SparkParticle;
+import com.skullmangames.darksouls.client.particles.VaseShardParticle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
@@ -48,6 +49,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> LIGHTNING = register("lightning", true);
 	public static final RegistryObject<SimpleParticleType> BLOOD = register("blood", true);
 	public static final RegistryObject<SimpleParticleType> SPARK = register("spark", true);
+	public static final RegistryObject<SimpleParticleType> VASE_SHARD = register("vase_shard", true);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
 	{
@@ -85,5 +87,6 @@ public class ModParticles
 		minecraft.particleEngine.register(LIGHTNING.get(), LightningParticle.Factory::new);
 		minecraft.particleEngine.register(BLOOD.get(), BloodParticle.Factory::new);
 		minecraft.particleEngine.register(SPARK.get(), SparkParticle.Factory::new);
+		minecraft.particleEngine.register(VASE_SHARD.get(), VaseShardParticle.Factory::new);
 	}
 }

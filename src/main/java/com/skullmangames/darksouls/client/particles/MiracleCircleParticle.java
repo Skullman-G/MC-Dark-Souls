@@ -20,7 +20,7 @@ public class MiracleCircleParticle extends TextureSheetParticle
 {
 	private final float maxSize;
 	
-	protected MiracleCircleParticle(ClientLevel level, float maxSize, double xCoord, double yCoord, double zCoord)
+	private MiracleCircleParticle(ClientLevel level, float maxSize, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 0;

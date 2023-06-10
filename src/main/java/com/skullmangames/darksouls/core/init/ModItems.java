@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.item.ModArmorItem;
 import com.skullmangames.darksouls.common.item.SoulContainerItem;
 import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
+import com.skullmangames.darksouls.common.item.TerracottaVaseItem;
 import com.skullmangames.darksouls.common.item.UndeadBoneShardItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
@@ -218,6 +219,9 @@ public class ModItems
 	public static final RegistryObject<Item> SUNLIGHT_MEDAL = ITEMS.register("sunlight_medal", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> TERRACOTTA_VASE = ITEMS.register("terracotta_vase", () -> new TerracottaVaseItem(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Souls
 	public static final RegistryObject<Item> SOUL_OF_A_LOST_UNDEAD = ITEMS.register("soul_of_a_lost_undead", () -> new SoulContainerItem(200, new Item.Properties()
@@ -277,9 +281,6 @@ public class ModItems
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> STONE_BRICK_WINDOW = ITEMS.register("stone_brick_window", () -> new BlockItem(ModBlocks.STONE_BRICK_WINDOW.get(),
-			new Item.Properties().tab(DarkSouls.TAB)));
-	
-	public static final RegistryObject<Item> TERRACOTTA_POT = ITEMS.register("terracotta_pot", () -> new BlockItem(ModBlocks.TERRACOTTA_POT.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	

@@ -26,7 +26,7 @@ public class MiracleGlowParticle extends EntityboundParticle
 	@Nullable private LivingCap<?> entityCap;
 	@Nullable private Joint joint;
 	
-	protected MiracleGlowParticle(ClientLevel level, int entityId, int lifetime, SpriteSet sprites, double xCoord, double yCoord, double zCoord)
+	private MiracleGlowParticle(ClientLevel level, int entityId, int lifetime, SpriteSet sprites, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 0.3F;

@@ -13,9 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class DustCloudParticle extends TextureSheetParticle
 {
-	public DustCloudParticle(ClientLevel world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
+	private DustCloudParticle(ClientLevel level, double posX, double posY, double posZ, double speedX, double speedY, double speedZ)
 	{
-		super(world, posX, posY, posZ, speedX, speedY, speedZ);
+		super(level, posX, posY, posZ, speedX, speedY, speedZ);
 
 		this.xd = speedX / 2;
 		this.yd = speedY / 2;

@@ -36,7 +36,7 @@ public class LightningSpearParticle extends EntityboundParticle
 	private Quaternion rot2;
 	private final float scale;
 	
-	protected LightningSpearParticle(ClientLevel level, int entityId, float scale, double xCoord, double yCoord, double zCoord)
+	private LightningSpearParticle(ClientLevel level, int entityId, float scale, double xCoord, double yCoord, double zCoord)
 	{
 		super(level, entityId, xCoord, yCoord, zCoord, 0, 0, 0);
 		this.quadSize = 1.0F;
