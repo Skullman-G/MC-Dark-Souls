@@ -461,9 +461,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return Damages.create().putAll(CoreDamageType.damages(this.orgEntity));
 	}
+	
+	@Override
+	public boolean isInvincible()
+	{
+		return this.getEntityState().isInvincible();
+	}
 
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
+		EntityCapability<?> cap = (EntityCapability<?>)hitTarget.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		if (cap != null && cap.isInvincible()) return false;
+		
 		boolean succeed = hitTarget.hurt((DamageSource) source, source.getAmount());
 
 		if (succeed)

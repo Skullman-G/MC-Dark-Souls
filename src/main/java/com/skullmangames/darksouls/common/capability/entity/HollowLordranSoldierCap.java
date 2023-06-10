@@ -52,7 +52,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		}
 		else
 		{
-			if (moveset == WeaponMovesets.STRAIGHT_SWORD)
+			if (moveset.compareTo(WeaponMovesets.STRAIGHT_SWORD) == 0)
 			{
 				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))
@@ -62,7 +62,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 						.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
 						.addDodge(Animations.BIPED_JUMP_BACK));
 			}
-			else if (moveset == WeaponMovesets.SPEAR)
+			else if (moveset.compareTo(WeaponMovesets.SPEAR) == 0)
 			{
 				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 1.0F, true, true, true)
 						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS))

@@ -1,15 +1,15 @@
 {
   "moveset": {
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_thrust_check"
-      ]
-    },
     "dash": {
       "repeating": true,
       "animations": [
         "darksouls:greatsword_dash_attack"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_thrust_check"
       ]
     },
     "heavy": {

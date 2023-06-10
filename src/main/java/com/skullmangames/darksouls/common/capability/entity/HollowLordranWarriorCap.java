@@ -46,7 +46,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
-		if (moveset == WeaponMovesets.STRAIGHT_SWORD)
+		if (moveset.compareTo(WeaponMovesets.STRAIGHT_SWORD) == 0)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
@@ -55,7 +55,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK))
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
-		else if (moveset == WeaponMovesets.AXE)
+		else if (moveset.compareTo(WeaponMovesets.AXE) == 0)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))

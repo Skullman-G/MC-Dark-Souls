@@ -29,7 +29,7 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	@Override
 	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
 	{
-		if (moveset != WeaponMovesets.ULTRA_GREATSWORD) return;
+		if (moveset.compareTo(WeaponMovesets.BLACK_KNIGHT_SWORD) != 0) return;
 		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 				.addAttack(new AttackInstance(4, 3.0F, Animations.BLACK_KNIGHT_SWORD_LA))
 				.addDodge(Animations.BIPED_JUMP_BACK));

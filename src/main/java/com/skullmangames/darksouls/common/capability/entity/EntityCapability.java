@@ -71,4 +71,9 @@ public abstract class EntityCapability<T extends Entity>
 	}
 
 	public abstract PublicMatrix4f getModelMatrix(float partialTicks);
+	
+	public boolean isInvincible()
+	{
+		return false;
+	}
 }

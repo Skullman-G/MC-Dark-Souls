@@ -85,7 +85,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 		}
 		else
 		{
-			if (moveset != WeaponMovesets.STRAIGHT_SWORD) return;
+			if (moveset.compareTo(WeaponMovesets.STRAIGHT_SWORD) != 0) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))

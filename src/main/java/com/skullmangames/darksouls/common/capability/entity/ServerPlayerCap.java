@@ -205,7 +205,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 				new STCPlayAnimation(animation, this.orgEntity.getId(), 0.0F), this.orgEntity);
 
 		if (this.isCreativeOrSpectator()) return;
-		this.increaseStamina(-4.0F);
+		this.increaseStamina(-25.0F);
 	}
 	
 	@Override
