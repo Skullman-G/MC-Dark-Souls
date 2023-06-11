@@ -41,11 +41,11 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		this.slot = slotType;
 	}
 	
-	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, ResourceLocation armorResource, PublicMatrix4f[] poses)
+	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, float a, ResourceLocation armorResource, PublicMatrix4f[] poses)
 	{
 		RenderType rt = ModRenderTypes.getAnimatedArmorModel(armorResource);
 		VertexConsumer vertexConsumer = ModRenderTypes.getArmorVertexBuilder(buf, rt, hasEffect);
-		model.draw(matStack, vertexConsumer, packedLight, r, g, b, 1.0F, poses);
+		model.draw(matStack, vertexConsumer, packedLight, r, g, b, a, poses);
 	}
 	
 	@Override
@@ -67,18 +67,19 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 			ClientModel model = this.getArmorModel(entity, armorItem, stack);
 			
 			boolean hasEffect = stack.isEnchanted();
+			float a = Math.min(entityCap.getAlpha() + 0.5F, 1.0F);
 			if (armorItem instanceof DyeableArmorItem)
 			{
 				int i = ((DyeableArmorItem) armorItem).getColor(stack);
 				float r = (float) (i >> 16 & 255) / 255.0F;
 				float g = (float) (i >> 8 & 255) / 255.0F;
 				float b = (float) (i & 255) / 255.0F;
-				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, r, g, b, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
-				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entity, armorItem.getSlot(), "overlay"), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, r, g, b, a, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, a, this.getArmorTexture(stack, entity, armorItem.getSlot(), "overlay"), poses);
 			}
 			else
 			{
-				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
+				this.renderArmor(poseStack, buffer, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, a, this.getArmorTexture(stack, entity, armorItem.getSlot(), null), poses);
 			}
 		}
 		else

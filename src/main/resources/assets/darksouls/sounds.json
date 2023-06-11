@@ -1,4 +1,35 @@
 {
+	"entity.black_knight.death":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/black_knight/death"
+		]
+	},
+	
+	"entity.black_knight.foot":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/black_knight/foot_1",
+			"darksouls:entities/black_knight/foot_2",
+			"darksouls:entities/black_knight/foot_3"
+		]
+	},
+	
+	"entity.black_knight.damage":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/black_knight/damage_1",
+			"darksouls:entities/black_knight/damage_2",
+			"darksouls:entities/black_knight/damage_3"
+		]
+	},
+	
 	"block.vase.break":
 	{
 		"category": "block",

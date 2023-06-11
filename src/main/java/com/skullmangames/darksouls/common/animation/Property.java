@@ -52,4 +52,9 @@ public abstract class Property<T>
 
 		public static final AttackProperty<Boolean> BLOCKING = new AttackProperty<Boolean>();
 	}
+	
+	public static class DeathProperty<T> extends Property<T>
+	{
+		public static final DeathProperty<Float> DISAPPEAR_AT = new DeathProperty<Float>();
+	}
 }

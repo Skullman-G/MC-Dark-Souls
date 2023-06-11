@@ -67,7 +67,7 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<TerracottaVase>> TERRACOTTA_VASE = register("terracotta_vase",
 			EntityType.Builder.<TerracottaVase>of(TerracottaVase::new, MobCategory.MISC)
-				.sized(1.0F, 1.9F)
+				.sized(0.8F, 1.8F)
 				.setUpdateInterval(20)
 				.clientTrackingRange(6));
 

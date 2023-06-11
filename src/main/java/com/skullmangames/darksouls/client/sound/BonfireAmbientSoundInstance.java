@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 {
 	private static final float VOLUME_MIN = 0.0F;
-	private static final float VOLUME_MAX = 0.5F;
+	private static final float VOLUME_MAX = 1.0F;
 	private final BonfireBlockEntity bonfire;
 
 	public BonfireAmbientSoundInstance(BonfireBlockEntity bonfire)
@@ -49,6 +49,6 @@ public class BonfireAmbientSoundInstance extends AbstractTickableSoundInstance
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		float f = (float)player.distanceToSqr(this.x, this.y, this.z);
-		this.volume = Mth.lerp(Mth.clamp(1.0F - (f * 0.005F), 0.0F, 0.5F), VOLUME_MIN, VOLUME_MAX);
+		this.volume = Mth.lerp(Mth.clamp(1.0F - (f * 0.005F), 0.0F, 1F), VOLUME_MIN, VOLUME_MAX);
 	}
 }

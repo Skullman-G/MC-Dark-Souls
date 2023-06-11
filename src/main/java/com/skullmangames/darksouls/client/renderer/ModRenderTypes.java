@@ -81,7 +81,7 @@ public class ModRenderTypes extends RenderType
 	{
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
-				.setTransparencyState(NO_TRANSPARENCY)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setDepthTestState(LEQUAL_DEPTH_TEST).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
 				.setShaderState(RENDERTYPE_ENTITY_CUTOUT_SHADER)
 				.setLayeringState(VIEW_OFFSET_Z_LAYERING).createCompositeState(true);

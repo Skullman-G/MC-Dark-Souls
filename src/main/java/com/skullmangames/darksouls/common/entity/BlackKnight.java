@@ -1,7 +1,10 @@
 package com.skullmangames.darksouls.common.entity;
 
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -61,5 +64,17 @@ public class BlackKnight extends ArmoredMob
 		case FEET:
 			return null;
 		}
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source)
+	{
+		return ModSoundEvents.BLACK_KNIGHT_DAMAGE.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return ModSoundEvents.BLACK_KNIGHT_DEATH.get();
 	}
 }

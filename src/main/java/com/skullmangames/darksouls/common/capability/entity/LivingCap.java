@@ -69,6 +69,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;
 	public Entity criticalTarget;
+	private float alpha = 1.0F;
 
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -78,6 +79,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
 		this.currentlyAttackedEntities = new ArrayList<Entity>();
+	}
+	
+	public float getAlpha()
+	{
+		return this.alpha;
+	}
+	
+	public void setAlpha(float value)
+	{
+		this.alpha = value;
 	}
 
 	@Override

@@ -86,6 +86,11 @@ public class AttackAnimation extends ActionAnimation
 		this.attackType = attackType;
 		this.phases = phases;
 	}
+	
+	public AttackType getAttackType()
+	{
+		return this.attackType;
+	}
 
 	@Override
 	public void onUpdate(LivingCap<?> entityCap)

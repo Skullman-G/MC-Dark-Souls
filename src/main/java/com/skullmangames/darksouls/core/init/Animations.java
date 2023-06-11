@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.client.particles.spawner.CircleParticleSpawne
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
+import com.skullmangames.darksouls.common.animation.Property.DeathProperty;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
@@ -285,6 +286,9 @@ public final class Animations
 	
 	// Black Knight
 	public static StaticAnimation BLACK_KNIGHT_IDLE;
+	public static StaticAnimation BLACK_KNIGHT_WALKING;
+	public static StaticAnimation BLACK_KNIGHT_RUNNING;
+	public static DeathAnimation BLACK_KNIGHT_DEATH;
 	
 	public static AttackAnimation[] BLACK_KNIGHT_SWORD_LA;
 
@@ -1604,7 +1608,31 @@ public final class Animations
 		
 		
 		// Black Knight
-		BLACK_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("black_knight_idle"), 1.0F, true, DarkSouls.rl("black_knight/idle"), (models) -> models.ENTITY_BIPED)
+		BLACK_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("black_knight_idle"), 0.3F, true, DarkSouls.rl("black_knight/idle"), (models) -> models.ENTITY_BIPED)
+				.register(builder);
+		
+		BLACK_KNIGHT_WALKING = new StaticAnimation(DarkSouls.rl("black_knight_walking"), 0.1F, true, DarkSouls.rl("black_knight/walking"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+						{
+								Event.create(0.24F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get())),
+								Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get()))
+						})
+				.register(builder);
+		
+		BLACK_KNIGHT_RUNNING = new StaticAnimation(DarkSouls.rl("black_knight_running"), 0.1F, true, DarkSouls.rl("black_knight/running"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+						{
+								Event.create(0.12F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get())),
+								Event.create(0.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get()))
+						})
+				.register(builder);
+		
+		BLACK_KNIGHT_DEATH = new DeathAnimation(DarkSouls.rl("black_knight_death"), 0.1F, DarkSouls.rl("black_knight/death"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+						{
+								Event.create(1.84F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+						})
+				.addProperty(DeathProperty.DISAPPEAR_AT, 0.5F)
 				.register(builder);
 		
 		BLACK_KNIGHT_SWORD_LA = new AttackAnimation[]
@@ -1643,12 +1671,13 @@ public final class Animations
 		STRAY_DEMON_MOVE = new StaticAnimation(DarkSouls.rl("stray_demon_move"), 0.5F, true, DarkSouls.rl("stray_demon/move"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 						Event.create(0.4F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
-						Event.create(1.2F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(1.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
 						Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 				}).register(builder);
 		STRAY_DEMON_DEATH = new DeathAnimation(DarkSouls.rl("stray_demon_death"), 0.5F, DarkSouls.rl("stray_demon/death"), (models) -> models.ENTITY_STRAY_DEMON)
+				.addProperty(DeathProperty.DISAPPEAR_AT, 1.0F)
 				.register(builder);
 
 		STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
