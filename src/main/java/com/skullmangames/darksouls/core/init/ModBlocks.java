@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.block.CustomShapedBlock;
-import com.skullmangames.darksouls.common.block.DirectionalCustomShapedBlock;
+import com.skullmangames.darksouls.common.block.DefaultHorizontalDirectionalBlock;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
 import net.minecraft.world.level.block.Block;
@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -89,58 +88,8 @@ public class ModBlocks
 			.noOcclusion(),
 			Block.box(0, 0, 0, 16, 4, 16)));
 	
-	public static final RegistryObject<Block> STONE_BRICK_WINDOW = BLOCKS.register("stone_brick_window", () -> new DirectionalCustomShapedBlock(BlockBehaviour.Properties
+	public static final RegistryObject<Block> STONE_BRICK_WINDOW = BLOCKS.register("stone_brick_window", () -> new DefaultHorizontalDirectionalBlock(BlockBehaviour.Properties
 			.of(Material.STONE)
 			.strength(3.0F)
-			.sound(SoundType.STONE)
-			.noOcclusion(),
-			new VoxelShape[]
-			{
-				Block.box(14, 0, 0, 16, 16, 16),
-				Block.box(2, 14, 0, 14, 16, 16),
-				Block.box(2, 0, 0, 14, 2, 16),
-				Block.box(2, 13, 1, 14, 14, 15),
-				Block.box(2, 2, 1, 14, 3, 15),
-				Block.box(2, 3, 1, 3, 13, 15),
-				Block.box(13, 3, 1, 14, 13, 15),
-				Block.box(7, 3, 1, 9, 13, 15),
-				Block.box(0, 0, 0, 2, 16, 16)
-			},
-			new VoxelShape[]
-			{
-				Block.box(14, 0, 0, 16, 16, 16),
-				Block.box(2, 14, 0, 14, 16, 16),
-				Block.box(2, 0, 0, 14, 2, 16),
-				Block.box(2, 13, 1, 14, 14, 15),
-				Block.box(2, 2, 1, 14, 3, 15),
-				Block.box(2, 3, 1, 3, 13, 15),
-				Block.box(13, 3, 1, 14, 13, 15),
-				Block.box(7, 3, 1, 9, 13, 15),
-				Block.box(0, 0, 0, 2, 16, 16)
-			},
-			new VoxelShape[]
-			{
-				Block.box(0, 0, 0, 16, 16, 2),
-				Block.box(0, 14, 2, 16, 16, 14),
-				Block.box(0, 0, 2, 16, 2, 14),
-				Block.box(1, 13, 2, 15, 14, 14),
-				Block.box(1, 2, 2, 15, 3, 14),
-				Block.box(1, 3, 13, 15, 13, 14),
-				Block.box(1, 3, 2, 15, 13, 3),
-				Block.box(1, 3, 7, 15, 13, 9),
-				Block.box(0, 0, 14, 16, 16, 16)
-			},
-			new VoxelShape[]
-			{
-				Block.box(0, 0, 0, 16, 16, 2),
-				Block.box(0, 14, 2, 16, 16, 14),
-				Block.box(0, 0, 2, 16, 2, 14),
-				Block.box(1, 13, 2, 15, 14, 14),
-				Block.box(1, 2, 2, 15, 3, 14),
-				Block.box(1, 3, 13, 15, 13, 14),
-				Block.box(1, 3, 2, 15, 13, 3),
-				Block.box(1, 3, 7, 15, 13, 9),
-				Block.box(0, 0, 14, 16, 16, 16)
-			}
-	));
+			.sound(SoundType.STONE)));
 }
