@@ -12,18 +12,18 @@
         "darksouls:backstab_thrust_check"
       ]
     },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:greatsword_thrust",
-        "darksouls:greatsword_upward_slash"
-      ]
-    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:greatsword_light_attack_1",
         "darksouls:greatsword_light_attack_2"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatsword_thrust",
+        "darksouls:greatsword_upward_slash"
       ]
     }
   }

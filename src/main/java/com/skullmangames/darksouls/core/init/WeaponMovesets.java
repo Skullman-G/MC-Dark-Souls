@@ -14,7 +14,8 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.ReloadableCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
+import com.skullmangames.darksouls.core.util.WeaponMoveset;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;

@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.core.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -15,8 +18,10 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	private boolean wasBlocked;
 	private StunType stunType;
 	private final Damages damages;
+	private final Set<AuxEffect> auxEffects = new HashSet<>();
 	
-	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType, int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damages damages)
+	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType,
+			int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damages damages)
 	{
 		super(damageTypeIn, source);
 		
@@ -128,5 +133,25 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	public Vec3 getAttackPos()
 	{
 		return this.attackPos;
+	}
+
+	@Override
+	public Set<AuxEffect> getAuxEffects()
+	{
+		return this.auxEffects;
+	}
+
+	@Override
+	public DamageSourceExtended addAuxEffect(AuxEffect auxEffect)
+	{
+		this.auxEffects.add(auxEffect);
+		return this;
+	}
+
+	@Override
+	public DamageSourceExtended addAuxEffects(Set<AuxEffect> auxEffects)
+	{
+		this.auxEffects.addAll(auxEffects);
+		return this;
 	}
 }

@@ -3,9 +3,12 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -18,6 +21,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -37,22 +41,30 @@ public abstract class WeaponCap extends AttributeItemCap
 {
 	private final WeaponCategory weaponCategory;
 	private final ImmutableMap<CoreDamageType, Integer> damage;
-	protected final Map<LivingMotion, StaticAnimation> animationSet = new HashMap<>();
+	protected final Map<LivingMotion, StaticAnimation> animationOverrides = new HashMap<>();
 	private final ImmutableMap<Stat, Integer> statRequirements;
 	private final ImmutableMap<Stat, Scaling> statScaling;
+	private final ImmutableSet<AuxEffect> auxEffects;
 	private final float weight;
 	private final float critical;
 
-	public WeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, float critical, float weight,
+	public WeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+			float critical, float weight,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item);
 		this.weaponCategory = category;
 		this.damage = damage;
+		this.auxEffects = auxEffects;
 		this.critical = critical;
 		this.statRequirements = statRequirements;
 		this.statScaling = statScaling;
 		this.weight = weight;
+	}
+	
+	public Set<AuxEffect> getAuxEffects()
+	{
+		return this.auxEffects;
 	}
 	
 	public float getCritical()
@@ -210,7 +222,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	@Override
 	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> playerCap)
 	{
-		return this.animationSet;
+		return this.animationOverrides;
 	}
 
 	@OnlyIn(Dist.CLIENT)

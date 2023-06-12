@@ -357,6 +357,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return ModCapabilities.getMeleeWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
+	
+	public WeaponCap getHeldWeaponCap(InteractionHand hand)
+	{
+		return ModCapabilities.getWeaponCap(this.orgEntity.getItemInHand(hand));
+	}
 
 	public boolean isInaction()
 	{
@@ -375,6 +380,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
+		
+		// Aux Effects
+		extSource.getAuxEffects().forEach((aux) ->
+		{
+			aux.apply(this, extSource);
+		});
 		
 		// Damage Calculation
 		if (!indirect)
@@ -465,7 +476,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType,
 			int requireddeflectionlevel, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages);
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages)
+				.addAuxEffects(null);
 	}
 
 	public Damages getDamageToEntity(Entity targetEntity, InteractionHand hand)

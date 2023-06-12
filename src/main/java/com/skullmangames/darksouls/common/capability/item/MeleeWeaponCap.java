@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -20,9 +22,12 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.util.WeaponMoveset;
+import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -53,12 +58,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	private final ImmutableMap<CoreDamageType, Float> defense;
 	private final float stability;
 	
-	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage,
+	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 			float critical, boolean holdOnShoulder, float weight,
 			ShieldType shieldType, WeaponMaterial weaponMaterial, ImmutableMap<CoreDamageType, Float> defense, float stability,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.MELEE_WEAPON, damage, critical, weight, statRequirements, statScaling);
+		super(item, WeaponCategory.MELEE_WEAPON, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		this.movesetId = moveset;
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.collider = collider;
@@ -266,6 +271,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		private ResourceLocation movesetId;
 		private ResourceLocation colliderId;
 		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
 		private float critical = 1.00F;
 		private boolean holdOnShoulder;
 		private float weight;
@@ -288,6 +294,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		public ResourceLocation getLocation()
 		{
 			return this.item.getRegistryName();
+		}
+		
+		public Builder addAuxEffect(AuxEffect auxEffect)
+		{
+			this.auxEffects.add(auxEffect);
+			return this;
 		}
 		
 		public Builder setCritical(float critical)
@@ -350,6 +362,13 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			this.damage.build().forEach((type, dam) ->
 			{
 				damage.addProperty(type.toString(), dam);
+			});
+			
+			JsonArray auxEffects = new JsonArray();
+			root.add("aux_effects", auxEffects);
+			this.auxEffects.build().forEach((auxEffect) ->
+			{
+				auxEffects.add(auxEffect.toString());
 			});
 			
 			JsonObject statRequirements = new JsonObject();
@@ -438,13 +457,23 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 				builder.putDamageInfo(type, dam, def);
 			}
 			
+			JsonElement auxEffects = json.get("aux_effects");
+			if (auxEffects != null)
+			{
+				for (JsonElement auxEffect : auxEffects.getAsJsonArray())
+				{
+					builder.addAuxEffect(AuxEffects.fromId(ResourceLocation.tryParse(auxEffect.getAsString())));
+				}
+			}
+			
 			return builder;
 		}
 		
 		public MeleeWeaponCap build()
 		{
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.damage.build(), this.critical, this.holdOnShoulder, this.weight,
+			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.damage.build(), this.auxEffects.build(),
+					this.critical, this.holdOnShoulder, this.weight,
 					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability, this.statRequirements.build(), this.statScaling.build());
 		}
 	}

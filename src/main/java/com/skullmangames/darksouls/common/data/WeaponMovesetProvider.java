@@ -9,11 +9,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.util.WeaponMoveset;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;

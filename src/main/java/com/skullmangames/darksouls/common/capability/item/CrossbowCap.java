@@ -1,23 +1,25 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
 import net.minecraft.world.item.Item;
 
 public class CrossbowCap extends RangedWeaponCap
 {
-	public CrossbowCap(Item item, ImmutableMap<CoreDamageType, Integer> damage, float critical, float weight,
+	public CrossbowCap(Item item, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects, float critical, float weight,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.CROSSBOW, Animations.BIPED_CROSSBOW_RELOAD, Animations.BIPED_CROSSBOW_AIM, Animations.BIPED_CROSSBOW_SHOT, damage, critical,
-				weight, statRequirements, statScaling);
-		this.animationSet.put(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW);
-		this.animationSet.put(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW);
-		this.animationSet.put(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW);
+		super(item, WeaponCategory.CROSSBOW, Animations.BIPED_CROSSBOW_RELOAD, Animations.BIPED_CROSSBOW_AIM, Animations.BIPED_CROSSBOW_SHOT, damage, auxEffects,
+				critical, weight, statRequirements, statScaling);
+		this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW);
+		this.animationOverrides.put(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW);
+		this.animationOverrides.put(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW);
 	}
 	
 	@Override
@@ -37,6 +39,7 @@ public class CrossbowCap extends RangedWeaponCap
 		private float critical;
 		private float weight;
 		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
@@ -45,6 +48,12 @@ public class CrossbowCap extends RangedWeaponCap
 			this.item = item;
 			this.critical = critical;
 			this.weight = weight;
+		}
+		
+		public Builder addAuxEffect(AuxEffect auxEffect)
+		{
+			this.auxEffects.add(auxEffect);
+			return this;
 		}
 		
 		public Builder putDamage(CoreDamageType type, int value)
@@ -62,7 +71,8 @@ public class CrossbowCap extends RangedWeaponCap
 		
 		public CrossbowCap build()
 		{
-			return new CrossbowCap(this.item, this.damage.build(), this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
+			return new CrossbowCap(this.item, this.damage.build(), this.auxEffects.build(),
+					this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.core.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
@@ -18,24 +19,30 @@ import net.minecraft.world.phys.Vec3;
 
 public interface ExtendedDamageSource
 {
-	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
+	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType,
+			int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("player", player, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType, int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
+	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType,
+			int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("mob", mob, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
-	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damages damages)
+	public static IndirectDamageSourceExtended causeProjectileDamage(Projectile projectile, Entity owner, StunType stunType,
+			float poiseDamage, float staminaDamage, Damages damages)
 	{
 		return new IndirectDamageSourceExtended("projectile", projectile, owner, stunType, poiseDamage, staminaDamage, damages);
 	}
 	
 	public static DamageSourceExtended getDirectFrom(ExtendedDamageSource org)
 	{
-		return new DamageSourceExtended(org.getType(), org.getOwner(), org.getAttackPos(), org.getStunType(), org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
+		DamageSourceExtended source = new DamageSourceExtended(org.getType(), org.getOwner(), org.getAttackPos(), org.getStunType(),
+				org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
+		source.addAuxEffects(org.getAuxEffects());
+		return source;
 	}
 	
 	public static DamageSourceExtended getDirectFrom(DamageSource org, float amount)
@@ -53,7 +60,8 @@ public interface ExtendedDamageSource
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(ExtendedDamageSource org)
 	{
-		return new IndirectDamageSourceExtended(org.getType(), org.getSource(), org.getOwner(), org.getStunType(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
+		return new IndirectDamageSourceExtended(org.getType(), org.getSource(), org.getOwner(), org.getStunType(),
+				org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages()).addAuxEffects(org.getAuxEffects());
 	}
 	
 	public static IndirectDamageSourceExtended getIndirectFrom(IndirectEntityDamageSource org, float amount)
@@ -86,6 +94,9 @@ public interface ExtendedDamageSource
 	public void setWasBlocked(boolean value);
 	public float getAttackAngle(Entity target);
 	public Vec3 getAttackPos();
+	public Set<AuxEffect> getAuxEffects();
+	public ExtendedDamageSource addAuxEffect(AuxEffect auxEffect);
+	public ExtendedDamageSource addAuxEffects(Set<AuxEffect> auxEffects);
 	
 	public enum StunType
 	{
@@ -233,5 +244,7 @@ public interface ExtendedDamageSource
 			});
 			return this;
 		}
+		
+		
 	}
 }

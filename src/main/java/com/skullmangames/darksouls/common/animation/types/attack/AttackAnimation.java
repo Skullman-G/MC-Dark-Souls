@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types.attack;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,10 +27,12 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.TerracottaVase;
 import com.skullmangames.darksouls.config.IngameConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
+import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
@@ -317,8 +320,9 @@ public class AttackAnimation extends ActionAnimation
 		damages.replace(CoreDamageType.PHYSICAL, movDamageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflectionLevel(phase), poiseDamage, damages);
-		return extDmgSource;
+		WeaponCap weapon = entityCap.getHeldWeaponCap(phase.hand);
+		Set<AuxEffect> auxEffects = weapon == null ? new HashSet<>() : weapon.getAuxEffects();
+		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflectionLevel(phase), poiseDamage, damages).addAuxEffects(auxEffects);
 	}
 
 	public <V> AttackAnimation addProperty(Property<V> propertyType, V value)

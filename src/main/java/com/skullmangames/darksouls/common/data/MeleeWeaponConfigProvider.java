@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.WeaponMaterial;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
@@ -435,6 +436,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON)
+			.addAuxEffect(AuxEffects.ANTI_DEMON)
 			.shouldHoldOnShoulder(),
 			
 			MeleeWeaponCap.builder(ModItems.CLAYMORE.get(), WeaponMovesets.CLAYMORE, Colliders.GREATSWORD.getId(), 9.0F)

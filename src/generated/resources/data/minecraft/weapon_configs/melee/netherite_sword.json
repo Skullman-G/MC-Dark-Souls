@@ -14,6 +14,7 @@
     "DARK": 0,
     "HOLY": 0
   },
+  "aux_effects": [],
   "stat_requirements": {
     "stat.darksouls.strength": 8,
     "stat.darksouls.dexterity": 10,

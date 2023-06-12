@@ -12,17 +12,17 @@
         "darksouls:backstab_thrust_check"
       ]
     },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:dagger_heavy_attack"
-      ]
-    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:dagger_light_attack_1",
         "darksouls:dagger_light_attack_2"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:dagger_heavy_attack"
       ]
     }
   }

@@ -1,18 +1,20 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
 import net.minecraft.world.item.Item;
 
 public class TridentCap extends RangedWeaponCap
 {
-	public TridentCap(Item item, ImmutableMap<CoreDamageType, Integer> damage, float critical, float weight,
+	public TridentCap(Item item, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects, float critical, float weight,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.NONE_WEAON, null, Animations.BIPED_SPEER_AIM, Animations.BIPED_SPEER_REBOUND, damage,
+		super(item, WeaponCategory.NONE_WEAON, null, Animations.BIPED_SPEER_AIM, Animations.BIPED_SPEER_REBOUND, damage, auxEffects,
 				critical, weight, statRequirements, statScaling);
 	}
 	
@@ -33,6 +35,7 @@ public class TridentCap extends RangedWeaponCap
 		private float critical;
 		private float weight;
 		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
@@ -41,6 +44,12 @@ public class TridentCap extends RangedWeaponCap
 			this.item = item;
 			this.critical = critical;
 			this.weight = weight;
+		}
+		
+		public Builder putAuxEffect(AuxEffect auxEffect)
+		{
+			this.auxEffects.add(auxEffect);
+			return this;
 		}
 		
 		public Builder putDamage(CoreDamageType type, int value)
@@ -58,7 +67,8 @@ public class TridentCap extends RangedWeaponCap
 		
 		public TridentCap build()
 		{
-			return new TridentCap(this.item, this.damage.build(), this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
+			return new TridentCap(this.item, this.damage.build(), this.auxEffects.build(),
+					this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
 		}
 	}
 }

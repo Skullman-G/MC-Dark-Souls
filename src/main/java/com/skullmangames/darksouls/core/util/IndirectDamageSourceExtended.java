@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
+import java.util.Set;
+
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
@@ -14,14 +16,36 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	private boolean wasBlocked;
 	private StunType stunType;
 	private final Damages damages;
+	private Set<AuxEffect> auxEffects;
 
-	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType, float poiseDamage, float staminaDamage, Damages damages)
+	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType,
+			float poiseDamage, float staminaDamage, Damages damages)
 	{
 		super(damageTypeIn, source, owner);
 		this.stunType = stunType;
 		this.damages = damages;
 		this.poiseDamage = poiseDamage;
 		this.staminaDamage = staminaDamage;
+	}
+	
+	@Override
+	public IndirectDamageSourceExtended addAuxEffect(AuxEffect auxEffect)
+	{
+		this.auxEffects.add(auxEffect);
+		return this;
+	}
+	
+	@Override
+	public IndirectDamageSourceExtended addAuxEffects(Set<AuxEffect> auxEffects)
+	{
+		this.auxEffects.addAll(auxEffects);
+		return this;
+	}
+	
+	@Override
+	public Set<AuxEffect> getAuxEffects()
+	{
+		return this.auxEffects;
 	}
 	
 	@Override

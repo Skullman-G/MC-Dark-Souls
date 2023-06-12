@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.capability.item;
+package com.skullmangames.darksouls.core.util;
 
 import java.util.HashMap;
 import java.util.Map;

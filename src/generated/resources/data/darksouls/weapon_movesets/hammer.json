@@ -12,16 +12,16 @@
         "darksouls:backstab_strike_check"
       ]
     },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:hammer_heavy_attack"
-      ]
-    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:hammer_light_attack"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:hammer_heavy_attack"
       ]
     }
   }

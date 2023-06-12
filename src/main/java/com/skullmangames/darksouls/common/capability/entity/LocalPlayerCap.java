@@ -7,10 +7,10 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponMoveset;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import java.util.ArrayList;
