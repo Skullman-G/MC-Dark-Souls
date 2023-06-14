@@ -79,6 +79,7 @@
 	"item.darksouls.black_knight_spawn_egg": "Black Knight Spawn Egg",
 	"item.darksouls.black_knight_sword": "Black Knight Sword",
 	"item.darksouls.claymore": "Claymore",
+	"item.darksouls.balder_shield": "Balder Shield",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -201,11 +202,11 @@
 	"tooltip.darksouls.elite_cleric_helm.extended": "Helm worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
 	"tooltip.darksouls.elite_cleric_armor.extended": "Armor worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
 	"tooltip.darksouls.elite_cleric_leggings.extended": "Leggings worn by the warrior clerics of the Way of White, who are famous for being unyielding in battle. Those black armor pieces belonged to warrior clerics sent on missions, many of whom were high level priests.",
-	"tooltip.darksouls.falconer_helm.extended": "Helm worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
-	"tooltip.darksouls.falconer_armor.extended": "Armor worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
-	"tooltip.darksouls.falconer_leggings.extended": "Leggings worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
-	"tooltip.darksouls.falconer_boots.extended": "Boots worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
-	"tooltip.darksouls.golden_falcon_shield.extended": "Small shield used by Volgen Falconers. Appears like a glistening gold falcon from afar. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate. The falconers are rumored to be untrusting of others, and demanding of prompt, full payment. But no wonder; they deliver much more than they are paid, and are well aware of it.",
+	"tooltip.darksouls.falconer_helm.extended": "Helm worn by the Volgen Falconers. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.falconer_armor.extended": "Armor worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate.",
+	"tooltip.darksouls.falconer_leggings.extended": "Leggings worn by the Volgen Falconers. In practice they serve as bodyguards for the affluent elite, and they serve well, such that nobody dares scrutinize their backgrounds.",
+	"tooltip.darksouls.falconer_boots.extended": "Boots worn by the Volgen Falconers. Domestic Volgen soldiers are infamously timid, so it is no wonder that this fierce band of mercenary falconers was hired to compensate.",
+	"tooltip.darksouls.golden_falcon_shield.extended": "Small shield used by Volgen Falconers. The falconers are rumored to be untrusting of others, and demanding of prompt, full payment. But no wonder; they deliver much more than they are paid, and are well aware of it.",
 	"tooltip.darksouls.black_knight_helm.extended": "Helm of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
 	"tooltip.darksouls.black_knight_leggings.extended": "Leggings of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
 	"tooltip.darksouls.black_knight_armor.extended": "Armor of a Black Knight. The knights followed Lord Gwyn when he departed to link the flame, but they were burned to ashes in the kindled fire, wandering the world as disembodied spirits ever after.",
@@ -218,6 +219,7 @@
 	"tooltip.darksouls.large_soul_of_a_nameless_soldier.extended": "Large soul of a nameless Undead soldier who has long ago gone Hollow. Souls are the source of all life, and whether Undead, or even Hollow, one continues to seek them.",
 	"tooltip.darksouls.black_knight_sword.extended": "Greatsword of the Black Knights. Used to face chaos demons. The Large motion that puts the weight of the body into the attack reflects the great size of their adversaries long ago.",
 	"tooltip.darksouls.claymore.extended": "This larger type of greatsword is normally wielded with two hands due to its weight. A highly flexible greatsword that can be used to attack in swings or thrusts.",
+	"tooltip.darksouls.balder_shield.extended": "Shield of the knights of the ancient kingdom of Balder. Tweaked for improved stability. Balder was the home of Knight King Rendal, but the kingdom was reduced to ruins after a widespread outbreak of Undead",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

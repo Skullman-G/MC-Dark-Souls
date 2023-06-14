@@ -501,6 +501,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON)
 			.shouldHoldOnShoulder(),
 			
+			// Shields
 			MeleeWeaponCap.builder(Items.SHIELD, WeaponMovesets.SHIELD, Colliders.FIST.getId(), 4.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 88, 0.84F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.47F)
@@ -595,7 +596,23 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.SMALL)
+			.setShieldType(ShieldType.SMALL),
+			
+			MeleeWeaponCap.builder(ModItems.BALDER_SHIELD.get(), WeaponMovesets.SHIELD, Colliders.FIST.getId(), 4.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 66, 1.00F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.20F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.60F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.50F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.25F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.25F)
+			.setCritical(1.00F)
+			.setStability(0.63F)
+			.putStatInfo(Stats.STRENGTH, 12, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
+			.setShieldType(ShieldType.STANDARD)
 		);
 	}
 

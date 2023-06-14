@@ -106,6 +106,10 @@ public class ModItems
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BALDER_SHIELD = ITEMS.register("balder_shield", () -> new Item(new Item.Properties()
+			.stacksTo(1)
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Talismans
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()

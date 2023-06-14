@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -22,7 +21,7 @@ public class WeaponMoveset
 	public static final WeaponMoveset EMPTY = new WeaponMoveset();
 	
 	private final ResourceLocation name;
-	private final Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
+	private final ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
 	
 	private WeaponMoveset()
 	{
@@ -60,7 +59,7 @@ public class WeaponMoveset
 	{
 		private static final Logger LOGGER = LogUtils.getLogger();
 		private ResourceLocation location;
-		private Map<AttackType, Pair<Boolean, AttackAnimation[]>> moveset = new HashMap<>();
+		private ImmutableMap.Builder<AttackType, Pair<Boolean, AttackAnimation[]>> moveset = ImmutableMap.builder();
 		
 		public Builder(ResourceLocation location)
 		{
@@ -80,7 +79,7 @@ public class WeaponMoveset
 		
 		public WeaponMoveset build()
 		{
-			return new WeaponMoveset(this.location, ImmutableMap.copyOf(this.moveset));
+			return new WeaponMoveset(this.location, this.moveset.build());
 		}
 		
 		public JsonObject toJson()
@@ -89,7 +88,7 @@ public class WeaponMoveset
 			JsonObject moveset = new JsonObject();
 			root.add("moveset", moveset);
 			
-			this.moveset.forEach((type, pair) ->
+			this.moveset.build().forEach((type, pair) ->
 			{
 				JsonObject entry = new JsonObject();
 				moveset.add(type.toString(), entry);

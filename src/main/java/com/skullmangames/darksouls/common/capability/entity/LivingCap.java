@@ -476,8 +476,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType,
 			int requireddeflectionlevel, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages)
-				.addAuxEffects(null);
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages);
 	}
 
 	public Damages getDamageToEntity(Entity targetEntity, InteractionHand hand)
