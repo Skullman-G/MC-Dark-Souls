@@ -35,7 +35,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.FALCONER_RUN);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK);
+		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}

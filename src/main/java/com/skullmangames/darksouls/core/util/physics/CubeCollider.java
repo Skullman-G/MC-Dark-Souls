@@ -200,8 +200,7 @@ public class CubeCollider extends Collider
 	public void drawInternal(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, boolean red)
 	{
 		VertexConsumer vertexBuilder = buffer.getBuffer(ModRenderTypes.debugCollider());
-		PublicMatrix4f transpose = new PublicMatrix4f();
-		PublicMatrix4f.transpose(pose, transpose);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(pose);
 		matrixStackIn.pushPose();
 		MathUtils.translateStack(matrixStackIn, pose);
 		MathUtils.rotateStack(matrixStackIn, transpose);

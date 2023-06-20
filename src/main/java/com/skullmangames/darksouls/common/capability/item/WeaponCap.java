@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
@@ -27,6 +25,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -35,7 +34,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public abstract class WeaponCap extends AttributeItemCap
 {
@@ -111,10 +109,9 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.statRequirements.get(stat) <= playerCap.getStatValue(stat);
+		return this.statRequirements.getOrDefault(stat, 0) <= playerCap.getStatValue(stat);
 	}
 
-	@Nullable
 	public boolean hasHoldingAnimation()
 	{
 		return false;
@@ -128,14 +125,15 @@ public abstract class WeaponCap extends AttributeItemCap
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
-		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
+		ResourceLocation id = this.orgItem.getRegistryName();
+		if (id == null) return;
 
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 
 		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
 			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
-					+ ((IForgeRegistryEntry<Item>) this.orgItem).getRegistryName().getPath() + ".extended";
+					+ id.getPath() + ".extended";
 			String description = new TranslatableComponent(languagePath).getString();
 
 			if (!description.contains(languagePath))

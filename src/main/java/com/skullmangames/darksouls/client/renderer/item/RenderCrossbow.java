@@ -10,6 +10,6 @@ public class RenderCrossbow extends RenderShootableWeapon
 {
 	public RenderCrossbow()
 	{
-		correctionMatrix = new PublicMatrix4f();
+		transform = new PublicMatrix4f();
 	}
 }

@@ -21,7 +21,7 @@
 		},
 		{
 			"from": [9, 15.5, 7],
-			"to": [10, 17.5, 9],
+			"to": [10, 17.5, 9.5],
 			"rotation": {"angle": 0, "axis": "z", "origin": [9.5, 19.5, 8]},
 			"faces": {
 				"north": {"uv": [13, 11, 14, 11.5], "rotation": 270, "texture": "#0"},
@@ -258,11 +258,11 @@
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [-90, 90, 0],
-			"translation": [1.75, -1.75, 10]
+			"translation": [1.75, -2.25, 9.25]
 		},
 		"thirdperson_lefthand": {
 			"rotation": [-90, 90, 0],
-			"translation": [1.75, -1.75, 10]
+			"translation": [1.75, -1.75, 9.25]
 		},
 		"firstperson_righthand": {
 			"rotation": [0, 180, 0],

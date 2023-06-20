@@ -68,7 +68,7 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 	
 	public Matrix4f getMVMatrix(PoseStack poseStack, float posX, float posY, float posZ, float xRot, boolean lockRotation)
 	{
-		PublicMatrix4f viewMatrix = PublicMatrix4f.importMatrix(poseStack.last().pose());
+		PublicMatrix4f viewMatrix = new PublicMatrix4f(poseStack.last().pose());
 		PublicMatrix4f finalMatrix = new PublicMatrix4f();
 		finalMatrix.translate(-posX, posY, -posZ);
 		poseStack.popPose();

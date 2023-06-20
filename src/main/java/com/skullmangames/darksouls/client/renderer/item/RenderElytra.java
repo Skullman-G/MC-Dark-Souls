@@ -45,7 +45,7 @@ public class RenderElytra extends RenderItemBase
 		PublicMatrix4f.mul(
 				itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(8).getAnimatedTransform(),
 				modelMatrix, modelMatrix);
-		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
 		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
 

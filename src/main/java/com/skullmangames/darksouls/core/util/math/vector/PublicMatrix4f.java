@@ -20,7 +20,15 @@ public class PublicMatrix4f
 
 	public PublicMatrix4f(final PublicMatrix4f src)
 	{
-		load(src);
+		this.load(src);
+	}
+	
+	public PublicMatrix4f(Matrix4f mat4f)
+	{
+		FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+		buf.position(0);
+		mat4f.store(buf);
+		this.load(buf);
 	}
 	
 	@Override
@@ -32,89 +40,69 @@ public class PublicMatrix4f
 				+" "+this.m30+" "+this.m31+" "+this.m32+" "+this.m33;
 	}
 
-	public PublicMatrix4f setIdentity()
+	public void setIdentity()
 	{
-		return setIdentity(this);
-	}
-
-	public static PublicMatrix4f setIdentity(PublicMatrix4f m)
-	{
-		m.m00 = 1.0f;
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m03 = 0.0f;
-		m.m10 = 0.0f;
-		m.m11 = 1.0f;
-		m.m12 = 0.0f;
-		m.m13 = 0.0f;
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = 1.0f;
-		m.m23 = 0.0f;
-		m.m30 = 0.0f;
-		m.m31 = 0.0f;
-		m.m32 = 0.0f;
-		m.m33 = 1.0f;
-
-		return m;
+		this.m00 = 1.0f;
+		this.m01 = 0.0f;
+		this.m02 = 0.0f;
+		this.m03 = 0.0f;
+		this.m10 = 0.0f;
+		this.m11 = 1.0f;
+		this.m12 = 0.0f;
+		this.m13 = 0.0f;
+		this.m20 = 0.0f;
+		this.m21 = 0.0f;
+		this.m22 = 1.0f;
+		this.m23 = 0.0f;
+		this.m30 = 0.0f;
+		this.m31 = 0.0f;
+		this.m32 = 0.0f;
+		this.m33 = 1.0f;
 	}
 
 	public PublicMatrix4f load(PublicMatrix4f src)
 	{
-		return load(src, this);
-	}
-
-	public static PublicMatrix4f load(PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		if (dest == null)
-			dest = new PublicMatrix4f();
-		dest.m00 = src.m00;
-		dest.m01 = src.m01;
-		dest.m02 = src.m02;
-		dest.m03 = src.m03;
-		dest.m10 = src.m10;
-		dest.m11 = src.m11;
-		dest.m12 = src.m12;
-		dest.m13 = src.m13;
-		dest.m20 = src.m20;
-		dest.m21 = src.m21;
-		dest.m22 = src.m22;
-		dest.m23 = src.m23;
-		dest.m30 = src.m30;
-		dest.m31 = src.m31;
-		dest.m32 = src.m32;
-		dest.m33 = src.m33;
-
-		return dest;
-	}
-
-	public static PublicMatrix4f load(PublicMatrix4f mat, FloatBuffer buf)
-	{
-		if (mat == null)
-			mat = new PublicMatrix4f();
-		buf.position(0);
-		mat.m00 = buf.get();
-		mat.m01 = buf.get();
-		mat.m02 = buf.get();
-		mat.m03 = buf.get();
-		mat.m10 = buf.get();
-		mat.m11 = buf.get();
-		mat.m12 = buf.get();
-		mat.m13 = buf.get();
-		mat.m20 = buf.get();
-		mat.m21 = buf.get();
-		mat.m22 = buf.get();
-		mat.m23 = buf.get();
-		mat.m30 = buf.get();
-		mat.m31 = buf.get();
-		mat.m32 = buf.get();
-		mat.m33 = buf.get();
-		return mat;
+		this.m00 = src.m00;
+		this.m01 = src.m01;
+		this.m02 = src.m02;
+		this.m03 = src.m03;
+		this.m10 = src.m10;
+		this.m11 = src.m11;
+		this.m12 = src.m12;
+		this.m13 = src.m13;
+		this.m20 = src.m20;
+		this.m21 = src.m21;
+		this.m22 = src.m22;
+		this.m23 = src.m23;
+		this.m30 = src.m30;
+		this.m31 = src.m31;
+		this.m32 = src.m32;
+		this.m33 = src.m33;
+		
+		return this;
 	}
 
 	public PublicMatrix4f load(FloatBuffer buf)
 	{
-		return PublicMatrix4f.load(this, buf);
+		buf.position(0);
+		this.m00 = buf.get();
+		this.m01 = buf.get();
+		this.m02 = buf.get();
+		this.m03 = buf.get();
+		this.m10 = buf.get();
+		this.m11 = buf.get();
+		this.m12 = buf.get();
+		this.m13 = buf.get();
+		this.m20 = buf.get();
+		this.m21 = buf.get();
+		this.m22 = buf.get();
+		this.m23 = buf.get();
+		this.m30 = buf.get();
+		this.m31 = buf.get();
+		this.m32 = buf.get();
+		this.m33 = buf.get();
+		
+		return this;
 	}
 
 	public PublicMatrix4f transpose()
@@ -122,15 +110,8 @@ public class PublicMatrix4f
 		return transpose(this);
 	}
 
-	public PublicMatrix4f transpose(PublicMatrix4f dest)
+	public PublicMatrix4f transpose(PublicMatrix4f src)
 	{
-		return transpose(this, dest);
-	}
-
-	public static PublicMatrix4f transpose(PublicMatrix4f src, PublicMatrix4f dest)
-	{
-		if (dest == null)
-			dest = new PublicMatrix4f();
 		float m00 = src.m00;
 		float m01 = src.m10;
 		float m02 = src.m20;
@@ -148,24 +129,24 @@ public class PublicMatrix4f
 		float m32 = src.m23;
 		float m33 = src.m33;
 
-		dest.m00 = m00;
-		dest.m01 = m01;
-		dest.m02 = m02;
-		dest.m03 = m03;
-		dest.m10 = m10;
-		dest.m11 = m11;
-		dest.m12 = m12;
-		dest.m13 = m13;
-		dest.m20 = m20;
-		dest.m21 = m21;
-		dest.m22 = m22;
-		dest.m23 = m23;
-		dest.m30 = m30;
-		dest.m31 = m31;
-		dest.m32 = m32;
-		dest.m33 = m33;
+		this.m00 = m00;
+		this.m01 = m01;
+		this.m02 = m02;
+		this.m03 = m03;
+		this.m10 = m10;
+		this.m11 = m11;
+		this.m12 = m12;
+		this.m13 = m13;
+		this.m20 = m20;
+		this.m21 = m21;
+		this.m22 = m22;
+		this.m23 = m23;
+		this.m30 = m30;
+		this.m31 = m31;
+		this.m32 = m32;
+		this.m33 = m33;
 
-		return dest;
+		return this;
 	}
 
 	public Vector4f transform(Vector4f right)
@@ -450,7 +431,7 @@ public class PublicMatrix4f
 			float prevPosZ, float posZ, float prevPitch, float pitch, float prevYaw, float yaw, float partialTick,
 			float scaleX, float scaleY, float scaleZ)
 	{
-		PublicMatrix4f modelMatrix = new PublicMatrix4f().setIdentity();
+		PublicMatrix4f modelMatrix = new PublicMatrix4f();
 		Vector3f entityPosition = new Vector3f(-(prevPosX + (posX - prevPosX) * partialTick),
 				((prevPosY + (posY - prevPosY) * partialTick)), -(prevPosZ + (posZ - prevPosZ) * partialTick));
 
@@ -529,14 +510,6 @@ public class PublicMatrix4f
 		Vector3f b = new Vector3f(mat.m01, mat.m11, mat.m21);
 		Vector3f c = new Vector3f(mat.m02, mat.m12, mat.m22);
 		return new Vector3f(Vector3fHelper.length(a), Vector3fHelper.length(b), Vector3fHelper.length(c));
-	}
-
-	public static PublicMatrix4f importMatrix(Matrix4f mat4f)
-	{
-		FloatBuffer buf = BufferUtils.createFloatBuffer(16);
-		buf.position(0);
-		mat4f.store(buf);
-		return PublicMatrix4f.load(null, buf);
 	}
 
 	public static Matrix4f exportMatrix(PublicMatrix4f visibleMat)

@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
 import com.skullmangames.darksouls.common.item.ModArmorItem;
+import com.skullmangames.darksouls.common.item.ModShieldItem;
 import com.skullmangames.darksouls.common.item.SoulContainerItem;
 import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.common.item.Teleport2BonfireItem;
@@ -86,27 +87,27 @@ public class ModItems
 	
 	
 	//Shields
-	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> CRACKED_ROUND_SHIELD = ITEMS.register("cracked_round_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> LORDRAN_SOLDIER_SHIELD = ITEMS.register("lordran_soldier_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> KNIGHT_SHIELD = ITEMS.register("knight_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> KNIGHT_SHIELD = ITEMS.register("knight_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> GOLDEN_FALCON_SHIELD = ITEMS.register("golden_falcon_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> GOLDEN_FALCON_SHIELD = ITEMS.register("golden_falcon_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> BALDER_SHIELD = ITEMS.register("balder_shield", () -> new Item(new Item.Properties()
+	public static final RegistryObject<Item> BALDER_SHIELD = ITEMS.register("balder_shield", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	

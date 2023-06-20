@@ -19,22 +19,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class RenderItemMirror extends RenderItemBase
 {
-	protected PublicMatrix4f leftHandCorrectionMatrix;
+	protected PublicMatrix4f leftTransform;
 	
 	@Override
-	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStackIn, int packedLight, float scale, Vector3d translation)
+	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack matrixStack, int packedLight, float scale, Vector3d translation)
 	{
 		boolean isMainHand = hand == InteractionHand.MAIN_HAND;
-		PublicMatrix4f modelMatrix = new PublicMatrix4f(isMainHand ? this.correctionMatrix : this.leftHandCorrectionMatrix);
-		String heldingHand = isMainHand ? "Tool_R" : "Tool_L";
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(heldingHand).getAnimatedTransform(), modelMatrix, modelMatrix);
-		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+		PublicMatrix4f modelMatrix = this.getTransform(stack, itemHolder, hand);
+		String handBone = isMainHand ? "Tool_R" : "Tool_L";
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(handBone).getAnimatedTransform(), modelMatrix, modelMatrix);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		
-		matrixStackIn.pushPose();
-		MathUtils.translateStack(matrixStackIn, modelMatrix);
-		PublicMatrix4f.rotateStack(matrixStackIn, transpose);
+		matrixStack.pushPose();
+		MathUtils.translateStack(matrixStack, modelMatrix);
+		PublicMatrix4f.rotateStack(matrixStack, transpose);
 		
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, matrixStackIn, buffer, -1);
-        matrixStackIn.popPose();
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack,
+				isMainHand ? TransformType.THIRD_PERSON_RIGHT_HAND : TransformType.THIRD_PERSON_LEFT_HAND,
+				packedLight, OverlayTexture.NO_OVERLAY, matrixStack, buffer, -1);
+        matrixStack.popPose();
+	}
+
+	@Override
+	public PublicMatrix4f getTransform(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand)
+	{
+		return new PublicMatrix4f(hand == InteractionHand.MAIN_HAND ? this.transform : this.leftTransform);
 	}
 }

@@ -44,7 +44,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 {
@@ -59,9 +58,10 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	private final float stability;
 	
 	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
-			float critical, boolean holdOnShoulder, float weight,
-			ShieldType shieldType, WeaponMaterial weaponMaterial, ImmutableMap<CoreDamageType, Float> defense, float stability,
-			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
+						  float critical, boolean holdOnShoulder, float weight,
+						  ShieldType shieldType, WeaponMaterial weaponMaterial,
+						  ImmutableMap<CoreDamageType, Float> defense, float stability,
+						  ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item, WeaponCategory.MELEE_WEAPON, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		this.movesetId = moveset;
@@ -94,7 +94,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	@Override
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
-		if (!(this.orgItem instanceof IForgeRegistryEntry)) return;
 		super.modifyItemTooltip(itemTooltip, playerCap, stack);
 		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
 		{
@@ -184,7 +183,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	{
 		return this.weaponMaterial.getBlockSound();
 	}
-	
+
 	@Override
 	public float getDefense(CoreDamageType damageType)
 	{
@@ -438,7 +437,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			if (shieldTypeJson != null)
 			{
 				ShieldType shieldType = ShieldType.valueOf(shieldTypeJson.getAsString());
-				if (shieldType != null) builder.setShieldType(shieldType);
+				builder.setShieldType(shieldType);
 			}
 			
 			JsonElement weaponMaterialJson = json.get("weapon_material");
@@ -474,7 +473,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
 			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.damage.build(), this.auxEffects.build(),
 					this.critical, this.holdOnShoulder, this.weight,
-					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability, this.statRequirements.build(), this.statScaling.build());
+					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability,
+					this.statRequirements.build(), this.statScaling.build());
 		}
 	}
 }

@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderItemBase
 {
-	protected PublicMatrix4f correctionMatrix;
+	protected PublicMatrix4f transform;
 	
 	protected static final PublicMatrix4f BACK_COORECTION;
 	public static RenderEngine renderEngine;
@@ -37,18 +37,18 @@ public class RenderItemBase
 	
 	public RenderItemBase()
 	{
-		correctionMatrix = new PublicMatrix4f();
-		correctionMatrix.rotate((float)Math.toRadians(-80), Vector3f.XP);
-		correctionMatrix.translate(0, 0.1F, 0);
+		this.transform = new PublicMatrix4f();
+		this.transform.rotate((float)Math.toRadians(-80), Vector3f.XP);
+		this.transform.translate(0, 0.1F, 0);
 	}
 	
 	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float scale, Vector3d translation)
 	{
-		PublicMatrix4f modelMatrix = this.getCorrectionMatrix(stack, itemHolder, hand);
+		PublicMatrix4f modelMatrix = this.getTransform(stack, itemHolder, hand);
 		String heldingHand = hand == InteractionHand.MAIN_HAND ? "Tool_R" : "Tool_L";
 		PublicMatrix4f jointTransform = itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName(heldingHand).getAnimatedTransform();
 		modelMatrix.mulFront(jointTransform);
-		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		
 		MathUtils.translateStack(poseStack, modelMatrix);
 		PublicMatrix4f.rotateStack(poseStack, transpose);
@@ -64,7 +64,7 @@ public class RenderItemBase
 	{
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
-		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
 		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
@@ -78,15 +78,15 @@ public class RenderItemBase
 		modelMatrix.translate(0F, 0.2F, 0F);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 		modelMatrix.scale(0.6F, 0.6F, 0.6F);
-		PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
 		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
 		
 		Minecraft.getInstance().getItemInHandRenderer().renderItem(itemHolder.getOriginalEntity(), stack, TransformType.HEAD, false, viewMatrixStack, buffer, packedLight);
 	}
 	
-	public PublicMatrix4f getCorrectionMatrix(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand)
+	public PublicMatrix4f getTransform(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand)
 	{
-		return new PublicMatrix4f(correctionMatrix);
+		return new PublicMatrix4f(this.transform);
 	}
 }

@@ -41,8 +41,8 @@ import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
 import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
+import com.skullmangames.darksouls.common.item.ModShieldItem;
 import com.skullmangames.darksouls.core.init.ModEntities;
-import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
 import net.minecraft.client.CameraType;
@@ -151,18 +151,12 @@ public class RenderEngine
 		itemRendererMapByInstance.put(Items.CROSSBOW, crossbowRenderer);
 		itemRendererMapByInstance.put(Items.TRIDENT, tridentRenderer);
 		
-		itemRendererMapByInstance.put(Items.SHIELD, shieldRenderer);
-		itemRendererMapByInstance.put(ModItems.HEATER_SHIELD.get(), shieldRenderer);
-		itemRendererMapByInstance.put(ModItems.CRACKED_ROUND_SHIELD.get(), shieldRenderer);
-		itemRendererMapByInstance.put(ModItems.LORDRAN_SOLDIER_SHIELD.get(), shieldRenderer);
-		itemRendererMapByInstance.put(ModItems.KNIGHT_SHIELD.get(), shieldRenderer);
-		itemRendererMapByInstance.put(ModItems.GOLDEN_FALCON_SHIELD.get(), shieldRenderer);
-		
 		itemRendererMapByClass.put(BlockItem.class, hatRenderer);
 		itemRendererMapByClass.put(BowItem.class, bowRenderer);
 		itemRendererMapByClass.put(CrossbowItem.class, crossbowRenderer);
 		itemRendererMapByClass.put(ElytraItem.class, elytraRenderer);
 		itemRendererMapByClass.put(ShieldItem.class, shieldRenderer);
+		itemRendererMapByClass.put(ModShieldItem.class, shieldRenderer);
 		itemRendererMapByClass.put(TridentItem.class, tridentRenderer);
 		aimHelper = new AimHelperRenderer();
 	}

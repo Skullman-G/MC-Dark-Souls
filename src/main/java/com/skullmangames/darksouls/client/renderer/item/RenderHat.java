@@ -50,7 +50,7 @@ public class RenderHat extends RenderItemBase
 			model.x = 0.0F;
 			model.y = 0.0F;
 			model.z = 0.0F;
-			PublicMatrix4f transpose = PublicMatrix4f.transpose(modelMatrix, null);
+			PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 			viewMatrixStack.pushPose();
 			MathUtils.translateStack(viewMatrixStack, modelMatrix);
 			PublicMatrix4f.rotateStack(viewMatrixStack, transpose);

@@ -93,7 +93,7 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<BlackKnight>> BLACK_KNIGHT = register("black_knight",
 			EntityType.Builder.<BlackKnight>of(BlackKnight::new, MobCategory.MONSTER)
-			.sized(0.7F, 2.05F)
+			.sized(0.7F, 2.2F)
 			.canSpawnFarFromPlayer());
 	
 	//Projectiles

@@ -43,7 +43,7 @@ public class PlayerGuiRenderer extends ArmatureRenderer<LocalPlayer, LocalPlayer
 		
 		PoseStack poseStack1 = new PoseStack();
 		poseStack1.translate(0.0D, 0.0D, 1000.0D);
-		PublicMatrix4f.scaleStack(poseStack1, PublicMatrix4f.importMatrix(poseStack.last().pose()));
+		PublicMatrix4f.scaleStack(poseStack1, new PublicMatrix4f(poseStack.last().pose()));
 		poseStack1.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation()));
 		ClientModels.CLIENT.ENTITY_BIPED.draw(poseStack1, vc, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses);

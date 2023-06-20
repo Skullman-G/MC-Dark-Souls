@@ -81,6 +81,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.currentlyAttackedEntities = new ArrayList<Entity>();
 	}
 	
+	public boolean holdsShieldHorizontally()
+	{
+		return false;
+	}
+	
 	public float getAlpha()
 	{
 		return this.alpha;
