@@ -10,12 +10,10 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.TerracottaVase;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -101,7 +99,6 @@ public class DodgingAnimation extends ActionAnimation
 		if (list.size() > 0)
 		{
 			AttackResult attackResult = new AttackResult(entity, list);
-			boolean flag1 = true;
 			do
 			{
 				Entity e = attackResult.getEntity();
@@ -114,20 +111,11 @@ public class DodgingAnimation extends ActionAnimation
 									ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
 							.getType() == HitResult.Type.MISS)
 					{
-						Damages damages = Damages.create().put(CoreDamageType.PHYSICAL, 0F);
-						ExtendedDamageSource source = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.HEAVY,
+						Damages damages = Damages.create();
+						ExtendedDamageSource source = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE,
 								0, 0, damages);
 						
-						if (entityCap.hurtEntity(e, InteractionHand.MAIN_HAND, source))
-						{
-							e.invulnerableTime = 0;
-							if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
-							{
-								entityCap.getOriginalEntity().getItemInHand(InteractionHand.MAIN_HAND).hurtEnemy((LivingEntity) trueEntity,
-										((PlayerCap<?>) entityCap).getOriginalEntity());
-								flag1 = false;
-							}
-						}
+						entityCap.hurtEntity(e, InteractionHand.MAIN_HAND, source);
 						entityCap.currentlyAttackedEntities.add(trueEntity);
 					}
 				}

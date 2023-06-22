@@ -611,6 +611,22 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
+			.setShieldType(ShieldType.STANDARD),
+			
+			MeleeWeaponCap.builder(ModItems.BLACK_KNIGHT_SHIELD.get(), WeaponMovesets.SHIELD, Colliders.FIST.getId(), 4.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 113, 1.00F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.65F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.85F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.52F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.63F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.63F)
+			.setCritical(1.00F)
+			.setStability(0.60F)
+			.putStatInfo(Stats.STRENGTH, 18, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
 			.setShieldType(ShieldType.STANDARD)
 		);
 	}

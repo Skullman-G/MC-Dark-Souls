@@ -111,6 +111,11 @@ public class ModItems
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BLACK_KNIGHT_SHIELD = ITEMS.register("black_knight_shield", () -> new ModShieldItem(new Item.Properties()
+			.stacksTo(1)
+			.tab(DarkSouls.TAB)));
+			
+	
 	
 	//Talismans
 	public static final RegistryObject<Item> TALISMAN = ITEMS.register("talisman", () -> new Item(new Item.Properties()

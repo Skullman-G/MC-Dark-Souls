@@ -197,6 +197,11 @@ public interface ExtendedDamageSource
 			return new Damages();
 		}
 		
+		public boolean isEmpty()
+		{
+			return this.damages.isEmpty();
+		}
+		
 		public Damages put(DamageType type, float amount)
 		{
 			this.damages.put(type, amount);

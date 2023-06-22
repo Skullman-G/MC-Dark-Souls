@@ -420,7 +420,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		float poiseDamage = extSource.getPoiseDamage();
 		StunType stunType = extSource.getStunType();
 		
-		this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
+		// Particles
+		if (!extSource.getDamages().isEmpty())
+			this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
 		
 		// Stun Animation
 		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);

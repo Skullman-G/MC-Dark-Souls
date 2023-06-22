@@ -80,6 +80,7 @@
 	"item.darksouls.black_knight_sword": "Black Knight Sword",
 	"item.darksouls.claymore": "Claymore",
 	"item.darksouls.balder_shield": "Balder Shield",
+	"item.darksouls.black_knight_shield": "Black Knight Shield",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -220,6 +221,7 @@
 	"tooltip.darksouls.black_knight_sword.extended": "Greatsword of the Black Knights. Used to face chaos demons. The Large motion that puts the weight of the body into the attack reflects the great size of their adversaries long ago.",
 	"tooltip.darksouls.claymore.extended": "This larger type of greatsword is normally wielded with two hands due to its weight. A highly flexible greatsword that can be used to attack in swings or thrusts.",
 	"tooltip.darksouls.balder_shield.extended": "Shield of the knights of the ancient kingdom of Balder. Tweaked for improved stability. Balder was the home of Knight King Rendal, but the kingdom was reduced to ruins after a widespread outbreak of Undead",
+	"tooltip.darksouls.black_knight_shield.extended": "Shield of the Black Knights who roam the lands. A flowing canal is chiseled deeply into its face. Long ago, the black knights faced the chaos demons, and were charred black, but their shields became highly resistant to fire.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

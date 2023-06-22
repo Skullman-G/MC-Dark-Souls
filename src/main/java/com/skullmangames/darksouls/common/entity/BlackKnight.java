@@ -49,7 +49,7 @@ public class BlackKnight extends ArmoredMob
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
 		if (slot == EquipmentSlot.MAINHAND) return ModItems.BLACK_KNIGHT_SWORD.get();
-		else if (slot == EquipmentSlot.OFFHAND) return null;
+		else if (slot == EquipmentSlot.OFFHAND) return ModItems.BLACK_KNIGHT_SHIELD.get();
 
 		switch (slot)
 		{
