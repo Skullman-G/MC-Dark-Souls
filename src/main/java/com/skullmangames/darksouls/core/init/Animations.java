@@ -405,7 +405,8 @@ public final class Animations
 				DarkSouls.rl("biped/living/consume_soul_l"), (models) -> models.ENTITY_BIPED).register(builder);
 
 		BIPED_BLOCK_HORIZONTAL = new AdaptableAnimation(DarkSouls.rl("biped_block"), 0.1F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false),
+				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false),
+				new AnimConfig(LivingMotion.WEAPON_BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false),
 				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_walk_mirror"), DarkSouls.rl("biped/combat/block_walk"), true),
 				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_run_mirror"), DarkSouls.rl("biped/combat/block_run"), true),
 				new AnimConfig(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), true),
@@ -413,7 +414,8 @@ public final class Animations
 				.register(builder);
 
 		BIPED_BLOCK_VERTICAL = new AdaptableAnimation(DarkSouls.rl("biped_block_vertical"), 0.1F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), false),
+				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), false),
+				new AnimConfig(LivingMotion.WEAPON_BLOCKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), false),
 				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_vertical_walk_mirror"), DarkSouls.rl("biped/combat/block_vertical_walk"), true),
 				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_vertical_run_mirror"), DarkSouls.rl("biped/combat/block_vertical_run"), true),
 				new AnimConfig(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true),
@@ -1422,7 +1424,7 @@ public final class Animations
 		HOLLOW_LORDRAN_SOLDIER_RUN = new MovementAnimation(DarkSouls.rl("hollow_lordran_soldier_run"), 0.2F, true,
 				DarkSouls.rl("hollow_lordran_soldier/run"), (models) -> models.ENTITY_BIPED).register(builder);
 		HOLLOW_LORDRAN_SOLDIER_BLOCK = new AdaptableAnimation(DarkSouls.rl("hollow_lordran_soldier_block"), 0.2F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.BLOCKING, DarkSouls.rl("hollow_lordran_soldier/block"), DarkSouls.rl("hollow_lordran_soldier/block"), false),
+				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("hollow_lordran_soldier/block"), DarkSouls.rl("hollow_lordran_soldier/block"), false),
 				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("hollow_lordran_soldier/block_walking"), DarkSouls.rl("hollow_lordran_soldier/block_walking"), true),
 				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("hollow_lordran_soldier/block_run"), DarkSouls.rl("hollow_lordran_soldier/block_run"), true))
 				.register(builder);

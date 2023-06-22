@@ -269,7 +269,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.addLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
 		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
-		animatorClient.addLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK_VERTICAL);
+		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_VERTICAL);
+		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
 		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
 		animatorClient.addLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
 		animatorClient.addLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);

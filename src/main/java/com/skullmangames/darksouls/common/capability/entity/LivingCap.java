@@ -19,6 +19,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -278,7 +279,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			}
 			else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
 			{
-				this.currentMotion = LivingMotion.BLOCKING;
+				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
+				{
+					if (shield.getShieldType() == ShieldType.NONE) this.currentMotion = LivingMotion.WEAPON_BLOCKING;
+					else this.currentMotion = LivingMotion.SHIELD_BLOCKING;
+				}
 			}
 			else
 			{
@@ -293,7 +298,22 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-			if (this.currentMotion != LivingMotion.BLOCKING && this.isBlocking()) this.currentMixMotions.put(layerPart, LivingMotion.BLOCKING);
+			if (this.isBlocking())
+			{
+				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
+				{
+					if (shield.getShieldType() == ShieldType.NONE)
+					{
+						if (this.currentMotion != LivingMotion.WEAPON_BLOCKING) this.currentMixMotions.put(layerPart, LivingMotion.WEAPON_BLOCKING);
+						else this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+					}
+					else
+					{
+						if (this.currentMotion != LivingMotion.SHIELD_BLOCKING) this.currentMixMotions.put(layerPart, LivingMotion.SHIELD_BLOCKING);
+						else this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+					}
+				}
+			}
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
@@ -453,7 +473,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		if (!this.isBlocking()) return false;
 
-		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		IShield shield = this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 		if (attacker == null) return false;
 		
