@@ -81,9 +81,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.currentlyAttackedEntities = new ArrayList<Entity>();
 	}
 	
-	public boolean holdsShieldHorizontally()
+	public ShieldHoldType getShieldHoldType()
 	{
-		return false;
+		return ShieldHoldType.VERTICAL;
 	}
 	
 	public float getAlpha()
@@ -821,5 +821,23 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public EntityState getEntityState()
 	{
 		return this.animator.getEntityState();
+	}
+	
+	
+	public enum ShieldHoldType
+	{
+		HORIZONTAL(true), VERTICAL(false), VERTICAL_REVERSE(true);
+		
+		private boolean horizontalBlocking;
+		
+		ShieldHoldType(boolean horizontalBlocking)
+		{
+			this.horizontalBlocking = horizontalBlocking;
+		}
+		
+		public boolean isBlockingHorizontally()
+		{
+			return this.horizontalBlocking;
+		}
 	}
 }

@@ -152,6 +152,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		Entity attacker = dmgSource.getSource();
 		StunType stunType = dmgSource.getStunType();
+		boolean horizontalBlocking = entityCap.getShieldHoldType().isBlockingHorizontally();
 		if (attacker == null) return null;
 		else
 		{
@@ -160,13 +161,25 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			{
 				if (stunType == StunType.FLY)
 				{
-					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_FLY_RIGHT;
-					return Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
+					
+					if (horizontalBlocking)
+					{
+						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+								? Animations.BIPED_HIT_BLOCKED_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
+					}
+					return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+							? Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT;
 				}
 				else
 				{
-					if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_HIT_BLOCKED_RIGHT;
-					return Animations.BIPED_HIT_BLOCKED_LEFT;
+					if (horizontalBlocking)
+					{
+						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+								? Animations.BIPED_HIT_BLOCKED_RIGHT : Animations.BIPED_HIT_BLOCKED_LEFT;
+						
+					}
+					return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+							? Animations.BIPED_HIT_BLOCKED_VERTICAL_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_LEFT;
 				}
 			}
 			else

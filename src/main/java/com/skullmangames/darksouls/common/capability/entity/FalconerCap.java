@@ -57,6 +57,12 @@ public class FalconerCap extends HumanoidCap<Falconer>
 					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}
+	
+	@Override
+	public ShieldHoldType getShieldHoldType()
+	{
+		return ShieldHoldType.VERTICAL_REVERSE;
+	}
 
 	@Override
 	public void updateMotion()

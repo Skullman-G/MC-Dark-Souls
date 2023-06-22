@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.core.util;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -16,7 +17,7 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	private boolean wasBlocked;
 	private StunType stunType;
 	private final Damages damages;
-	private Set<AuxEffect> auxEffects;
+	private Set<AuxEffect> auxEffects = new HashSet<>();
 
 	public IndirectDamageSourceExtended(String damageTypeIn, Entity source, Entity owner, StunType stunType,
 			float poiseDamage, float staminaDamage, Damages damages)

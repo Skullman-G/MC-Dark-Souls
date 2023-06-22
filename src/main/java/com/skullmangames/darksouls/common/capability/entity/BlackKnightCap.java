@@ -44,6 +44,12 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	}
 	
 	@Override
+	public ShieldHoldType getShieldHoldType()
+	{
+		return ShieldHoldType.VERTICAL_REVERSE;
+	}
+	
+	@Override
 	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
 		return Animations.BLACK_KNIGHT_DEATH;

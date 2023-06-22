@@ -72,6 +72,12 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			}
 		}
 	}
+	
+	@Override
+	public ShieldHoldType getShieldHoldType()
+	{
+		return ShieldHoldType.HORIZONTAL;
+	}
 
 	@Override
 	public void updateMotion()
