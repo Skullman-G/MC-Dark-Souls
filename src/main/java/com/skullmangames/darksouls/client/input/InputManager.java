@@ -24,7 +24,9 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -461,6 +463,7 @@ public class InputManager
 		public static void onMoveInput(MovementInputUpdateEvent event)
 		{
 			if(inputManager.playerCap == null) return;
+			Input in = event.getInput();
 			EntityState playerState = inputManager.playerCap.getEntityState();
 			
 			// Mouse Movement
@@ -480,37 +483,37 @@ public class InputManager
 			// Keyboard Movement
 			if (inputManager.playerCap.getTarget() != null)
 			{
-				float forward = event.getInput().forwardImpulse;
-				float left = event.getInput().leftImpulse;
+				float forward = in.forwardImpulse;
+				float left = in.leftImpulse;
 				float rot = 0.0F;
+				
+				boolean w = in.up;
+				boolean s = in.down;
+				boolean a = in.left;
+				boolean d = in.right;
 				
 				if (!inputManager.playerCap.shouldShoulderSurf()
 					&& (inputManager.sprintPressCounter >= 5 || inputManager.player.getVehicle() != null))
 				{
-					boolean w = event.getInput().up;
-					boolean s = event.getInput().down;
-					boolean a = event.getInput().left;
-					boolean d = event.getInput().right;
-					
 					rot = w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
 							: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
 							: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
 							: w && !s && !a && d ? 315 : 0;
 					
-					forward = rot == 0.0F ? event.getInput().forwardImpulse
-							: rot == 180.0F ? -event.getInput().forwardImpulse
-							: rot == 90.0F ? event.getInput().leftImpulse
-							: rot == 270.0F ? -event.getInput().leftImpulse
-							: rot == 45.0F ? event.getInput().forwardImpulse * 10
-							: rot == 135.0F ? -event.getInput().forwardImpulse * 10
-							: rot == 225.0F ? -event.getInput().forwardImpulse * 10
-							: rot == 315.0F ? event.getInput().forwardImpulse * 10
+					forward = rot == 0.0F ? in.forwardImpulse
+							: rot == 180.0F ? -in.forwardImpulse
+							: rot == 90.0F ? in.leftImpulse
+							: rot == 270.0F ? -in.leftImpulse
+							: rot == 45.0F ? in.forwardImpulse * 10
+							: rot == 135.0F ? -in.forwardImpulse * 10
+							: rot == 225.0F ? -in.forwardImpulse * 10
+							: rot == 315.0F ? in.forwardImpulse * 10
 							: 0.0F;
 					
-					left = rot == 45.0F ? event.getInput().leftImpulse
-							: rot == 135.0F ? -event.getInput().leftImpulse
-							: rot == 225.0F ? -event.getInput().leftImpulse
-							: rot == 315.0F ? event.getInput().leftImpulse
+					left = rot == 45.0F ? in.leftImpulse
+							: rot == 135.0F ? -in.leftImpulse
+							: rot == 225.0F ? -in.leftImpulse
+							: rot == 315.0F ? in.leftImpulse
 							: 0.0F;
 				}
 				
@@ -525,22 +528,22 @@ public class InputManager
 					inputManager.playerCap.rotateTo(degree, 60, false);
 					inputManager.player.xRot = xDegree;
 				}
-				event.getInput().forwardImpulse = forward;
-				event.getInput().leftImpulse = left;
+				in.forwardImpulse = forward;
+				in.leftImpulse = left;
 				
 			}
 			else if (!inputManager.playerCap.shouldShoulderSurf() && minecraft.options.getCameraType() != CameraType.FIRST_PERSON)
 			{
 				if (inputManager.player.getVehicle() != null)
 				{
-					float forward = event.getInput().forwardImpulse;
-					float left = event.getInput().leftImpulse;
+					float forward = in.forwardImpulse;
+					float left = in.leftImpulse;
 					float rot = inputManager.player.yRot;
 					
-					boolean w = event.getInput().up;
-					boolean s = event.getInput().down;
-					boolean a = event.getInput().left;
-					boolean d = event.getInput().right;
+					boolean w = in.up;
+					boolean s = in.down;
+					boolean a = in.left;
+					boolean d = in.right;
 					
 					float pivot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
 					
@@ -553,73 +556,63 @@ public class InputManager
 								: w && !s && !a && d ? 315 : 0;
 					}
 					
-					forward = rot == pivot ? event.getInput().forwardImpulse
-							: rot == pivot - 180.0F ? -event.getInput().forwardImpulse
-							: rot == pivot - 90.0F ? event.getInput().leftImpulse
-							: rot == pivot - 270.0F ? -event.getInput().leftImpulse
-							: rot == pivot - 45.0F ? event.getInput().forwardImpulse * 10
-							: rot == pivot - 135.0F ? -event.getInput().forwardImpulse * 10
-							: rot == pivot - 225.0F ? -event.getInput().forwardImpulse * 10
-							: rot == pivot - 315.0F ? event.getInput().forwardImpulse * 10
+					forward = rot == pivot ? in.forwardImpulse
+							: rot == pivot - 180.0F ? -in.forwardImpulse
+							: rot == pivot - 90.0F ? in.leftImpulse
+							: rot == pivot - 270.0F ? -in.leftImpulse
+							: rot == pivot - 45.0F ? in.forwardImpulse * 10
+							: rot == pivot - 135.0F ? -in.forwardImpulse * 10
+							: rot == pivot - 225.0F ? -in.forwardImpulse * 10
+							: rot == pivot - 315.0F ? in.forwardImpulse * 10
 							: 0.0F;
 					
-					left = rot == pivot - 45.0F ? event.getInput().leftImpulse
-							: rot == pivot - 135.0F ? -event.getInput().leftImpulse
-							: rot == pivot - 225.0F ? -event.getInput().leftImpulse
-							: rot == pivot - 315.0F ? event.getInput().leftImpulse
+					left = rot == pivot - 45.0F ? in.leftImpulse
+							: rot == pivot - 135.0F ? -in.leftImpulse
+							: rot == pivot - 225.0F ? -in.leftImpulse
+							: rot == pivot - 315.0F ? in.leftImpulse
 							: 0.0F;
 					
 					if (!playerState.isRotationLocked() || inputManager.player.getVehicle() != null) inputManager.playerCap.rotateTo(rot, 60, false);
-					event.getInput().forwardImpulse = forward;
-					event.getInput().leftImpulse = left;
+					in.forwardImpulse = forward;
+					in.leftImpulse = left;
 				}
 				else if (!inputManager.playerCap.shouldShoulderSurf())
 				{
-					float forward = 0.0F;
-					float left = 0.0F;
+					boolean w = in.up;
+					boolean s = in.down;
+					boolean a = in.left;
+					boolean d = in.right;
 					float rot = inputManager.player.yRot;
-					boolean back = false;
 					
-					if (event.getInput().forwardImpulse > 0.0F)
+					if (w || a || s || d)
 					{
 						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F);
-						forward = event.getInput().forwardImpulse;
-					}
-					else if (event.getInput().forwardImpulse < 0.0F)
-					{
-						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 180.0F;
-						forward = -event.getInput().forwardImpulse;
-						back = true;
-					}
-					if (event.getInput().leftImpulse > 0.0F)
-					{
-						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) - 90.0F;
-						
-						if (forward == 0.0F) forward = event.getInput().leftImpulse;
-						else if (!back) left = -event.getInput().leftImpulse;
-						else left = event.getInput().leftImpulse;
-					}
-					else if (event.getInput().leftImpulse < 0.0F)
-					{
-						rot = ClientManager.INSTANCE.mainCamera.getPivotXRot(1.0F) + 90.0F;
-						
-						if (forward == 0.0F) forward = -event.getInput().leftImpulse;
-						else if (!back) left = -event.getInput().leftImpulse;
-						else left = event.getInput().leftImpulse;
+						rot -= w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
+								: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
+								: !w && s && !a && d ? 225 : !w && !s && !a && d ? 270
+								: w && !s && !a && d ? 315 : 0;
 					}
 					
-					if (forward > 0 && left > 0)
-					{
-						forward *= 2.0F;
-						left *= 2.0F;
-					}
+					float forward = w ? in.forwardImpulse
+							: s ? -in.forwardImpulse
+							: !w && !s && a ? in.leftImpulse
+							: !w && !s && d ? -in.leftImpulse
+							: 0;
 					
-					if (!playerState.isRotationLocked()) inputManager.player.yRot = rot;
+					float r = Mth.rotLerp(0.5F, inputManager.player.yHeadRot, rot);
+					
+					if (!playerState.isRotationLocked())
+					{
+						inputManager.player.yRot = r;
+						inputManager.player.yBodyRot = r;
+						inputManager.player.yHeadRot = r;
+					}
 					if (inputManager.playerCanMove(playerState))
 					{
-						event.getInput().forwardImpulse = forward;
-						event.getInput().leftImpulse = left;
+						in.forwardImpulse = forward;
 					}
+					else in.forwardImpulse = 0.0F;
+					in.leftImpulse = 0.0F;
 				}
 			}
 			
