@@ -10,7 +10,6 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-
 import net.minecraft.resources.ResourceLocation;
 
 public class BlackKnightCap extends HumanoidCap<BlackKnight>
@@ -23,8 +22,8 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUNNING);
 		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
-		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
+		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
+		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
@@ -34,7 +33,11 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	{
 		if (moveset.compareTo(WeaponMovesets.BLACK_KNIGHT_SWORD) != 0) return;
 		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-				.addAttack(new AttackInstance(4, 3.0F, Animations.BLACK_KNIGHT_SWORD_LA))
+				.addAttack(new AttackInstance(5, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_SHORT))
+				.addAttack(new AttackInstance(4, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_LONG))
+				.addAttack(new AttackInstance(6, 4.0F, Animations.BLACK_KNIGHT_SWORD_HA))
+				.addAttack(new AttackInstance(1, 5.0F, Animations.BLACK_KNIGHT_SWORD_DA))
+				.addAttack(new AttackInstance(2, 4.0F, Animations.BLACK_KNIGHT_SHIELD_ATTACK))
 				.addDodge(Animations.BIPED_JUMP_BACK));
 	}
 
