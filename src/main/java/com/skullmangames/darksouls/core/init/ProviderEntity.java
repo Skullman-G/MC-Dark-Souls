@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
+import com.skullmangames.darksouls.common.capability.entity.TaurusDemonCap;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.FalconerCap;
@@ -48,6 +49,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 		CAPABILITIES.put(ModEntities.PETRUS_OF_THOROLUND.get(), (entity) -> SimpleHumanoidCap::new);
 		CAPABILITIES.put(ModEntities.FALCONER.get(), (entity) -> FalconerCap::new);
 		CAPABILITIES.put(ModEntities.BLACK_KNIGHT.get(), (entity) -> BlackKnightCap::new);
+		CAPABILITIES.put(ModEntities.TAURUS_DEMON.get(), (entity) -> TaurusDemonCap::new);
 		
 		CAPABILITIES.put(EntityType.ARMOR_STAND, (entity) -> ArmorStandCap::new);
 		CAPABILITIES.put(EntityType.ZOMBIE, (entity) -> SimpleHumanoidCap::new);

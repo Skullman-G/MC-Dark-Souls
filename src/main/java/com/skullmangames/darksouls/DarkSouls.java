@@ -226,6 +226,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.LIGHTNING_SPEAR.get(), LightningSpearRenderer::lightningSpear);
 		EntityRenderers.register(ModEntities.GREAT_LIGHTNING_SPEAR.get(), LightningSpearRenderer::greatLightningSpear);
 		EntityRenderers.register(ModEntities.TERRACOTTA_VASE.get(), TerracottaVaseRenderer::new);
+		EntityRenderers.register(ModEntities.TAURUS_DEMON.get(), VanillaHumanoidRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

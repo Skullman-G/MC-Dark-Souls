@@ -27,6 +27,12 @@ public class XmlNode
 		return this.data;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return this.getName();
+	}
+	
 	public boolean hasAttributes()
 	{
 		return this.attributes != null;

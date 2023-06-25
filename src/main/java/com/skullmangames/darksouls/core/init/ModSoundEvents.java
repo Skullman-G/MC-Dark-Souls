@@ -64,6 +64,9 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> BLACK_KNIGHT_FOOT = register("entity.black_knight.foot");
 	public static final RegistryObject<SoundEvent> BLACK_KNIGHT_DAMAGE = register("entity.black_knight.damage");
 	public static final RegistryObject<SoundEvent> BLACK_KNIGHT_DEATH = register("entity.black_knight.death");
+	
+	public static final RegistryObject<SoundEvent> TAURUS_DEMON_AMBIENT = register("entity.taurus_demon.ambient");
+	public static final RegistryObject<SoundEvent> TAURUS_DEMON_DEATH = register("entity.taurus_demon.death");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

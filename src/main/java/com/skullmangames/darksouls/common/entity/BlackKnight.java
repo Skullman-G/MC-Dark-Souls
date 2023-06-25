@@ -26,7 +26,7 @@ public class BlackKnight extends ArmoredMob
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 497D)
+				.add(Attributes.MAX_HEALTH, 672D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.27D);
 	}

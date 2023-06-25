@@ -439,7 +439,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.shouldHoldOnShoulder(),
 			
 			MeleeWeaponCap.builder(ModItems.CLAYMORE.get(), WeaponMovesets.CLAYMORE, Colliders.GREATSWORD.getId(), 9.0F)
-			.putDamageInfo(CoreDamageType.PHYSICAL, 276, 0.50F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 138, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.30F)

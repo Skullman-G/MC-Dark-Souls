@@ -35,6 +35,10 @@ public class ColladaParser
 		}
 
 		XmlNode rootNode = XmlParser.loadXmlFile(bufreader);
+		if (rootNode == null)
+		{
+			DarkSouls.LOGGER.error("Could not find root node of "+path);
+		}
 		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getChild("library_controllers").getChild("controller").getChild("skin"));
 		JointDataExtractor skeleton = new JointDataExtractor(rootNode.getChild("library_visual_scenes").getChild("visual_scene").getChildWithAttributeValue("node", "id", "Armature"), skin.getRawJoints());
 		Joint joint = skeleton.extractSkeletonData();

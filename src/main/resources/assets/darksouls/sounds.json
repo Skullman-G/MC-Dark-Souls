@@ -1,4 +1,23 @@
 {
+	"entity.taurus_demon.death":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/taurus_demon/death"
+		]
+	},
+	
+	"entity.taurus_demon.ambient":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/taurus_demon/ambient_1",
+			"darksouls:entities/taurus_demon/ambient_2"
+		]
+	},
+	
 	"entity.black_knight.death":
 	{
 		"category": "entity",

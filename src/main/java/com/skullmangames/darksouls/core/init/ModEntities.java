@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
+import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.common.entity.TerracottaVase;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
@@ -94,6 +95,11 @@ public class ModEntities
 	public static final RegistryObject<EntityType<BlackKnight>> BLACK_KNIGHT = register("black_knight",
 			EntityType.Builder.<BlackKnight>of(BlackKnight::new, MobCategory.MONSTER)
 			.sized(0.7F, 2.2F)
+			.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<TaurusDemon>> TAURUS_DEMON = register("taurus_demon",
+			EntityType.Builder.<TaurusDemon>of(TaurusDemon::new, MobCategory.MONSTER)
+			.sized(3.5F, 5F)
 			.canSpawnFarFromPlayer());
 	
 	//Projectiles
