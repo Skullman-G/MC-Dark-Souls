@@ -82,6 +82,9 @@
 	"item.darksouls.balder_shield": "Balder Shield",
 	"item.darksouls.black_knight_shield": "Black Knight Shield",
 	"item.darksouls.demon_greataxe": "Demon's Greataxe",
+	"item.darksouls.small_stone_bricks": "Small Stone Bricks",
+	"item.darksouls.small_stone_brick_slab": "Small Stone Brick Slab",
+	"item.darksouls.small_stone_brick_stairs": "Small Stone Brick Stairs",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -96,6 +99,9 @@
 	"block.darksouls.sunlight_altar": "Sunlight Altar",
 	"block.darksouls.oak_platform": "Oak Platform",
 	"block.darksouls.stone_brick_window": "Stone Brick Window",
+	"block.darksouls.small_stone_bricks": "Small Stone Bricks",
+	"block.darksouls.small_stone_brick_slab": "Small Stone Brick Slab",
+	"block.darksouls.small_stone_brick_stairs": "Small Stone Brick Stairs",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
 	"entity.darksouls.hollow": "Hollow",

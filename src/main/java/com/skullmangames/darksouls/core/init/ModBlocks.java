@@ -10,7 +10,9 @@ import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -103,4 +105,20 @@ public class ModBlocks
 				Block.box(6, 0, 0, 10, 16, 16)
 			}
 			));
+	
+	public static final RegistryObject<Block> SMALL_STONE_BRICKS = BLOCKS.register("small_stone_bricks", () -> new Block(BlockBehaviour.Properties
+			.of(Material.STONE)
+			.requiresCorrectToolForDrops()
+			.strength(2.0F, 6.0F)));
+	
+	public static final RegistryObject<Block> SMALL_STONE_BRICK_SLAB = BLOCKS.register("small_stone_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties
+			.of(Material.STONE)
+			.requiresCorrectToolForDrops()
+			.strength(2.0F, 6.0F)));
+	
+	public static final RegistryObject<Block> SMALL_STONE_BRICK_STAIRS = BLOCKS.register("small_stone_brick_stairs", () -> new StairBlock(
+			() -> ModBlocks.SMALL_STONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties
+			.of(Material.STONE)
+			.requiresCorrectToolForDrops()
+			.strength(2.0F, 6.0F)));
 }

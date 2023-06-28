@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures":
+  {
+    "bottom": "darksouls:blocks/small_stone_bricks",
+    "top": "darksouls:blocks/small_stone_bricks",
+    "side": "darksouls:blocks/small_stone_bricks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures":
+  {
+    "all": "darksouls:blocks/small_stone_bricks"
+  }
+}

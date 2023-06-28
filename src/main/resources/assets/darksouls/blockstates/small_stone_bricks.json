@@ -1,0 +1,6 @@
+{
+    "variants":
+    {
+        "": { "model": "darksouls:block/small_stone_bricks" }
+    }
+}
