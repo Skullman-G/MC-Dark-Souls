@@ -304,6 +304,8 @@ public final class Animations
 	public static AttackAnimation STRAY_DEMON_JUMP_ATTACK;
 	public static AttackAnimation STRAY_DEMON_GROUND_POUND;
 	
+	public static StaticAnimation TAURUS_DEMON_IDLE;
+	
 	// Anastacia of Astora
 	public static StaticAnimation ANASTACIA_IDLE;
 	
@@ -1882,6 +1884,10 @@ public final class Animations
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.25F))
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 				.addProperty(AttackProperty.POISE_DAMAGE, 28)
+				.register(builder);
+		
+		// Taurus Demon
+		TAURUS_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("taurus_demon_idle"), 0.2F, true, DarkSouls.rl("taurus_demon/idle"), (models) -> models.ENTITY_TAURUS_DEMON)
 				.register(builder);
 		
 		// Anastacia of Astora

@@ -500,6 +500,23 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON)
 			.shouldHoldOnShoulder(),
 			
+			// Greataxes
+			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponMovesets.ULTRA_GREATSWORD, Colliders.GREATAXE.getId(), 22.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 114, 0.55F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.10F)
+			.setCritical(1.00F)
+			.setStability(0.38F)
+			.putStatInfo(Stats.STRENGTH, 46, Scaling.A)
+			.putStatInfo(Stats.DEXTERITY, 11, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON)
+			.shouldHoldOnShoulder(),
+			
 			// Shields
 			MeleeWeaponCap.builder(Items.SHIELD, WeaponMovesets.SHIELD, Colliders.FIST.getId(), 4.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 88, 0.84F)

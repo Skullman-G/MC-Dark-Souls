@@ -7,7 +7,7 @@
   "stability": 0.35,
   "critical": 1.0,
   "damage": {
-    "PHYSICAL": 276,
+    "PHYSICAL": 138,
     "MAGIC": 0,
     "FIRE": 0,
     "LIGHTNING": 0,

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
+import com.skullmangames.darksouls.common.capability.entity.TaurusDemonCap;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.physics.CubeCollider;
 
@@ -26,10 +27,14 @@ public class Colliders
 	public static final Collider WINGED_SPEAR = register("winged_spear", new CubeCollider(0.4F, 0.4F, 0.75F, 0F, 0F, -1.35F));
 	public static final Collider ULTRA_GREATSWORD = register("ultra_greatsword", new CubeCollider(0.4F, 0.4F, 0.95F, 0F, 0F, -1.35F));
 	public static final Collider GREATSWORD = register("greatsword", new CubeCollider(0.4F, 0.4F, 0.9F, 0F, 0F, -0.75F));
+	public static final Collider GREATAXE = register("greataxe", new CubeCollider(0.6F, 0.6F, 1.0F, 0.0F, 0.3F, -1.35F));
 	
 	//Stray Demon
 	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.getWeaponScale());
 	public static final Collider STRAY_DEMON_BODY = new CubeCollider(3F, 1F, 3F, 0F, 0F, 0F);
+	
+	//Taurus Demon
+	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.getWeaponScale());
 	
 	private static Collider register(String name, Collider collider)
 	{

@@ -4,7 +4,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.block.CustomShapedBlock;
-import com.skullmangames.darksouls.common.block.DefaultHorizontalDirectionalBlock;
+import com.skullmangames.darksouls.common.block.DirectionalCustomShapedBlock;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -88,8 +89,18 @@ public class ModBlocks
 			.noOcclusion(),
 			Block.box(0, 0, 0, 16, 4, 16)));
 	
-	public static final RegistryObject<Block> STONE_BRICK_WINDOW = BLOCKS.register("stone_brick_window", () -> new DefaultHorizontalDirectionalBlock(BlockBehaviour.Properties
+	public static final RegistryObject<Block> STONE_BRICK_WINDOW = BLOCKS.register("stone_brick_window", () -> new DirectionalCustomShapedBlock(BlockBehaviour.Properties
 			.of(Material.STONE)
 			.strength(3.0F)
-			.sound(SoundType.STONE)));
+			.sound(SoundType.STONE)
+			.noOcclusion(),
+			new VoxelShape[]
+			{
+				Block.box(0, 13, 0, 16, 16, 16),
+				Block.box(0, 0, 0, 16, 3, 16),
+				Block.box(0, 0, 0, 3, 16, 16),
+				Block.box(13, 0, 0, 16, 16, 16),
+				Block.box(6, 0, 0, 10, 16, 16)
+			}
+			));
 }

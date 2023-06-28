@@ -1,0 +1,40 @@
+{
+  "registry_name": "darksouls:demon_greataxe",
+  "moveset": "darksouls:ultra_greatsword",
+  "collider": "darksouls:greataxe",
+  "weight": 22.0,
+  "hold_on_shoulder": true,
+  "stability": 0.38,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 114,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0,
+    "HOLY": 0
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 46,
+    "stat.darksouls.dexterity": 11,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "A",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "wooden_weapon",
+  "defense": {
+    "PHYSICAL": 0.55,
+    "MAGIC": 0.1,
+    "FIRE": 0.4,
+    "LIGHTNING": 0.4,
+    "DARK": 0.1,
+    "HOLY": 0.1
+  }
+}

@@ -3,10 +3,15 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.physics.Collider;
+
+import net.minecraft.world.InteractionHand;
 
 public class TaurusDemonCap extends MobCap<TaurusDemon>
 {
@@ -21,6 +26,19 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	{
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.DUMMY_ANIMATION);
 		animatorClient.setCurrentMotionsToDefault();
+	}
+	
+	public static float getWeaponScale()
+	{
+		return 1.3F;
+	}
+	
+	@Override
+	public Collider getColliderMatching(InteractionHand hand)
+	{
+		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		if (cap.getWeaponCollider() == Colliders.GREATAXE) return Colliders.TAURUS_DEMON_GREATAXE;
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 	
 	@Override

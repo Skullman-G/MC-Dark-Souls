@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.block;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
@@ -18,19 +17,36 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DirectionalCustomShapedBlock extends HorizontalDirectionalBlock
 {
-	private final Optional<VoxelShape> north;
-	private final Optional<VoxelShape> south;
-	private final Optional<VoxelShape> east;
-	private final Optional<VoxelShape> west;
+	private final VoxelShape north;
+	private final VoxelShape south;
+	private final VoxelShape west;
+	private final VoxelShape east;
 	
-	public DirectionalCustomShapedBlock(Properties properties, VoxelShape[] north, VoxelShape[] south, VoxelShape[] east, VoxelShape[] west)
+	public DirectionalCustomShapedBlock(Properties properties, VoxelShape[] north)
 	{
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-		this.north = Stream.of(north).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
-		this.south = Stream.of(south).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
-		this.east = Stream.of(east).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
-		this.west = Stream.of(west).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
+		this.north = Stream.of(north).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
+		this.south = rotateShape(Direction.NORTH, Direction.SOUTH, this.north);
+		this.west = rotateShape(Direction.NORTH, Direction.WEST, this.north);
+		this.east = rotateShape(Direction.NORTH, Direction.EAST, this.north);
+	}
+	
+	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape)
+	{
+		VoxelShape[] buffer = new VoxelShape[]
+		{ shape, Shapes.empty() };
+
+		int times = (to.get2DDataValue() - from.get2DDataValue() + 4) % 4;
+		for (int i = 0; i < times; i++)
+		{
+			buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = Shapes.or(buffer[1],
+					Shapes.create(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
+			buffer[0] = buffer[1];
+			buffer[1] = Shapes.empty();
+		}
+
+		return buffer[0];
 	}
 	
 	@Override
@@ -53,10 +69,10 @@ public class DirectionalCustomShapedBlock extends HorizontalDirectionalBlock
 		switch(state.getValue(FACING))
 		{
 			default:
-			case NORTH: return this.north.orElse(Shapes.block());
-			case SOUTH: return this.south.orElse(Shapes.block());
-			case WEST: return this.west.orElse(Shapes.block());
-			case EAST: return this.east.orElse(Shapes.block());
+			case NORTH: return this.north;
+			case SOUTH: return this.south;
+			case WEST: return this.west;
+			case EAST: return this.east;
 		}
 	}
 }

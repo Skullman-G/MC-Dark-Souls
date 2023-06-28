@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.block;
 
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -25,6 +26,12 @@ public class DefaultHorizontalDirectionalBlock extends Block
 	{
 	    super.createBlockStateDefinition(container);
 		container.add(FACING);
+	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context)
+	{
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
 	}
 	
 	public BlockState rotate(BlockState state, Rotation rotation)
