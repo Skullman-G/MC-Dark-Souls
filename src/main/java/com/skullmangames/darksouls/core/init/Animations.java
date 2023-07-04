@@ -60,10 +60,14 @@ public final class Animations
 	public static StaticAnimation DUMMY_ANIMATION;
 
 	public static StaticAnimation BIPED_IDLE;
-	public static StaticAnimation BIPED_IDLE_TH;
 	public static StaticAnimation BIPED_WALK;
 	public static StaticAnimation BIPED_RUN;
 	public static StaticAnimation BIPED_SNEAK;
+	
+	public static StaticAnimation BIPED_IDLE_TH;
+	public static StaticAnimation BIPED_WALK_TH;
+	public static StaticAnimation BIPED_RUN_TH;
+	
 	public static StaticAnimation BIPED_SWIM;
 	public static StaticAnimation BIPED_FLOAT;
 	public static StaticAnimation BIPED_KNEEL;
@@ -325,6 +329,14 @@ public final class Animations
 				DarkSouls.rl("biped/living/run"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_SNEAK = new MovementAnimation(DarkSouls.rl("biped_sneak"), 0.08F, true,
 				DarkSouls.rl("biped/living/sneak"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		BIPED_IDLE_TH = new StaticAnimation(DarkSouls.rl("biped_idle_th"), 0.1F, true,
+				DarkSouls.rl("biped/living/idle_th"), (models) -> models.ENTITY_BIPED).register(builder);
+		BIPED_WALK_TH = new StaticAnimation(DarkSouls.rl("biped_walk_th"), 0.08F, true,
+				DarkSouls.rl("biped/living/walk_th"), (models) -> models.ENTITY_BIPED).register(builder);
+		BIPED_RUN_TH = new StaticAnimation(DarkSouls.rl("biped_run_th"), 0.08F, true,
+				DarkSouls.rl("biped/living/run_th"), (models) -> models.ENTITY_BIPED).register(builder);
+		
 		BIPED_SWIM = new MovementAnimation(DarkSouls.rl("biped_swim"), 0.08F, true,
 				DarkSouls.rl("biped/living/swim"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_FLOAT = new StaticAnimation(new ResourceLocation(DarkSouls.MOD_ID, "biped_float"), 0.08F, true,
@@ -333,9 +345,6 @@ public final class Animations
 				DarkSouls.rl("biped/living/kneel"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_FALL = new StaticAnimation(new ResourceLocation(DarkSouls.MOD_ID, "biped_fall"), 0.08F, false,
 				DarkSouls.rl("biped/living/fall"), (models) -> models.ENTITY_BIPED).register(builder);
-		
-		BIPED_IDLE_TH = new StaticAnimation(DarkSouls.rl("biped_idle_th"), 0.1F, true,
-				DarkSouls.rl("biped/living/idle_th"), (models) -> models.ENTITY_BIPED).register(builder);
 		
 		BIPED_DEATH = new DeathAnimation(DarkSouls.rl("biped_death"), 0.05F, DarkSouls.rl("biped/death/death"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]

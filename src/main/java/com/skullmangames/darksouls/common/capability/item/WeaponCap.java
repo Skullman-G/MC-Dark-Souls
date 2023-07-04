@@ -63,6 +63,8 @@ public abstract class WeaponCap extends AttributeItemCap
 		this.weight = weight;
 		
 		this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH);
+		this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_WALK_TH);
+		this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_RUN_TH);
 	}
 	
 	public Set<AuxEffect> getAuxEffects()
