@@ -16,7 +16,9 @@ import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoa
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
+import com.skullmangames.darksouls.network.client.CTSTwoHanding;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
@@ -81,6 +83,7 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_UP, this::onAttunementSlotUp);
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
 		this.keyFunctionMap.put(ModKeys.TARGET_LOCK_ON, this::onTrySelectTarget);
+		this.keyFunctionMap.put(ModKeys.TWO_HANDING, this::onTwoHanding);
 		
 		try
 		{
@@ -111,13 +114,13 @@ public class InputManager
 
 	public boolean playerCanAct(EntityState playerState)
 	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.currentMotion == LivingMotion.FALL || playerState.isMovementLocked());
+		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.baseMotion == LivingMotion.FALL || playerState.isMovementLocked());
 	}
 
 	public boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
-				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& !(this.player.isFallFlying() || this.playerCap.baseMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
 				&& (!this.player.isUnderWater() || this.player.isOnGround())
 				&& (this.player.isOnGround() || this.playerCap.isMounted())
@@ -129,13 +132,23 @@ public class InputManager
 	{
 		return ClientManager.INSTANCE.isCombatModeActive() 
 				&&!this.player.isSpectator()
-				&& !(this.player.isFallFlying() || this.playerCap.currentMotion == LivingMotion.FALL || !playerState.canAct())
+				&& !(this.player.isFallFlying() || this.playerCap.baseMotion == LivingMotion.FALL || !playerState.canAct())
 				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
 				&& !this.player.isUnderWater()
 				&& this.player.isOnGround()
 				&& this.player.getVehicle() == null
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	private void onTwoHanding(int key, int action)
+	{
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
+		{
+			boolean value = !this.playerCap.isTwohanding();
+			ModNetworkManager.sendToServer(new CTSTwoHanding(value));
+			this.playerCap.setTwoHanding(value);
+		}
 	}
 	
 	private void onTrySelectTarget(int key, int action)

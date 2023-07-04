@@ -44,6 +44,14 @@ public class RenderShield extends RenderItemMirror
 		this.leftReverseTransform.rotate((float)Math.toRadians(90), Vector3f.XP);
 		this.leftReverseTransform.rotate((float)Math.toRadians(180), Vector3f.ZP);
 		this.leftReverseTransform.rotate((float)Math.toRadians(-5), Vector3f.XP);
+<<<<<<< Updated upstream
+=======
+		
+		this.backTransform = new PublicMatrix4f();
+		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.YN);
+		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.XP);
+		this.backTransform.translate(0.15F, 0.1F, -0.2F);
+>>>>>>> Stashed changes
 	}
 	
 	@Override
@@ -62,5 +70,14 @@ public class RenderShield extends RenderItemMirror
 			return new PublicMatrix4f(mainHand ? this.rightReverseTransform
 					: this.leftReverseTransform);
 		}
+<<<<<<< Updated upstream
+=======
+	}
+	
+	@Override
+	protected PublicMatrix4f getBackTransform()
+	{
+		return this.backTransform;
+>>>>>>> Stashed changes
 	}
 }

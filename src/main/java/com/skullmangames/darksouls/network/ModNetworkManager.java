@@ -14,6 +14,7 @@ import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.client.CTSSelectTrade;
 import com.skullmangames.darksouls.network.client.CTSTeleportPlayer;
+import com.skullmangames.darksouls.network.client.CTSTwoHanding;
 import com.skullmangames.darksouls.network.play.ModPlayNetHandler;
 import com.skullmangames.darksouls.network.server.STCAttunements;
 import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
@@ -101,6 +102,7 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, CTSCovenant.class, CTSCovenant::toBytes, CTSCovenant::fromBytes, CTSCovenant::handle);
 		INSTANCE.registerMessage(id++, CTSTeleportPlayer.class, CTSTeleportPlayer::toBytes, CTSTeleportPlayer::fromBytes, CTSTeleportPlayer::handle);
 		INSTANCE.registerMessage(id++, CTSOpenBonfireTeleportScreen.class, CTSOpenBonfireTeleportScreen::toBytes, CTSOpenBonfireTeleportScreen::fromBytes, CTSOpenBonfireTeleportScreen::handle);
+		INSTANCE.registerMessage(id++, CTSTwoHanding.class, CTSTwoHanding::toBytes, CTSTwoHanding::fromBytes, CTSTwoHanding::handle);
 		
 		INSTANCE.registerMessage(id++, STCMobInitialSetting.class, STCMobInitialSetting::toBytes, STCMobInitialSetting::fromBytes, STCMobInitialSetting::handle);
 		INSTANCE.registerMessage(id++, STCLivingMotionChange.class, STCLivingMotionChange::toBytes, STCLivingMotionChange::fromBytes, STCLivingMotionChange::handle);

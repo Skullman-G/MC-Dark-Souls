@@ -1,12 +1,17 @@
 package com.skullmangames.darksouls.common.capability.item;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.item.SpellItem;
@@ -38,9 +43,10 @@ public class ItemCapability
 		return false;
 	}
 	
-	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> player)
+	@NonNull
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(LivingCap<?> cap)
 	{
-		return null;
+		return new HashMap<>();
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -54,9 +60,9 @@ public class ItemCapability
 		return true;
 	}
 	
-	public boolean canUseOnMount()
+	public boolean canBeRenderedOnBack()
 	{
-		return true;
+		return false;
 	}
 	
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)

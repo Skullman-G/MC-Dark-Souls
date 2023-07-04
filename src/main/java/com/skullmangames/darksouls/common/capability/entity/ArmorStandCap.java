@@ -12,13 +12,13 @@ public class ArmorStandCap extends LivingCap<ArmorStand>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.DUMMY_ANIMATION);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.DUMMY_ANIMATION);
 	}
 
 	@Override
 	public void updateMotion()
 	{
-		this.currentMotion = LivingMotion.IDLE;
+		this.baseMotion = LivingMotion.IDLE;
 	}
 
 	@Override

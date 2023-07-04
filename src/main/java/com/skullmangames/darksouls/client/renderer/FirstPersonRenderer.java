@@ -63,7 +63,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		
 		for (LayerPart layerPart : LayerPart.mixLayers())
 		{
-			if (entityCap.getClientAnimator().getCompositeLayer(layerPart).animationPlayer.getPlay() instanceof AimingAnimation)
+			if (entityCap.getClientAnimator().getMixLayer(layerPart).animationPlayer.getPlay() instanceof AimingAnimation)
 			{
 				flag2 = true;
 				break;

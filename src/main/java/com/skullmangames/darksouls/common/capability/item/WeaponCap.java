@@ -13,11 +13,13 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
+import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
@@ -39,6 +41,7 @@ public abstract class WeaponCap extends AttributeItemCap
 {
 	private final WeaponCategory weaponCategory;
 	private final ImmutableMap<CoreDamageType, Integer> damage;
+	protected final Map<LivingMotion, StaticAnimation> twoHandingOverrides = new HashMap<>();
 	protected final Map<LivingMotion, StaticAnimation> animationOverrides = new HashMap<>();
 	private final ImmutableMap<Stat, Integer> statRequirements;
 	private final ImmutableMap<Stat, Scaling> statScaling;
@@ -58,6 +61,8 @@ public abstract class WeaponCap extends AttributeItemCap
 		this.statRequirements = statRequirements;
 		this.statScaling = statScaling;
 		this.weight = weight;
+		
+		this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH);
 	}
 	
 	public Set<AuxEffect> getAuxEffects()
@@ -110,11 +115,14 @@ public abstract class WeaponCap extends AttributeItemCap
 	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
 		return this.statRequirements.getOrDefault(stat, 0) <= playerCap.getStatValue(stat);
+<<<<<<< Updated upstream
 	}
 
 	public boolean hasHoldingAnimation()
 	{
 		return false;
+=======
+>>>>>>> Stashed changes
 	}
 	
 	public int getDamage(CoreDamageType type)
@@ -206,21 +214,15 @@ public abstract class WeaponCap extends AttributeItemCap
 		return this.getHandProperty() == HandProperty.MAINHAND_ONLY;
 	}
 
-	@Override
-	public boolean canUseOnMount()
-	{
-		return !this.isTwoHanded();
-	}
-
 	public HandProperty getHandProperty()
 	{
 		return HandProperty.GENERAL;
 	}
 
 	@Override
-	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(PlayerCap<?> playerCap)
+	public Map<LivingMotion, StaticAnimation> getLivingMotionChanges(LivingCap<?> cap)
 	{
-		return this.animationOverrides;
+		return cap.isTwohanding() ? this.twoHandingOverrides : this.animationOverrides;
 	}
 
 	@OnlyIn(Dist.CLIENT)

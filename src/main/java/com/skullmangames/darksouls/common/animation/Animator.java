@@ -2,8 +2,6 @@ package com.skullmangames.darksouls.common.animation;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
@@ -59,17 +57,12 @@ public abstract class Animator
 		return false;
 	}
 
-	public void addLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
+	public void putLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
 	{
 		this.livingAnimations.put(livingMotion, animation);
 	}
 
-	public Set<Map.Entry<LivingMotion, StaticAnimation>> getLivingAnimationEntrySet()
-	{
-		return this.livingAnimations.entrySet();
-	}
-
-	public void resetMotions()
+	public void resetLivingAnimations()
 	{
 		this.livingAnimations.clear();
 	}

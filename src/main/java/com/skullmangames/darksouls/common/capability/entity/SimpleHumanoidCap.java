@@ -2,13 +2,17 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.capability.item.IShield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
@@ -19,6 +23,7 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
+<<<<<<< Updated upstream
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
@@ -26,6 +31,19 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_VERTICAL);
 		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
+=======
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
+		{
+			IShield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
+			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
+					: Animations.BIPED_BLOCK_VERTICAL;
+		}));
+>>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -60,5 +78,17 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 	public void updateMotion()
 	{
 		this.commonMotionUpdate();
+	}
+	
+	public void modifyLivingMotions(ItemCapability itemCap)
+	{
+		STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), false);
+		
+		if (itemCap != null)
+		{
+			msg.putEntries(itemCap.getLivingMotionChanges(this));
+		}
+
+		ModNetworkManager.sendToAllPlayerTrackingThisEntity(msg, this.orgEntity);
 	}
 }

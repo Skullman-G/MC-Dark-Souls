@@ -30,6 +30,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
+<<<<<<< Updated upstream
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.FALCONER_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.FALCONER_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.FALCONER_RUN);
@@ -38,6 +39,15 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
 		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+=======
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.FALCONER_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.FALCONER_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.FALCONER_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+>>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 

@@ -22,24 +22,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderItemBase
 {
+<<<<<<< Updated upstream
 	protected PublicMatrix4f transform;
 	
 	protected static final PublicMatrix4f BACK_COORECTION;
+=======
+>>>>>>> Stashed changes
 	public static RenderEngine renderEngine;
 	
-	static
-	{
-		BACK_COORECTION = new PublicMatrix4f();
-		BACK_COORECTION.translate(0.5F, 1, 0.1F);
-		BACK_COORECTION.rotate((float)Math.toRadians(130), Vector3f.ZP);
-		BACK_COORECTION.rotate((float)Math.toRadians(100), Vector3f.YP);
-	}
+	protected PublicMatrix4f transform;
+	protected PublicMatrix4f backTransform;
 	
 	public RenderItemBase()
 	{
 		this.transform = new PublicMatrix4f();
 		this.transform.rotate((float)Math.toRadians(-80), Vector3f.XP);
 		this.transform.translate(0, 0.1F, 0);
+<<<<<<< Updated upstream
+=======
+		
+		this.backTransform = new PublicMatrix4f();
+		this.backTransform.rotate((float)Math.toRadians(130), Vector3f.ZP);
+		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.YP);
+		this.backTransform.translate(-0.2F, -0.5F, -0.1F);
+>>>>>>> Stashed changes
 	}
 	
 	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float scale, Vector3d translation)
@@ -60,16 +66,26 @@ public class RenderItemBase
 		GlStateManager._enableDepthTest();
 	}
 	
-	public void renderItemBack(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
+	public void renderItemOnBack(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
 	{
+<<<<<<< Updated upstream
 		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
+=======
+		PublicMatrix4f modelMatrix = this.getBackTransform();
+		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName("Chest").getAnimatedTransform(), modelMatrix, modelMatrix);
+>>>>>>> Stashed changes
 		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
 		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
 		
         Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, viewMatrixStack, buffer, 0);
+	}
+	
+	protected PublicMatrix4f getBackTransform()
+	{
+		return this.backTransform;
 	}
 	
 	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)

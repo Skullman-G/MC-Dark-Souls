@@ -60,10 +60,11 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
 {
-	public LivingMotion currentMotion = LivingMotion.IDLE;
-	public Map<LayerPart, LivingMotion> currentMixMotions = new HashMap<>();
 	protected Animator animator;
-	public List<Entity> currentlyAttackedEntities;
+	public LivingMotion baseMotion = LivingMotion.IDLE;
+	public final Map<LayerPart, LivingMotion> mixMotions = new HashMap<>();
+	
+	public List<Entity> currentlyAttackedEntities = new ArrayList<>();
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());
 	private float stamina;
@@ -76,10 +77,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-		for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
+		for (LayerPart part : LayerPart.mixLayers()) this.mixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
-		this.currentlyAttackedEntities = new ArrayList<Entity>();
+	}
+	
+	public ShieldHoldType getShieldHoldType()
+	{
+		return ShieldHoldType.VERTICAL;
 	}
 	
 	public ShieldHoldType getShieldHoldType()
@@ -104,6 +109,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.initAttributes();
 		this.poiseDef = this.getPoise();
 		this.stamina = this.getMaxStamina();
+		this.modifyLivingMotions();
 	}
 	
 	public float getSpellBuff()
@@ -114,7 +120,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public void onHeldItemChange(ItemCapability toChange, ItemStack stack, InteractionHand hand)
 	{
 		this.cancelUsingItem();
+		this.modifyLivingMotions();
 	}
+	
+	public void modifyLivingMotions() {}
 	
 	public boolean isMounted()
 	{
@@ -176,12 +185,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		if (!this.isInaction()) this.updateMotion();
 		this.animator.update();
-	}
-
-	public boolean isHoldingWeaponWithHoldingAnimation(InteractionHand hand)
-	{
-		WeaponCap cap = this.getHeldWeaponCapability(hand);
-		return cap != null && cap.hasHoldingAnimation();
 	}
 
 	@Override
@@ -251,43 +254,47 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	protected final void commonBipedAnimatorInit(ClientAnimator animatorClient)
 	{
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 	}
 
 	protected final void commonMotionUpdate()
 	{
 		if (this.isMounted())
 		{
-			this.currentMotion = LivingMotion.MOUNTED;
+			this.baseMotion = LivingMotion.MOUNTED;
 		}
 		else
 		{
 			if (this.orgEntity.getDeltaMovement().y < -0.55F)
 			{
-				currentMotion = LivingMotion.FALL;
+				baseMotion = LivingMotion.FALL;
 			}
 			else if (this.orgEntity.animationSpeed > 0.01F)
 			{
 				if (this.orgEntity.isSprinting())
-					this.currentMotion = LivingMotion.RUNNING;
+					this.baseMotion = LivingMotion.RUNNING;
 				else
-					this.currentMotion = LivingMotion.WALKING;
+					this.baseMotion = LivingMotion.WALKING;
 			}
-			else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+			else if (this.isUsingShield())
 			{
+<<<<<<< Updated upstream
 				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
 				{
 					if (shield.getShieldType() == ShieldType.NONE) this.currentMotion = LivingMotion.WEAPON_BLOCKING;
 					else this.currentMotion = LivingMotion.SHIELD_BLOCKING;
 				}
+=======
+				this.baseMotion = LivingMotion.BLOCKING;
+>>>>>>> Stashed changes
 			}
 			else
 			{
-				currentMotion = LivingMotion.IDLE;
+				this.baseMotion = LivingMotion.IDLE;
 			}
 		}
 		
@@ -298,6 +305,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
+<<<<<<< Updated upstream
 			if (this.isBlocking())
 			{
 				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
@@ -313,34 +321,39 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 						else this.currentMixMotions.put(layerPart, LivingMotion.NONE);
 					}
 				}
+=======
+			UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
+			if (this.baseMotion != LivingMotion.BLOCKING && this.isUsingShield())
+			{
+				this.mixMotions.put(layerPart, LivingMotion.BLOCKING);
+>>>>>>> Stashed changes
 			}
 			else
 			{
-				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 				switch (useAction)
 				{
 					case BOW:
-						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						this.mixMotions.put(layerPart, LivingMotion.AIMING);
 						break;
 						
 					case CROSSBOW:
-						this.currentMixMotions.put(layerPart, LivingMotion.RELOADING);
+						this.mixMotions.put(layerPart, LivingMotion.RELOADING);
 						break;
 						
 					case SPEAR:
-						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
+						this.mixMotions.put(layerPart, LivingMotion.AIMING);
 						break;
 						
 					case DRINK:
-						this.currentMixMotions.put(layerPart, LivingMotion.DRINKING);
+						this.mixMotions.put(layerPart, LivingMotion.DRINKING);
 						break;
 						
 					case EAT:
-						this.currentMixMotions.put(layerPart, LivingMotion.EATING);
+						this.mixMotions.put(layerPart, LivingMotion.EATING);
 						break;
 						
 					default:
-						this.currentMixMotions.put(layerPart, LivingMotion.NONE);
+						this.mixMotions.put(layerPart, LivingMotion.NONE);
 						break;
 				}
 			}
@@ -351,14 +364,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
 		{
-			this.currentMixMotions.put(LayerPart.UP, LivingMotion.AIMING);
+			this.mixMotions.put(LayerPart.UP, LivingMotion.AIMING);
 			leftChanged = true;
 			rightChanged = true;
 		}
 		
-		if (!leftChanged) this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
-		if (!rightChanged) this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
-		if (!leftChanged && !rightChanged) this.currentMixMotions.put(LayerPart.UP, LivingMotion.NONE);
+		if (!leftChanged) this.mixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
+		if (!rightChanged) this.mixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
+		if (!leftChanged && !rightChanged) this.mixMotions.put(LayerPart.UP, LivingMotion.NONE);
 	}
 
 	public void cancelUsingItem()
@@ -461,7 +474,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean isBlocking()
 	{
-		if (this.animator.getMainPlayer().getPlay().getPropertyByTime(AttackProperty.BLOCKING, this.animator.getMainPlayer().getElapsedTime()).orElse(false)) return true;
+		return this.animator.getMainPlayer().getPlay().getPropertyByTime(AttackProperty.BLOCKING, this.animator.getMainPlayer().getElapsedTime()).orElse(false)
+				|| this.isUsingShield();
+	}
+	
+	public boolean isUsingShield()
+	{
 		if (!this.orgEntity.isUsingItem() || this.orgEntity.getUseItem().isEmpty()) return false;
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();

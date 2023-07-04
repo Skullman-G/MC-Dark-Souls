@@ -16,7 +16,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 public class MirrorAnimation extends StaticAnimation
 {
-	public StaticAnimation mirror;
+	public StaticAnimation right;
+	public StaticAnimation left;
 	
 	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
 	{
@@ -25,34 +26,40 @@ public class MirrorAnimation extends StaticAnimation
 	
 	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, boolean applyLayerParts, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
 	{
-		super(id, convertTime, repeatPlay, path1, model);
-		this.mirror = new StaticAnimation(null, convertTime, repeatPlay, path2, model);
+		super();
+		
+		ResourceLocation rightId = new ResourceLocation(id.getNamespace(), id.getPath()+"_right");
+		ResourceLocation leftId = new ResourceLocation(id.getNamespace(), id.getPath()+"_left");
+		
+		this.right = new StaticAnimation(rightId, convertTime, repeatPlay, path1, model);
+		this.left = new StaticAnimation(leftId, convertTime, repeatPlay, path2, model);
 		
 		if (applyLayerParts)
 		{
-			this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
-			this.mirror.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT);
+			this.right.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
+			this.left.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT);
 		}
 	}
 	
 	@Override
 	public <V> MirrorAnimation addProperty(Property<V> propertyType, V value)
 	{
-		super.addProperty(propertyType, value);
+		this.right.addProperty(propertyType, value);
+		this.left.addProperty(propertyType, value);
 		return this;
 	}
 	
 	@Override
-	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
+	public StaticAnimation get(LivingCap<?> entityCap, LayerPart layerPart)
 	{
 		switch (layerPart)
 		{
-			case RIGHT: return this;
-			case LEFT: return this.mirror;
+			case RIGHT: return this.right;
+			case LEFT: return this.left;
 			default: switch(entityCap.getOriginalEntity().getUsedItemHand())
 			{
-				case MAIN_HAND: return this;
-				case OFF_HAND: return this.mirror;
+				case MAIN_HAND: return this.right;
+				case OFF_HAND: return this.left;
 				default: return Animations.DUMMY_ANIMATION;
 			}
 		}
@@ -61,13 +68,15 @@ public class MirrorAnimation extends StaticAnimation
 	@Override
 	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
 	{
-		load(resourceManager, models, this);
-		load(resourceManager, models, this.mirror);
+		load(resourceManager, models, this.right);
+		load(resourceManager, models, this.left);
 	}
 	
 	@Override
 	public MirrorAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
 	{
-		return (MirrorAnimation)super.register(builder);
+		this.right.register(builder);
+		this.left.register(builder);
+		return this;
 	}
 }

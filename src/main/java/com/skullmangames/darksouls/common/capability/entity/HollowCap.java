@@ -46,11 +46,11 @@ public class HollowCap extends HumanoidCap<Hollow>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
-		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -71,8 +71,8 @@ public class HollowCap extends HumanoidCap<Hollow>
 		
 		if (buf.readBoolean())
 		{
-			animator.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
-			animator.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
+			animator.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
+			animator.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
 		}
 	}
 	

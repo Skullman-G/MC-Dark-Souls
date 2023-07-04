@@ -1,9 +1,7 @@
 package com.skullmangames.darksouls.network.server;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -11,6 +9,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.client.Minecraft;
@@ -21,89 +20,42 @@ import net.minecraftforge.network.NetworkEvent;
 public class STCLivingMotionChange
 {
 	private int entityId;
-	private int count;
 	private boolean setChangesAsDefault;
-	private List<LivingMotion> motionList = new ArrayList<>();
-	private List<StaticAnimation> animationList = new ArrayList<>();
-
-	public STCLivingMotionChange()
-	{
-		this(-1);
-	}
-
-	public STCLivingMotionChange(int entityId)
-	{
-		this(entityId, 0, false);
-	}
+	private Map<LivingMotion, StaticAnimation> changes = new HashMap<>();
 
 	public STCLivingMotionChange(int entityId, boolean setChangesAsDefault)
 	{
-		this(entityId, 0, setChangesAsDefault);
-	}
-
-	private STCLivingMotionChange(int entityId, int count, boolean setChangesAsDefault)
-	{
 		this.entityId = entityId;
-		this.count = count;
 		this.setChangesAsDefault = setChangesAsDefault;
 	}
 
 	public STCLivingMotionChange put(LivingMotion motion, StaticAnimation animation)
 	{
-		this.motionList.add(motion);
-		this.animationList.add(animation);
-		this.count++;
+		this.changes.put(motion, animation);
 		return this;
 	}
 
-	public void putEntries(Set<Map.Entry<LivingMotion, StaticAnimation>> motionSet)
+	public STCLivingMotionChange putEntries(Map<LivingMotion, StaticAnimation> motions)
 	{
-		this.count += motionSet.size();
-
-		motionSet.forEach((entry) ->
-		{
-			this.motionList.add(entry.getKey());
-			this.animationList.add(entry.getValue());
-		});
+		this.changes.putAll(motions);
+		return this;
 	}
 
 	public static STCLivingMotionChange fromBytes(FriendlyByteBuf buf)
 	{
-		STCLivingMotionChange msg = new STCLivingMotionChange(buf.readInt(), buf.readInt(), buf.readBoolean());
-		List<LivingMotion> motionList = new ArrayList<>();
-		List<StaticAnimation> animationList = new ArrayList<>();
-
-		for (int i = 0; i < msg.count; i++)
-		{
-			motionList.add(LivingMotion.values()[buf.readInt()]);
-		}
-
-		for (int i = 0; i < msg.count; i++)
-		{
-			animationList.add(DarkSouls.getInstance().animationManager.getAnimation(buf.readResourceLocation()));
-		}
-
-		msg.motionList = motionList;
-		msg.animationList = animationList;
-
-		return msg;
+		return new STCLivingMotionChange(buf.readInt(), buf.readBoolean())
+				.putEntries(buf.readMap((b) -> b.readEnum(LivingMotion.class), (b) ->
+				{
+					return DarkSouls.getInstance().animationManager.getAnimation(b.readResourceLocation());
+				}));
 	}
 
 	public static void toBytes(STCLivingMotionChange msg, FriendlyByteBuf buf)
 	{
 		buf.writeInt(msg.entityId);
-		buf.writeInt(msg.count);
 		buf.writeBoolean(msg.setChangesAsDefault);
-
-		for (LivingMotion motion : msg.motionList)
-		{
-			buf.writeInt(motion.getId());
-		}
-
-		for (StaticAnimation anim : msg.animationList)
-		{
-			buf.writeResourceLocation(anim.getId());
-		}
+		
+		buf.writeMap(msg.changes, (b, motion) -> b.writeEnum(motion), (b, anim) -> b.writeResourceLocation(anim.getId()));
 	}
 
 	public static void handle(STCLivingMotionChange msg, Supplier<NetworkEvent.Context> ctx)
@@ -117,16 +69,22 @@ public class STCLivingMotionChange
 			{
 				LivingCap<?> entityCap = (LivingCap<?>) entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				ClientAnimator animator = entityCap.getClientAnimator();
-				animator.resetMotions();
-				animator.resetMixMotion();
-
-				for (int i = 0; i < msg.count; i++)
+				animator.resetLivingAnimations();
+				animator.resetMixMotions();
+				
+				msg.changes.forEach((motion, animation) ->
 				{
-					LivingMotion motion = msg.motionList.get(i);
-					StaticAnimation animation = msg.animationList.get(i);
-					animator.addLivingAnimation(motion, animation);
-					if (animator.isMotionActive(motion)) animator.playAnimation(animation, 0.0F);
-				}
+					if (animation.getLayerPart() != LayerPart.FULL)
+					{
+						animator.putAnimOverride(animation.getLayerPart(), motion, animation);
+						if (entityCap.baseMotion == motion) animator.playAnimation(animation, 0.0F);
+					}
+					else
+					{
+						animator.putLivingAnimation(motion, animation);
+						if (entityCap.baseMotion == motion) animator.playAnimation(animation, 0.0F);
+					}
+				});
 
 				if (msg.setChangesAsDefault)
 				{

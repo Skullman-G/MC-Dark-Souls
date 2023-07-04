@@ -31,6 +31,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
+<<<<<<< Updated upstream
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_WARRIOR_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_WARRIOR_RUN);
@@ -39,6 +40,15 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+=======
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_WARRIOR_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_WARRIOR_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+>>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

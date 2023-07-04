@@ -18,16 +18,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class WeaponMoveset
 {
-	public static final WeaponMoveset EMPTY = new WeaponMoveset();
+	public static final WeaponMoveset EMPTY = new WeaponMoveset(new ResourceLocation("empty"), ImmutableMap.of());
 	
 	private final ResourceLocation name;
 	private final ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
-	
-	private WeaponMoveset()
-	{
-		this.name = new ResourceLocation("empty");
-		this.moveset = ImmutableMap.of();
-	}
 	
 	private WeaponMoveset(ResourceLocation name, ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset)
 	{

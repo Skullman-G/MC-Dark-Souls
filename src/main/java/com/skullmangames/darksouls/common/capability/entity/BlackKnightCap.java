@@ -17,6 +17,7 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
+<<<<<<< Updated upstream
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BLACK_KNIGHT_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALKING);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUNNING);
@@ -25,6 +26,15 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
 		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+=======
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BLACK_KNIGHT_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALKING);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUNNING);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+>>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

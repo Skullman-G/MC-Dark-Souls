@@ -8,9 +8,9 @@ import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class BlockAnimation extends ActionAnimation
+public class BlockedAnimation extends ActionAnimation
 {
-	public BlockAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public BlockedAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
 		super(id, convertTime, path, model);
 	}

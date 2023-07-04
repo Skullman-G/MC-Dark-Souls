@@ -16,6 +16,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
@@ -50,7 +51,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	private final ResourceLocation movesetId;
 	private WeaponMoveset moveset;
 	private final Collider collider;
-	private final boolean holdOnShoulder;
 	
 	private final ShieldType shieldType;
 	private final WeaponMaterial weaponMaterial;
@@ -67,22 +67,26 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		this.movesetId = moveset;
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.collider = collider;
-		this.holdOnShoulder = holdOnShoulder;
 		this.weaponMaterial = weaponMaterial;
 		this.shieldType = shieldType;
 		this.defense = defense;
 		this.stability = stability;
+		
+		if (holdOnShoulder)
+		{
+			this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.WALKING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.RUNNING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.KNEELING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.BLOCKING, Animations.BIPED_HOLDING_BIG_WEAPON);
+		}
 	}
 	
 	public void reload()
 	{
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
-	}
-	
-	@Override
-	public boolean hasHoldingAnimation()
-	{
-		return this.holdOnShoulder;
 	}
 	
 	@Override
@@ -183,6 +187,22 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	{
 		return this.weaponMaterial.getBlockSound();
 	}
+<<<<<<< Updated upstream
+=======
+	
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public boolean canBeRenderedBoth(ItemStack item)
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean canBeRenderedOnBack()
+	{
+		return true;
+	}
+>>>>>>> Stashed changes
 
 	@Override
 	public float getDefense(CoreDamageType damageType)
@@ -203,7 +223,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	
 	public enum AttackType
 	{
-		LIGHT("light"), HEAVY("heavy"), DASH("dash"), BACKSTAB("backstab");
+		LIGHT("light"), HEAVY("heavy"), DASH("dash"), BACKSTAB("backstab"),
+		TWO_HANDED_LIGHT("two_handed_light");
 		
 		private String id;
 		

@@ -217,7 +217,7 @@ public class EntityEvents
 		
 		if (event.getEntityLiving() instanceof ServerPlayer player)
 		{
-			ModNetworkManager.sendToPlayer(new STCChangeEquipment(event.getEntityLiving().getId(), event.getFrom(), event.getTo(), event.getSlot()), player);
+			ModNetworkManager.sendToPlayer(new STCChangeEquipment(player.getId(), event.getFrom(), event.getTo(), event.getSlot()), player);
 		}
 	}
 	
@@ -303,8 +303,8 @@ public class EntityEvents
 	public static void changeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event)
 	{
 		Player player = event.getPlayer();
-		ServerPlayerCap playerData = (ServerPlayerCap) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
-		playerData.modifyLivingMotions(playerData.getHeldItemCapability(InteractionHand.MAIN_HAND));
+		ServerPlayerCap playerCap = (ServerPlayerCap) player.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+		playerCap.modifyLivingMotions();
 	}
 	
 	@SubscribeEvent

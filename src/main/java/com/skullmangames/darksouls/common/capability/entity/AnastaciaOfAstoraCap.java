@@ -12,14 +12,14 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 
 	@Override
 	public void updateMotion()
 	{
-		this.currentMotion = LivingMotion.IDLE;
+		this.baseMotion = LivingMotion.IDLE;
 	}
 	
 	@Override

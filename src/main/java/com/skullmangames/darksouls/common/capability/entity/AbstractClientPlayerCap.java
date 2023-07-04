@@ -43,42 +43,42 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	{
 		if (this.orgEntity.isFallFlying())
 		{
-			this.currentMotion = LivingMotion.FLYING;
+			this.baseMotion = LivingMotion.FLYING;
 		}
 		else if (this.isMounted())
 		{
-			this.currentMotion = LivingMotion.MOUNTED;
+			this.baseMotion = LivingMotion.MOUNTED;
 		}
 		else if (this.orgEntity.getPose() == Pose.SWIMMING && !this.orgEntity.isSecondaryUseActive())
 		{
-			this.currentMotion = LivingMotion.SWIMMING;
+			this.baseMotion = LivingMotion.SWIMMING;
 		}
 		else
 		{
-			ClientAnimator animator = getClientAnimator();
+			ClientAnimator animator = this.getClientAnimator();
 			Vec3 mov = this.orgEntity.getDeltaMovement();
 
 			if (this.orgEntity.isSwimming() && mov.y < -0.005)
 			{
-				this.currentMotion = LivingMotion.FLOATING;
+				this.baseMotion = LivingMotion.FLOATING;
 			}
 			else if(mov.y < -0.55F)
 			{
-				this.currentMotion = LivingMotion.FALL;
+				this.baseMotion = LivingMotion.FALL;
 			}
 			else if (mov.x != 0 || mov.z != 0)
 			{
 				if(this.orgEntity.isCrouching())
 				{
-					this.currentMotion = LivingMotion.SNEAKING;
+					this.baseMotion = LivingMotion.SNEAKING;
 				}
 				else if (this.orgEntity.isSprinting())
 				{
-					this.currentMotion = LivingMotion.RUNNING;
+					this.baseMotion = LivingMotion.RUNNING;
 				}
 				else
 				{
-					this.currentMotion = LivingMotion.WALKING;
+					this.baseMotion = LivingMotion.WALKING;
 				}
 
 				if (this.orgEntity.moveDist > 0)
@@ -95,19 +95,23 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 				animator.baseLayer.animationPlayer.setReversed(false);
 				if (this.orgEntity.isCrouching())
 				{
-					this.currentMotion = LivingMotion.KNEELING;
+					this.baseMotion = LivingMotion.KNEELING;
 				}
-				else if (this.orgEntity.getUseItemRemainingTicks() > 0 && this.isBlocking())
+				else if (this.isUsingShield())
 				{
+<<<<<<< Updated upstream
 					if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
 					{
 						if (shield.getShieldType() == ShieldType.NONE) this.currentMotion = LivingMotion.WEAPON_BLOCKING;
 						else this.currentMotion = LivingMotion.SHIELD_BLOCKING;
 					}
+=======
+					this.baseMotion = LivingMotion.BLOCKING;
+>>>>>>> Stashed changes
 				}
 				else
 				{
-					this.currentMotion = LivingMotion.IDLE;
+					this.baseMotion = LivingMotion.IDLE;
 				}
 			}
 		}
@@ -122,9 +126,10 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 				
 				if (useaction == DarkSoulsUseAction.DARKSIGN || useaction == DarkSoulsUseAction.MIRACLE || useaction == DarkSoulsUseAction.SOUL_CONTAINER)
 				{
-					this.currentMixMotions.put(layerPart, LivingMotion.CONSUME_SOUL);
+					this.mixMotions.put(layerPart, LivingMotion.CONSUME_SOUL);
 				}
 			}
+<<<<<<< Updated upstream
 			else if (this.isBlocking())
 			{
 				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
@@ -141,34 +146,43 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 					}
 				}
 			}
+=======
+>>>>>>> Stashed changes
 			else
 			{
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
-				switch (useAction)
+				if (this.baseMotion != LivingMotion.BLOCKING && this.isUsingShield())
 				{
-					case BOW:
-						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
-						break;
-						
-					case CROSSBOW:
-						this.currentMixMotions.put(layerPart, LivingMotion.RELOADING);
-						break;
-						
-					case SPEAR:
-						this.currentMixMotions.put(layerPart, LivingMotion.AIMING);
-						break;
-						
-					case DRINK:
-						this.currentMixMotions.put(layerPart, LivingMotion.DRINKING);
-						break;
-						
-					case EAT:
-						this.currentMixMotions.put(layerPart, LivingMotion.EATING);
-						break;
-						
-					default:
-						this.currentMixMotions.put(layerPart, LivingMotion.NONE);
-						break;
+					this.mixMotions.put(layerPart, LivingMotion.BLOCKING);
+				}
+				else
+				{
+					switch (useAction)
+					{
+						case BOW:
+							this.mixMotions.put(layerPart, LivingMotion.AIMING);
+							break;
+							
+						case CROSSBOW:
+							this.mixMotions.put(layerPart, LivingMotion.RELOADING);
+							break;
+							
+						case SPEAR:
+							this.mixMotions.put(layerPart, LivingMotion.AIMING);
+							break;
+							
+						case DRINK:
+							this.mixMotions.put(layerPart, LivingMotion.DRINKING);
+							break;
+							
+						case EAT:
+							this.mixMotions.put(layerPart, LivingMotion.EATING);
+							break;
+							
+						default:
+							this.mixMotions.put(layerPart, LivingMotion.NONE);
+							break;
+					}
 				}
 			}
 		}
@@ -178,32 +192,19 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			boolean changedRight = false;
 			if (this.orgEntity.swinging)
 			{
-				this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.DIGGING);
+				this.mixMotions.put(LayerPart.RIGHT, LivingMotion.DIGGING);
 				changedRight = true;
 			}
 			if (CrossbowItem.isCharged(this.orgEntity.getMainHandItem()))
 			{
-				this.currentMixMotions.put(LayerPart.UP, LivingMotion.AIMING);
+				this.mixMotions.put(LayerPart.UP, LivingMotion.AIMING);
 				changedLeft = true;
 				changedRight = true;
 			}
 			else if (this.getClientAnimator().isAiming()) this.playReboundAnimation();
-			else 
-			{
-				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.MAIN_HAND))
-				{
-					this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.HOLDING_WEAPON);
-					changedRight = true;
-				}
-				if (this.isHoldingWeaponWithHoldingAnimation(InteractionHand.OFF_HAND))
-				{
-					this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.HOLDING_WEAPON);
-					changedLeft = true;
-				}
-			}
-			if (!changedLeft) this.currentMixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
-			if (!changedRight) this.currentMixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
-			if (!changedLeft && !changedRight) this.currentMixMotions.put(LayerPart.UP, LivingMotion.NONE);
+			if (!changedLeft) this.mixMotions.put(LayerPart.LEFT, LivingMotion.NONE);
+			if (!changedRight) this.mixMotions.put(LayerPart.RIGHT, LivingMotion.NONE);
+			if (!changedLeft && !changedRight) this.mixMotions.put(LayerPart.UP, LivingMotion.NONE);
 		}
 	}
 	

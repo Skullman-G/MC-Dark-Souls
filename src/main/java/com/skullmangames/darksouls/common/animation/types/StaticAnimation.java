@@ -36,7 +36,7 @@ public class StaticAnimation extends DynamicAnimation
 	public StaticAnimation()
 	{
 		super(0.0F, false);
-		this.animationId = null;
+		this.animationId = new ResourceLocation("null", "null");
 		this.path = null;
 		this.model = null;
 	}
@@ -60,7 +60,7 @@ public class StaticAnimation extends DynamicAnimation
 		return this;
 	}
 	
-	public StaticAnimation checkAndReturnAnimation(LivingCap<?> entityCap, LayerPart layerPart)
+	public StaticAnimation get(LivingCap<?> entityCap, LayerPart layerPart)
 	{
 		return this;
 	}

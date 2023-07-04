@@ -4,6 +4,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
+import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
@@ -49,6 +51,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	private Covenant covenant = Covenants.NONE;
 	private int covenantProgress;
 	private int[] covenantProgresses = new int[Covenants.COVENANTS.size()];
+	
+	private boolean twoHanding;
 	
 	@Override
 	public void onEntityConstructed(T entityIn)
@@ -127,6 +131,17 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		}
 		
 		this.stats.saveStats(nbt);
+	}
+	
+	@Override
+	public boolean isTwohanding()
+	{
+		return this.twoHanding;
+	}
+	
+	public void setTwoHanding(boolean value)
+	{
+		this.twoHanding = value;
 	}
 	
 	public void addAttributeModifierForSlot(Attribute attribute, EquipmentSlot slot, float value)
@@ -257,6 +272,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
+<<<<<<< Updated upstream
 		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
@@ -276,6 +292,30 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.addLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
 		animatorClient.addLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
 		animatorClient.addLivingAnimation(LivingMotion.HOLDING_WEAPON, Animations.BIPED_HOLDING_BIG_WEAPON);
+=======
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
+		animatorClient.putLivingAnimation(LivingMotion.SNEAKING, Animations.BIPED_SNEAK);
+		animatorClient.putLivingAnimation(LivingMotion.SWIMMING, Animations.BIPED_SWIM);
+		animatorClient.putLivingAnimation(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
+		animatorClient.putLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
+		animatorClient.putLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
+		animatorClient.putLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
+		animatorClient.putLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
+		animatorClient.putLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
+		animatorClient.putLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
+		{
+			IShield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
+			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
+					: Animations.BIPED_BLOCK_VERTICAL;
+		}));
+>>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

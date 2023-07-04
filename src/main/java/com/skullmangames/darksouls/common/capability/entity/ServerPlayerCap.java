@@ -1,14 +1,9 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import com.google.common.collect.Sets;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.capability.item.IShield;
@@ -50,31 +45,12 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 {
-	private Map<LivingMotion, StaticAnimation> livingMotionMap = new HashMap<>();
-	private Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
-	private List<LivingMotion> modifiedLivingMotions = new ArrayList<>();
-	
 	public final Set<BonfireBlockEntity> teleports = new HashSet<>();
 
 	@Override
 	public void onEntityJoinWorld(ServerPlayer entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
-		livingMotionMap.put(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		livingMotionMap.put(LivingMotion.WALKING, Animations.BIPED_WALK);
-		livingMotionMap.put(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		livingMotionMap.put(LivingMotion.SNEAKING, Animations.BIPED_SNEAK);
-		livingMotionMap.put(LivingMotion.SWIMMING, Animations.BIPED_SWIM);
-		livingMotionMap.put(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
-		livingMotionMap.put(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
-		livingMotionMap.put(LivingMotion.FALL, Animations.BIPED_FALL);
-		livingMotionMap.put(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-
-		for (Map.Entry<LivingMotion, StaticAnimation> entry : livingMotionMap.entrySet())
-		{
-			defaultLivingAnimations.put(entry.getKey(), entry.getValue());
-		}
-
 		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
@@ -150,6 +126,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	{
 		super.updateOnServer();
 
+		// Stamina
 		EntityState state = this.getEntityState();
 		if (!this.isCreativeOrSpectator() && (state.canAct() || state.getContactLevel() == 3))
 		{
@@ -295,8 +272,6 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		ItemCapability mainHandCap = hand == InteractionHand.MAIN_HAND ? toChange
 				: this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		if (mainHandCap != null) mainHandCap.onHeld(this);
-
-		this.modifyLivingMotions(mainHandCap);
 	}
 	
 	@Override
@@ -332,61 +307,42 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		this.cancelUsingItem();
 		return true;
 	}
-
-	public void modifyLivingMotions(ItemCapability itemCap)
+	
+	@Override
+	public void setTwoHanding(boolean value)
 	{
-		this.resetModifiedLivingMotions();
+		super.setTwoHanding(value);
+		this.modifyLivingMotions();
+	}
 
-		if (itemCap != null)
-		{
-			Map<LivingMotion, StaticAnimation> motionChanger = itemCap.getLivingMotionChanges(this);
-			if (motionChanger != null)
-			{
-				Set<Map.Entry<LivingMotion, StaticAnimation>> map = Sets.newHashSet();
-
-				for (Map.Entry<LivingMotion, StaticAnimation> entry : motionChanger.entrySet())
-				{
-					this.addModifiedLivingMotion(entry.getKey(), entry.getValue());
-					map.add(entry);
-				}
-				
-				STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), false);
-				msg.putEntries(map);
-				ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, orgEntity);
-				return;
-			}
-		}
-
+	@Override
+	public void modifyLivingMotions()
+	{
+		ItemCapability mainHandCap = this.getHeldItemCapability(InteractionHand.MAIN_HAND);
+		ItemCapability offHandCap = this.getHeldItemCapability(InteractionHand.OFF_HAND);
+		
 		STCLivingMotionChange msg = new STCLivingMotionChange(this.orgEntity.getId(), false);
-		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, orgEntity);
-	}
-
-	private void addModifiedLivingMotion(LivingMotion motion, StaticAnimation animation)
-	{
-		if (animation != null)
+		
+		if (mainHandCap != null)
 		{
-			if (!this.modifiedLivingMotions.contains(motion))
+			mainHandCap.getLivingMotionChanges(this).forEach((motion, animation) ->
 			{
-				this.modifiedLivingMotions.add(motion);
-			}
-
-			this.livingMotionMap.put(motion, animation);
+				msg.put(motion, animation.get(this, LayerPart.RIGHT));
+			});
 		}
-	}
-
-	private void resetModifiedLivingMotions()
-	{
-		for (LivingMotion livingMotion : modifiedLivingMotions)
+		if (offHandCap != null)
 		{
-			this.livingMotionMap.put(livingMotion, defaultLivingAnimations.get(livingMotion));
+			offHandCap.getLivingMotionChanges(this).forEach((motion, animation) ->
+			{
+				StaticAnimation anim = animation.get(this, LayerPart.LEFT);
+				if (anim.getLayerPart() == LayerPart.LEFT)
+				{
+					msg.put(motion, anim);
+				}
+			});
 		}
 
-		modifiedLivingMotions.clear();
-	}
-
-	public Set<Map.Entry<LivingMotion, StaticAnimation>> getLivingMotionEntrySet()
-	{
-		return this.livingMotionMap.entrySet();
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, this.orgEntity);
 	}
 
 	@Override

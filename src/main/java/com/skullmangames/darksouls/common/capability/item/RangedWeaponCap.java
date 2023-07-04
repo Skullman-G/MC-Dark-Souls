@@ -30,10 +30,4 @@ public abstract class RangedWeaponCap extends WeaponCap
 			this.animationOverrides.put(LivingMotion.SHOOTING, shot);
 		}
 	}
-
-	@Override
-	public boolean canUseOnMount()
-	{
-		return true;
-	}
 }

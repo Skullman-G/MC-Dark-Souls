@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -108,7 +109,8 @@ public class AnimationLayer
 				if (this.animationPlayer.getPlay() instanceof LayerOffAnimation)
 				{
 					this.animationPlayer.getPlay().onFinish(entityCap, true);
-				} else
+				}
+				else
 				{
 					this.off(entityCap);
 				}
@@ -213,6 +215,12 @@ public class AnimationLayer
 			if (this == UP) return new LayerPart[] { LEFT, RIGHT };
 			if (this == LEFT || this == RIGHT) return new LayerPart[] { UP };
 			return mixLayers();
+		}
+		
+		public static LayerPart fromHand(InteractionHand hand)
+		{
+			return hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT
+					: LayerPart.LEFT;
 		}
 	}
 }

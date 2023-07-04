@@ -22,6 +22,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 	private final float scale;
 	private final Vector3d translation;
 	
+	
 	public HeldItemLayer()
 	{
 		this(1.0F, new Vector3d(0, 0, 0));
@@ -42,16 +43,6 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 		poseStack.pushPose();
 		if (mainHandStack.getItem() != Items.AIR)
 		{
-			if (entityCap.getOriginalEntity().getControllingPassenger() != null)
-			{
-				ItemCapability itemCap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
-				if (itemCap != null && !itemCap.canUseOnMount())
-				{
-					renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemBack(mainHandStack, entityCap, buffer, poseStack, packedLight);
-					poseStack.popPose();
-					return;
-				}
-			}
 			renderEngine.getItemRenderer(mainHandStack.getItem()).renderItemInHand(mainHandStack, entityCap, InteractionHand.MAIN_HAND, buffer, poseStack, packedLight, this.scale, this.translation);
 		}
 		poseStack.popPose();
@@ -62,9 +53,13 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 		if (offHandStack.getItem() != Items.AIR)
 		{
 			ItemCapability cap = entityCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
-			if (!entityCap.isMounted() && (cap == null || cap.canBeRenderedBoth(offHandStack)))
+			if (!entityCap.isMounted() && !entityCap.isTwohanding() && (cap == null || cap.canBeRenderedBoth(offHandStack)))
 			{
 				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemInHand(offHandStack, entityCap, InteractionHand.OFF_HAND, buffer, poseStack, packedLight, this.scale, this.translation);
+			}
+			else if (cap != null && cap.canBeRenderedOnBack())
+			{
+				renderEngine.getItemRenderer(offHandStack.getItem()).renderItemOnBack(offHandStack, entityCap, buffer, poseStack, packedLight);
 			}
 		}
 		poseStack.popPose();

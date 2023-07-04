@@ -24,28 +24,38 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ClientAnimator extends Animator
 {
-	public static Animator getAnimator(LivingCap<?> entityCap)
-	{
-		return entityCap.isClientSide() ? new ClientAnimator(entityCap) : ServerAnimator.getAnimator(entityCap);
-	}
-
-	private final Map<LivingMotion, StaticAnimation> defaultLivingAnimations;
 	public final AnimationLayer.BaseLayer baseLayer;
-	private LivingMotion currentMotion;
-	public Map<AnimationLayer.LayerPart, LivingMotion> currentMixMotions = new HashMap<>();
+	private LivingMotion baseMotion;
+	
+	private final Map<LivingMotion, StaticAnimation> defaultLivingAnimations = new HashMap<>();
+	private final Map<LayerPart, Map<LivingMotion, StaticAnimation>> animOverrides = new HashMap<>();
+	private final Map<LayerPart, LivingMotion> mixMotions = new HashMap<>();
 
 	public ClientAnimator(LivingCap<?> entityCap)
 	{
 		this.entityCap = entityCap;
-		this.currentMotion = LivingMotion.IDLE;
-		for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
-		this.defaultLivingAnimations = new HashMap<>();
+		this.baseMotion = LivingMotion.IDLE;
+		for (LayerPart part : LayerPart.mixLayers())
+		{
+			this.mixMotions.put(part, LivingMotion.NONE);
+			this.animOverrides.put(part, new HashMap<>());
+		}
 		this.baseLayer = new AnimationLayer.BaseLayer();
+	}
+	
+	public static Animator getAnimator(LivingCap<?> entityCap)
+	{
+		return entityCap.isClientSide() ? new ClientAnimator(entityCap) : ServerAnimator.getAnimator(entityCap);
+	}
+	
+	public void putAnimOverride(LayerPart layerPart, LivingMotion motion, StaticAnimation anim)
+	{
+		this.animOverrides.get(layerPart).put(motion, anim);
 	}
 	
 	public boolean isMotionActive(LivingMotion motion)
 	{
-		return this.currentMotion == motion || this.currentMixMotions.containsValue(motion);
+		return this.baseMotion == motion || this.mixMotions.containsValue(motion);
 	}
 
 	@Override
@@ -64,30 +74,40 @@ public class ClientAnimator extends Animator
 	}
 
 	@Override
-	public void addLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
+	public void putLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
 	{
 		if (animation != null) this.livingAnimations.put(livingMotion, animation);
 	}
 
 	public void setCurrentMotionsToDefault()
 	{
-		this.livingAnimations.forEach(this.defaultLivingAnimations::put);
+		this.defaultLivingAnimations.putAll(this.livingAnimations);
 	}
 
 	@Override
-	public void resetMotions()
+	public void resetLivingAnimations()
 	{
-		super.resetMotions();
+		super.resetLivingAnimations();
+		this.animOverrides.forEach((layerPart, map) -> map.clear());
 		this.defaultLivingAnimations.forEach((motion, animation) ->
 		{
 			this.livingAnimations.put(motion, animation);
-			if (this.isMotionActive(motion)) this.playAnimation(animation, 0.0F);
+			if (this.isMotionActive(motion))
+			{
+				StaticAnimation anim = this.getForLivingMotion(motion, LayerPart.FULL);
+				this.playAnimation(anim, 0.0F);
+			}
 		});
 	}
 
-	public StaticAnimation getLivingMotion(LivingMotion motion, LayerPart part)
+	public StaticAnimation getForLivingMotion(LivingMotion motion, LayerPart part)
 	{
-		return this.livingAnimations.getOrDefault(motion, Animations.DUMMY_ANIMATION).checkAndReturnAnimation(this.entityCap, part);
+		return this.livingAnimations.getOrDefault(motion, Animations.DUMMY_ANIMATION).get(this.entityCap, part);
+	}
+	
+	public StaticAnimation getOverrideAnim(LivingMotion motion, LayerPart part)
+	{
+		return this.animOverrides.get(part).getOrDefault(motion, Animations.DUMMY_ANIMATION);
 	}
 
 	public void setPoseToModel(float partialTicks)
@@ -111,7 +131,7 @@ public class ClientAnimator extends Animator
 	public void init()
 	{
 		this.entityCap.initAnimator(this);
-		StaticAnimation idleMotion = this.livingAnimations.get(this.currentMotion);
+		StaticAnimation idleMotion = this.getForLivingMotion(this.baseMotion, LayerPart.FULL);
 		this.baseLayer.playAnimation(idleMotion, this.entityCap);
 	}
 
@@ -119,7 +139,7 @@ public class ClientAnimator extends Animator
 	public void updatePose()
 	{
 		this.prevPose = this.currentPose;
-		this.currentPose = this.getComposedLayerPose(1.0F);
+		this.currentPose = this.getMixedLayerPose(1.0F);
 	}
 
 	@Override
@@ -128,49 +148,56 @@ public class ClientAnimator extends Animator
 		this.baseLayer.update(this.entityCap);
 		this.updatePose();
 		
+		StaticAnimation baseAnim = Animations.DUMMY_ANIMATION;
+		
 		if (this.baseLayer.animationPlayer.isEnd() && this.baseLayer.nextAnimation == null)
 		{
 			this.entityCap.updateMotion();
-			this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion, LayerPart.FULL), this.entityCap, 0.0F);
+			baseAnim = this.getForLivingMotion(this.entityCap.baseMotion, LayerPart.FULL);
+			this.baseLayer.playAnimation(baseAnim, this.entityCap, 0.0F);
 		}
 		
-		boolean currentMotionChanged = this.currentMotion != this.entityCap.currentMotion
-				&& !(this.currentMotion == LivingMotion.INACTION && this.entityCap.currentMotion == LivingMotion.IDLE);
+		boolean baseMotionChanged = this.baseMotion != this.entityCap.baseMotion;
 		
-		for (AnimationLayer.LayerPart layerPart : AnimationLayer.LayerPart.mixLayers())
+		if (baseMotionChanged)
 		{
-			LivingMotion motion = this.entityCap.currentMixMotions.get(layerPart);
-			if (this.currentMixMotions.get(layerPart) != motion || currentMotionChanged)
+			if (this.livingAnimations.containsKey(this.entityCap.baseMotion))
 			{
-				if (this.livingAnimations.containsKey(motion))
+				baseAnim = this.getForLivingMotion(this.entityCap.baseMotion, LayerPart.FULL);
+				this.baseLayer.playAnimation(baseAnim, this.entityCap, 0.0F);
+			}
+		}
+		
+		for (LayerPart layerPart : LayerPart.mixLayers())
+		{
+			LivingMotion newMixMotion = this.entityCap.mixMotions.get(layerPart);
+			if (this.mixMotions.get(layerPart) != newMixMotion || baseMotionChanged)
+			{
+				if (this.livingAnimations.containsKey(newMixMotion))
 				{
-					this.playAnimation(this.getLivingMotion(motion, layerPart), 0.0F);
+					this.playAnimation(this.getForLivingMotion(newMixMotion, layerPart), 0.0F);
+				}
+				else if (this.animOverrides.get(layerPart).containsKey(this.entityCap.baseMotion))
+				{
+					this.playAnimation(this.getOverrideAnim(this.entityCap.baseMotion, layerPart), 0.0F);
 				}
 				else
 				{
-					this.getCompositeLayer(layerPart).off(this.entityCap);
+					this.getMixLayer(layerPart).off(this.entityCap);
 				}
 			}
 		}
 
-		if (currentMotionChanged)
-		{
-			if (this.livingAnimations.containsKey(this.entityCap.currentMotion))
-			{
-				this.baseLayer.playAnimation(this.getLivingMotion(this.entityCap.currentMotion, LayerPart.FULL), this.entityCap, 0.0F);
-			}
-		}
-
-		this.currentMotion = this.entityCap.currentMotion;
-		this.currentMixMotions.putAll(this.entityCap.currentMixMotions);
+		this.baseMotion = this.entityCap.baseMotion;
+		this.mixMotions.putAll(this.entityCap.mixMotions);
 	}
 
-	public AnimationLayer getCompositeLayer(AnimationLayer.LayerPart layerPart)
+	public AnimationLayer getMixLayer(AnimationLayer.LayerPart layerPart)
 	{
 		return this.baseLayer.mixLayers.get(layerPart);
 	}
 
-	public Pose getComposedLayerPose(float partialTicks)
+	public Pose getMixedLayerPose(float partialTicks)
 	{
 		Pose composedPose = new Pose();
 		
@@ -196,7 +223,7 @@ public class ClientAnimator extends Animator
 		return composedPose;
 	}
 
-	public Pose getComposedLayerPoseFromOthers(AnimationLayer.LayerPart layerPart, float partialTicks)
+	public Pose getMixedLayerPoseFromOthers(AnimationLayer.LayerPart layerPart, float partialTicks)
 	{
 		Pose composedPose = this.baseLayer.animationPlayer.getCurrentPose(this.entityCap, partialTicks);
 
@@ -224,11 +251,11 @@ public class ClientAnimator extends Animator
 
 	public void startInaction()
 	{
-		this.currentMotion = LivingMotion.INACTION;
-		this.entityCap.currentMotion = LivingMotion.INACTION;
+		this.baseMotion = LivingMotion.INACTION;
+		this.entityCap.baseMotion = LivingMotion.INACTION;
 	}
 
-	public void resetMixMotion()
+	public void resetMixMotions()
 	{
 		for (LayerPart part : LayerPart.mixLayers())
 		{
@@ -238,22 +265,23 @@ public class ClientAnimator extends Animator
 	
 	public void resetMixMotionFor(LayerPart part)
 	{
-		this.currentMixMotions.put(part, LivingMotion.NONE);
-		this.entityCap.currentMixMotions.put(part, LivingMotion.NONE);
+		this.mixMotions.put(part, LivingMotion.NONE);
+		this.entityCap.mixMotions.put(part, LivingMotion.NONE);
+		this.getMixLayer(part).off(this.entityCap);
 	}
 
 	public boolean isAiming()
 	{
-		return this.currentMixMotions.containsValue(LivingMotion.AIMING);
+		return this.mixMotions.containsValue(LivingMotion.AIMING);
 	}
 
 	public void playReboundAnimation()
 	{
 		if (this.livingAnimations.containsKey(LivingMotion.SHOOTING))
 		{
-			this.playAnimation(this.livingAnimations.get(LivingMotion.SHOOTING), 0.0F);
-			for (LayerPart part : LayerPart.mixLayers()) this.currentMixMotions.put(part, LivingMotion.NONE);
-			this.resetMixMotion();
+			this.playAnimation(this.getForLivingMotion(LivingMotion.SHOOTING, LayerPart.FULL), 0.0F);
+			for (LayerPart part : LayerPart.mixLayers()) this.mixMotions.put(part, LivingMotion.NONE);
+			this.resetMixMotions();
 		}
 	}
 

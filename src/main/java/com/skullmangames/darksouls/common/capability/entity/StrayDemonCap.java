@@ -28,8 +28,8 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -60,8 +60,8 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public void updateMotion()
 	{
-		if (orgEntity.animationSpeed > 0.01F) this.currentMotion = LivingMotion.WALKING;
-		else this.currentMotion = LivingMotion.IDLE;
+		if (orgEntity.animationSpeed > 0.01F) this.baseMotion = LivingMotion.WALKING;
+		else this.baseMotion = LivingMotion.IDLE;
 	}
 	
 	@Override
