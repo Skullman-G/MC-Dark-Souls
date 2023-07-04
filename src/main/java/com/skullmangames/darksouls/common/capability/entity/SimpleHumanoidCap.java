@@ -23,15 +23,6 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-<<<<<<< Updated upstream
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_VERTICAL);
-		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
-=======
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
@@ -43,7 +34,6 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));
->>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

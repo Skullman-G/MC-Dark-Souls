@@ -187,8 +187,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	{
 		return this.weaponMaterial.getBlockSound();
 	}
-<<<<<<< Updated upstream
-=======
 	
 	@OnlyIn(Dist.CLIENT)
 	@Override
@@ -202,7 +200,6 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	{
 		return true;
 	}
->>>>>>> Stashed changes
 
 	@Override
 	public float getDefense(CoreDamageType damageType)

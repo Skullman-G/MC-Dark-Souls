@@ -317,11 +317,7 @@ public final class Animations
 		
 		DUMMY_ANIMATION = new StaticAnimation();
 
-<<<<<<< Updated upstream
-		BIPED_IDLE = new StaticAnimation(new ResourceLocation(DarkSouls.MOD_ID, "biped_idle"), 0.1F, true,
-=======
 		BIPED_IDLE = new StaticAnimation(DarkSouls.rl("biped_idle"), 0.1F, true,
->>>>>>> Stashed changes
 				DarkSouls.rl("biped/living/idle"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_WALK = new MovementAnimation(DarkSouls.rl("biped_walk"), 0.08F, true,
 				DarkSouls.rl("biped/living/walk"), (models) -> models.ENTITY_BIPED).register(builder);
@@ -415,25 +411,6 @@ public final class Animations
 		BIPED_CONSUME_SOUL = new MirrorAnimation(DarkSouls.rl("biped_consume_soul"), 0.2F, true, DarkSouls.rl("biped/living/consume_soul_r"),
 				DarkSouls.rl("biped/living/consume_soul_l"), (models) -> models.ENTITY_BIPED).register(builder);
 
-<<<<<<< Updated upstream
-		BIPED_BLOCK_HORIZONTAL = new AdaptableAnimation(DarkSouls.rl("biped_block"), 0.1F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false),
-				new AnimConfig(LivingMotion.WEAPON_BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false),
-				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_walk_mirror"), DarkSouls.rl("biped/combat/block_walk"), true),
-				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_run_mirror"), DarkSouls.rl("biped/combat/block_run"), true),
-				new AnimConfig(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), true),
-				new AnimConfig(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), true))
-				.register(builder);
-
-		BIPED_BLOCK_VERTICAL = new AdaptableAnimation(DarkSouls.rl("biped_block_vertical"), 0.1F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), false),
-				new AnimConfig(LivingMotion.WEAPON_BLOCKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), false),
-				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_vertical_walk_mirror"), DarkSouls.rl("biped/combat/block_vertical_walk"), true),
-				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_vertical_run_mirror"), DarkSouls.rl("biped/combat/block_vertical_run"), true),
-				new AnimConfig(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true),
-				new AnimConfig(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true))
-				.register(builder);
-=======
 		BIPED_BLOCK_HORIZONTAL = new AdaptableAnimation.Builder(DarkSouls.rl("biped_block"), 0.1F, true, (models) -> models.ENTITY_BIPED)
 				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false)
 				.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_walk_mirror"), DarkSouls.rl("biped/combat/block_walk"), true)
@@ -449,7 +426,6 @@ public final class Animations
 				.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true)
 				.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true)
 				.build().register(builder);
->>>>>>> Stashed changes
 		
 		BIPED_HIT_BLOCKED_LEFT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_left"), (models) -> models.ENTITY_BIPED)
@@ -457,17 +433,10 @@ public final class Animations
 		BIPED_HIT_BLOCKED_RIGHT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_right"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
-<<<<<<< Updated upstream
-		BIPED_HIT_BLOCKED_VERTICAL_LEFT = new BlockAnimation(DarkSouls.rl("biped_hit_blocked_vertical_left"), 0.05F,
-				DarkSouls.rl("biped/hit/blocked_vertical_left"), (models) -> models.ENTITY_BIPED)
-				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
-		BIPED_HIT_BLOCKED_VERTICAL_RIGHT = new BlockAnimation(DarkSouls.rl("biped_hit_blocked_vertical_right"), 0.05F,
-=======
 		BIPED_HIT_BLOCKED_VERTICAL_LEFT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_vertical_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_vertical_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
 		BIPED_HIT_BLOCKED_VERTICAL_RIGHT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_vertical_right"), 0.05F,
->>>>>>> Stashed changes
 				DarkSouls.rl("biped/hit/blocked_vertical_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
 		
@@ -1461,18 +1430,11 @@ public final class Animations
 				DarkSouls.rl("hollow_lordran_soldier/walking"), (models) -> models.ENTITY_BIPED).register(builder);
 		HOLLOW_LORDRAN_SOLDIER_RUN = new MovementAnimation(DarkSouls.rl("hollow_lordran_soldier_run"), 0.2F, true,
 				DarkSouls.rl("hollow_lordran_soldier/run"), (models) -> models.ENTITY_BIPED).register(builder);
-<<<<<<< Updated upstream
-		HOLLOW_LORDRAN_SOLDIER_BLOCK = new AdaptableAnimation(DarkSouls.rl("hollow_lordran_soldier_block"), 0.2F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("hollow_lordran_soldier/block"), DarkSouls.rl("hollow_lordran_soldier/block"), false),
-				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("hollow_lordran_soldier/block_walking"), DarkSouls.rl("hollow_lordran_soldier/block_walking"), true),
-				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("hollow_lordran_soldier/block_run"), DarkSouls.rl("hollow_lordran_soldier/block_run"), true))
-=======
 		HOLLOW_LORDRAN_SOLDIER_BLOCK = new AdaptableAnimation.Builder(DarkSouls.rl("hollow_lordran_soldier_block"), 0.2F, true, (models) -> models.ENTITY_BIPED)
 				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("hollow_lordran_soldier/block"), DarkSouls.rl("hollow_lordran_soldier/block"), false)
 				.addEntry(LivingMotion.WALKING, DarkSouls.rl("hollow_lordran_soldier/block_walking"), DarkSouls.rl("hollow_lordran_soldier/block_walking"), true)
 				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("hollow_lordran_soldier/block_run"), DarkSouls.rl("hollow_lordran_soldier/block_run"), true)
 				.build()
->>>>>>> Stashed changes
 				.register(builder);
 		
 		HOLLOW_LORDRAN_SOLDIER_SWORD_LA = new AttackAnimation[]
@@ -1667,18 +1629,12 @@ public final class Animations
 								Event.create(0.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get()))
 						})
 				.register(builder);
-<<<<<<< Updated upstream
-		BLACK_KNIGHT_BLOCK = new AdaptableAnimation(DarkSouls.rl("black_knight_block"), 0.2F, true, (models) -> models.ENTITY_BIPED,
-				new AnimConfig(LivingMotion.SHIELD_BLOCKING, DarkSouls.rl("black_knight/block"), DarkSouls.rl("black_knight/block"), false),
-				new AnimConfig(LivingMotion.WALKING, DarkSouls.rl("black_knight/block_walk"), DarkSouls.rl("black_knight/block_walk"), true),
-				new AnimConfig(LivingMotion.RUNNING, DarkSouls.rl("black_knight/block_run"), DarkSouls.rl("black_knight/block_run"), true))
-=======
+		
 		BLACK_KNIGHT_BLOCK = new AdaptableAnimation.Builder(DarkSouls.rl("black_knight_block"), 0.2F, true, (models) -> models.ENTITY_BIPED)
 				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("black_knight/block"), DarkSouls.rl("black_knight/block"), false)
 				.addEntry(LivingMotion.WALKING, DarkSouls.rl("black_knight/block_walk"), DarkSouls.rl("black_knight/block_walk"), true)
 				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("black_knight/block_run"), DarkSouls.rl("black_knight/block_run"), true)
 				.build()
->>>>>>> Stashed changes
 				.register(builder);
 		
 		BLACK_KNIGHT_DEATH = new DeathAnimation(DarkSouls.rl("black_knight_death"), 0.1F, DarkSouls.rl("black_knight/death"), (models) -> models.ENTITY_BIPED)

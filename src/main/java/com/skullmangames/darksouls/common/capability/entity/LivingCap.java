@@ -19,7 +19,6 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.IShield;
-import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -80,11 +79,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		for (LayerPart part : LayerPart.mixLayers()) this.mixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
-	}
-	
-	public ShieldHoldType getShieldHoldType()
-	{
-		return ShieldHoldType.VERTICAL;
 	}
 	
 	public ShieldHoldType getShieldHoldType()
@@ -282,15 +276,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			}
 			else if (this.isUsingShield())
 			{
-<<<<<<< Updated upstream
-				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
-				{
-					if (shield.getShieldType() == ShieldType.NONE) this.currentMotion = LivingMotion.WEAPON_BLOCKING;
-					else this.currentMotion = LivingMotion.SHIELD_BLOCKING;
-				}
-=======
 				this.baseMotion = LivingMotion.BLOCKING;
->>>>>>> Stashed changes
 			}
 			else
 			{
@@ -305,28 +291,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			InteractionHand hand = this.orgEntity.getUsedItemHand();
 			LayerPart layerPart = hand == InteractionHand.MAIN_HAND ? LayerPart.RIGHT : LayerPart.LEFT;
-<<<<<<< Updated upstream
-			if (this.isBlocking())
-			{
-				if (ModCapabilities.getItemCapability(this.orgEntity.getUseItem()) instanceof IShield shield)
-				{
-					if (shield.getShieldType() == ShieldType.NONE)
-					{
-						if (this.currentMotion != LivingMotion.WEAPON_BLOCKING) this.currentMixMotions.put(layerPart, LivingMotion.WEAPON_BLOCKING);
-						else this.currentMixMotions.put(layerPart, LivingMotion.NONE);
-					}
-					else
-					{
-						if (this.currentMotion != LivingMotion.SHIELD_BLOCKING) this.currentMixMotions.put(layerPart, LivingMotion.SHIELD_BLOCKING);
-						else this.currentMixMotions.put(layerPart, LivingMotion.NONE);
-					}
-				}
-=======
 			UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 			if (this.baseMotion != LivingMotion.BLOCKING && this.isUsingShield())
 			{
 				this.mixMotions.put(layerPart, LivingMotion.BLOCKING);
->>>>>>> Stashed changes
 			}
 			else
 			{

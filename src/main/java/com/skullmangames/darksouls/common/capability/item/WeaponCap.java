@@ -115,14 +115,6 @@ public abstract class WeaponCap extends AttributeItemCap
 	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
 		return this.statRequirements.getOrDefault(stat, 0) <= playerCap.getStatValue(stat);
-<<<<<<< Updated upstream
-	}
-
-	public boolean hasHoldingAnimation()
-	{
-		return false;
-=======
->>>>>>> Stashed changes
 	}
 	
 	public int getDamage(CoreDamageType type)

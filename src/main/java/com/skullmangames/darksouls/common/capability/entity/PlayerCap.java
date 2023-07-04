@@ -272,27 +272,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-<<<<<<< Updated upstream
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.addLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.addLivingAnimation(LivingMotion.SNEAKING, Animations.BIPED_SNEAK);
-		animatorClient.addLivingAnimation(LivingMotion.SWIMMING, Animations.BIPED_SWIM);
-		animatorClient.addLivingAnimation(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
-		animatorClient.addLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
-		animatorClient.addLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.addLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.addLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
-		animatorClient.addLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
-		animatorClient.addLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
-		animatorClient.addLivingAnimation(LivingMotion.SHIELD_BLOCKING, Animations.BIPED_BLOCK_VERTICAL);
-		animatorClient.addLivingAnimation(LivingMotion.WEAPON_BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
-		animatorClient.addLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
-		animatorClient.addLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
-		animatorClient.addLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
-		animatorClient.addLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
-		animatorClient.addLivingAnimation(LivingMotion.HOLDING_WEAPON, Animations.BIPED_HOLDING_BIG_WEAPON);
-=======
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
 		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
 		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
@@ -315,7 +294,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));
->>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

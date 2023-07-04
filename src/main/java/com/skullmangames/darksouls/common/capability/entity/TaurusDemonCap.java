@@ -24,11 +24,7 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-<<<<<<< Updated upstream
-		animatorClient.addLivingAnimation(LivingMotion.IDLE, Animations.DUMMY_ANIMATION);
-=======
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.DUMMY_ANIMATION);
->>>>>>> Stashed changes
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -48,11 +44,7 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	@Override
 	public void updateMotion()
 	{
-<<<<<<< Updated upstream
-		this.currentMotion = LivingMotion.IDLE;
-=======
 		this.baseMotion = LivingMotion.IDLE;
->>>>>>> Stashed changes
 	}
 	
 	@Override

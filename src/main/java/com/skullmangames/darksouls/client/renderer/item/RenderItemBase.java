@@ -22,12 +22,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderItemBase
 {
-<<<<<<< Updated upstream
-	protected PublicMatrix4f transform;
-	
-	protected static final PublicMatrix4f BACK_COORECTION;
-=======
->>>>>>> Stashed changes
 	public static RenderEngine renderEngine;
 	
 	protected PublicMatrix4f transform;
@@ -38,14 +32,11 @@ public class RenderItemBase
 		this.transform = new PublicMatrix4f();
 		this.transform.rotate((float)Math.toRadians(-80), Vector3f.XP);
 		this.transform.translate(0, 0.1F, 0);
-<<<<<<< Updated upstream
-=======
 		
 		this.backTransform = new PublicMatrix4f();
 		this.backTransform.rotate((float)Math.toRadians(130), Vector3f.ZP);
 		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.YP);
 		this.backTransform.translate(-0.2F, -0.5F, -0.1F);
->>>>>>> Stashed changes
 	}
 	
 	public void renderItemInHand(ItemStack stack, LivingCap<?> itemHolder, InteractionHand hand, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float scale, Vector3d translation)
@@ -68,13 +59,8 @@ public class RenderItemBase
 	
 	public void renderItemOnBack(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight)
 	{
-<<<<<<< Updated upstream
-		PublicMatrix4f modelMatrix = new PublicMatrix4f(BACK_COORECTION);
-		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(0).getAnimatedTransform(), modelMatrix, modelMatrix);
-=======
 		PublicMatrix4f modelMatrix = this.getBackTransform();
 		PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName("Chest").getAnimatedTransform(), modelMatrix, modelMatrix);
->>>>>>> Stashed changes
 		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
 		
 		MathUtils.translateStack(viewMatrixStack, modelMatrix);
@@ -85,7 +71,7 @@ public class RenderItemBase
 	
 	protected PublicMatrix4f getBackTransform()
 	{
-		return this.backTransform;
+		return new PublicMatrix4f(this.backTransform);
 	}
 	
 	public void renderItemOnHead(ItemStack stack, LivingCap<?> itemHolder, MultiBufferSource buffer, PoseStack viewMatrixStack, int packedLight, float partialTicks)
