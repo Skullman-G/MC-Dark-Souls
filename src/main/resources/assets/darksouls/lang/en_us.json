@@ -85,6 +85,7 @@
 	"item.darksouls.small_stone_bricks": "Small Stone Bricks",
 	"item.darksouls.small_stone_brick_slab": "Small Stone Brick Slab",
 	"item.darksouls.small_stone_brick_stairs": "Small Stone Brick Stairs",
+	"item.darksouls.breakable_barrel": "Breakable Barrel",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -119,6 +120,7 @@
 	"entity.darksouls.black_knight": "Black Knight",
 	"entity.darksouls.terracotta_vase": "Terracotta Vase",
 	"entity.darksouls.taurus_demon": "Taurus Demon",
+	"entity.darksouls.breakable_barrel": "Breakable Barrel",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -271,6 +273,7 @@
 	"block.bonfire.ambient.sub": "Bonfire burning",
 	"block.bonfire.teleport.sub": "Bonfire teleports player",
 	"block.vase.break.sub": "Vase breaks",
+	"block.barrel.break.sub": "Barrel breaks",
 	
 	"item.darksign.use.sub": "Darksign flickers",
 	"item.soul_container.use.sub": "Soul Container crumbles",

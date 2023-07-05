@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
+import com.skullmangames.darksouls.common.entity.BreakableBarrel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.common.entity.TerracottaVase;
@@ -71,6 +72,12 @@ public class ModEntities
 				.sized(0.8F, 1.8F)
 				.setUpdateInterval(20)
 				.clientTrackingRange(6));
+	
+	public static final RegistryObject<EntityType<BreakableBarrel>> BREAKABLE_BARREL = register("breakable_barrel",
+			EntityType.Builder.<BreakableBarrel>of(BreakableBarrel::new, MobCategory.MISC)
+			.sized(0.8F, 1.8F)
+			.setUpdateInterval(20)
+			.clientTrackingRange(6));
 
 	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
 			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)

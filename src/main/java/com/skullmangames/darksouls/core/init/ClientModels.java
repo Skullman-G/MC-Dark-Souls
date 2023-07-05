@@ -36,6 +36,7 @@ public class ClientModels extends Models<ClientModel>
 	public final ClientModel BALDER_BOOTS;
 	
 	public final ClientModel TERRACOTTA_VASE;
+	public final ClientModel BREAKABLE_BARREL;
 	
 	public ClientModels()
 	{
@@ -65,6 +66,7 @@ public class ClientModels extends Models<ClientModel>
 		this.BALDER_BOOTS = this.registerMeshOnly("balder_boots");
 		
 		this.TERRACOTTA_VASE = this.registerMeshOnly("terracotta_vase");
+		this.BREAKABLE_BARREL = this.registerMeshOnly("breakable_barrel");
 	}
 	
 	@Override

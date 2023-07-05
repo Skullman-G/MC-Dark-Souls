@@ -33,6 +33,7 @@ import com.skullmangames.darksouls.client.event.ClientEvents;
 import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
+import com.skullmangames.darksouls.client.renderer.entity.BreakableBarrelRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HumanityRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
@@ -228,6 +229,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.GREAT_LIGHTNING_SPEAR.get(), LightningSpearRenderer::greatLightningSpear);
 		EntityRenderers.register(ModEntities.TERRACOTTA_VASE.get(), TerracottaVaseRenderer::new);
 		EntityRenderers.register(ModEntities.TAURUS_DEMON.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.BREAKABLE_BARREL.get(), BreakableBarrelRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.entity.TerracottaVase;
+import com.skullmangames.darksouls.common.entity.BreakableObject;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -89,6 +89,8 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		super.onUpdate(entityCap);
 		
+		if (entityCap.isClientSide()) return;
+		
 		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
@@ -104,7 +106,7 @@ public class DodgingAnimation extends ActionAnimation
 				Entity e = attackResult.getEntity();
 				Entity trueEntity = this.getTrueEntity(e);
 				if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && (trueEntity instanceof LivingEntity
-					|| trueEntity instanceof TerracottaVase))
+					|| trueEntity instanceof BreakableObject))
 				{
 					if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
 									new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
@@ -119,7 +121,8 @@ public class DodgingAnimation extends ActionAnimation
 						entityCap.currentlyAttackedEntities.add(trueEntity);
 					}
 				}
-			} while (attackResult.next());
+			}
+			while (attackResult.next());
 		}
 	}
 	

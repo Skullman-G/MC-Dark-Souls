@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.item.AshenEstusFlaskItem;
+import com.skullmangames.darksouls.common.item.BreakableBarrelItem;
 import com.skullmangames.darksouls.common.item.DarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.EstusFlaskItem;
 import com.skullmangames.darksouls.common.item.HumanityItem;
@@ -235,6 +236,9 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> TERRACOTTA_VASE = ITEMS.register("terracotta_vase", () -> new TerracottaVaseItem(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> BREAKABLE_BARREL = ITEMS.register("breakable_barrel", () -> new BreakableBarrelItem(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

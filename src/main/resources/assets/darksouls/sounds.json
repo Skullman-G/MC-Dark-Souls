@@ -49,6 +49,16 @@
 		]
 	},
 	
+	"block.barrel.break":
+	{
+		"category": "block",
+		"subtitle": "block.barrel.break.sub",
+		"sounds":
+		[
+			"darksouls:blocks/barrel/break" 
+		]
+	},
+	
 	"block.vase.break":
 	{
 		"category": "block",
