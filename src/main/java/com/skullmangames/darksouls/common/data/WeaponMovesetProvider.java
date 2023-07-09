@@ -64,7 +64,10 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.LIGHT, true, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.STRAIGHT_SWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.STRAIGHT_SWORD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.STRAIGHT_SWORD_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.STRAIGHT_SWORD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.AXE)
 			.putMove(AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK)

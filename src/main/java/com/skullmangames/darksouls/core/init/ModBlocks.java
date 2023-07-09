@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.block.CustomShapedBlock;
 import com.skullmangames.darksouls.common.block.DirectionalCustomShapedBlock;
 import com.skullmangames.darksouls.common.block.LightSource;
+import com.skullmangames.darksouls.common.block.MossWallBlock;
 import com.skullmangames.darksouls.common.block.SunlightAltarBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -121,4 +122,25 @@ public class ModBlocks
 			.of(Material.STONE)
 			.requiresCorrectToolForDrops()
 			.strength(2.0F, 6.0F)));
+	
+	public static final RegistryObject<Block> MOSS_WALL = BLOCKS.register("moss_wall", () -> new MossWallBlock(BlockBehaviour.Properties
+			.of(Material.REPLACEABLE_PLANT)
+			.noCollission().randomTicks()
+			.strength(0.2F)
+			.sound(SoundType.VINE)));
+	
+	public static final RegistryObject<Block> SMALL_STONE_BRICK_WINDOW = BLOCKS.register("small_stone_brick_window", () -> new DirectionalCustomShapedBlock(BlockBehaviour.Properties
+			.of(Material.STONE)
+			.strength(3.0F)
+			.sound(SoundType.STONE)
+			.noOcclusion(),
+			new VoxelShape[]
+			{
+				Block.box(0, 13, 0, 16, 16, 16),
+				Block.box(0, 0, 0, 16, 3, 16),
+				Block.box(0, 0, 0, 3, 16, 16),
+				Block.box(13, 0, 0, 16, 16, 16),
+				Block.box(6, 0, 0, 10, 16, 16)
+			}
+			));
 }

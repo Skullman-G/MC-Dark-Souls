@@ -212,6 +212,7 @@ public class DarkSouls
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_BAR_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BONFIRE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.STONE_BRICK_WINDOW.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.MOSS_WALL.get(), RenderType.cutout());
 
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);

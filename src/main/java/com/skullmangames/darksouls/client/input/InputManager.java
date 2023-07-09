@@ -631,8 +631,9 @@ public class InputManager
 			
 			if (inputManager.playerCap.isBlocking())
 			{
-				event.getInput().leftImpulse *= 20F;
-				event.getInput().forwardImpulse *= 20F;
+				float mul = inputManager.player.isCrouching() ? 5F : 20F;
+				event.getInput().leftImpulse *= mul;
+				event.getInput().forwardImpulse *= mul;
 			}
 			
 			if (!inputManager.playerCanMove(playerState) && inputManager.player.isAlive())

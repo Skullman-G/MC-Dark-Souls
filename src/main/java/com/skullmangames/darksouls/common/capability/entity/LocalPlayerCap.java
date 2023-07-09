@@ -157,6 +157,8 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		AttackAnimation animation = null;
 		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND));
 		
+		if (this.isTwohanding()) type = type.getTwoHanded();
+		
 		if (type == AttackType.LIGHT)
 		{
 			double yRot = Math.toRadians(MathUtils.toNormalRot(this.getYRot()));

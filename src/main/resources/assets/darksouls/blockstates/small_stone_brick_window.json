@@ -1,0 +1,23 @@
+{
+    "variants": {
+        "facing=north":
+        {
+        	"model": "darksouls:block/small_stone_brick_window",
+        	"y": 180
+        },
+        "facing=east":
+        {
+        	"model": "darksouls:block/small_stone_brick_window",
+        	"y": 270
+        },
+        "facing=south":
+        {
+        	"model": "darksouls:block/small_stone_brick_window"
+        },
+        "facing=west":
+        {
+        	"model": "darksouls:block/small_stone_brick_window",
+        	"y": 90
+        }
+    }
+}

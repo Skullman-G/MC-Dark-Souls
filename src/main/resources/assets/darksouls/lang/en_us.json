@@ -86,6 +86,8 @@
 	"item.darksouls.small_stone_brick_slab": "Small Stone Brick Slab",
 	"item.darksouls.small_stone_brick_stairs": "Small Stone Brick Stairs",
 	"item.darksouls.breakable_barrel": "Breakable Barrel",
+	"item.darksouls.moss_wall": "Moss Wall",
+	"item.darksouls.small_stone_brick_window": "Small Stone Brick Window",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -103,6 +105,8 @@
 	"block.darksouls.small_stone_bricks": "Small Stone Bricks",
 	"block.darksouls.small_stone_brick_slab": "Small Stone Brick Slab",
 	"block.darksouls.small_stone_brick_stairs": "Small Stone Brick Stairs",
+	"block.darksouls.moss_wall": "Moss Wall",
+	"block.darksouls.small_stone_brick_window": "Small Stone Brick Window",
 	
 	"entity.darksouls.fire_keeper": "Fire Keeper",
 	"entity.darksouls.hollow": "Hollow",

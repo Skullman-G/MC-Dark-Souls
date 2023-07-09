@@ -311,6 +311,12 @@ public class ModItems
 	public static final RegistryObject<Item> SMALL_STONE_BRICK_STAIRS = ITEMS.register("small_stone_brick_stairs", () -> new BlockItem(ModBlocks.SMALL_STONE_BRICK_STAIRS.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> MOSS_WALL = ITEMS.register("moss_wall", () -> new BlockItem(ModBlocks.MOSS_WALL.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> SMALL_STONE_BRICK_WINDOW = ITEMS.register("small_stone_brick_window", () -> new BlockItem(ModBlocks.SMALL_STONE_BRICK_WINDOW.get(),
+			new Item.Properties().tab(DarkSouls.TAB)));
+	
 	
 	//Spawn Eggs
 	public static final RegistryObject<SpawnEggItem> HOLLOW_SPAWN_EGG = ITEMS.register("hollow_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HOLLOW, 0xAA2A00, 0xB05139, new Item.Properties()

@@ -221,7 +221,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	public enum AttackType
 	{
 		LIGHT("light"), HEAVY("heavy"), DASH("dash"), BACKSTAB("backstab"),
-		TWO_HANDED_LIGHT("two_handed_light");
+		TWO_HANDED_LIGHT("two_handed_light"), TWO_HANDED_HEAVY("two_handed_heavy"),
+		TWO_HANDED_DASH("two_handed_dash");
 		
 		private String id;
 		
@@ -242,6 +243,17 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 				if (type.id.equals(id)) return type;
 			}
 			return null;
+		}
+		
+		public AttackType getTwoHanded()
+		{
+			switch(this)
+			{
+				default: return this;
+				case LIGHT: return TWO_HANDED_LIGHT;
+				case HEAVY: return TWO_HANDED_HEAVY;
+				case DASH: return TWO_HANDED_DASH;
+			}
 		}
 	}
 	
