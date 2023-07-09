@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -8,7 +9,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class BreakableObject extends Entity
@@ -16,6 +19,25 @@ public abstract class BreakableObject extends Entity
 	public BreakableObject(EntityType<? extends BreakableObject> type, Level level)
 	{
 		super(type, level);
+	}
+	
+	@Override
+	public void tick()
+	{
+		super.tick();
+		
+		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+		this.move(MoverType.SELF, this.getDeltaMovement());
+	}
+	
+	@Override
+	protected void checkFallDamage(double distance, boolean isOnGround, BlockState blockstate, BlockPos blockpos)
+	{
+		if (isOnGround && this.fallDistance > 1)
+		{
+			this.hurt(null, 0);
+		}
+		super.checkFallDamage(distance, isOnGround, blockstate, blockpos);
 	}
 	
 	@Override

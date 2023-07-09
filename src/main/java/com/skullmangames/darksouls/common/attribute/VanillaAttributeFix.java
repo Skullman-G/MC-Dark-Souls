@@ -92,7 +92,7 @@ public class VanillaAttributeFix
 						AttributeSupplier supplier = values.get(entity);
 						if (supplier != null)
 						{
-							double value = supplier.getBaseValue(Attributes.MAX_HEALTH) * 100D;
+							double value = supplier.getBaseValue(Attributes.MAX_HEALTH) * 1000D;
 							event.add(entity, Attributes.MAX_HEALTH, value);
 						}
 					}
