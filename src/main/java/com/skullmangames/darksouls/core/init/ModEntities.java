@@ -75,7 +75,7 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<BreakableBarrel>> BREAKABLE_BARREL = register("breakable_barrel",
 			EntityType.Builder.<BreakableBarrel>of(BreakableBarrel::new, MobCategory.MISC)
-			.sized(0.8F, 1.8F)
+			.sized(0.8F, 1.225F)
 			.setUpdateInterval(20)
 			.clientTrackingRange(6));
 

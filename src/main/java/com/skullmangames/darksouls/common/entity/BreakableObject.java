@@ -33,7 +33,7 @@ public abstract class BreakableObject extends Entity
 	@Override
 	protected void checkFallDamage(double distance, boolean isOnGround, BlockState blockstate, BlockPos blockpos)
 	{
-		if (isOnGround && this.fallDistance > 1)
+		if (isOnGround && this.fallDistance > 2)
 		{
 			this.hurt(null, 0);
 		}
