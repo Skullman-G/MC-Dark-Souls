@@ -119,22 +119,20 @@ public class ModAttributes
 	
 	public static boolean isDamageAttribute(Attribute attribute)
 	{
-		boolean flag = false;
 		for (Supplier<Attribute> supplier : ModAttributes.damageAttributes())
 		{
-			if (attribute == supplier.get()) flag = true;
+			if (attribute == supplier.get()) return true;
 		}
-		return flag;
+		return false;
 	}
 	
 	public static boolean isProtectionAttribute(Attribute attribute)
 	{
-		boolean flag = false;
 		for (Supplier<Attribute> supplier : ModAttributes.protectionAttributes())
 		{
-			if (attribute == supplier.get()) flag = true;
+			if (attribute == supplier.get()) return true;
 		}
-		return flag;
+		return false;
 	}
 	
 	public static void createAttributeMap(EntityAttributeCreationEvent event)
@@ -207,7 +205,8 @@ public class ModAttributes
 	
 	public static AttributeModifier getAttributeModifierForSlot(EquipmentSlot slot, float value)
 	{
-		return new AttributeModifier(EQUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier", value, AttributeModifier.Operation.ADDITION);
+		return new AttributeModifier(EQUIPMENT_MODIFIER_UUIDS[slot.ordinal()], DarkSouls.MOD_ID + ":equipment_modifier." + slot.getName().toLowerCase(),
+				value, AttributeModifier.Operation.ADDITION);
 	}
 	
 	public static AttributeModifier getMovementSpeedModifier(EquipLoadLevel level)

@@ -89,12 +89,16 @@ public abstract class WeaponCap extends AttributeItemCap
 	{
 		Multimap<Attribute, AttributeModifier> map = super.getAttributeModifiers(slot);
 		map.put(ModAttributes.EQUIP_LOAD.get(), ModAttributes.getAttributeModifierForSlot(slot, this.weight));
-		map.put(Attributes.ATTACK_DAMAGE, ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.PHYSICAL) - ModAttributes.PLAYER_FIST_DAMAGE));
-		map.put(ModAttributes.MAGIC_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.MAGIC)));
-		map.put(ModAttributes.FIRE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.FIRE)));
-		map.put(ModAttributes.LIGHTNING_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.LIGHTNING)));
-		map.put(ModAttributes.HOLY_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.HOLY)));
-		map.put(ModAttributes.DARK_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.DARK)));
+		
+		if (slot == EquipmentSlot.MAINHAND)
+		{
+			map.put(Attributes.ATTACK_DAMAGE, ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.PHYSICAL) - ModAttributes.PLAYER_FIST_DAMAGE));
+			map.put(ModAttributes.MAGIC_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.MAGIC)));
+			map.put(ModAttributes.FIRE_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.FIRE)));
+			map.put(ModAttributes.LIGHTNING_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.LIGHTNING)));
+			map.put(ModAttributes.HOLY_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.HOLY)));
+			map.put(ModAttributes.DARK_DAMAGE.get(), ModAttributes.getAttributeModifierForSlot(slot, this.getDamage(CoreDamageType.DARK)));
+		}
 		return map;
 	}
 	

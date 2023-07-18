@@ -24,9 +24,6 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -142,12 +139,6 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void setTwoHanding(boolean value)
 	{
 		this.twoHanding = value;
-	}
-	
-	public void addAttributeModifierForSlot(Attribute attribute, EquipmentSlot slot, float value)
-	{
-		AttributeInstance instance = this.orgEntity.getAttribute(attribute);
-		instance.addTransientModifier(ModAttributes.getAttributeModifierForSlot(slot, value));
 	}
 	
 	public void addTeleport(BonfireBlockEntity bonfire) {}

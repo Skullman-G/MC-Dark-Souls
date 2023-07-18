@@ -53,7 +53,7 @@ public class PlayerStatsScreen extends Screen
 	protected final ImmutableMap<Attribute, Double> defMod;
 
 	protected final int color;
-	protected final String motdColor;
+	protected final String modColor;
 
 	public PlayerStatsScreen()
 	{
@@ -73,7 +73,7 @@ public class PlayerStatsScreen extends Screen
 		this.imageHeight = 240;
 
 		this.color = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
-		this.motdColor = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? "\u00A7f" : "\u00A70";
+		this.modColor = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? "\u00A7f" : "\u00A70";
 		
 		this.maxHealthBase = (int)this.player.getAttributeBaseValue(Attributes.MAX_HEALTH);
 		this.maxStaminaBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_STAMINA.get());
@@ -184,10 +184,11 @@ public class PlayerStatsScreen extends Screen
 		Map<Attribute, String> damageValues = new HashMap<>();
 		this.damageMod.forEach((attribute, mod) ->
 		{
+			double displayMod = Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat));
 			int value = (int)Math.round(this.player.getAttributeValue(attribute) / mod
-					* Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat)));
+					* displayMod);
 			
-			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.motdColor;
+			String color = mod != displayMod ? "\u00A7b" : this.modColor;
 			
 			damageValues.put(attribute, color + value);
 		});
@@ -216,7 +217,7 @@ public class PlayerStatsScreen extends Screen
 			int value = (int)Math.round(this.player.getAttributeValue(attribute) - mod
 					+ mod2);
 			
-			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.motdColor;
+			String color = (int)Math.round(this.player.getAttributeValue(attribute)) != value ? "\u00A7b" : this.modColor;
 			
 			defValues.put(attribute, color + value);
 		});

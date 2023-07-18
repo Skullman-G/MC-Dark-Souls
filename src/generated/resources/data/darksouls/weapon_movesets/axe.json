@@ -24,6 +24,25 @@
       "animations": [
         "darksouls:backstab_strike_check"
       ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:axe_th_la_1",
+        "darksouls:axe_th_la_2"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:axe_th_ha"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:axe_th_da"
+      ]
     }
   }
 }

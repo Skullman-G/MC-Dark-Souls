@@ -216,7 +216,7 @@ public class Stats
 	
 	public static double getDamageMultiplier(Player player, Attribute attribute, Function<Stat, Integer> value)
 	{
-		double mul = 0D;
+		double mul = 1D;
 		for (Stat stat : getForAttribute(attribute))
 		{
 			mul += stat.getModifyValue(player, attribute, value.apply(stat));

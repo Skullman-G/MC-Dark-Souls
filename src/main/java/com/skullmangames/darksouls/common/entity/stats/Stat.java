@@ -8,8 +8,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.core.init.ModAttributes;
-
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -53,10 +51,6 @@ public abstract class Stat
 	
 	public double getModifyValue(Player player, Attribute attribute, int value)
 	{
-		for (Supplier<Attribute> s : ModAttributes.damageAttributes())
-		{
-			if (attribute == s.get()) return 1D;
-		}
 		return 0D;
 	}
 	

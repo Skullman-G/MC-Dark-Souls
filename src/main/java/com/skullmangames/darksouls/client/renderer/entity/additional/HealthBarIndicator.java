@@ -51,7 +51,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 				return false;
 		}
 		
-		if (!this.healthInfoMap.containsKey(entity.getId())) this.healthInfoMap.put(entity.getId(), new HealthInfo());
+		if (!this.healthInfoMap.containsKey(entity.getId())) this.healthInfoMap.put(entity.getId(), new HealthInfo(entity));
 
 		if (entity.getHealth() >= entity.getMaxHealth())
 		{
@@ -73,8 +73,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		float blackStart = 0;
 		
 		HealthInfo info = this.healthInfoMap.get(entity.getId());
-		float maxHealth = entity.getMaxHealth();
-		float healthpercentage = entity.getHealth() / maxHealth;
+		float healthpercentage = entity.getHealth() / entity.getMaxHealth();
 		
 		// Damage Animation
 		if (info.lastHealthPercentage > healthpercentage)
@@ -123,10 +122,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		}
 		
 		// Default
-		else
-		{
-			redStop = healthpercentage;
-		}
+		else redStop = healthpercentage;
 		
 		if (blackStart < redStop) blackStart = redStop;
 		
@@ -181,5 +177,10 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		
 		private float damage;
 		private int damageNumberTimer;
+		
+		private HealthInfo(LivingEntity entity)
+		{
+			this.lastHealth = entity.getHealth();
+		}
 	}
 }
