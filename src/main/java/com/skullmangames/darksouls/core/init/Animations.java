@@ -1215,7 +1215,7 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 30)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R",
+		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.28F, 0.48F, 1.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
@@ -1227,7 +1227,7 @@ public final class Animations
 				.register(builder);
 		HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.5F, 0.0F, 0.28F, 0.52F, 1.2F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.2F, 0.0F, 0.24F, 0.48F, 1.2F, "Tool_R",
 						DarkSouls.rl("biped/combat/hammer_light_attack"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)

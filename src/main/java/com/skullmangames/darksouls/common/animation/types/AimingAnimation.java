@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +34,7 @@ public class AimingAnimation extends StaticAnimation
 
 	public AimingAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3, Function<Models<?>, Model> model)
 	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
 	}
 
 	@Override

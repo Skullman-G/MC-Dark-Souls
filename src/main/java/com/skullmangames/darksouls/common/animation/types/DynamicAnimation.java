@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Animations;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,7 +33,7 @@ public class DynamicAnimation
 
 	public DynamicAnimation()
 	{
-		this(IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, false);
+		this(ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, false);
 	}
 
 	public DynamicAnimation(float convertTime, boolean isRepeat)

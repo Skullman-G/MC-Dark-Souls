@@ -72,8 +72,8 @@ public class PlayerStatsScreen extends Screen
 		this.imageWidth = 418;
 		this.imageHeight = 240;
 
-		this.color = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
-		this.modColor = ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue() ? "\u00A7f" : "\u00A70";
+		this.color = ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue() ? 16777215 : 4210752;
+		this.modColor = ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue() ? "\u00A7f" : "\u00A70";
 		
 		this.maxHealthBase = (int)this.player.getAttributeBaseValue(Attributes.MAX_HEALTH);
 		this.maxStaminaBase = (int)this.player.getAttributeBaseValue(ModAttributes.MAX_STAMINA.get());
@@ -248,7 +248,7 @@ public class PlayerStatsScreen extends Screen
 
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
-		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
+		if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue())
 			RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else
 			RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);

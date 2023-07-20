@@ -216,7 +216,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	public boolean shouldShoulderSurf()
 	{
     	return this.getClientAnimator().isAiming()
-    			|| (!ConfigManager.INGAME_CONFIG.onlyShoulderSurfWhenAiming.getValue() && this.orgEntity.getMainHandItem().getItem() instanceof ProjectileWeaponItem);
+    			|| (!ConfigManager.CLIENT_CONFIG.onlyShoulderSurfWhenAiming.getValue() && this.orgEntity.getMainHandItem().getItem() instanceof ProjectileWeaponItem);
 	}
 	
 	@Override

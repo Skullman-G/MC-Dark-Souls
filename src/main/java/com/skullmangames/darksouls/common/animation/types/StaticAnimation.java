@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
 
@@ -43,7 +43,7 @@ public class StaticAnimation extends DynamicAnimation
 
 	public StaticAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
 	}
 
 	public StaticAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)

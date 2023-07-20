@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ public class MovementAnimation extends StaticAnimation
 
 	public MovementAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, IngameConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
 	}
 	
 	@Override

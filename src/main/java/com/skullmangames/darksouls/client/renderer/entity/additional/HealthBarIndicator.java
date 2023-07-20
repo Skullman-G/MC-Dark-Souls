@@ -36,7 +36,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.options.hideGui) return false;
-		if (!ConfigManager.INGAME_CONFIG.showHealthIndicator.getValue()
+		if (!ConfigManager.CLIENT_CONFIG.showHealthIndicator.getValue()
 				|| (entity.isInvisible() || entity == minecraft.player.getControllingPassenger())
 				|| entity.distanceToSqr(minecraft.getCameraEntity()) >= 400
 				|| entity.deathTime >= 19)

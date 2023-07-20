@@ -74,7 +74,7 @@ public class ScreenManager
 		{
 			Screen gui = event.getScreen();
 
-			if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
+			if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue())
 			{
 				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{

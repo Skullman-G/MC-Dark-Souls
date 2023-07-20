@@ -348,7 +348,7 @@ public class InputManager
 		}
 		else
 		{
-			if (this.rightHandPressCounter > ConfigManager.INGAME_CONFIG.longPressCount.getValue())
+			if (this.rightHandPressCounter > ConfigManager.CLIENT_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
 				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;

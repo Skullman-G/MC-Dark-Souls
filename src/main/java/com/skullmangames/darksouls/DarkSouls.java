@@ -103,8 +103,8 @@ public class DarkSouls
 		this.meleeWeaponConfigs = new MeleeWeaponConfigs();
 		instance = this;
 
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_CONFIG, CONFIG_FILE_PATH);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);
 
 		if (isPhysicalClient())
 		{
@@ -143,10 +143,10 @@ public class DarkSouls
 		forgeBus.addListener(ModEntities::addEntitySpawns);
 		forgeBus.addListener(this::registerDataReloadListeners);
 
-		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG,
+		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG_BUILDER,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
-		ConfigManager.INGAME_CONFIG.populateDefaultValues();
-		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG,
+		ConfigManager.CLIENT_CONFIG.populateDefaultValues();
+		ConfigManager.loadConfig(ConfigManager.SERVER_CONFIG_BUILDER,
 				FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
 	}
 	
@@ -234,7 +234,7 @@ public class DarkSouls
 
 		ModItems.registerDescriptionItems();
 
-		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue());
+		com.skullmangames.darksouls.client.gui.ScreenManager.onDarkSoulsUIChanged(ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue());
 		
 		this.animatorProvider = ClientAnimator::getAnimator;
 	}

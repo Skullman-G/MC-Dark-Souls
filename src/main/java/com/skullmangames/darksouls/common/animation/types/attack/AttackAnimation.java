@@ -29,7 +29,7 @@ import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
-import com.skullmangames.darksouls.config.IngameConfig;
+import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.AuxEffect;
@@ -203,7 +203,7 @@ public class AttackAnimation extends ActionAnimation
 		if (spawner != null)
 		{
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
-			if (elapsedTime >= phase.contactEnd && prevElapsedTime - IngameConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getWorldCenter());
+			if (elapsedTime >= phase.contactEnd && prevElapsedTime - ClientConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getWorldCenter());
 		}
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
 		{

@@ -129,7 +129,7 @@ public abstract class AbstractCovenantScreen extends Screen
 			Reward reward = this.covenant.getNextReward(this.playerCap);
 			if (reward != null)
 			{
-				if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+				if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 				else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 				
 				this.blit(poseStack, this.width / 2 - 9, this.height / 2 + 85, 234, 0, 22, 15);
@@ -165,7 +165,7 @@ public abstract class AbstractCovenantScreen extends Screen
 
 	private void renderBg(PoseStack poseStack, float partialticks, int x, int y)
 	{
-		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue())
+		if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue())
 			RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else
 			RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);

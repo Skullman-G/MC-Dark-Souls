@@ -39,7 +39,7 @@ public class IngameConfigurationScreen extends Screen
 		
 		int yDistance = -24;
 		
-		for (Option<?> option : ConfigManager.INGAME_CONFIG.OPTIONS)
+		for (Option<?> option : ConfigManager.CLIENT_CONFIG.OPTIONS)
 		{
 			if (option instanceof BooleanOption)
 			{
@@ -73,7 +73,7 @@ public class IngameConfigurationScreen extends Screen
 		
 		this.addRenderableWidget(new Button(this.width / 2 + 4, this.height / 4 + 150, 96, 20, new TranslatableComponent("gui."+DarkSouls.MOD_ID+".reset"), (button) ->
 		{
-			ConfigManager.INGAME_CONFIG.resetSettings();
+			ConfigManager.CLIENT_CONFIG.resetSettings();
 			for (OptionButton<?> b : buttons)
 			{
 				b.refreshMessage();
@@ -91,7 +91,7 @@ public class IngameConfigurationScreen extends Screen
 	@Override
 	public void onClose()
 	{
-		ConfigManager.INGAME_CONFIG.save();
+		ConfigManager.CLIENT_CONFIG.save();
 		this.minecraft.setScreen(this.parentScreen);
 	}
 }

@@ -79,7 +79,7 @@ public class GameOverlayManager
 		ModOverlayRegistry.enableFoodLevel(false);
 		ModOverlayRegistry.enableBossHealth(false);
 		
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		ModOverlayRegistry.enableHotbar(!dsLayout);
 		ModOverlayRegistry.enableExpBar(!dsLayout);
 		ModOverlayRegistry.enableJumpMeter(!dsLayout);
@@ -161,7 +161,7 @@ public class GameOverlayManager
 	
 	public void reloadOverlayElements()
 	{
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		ModOverlayRegistry.enableHotbar(!dsLayout);
 		ModOverlayRegistry.enableExpBar(!dsLayout);
 		ModOverlayRegistry.enableJumpMeter(!dsLayout);
@@ -170,7 +170,7 @@ public class GameOverlayManager
 	
 	private void renderItems(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
 	{
-		if (!ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
+		if (!ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue()) return;
 		
 		LocalPlayerCap playerCap = getCameraPlayerCap();
 		if (playerCap == null) return;
@@ -283,7 +283,7 @@ public class GameOverlayManager
 	
 	private void renderAttunements(ForgeIngameGui gui, int width, int height, PoseStack poseStack, float partialTicks)
 	{
-		if (ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue()) return;
+		if (ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue()) return;
 		
 		LocalPlayerCap playerCap = getCameraPlayerCap();
 		if (playerCap == null) return;
@@ -347,7 +347,7 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 10 : width / 2 + 7;
 		int y = dsLayout ? 18 : height - 49;
 		if (!dsLayout) gui.right_height += 10;
@@ -420,12 +420,14 @@ public class GameOverlayManager
 		RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 		RenderSystem.defaultBlendFunc();
 		minecraft.getProfiler().push("bossHealth");
+		
+		if (ConfigManager.CLIENT_CONFIG.hideBossBars.getValue()) return;
 
 		Map<UUID, LerpingBossEvent> events = gui.getBossOverlay().events;
 
 		if (!events.isEmpty())
 		{
-			boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+			boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 			int width = minecraft.getWindow().getGuiScaledWidth();
 			int y = dsLayout ? minecraft.getWindow().getGuiScaledHeight() / 2 + 100 : minecraft.getWindow().getGuiScaledHeight() / 2 - 90;
 			
@@ -532,7 +534,7 @@ public class GameOverlayManager
 	private void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		RenderSystem.enableBlend();
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 10 : width / 2 - 96;
 		int y = dsLayout ? 10 : height - 39;
 		if (!dsLayout) gui.left_height += 10;
@@ -607,7 +609,7 @@ public class GameOverlayManager
 		if (player == null) return;
 		
 		RenderSystem.enableBlend();
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 10 : width / 2 + 7;
 		int y = dsLayout ? 26 : height - 39;
 		if (!dsLayout) gui.right_height += 10;
@@ -673,7 +675,7 @@ public class GameOverlayManager
 	private void renderHumanity(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap playerCap = ClientManager.INSTANCE.getPlayerCap();
-		boolean dsLayout = ConfigManager.INGAME_CONFIG.darkSoulsHUDLayout.getValue();
+		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 52 : width / 2;
 		int y = dsLayout ? height - 52 :  height - 45;
 		int color = playerCap.isHuman() ? Color.WHITE.getRGB() : Color.LIGHT_GRAY.getRGB();

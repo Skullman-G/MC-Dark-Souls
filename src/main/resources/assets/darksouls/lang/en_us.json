@@ -338,11 +338,12 @@
 	"key.darksouls.attunement_slot_down": "Attunement Slot Down",
 	"key.darksouls.target_lock_on": "Target Lock On",
 	
-	"ingame.long_press_count": "Button Long Press Count",
-	"ingame.show_health_indicator": "Show Health Bar Indicator",
-	"ingame.dark_souls_ui": "Dark Souls UI",
-	"ingame.dark_souls_hud_layout": "Dark Souls HUD Layout",
-	"ingame.only_shouldersurf_when_aiming": "Only Shouldersurf Camera when aiming",
+	"config.long_press_count": "Button Long Press Count",
+	"config.show_health_indicator": "Show Health Bar Indicator",
+	"config.dark_souls_ui": "Dark Souls UI",
+	"config.dark_souls_hud_layout": "Dark Souls HUD Layout",
+	"config.only_shouldersurf_when_aiming": "Only Shouldersurf Camera when aiming",
+	"config.hide_boss_bars": "Hide Boss Bars",
 	
 	"stat.darksouls.vigor": "Vigor",
 	"stat.darksouls.endurance": "Endurance",

@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.client.gui.ScreenManager;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class IngameConfig
+public class ClientConfig
 {
 	private final ForgeConfigSpec.Builder config;
 	public final List<Option<?>> OPTIONS = new ArrayList<Option<?>>();
@@ -22,8 +22,9 @@ public class IngameConfig
 	public final Option<Boolean> darkSoulsUI;
 	public final Option<Boolean> darkSoulsHUDLayout;
 	public final Option<Boolean> onlyShoulderSurfWhenAiming;
+	public final Option<Boolean> hideBossBars;
 	
-	public IngameConfig(ForgeConfigSpec.Builder config)
+	public ClientConfig(ForgeConfigSpec.Builder config)
 	{
 		this.config = config;
 		
@@ -33,6 +34,7 @@ public class IngameConfig
 		this.darkSoulsUI = this.registerBoolean("dark_souls_ui", true);
 		this.darkSoulsHUDLayout = this.registerBoolean("dark_souls_hud_layout", false);
 		this.onlyShoulderSurfWhenAiming = this.registerBoolean("only_shouldersurf_when_aiming", false);
+		this.hideBossBars = this.registerBoolean("hide_boss_bars", false);
 	}
 	
 	public void populateDefaultValues()
@@ -54,7 +56,7 @@ public class IngameConfig
 	
 	private Option<Boolean> registerBoolean(String name, boolean defaultValue)
 	{
-		name = "ingame."+name;
+		name = "config."+name;
 		Option<Boolean> option = new Option.BooleanOption(this.config.define(name, () -> defaultValue), name, defaultValue);
 		OPTIONS.add(option);
 		return option;
@@ -62,7 +64,7 @@ public class IngameConfig
 	
 	private Option<Integer> registerInt(String name, int defaultValue, int min, int max)
 	{
-		name = "ingame."+name;
+		name = "config."+name;
 		Option<Integer> option = new Option.IntegerOption(this.config.defineInRange(name, defaultValue, min, max), name, defaultValue, min, max);
 		OPTIONS.add(option);
 		return option;

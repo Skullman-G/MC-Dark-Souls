@@ -10,9 +10,9 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class ConfigManager
 {
-	public static final ForgeConfigSpec COMMON_CONFIG;
-	public static final ForgeConfigSpec CLIENT_CONFIG;
-	public static final IngameConfig INGAME_CONFIG;
+	public static final ForgeConfigSpec SERVER_CONFIG_BUILDER;
+	public static final ForgeConfigSpec CLIENT_CONFIG_BUILDER;
+	public static final ClientConfig CLIENT_CONFIG;
 	public static final ServerConfig SERVER_CONFIG;
 	
 	static
@@ -22,11 +22,11 @@ public class ConfigManager
 		ForgeConfigSpec.Builder client = new ForgeConfigSpec.Builder();
 		ForgeConfigSpec.Builder server = new ForgeConfigSpec.Builder();
 		
-		INGAME_CONFIG = new IngameConfig(client);
+		CLIENT_CONFIG = new ClientConfig(client);
 		SERVER_CONFIG = new ServerConfig(server, file.valueMap());
 		
-		CLIENT_CONFIG = client.build();
-		COMMON_CONFIG = server.build();
+		CLIENT_CONFIG_BUILDER = client.build();
+		SERVER_CONFIG_BUILDER = server.build();
 	}
 	
 	public static void loadConfig(ForgeConfigSpec config, String path)

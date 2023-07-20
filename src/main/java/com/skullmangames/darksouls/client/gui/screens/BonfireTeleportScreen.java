@@ -114,7 +114,7 @@ public class BonfireTeleportScreen extends Screen
 		{
 			int j = (this.height - this.imageHeight) / 2;
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+			if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 			else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 			this.renderScroller(poseStack, this.width / 2 + this.imageWidth / 2 - 10, j);
 			int i1 = 0;
@@ -147,7 +147,7 @@ public class BonfireTeleportScreen extends Screen
 	
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
-		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+		if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;

@@ -163,7 +163,7 @@ public class BonfireScreen extends Screen
 	
 	private void renderBg(PoseStack matrixstack, float partialticks, int mouseX, int mouseY)
 	{
-		if (ConfigManager.INGAME_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
+		if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue()) RenderSystem.setShaderTexture(0, DS_TEXTURE_LOCATION);
 		else RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
 		int x = (this.width - this.imageWidth) / 2;
 	    int y = (this.height - this.imageHeight) / 2;
