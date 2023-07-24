@@ -102,7 +102,10 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.LIGHT, true, Animations.HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.HAMMER_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.HAMMER_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.HAMMER_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.DAGGER)
 			.putMove(AttackType.LIGHT, true, Animations.DAGGER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.DAGGER_HEAVY_ATTACK)

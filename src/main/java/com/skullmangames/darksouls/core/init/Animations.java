@@ -232,7 +232,10 @@ public final class Animations
 	// Hammer
 	public static AttackAnimation HAMMER_DASH_ATTACK;
 	public static AttackAnimation HAMMER_HEAVY_ATTACK;
-	public static AttackAnimation[] HAMMER_LIGHT_ATTACK;
+	public static AttackAnimation HAMMER_LIGHT_ATTACK;
+	public static AttackAnimation HAMMER_TH_LIGHT_ATTACK;
+	public static AttackAnimation HAMMER_TH_HEAVY_ATTACK;
+	public static AttackAnimation HAMMER_TH_DASH_ATTACK;
 
 	// Fist
 	public static AttackAnimation[] FIST_LIGHT_ATTACK;
@@ -1205,8 +1208,8 @@ public final class Animations
 				.register(builder);
 
 		// Hammer
-		HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_dash_attack"), AttackType.DASH, 0.5F, 0.0F, 0.32F, 0.6F, 1.4F, "Tool_R",
-				DarkSouls.rl("biped/combat/hammer_dash_attack"), (models) -> models.ENTITY_BIPED)
+		HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.32F, 0.6F, 1.4F, "Tool_R",
+				DarkSouls.rl("biped/combat/hammer_light_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -1215,28 +1218,52 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 30)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.28F, 0.48F, 1.4F, "Tool_R",
+		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.28F, 0.48F, 1.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-				.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 68)
 				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 36)
+				.register(builder);
+		HAMMER_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.3F, 0.0F, 0.24F, 0.48F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/hammer_light_attack"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		HAMMER_LIGHT_ATTACK = new AttackAnimation[]
-		{
-				new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.2F, 0.0F, 0.24F, 0.48F, 1.2F, "Tool_R",
-						DarkSouls.rl("biped/combat/hammer_light_attack"), (models) -> models.ENTITY_BIPED)
-					.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
-					.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
-					.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-					.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
-					.addProperty(AttackProperty.STAMINA_USAGE, 25)
-					.addProperty(AttackProperty.POISE_DAMAGE, 23)
-					.register(builder)
-		};
+		HAMMER_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.24F, 0.48F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/hammer_th_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.2F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 63)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
+				.addProperty(AttackProperty.POISE_DAMAGE, 32)
+				.register(builder);
+		HAMMER_TH_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.4F, 0.0F, 0.24F, 0.44F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/hammer_th_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.24F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 69)
+				.addProperty(AttackProperty.STAMINA_USAGE, 50)
+				.addProperty(AttackProperty.POISE_DAMAGE, 47)
+				.register(builder);
+		HAMMER_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.24F, 0.48F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/hammer_th_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.2F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 63)
+				.addProperty(AttackProperty.STAMINA_USAGE, 25)
+				.addProperty(AttackProperty.POISE_DAMAGE, 32)
+				.register(builder);
 
 		// Fist
 		FIST_LIGHT_ATTACK = new AttackAnimation[]
