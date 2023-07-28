@@ -81,6 +81,10 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			this.animationOverrides.put(LivingMotion.KNEELING, Animations.BIPED_HOLDING_BIG_WEAPON);
 			this.animationOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_HOLDING_BIG_WEAPON);
 			this.animationOverrides.put(LivingMotion.BLOCKING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 		}
 	}
 	

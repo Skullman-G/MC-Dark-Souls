@@ -68,6 +68,8 @@ public final class Animations
 	public static StaticAnimation BIPED_WALK_TH;
 	public static StaticAnimation BIPED_RUN_TH;
 	
+	public static StaticAnimation BIPED_IDLE_TH_BIG_WEAPON;
+	
 	public static StaticAnimation BIPED_SWIM;
 	public static StaticAnimation BIPED_FLOAT;
 	public static StaticAnimation BIPED_KNEEL;
@@ -220,6 +222,9 @@ public final class Animations
 	public static AttackAnimation GREAT_HAMMER_HEAVY_ATTACK;
 	public static AttackAnimation[] GREAT_HAMMER_LIGHT_ATTACK;
 	public static AttackAnimation GREAT_HAMMER_DASH_ATTACK;
+	public static AttackAnimation[] GREAT_HAMMER_TH_LIGHT_ATTACK;
+	public static AttackAnimation GREAT_HAMMER_TH_HEAVY_ATTACK;
+	public static AttackAnimation GREAT_HAMMER_TH_DASH_ATTACK;
 
 	// Axe
 	public static AttackAnimation AXE_HEAVY_ATTACK;
@@ -344,6 +349,11 @@ public final class Animations
 				DarkSouls.rl("biped/living/walk_th"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_RUN_TH = new StaticAnimation(DarkSouls.rl("biped_run_th"), 0.08F, true,
 				DarkSouls.rl("biped/living/run_th"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		BIPED_IDLE_TH_BIG_WEAPON = new StaticAnimation(DarkSouls.rl("biped_idle_th_big_weapon"), 0.1F, true,
+				DarkSouls.rl("biped/living/idle_th_big_weapon"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
+				.register(builder);
 		
 		BIPED_SWIM = new MovementAnimation(DarkSouls.rl("biped_swim"), 0.08F, true,
 				DarkSouls.rl("biped/living/swim"), (models) -> models.ENTITY_BIPED).register(builder);
@@ -1064,11 +1074,11 @@ public final class Animations
 				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 				.addProperty(AttackProperty.STAMINA_USAGE, 74)
-				.addProperty(AttackProperty.POISE_DAMAGE, 28)
+				.addProperty(AttackProperty.POISE_DAMAGE, 32)
 				.register(builder);
 		GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), AttackType.LIGHT, 0.5F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), AttackType.LIGHT, 0.5F, 0.0F, 0.84F, 1.08F, 2.76F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -1114,6 +1124,69 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 45)
 				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
+		GREAT_HAMMER_TH_LIGHT_ATTACK = new AttackAnimation[]
+		{
+						new AttackAnimation(DarkSouls.rl("great_hammer_th_la_1"), AttackType.LIGHT, 0.5F, 0.0F, 0.32F, 0.56F, 1.6F, "Tool_R",
+								DarkSouls.rl("biped/combat/great_hammer_th_la_1"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+							{
+									Event.create(0.56F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+									Event.create(0.56F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
+							.addProperty(AttackProperty.STAMINA_USAGE, 40)
+							.addProperty(AttackProperty.POISE_DAMAGE, 36)
+							.register(builder),
+						new AttackAnimation(DarkSouls.rl("great_hammer_th_la_2"), AttackType.LIGHT, 0.5F, 0.0F, 0.24F, 0.48F, 1.2F, "Tool_R",
+								DarkSouls.rl("biped/combat/great_hammer_th_la_2"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+							{
+									Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+									Event.create(0.48F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+							})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
+							.addProperty(AttackProperty.STAMINA_USAGE, 40)
+							.addProperty(AttackProperty.POISE_DAMAGE, 36)
+							.register(builder)
+		};
+		GREAT_HAMMER_TH_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_th_ha"), AttackType.HEAVY, 0.5F, 0.0F, 0.32F, 0.52F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/great_hammer_th_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.52F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+						Event.create(0.52F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+				})
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+				.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 95)
+				.addProperty(AttackProperty.STAMINA_USAGE, 82)
+				.addProperty(AttackProperty.POISE_DAMAGE, 39)
+				.register(builder);
+		GREAT_HAMMER_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("great_hammer_th_da"), AttackType.LIGHT, 0.5F, 0.0F, 0.32F, 0.56F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/great_hammer_th_la_1"), (models) -> models.ENTITY_BIPED)
+			.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+			{
+					Event.create(0.56F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GREAT_HAMMER_SMASH.get())),
+					Event.create(0.56F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 20, 1))
+			})
+			.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+			.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+			.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+			.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+			.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
+			.addProperty(AttackProperty.STAMINA_USAGE, 40)
+			.addProperty(AttackProperty.POISE_DAMAGE, 36)
+			.register(builder);
 
 		// Axe
 		AXE_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("axe_heavy_attack"), AttackType.HEAVY, 0.3F, 0.0F, 0.55F, 0.7F, 1.5F, "Tool_R",

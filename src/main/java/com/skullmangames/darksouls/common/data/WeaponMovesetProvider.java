@@ -116,6 +116,9 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREAT_HAMMER_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREAT_HAMMER_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREAT_HAMMER_TH_DASH_ATTACK)
 		);
 	}
 	
