@@ -88,9 +88,12 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
 			new WeaponMoveset.Builder(WeaponMovesets.ULTRA_GREATSWORD)
 			.putMove(AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
+			.putMove(AttackType.HEAVY, false, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.ULTRA_GREATSWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE),
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.ULTRA_GREATSWORD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, false, Animations.ULTRA_GREATSWORD_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.ULTRA_GREATSWORD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.SHIELD)
 			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.SPEAR)
@@ -113,7 +116,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
 			new WeaponMoveset.Builder(WeaponMovesets.GREAT_HAMMER)
 			.putMove(AttackType.LIGHT, true, Animations.GREAT_HAMMER_LIGHT_ATTACK)
-			.putMove(AttackType.HEAVY, true, Animations.GREAT_HAMMER_HEAVY_ATTACK)
+			.putMove(AttackType.HEAVY, false, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREAT_HAMMER_TH_LIGHT_ATTACK)
