@@ -1574,22 +1574,22 @@ public final class Animations
 				.register(builder);
 		STRAIGHT_SWORD_TH_LIGHT_ATTACK = new AttackAnimation[]
 		{
-						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.24F, 0.52F, 1.4F, "Tool_R",
+						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.36F, 0.6F, 1.52F, "Tool_R",
 								DarkSouls.rl("biped/combat/straight_sword_th_la_1"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 							.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-							.addProperty(AttackProperty.STAMINA_USAGE, 20)
+							.addProperty(AttackProperty.STAMINA_USAGE, 23)
 							.addProperty(AttackProperty.POISE_DAMAGE, 20)
 							.register(builder),
-						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.28F, 0.52F, 1.4F, "Tool_R",
+						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.48F, 0.42F, 1.6F, "Tool_R",
 								DarkSouls.rl("biped/combat/straight_sword_th_la_2"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 							.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-							.addProperty(AttackProperty.STAMINA_USAGE, 20)
+							.addProperty(AttackProperty.STAMINA_USAGE, 23)
 							.addProperty(AttackProperty.POISE_DAMAGE, 20)
 							.register(builder)
 		};
