@@ -24,6 +24,26 @@
       "animations": [
         "darksouls:backstab_thrust_check"
       ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatsword_th_la_1",
+        "darksouls:greatsword_th_la_2"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatsword_th_ha_1",
+        "darksouls:greatsword_th_ha_2"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatsword_th_da"
+      ]
     }
   }
 }

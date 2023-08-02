@@ -202,6 +202,9 @@ public final class Animations
 	public static AttackAnimation GREATSWORD_DASH_ATTACK;
 	public static AttackAnimation GREATSWORD_UPWARD_SLASH;
 	public static AttackAnimation GREATSWORD_STYLISH_THRUST;
+	public static AttackAnimation[] GREATSWORD_TH_LIGHT_ATTACK;
+	public static AttackAnimation[] GREATSWORD_TH_THRUST_ATTACK;
+	public static AttackAnimation GREATSWORD_TH_DASH_ATTACK;
 
 	// Ultra Greatsword
 	public static AttackAnimation[] ULTRA_GREATSWORD_LIGHT_ATTACK;
@@ -872,40 +875,36 @@ public final class Animations
 						.addProperty(AttackProperty.POISE_DAMAGE, 23)
 						.register(builder)
 		};
-		
 		GREATSWORD_THRUST = new AttackAnimation(DarkSouls.rl("greatsword_thrust"), AttackType.HEAVY, 0.3F, 0.0F, 0.28F, 0.68F, 1.6F, "Tool_R",
 				DarkSouls.rl("biped/combat/greatsword_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUST)
-				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
 				.addProperty(AttackProperty.STAMINA_USAGE, 70)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		
 		GREATSWORD_UPWARD_SLASH = new AttackAnimation(DarkSouls.rl("greatsword_upward_slash"), AttackType.HEAVY, 0.3F, 0.0F, 0.28F, 0.56F, 2.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/greatsword_upward_slash"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
-				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
 				.addProperty(AttackProperty.STAMINA_USAGE, 50)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		
 		GREATSWORD_STYLISH_THRUST = new AttackAnimation(DarkSouls.rl("greatsword_stylish_thrust"), AttackType.HEAVY, 0.3F, 0.0F, 0.64F, 0.76F, 2.8F, "Tool_R",
 				DarkSouls.rl("biped/combat/greatsword_stylish_thrust"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUST)
-				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
 				.addProperty(AttackProperty.STAMINA_USAGE, 70)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		
 		GREATSWORD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.4F, 0.72F, 1.6F, "Tool_R",
 				DarkSouls.rl("biped/combat/greatsword_dash_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -915,6 +914,62 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
 				.addProperty(AttackProperty.STAMINA_USAGE, 40)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
+				.register(builder);
+		GREATSWORD_TH_LIGHT_ATTACK = new AttackAnimation[]
+				{
+						new AttackAnimation(DarkSouls.rl("greatsword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.5F, 0.0F, 0.2F, 0.44F, 1.6F, "Tool_R",
+								DarkSouls.rl("biped/combat/greatsword_th_la_1"), (models) -> models.ENTITY_BIPED)
+								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 62)
+								.addProperty(AttackProperty.POISE_DAMAGE, 26)
+								.register(builder),
+						new AttackAnimation(DarkSouls.rl("greatsword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.28F, 0.48F, 2.0F, "Tool_R",
+								DarkSouls.rl("biped/combat/greatsword_th_la_2"), (models) -> models.ENTITY_BIPED)
+								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 62)
+								.addProperty(AttackProperty.POISE_DAMAGE, 26)
+								.register(builder)
+				};
+		GREATSWORD_TH_THRUST_ATTACK = new AttackAnimation[]
+				{
+						new AttackAnimation(DarkSouls.rl("greatsword_th_ha_1"), AttackType.TWO_HANDED_HEAVY, 0.5F, 0.0F, 0.4F, 0.52F, 1.6F, "Tool_R",
+								DarkSouls.rl("biped/combat/greatsword_th_ha_1"), (models) -> models.ENTITY_BIPED)
+								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUST)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
+								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.POISE_DAMAGE, 26)
+								.register(builder),
+						new AttackAnimation(DarkSouls.rl("greatsword_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.3F, 0.0F, 0.28F, 0.48F, 2.0F, "Tool_R",
+								DarkSouls.rl("biped/combat/greatsword_th_la_2"), (models) -> models.ENTITY_BIPED)
+								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_SWING)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
+								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.POISE_DAMAGE, 26)
+								.register(builder)
+				};
+		GREATSWORD_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("greatsword_th_da"), AttackType.TWO_HANDED_DASH, 0.05F, 0.0F, 0.4F, 0.52F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatsword_th_ha_1"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SWORD_THRUST)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
+				.addProperty(AttackProperty.STAMINA_USAGE, 72)
+				.addProperty(AttackProperty.POISE_DAMAGE, 25)
 				.register(builder);
 
 		// Ultra Greatsword

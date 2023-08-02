@@ -80,12 +80,18 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREATSWORD_STYLISH_THRUST)
 			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSWORD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSWORD_TH_THRUST_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSWORD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.CLAYMORE)
 			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, new AttackAnimation[] {Animations.GREATSWORD_THRUST, Animations.GREATSWORD_UPWARD_SLASH})
 			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
-			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSWORD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSWORD_TH_THRUST_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSWORD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.ULTRA_GREATSWORD)
 			.putMove(AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, false, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
