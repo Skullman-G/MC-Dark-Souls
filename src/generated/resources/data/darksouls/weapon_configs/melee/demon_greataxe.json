@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:demon_greataxe",
+  "category": "greataxe",
   "moveset": "darksouls:ultra_greatsword",
   "collider": "darksouls:greataxe",
   "weight": 22.0,
-  "hold_on_shoulder": true,
   "stability": 0.38,
   "critical": 1.0,
   "damage": {

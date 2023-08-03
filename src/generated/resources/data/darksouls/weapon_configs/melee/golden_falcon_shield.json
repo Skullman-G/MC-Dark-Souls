@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:golden_falcon_shield",
+  "category": "small_shield",
   "moveset": "darksouls:shield",
   "collider": "darksouls:fist",
   "weight": 2.5,
-  "hold_on_shoulder": false,
   "stability": 0.48,
   "critical": 1.0,
   "damage": {

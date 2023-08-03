@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:demon_great_hammer",
+  "category": "great_hammer",
   "moveset": "darksouls:great_hammer",
   "collider": "darksouls:great_hammer",
   "weight": 22.0,
-  "hold_on_shoulder": true,
   "stability": 0.32,
   "critical": 1.0,
   "damage": {

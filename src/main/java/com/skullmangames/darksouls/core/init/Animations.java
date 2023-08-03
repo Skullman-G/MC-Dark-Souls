@@ -70,6 +70,8 @@ public final class Animations
 	
 	public static StaticAnimation BIPED_IDLE_TH_BIG_WEAPON;
 	
+	public static StaticAnimation BIPED_IDLE_TH_SPEAR;
+	
 	public static StaticAnimation BIPED_SWIM;
 	public static StaticAnimation BIPED_FLOAT;
 	public static StaticAnimation BIPED_KNEEL;
@@ -358,6 +360,11 @@ public final class Animations
 		
 		BIPED_IDLE_TH_BIG_WEAPON = new StaticAnimation(DarkSouls.rl("biped_idle_th_big_weapon"), 0.1F, true,
 				DarkSouls.rl("biped/living/idle_th_big_weapon"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
+				.register(builder);
+		
+		BIPED_IDLE_TH_SPEAR = new StaticAnimation(DarkSouls.rl("biped_idle_th_spear"), 0.1F, true,
+				DarkSouls.rl("biped/living/idle_th_spear"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
 				.register(builder);
 		

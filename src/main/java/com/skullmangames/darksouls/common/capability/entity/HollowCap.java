@@ -2,20 +2,18 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.Hollow;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class HollowCap extends HumanoidCap<Hollow>
@@ -77,7 +75,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 	}
 	
 	@Override
-	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
+	public void setAttackGoals(WeaponCategory category)
 	{
 		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
 		{
@@ -85,7 +83,7 @@ public class HollowCap extends HumanoidCap<Hollow>
 		}
 		else
 		{
-			if (moveset.compareTo(WeaponMovesets.STRAIGHT_SWORD) != 0) return;
+			if (category != WeaponCategory.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))

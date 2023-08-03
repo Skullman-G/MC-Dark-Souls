@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 
 import net.minecraft.world.item.Item;
 

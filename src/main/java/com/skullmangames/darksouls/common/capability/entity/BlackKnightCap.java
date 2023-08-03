@@ -3,14 +3,12 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import net.minecraft.resources.ResourceLocation;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 
 public class BlackKnightCap extends HumanoidCap<BlackKnight>
 {
@@ -28,9 +26,9 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	}
 	
 	@Override
-	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
+	public void setAttackGoals(WeaponCategory category)
 	{
-		if (moveset.compareTo(WeaponMovesets.BLACK_KNIGHT_SWORD) != 0) return;
+		if (category != WeaponCategory.GREATSWORD) return;
 		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 				.addAttack(new AttackInstance(5, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_SHORT))
 				.addAttack(new AttackInstance(4, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_LONG))

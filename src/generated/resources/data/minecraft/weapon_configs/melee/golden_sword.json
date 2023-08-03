@@ -1,9 +1,9 @@
 {
   "registry_name": "minecraft:golden_sword",
+  "category": "straight_sword",
   "moveset": "darksouls:straight_sword",
   "collider": "darksouls:shortsword",
   "weight": 2.0,
-  "hold_on_shoulder": false,
   "stability": 0.3,
   "critical": 1.1,
   "damage": {

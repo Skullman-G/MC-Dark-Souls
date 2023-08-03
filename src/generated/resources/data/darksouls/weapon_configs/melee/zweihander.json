@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:zweihander",
+  "category": "ultra_greatsword",
   "moveset": "darksouls:ultra_greatsword",
   "collider": "darksouls:ultra_greatsword",
   "weight": 10.0,
-  "hold_on_shoulder": true,
   "stability": 0.4,
   "critical": 1.0,
   "damage": {

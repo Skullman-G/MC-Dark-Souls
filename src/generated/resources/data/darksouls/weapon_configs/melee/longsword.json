@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:longsword",
+  "category": "straight_sword",
   "moveset": "darksouls:straight_sword",
   "collider": "darksouls:longsword",
   "weight": 3.0,
-  "hold_on_shoulder": false,
   "stability": 0.3,
   "critical": 1.0,
   "damage": {

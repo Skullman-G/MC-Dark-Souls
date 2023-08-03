@@ -1,9 +1,9 @@
 {
   "registry_name": "minecraft:stone_axe",
+  "category": "axe",
   "moveset": "darksouls:axe",
   "collider": "darksouls:tool",
   "weight": 0.8,
-  "hold_on_shoulder": false,
   "stability": 0.3,
   "critical": 1.0,
   "damage": {

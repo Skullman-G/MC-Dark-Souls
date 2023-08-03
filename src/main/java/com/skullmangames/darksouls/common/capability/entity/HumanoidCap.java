@@ -3,9 +3,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.IShield;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 
@@ -15,8 +13,8 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -35,12 +33,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			
 			if(!(this.orgEntity.getControllingPassenger() != null && this.orgEntity.getControllingPassenger() instanceof Mob) && this.isArmed())
 			{
-				ResourceLocation moveset = null;
-				if (heldItem instanceof MeleeWeaponCap)
-				{
-					moveset = ((MeleeWeaponCap)heldItem).getWeaponMovesetId();
-				}
-				this.setAttackGoals(heldItem.getWeaponCategory(), moveset);
+				this.setAttackGoals(heldItem.getWeaponCategory());
 			}
 		}
 	}
@@ -52,7 +45,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
+	public void setAttackGoals(WeaponCategory category)
 	{
 		if (category == WeaponCategory.BOW && this.orgEntity instanceof RangedAttackMob)
 		{
@@ -81,12 +74,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		if(!isMount && this.isArmed())
 		{
 			WeaponCap heldItem = ModCapabilities.getWeaponCap(this.orgEntity.getMainHandItem());
-			ResourceLocation moveset = null;
-			if (heldItem instanceof MeleeWeaponCap)
-			{
-				moveset = ((MeleeWeaponCap)heldItem).getWeaponMovesetId();
-			}
-			this.setAttackGoals(heldItem.getWeaponCategory(), moveset);
+			this.setAttackGoals(heldItem.getWeaponCategory());
 		}
 	}
 	

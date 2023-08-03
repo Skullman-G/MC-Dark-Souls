@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:winged_spear",
+  "category": "spear",
   "moveset": "darksouls:spear",
   "collider": "darksouls:winged_spear",
   "weight": 6.0,
-  "hold_on_shoulder": false,
   "stability": 0.2,
   "critical": 1.0,
   "damage": {

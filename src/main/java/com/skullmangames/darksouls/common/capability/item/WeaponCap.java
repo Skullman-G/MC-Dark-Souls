@@ -23,6 +23,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -228,11 +230,6 @@ public abstract class WeaponCap extends AttributeItemCap
 	public boolean canBeRenderedBoth(ItemStack item)
 	{
 		return !isTwoHanded() && !item.isEmpty();
-	}
-
-	public enum WeaponCategory
-	{
-		NONE_WEAON, MELEE_WEAPON, BOW, CROSSBOW, TALISMAN
 	}
 
 	public enum HandProperty

@@ -2,18 +2,16 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.WeaponCategory;
 import com.skullmangames.darksouls.common.entity.HollowLordranSoldier;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 
 public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
@@ -42,7 +40,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	}
 	
 	@Override
-	public void setAttackGoals(WeaponCategory category, ResourceLocation moveset)
+	public void setAttackGoals(WeaponCategory category)
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
 		
@@ -52,7 +50,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		}
 		else
 		{
-			if (moveset.compareTo(WeaponMovesets.STRAIGHT_SWORD) == 0)
+			if (category == WeaponCategory.STRAIGHT_SWORD)
 			{
 				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))
@@ -62,7 +60,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 						.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
 						.addDodge(Animations.BIPED_JUMP_BACK));
 			}
-			else if (moveset.compareTo(WeaponMovesets.SPEAR) == 0)
+			else if (category == WeaponCategory.SPEAR)
 			{
 				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 1.0F, true, true, true)
 						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS))

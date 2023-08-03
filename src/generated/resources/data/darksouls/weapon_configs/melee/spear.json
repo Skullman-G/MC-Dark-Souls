@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:spear",
+  "category": "spear",
   "moveset": "darksouls:spear",
   "collider": "darksouls:spear",
   "weight": 4.5,
-  "hold_on_shoulder": false,
   "stability": 0.3,
   "critical": 1.0,
   "damage": {

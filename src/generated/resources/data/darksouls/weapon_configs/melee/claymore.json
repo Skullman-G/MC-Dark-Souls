@@ -1,9 +1,9 @@
 {
   "registry_name": "darksouls:claymore",
+  "category": "greatsword",
   "moveset": "darksouls:claymore",
   "collider": "darksouls:greatsword",
   "weight": 9.0,
-  "hold_on_shoulder": true,
   "stability": 0.35,
   "critical": 1.0,
   "damage": {

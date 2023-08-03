@@ -30,6 +30,7 @@ import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
@@ -57,13 +58,13 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	private final ImmutableMap<CoreDamageType, Float> defense;
 	private final float stability;
 	
-	public MeleeWeaponCap(Item item, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
-						  float critical, boolean holdOnShoulder, float weight,
+	public MeleeWeaponCap(Item item, WeaponCategory category, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+						  float critical, float weight,
 						  ShieldType shieldType, WeaponMaterial weaponMaterial,
 						  ImmutableMap<CoreDamageType, Float> defense, float stability,
 						  ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, WeaponCategory.MELEE_WEAPON, damage, auxEffects, critical, weight, statRequirements, statScaling);
+		super(item, category, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		this.movesetId = moveset;
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.collider = collider;
@@ -72,7 +73,7 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		this.defense = defense;
 		this.stability = stability;
 		
-		if (holdOnShoulder)
+		if (this.getWeaponCategory().isHeavy())
 		{
 			this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_HOLDING_BIG_WEAPON);
 			this.animationOverrides.put(LivingMotion.WALKING, Animations.BIPED_HOLDING_BIG_WEAPON);
@@ -85,6 +86,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+		}
+		else if (this.getWeaponCategory().isLong())
+		{
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SPEAR);
 		}
 	}
 	
@@ -217,9 +224,9 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		return this.shieldType;
 	}
 	
-	public static Builder builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
+	public static Builder builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 	{
-		return new Builder(item, movesetId, colliderId, weight);
+		return new Builder(item, category, movesetId, colliderId, weight);
 	}
 	
 	public enum AttackType
@@ -301,12 +308,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 	public static class Builder
 	{
 		private Item item;
+		private WeaponCategory category;
 		private ResourceLocation movesetId;
 		private ResourceLocation colliderId;
 		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
 		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
 		private float critical = 1.00F;
-		private boolean holdOnShoulder;
 		private float weight;
 		private float stability = 0.25F;
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
@@ -316,9 +323,10 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		private WeaponMaterial weaponMaterial = WeaponMaterial.METAL_WEAPON;
 		private ImmutableMap.Builder<CoreDamageType, Float> defense = ImmutableMap.builder();
 		
-		private Builder(Item item, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
+		private Builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 		{
 			this.item = item;
+			this.category = category;
 			this.movesetId = movesetId;
 			this.colliderId = colliderId;
 			this.weight = weight;
@@ -373,20 +381,14 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			return this;
 		}
 		
-		public Builder shouldHoldOnShoulder()
-		{
-			this.holdOnShoulder = true;
-			return this;
-		}
-		
 		public JsonObject toJson()
 		{
 			JsonObject root = new JsonObject();
 			root.addProperty("registry_name", this.item.getRegistryName().toString());
+			root.addProperty("category", this.category.toString());
 			root.addProperty("moveset", this.movesetId.toString());
 			root.addProperty("collider", this.colliderId.toString());
 			root.addProperty("weight", this.weight);
-			root.addProperty("hold_on_shoulder", this.holdOnShoulder);
 			root.addProperty("stability", this.stability);
 			root.addProperty("critical", this.critical);
 			
@@ -435,16 +437,15 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
 			Item item = ForgeRegistries.ITEMS.getValue(itemId);
 			
+			WeaponCategory category = WeaponCategory.fromString(json.get("category").getAsString());
+			
 			ResourceLocation movesetId = ResourceLocation.tryParse(json.get("moveset").getAsString());
 			
 			ResourceLocation colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
 			
 			float weight = json.get("weight").getAsFloat();
 			
-			Builder builder = new Builder(item, movesetId, colliderId, weight);
-			
-			JsonElement holdOnShoulder = json.get("hold_on_shoulder");
-			if (holdOnShoulder != null && holdOnShoulder.getAsBoolean()) builder.shouldHoldOnShoulder();
+			Builder builder = new Builder(item, category, movesetId, colliderId, weight);
 			
 			JsonElement criticalJson = json.get("critical");
 			if (criticalJson != null) builder.setCritical(criticalJson.getAsFloat());
@@ -505,8 +506,8 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		public MeleeWeaponCap build()
 		{
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.movesetId, collider, this.damage.build(), this.auxEffects.build(),
-					this.critical, this.holdOnShoulder, this.weight,
+			return new MeleeWeaponCap(this.item, this.category, this.movesetId, collider, this.damage.build(), this.auxEffects.build(),
+					this.critical, this.weight,
 					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability,
 					this.statRequirements.build(), this.statScaling.build());
 		}

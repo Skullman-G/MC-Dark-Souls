@@ -1,9 +1,9 @@
 {
   "registry_name": "minecraft:golden_pickaxe",
+  "category": "hammer",
   "moveset": "darksouls:hammer",
   "collider": "darksouls:tool",
   "weight": 5.0,
-  "hold_on_shoulder": false,
   "stability": 0.4,
   "critical": 1.0,
   "damage": {
