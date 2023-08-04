@@ -107,17 +107,19 @@ public final class Animations
 
 	public static StaticAnimation BIPED_BLOCK_HORIZONTAL;
 	public static StaticAnimation BIPED_BLOCK_VERTICAL;
+	public static StaticAnimation BIPED_BLOCK_TH_SWORD;
 	
 	public static StaticAnimation BIPED_HIT_BLOCKED_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_RIGHT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_VERTICAL_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_VERTICAL_RIGHT;
+	public static StaticAnimation BIPED_HIT_BLOCKED_TH_SWORD;
 	
 	public static StaticAnimation BIPED_HIT_BLOCKED_FLY_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_FLY_RIGHT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT;
-	
+	public static StaticAnimation BIPED_HIT_BLOCKED_TH_SWORD_FLY;
 	
 	public static StaticAnimation BIPED_DISARM_SHIELD_LEFT;
 	public static StaticAnimation BIPED_DISARM_SHIELD_RIGHT;
@@ -470,6 +472,14 @@ public final class Animations
 				.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_vertical_mirror"), DarkSouls.rl("biped/combat/block_vertical"), true)
 				.build().register(builder);
 		
+		BIPED_BLOCK_TH_SWORD = new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_sword"), 0.1F, true, (models) -> models.ENTITY_BIPED)
+				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_sword"), false)
+				.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+				.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+				.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+				.build().register(builder);
+		
 		BIPED_HIT_BLOCKED_LEFT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
@@ -482,6 +492,8 @@ public final class Animations
 		BIPED_HIT_BLOCKED_VERTICAL_RIGHT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_vertical_right"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_vertical_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(ActionAnimationProperty.ALLOW_MIX_LAYERS, true).register(builder);
+		BIPED_HIT_BLOCKED_TH_SWORD = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_th_sword"), 0.05F,
+				DarkSouls.rl("biped/hit/blocked_th_sword"), (models) -> models.ENTITY_BIPED).register(builder);
 		
 		BIPED_HIT_BLOCKED_FLY_LEFT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_fly_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_fly_left"), (models) -> models.ENTITY_BIPED)
@@ -497,6 +509,10 @@ public final class Animations
 				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
 		BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_vertical_fly_right"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_vertical_fly_right"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+		BIPED_HIT_BLOCKED_TH_SWORD_FLY = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_th_sword_fly"), 0.05F,
+				DarkSouls.rl("biped/hit/blocked_th_sword_fly"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
 		

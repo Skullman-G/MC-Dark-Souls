@@ -30,6 +30,7 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
+			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
 			IShield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;

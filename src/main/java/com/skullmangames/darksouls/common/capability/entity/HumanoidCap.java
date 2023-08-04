@@ -140,16 +140,21 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		Entity attacker = dmgSource.getSource();
 		StunType stunType = dmgSource.getStunType();
+		boolean twoHanding = entityCap.isTwohanding();
 		boolean horizontalBlocking = entityCap.getShieldHoldType().isBlockingHorizontally();
 		if (attacker == null) return null;
 		else
 		{
 			float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
+			// Blocked
 			if (dmgSource.wasBlocked() && stunType != StunType.DISARMED)
 			{
 				if (stunType == StunType.FLY)
 				{
-					
+					if (twoHanding)
+					{
+						return Animations.BIPED_HIT_BLOCKED_TH_SWORD_FLY;
+					}
 					if (horizontalBlocking)
 					{
 						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
@@ -160,6 +165,10 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 				}
 				else
 				{
+					if (twoHanding)
+					{
+						return Animations.BIPED_HIT_BLOCKED_TH_SWORD;
+					}
 					if (horizontalBlocking)
 					{
 						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
@@ -170,6 +179,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 							? Animations.BIPED_HIT_BLOCKED_VERTICAL_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_LEFT;
 				}
 			}
+			// Hit
 			else
 			{
 				switch (stunType)

@@ -47,8 +47,8 @@ public class RenderShield extends RenderItemMirror
 		
 		this.backTransform = new PublicMatrix4f();
 		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.YN);
-		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.XP);
-		this.backTransform.translate(0.15F, 0.1F, -0.2F);
+		this.backTransform.rotate((float)Math.toRadians(70), Vector3f.XP);
+		this.backTransform.translate(0.15F, 0.1F, -0.3F);
 	}
 	
 	@Override
