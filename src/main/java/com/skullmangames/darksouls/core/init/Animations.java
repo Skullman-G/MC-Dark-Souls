@@ -221,6 +221,9 @@ public final class Animations
 	public static AttackAnimation SPEAR_HEAVY_ATTACK;
 	public static AttackAnimation SPEAR_LIGHT_ATTACK;
 	public static AttackAnimation SPEAR_LIGHT_BLOCKING_ATTACK;
+	public static AttackAnimation SPEAR_TH_LIGHT_ATTACK;
+	public static AttackAnimation SPEAR_TH_HEAVY_ATTACK;
+	public static AttackAnimation SPEAR_TH_DASH_ATTACK;
 
 	// Dagger
 	public static AttackAnimation DAGGER_HEAVY_ATTACK;
@@ -1164,7 +1167,7 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 55)
 				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
-		SPEAR_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("spear_light_attack"), AttackType.LIGHT, 0.15F, 0.0F, 0.65F, 0.8F, 1.5F, "Tool_R",
+		SPEAR_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("spear_light_attack"), AttackType.LIGHT, 0.15F, 0.0F, 0.32F, 0.6F, 1.5F, "Tool_R",
 				DarkSouls.rl("biped/combat/spear_light_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
@@ -1182,6 +1185,35 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
 				.addProperty(AttackProperty.STAMINA_USAGE, 25)
 				.addProperty(AttackProperty.POISE_DAMAGE, 20)
+				.register(builder);
+		SPEAR_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("spear_th_la"), AttackType.TWO_HANDED_LIGHT, 0.15F, 0.0F, 0.4F, 0.64F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/spear_th_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
+				.addProperty(AttackProperty.STAMINA_USAGE, 27)
+				.addProperty(AttackProperty.POISE_DAMAGE, 23)
+				.register(builder);
+		SPEAR_TH_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("spear_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.35F, 0.0F, 0.6F, 0.8F, 1.6F, "Tool_R",
+				DarkSouls.rl("biped/combat/spear_th_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+				.addProperty(AttackProperty.STAMINA_USAGE, 61)
+				.addProperty(AttackProperty.POISE_DAMAGE, 26)
+				.register(builder);
+		SPEAR_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("spear_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.36F, 0.55F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/spear_th_da"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.SPEAR_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
+				.addProperty(AttackProperty.STAMINA_USAGE, 35)
+				.addProperty(AttackProperty.POISE_DAMAGE, 24)
 				.register(builder);
 
 		// Dagger
