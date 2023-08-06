@@ -202,11 +202,13 @@ public class ModItems
 	public static final RegistryObject<Item> BLACK_KNIGHT_LEGGINGS = ITEMS.register("black_knight_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "black_knight_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> BALDER_HELM = ITEMS.register("balder_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "balder_helm", new Item.Properties()
+	public static final RegistryObject<Item> BALDER_HELM = ITEMS.register("balder_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "balder_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	public static final RegistryObject<Item> BALDER_ARMOR = ITEMS.register("balder_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "balder_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
-	public static final RegistryObject<Item> BALDER_BOOTS = ITEMS.register("balder_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "balder_boots", new Item.Properties()
+	public static final RegistryObject<Item> BALDER_LEGGINGS = ITEMS.register("balder_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "balder_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BALDER_BOOTS = ITEMS.register("balder_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "balder_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	
