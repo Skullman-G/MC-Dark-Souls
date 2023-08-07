@@ -11,8 +11,6 @@ import com.google.common.base.Function;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat.AttributeList;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -29,14 +27,15 @@ public class Stats
 	public static final Stat VIGOR = register(new Stat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", AttributeList.of(() -> Attributes.MAX_HEALTH))
 	{
 		@Override
-		public void onChange(Player player, int value)
+		public void onChange(PlayerCap<?> playerCap, int value)
 		{
-			super.onChange(player, value);
+			super.onChange(playerCap, value);
+			Player player = playerCap.getOriginalEntity();
 			if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
 		}
 
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			double modValue = 0D;
 			for (int i = 1; i <= 16 && i <= value; i++)
@@ -58,15 +57,14 @@ public class Stats
 	public static final Stat ENDURANCE = register(new Stat("endurance", "8bbd5d2d-0188-41be-a673-cfca6cd8da8c", AttributeList.of(ModAttributes.MAX_STAMINA))
 	{
 		@Override
-		public void onChange(Player player, int value)
+		public void onChange(PlayerCap<?> playerCap, int value)
 		{
-			super.onChange(player, value);
-			PlayerCap<?> cap = (PlayerCap<?>)player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (cap != null && cap.getStamina() > cap.getMaxStamina()) cap.setStamina(cap.getMaxStamina());
+			super.onChange(playerCap, value);
+			if (playerCap.getStamina() > playerCap.getMaxStamina()) playerCap.setStamina(playerCap.getMaxStamina());
 		}
 
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			return Math.min(value * (80D / 40D), 80D);
 		}
@@ -74,7 +72,7 @@ public class Stats
 	public static final Stat VITALITY = register(new Stat("vitality", "1858d77f-b8fd-46a7-a9e1-373e5a2dac0a", AttributeList.of(ModAttributes.MAX_EQUIP_LOAD))
 	{
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			return -0.019D * (value - STANDARD_LEVEL) * (value - MAX_LEVEL * 2 + STANDARD_LEVEL);
 		}
@@ -83,19 +81,15 @@ public class Stats
 			ModAttributes.MAX_FOCUS_POINTS, ModAttributes.ATTUNEMENT_SLOTS))
 	{
 		@Override
-		public void onChange(Player player, int value)
+		public void onChange(PlayerCap<?> playerCap, int value)
 		{
-			super.onChange(player, value);
-			PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-			if (playerCap != null)
-			{
-				playerCap.getAttunements().updateSize();
-				if (playerCap.getFP() > playerCap.getMaxFP()) playerCap.setFP(playerCap.getMaxFP());
-			}
+			super.onChange(playerCap, value);
+			playerCap.getAttunements().updateSize();
+			if (playerCap.getFP() > playerCap.getMaxFP()) playerCap.setFP(playerCap.getMaxFP());
 		}
 
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			if (attribute == ModAttributes.ATTUNEMENT_SLOTS.get())
 			{
@@ -109,15 +103,17 @@ public class Stats
 			ModAttributes.FIRE_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
+			if (playerCap.isTwohanding()) value = (int)(value * 1.5F);
+			
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
-				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
+				return this.scalingPercentage(playerCap, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.55D, 0.65D, 0.75D);
+				return this.scalingPercentage(playerCap, value, 0.55D, 0.65D, 0.75D);
 			}
 			if (attribute == ModAttributes.STANDARD_PROTECTION.get() || attribute == ModAttributes.STRIKE_PROTECTION.get()
 					|| attribute == ModAttributes.SLASH_PROTECTION.get() || attribute == ModAttributes.THRUST_PROTECTION.get())
@@ -132,39 +128,39 @@ public class Stats
 			{
 				return 0.4D * value;
 			}
-			return super.getModifyValue(player, attribute, value);
+			return super.getModifyValue(playerCap, attribute, value);
 		}
 	});
 	public static final Stat DEXTERITY = register(new ScalingStat("dexterity", "2e316050-52aa-446f-8b05-0abefbbb6cb2", AttributeList.of(() -> Attributes.ATTACK_DAMAGE,
 			ModAttributes.FIRE_DAMAGE, ModAttributes.LIGHTNING_DAMAGE))
 	{
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			if (attribute == Attributes.ATTACK_DAMAGE)
 			{
-				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
+				return this.scalingPercentage(playerCap, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.FIRE_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.05D, 0.15D, 0.25D);
+				return this.scalingPercentage(playerCap, value, 0.05D, 0.15D, 0.25D);
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.25D, 0.35D, 0.45D);
+				return this.scalingPercentage(playerCap, value, 0.25D, 0.35D, 0.45D);
 			}
-			return super.getModifyValue(player, attribute, value);
+			return super.getModifyValue(playerCap, attribute, value);
 		}
 	});
 	public static final Stat INTELLIGENCE = register(new ScalingStat("intelligence", "39d35885-78e0-4be3-b72f-7c3b4876ad8d", AttributeList.of(
 			ModAttributes.MAGIC_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			if (attribute == ModAttributes.MAGIC_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
+				return this.scalingPercentage(playerCap, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.MAGIC_PROTECTION.get())
 			{
@@ -174,22 +170,22 @@ public class Stats
 			{
 				return 0.4D * value;
 			}
-			return super.getModifyValue(player, attribute, value);
+			return super.getModifyValue(playerCap, attribute, value);
 		}
 	});
 	public static final Stat FAITH = register(new ScalingStat("faith", "2939c660-37cc-4e0e-9cca-2b08d011f472", AttributeList.of(
 			ModAttributes.HOLY_DAMAGE, ModAttributes.LIGHTNING_DAMAGE).addAll(ModAttributes.protectionAttributes()))
 	{
 		@Override
-		public double getModifyValue(Player player, Attribute attribute, int value)
+		public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 		{
 			if (attribute == ModAttributes.HOLY_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.75D, 0.85D, 1.00D);
+				return this.scalingPercentage(playerCap, value, 0.75D, 0.85D, 1.00D);
 			}
 			if (attribute == ModAttributes.LIGHTNING_DAMAGE.get())
 			{
-				return this.scalingPercentage(player, value, 0.25D, 0.35D, 0.45D);
+				return this.scalingPercentage(playerCap, value, 0.25D, 0.35D, 0.45D);
 			}
 			if (attribute == ModAttributes.HOLY_PROTECTION.get())
 			{
@@ -199,7 +195,7 @@ public class Stats
 			{
 				return 0.4D * value;
 			}
-			return super.getModifyValue(player, attribute, value);
+			return super.getModifyValue(playerCap, attribute, value);
 		}
 	});
 	
@@ -214,12 +210,12 @@ public class Stats
 			STRENGTH, DEXTERITY, INTELLIGENCE, FAITH
 	};
 	
-	public static double getDamageMultiplier(Player player, Attribute attribute, Function<Stat, Integer> value)
+	public static double getDamageMultiplier(PlayerCap<?> playerCap, Attribute attribute, Function<Stat, Integer> value)
 	{
 		double mul = 1D;
 		for (Stat stat : getForAttribute(attribute))
 		{
-			mul += stat.getModifyValue(player, attribute, value.apply(stat));
+			mul += stat.getModifyValue(playerCap, attribute, value.apply(stat));
 		}
 		return mul;
 	}
@@ -235,21 +231,17 @@ public class Stats
 		return list.toArray(array);
 	}
 	
-	public static void changeWeaponScalingAttributes(Player player)
+	public static void changeWeaponScalingAttributes(PlayerCap<?> playerCap)
 	{
-		PlayerCap<?> playerCap = (PlayerCap<?>) player.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (playerCap != null)
+		List<Supplier<Attribute>> dmgAttributes = ModAttributes.damageAttributes();
+		for (int i = 0; i < dmgAttributes.size(); i++)
 		{
-			List<Supplier<Attribute>> dmgAttributes = ModAttributes.damageAttributes();
-			for (int i = 0; i < dmgAttributes.size(); i++)
-			{
-				Attribute attribute = dmgAttributes.get(i).get();
-				UUID uuid = ModAttributes.WEAPON_SCALING_MODIFIER_UUIDS[i];
-				double mul = Stats.getDamageMultiplier(playerCap.getOriginalEntity(), attribute, (stat) -> playerCap.getStatValue(stat));
-				AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute);
-				if (instance.getModifier(uuid) != null) instance.removeModifier(uuid);
-				instance.addTransientModifier(new AttributeModifier(uuid, "weapon scaling", mul, Operation.MULTIPLY_TOTAL));
-			}
+			Attribute attribute = dmgAttributes.get(i).get();
+			UUID uuid = ModAttributes.WEAPON_SCALING_MODIFIER_UUIDS[i];
+			double mul = Stats.getDamageMultiplier(playerCap, attribute, (stat) -> playerCap.getStatValue(stat));
+			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute);
+			if (instance.getModifier(uuid) != null) instance.removeModifier(uuid);
+			instance.addTransientModifier(new AttributeModifier(uuid, "weapon scaling", mul, Operation.MULTIPLY_TOTAL));
 		}
 	}
 	

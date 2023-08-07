@@ -83,7 +83,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	public void onHeld(PlayerCap<?> playerCap)
 	{
 		super.onHeld(playerCap);
-		Stats.changeWeaponScalingAttributes(playerCap.getOriginalEntity());
+		Stats.changeWeaponScalingAttributes(playerCap);
 	}
 	
 	@Override
@@ -122,7 +122,9 @@ public abstract class WeaponCap extends AttributeItemCap
 
 	public boolean meetsRequirement(Stat stat, PlayerCap<?> playerCap)
 	{
-		return this.statRequirements.getOrDefault(stat, 0) <= playerCap.getStatValue(stat);
+		int statValue = stat == Stats.STRENGTH && playerCap.isTwohanding() ? (int)(playerCap.getStatValue(stat) * 1.5F)
+				: playerCap.getStatValue(stat);
+		return this.statRequirements.getOrDefault(stat, 0) <= statValue;
 	}
 	
 	public int getDamage(CoreDamageType type)

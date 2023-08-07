@@ -352,7 +352,7 @@ public class GameOverlayManager
 		int y = dsLayout ? 18 : height - 49;
 		if (!dsLayout) gui.right_height += 10;
 		int length = dsLayout ?
-				(int)(player.getMaxFP() / (player.getMaxFP() + Stats.ATTUNEMENT.getModifyValue(getCameraPlayer(), ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL)) * 150)
+				(int)(player.getMaxFP() / (player.getMaxFP() + Stats.ATTUNEMENT.getModifyValue(player, ModAttributes.MAX_FOCUS_POINTS.get(), Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
@@ -533,18 +533,20 @@ public class GameOverlayManager
 	
 	private void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
+		LocalPlayerCap playerCap = getCameraPlayerCap();
+		LocalPlayer player = playerCap.getOriginalEntity();
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();
 		int x = dsLayout ? 10 : width / 2 - 96;
 		int y = dsLayout ? 10 : height - 39;
 		if (!dsLayout) gui.left_height += 10;
 		int length = dsLayout ?
-				(int)(getCameraPlayer().getMaxHealth() / (getCameraPlayer().getMaxHealth() + Stats.VIGOR.getModifyValue(getCameraPlayer(), Attributes.MAX_HEALTH, Stats.MAX_LEVEL)) * 150)
+				(int)(player.getMaxHealth() / (player.getMaxHealth() + Stats.VIGOR.getModifyValue(playerCap, Attributes.MAX_HEALTH, Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);
 		drawBar(poseStack, x, y, 0, 0, 256, 7, length, length); // Black
-		int healthpercentage = (int)(getCameraPlayer().getHealth() / getCameraPlayer().getMaxHealth() * length);
+		int healthpercentage = (int)(player.getHealth() / player.getMaxHealth() * length);
 		
 		// Damage Animation
 		if (lastHealth > healthpercentage)
@@ -614,7 +616,7 @@ public class GameOverlayManager
 		int y = dsLayout ? 26 : height - 39;
 		if (!dsLayout) gui.right_height += 10;
 		int length = dsLayout ?
-				(int)(player.getMaxStamina() / (player.getMaxStamina() + Stats.ENDURANCE.getModifyValue(getCameraPlayer(), ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL)) * 150)
+				(int)(player.getMaxStamina() / (player.getMaxStamina() + Stats.ENDURANCE.getModifyValue(player, ModAttributes.MAX_STAMINA.get(), Stats.MAX_LEVEL)) * 150)
 				: 88;
 		
 		RenderSystem.setShaderTexture(0, LOCATION);

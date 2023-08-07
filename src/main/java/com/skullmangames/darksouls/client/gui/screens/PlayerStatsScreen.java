@@ -84,7 +84,7 @@ public class PlayerStatsScreen extends Screen
 		ImmutableMap.Builder<Attribute, Double> damageModBuilder = ImmutableMap.builder();
 		for (Supplier<Attribute> attribute : ModAttributes.damageAttributes())
 		{
-			damageModBuilder.put(attribute.get(), Stats.getDamageMultiplier(this.player, attribute.get(), (stat) -> this.displayedStats.get(stat)));
+			damageModBuilder.put(attribute.get(), Stats.getDamageMultiplier(this.playerCap, attribute.get(), (stat) -> this.displayedStats.get(stat)));
 		}
 		this.damageMod = damageModBuilder.build();
 		
@@ -94,7 +94,7 @@ public class PlayerStatsScreen extends Screen
 			double mod = 0D;
 			for (Stat stat : Stats.getForAttribute(attribute.get()))
 			{
-				mod += stat.getModifyValue(this.player, attribute.get(), this.displayedStats.get(stat));
+				mod += stat.getModifyValue(this.playerCap, attribute.get(), this.displayedStats.get(stat));
 			}
 			defModBuilder.put(attribute.get(), mod);
 		}
@@ -158,24 +158,24 @@ public class PlayerStatsScreen extends Screen
 		
 		this.font.draw(poseStack, "Base Power", secondX, y + 36, this.color);
 		
-		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.player, null, this.displayedStats.get(Stats.VIGOR));
+		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VIGOR));
 		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
 		
-		int maxfp = this.maxFPBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.MAX_FOCUS_POINTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
+		int maxfp = this.maxFPBase + (int)Stats.ATTUNEMENT.getModifyValue(this.playerCap, ModAttributes.MAX_FOCUS_POINTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxfpcolor = (int)this.player.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get()) != maxfp ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Focus Points: " + maxfp, secondX, y + 64, maxfpcolor);
 
-		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.player, null, this.displayedStats.get(Stats.ENDURANCE));
+		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.ENDURANCE));
 		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Stamina: " + maxstamina, secondX, y + 76, maxstaminacolor);
 		
-		float maxEquipLoad = MathUtils.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.player, null, this.displayedStats.get(Stats.VITALITY)), 1);
+		float maxEquipLoad = MathUtils.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VITALITY)), 1);
 		int maxEquipLoadColor = MathUtils.round((float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()), 1) != maxEquipLoad ? 0x8cc9ff : this.color;
 		double equipLoad = this.player.getAttributeValue(ModAttributes.EQUIP_LOAD.get());
 		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 88, maxEquipLoadColor);
 		
-		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.player, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
+		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.playerCap, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Attunement Slots: " + maxAttunementSlots, secondX, y + 100, maxAttunementSlotsColor);
 		
@@ -184,7 +184,7 @@ public class PlayerStatsScreen extends Screen
 		Map<Attribute, String> damageValues = new HashMap<>();
 		this.damageMod.forEach((attribute, mod) ->
 		{
-			double displayMod = Stats.getDamageMultiplier(this.player, attribute, (stat) -> this.displayedStats.get(stat));
+			double displayMod = Stats.getDamageMultiplier(this.playerCap, attribute, (stat) -> this.displayedStats.get(stat));
 			int value = (int)Math.round(this.player.getAttributeValue(attribute) / mod
 					* displayMod);
 			
@@ -211,7 +211,7 @@ public class PlayerStatsScreen extends Screen
 			double mod2 = 0D;
 			for (Stat stat : Stats.getForAttribute(attribute))
 			{
-				mod2 += stat.getModifyValue(this.player, attribute, this.displayedStats.get(stat));
+				mod2 += stat.getModifyValue(this.playerCap, attribute, this.displayedStats.get(stat));
 			}
 			
 			int value = (int)Math.round(this.player.getAttributeValue(attribute) - mod

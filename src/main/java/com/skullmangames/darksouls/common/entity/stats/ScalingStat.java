@@ -3,12 +3,11 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 
 public abstract class ScalingStat extends Stat
 {
@@ -17,9 +16,9 @@ public abstract class ScalingStat extends Stat
 		super(name, uuid, attributes);
 	}
 	
-	protected double scalingPercentage(Player player, int value, double softCap1, double softCap2, double hardCap)
+	protected double scalingPercentage(PlayerCap<?> playerCap, int value, double softCap1, double softCap2, double hardCap)
 	{
-		WeaponCap weapon = ModCapabilities.getWeaponCap(player.getMainHandItem());
+		WeaponCap weapon = playerCap.getHeldWeaponCap(InteractionHand.MAIN_HAND);
 		if (weapon == null) return 0D;
 		double percentage = 0D;
 		if (value <= 40) percentage = value * (softCap1 / 40D);
@@ -29,13 +28,13 @@ public abstract class ScalingStat extends Stat
 	}
 	
 	@Override
-	protected void modifyAttribute(Player player, Attribute attribute, int value)
+	protected void modifyAttribute(PlayerCap<?> playerCap, Attribute attribute, int value)
 	{
 		List<Supplier<Attribute>> dmgAttributes = ModAttributes.damageAttributes();
 		for (Supplier<Attribute> s : dmgAttributes)
 		{
 			if (s.get() == attribute) return;
 		}
-		super.modifyAttribute(player, attribute, value);
+		super.modifyAttribute(playerCap, attribute, value);
 	}
 }

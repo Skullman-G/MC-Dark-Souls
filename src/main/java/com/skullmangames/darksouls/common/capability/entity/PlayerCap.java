@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.StatHolder;
+import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.inventory.SpellInventory;
 
 import com.skullmangames.darksouls.DarkSouls;
@@ -55,7 +56,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void onEntityConstructed(T entityIn)
 	{
 		super.onEntityConstructed(entityIn);
-		this.stats = new StatHolder(this.orgEntity);
+		this.stats = new StatHolder(this);
 		this.attunements = new SpellInventory(entityIn);
 	}
 	
@@ -139,6 +140,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void setTwoHanding(boolean value)
 	{
 		this.twoHanding = value;
+		Stats.changeWeaponScalingAttributes(this);
 	}
 	
 	public void addTeleport(BonfireBlockEntity bonfire) {}

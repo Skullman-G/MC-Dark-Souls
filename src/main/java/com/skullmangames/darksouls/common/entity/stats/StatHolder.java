@@ -3,19 +3,19 @@ package com.skullmangames.darksouls.common.entity.stats;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 
 public class StatHolder
 {
 	private final Map<String, Integer> statValues = new HashMap<>();
-	private final Player player;
+	private final PlayerCap<?> playerCap;
 	
-	public StatHolder(Player player)
+	public StatHolder(PlayerCap<?> playerCap)
 	{
-		this.player = player;
+		this.playerCap = playerCap;
 		for (Stat stat : Stats.STATS.values()) this.statValues.putIfAbsent(stat.getName(), Stats.STANDARD_LEVEL);
 	}
 	
@@ -57,9 +57,9 @@ public class StatHolder
 	{
 		this.statValues.forEach((stat, value) ->
 		{
-			Stats.STATS.get(stat).onChange(this.player, value);
+			Stats.STATS.get(stat).onChange(this.playerCap, value);
 		});
-		Stats.changeWeaponScalingAttributes(this.player);
+		Stats.changeWeaponScalingAttributes(this.playerCap);
 	}
 	
 	public int getLevel()

@@ -8,11 +8,12 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
+
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.world.entity.player.Player;
 
 public abstract class Stat
 {
@@ -44,12 +45,12 @@ public abstract class Stat
 		return this.name;
 	}
 	
-	public void onChange(Player player, int value)
+	public void onChange(PlayerCap<?> playerCap, int value)
 	{
-		this.modifyAttributes(player, value);
+		this.modifyAttributes(playerCap, value);
 	}
 	
-	public double getModifyValue(Player player, Attribute attribute, int value)
+	public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 	{
 		return 0D;
 	}
@@ -59,21 +60,21 @@ public abstract class Stat
 		return Operation.ADDITION;
 	}
 	
-	protected void modifyAttributes(Player player, int value)
+	protected void modifyAttributes(PlayerCap<?> playerCap, int value)
 	{
 		for (Attribute attribute : this.attributes)
 		{
-			this.modifyAttribute(player, attribute, value);
+			this.modifyAttribute(playerCap, attribute, value);
 		}
 	}
 	
-	protected void modifyAttribute(Player player, Attribute attribute, int value)
+	protected void modifyAttribute(PlayerCap<?> playerCap, Attribute attribute, int value)
 	{
-		AttributeInstance instance = player.getAttribute(attribute);
+		AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute);
 		instance.removeModifier(this.getModifierUUID());
 		instance.addPermanentModifier(
 				new AttributeModifier(this.getModifierUUID(), this.toString(),
-						this.getModifyValue(player, attribute, value), this.getOperation(attribute)));
+						this.getModifyValue(playerCap, attribute, value), this.getOperation(attribute)));
 	}
 	
 	public UUID getModifierUUID()
