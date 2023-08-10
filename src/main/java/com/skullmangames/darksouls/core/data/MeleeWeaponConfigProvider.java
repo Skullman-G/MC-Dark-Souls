@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.data;
+package com.skullmangames.darksouls.core.data;
 
 import java.io.IOException;
 import java.nio.file.Path;

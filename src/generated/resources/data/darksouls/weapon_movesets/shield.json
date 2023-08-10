@@ -3,7 +3,20 @@
     "light": {
       "repeating": true,
       "animations": [
-        "darksouls:shield_attack"
+        "darksouls:shield_la"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_ha_1",
+        "darksouls:shield_ha_2"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_da"
       ]
     }
   }

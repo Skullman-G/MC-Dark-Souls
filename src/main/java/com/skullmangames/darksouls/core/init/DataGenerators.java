@@ -1,8 +1,8 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.data.MeleeWeaponConfigProvider;
-import com.skullmangames.darksouls.common.data.WeaponMovesetProvider;
+import com.skullmangames.darksouls.core.data.MeleeWeaponConfigProvider;
+import com.skullmangames.darksouls.core.data.WeaponMovesetProvider;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.common.data;
+package com.skullmangames.darksouls.core.data;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -101,7 +101,9 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_HEAVY, false, Animations.ULTRA_GREATSWORD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.ULTRA_GREATSWORD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.SHIELD)
-			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK),
+			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK)
+			.putMove(AttackType.HEAVY, true, Animations.SHIELD_HEAVY_ATTACK)
+			.putMove(AttackType.DASH, true, Animations.SHIELD_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.SPEAR)
 			.putMove(AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK)
