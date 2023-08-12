@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import net.minecraft.sounds.SoundEvent;
 
-public interface IShield
+public interface Shield
 {
 	float getDefense(CoreDamageType damageType);
 	ShieldType getShieldType();

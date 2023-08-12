@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
@@ -292,7 +292,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
 
-		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		Shield shield = (Shield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		

@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.Shield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.WeaponMaterial;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;

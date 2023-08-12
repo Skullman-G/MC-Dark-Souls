@@ -4,8 +4,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.capability.item.IShield;
-import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.Shield;
+import com.skullmangames.darksouls.common.capability.item.Shield.ShieldType;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
@@ -284,7 +284,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
-			IShield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
+			Shield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));

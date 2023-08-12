@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.List;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
@@ -214,7 +214,7 @@ public class AttackGoal extends Goal
     	this.attacker.getNavigation().moveTo(this.path, 1D);
 		this.attacker.setAggressive(true);
 		
-		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
+		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof Shield && this.mobCap.canBlock())
 			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
     }
     
@@ -234,7 +234,7 @@ public class AttackGoal extends Goal
     
     private void startStrafing()
     {
-    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield && this.mobCap.canBlock())
+    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof Shield && this.mobCap.canBlock())
 			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
     	
     	this.strafingDir = this.strafeLength == 0 && this.getTargetRange(this.attacker.getTarget()) < this.minDist ? BACK : this.strafingDir == RIGHT ? LEFT : RIGHT;

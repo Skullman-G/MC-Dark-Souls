@@ -18,6 +18,25 @@
       "animations": [
         "darksouls:shield_da"
       ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_th_la"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_th_ha_1",
+        "darksouls:shield_th_ha_2"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_th_da"
+      ]
     }
   }
 }

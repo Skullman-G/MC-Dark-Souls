@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -452,14 +452,14 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		ItemStack stack = this.orgEntity.getUseItem();
 		Item item = stack.getItem();
 		ItemCapability shield = ModCapabilities.getItemCapability(stack);
-		return item.getUseAnimation(stack) == UseAnim.BLOCK || shield instanceof IShield;
+		return item.getUseAnimation(stack) == UseAnim.BLOCK || shield instanceof Shield;
 	}
 
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		if (!this.isBlocking()) return false;
 
-		IShield shield = this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		Shield shield = this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 		if (attacker == null) return false;
 		

@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.EnumSet;
 
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.world.InteractionHand;
@@ -60,7 +60,7 @@ public class ChasingGoal extends Goal
 		this.attacker.getNavigation().moveTo(this.path, 1D);
 		this.attacker.setAggressive(true);
 		
-		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof IShield)
+		if (this.defensive && ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof Shield)
 			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
 	}
 

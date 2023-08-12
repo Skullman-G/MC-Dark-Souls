@@ -2,10 +2,10 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.common.capability.item.IShield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.Shield.ShieldType;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
@@ -31,7 +31,7 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
-			IShield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
+			Shield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));

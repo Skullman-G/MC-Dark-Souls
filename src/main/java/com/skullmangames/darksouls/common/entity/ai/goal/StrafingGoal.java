@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.EnumSet;
 
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 
 import net.minecraft.world.InteractionHand;
@@ -44,7 +44,7 @@ public class StrafingGoal extends Goal
 	@Override
 	public void start()
 	{
-		if (ModCapabilities.getItemCapability(this.mob.getOffhandItem()) instanceof IShield)
+		if (ModCapabilities.getItemCapability(this.mob.getOffhandItem()) instanceof Shield)
 			this.mob.startUsingItem(InteractionHand.OFF_HAND);
 		
 		this.time = this.defaultTime;

@@ -42,7 +42,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.capability.item.IShield.Deflection;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 
@@ -71,6 +71,8 @@ public final class Animations
 	public static StaticAnimation BIPED_IDLE_TH_BIG_WEAPON;
 	
 	public static StaticAnimation BIPED_IDLE_TH_SPEAR;
+	
+	public static StaticAnimation BIPED_IDLE_TH_SHIELD;
 	
 	public static StaticAnimation BIPED_SWIM;
 	public static StaticAnimation BIPED_FLOAT;
@@ -264,6 +266,9 @@ public final class Animations
 	public static AttackAnimation SHIELD_LIGHT_ATTACK;
 	public static AttackAnimation[] SHIELD_HEAVY_ATTACK;
 	public static AttackAnimation SHIELD_DASH_ATTACK;
+	public static AttackAnimation SHIELD_TH_LIGHT_ATTACK;
+	public static AttackAnimation[] SHIELD_TH_HEAVY_ATTACK;
+	public static AttackAnimation SHIELD_TH_DASH_ATTACK;
 
 	// Straight Sword
 	public static AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK;
@@ -372,6 +377,11 @@ public final class Animations
 		
 		BIPED_IDLE_TH_SPEAR = new StaticAnimation(DarkSouls.rl("biped_idle_th_spear"), 0.1F, true,
 				DarkSouls.rl("biped/living/idle_th_spear"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
+				.register(builder);
+		
+		BIPED_IDLE_TH_SHIELD = new StaticAnimation(DarkSouls.rl("biped_idle_th_shield"), 0.1F, true,
+				DarkSouls.rl("biped/living/idle_th_shield"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
 				.register(builder);
 		
@@ -1608,11 +1618,50 @@ public final class Animations
 		SHIELD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("shield_da"), AttackType.DASH, 0.05F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/shield_da"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
-				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 49)
 				.addProperty(AttackProperty.STAMINA_USAGE, 25)
 				.addProperty(AttackProperty.POISE_DAMAGE, 27)
+				.register(builder);
+		SHIELD_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("shield_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.12F, 0.32F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/shield_th_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 48)
+				.addProperty(AttackProperty.STAMINA_USAGE, 26)
+				.addProperty(AttackProperty.POISE_DAMAGE, 28)
+				.register(builder);
+		SHIELD_TH_HEAVY_ATTACK = new AttackAnimation[]
+				{
+						new AttackAnimation(DarkSouls.rl("shield_th_ha_1"), AttackType.TWO_HANDED_HEAVY, 0.2F, 0.0F, 0.28F, 0.48F, 1.2F, "Tool_R",
+								DarkSouls.rl("biped/combat/shield_th_ha_1"), (models) -> models.ENTITY_BIPED)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
+						.addProperty(AttackProperty.STAMINA_USAGE, 33)
+						.addProperty(AttackProperty.POISE_DAMAGE, 35)
+						.register(builder),
+						new AttackAnimation(DarkSouls.rl("shield_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.2F, 0.0F, 0.12F, 0.32F, 1.2F, "Tool_R",
+								DarkSouls.rl("biped/combat/shield_th_ha_2"), (models) -> models.ENTITY_BIPED)
+						.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+						.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+						.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
+						.addProperty(AttackProperty.STAMINA_USAGE, 33)
+						.addProperty(AttackProperty.POISE_DAMAGE, 35)
+						.register(builder),
+				};
+		SHIELD_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("shield_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.12F, 0.32F, 1.4F, "Tool_R",
+				DarkSouls.rl("biped/combat/shield_th_da"), (models) -> models.ENTITY_BIPED)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.SWING_SOUND, ModSoundEvents.FIST_SWING)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 52)
+				.addProperty(AttackProperty.STAMINA_USAGE, 29)
+				.addProperty(AttackProperty.POISE_DAMAGE, 33)
 				.register(builder);
 		
 		// Straight Sword

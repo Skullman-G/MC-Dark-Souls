@@ -47,7 +47,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
+public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 {
 	private final ResourceLocation movesetId;
 	private WeaponMoveset moveset;
@@ -73,6 +73,12 @@ public class MeleeWeaponCap extends WeaponCap implements IShield, ReloadableCap
 		this.defense = defense;
 		this.stability = stability;
 		
+		if (this.getShieldType() != ShieldType.NONE)
+		{
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SHIELD);
+		}
 		if (this.getWeaponCategory().isHeavy())
 		{
 			this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_HOLDING_BIG_WEAPON);

@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.common.capability.item.IShield;
+import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
@@ -86,7 +86,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		float dir = damageSource.getAttackAngle(this.orgEntity);
 		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
 
-		IShield shield = (IShield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		Shield shield = (Shield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		
