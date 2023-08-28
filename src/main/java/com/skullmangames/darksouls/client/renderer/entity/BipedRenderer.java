@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +36,7 @@ public abstract class BipedRenderer<E extends LivingEntity, T extends LivingCap<
 		}
 		if (entityIn.isBaby())
 		{
-			this.transformJoint(9, armature, new PublicMatrix4f().scale(new Vector3f(1.25F, 1.25F, 1.25F)));
+			this.transformJoint(9, armature, new ModMatrix4f().scale(new Vector3f(1.25F, 1.25F, 1.25F)));
 		}
 		
 		this.transformJoint(9, armature, entityCap.getHeadMatrix(partialTicks));

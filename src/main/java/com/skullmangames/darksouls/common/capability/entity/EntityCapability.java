@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -64,13 +64,13 @@ public abstract class EntityCapability<T extends Entity>
 		return this.orgEntity.level.isClientSide;
 	}
 	
-	public PublicMatrix4f getMatrix(float partialTicks)
+	public ModMatrix4f getMatrix(float partialTicks)
 	{
-		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, orgEntity.xRotO,
+		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, orgEntity.xRotO,
 				orgEntity.xRot, orgEntity.yRotO, orgEntity.yRot, partialTicks, 1, 1, 1);
 	}
 
-	public abstract PublicMatrix4f getModelMatrix(float partialTicks);
+	public abstract ModMatrix4f getModelMatrix(float partialTicks);
 	
 	public boolean isInvincible()
 	{

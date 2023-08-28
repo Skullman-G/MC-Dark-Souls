@@ -1,10 +1,7 @@
 package com.skullmangames.darksouls.core.util.math;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -40,54 +37,6 @@ public class MathUtils
 	{
 		int multiply = (int)Math.pow(10, decimalAmount);
 		return (float) Math.round(value * multiply) / multiply;
-	}
-	
-	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
-	{
-		mStack.mulPose(getQuaternionFromMatrix(mat));
-	}
-	
-	private static Quaternion getQuaternionFromMatrix(PublicMatrix4f mat)
-	{
-		float w, x, y, z;
-		float diagonal = mat.m00 + mat.m11 + mat.m22;
-
-		if (diagonal > 0)
-		{
-			float w4 = (float) (Math.sqrt(diagonal + 1.0F) * 2.0F);
-			w = w4 * 0.25F;
-			x = (mat.m21 - mat.m12) / w4;
-			y = (mat.m02 - mat.m20) / w4;
-			z = (mat.m10 - mat.m01) / w4;
-		}
-		else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
-		{
-			float x4 = (float) (Math.sqrt(1.0F + mat.m00 - mat.m11 - mat.m22) * 2F);
-			w = (mat.m21 - mat.m12) / x4;
-			x = x4 * 0.25F;
-			y = (mat.m01 + mat.m10) / x4;
-			z = (mat.m02 + mat.m20) / x4;
-		}
-		else if (mat.m11 > mat.m22)
-		{
-			float y4 = (float) (Math.sqrt(1.0F + mat.m11 - mat.m00 - mat.m22) * 2F);
-			w = (mat.m02 - mat.m20) / y4;
-			x = (mat.m01 + mat.m10) / y4;
-			y = y4 * 0.25F;
-			z = (mat.m12 + mat.m21) / y4;
-		}
-		else
-		{
-			float z4 = (float) (Math.sqrt(1.0F + mat.m22 - mat.m00 - mat.m11) * 2F);
-			w = (mat.m10 - mat.m01) / z4;
-			x = (mat.m02 + mat.m20) / z4;
-			y = (mat.m12 + mat.m21) / z4;
-			z = z4 * 0.25F;
-		}
-		
-		Quaternion quat = new Quaternion(x, y, z, w);
-		quat.normalize();
-		return quat;
 	}
 	
 	public static Vec3 projectVector(Vec3 from, Vec3 to)
@@ -136,35 +85,12 @@ public class MathUtils
 		return dest;
 	}
 
-	public static void translateStack(PoseStack mStack, PublicMatrix4f mat)
+	public static float interpolateRotation(float startRot, float endRot, float percentage)
 	{
-		Vector3f vector = getTranslationFromMatrix(mat);
-		mStack.translate(vector.x(), vector.y(), vector.z());
-	}
-
-	private static Vector3f getTranslationFromMatrix(PublicMatrix4f mat)
-	{
-		return new Vector3f(mat.m30, mat.m31, mat.m32);
-	}
-
-	public static float interpolateRotation(float par1, float par2, float par3)
-	{
-		float f = 0;
-		for (f = par2 - par1; f < -180.0F; f += 360.0F)
-			;
-		while (f >= 180.0F)
-			f -= 360.0F;
-		return par1 + par3 * f;
-	}
-
-	public static float getInterpolatedRotation(float par1, float par2, float par3)
-	{
-		float f = 0;
-		for (f = par2 - par1; f < -180.0F; f += 360.0F)
-			;
-		while (f >= 180.0F)
-			f -= 360.0F;
-		return par3 * f;
+		float dist = endRot - startRot;
+		while (dist < -180.0F) dist += 360.0F;
+		while (dist >= 180.0F) dist -= 360.0F;
+		return startRot + dist * percentage;
 	}
 
 	public static int clamp(int value, int min, int max)

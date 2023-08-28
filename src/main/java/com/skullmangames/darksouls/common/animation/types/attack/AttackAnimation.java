@@ -133,7 +133,7 @@ public class AttackAnimation extends ActionAnimation
 
 			Collider collider = this.getCollider(entityCap, elapsedTime);
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-			Vec3 prevColPos = collider.getWorldCenter();
+			Vec3 prevColPos = collider.getMassCenter();
 			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, phase.getColliderJointName(), 1.0F);
 			
 			if (list.size() > 0)
@@ -203,7 +203,7 @@ public class AttackAnimation extends ActionAnimation
 		if (spawner != null)
 		{
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
-			if (elapsedTime >= phase.contactEnd && prevElapsedTime - ClientConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getWorldCenter());
+			if (elapsedTime >= phase.contactEnd && prevElapsedTime - ClientConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getMassCenter());
 		}
 		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
 		{
@@ -217,7 +217,7 @@ public class AttackAnimation extends ActionAnimation
 	{
 		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
-		this.getCollider(entityCap, elapsedTime).draw(poseStack, buffer, entityCap, this.getPathIndexByTime(elapsedTime), partialTicks);
+		this.getCollider(entityCap, elapsedTime).draw(entityCap, this.getPathIndexByTime(elapsedTime), partialTicks);
 	}
 	
 	@Override

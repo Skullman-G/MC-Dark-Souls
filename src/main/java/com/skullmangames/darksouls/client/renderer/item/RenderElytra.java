@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ElytraModel;
@@ -39,15 +39,15 @@ public class RenderElytra extends RenderItemBase
 		}
 		
 		LivingEntity entity = itemHolder.getOriginalEntity();
-		PublicMatrix4f modelMatrix = new PublicMatrix4f();
+		ModMatrix4f modelMatrix = new ModMatrix4f();
 		modelMatrix.scale(-0.9F, -0.9F, 0.9F);
 		modelMatrix.translate(0F, -0.5F, 0.125F);
-		PublicMatrix4f.mul(
+		ModMatrix4f.mul(
 				itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(8).getAnimatedTransform(),
 				modelMatrix, modelMatrix);
-		PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
-		MathUtils.translateStack(viewMatrixStack, modelMatrix);
-		PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
+		ModMatrix4f transpose = new ModMatrix4f().transpose(modelMatrix);
+		ModMatrix4f.translateStack(viewMatrixStack, modelMatrix);
+		ModMatrix4f.rotateStack(viewMatrixStack, transpose);
 
 		float f = MathUtils.interpolateRotation(entity.yBodyRotO, entity.yBodyRot, partialTicks);
 		float f1 = MathUtils.interpolateRotation(entity.yHeadRotO, entity.yHeadRot, partialTicks);

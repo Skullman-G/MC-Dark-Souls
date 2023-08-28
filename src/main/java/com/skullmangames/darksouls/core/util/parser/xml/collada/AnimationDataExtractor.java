@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.TransformSheet;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 
@@ -26,11 +26,11 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 
 public class AnimationDataExtractor
 {
-	private static final PublicMatrix4f CORRECTION = new PublicMatrix4f().rotate((float) Math.toRadians(-90),
+	private static final ModMatrix4f CORRECTION = new ModMatrix4f().rotate((float) Math.toRadians(-90),
 			new Vector3f(1, 0, 0));
 
 	private static TransformSheet getTransformSheet(String[] times, String[] trasnformMatrix,
-			PublicMatrix4f invLocalTransform, boolean correct)
+			ModMatrix4f invLocalTransform, boolean correct)
 	{
 		List<Keyframe> keyframeList = new ArrayList<Keyframe>();
 
@@ -50,16 +50,16 @@ public class AnimationDataExtractor
 			buffer.put(matrixValue);
 			buffer.flip();
 
-			PublicMatrix4f matrix = new PublicMatrix4f();
+			ModMatrix4f matrix = new ModMatrix4f();
 			matrix.load(buffer);
 			matrix.transpose();
 
 			if (correct)
 			{
-				PublicMatrix4f.mul(CORRECTION, matrix, matrix);
+				ModMatrix4f.mul(CORRECTION, matrix, matrix);
 			}
 
-			PublicMatrix4f.mul(invLocalTransform, matrix, matrix);
+			ModMatrix4f.mul(invLocalTransform, matrix, matrix);
 
 			JointTransform transform = new JointTransform(new Vector3f(matrix.m30, matrix.m31, matrix.m32),
 					matrix.toQuaternion(),
@@ -124,7 +124,7 @@ public class AnimationDataExtractor
 			}
 
 			TransformSheet sheet = getTransformSheet(timeValue, matrixArray,
-					PublicMatrix4f.invert(joint.getLocalTransform(), null), root);
+					ModMatrix4f.invert(joint.getLocalTransform(), null), root);
 			data.addSheet(sec, sheet);
 			data.setTotalTime(Float.parseFloat(timeValue[timeValue.length - 1]));
 			root = false;

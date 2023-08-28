@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -41,7 +41,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		this.slot = slotType;
 	}
 	
-	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, float a, ResourceLocation armorResource, PublicMatrix4f[] poses)
+	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, float a, ResourceLocation armorResource, ModMatrix4f[] poses)
 	{
 		RenderType rt = ModRenderTypes.getAnimatedArmorModel(armorResource);
 		VertexConsumer vertexConsumer = ModRenderTypes.getArmorVertexBuilder(buf, rt, hasEffect);
@@ -49,7 +49,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 	}
 	
 	@Override
-	public void renderLayer(T entityCap, PoseStack poseStack, MultiBufferSource buffer, int packedLightIn, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, PoseStack poseStack, MultiBufferSource buffer, int packedLightIn, ModMatrix4f[] poses, float partialTicks)
 	{
 		E entity = entityCap.getOriginalEntity();
 		ItemStack stack = entity.getItemBySlot(this.slot);

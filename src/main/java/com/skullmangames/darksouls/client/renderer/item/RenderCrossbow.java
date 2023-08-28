@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.renderer.item;
 
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -10,6 +10,6 @@ public class RenderCrossbow extends RenderShootableWeapon
 {
 	public RenderCrossbow()
 	{
-		transform = new PublicMatrix4f();
+		transform = new ModMatrix4f();
 	}
 }

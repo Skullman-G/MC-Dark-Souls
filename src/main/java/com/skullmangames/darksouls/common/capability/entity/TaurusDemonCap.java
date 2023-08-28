@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.InteractionHand;
@@ -48,8 +48,8 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	}
 	
 	@Override
-	public PublicMatrix4f getHeadMatrix(float partialTicks)
+	public ModMatrix4f getHeadMatrix(float partialTicks)
 	{
-		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, partialTicks, 1, 1, 1);
+		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, partialTicks, 1, 1, 1);
 	}
 }

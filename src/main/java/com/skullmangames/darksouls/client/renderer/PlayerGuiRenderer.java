@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -39,11 +39,11 @@ public class PlayerGuiRenderer extends ArmatureRenderer<LocalPlayer, LocalPlayer
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
 		entityCap.getClientAnimator().setPoseToModel(partialTicks);
-		PublicMatrix4f[] poses = armature.getJointTransforms();
+		ModMatrix4f[] poses = armature.getJointTransforms();
 		
 		PoseStack poseStack1 = new PoseStack();
 		poseStack1.translate(0.0D, 0.0D, 1000.0D);
-		PublicMatrix4f.scaleStack(poseStack1, new PublicMatrix4f(poseStack.last().pose()));
+		ModMatrix4f.scaleStack(poseStack1, new ModMatrix4f(poseStack.last().pose()));
 		poseStack1.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation()));
 		ClientModels.CLIENT.ENTITY_BIPED.draw(poseStack1, vc, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses);

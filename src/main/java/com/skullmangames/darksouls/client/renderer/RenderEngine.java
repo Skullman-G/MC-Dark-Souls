@@ -45,7 +45,7 @@ import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.ModShieldItem;
 import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -84,7 +84,7 @@ public class RenderEngine
 	public static final ResourceLocation NULL_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/gui/null.png");
 	public AimHelperRenderer aimHelper;
 	private Minecraft minecraft;
-	private PublicMatrix4f projectionMatrix;
+	private ModMatrix4f projectionMatrix;
 	@SuppressWarnings("rawtypes")
 	private Map<EntityType<?>, ArmatureRenderer> entityRendererMap;
 	private Map<Item, RenderItemBase> itemRendererMapByInstance;
@@ -106,7 +106,7 @@ public class RenderEngine
 		this.entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
 		this.itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
 		this.itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
-		this.projectionMatrix = new PublicMatrix4f();
+		this.projectionMatrix = new ModMatrix4f();
 		this.firstPersonRenderer = new FirstPersonRenderer();
 		this.playerGuiRenderer = new PlayerGuiRenderer();
 		
@@ -216,7 +216,7 @@ public class RenderEngine
 	{
 	}
 
-	public PublicMatrix4f getCurrentProjectionMatrix()
+	public ModMatrix4f getCurrentProjectionMatrix()
 	{
 		return this.projectionMatrix;
 	}

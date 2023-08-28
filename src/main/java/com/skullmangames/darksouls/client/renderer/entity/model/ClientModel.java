@@ -9,7 +9,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector4fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.ColladaParser;
 import com.skullmangames.darksouls.core.util.parser.xml.collada.Mesh;
@@ -47,7 +47,7 @@ public class ClientModel extends Model
 		}
 	}
 
-	public void draw(PoseStack posestack, VertexConsumer builderIn, int packedLight, float r, float g, float b, float a, PublicMatrix4f[] poses)
+	public void draw(PoseStack posestack, VertexConsumer builderIn, int packedLight, float r, float g, float b, float a, ModMatrix4f[] poses)
 	{
 		float[] animatedPosition = this.mesh.positionList.clone();
 		float[] animatedNormal = this.mesh.normalList.clone();
@@ -66,9 +66,9 @@ public class ClientModel extends Model
 				if(weightIndex < this.mesh.weightList.length)
 				{
 					float weight = this.mesh.weightList[weightIndex];
-					PublicMatrix4f pose = poses[this.mesh.jointIdList[weightIndex++]];
-					Vector4fHelper.add(Vector4fHelper.scale(PublicMatrix4f.transform(pose, pos, null), weight), totalPos, totalPos);
-					Vector4fHelper.add(Vector4fHelper.scale(PublicMatrix4f.transform(pose, normal, null), weight), totalNormal, totalNormal);
+					ModMatrix4f pose = poses[this.mesh.jointIdList[weightIndex++]];
+					Vector4fHelper.add(Vector4fHelper.scale(ModMatrix4f.transform(pose, pos, null), weight), totalPos, totalPos);
+					Vector4fHelper.add(Vector4fHelper.scale(ModMatrix4f.transform(pose, normal, null), weight), totalNormal, totalNormal);
 				}
 			}
 			

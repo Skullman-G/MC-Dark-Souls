@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Joint;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -66,7 +66,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 			poseStack.pushPose();
 			this.applyRotations(poseStack, armature, entityCap, partialTicks);
 			entityCap.getClientAnimator().setPoseToModel(partialTicks);
-			PublicMatrix4f[] poses = armature.getJointTransforms();
+			ModMatrix4f[] poses = armature.getJointTransforms();
 			float scale = 0.95F;
 			poseStack.scale(scale, scale, scale);
 			model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : entityCap.getAlpha(), poses);
@@ -101,7 +101,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 
 	protected abstract ResourceLocation getEntityTexture(E entityIn);
 
-	protected void renderLayer(T entityCap, PublicMatrix4f[] poses, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks)
+	protected void renderLayer(T entityCap, ModMatrix4f[] poses, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks)
 	{
 		for (Layer<E, T> layer : this.layers) 
 		{
@@ -119,18 +119,18 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 		return ModRenderTypes.getAnimatedModel(resourcelocation);
 	}
 
-	protected void transformJoint(int jointId, Armature modelArmature, PublicMatrix4f mat)
+	protected void transformJoint(int jointId, Armature modelArmature, ModMatrix4f mat)
 	{
 		Joint joint = modelArmature.searchJointById(jointId);
-		PublicMatrix4f.mul(joint.getAnimatedTransform(), mat, joint.getAnimatedTransform());
+		ModMatrix4f.mul(joint.getAnimatedTransform(), mat, joint.getAnimatedTransform());
 	}
 
 	protected void applyRotations(PoseStack matStack, Armature armature, T entityCap, float partialTicks)
 	{
-		PublicMatrix4f transpose = entityCap.getModelMatrix(partialTicks).transpose();
+		ModMatrix4f transpose = entityCap.getModelMatrix(partialTicks).transpose();
 		matStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-		PublicMatrix4f.rotateStack(matStack, transpose);
-		PublicMatrix4f.scaleStack(matStack, transpose);
+		ModMatrix4f.rotateStack(matStack, transpose);
+		ModMatrix4f.scaleStack(matStack, transpose);
 	}
 
 	protected boolean shouldRenderNameTag(T entityCap)

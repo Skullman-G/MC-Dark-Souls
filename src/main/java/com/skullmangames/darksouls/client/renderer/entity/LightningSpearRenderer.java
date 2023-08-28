@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -50,7 +50,7 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 	public void render(LightningSpear entity, float p_114486_, float p_114487_, PoseStack poseStack, MultiBufferSource bufferSource, int uv2)
 	{
 		VertexConsumer vertexBuilder = bufferSource.getBuffer(RENDER_TYPE);
-		Quaternion rot = PublicMatrix4f.getModelMatrixIntegrated((float) entity.xOld, (float) entity.getX(),
+		Quaternion rot = ModMatrix4f.createModelMatrix((float) entity.xOld, (float) entity.getX(),
 				(float) entity.yOld, (float) entity.getY(), (float) entity.zOld, (float) entity.getZ(), -entity.xRotO,
 				-entity.xRot, entity.yRotO, entity.yRot, 1.0F, 1.0F, 1.0F, 1.0F).transpose().rotate((float)Math.toRadians(180), Vector3f.YP).toQuaternion().vanilla();
 		rot.mul(Vector3f.YP.rotationDegrees(90));

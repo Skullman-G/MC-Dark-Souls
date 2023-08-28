@@ -32,7 +32,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -63,7 +63,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public LivingMotion baseMotion = LivingMotion.IDLE;
 	public final Map<LayerPart, LivingMotion> mixMotions = new HashMap<>();
 	
-	public List<Entity> currentlyAttackedEntities = new ArrayList<>();
+	public final List<Entity> currentlyAttackedEntities = new ArrayList<>();
+	public Collider weaponCollider;
+	
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());
 	private float stamina;
@@ -79,6 +81,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		for (LayerPart part : LayerPart.mixLayers()) this.mixMotions.put(part, LivingMotion.NONE);
 		this.animator = DarkSouls.getAnimator(this);
 		this.animator.init();
+	}
+	
+	public void performParry()
+	{
+		this.playAnimationSynchronized(Animations.SHIELD_PARRY, 1.0F);
 	}
 	
 	public ShieldHoldType getShieldHoldType()
@@ -662,7 +669,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return this.orgEntity.getLastHurtMob();
 	}
 
-	public PublicMatrix4f getHeadMatrix(float partialTicks)
+	public ModMatrix4f getHeadMatrix(float partialTicks)
 	{
 		float bodyRot;
 		float headRot;
@@ -682,12 +689,12 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			}
 		}
 
-		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, orgEntity.xRotO, orgEntity.xRot, headRotDest,
+		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, orgEntity.xRotO, orgEntity.xRot, headRotDest,
 				headRotDest, partialTicks, 1, 1, 1);
 	}
 
 	@Override
-	public PublicMatrix4f getModelMatrix(float partialTicks)
+	public ModMatrix4f getModelMatrix(float partialTicks)
 	{
 		float prevRotYaw;
 		float rotyaw;
@@ -713,7 +720,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			scaleZ *= 0.5F;
 		}
 
-		return PublicMatrix4f.getModelMatrixIntegrated((float) orgEntity.xOld, (float) orgEntity.getX(),
+		return ModMatrix4f.createModelMatrix((float) orgEntity.xOld, (float) orgEntity.getX(),
 				(float) orgEntity.yOld, (float) orgEntity.getY(), (float) orgEntity.zOld, (float) orgEntity.getZ(), 0,
 				0, prevRotYaw, rotyaw, partialTicks, scaleX, scaleY, scaleZ);
 	}

@@ -32,6 +32,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -197,6 +198,9 @@ public final class Animations
 	
 	// Horseback Attacks
 	public static AttackAnimation[] HORSEBACK_LIGHT_ATTACK;
+	
+	// Parries
+	public static ParryAnimation SHIELD_PARRY;
 	
 	// Backstabs
 	public static AttackAnimation BACKSTAB_THRUST;
@@ -871,6 +875,11 @@ public final class Animations
 							.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM).register(builder)
 		};
 		
+		// Parries
+		SHIELD_PARRY = new ParryAnimation(DarkSouls.rl("shield_parry"), 0.1F, 0.08F, 0.8F, "Tool_L",
+				DarkSouls.rl("biped/combat/shield_parry"), (models) -> models.ENTITY_BIPED)
+				.register(builder);
+		
 		// Backstabs
 		BACKSTAB_THRUST = new CriticalCheckAnimation(DarkSouls.rl("backstab_thrust_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.36F, 0.64F, 1.44F, false, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_thrust_check"), (models) -> models.ENTITY_BIPED,
@@ -1283,7 +1292,7 @@ public final class Animations
 				.register(builder);
 		GREAT_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), AttackType.LIGHT, 0.5F, 0.0F, 0.84F, 1.08F, 2.76F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_1"), AttackType.LIGHT, 0.5F, 0.0F, 0.84F, 1.38F, 2.76F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_1"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -1298,7 +1307,7 @@ public final class Animations
 					.addProperty(AttackProperty.STAMINA_USAGE, 35)
 					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
-				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_2"), AttackType.LIGHT, 0.5F, 0.0F, 1.15F, 1.6F, 3.45F, "Tool_R",
+				new AttackAnimation(DarkSouls.rl("great_hammer_light_attack_2"), AttackType.LIGHT, 0.5F, 0.0F, 1.15F, 1.7F, 3.45F, "Tool_R",
 						DarkSouls.rl("biped/combat/great_hammer_light_attack_2"), (models) -> models.ENTITY_BIPED)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
@@ -1686,7 +1695,7 @@ public final class Animations
 					.addProperty(AttackProperty.POISE_DAMAGE, 20)
 					.register(builder)
 		};
-		STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("straight_sword_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.36F, 0.52F, 1.0F, "Tool_R",
+		STRAIGHT_SWORD_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("straight_sword_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.36F, 0.6F, 1.0F, "Tool_R",
 				DarkSouls.rl("biped/combat/straight_sword_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.SLASH)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -2317,7 +2326,7 @@ public final class Animations
 					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder)
 		};
-		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_heavy_attack"), AttackType.HEAVY, 1.0F, 0.0F, 0.64F, 1.04F, 2.8F, "Tool_R",
+		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_heavy_attack"), AttackType.HEAVY, 1.0F, 0.0F, 0.64F, 1.15F, 2.8F, "Tool_R",
 				DarkSouls.rl("stray_demon/heavy_attack"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{

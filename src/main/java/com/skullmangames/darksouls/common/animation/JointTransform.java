@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.animation;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.util.Mth;
 
@@ -53,15 +53,15 @@ public class JointTransform
 		return this;
 	}
 	
-	public PublicMatrix4f getParentboundMatrix(Joint joint, PublicMatrix4f parentTransform)
+	public ModMatrix4f getParentboundMatrix(Joint joint, ModMatrix4f parentTransform)
 	{
 		return this.toMatrix().mulFront(joint.getLocalTransform()).mulFront(parentTransform).mulBack(joint.getAnimatedTransform());
 	}
 
-	public PublicMatrix4f toMatrix()
+	public ModMatrix4f toMatrix()
 	{
-		PublicMatrix4f matrix = new PublicMatrix4f()
-				.translate(this.translation).mulBack(PublicMatrix4f.fromQuaternion(this.rotation)).scale(this.scale);
+		ModMatrix4f matrix = new ModMatrix4f()
+				.translate(this.translation).mulBack(ModMatrix4f.fromQuaternion(this.rotation)).scale(this.scale);
 		return matrix;
 	}
 
@@ -88,7 +88,7 @@ public class JointTransform
 		return interpolated;
 	}
 
-	public static JointTransform fromMatrixNoScale(PublicMatrix4f matrix)
+	public static JointTransform fromMatrixNoScale(ModMatrix4f matrix)
 	{
 		return new JointTransform(matrix.toTranslationVector(), matrix.toQuaternion(), new Vector3f(1.0F, 1.0F, 1.0F));
 	}
@@ -108,7 +108,7 @@ public class JointTransform
 		return new JointTransform(new Vector3f(1.0F, 1.0F, 1.0F), new ModQuaternion(0.0F, 0.0F, 0.0F, 1.0F), vec);
 	}
 
-	public static JointTransform fromMatrix(PublicMatrix4f matrix)
+	public static JointTransform fromMatrix(ModMatrix4f matrix)
 	{
 		return new JointTransform(matrix.toTranslationVector(), matrix.toQuaternion(), matrix.toScaleVector());
 	}

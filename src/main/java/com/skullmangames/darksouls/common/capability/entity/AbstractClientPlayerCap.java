@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.util.Mth;
@@ -201,7 +201,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	}
 
 	@Override
-	public PublicMatrix4f getHeadMatrix(float partialTick)
+	public ModMatrix4f getHeadMatrix(float partialTick)
 	{
 		T entity = getOriginalEntity();
 		
@@ -226,17 +226,17 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			pitch = entity.xRot;
 		}
         
-		return PublicMatrix4f.getModelMatrixIntegrated(0, 0, 0, 0, 0, 0, prvePitch, pitch, yaw, yaw, partialTick, 1, 1, 1);
+		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, prvePitch, pitch, yaw, yaw, partialTick, 1, 1, 1);
 	}
 	
 	@Override
-	public PublicMatrix4f getModelMatrix(float partialTick)
+	public ModMatrix4f getModelMatrix(float partialTick)
 	{
 		LivingEntity entity = getOriginalEntity();
 
 		if (orgEntity.isAutoSpinAttack())
 		{
-			PublicMatrix4f mat = PublicMatrix4f.getModelMatrixIntegrated((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
+			ModMatrix4f mat = ModMatrix4f.createModelMatrix((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			float yawDegree = MathUtils.interpolateRotation(orgEntity.yRotO, orgEntity.yRot, partialTick);
 			float pitchDegree = MathUtils.interpolateRotation(orgEntity.xRotO, orgEntity.xRot, partialTick) + 90.0F;
@@ -248,7 +248,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		}
 		else if (orgEntity.isFallFlying())
 		{
-			PublicMatrix4f mat = PublicMatrix4f.getModelMatrixIntegrated((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
+			ModMatrix4f mat = ModMatrix4f.createModelMatrix((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
 			
 			mat.rotate((float)-Math.toRadians(entity.yBodyRot), Vector3f.YP);
@@ -303,7 +303,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		        pitch = f4;
 			}
 			
-			return PublicMatrix4f.getModelMatrixIntegrated((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
+			return ModMatrix4f.createModelMatrix((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), prevPitch, pitch, prevRotYaw, rotyaw, partialTick, 1, 1, 1);
 		}
 	}

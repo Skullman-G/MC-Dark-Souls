@@ -3,8 +3,7 @@ package com.skullmangames.darksouls.client.renderer.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -37,23 +36,23 @@ public class RenderHat extends RenderItemBase
 			}
 			if (layer == null) return;
 			LivingEntity entity = itemHolder.getOriginalEntity();
-			PublicMatrix4f modelMatrix = new PublicMatrix4f();
+			ModMatrix4f modelMatrix = new ModMatrix4f();
 			modelMatrix.scale(-0.94F, -0.94F, 0.94F);
 			if(itemHolder.getOriginalEntity().isBaby())
 			{
 				modelMatrix.translate(0.0F, -0.65F, 0.0F);
 			}
-			PublicMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
+			ModMatrix4f.mul(itemHolder.getEntityModel(ClientModels.CLIENT).getArmature().searchJointById(9).getAnimatedTransform(), modelMatrix, modelMatrix);
 			model.xRot = 0.0F;
 			model.yRot = 0.0F;
 			model.zRot = 0.0F;
 			model.x = 0.0F;
 			model.y = 0.0F;
 			model.z = 0.0F;
-			PublicMatrix4f transpose = new PublicMatrix4f().transpose(modelMatrix);
+			ModMatrix4f transpose = new ModMatrix4f().transpose(modelMatrix);
 			viewMatrixStack.pushPose();
-			MathUtils.translateStack(viewMatrixStack, modelMatrix);
-			PublicMatrix4f.rotateStack(viewMatrixStack, transpose);
+			ModMatrix4f.translateStack(viewMatrixStack, modelMatrix);
+			ModMatrix4f.rotateStack(viewMatrixStack, transpose);
 			layer.render(viewMatrixStack, buffer, packedLight, entity, 0F, 0F, 0F, 0F, 0F, 0F);
 			viewMatrixStack.popPose();
 		}

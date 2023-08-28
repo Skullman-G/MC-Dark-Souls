@@ -1,13 +1,8 @@
 package com.skullmangames.darksouls.core.util.physics;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.client.renderer.Gizmos;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -16,219 +11,154 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CubeCollider extends Collider
 {
-	protected final Vec3[] modelVertex;
-	protected final Vec3[] modelNormal;
-	protected Vec3[] rotatedVertex;
-	protected Vec3[] rotatedNormal;
-
-	/**
-	 * make 3d obb
-	 * 
-	 * @param pos1        left_back
-	 * @param pos2        left_front
-	 * @param pos3        right_front
-	 * @param pos4        right_back
-	 * @param modelCenter central position
-	 */
-	public CubeCollider(double posX, double posY, double posZ, double center_x, double center_y, double center_z)
+	protected final Vec3[] modelVertices;
+	protected final Vec3[] modelNormals;
+	
+	public CubeCollider(AABB aabb)
 	{
-		this(getInitialAABB(posX, posY, posZ, center_x, center_y, center_z), posX, posY, posZ, center_x, center_y,
-				center_z);
+		this(aabb, aabb.getCenter());
+	}
+	
+	public CubeCollider(AABB aabb, Vec3 offset)
+	{
+		this(aabb.minX - offset.x, aabb.minY - offset.y, aabb.minZ - offset.z,
+				aabb.maxX - offset.x, aabb.maxY - offset.y, aabb.maxZ - offset.z);
+		this.moveTo(offset);
+	}
+	
+	public CubeCollider(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+	{
+		super(createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
+		this.modelVertices = new Vec3[8];
+		this.vertices = new Vec3[8];
+		this.modelNormals = new Vec3[3];
+		this.normals = new Vec3[3];
+		
+		this.modelVertices[0] = new Vec3(minX, minY, minZ);
+		this.modelVertices[1] = new Vec3(maxX, minY, minZ);
+		this.modelVertices[2] = new Vec3(maxX, maxY, minZ);
+		this.modelVertices[3] = new Vec3(minX, maxY, minZ);
+		this.modelVertices[4] = new Vec3(minX, minY, maxZ);
+		this.modelVertices[5] = new Vec3(maxX, minY, maxZ);
+		this.modelVertices[6] = new Vec3(maxX, maxY, maxZ);
+		this.modelVertices[7] = new Vec3(minX, maxY, maxZ);
+		
+		this.vertices[0] = this.modelVertices[0];
+		this.vertices[1] = this.modelVertices[1];
+		this.vertices[2] = this.modelVertices[2];
+		this.vertices[3] = this.modelVertices[3];
+		this.vertices[4] = this.modelVertices[4];
+		this.vertices[5] = this.modelVertices[5];
+		this.vertices[6] = this.modelVertices[6];
+		this.vertices[7] = this.modelVertices[7];
+		
+		this.modelNormals[0] = new Vec3(1, 0, 0);
+		this.modelNormals[1] = new Vec3(0, 1, 0);
+		this.modelNormals[2] = new Vec3(0, 0, -1);
+		
+		this.normals[0] = this.modelNormals[0];
+		this.normals[1] = this.modelNormals[1];
+		this.normals[2] = this.modelNormals[2];
+	}
+	
+	private static AABB createOuterAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+	{
+		Vec3 center = new Vec3((minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2);
+		double lengthX = maxX - center.x;
+		double lengthY = maxY - center.y;
+		double lengthZ = maxZ - center.z;
+		double length = Math.max(lengthX, Math.max(lengthY, lengthZ));
+		return new AABB(-length, -length, -length, length, length, length);
 	}
 
-	public CubeCollider(AABB outerAABB, double posX, double posY, double posZ, double center_x, double center_y,
-			double center_z)
-	{
-		super(new Vec3(center_x, center_y, center_z), outerAABB);
-		this.modelVertex = new Vec3[4];
-		this.modelNormal = new Vec3[3];
-		this.rotatedVertex = new Vec3[4];
-		this.rotatedNormal = new Vec3[3];
-		this.modelVertex[0] = new Vec3(posX, posY, -posZ);
-		this.modelVertex[1] = new Vec3(posX, posY, posZ);
-		this.modelVertex[2] = new Vec3(-posX, posY, posZ);
-		this.modelVertex[3] = new Vec3(-posX, posY, -posZ);
-		this.modelNormal[0] = new Vec3(1, 0, 0);
-		this.modelNormal[1] = new Vec3(0, 1, 0);
-		this.modelNormal[2] = new Vec3(0, 0, -1);
-		this.rotatedVertex[0] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedVertex[1] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedVertex[2] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedVertex[3] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedNormal[0] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedNormal[1] = new Vec3(0.0D, 0.0D, 0.0D);
-		this.rotatedNormal[2] = new Vec3(0.0D, 0.0D, 0.0D);
-	}
-
-	static AABB getInitialAABB(double posX, double posY, double posZ, double center_x, double center_y, double center_z)
-	{
-		double xLength = Math.abs(posX) + Math.abs(center_x);
-		double yLength = Math.abs(posY) + Math.abs(center_y);
-		double zLength = Math.abs(posZ) + Math.abs(center_z);
-		double maxLength = Math.max(xLength, Math.max(yLength, zLength));
-		return new AABB(maxLength, maxLength, maxLength, -maxLength, -maxLength, -maxLength);
-	}
-
-	/**
-	 * make obb from aabb
-	 * 
-	 * @param aabbCopy
-	 */
-	public CubeCollider(AABB aabbCopy)
-	{
-		super(null, null);
-		this.modelVertex = null;
-		this.modelNormal = null;
-		double xSize = (aabbCopy.maxX - aabbCopy.minX) / 2;
-		double ySize = (aabbCopy.maxY - aabbCopy.minY) / 2;
-		double zSize = (aabbCopy.maxZ - aabbCopy.minZ) / 2;
-		this.worldCenter = new Vec3(-((float) aabbCopy.minX + xSize), (float) aabbCopy.minY + ySize,
-				-((float) aabbCopy.minZ + zSize));
-		this.rotatedVertex = new Vec3[4];
-		this.rotatedNormal = new Vec3[3];
-		this.rotatedVertex[0] = new Vec3(-xSize, ySize, -zSize);
-		this.rotatedVertex[1] = new Vec3(-xSize, ySize, zSize);
-		this.rotatedVertex[2] = new Vec3(xSize, ySize, zSize);
-		this.rotatedVertex[3] = new Vec3(xSize, ySize, -zSize);
-		this.rotatedNormal[0] = new Vec3(1, 0, 0);
-		this.rotatedNormal[1] = new Vec3(0, 1, 0);
-		this.rotatedNormal[2] = new Vec3(0, 0, 1);
-	}
-
-	/**
-	 * Transform every elements of this Bounding Box
-	 **/
 	@Override
-	public void transform(PublicMatrix4f mat)
+	public void transform(ModMatrix4f mat)
 	{
-		PublicMatrix4f rotationMatrix = mat.removeTranslation();
-
-		for (int i = 0; i < this.modelVertex.length; i++)
+		ModMatrix4f rot = mat.removeTranslation();
+		
+		for (int i = 0; i < this.modelVertices.length; i++)
 		{
-			this.rotatedVertex[i] = PublicMatrix4f.transform(rotationMatrix, this.modelVertex[i]);
+			this.vertices[i] = ModMatrix4f.transform(rot, this.modelVertices[i]);
+			this.vertices[i] = new Vec3(-this.vertices[i].x, this.vertices[i].y, -this.vertices[i].z);
 		}
-
-		for (int i = 0; i < this.modelNormal.length; i++)
+		
+		for (int i = 0; i < this.modelNormals.length; i++)
 		{
-			this.rotatedNormal[i] = PublicMatrix4f.transform(rotationMatrix, this.modelNormal[i]);
+			this.normals[i] = ModMatrix4f.transform(rot, this.modelNormals[i]);
+			this.normals[i] = new Vec3(-this.normals[i].x, this.normals[i].y, -this.normals[i].z);
 		}
 
 		super.transform(mat);
 	}
 
-	public boolean isCollideWith(CubeCollider opponent)
+	@Override
+	public boolean collidesWith(Collider other)
 	{
-		Vec3 toOpponent = opponent.worldCenter.subtract(this.worldCenter);
-
-		for (Vec3 seperateAxis : this.rotatedNormal)
+		return satCollisionDetection(this, other) && satCollisionDetection(other, this);
+	}
+	
+	private static boolean satCollisionDetection(Collider a, Collider b)
+	{
+		for (Vec3 axis : a.normals)
 		{
-			if (!collisionDetection(seperateAxis, toOpponent, this, opponent))
+			double maxDistA = -Double.MAX_VALUE;
+			double minDistA = Double.MAX_VALUE;
+			for (Vec3 va : a.vertices)
 			{
-				return false;
+				double dot = axis.dot(va);
+				maxDistA = Math.max(maxDistA, dot);
+				minDistA = Math.min(minDistA, dot);
 			}
-		}
-
-		for (Vec3 seperateAxis : opponent.rotatedNormal)
-		{
-			if (!collisionDetection(seperateAxis, toOpponent, this, opponent))
+			
+			double maxDistB = -Double.MAX_VALUE;
+			double minDistB = Double.MAX_VALUE;
+			for (Vec3 vb : b.vertices)
 			{
-				return false;
+				double dot = axis.dot(vb);
+				maxDistB = Math.max(maxDistB, dot);
+				minDistB = Math.min(minDistB, dot);
 			}
+			
+			if (minDistA >= maxDistB || minDistB >= maxDistA) return false;
 		}
-
 		return true;
+	}
+	
+	@Override
+	public Vec3 getMassCenter()
+	{
+		Vec3 min = this.min();
+		Vec3 max = this.max();
+		return new Vec3((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
 	}
 	
 	@Override
 	public Collider getScaledCollider(float scale)
 	{
-		Vec3 pos = this.modelVertex[1];
-		Vec3 center = this.modelCenter;
-		return new CubeCollider(pos.x() * scale, pos.y() * scale, pos.z() * scale, center.x() * scale, center.y() * scale,
-				center.z() * scale);
+		Vec3 min = this.modelVertices[0];
+		Vec3 max = this.modelVertices[6];
+		return new CubeCollider(scale * min.x, scale * min.y, scale * min.z,
+				scale * max.x, scale * max.y, scale * max.z);
 	}
 
 	@Override
-	public boolean collide(Entity entity)
+	public boolean collidesWith(Entity entity)
 	{
-		CubeCollider obb = new CubeCollider(entity.getBoundingBox());
-		return this.isCollideWith(obb);
-	}
-
-	private static boolean collisionDetection(Vec3 seperateAxis, Vec3 toOpponent, CubeCollider box1, CubeCollider box2)
-	{
-		Vec3 maxProj1 = null, maxProj2 = null, distance;
-		double maxDot1 = -1, maxDot2 = -1;
-		distance = seperateAxis.dot(toOpponent) > 0.0F ? toOpponent : toOpponent.scale(-1.0D);
-
-		for (Vec3 vertexVector : box1.rotatedVertex)
-		{
-			Vec3 temp = seperateAxis.dot(vertexVector) > 0.0F ? vertexVector : vertexVector.scale(-1.0D);
-			double dot = seperateAxis.dot(temp);
-
-			if (dot > maxDot1)
-			{
-				maxDot1 = dot;
-				maxProj1 = temp;
-			}
-		}
-
-		for (Vec3 vertexVector : box2.rotatedVertex)
-		{
-			Vec3 temp = seperateAxis.dot(vertexVector) > 0.0F ? vertexVector : vertexVector.scale(-1.0D);
-			double dot = seperateAxis.dot(temp);
-
-			if (dot > maxDot2)
-			{
-				maxDot2 = dot;
-				maxProj2 = temp;
-			}
-		}
-
-		return !(MathUtils.projectVector(distance, seperateAxis).length() > MathUtils.projectVector(maxProj1, seperateAxis).length() + MathUtils.projectVector(maxProj2, seperateAxis).length());
+		CubeCollider collider = new CubeCollider(entity.getBoundingBox());
+		return this.collidesWith(collider);
 	}
 
 	@Override
 	public String toString()
 	{
-		return String.format("Center : [%f, %f, %f],  Direction : [%f, %f, %f]", this.worldCenter.x, this.worldCenter.y,
-				this.worldCenter.z, this.rotatedVertex[1].x, this.rotatedVertex[1].y, this.rotatedVertex[1].z);
+		return String.format("Center : [%f, %f, %f]", this.getWorldCenter().x, this.getWorldCenter().y,
+				this.getWorldCenter().z);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void drawInternal(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, boolean red)
+	public void drawInternal(boolean red)
 	{
-		VertexConsumer vertexBuilder = buffer.getBuffer(ModRenderTypes.debugCollider());
-		PublicMatrix4f transpose = new PublicMatrix4f().transpose(pose);
-		matrixStackIn.pushPose();
-		MathUtils.translateStack(matrixStackIn, pose);
-		MathUtils.rotateStack(matrixStackIn, transpose);
-		Matrix4f matrix = matrixStackIn.last().pose();
-		Vec3 vec = this.modelVertex[1];
-		float maxX = (float) (this.modelCenter.x + vec.x);
-		float maxY = (float) (this.modelCenter.y + vec.y);
-		float maxZ = (float) (this.modelCenter.z + vec.z);
-		float minX = (float) (this.modelCenter.x - vec.x);
-		float minY = (float) (this.modelCenter.y - vec.y);
-		float minZ = (float) (this.modelCenter.z - vec.z);
-		float color = red ? 0.0F : 1.0F;
-		vertexBuilder.vertex(matrix, maxX, maxY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, maxY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, maxY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, maxY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, maxY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, minY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, minY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, maxY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, minY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, minY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, maxY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, minY, minZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, minY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, maxY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, minX, minY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		vertexBuilder.vertex(matrix, maxX, minY, maxZ).color(1.0F, color, color, 1.0F).endVertex();
-		matrixStackIn.popPose();
+		Gizmos.drawBox(this.vertices, red ? 0xFF0000 : 0xFFFFFF);
 	}
 }

@@ -68,9 +68,9 @@ public class ModQuaternion
 		return this.mulLeft(new ModQuaternion(left.i(), left.j(), left.k(), left.r()));
 	}
 
-	public PublicMatrix4f toRotationMatrix()
+	public ModMatrix4f toRotationMatrix()
 	{
-		PublicMatrix4f matrix = new PublicMatrix4f();
+		ModMatrix4f matrix = new ModMatrix4f();
 		final float xy = x * y;
 		final float xz = x * z;
 		final float xw = x * w;
@@ -92,7 +92,7 @@ public class ModQuaternion
 		return matrix;
 	}
 
-	public static ModQuaternion fromMatrix(PublicMatrix4f matrix)
+	public static ModQuaternion fromMatrix(ModMatrix4f matrix)
 	{
 		float w, x, y, z;
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
@@ -158,19 +158,19 @@ public class ModQuaternion
 
 	public static ModQuaternion rotate(float degree, Vector3f axis, ModQuaternion src)
 	{
-		PublicMatrix4f quatmat;
+		ModMatrix4f quatmat;
 		if (src == null)
 		{
-			quatmat = new PublicMatrix4f();
+			quatmat = new ModMatrix4f();
 		}
 		else
 		{
 			quatmat = src.toRotationMatrix();
 		}
 		
-		PublicMatrix4f rotMat = new PublicMatrix4f();
+		ModMatrix4f rotMat = new ModMatrix4f();
 		rotMat.rotate(degree, axis);
-		PublicMatrix4f.mul(quatmat, rotMat,  quatmat);
+		ModMatrix4f.mul(quatmat, rotMat,  quatmat);
 		return ModQuaternion.fromMatrix(quatmat);
 	}
 	

@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.entity.BreakableBarrel;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -38,8 +38,8 @@ public class BreakableBarrelRenderer extends EntityRenderer<BreakableBarrel>
 		RenderType renderType = ModRenderTypes.getAnimatedModel(this.getTextureLocation(entity));
 		VertexConsumer builder = buffer.getBuffer(renderType);
 		ClientModel model = ClientModels.CLIENT.BREAKABLE_BARREL;
-		PublicMatrix4f[] poses = new PublicMatrix4f[1];
-		poses[0] = new PublicMatrix4f();
+		ModMatrix4f[] poses = new ModMatrix4f[1];
+		poses[0] = new ModMatrix4f();
 		poseStack.pushPose();
 		float scale = 0.9F;
 		poseStack.scale(scale, scale, scale);

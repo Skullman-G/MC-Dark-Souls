@@ -13,8 +13,7 @@ import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
-
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -39,7 +38,7 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 	}
 	
 	@Override
-	public void render(LocalPlayerCap entityCap, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack matStackIn, int packedLightIn, float partialTicks)
+	public void render(LocalPlayerCap entityCap, EntityRenderer<LocalPlayer> renderer, MultiBufferSource buffer, PoseStack poseStack, int packedLightIn, float partialTicks)
 	{
 		LocalPlayer player = entityCap.getOriginalEntity();
 		Camera camera = minecraft.gameRenderer.getMainCamera();
@@ -51,11 +50,11 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		Armature armature = model.getArmature();
 		armature.initializeTransform();
 		entityCap.getClientAnimator().setPoseToModel(partialTicks);
-		PublicMatrix4f[] poses = armature.getJointTransforms();
+		ModMatrix4f[] poses = armature.getJointTransforms();
 		
-		matStackIn.pushPose();
+		poseStack.pushPose();
 		Vector4f headPos = new Vector4f(0, player.getEyeHeight(), 0, 1.0F);
-		PublicMatrix4f.transform(poses[9], headPos, headPos);
+		ModMatrix4f.transform(poses[9], headPos, headPos);
 		float pitch = camera.getXRot();
 		
 		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
@@ -80,21 +79,21 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		
 		if (!flag2)
 		{
-			matStackIn.mulPose(Vector3f.XP.rotationDegrees(pitch));
+			poseStack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 		}
 		
 		float interpolation = pitch > 0.0F ? pitch / 90.0F : 0.0F;
-		matStackIn.translate(x, y - 0.1D - (0.2D * (flag2 ? 0.8D : interpolation)), z + 0.1D + (0.7D * (flag2 ? 0.0D : interpolation)) - posZ);
+		poseStack.translate(x, y - 0.1D - (0.2D * (flag2 ? 0.8D : interpolation)), z + 0.1D + (0.7D * (flag2 ? 0.0D : interpolation)) - posZ);
 		
-		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(matStackIn, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
+		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(poseStack, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
 				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses);
 		
 		if(!player.isSpectator())
 		{
-			renderLayer(entityCap, poses, buffer, matStackIn, packedLightIn, partialTicks);
+			renderLayer(entityCap, poses, buffer, poseStack, packedLightIn, partialTicks);
 		}
 		
-		matStackIn.popPose();
+		poseStack.popPose();
 	}
 	
 	@Override

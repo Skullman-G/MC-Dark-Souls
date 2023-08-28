@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModParticles;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -55,8 +55,8 @@ public class LightningSpearParticle extends EntityboundParticle
 	    		this.entityCap = cap;
 	    		this.joint = cap.getEntityModel(ClientModels.CLIENT).getArmature().searchJointByName("Tool_R");
 	    		
-	    		PublicMatrix4f rotationTransform = this.entityCap.getModelMatrix(1.0F);
-	    		PublicMatrix4f localTransform = this.joint.getAnimatedTransform();
+	    		ModMatrix4f rotationTransform = this.entityCap.getModelMatrix(1.0F);
+	    		ModMatrix4f localTransform = this.joint.getAnimatedTransform();
 	    		localTransform.mulFront(rotationTransform);
 	    		Vector3f jpos = localTransform.toTranslationVector();
 	    		jpos.mul(-1, 1, -1);
@@ -94,8 +94,8 @@ public class LightningSpearParticle extends EntityboundParticle
 		
 		if (this.joint != null)
 		{
-			PublicMatrix4f rotationTransform = this.entityCap.getModelMatrix(1.0F);
-			PublicMatrix4f localTransform = this.joint.getAnimatedTransform();
+			ModMatrix4f rotationTransform = this.entityCap.getModelMatrix(1.0F);
+			ModMatrix4f localTransform = this.joint.getAnimatedTransform();
 			localTransform.mulFront(rotationTransform);
 			Vector3f jpos = localTransform.toTranslationVector();
 			jpos.mul(-1, 1, -1);

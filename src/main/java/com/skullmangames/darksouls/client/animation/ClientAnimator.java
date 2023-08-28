@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -113,12 +113,12 @@ public class ClientAnimator extends Animator
 	public void setPoseToModel(float partialTicks)
 	{
 		Joint rootJoint = this.entityCap.getEntityModel(ClientModels.CLIENT).getArmature().getJointHierarcy();
-		this.applyPoseToJoint(rootJoint, new PublicMatrix4f(), this.getPose(partialTicks), partialTicks);
+		this.applyPoseToJoint(rootJoint, new ModMatrix4f(), this.getPose(partialTicks), partialTicks);
 	}
 
-	public void applyPoseToJoint(Joint joint, PublicMatrix4f parentTransform, Pose pose, float partialTicks)
+	public void applyPoseToJoint(Joint joint, ModMatrix4f parentTransform, Pose pose, float partialTicks)
 	{
-		PublicMatrix4f result = pose.getTransformByName(joint.getName()).getParentboundMatrix(joint, parentTransform);
+		ModMatrix4f result = pose.getTransformByName(joint.getName()).getParentboundMatrix(joint, parentTransform);
 		joint.setAnimatedTransform(result);
 
 		for (Joint joints : joint.getSubJoints())

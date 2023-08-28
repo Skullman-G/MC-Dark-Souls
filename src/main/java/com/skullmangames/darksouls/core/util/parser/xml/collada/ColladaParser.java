@@ -10,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.Joint;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlParser;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
@@ -42,7 +42,7 @@ public class ColladaParser
 		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getChild("library_controllers").getChild("controller").getChild("skin"));
 		JointDataExtractor skeleton = new JointDataExtractor(rootNode.getChild("library_visual_scenes").getChild("visual_scene").getChildWithAttributeValue("node", "id", "Armature"), skin.getRawJoints());
 		Joint joint = skeleton.extractSkeletonData();
-		joint.setInversedModelTransform(new PublicMatrix4f());
+		joint.setInversedModelTransform(new ModMatrix4f());
 		
 		Armature armature = new Armature(skeleton.getJointNumber(), joint, skeleton.getJointTable());
 		return armature;

@@ -7,12 +7,12 @@ import java.util.Map;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.animation.Joint;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 
 public class JointDataExtractor
 {
-	private static final PublicMatrix4f CORRECTION = new PublicMatrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
+	private static final ModMatrix4f CORRECTION = new ModMatrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
 	
 	private int jointNumber = 1;
 	
@@ -49,8 +49,8 @@ public class JointDataExtractor
 	{
 		String name = node.getAttributeValue("sid");
 		String[] matrixData = node.getChild("matrix").getData().split(" ");
-		PublicMatrix4f jointTransform = convertStringToMatrix(matrixData);
-		PublicMatrix4f.mul(CORRECTION, jointTransform, jointTransform);
+		ModMatrix4f jointTransform = convertStringToMatrix(matrixData);
+		ModMatrix4f.mul(CORRECTION, jointTransform, jointTransform);
 		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);
 		joints.put(joint.getName(), joint);
 		
@@ -63,14 +63,14 @@ public class JointDataExtractor
 		
 		String name = node.getAttributeValue("sid");
 		String[] matrixData = node.getChild("matrix").getData().split(" ");
-		PublicMatrix4f jointTransform = convertStringToMatrix(matrixData);
+		ModMatrix4f jointTransform = convertStringToMatrix(matrixData);
 		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);
 		joints.put(joint.getName(), joint);
 		
 		return joint;
 	}
 	
-	private PublicMatrix4f convertStringToMatrix(String[] data)
+	private ModMatrix4f convertStringToMatrix(String[] data)
 	{
 		float[] mat4 = new float[16];
 		for(int i = 0; i < 16; i++)
@@ -80,7 +80,7 @@ public class JointDataExtractor
 		FloatBuffer floatbuffer = FloatBuffer.allocate(16);
 		floatbuffer.put(mat4);
 		floatbuffer.flip();
-		PublicMatrix4f transform = new PublicMatrix4f();
+		ModMatrix4f transform = new ModMatrix4f();
 		transform.load(floatbuffer);
 		transform.transpose();
 		return transform;

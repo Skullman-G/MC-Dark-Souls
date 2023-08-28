@@ -80,8 +80,9 @@ public class DodgingAnimation extends ActionAnimation
 	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
 	{
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
-		Collider collider = new CubeCollider(aabb.maxX - aabb.minX, aabb.maxY - aabb.minY, aabb.maxZ - aabb.minZ, 0, 0, 0);
-		collider.draw(poseStack, buffer, entityCap, "Root", partialTicks);
+		Vec3 aabbCenter = aabb.getCenter();
+		Collider collider = new CubeCollider(aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
+		collider.draw(entityCap, "Root", partialTicks);
 	}
 	
 	@Override
@@ -94,7 +95,8 @@ public class DodgingAnimation extends ActionAnimation
 		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
-		Collider collider = new CubeCollider(aabb.maxX - aabb.minX, aabb.maxY - aabb.minY, aabb.maxZ - aabb.minZ, 0, 0, 0);
+		Vec3 aabbCenter = aabb.getCenter();
+		Collider collider = new CubeCollider(aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
 		entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 		List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, "Root", 1.0F);
 		

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.common.animation.Joint;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 public class Armature
 {
@@ -28,9 +28,9 @@ public class Armature
 		});
 	}
 
-	public PublicMatrix4f[] getJointTransforms()
+	public ModMatrix4f[] getJointTransforms()
 	{
-		PublicMatrix4f[] jointMatrices = new PublicMatrix4f[this.jointNumber];
+		ModMatrix4f[] jointMatrices = new ModMatrix4f[this.jointNumber];
 		this.jointToTransformMatrixArray(this.jointHierarcy, jointMatrices);
 		return jointMatrices;
 	}
@@ -86,9 +86,9 @@ public class Armature
 		return this.jointHierarcy;
 	}
 
-	private void jointToTransformMatrixArray(Joint joint, PublicMatrix4f[] jointMatrices)
+	private void jointToTransformMatrixArray(Joint joint, ModMatrix4f[] jointMatrices)
 	{
-		PublicMatrix4f result = PublicMatrix4f.mul(joint.getAnimatedTransform(), joint.getInversedModelTransform(), null);
+		ModMatrix4f result = ModMatrix4f.mul(joint.getAnimatedTransform(), joint.getInversedModelTransform(), null);
 		jointMatrices[joint.getId()] = result;
 
 		for (Joint childJoint : joint.getSubJoints())

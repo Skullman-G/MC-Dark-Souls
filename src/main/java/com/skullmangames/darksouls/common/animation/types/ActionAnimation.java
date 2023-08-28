@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.common.animation.Property.MovementAnimationSe
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
@@ -150,17 +150,17 @@ public class ActionAnimation extends ImmovableAnimation
 	{
 		JointTransform rootTransform = pose.getTransformByName("Root");
 		Vector3f rootPosition = rootTransform.translation();
-		PublicMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
+		ModMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
 				.searchJointByName("Root").getLocalTransform().removeTranslation();
-		PublicMatrix4f toOrigin = PublicMatrix4f.invert(toRootTransformApplied, null);
-		Vector3f worldPosition = PublicMatrix4f.transform3v(toRootTransformApplied, rootPosition, null);
+		ModMatrix4f toOrigin = ModMatrix4f.invert(toRootTransformApplied, null);
+		Vector3f worldPosition = ModMatrix4f.transform3v(toRootTransformApplied, rootPosition, null);
 		worldPosition.setX(0.0F);
 		worldPosition.setY(
 				(this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false) && worldPosition.y() > 0.0F)
 						? 0.0F
 						: worldPosition.y());
 		worldPosition.setZ(0.0F);
-		PublicMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
+		ModMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
 		rootPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
 	}
 
@@ -218,8 +218,8 @@ public class ActionAnimation extends ImmovableAnimation
 			
 			Vector4f currentpos = new Vector4f(jt.translation().x(), jt.translation().y(), jt.translation().z(), 1.0F);
 			Vector4f prevpos = new Vector4f(prevJt.translation().x(), prevJt.translation().y(), prevJt.translation().z(), 1.0F);
-			PublicMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
-			PublicMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature().searchJointByName("Root").getLocalTransform().removeTranslation();
+			ModMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
+			ModMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature().searchJointByName("Root").getLocalTransform().removeTranslation();
 			rotationTransform.mulBack(localTransform);
 			currentpos = rotationTransform.transform(currentpos);
 			prevpos = rotationTransform.transform(prevpos);

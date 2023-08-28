@@ -4,16 +4,14 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -23,15 +21,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class Collider
 {
-	protected final Vec3 modelCenter;
+	private Vec3 worldCenter;
+	protected Vec3[] vertices;
+	protected Vec3[] normals;
+	
+	/**
+	 * Test hitbox.
+	 * Bigger than collider hitbox.
+	 * Uses mass center instead of world center.
+	 **/
 	protected final AABB outerAABB;
-	protected Vec3 worldCenter;
 
-	public Collider(Vec3 center, @Nullable AABB outerAABB)
+	public Collider(AABB outerAABB)
 	{
-		this.modelCenter = center;
 		this.outerAABB = outerAABB;
-		this.worldCenter = new Vec3(0, 0, 0);
+		this.worldCenter = Vec3.ZERO;
 	}
 	
 	@Nullable
@@ -42,22 +46,45 @@ public abstract class Collider
 	
 	public Vec3 getWorldCenter()
 	{
-		return new Vec3(-this.worldCenter.x, this.worldCenter.y, -this.worldCenter.z);
+		return this.worldCenter;
 	}
 
-	protected void transform(PublicMatrix4f mat)
+	protected void transform(ModMatrix4f mat)
 	{
-		this.worldCenter = PublicMatrix4f.transform(mat, this.modelCenter);
+		Vec3 pos = ModMatrix4f.transform(mat, Vec3.ZERO);
+		this.moveTo(new Vec3(-pos.x, pos.y, -pos.z));
 	}
+	
+	protected void moveTo(Vec3 pos)
+	{
+		this.worldCenter = pos;
+		for (int i = 0; i < this.vertices.length; i++)
+		{
+			this.vertices[i] = this.vertices[i].add(this.worldCenter);
+		}
+	}
+	
+	protected Vec3 min()
+	{
+		return this.vertices[0];
+	}
+	
+	protected Vec3 max()
+	{
+		return this.vertices[6];
+	}
+	
+	public abstract boolean collidesWith(Collider other);
 	
 	public void update(LivingCap<?> entityCap, String jointName, float partialTicks)
 	{
-		PublicMatrix4f transformMatrix;
+		ModMatrix4f transformMatrix;
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
 		int pathIndex = armature.searchPathIndex(jointName);
 
-		if (pathIndex == -1) transformMatrix = new PublicMatrix4f();
+		if (pathIndex == -1) transformMatrix = new ModMatrix4f();
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
+		
 		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks));
 		this.transform(transformMatrix);
 	}
@@ -78,36 +105,28 @@ public abstract class Collider
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public abstract void drawInternal(PoseStack matrixStackIn, MultiBufferSource buffer, PublicMatrix4f pose, boolean red);
+	public abstract void drawInternal(boolean red);
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, String boneName, float partialTicks)
+	public void draw(LivingCap<?> entityCap, String jointName, float partialTicks)
 	{
-		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
-		int pathIndex = armature.searchPathIndex(boneName);
 		boolean red = entityCap.getEntityState() == EntityState.CONTACT;
-		PublicMatrix4f mat = null;
+		this.update(entityCap, jointName, partialTicks);
 
-		if (pathIndex == -1)
-		{
-			mat = new PublicMatrix4f();
-		} else
-		{
-			mat = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
-		}
-
-		this.drawInternal(poseStack, buffer, mat, red);
+		this.drawInternal(red);
 	}
 
-	protected abstract boolean collide(Entity opponent);
+	protected abstract boolean collidesWith(Entity opponent);
 
 	protected void filterHitEntities(List<Entity> entities)
 	{
-		entities.removeIf((entity) -> !this.collide(entity));
+		entities.removeIf((entity) -> !this.collidesWith(entity));
 	}
 
 	public AABB getHitboxAABB()
 	{
-		return this.outerAABB.move(-this.worldCenter.x, this.worldCenter.y, -this.worldCenter.z);
+		return this.outerAABB.move(this.getMassCenter());
 	}
+	
+	public abstract Vec3 getMassCenter();
 }

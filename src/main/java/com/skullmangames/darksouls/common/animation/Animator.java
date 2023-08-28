@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -67,16 +67,16 @@ public abstract class Animator
 		this.livingAnimations.clear();
 	}
 
-	public static PublicMatrix4f getParentboundTransform(Pose pose, Armature armature, int pathIndex)
+	public static ModMatrix4f getParentboundTransform(Pose pose, Armature armature, int pathIndex)
 	{
 		armature.initializeTransform();
-		return getParentboundTransformInternal(pose, armature.getJointHierarcy(), new PublicMatrix4f(), pathIndex);
+		return getParentboundTransformInternal(pose, armature.getJointHierarcy(), new ModMatrix4f(), pathIndex);
 	}
 
-	private static PublicMatrix4f getParentboundTransformInternal(Pose pose, Joint joint, PublicMatrix4f parentTransform, int pathIndex)
+	private static ModMatrix4f getParentboundTransformInternal(Pose pose, Joint joint, ModMatrix4f parentTransform, int pathIndex)
 	{
 		JointTransform jt = pose.getTransformByName(joint.getName());
-		PublicMatrix4f result = jt.getParentboundMatrix(joint, parentTransform);
+		ModMatrix4f result = jt.getParentboundMatrix(joint, parentTransform);
 		int nextIndex = pathIndex % 10;
 		return nextIndex > 0 ? getParentboundTransformInternal(pose, joint.getSubJoints().get(nextIndex - 1), result, pathIndex / 10) : result;
 	}

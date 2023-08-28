@@ -7,23 +7,28 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
+
 import net.minecraft.world.phys.Vec3;
 
-public class PublicMatrix4f
+public class ModMatrix4f
 {
-	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
+	public float m00, m01, m02, m03,
+				 m10, m11, m12, m13,
+				 m20, m21, m22, m23,
+				 m30, m31, m32, m33;
 
-	public PublicMatrix4f()
+	public ModMatrix4f()
 	{
 		this.setIdentity();
 	}
 
-	public PublicMatrix4f(final PublicMatrix4f src)
+	public ModMatrix4f(final ModMatrix4f src)
 	{
 		this.load(src);
 	}
 	
-	public PublicMatrix4f(Matrix4f mat4f)
+	public ModMatrix4f(Matrix4f mat4f)
 	{
 		FloatBuffer buf = BufferUtils.createFloatBuffer(16);
 		buf.position(0);
@@ -34,10 +39,10 @@ public class PublicMatrix4f
 	@Override
 	public String toString()
 	{
-		return this.m00+" "+this.m01+" "+this.m02+" "+this.m03
-				+" "+this.m10+" "+this.m11+" "+this.m12+" "+this.m13
-				+" "+this.m20+" "+this.m21+" "+this.m22+" "+this.m23
-				+" "+this.m30+" "+this.m31+" "+this.m32+" "+this.m33;
+		return "("+this.m00+" "+this.m01+" "+this.m02+" "+this.m03+")\n"
+				+"("+this.m10+" "+this.m11+" "+this.m12+" "+this.m13+")\n"
+				+"("+this.m20+" "+this.m21+" "+this.m22+" "+this.m23+")\n"
+				+"("+this.m30+" "+this.m31+" "+this.m32+" "+this.m33+")\n";
 	}
 
 	public void setIdentity()
@@ -60,7 +65,7 @@ public class PublicMatrix4f
 		this.m33 = 1.0f;
 	}
 
-	public PublicMatrix4f load(PublicMatrix4f src)
+	public ModMatrix4f load(ModMatrix4f src)
 	{
 		this.m00 = src.m00;
 		this.m01 = src.m01;
@@ -82,7 +87,7 @@ public class PublicMatrix4f
 		return this;
 	}
 
-	public PublicMatrix4f load(FloatBuffer buf)
+	public ModMatrix4f load(FloatBuffer buf)
 	{
 		buf.position(0);
 		this.m00 = buf.get();
@@ -105,12 +110,12 @@ public class PublicMatrix4f
 		return this;
 	}
 
-	public PublicMatrix4f transpose()
+	public ModMatrix4f transpose()
 	{
 		return transpose(this);
 	}
 
-	public PublicMatrix4f transpose(PublicMatrix4f src)
+	public ModMatrix4f transpose(ModMatrix4f src)
 	{
 		float m00 = src.m00;
 		float m01 = src.m10;
@@ -154,12 +159,12 @@ public class PublicMatrix4f
 		return transform(this, right);
 	}
 
-	public static Vector4f transform(PublicMatrix4f left, Vector4f right)
+	public static Vector4f transform(ModMatrix4f left, Vector4f right)
 	{
 		return transform(left, right, new Vector4f());
 	}
 	
-	public static Vec3 transform(PublicMatrix4f matrix, Vec3 src)
+	public static Vec3 transform(ModMatrix4f matrix, Vec3 src)
 	{
 		double x = matrix.m00 * src.x + matrix.m10 * src.y + matrix.m20 * src.z + matrix.m30 * 1.0F;
 		double y = matrix.m01 * src.x + matrix.m11 * src.y + matrix.m21 * src.z + matrix.m31 * 1.0F;
@@ -168,7 +173,7 @@ public class PublicMatrix4f
 		return new Vec3(x, y ,z);
 	}
 
-	public static Vector4f transform(PublicMatrix4f left, Vector4f right, Vector4f dest)
+	public static Vector4f transform(ModMatrix4f left, Vector4f right, Vector4f dest)
 	{
 		if (dest == null)
 			dest = new Vector4f();
@@ -186,52 +191,57 @@ public class PublicMatrix4f
 		return dest;
 	}
 
-	public PublicMatrix4f scale(Vector3f vec)
+	public ModMatrix4f scale(Vector3f vec)
 	{
 		return this.scale(vec.x(), vec.y(), vec.z());
 	}
 
-	public PublicMatrix4f scale(float x, float y, float z)
+	public ModMatrix4f scale(float x, float y, float z)
 	{
-		this.m00 = this.m00 * x;
-		this.m01 = this.m01 * x;
-		this.m02 = this.m02 * x;
-		this.m03 = this.m03 * x;
-		this.m10 = this.m10 * y;
-		this.m11 = this.m11 * y;
-		this.m12 = this.m12 * y;
-		this.m13 = this.m13 * y;
-		this.m20 = this.m20 * y;
-		this.m21 = this.m21 * y;
-		this.m22 = this.m22 * y;
-		this.m23 = this.m23 * y;
+		this.m00 *= x;
+		this.m01 *= x;
+		this.m02 *= x;
+		this.m03 *= x;
+		this.m10 *= y;
+		this.m11 *= y;
+		this.m12 *= y;
+		this.m13 *= y;
+		this.m20 *= y;
+		this.m21 *= y;
+		this.m22 *= y;
+		this.m23 *= y;
 		
 		return this;
 	}
 
-	public PublicMatrix4f rotate(float angle, Vector3f axis)
+	public ModMatrix4f rotate(float angle, Vector3f axis)
 	{
 		float c = (float) Math.cos(angle);
 		float s = (float) Math.sin(angle);
 		float oneminusc = 1.0f - c;
+		
+		float xx = axis.x() * axis.x();
+		float yy = axis.y() * axis.y();
+		float zz = axis.z() * axis.z();
 		float xy = axis.x() * axis.y();
 		float yz = axis.y() * axis.z();
 		float xz = axis.x() * axis.z();
+		
 		float xs = axis.x() * s;
 		float ys = axis.y() * s;
 		float zs = axis.z() * s;
 
-		float f00 = axis.x() * axis.x() * oneminusc + c;
+		float f00 = xx * oneminusc + c;
 		float f01 = xy * oneminusc + zs;
 		float f02 = xz * oneminusc - ys;
 
 		float f10 = xy * oneminusc - zs;
-		float f11 = axis.y() * axis.y() * oneminusc + c;
+		float f11 = yy * oneminusc + c;
 		float f12 = yz * oneminusc + xs;
 
 		float f20 = xz * oneminusc + ys;
 		float f21 = yz * oneminusc - xs;
-		float f22 = axis.z() * axis.z() * oneminusc + c;
+		float f22 = zz * oneminusc + c;
 
 		float t00 = this.m00 * f00 + this.m10 * f01 + this.m20 * f02;
 		float t01 = this.m01 * f00 + this.m11 * f01 + this.m21 * f02;
@@ -241,10 +251,12 @@ public class PublicMatrix4f
 		float t11 = this.m01 * f10 + this.m11 * f11 + this.m21 * f12;
 		float t12 = this.m02 * f10 + this.m12 * f11 + this.m22 * f12;
 		float t13 = this.m03 * f10 + this.m13 * f11 + this.m23 * f12;
+		
 		this.m20 = this.m00 * f20 + this.m10 * f21 + this.m20 * f22;
 		this.m21 = this.m01 * f20 + this.m11 * f21 + this.m21 * f22;
 		this.m22 = this.m02 * f20 + this.m12 * f21 + this.m22 * f22;
 		this.m23 = this.m03 * f20 + this.m13 * f21 + this.m23 * f22;
+		
 		this.m00 = t00;
 		this.m01 = t01;
 		this.m02 = t02;
@@ -257,25 +269,25 @@ public class PublicMatrix4f
 		return this;
 	}
 	
-	public PublicMatrix4f mulFront(PublicMatrix4f left)
+	public ModMatrix4f mulFront(ModMatrix4f left)
 	{
-		return PublicMatrix4f.mul(left, this, this);
+		return ModMatrix4f.mul(left, this, this);
 	}
 	
-	public PublicMatrix4f mulBack(PublicMatrix4f right)
+	public ModMatrix4f mulBack(ModMatrix4f right)
 	{
 		return mul(this, right, this);
 	}
 	
-	public static PublicMatrix4f mul(PublicMatrix4f left, PublicMatrix4f right)
+	public static ModMatrix4f mul(ModMatrix4f left, ModMatrix4f right)
 	{
 		return mul(left, right, null);
 	}
 
-	public static PublicMatrix4f mul(PublicMatrix4f left, PublicMatrix4f right, PublicMatrix4f dest)
+	public static ModMatrix4f mul(ModMatrix4f left, ModMatrix4f right, ModMatrix4f dest)
 	{
 		if (dest == null)
-			dest = new PublicMatrix4f();
+			dest = new ModMatrix4f();
 
 		float m00 = left.m00 * right.m00 + left.m10 * right.m01 + left.m20 * right.m02 + left.m30 * right.m03;
 		float m01 = left.m01 * right.m00 + left.m11 * right.m01 + left.m21 * right.m02 + left.m31 * right.m03;
@@ -314,24 +326,24 @@ public class PublicMatrix4f
 		return dest;
 	}
 
-	public static PublicMatrix4f mulAsOrigin(PublicMatrix4f left, PublicMatrix4f right, PublicMatrix4f dest)
+	public static ModMatrix4f mulAsOrigin(ModMatrix4f left, ModMatrix4f right, ModMatrix4f dest)
 	{
 		float x = right.m30;
 		float y = right.m31;
 		float z = right.m32;
-		PublicMatrix4f result = mul(left, right, dest);
+		ModMatrix4f result = mul(left, right, dest);
 		result.m30 = x;
 		result.m31 = y;
 		result.m32 = z;
 		return result;
 	}
 
-	public static PublicMatrix4f mulAsOriginFront(PublicMatrix4f left, PublicMatrix4f right, PublicMatrix4f dest)
+	public static ModMatrix4f mulAsOriginFront(ModMatrix4f left, ModMatrix4f right, ModMatrix4f dest)
 	{
 		return mulAsOrigin(right, left, dest);
 	}
 
-	public static PublicMatrix4f invert(PublicMatrix4f src, PublicMatrix4f dest)
+	public static ModMatrix4f invert(ModMatrix4f src, ModMatrix4f dest)
 	{
 		float determinant = src.determinant();
 
@@ -339,7 +351,7 @@ public class PublicMatrix4f
 		{
 			if (dest == null)
 			{
-				dest = new PublicMatrix4f();
+				dest = new ModMatrix4f();
 			}
 
 			float determinant_inv = 1f / determinant;
@@ -412,12 +424,12 @@ public class PublicMatrix4f
 		return t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
 	}
 
-	public PublicMatrix4f translate(Vector3f vec)
+	public ModMatrix4f translate(Vector3f vec)
 	{
 		return this.translate(vec.x(), vec.y(), vec.z());
 	}
 	
-	public PublicMatrix4f translate(float x, float y, float z)
+	public ModMatrix4f translate(float x, float y, float z)
 	{
 		this.m30 += this.m00 * x + this.m10 * y + this.m20 * z;
 		this.m31 += this.m01 * x + this.m11 * y + this.m21 * z;
@@ -427,17 +439,17 @@ public class PublicMatrix4f
 		return this;
 	}
 
-	public static PublicMatrix4f getModelMatrixIntegrated(float prevPosX, float posX, float prevPosY, float posY,
+	public static ModMatrix4f createModelMatrix(float prevPosX, float posX, float prevPosY, float posY,
 			float prevPosZ, float posZ, float prevPitch, float pitch, float prevYaw, float yaw, float partialTick,
 			float scaleX, float scaleY, float scaleZ)
 	{
-		PublicMatrix4f modelMatrix = new PublicMatrix4f();
+		ModMatrix4f modelMatrix = new ModMatrix4f();
 		Vector3f entityPosition = new Vector3f(-(prevPosX + (posX - prevPosX) * partialTick),
 				((prevPosY + (posY - prevPosY) * partialTick)), -(prevPosZ + (posZ - prevPosZ) * partialTick));
 
 		modelMatrix.translate(entityPosition);
-		float pitchDegree = interpolateRotation(prevPitch, pitch, partialTick);
-		float yawDegree = interpolateRotation(prevYaw, yaw, partialTick);
+		float pitchDegree = MathUtils.interpolateRotation(prevPitch, pitch, partialTick);
+		float yawDegree = MathUtils.interpolateRotation(prevYaw, yaw, partialTick);
 		modelMatrix.rotate((float) -Math.toRadians(yawDegree), Vector3f.YP);
 		modelMatrix.rotate((float) -Math.toRadians(pitchDegree), Vector3f.XP);
 		modelMatrix.scale(scaleX, scaleY, scaleZ);
@@ -445,45 +457,33 @@ public class PublicMatrix4f
 		return modelMatrix;
 	}
 
-	public static float interpolateRotation(float par1, float par2, float par3)
-	{
-		float f = 0;
-
-		for (f = par2 - par1; f < -180.0F; f += 360.0F)
-		{
-			;
-		}
-
-		while (f >= 180.0F)
-		{
-			f -= 360.0F;
-		}
-
-		return par1 + par3 * f;
-	}
-
-	public static void rotateStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void rotateStack(PoseStack mStack, ModMatrix4f mat)
 	{
 		mStack.mulPose(toQuaternion(mat).vanilla());
 	}
 
-	public static void scaleStack(PoseStack mStack, PublicMatrix4f mat)
+	public static void scaleStack(PoseStack mStack, ModMatrix4f mat)
 	{
 		Vector3f vector = getScaleFromMatrix(mat);
 		mStack.scale(vector.x(), vector.y(), vector.z());
 	}
 
-	public PublicMatrix4f removeTranslation()
+	public ModMatrix4f removeTranslation()
 	{
-		return removeTranslation(this);
+		ModMatrix4f copy = new ModMatrix4f(this);
+		copy.m30 = 0.0F;
+		copy.m31 = 0.0F;
+		copy.m32 = 0.0F;
+
+		return copy;
 	}
 
-	public static PublicMatrix4f createRotatorDeg(float angle, Vector3f axis)
+	public static ModMatrix4f createRotatorDeg(float angle, Vector3f axis)
 	{
-		return new PublicMatrix4f().rotate((float)Math.toRadians(angle), axis);
+		return new ModMatrix4f().rotate((float)Math.toRadians(angle), axis);
 	}
 
-	public static Vector3f transform3v(PublicMatrix4f matrix, Vector3f src, Vector3f dest)
+	public static Vector3f transform3v(ModMatrix4f matrix, Vector3f src, Vector3f dest)
 	{
 		if (dest == null)
 			dest = new Vector3f();
@@ -494,25 +494,21 @@ public class PublicMatrix4f
 		return dest;
 	}
 
-	public static PublicMatrix4f removeTranslation(PublicMatrix4f src)
-	{
-		PublicMatrix4f copy = new PublicMatrix4f(src);
-		copy.m30 = 0.0F;
-		copy.m31 = 0.0F;
-		copy.m32 = 0.0F;
-
-		return copy;
-	}
-
-	private static Vector3f getScaleFromMatrix(PublicMatrix4f mat)
+	private static Vector3f getScaleFromMatrix(ModMatrix4f mat)
 	{
 		Vector3f a = new Vector3f(mat.m00, mat.m10, mat.m20);
 		Vector3f b = new Vector3f(mat.m01, mat.m11, mat.m21);
 		Vector3f c = new Vector3f(mat.m02, mat.m12, mat.m22);
 		return new Vector3f(Vector3fHelper.length(a), Vector3fHelper.length(b), Vector3fHelper.length(c));
 	}
+	
+	public static void translateStack(PoseStack mStack, ModMatrix4f mat)
+	{
+		Vector3f vector = mat.toTranslationVector();
+		mStack.translate(vector.x(), vector.y(), vector.z());
+	}
 
-	public static Matrix4f exportMatrix(PublicMatrix4f visibleMat)
+	public static Matrix4f exportMatrix(ModMatrix4f visibleMat)
 	{
 		float[] arr = new float[16];
 		arr[0] = visibleMat.m00;
@@ -535,9 +531,9 @@ public class PublicMatrix4f
 		return new Matrix4f(arr);
 	}
 
-	public static PublicMatrix4f fromQuaternion(ModQuaternion quaternion)
+	public static ModMatrix4f fromQuaternion(ModQuaternion quaternion)
 	{
-		PublicMatrix4f matrix = new PublicMatrix4f();
+		ModMatrix4f matrix = new ModMatrix4f();
 		float x = quaternion.x;
 		float y = quaternion.y;
 		float z = quaternion.z;
@@ -568,17 +564,17 @@ public class PublicMatrix4f
 		return toVector(this);
 	}
 
-	public static Vector3f toVector(PublicMatrix4f matrix)
+	public static Vector3f toVector(ModMatrix4f matrix)
 	{
 		return new Vector3f(matrix.m30, matrix.m31, matrix.m32);
 	}
 
 	public ModQuaternion toQuaternion()
 	{
-		return PublicMatrix4f.toQuaternion(this);
+		return ModMatrix4f.toQuaternion(this);
 	}
 
-	public static ModQuaternion toQuaternion(PublicMatrix4f matrix)
+	public static ModQuaternion toQuaternion(ModMatrix4f matrix)
 	{
 		float w, x, y, z;
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;

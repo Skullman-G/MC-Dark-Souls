@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,7 +35,7 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 	}
 	
 	@Override
-	public void renderLayer(T entityCap, PoseStack poseStack, MultiBufferSource buffer, int packedLight, PublicMatrix4f[] poses, float partialTicks)
+	public void renderLayer(T entityCap, PoseStack poseStack, MultiBufferSource buffer, int packedLight, ModMatrix4f[] poses, float partialTicks)
 	{
 		ItemStack mainHandStack = entityCap.getOriginalEntity().getMainHandItem();
 		RenderEngine renderEngine = ClientManager.INSTANCE.renderEngine;

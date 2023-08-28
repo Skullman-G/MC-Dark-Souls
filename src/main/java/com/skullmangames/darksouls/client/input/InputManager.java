@@ -84,6 +84,7 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
 		this.keyFunctionMap.put(ModKeys.TARGET_LOCK_ON, this::onTrySelectTarget);
 		this.keyFunctionMap.put(ModKeys.TWO_HANDING, this::onTwoHanding);
+		this.keyFunctionMap.put(ModKeys.PARRY, this::onParry);
 		
 		try
 		{
@@ -139,6 +140,14 @@ public class InputManager
 				&& this.player.getVehicle() == null
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	private void onParry(int key, int action)
+	{
+		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
+		{
+			this.playerCap.performParry();
+		}
 	}
 	
 	private void onTwoHanding(int key, int action)

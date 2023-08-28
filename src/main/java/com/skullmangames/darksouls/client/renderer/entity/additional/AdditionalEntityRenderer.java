@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -68,8 +68,8 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 	
 	public Matrix4f getMVMatrix(PoseStack poseStack, float posX, float posY, float posZ, float xRot, boolean lockRotation)
 	{
-		PublicMatrix4f viewMatrix = new PublicMatrix4f(poseStack.last().pose());
-		PublicMatrix4f finalMatrix = new PublicMatrix4f();
+		ModMatrix4f viewMatrix = new ModMatrix4f(poseStack.last().pose());
+		ModMatrix4f finalMatrix = new ModMatrix4f();
 		finalMatrix.translate(-posX, posY, -posZ);
 		poseStack.popPose();
 		if (lockRotation)
@@ -84,10 +84,10 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 			finalMatrix.m21 = viewMatrix.m12;
 			finalMatrix.m22 = viewMatrix.m22;
 		}
-		PublicMatrix4f.mul(viewMatrix, finalMatrix, finalMatrix);
+		ModMatrix4f.mul(viewMatrix, finalMatrix, finalMatrix);
 		finalMatrix.rotate((float)Math.toRadians(xRot), new Vector3f(1, 0, 0));
 		
-		return PublicMatrix4f.exportMatrix(finalMatrix);
+		return ModMatrix4f.exportMatrix(finalMatrix);
 	}
 	
 	public abstract boolean shouldDraw(LivingEntity entity);

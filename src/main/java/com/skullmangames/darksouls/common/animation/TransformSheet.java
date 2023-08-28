@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 
 import net.minecraft.util.Mth;
@@ -123,10 +123,10 @@ public class TransformSheet
 			Vector3f startToKeyTransform = Vector3fHelper.mul(Vector3fHelper.sub(keyTransform, startpos), -1.0F, 1.0F,
 					-1.0F);
 			Vector3f animOnLine = Vector3fHelper.sub(startToKeyTransform, line);
-			PublicMatrix4f rotator = PublicMatrix4f.createRotatorDeg(pitchDeg, new Vector3f(1.0F, 0.0F, 0.0F))
-					.mulFront(PublicMatrix4f.createRotatorDeg(yawDeg, new Vector3f(0.0F, 1.0F, 0.0F)));
+			ModMatrix4f rotator = ModMatrix4f.createRotatorDeg(pitchDeg, new Vector3f(1.0F, 0.0F, 0.0F))
+					.mulFront(ModMatrix4f.createRotatorDeg(yawDeg, new Vector3f(0.0F, 1.0F, 0.0F)));
 			Vector3f toNewKeyTransform = Vector3fHelper.add(modifiedLine,
-					PublicMatrix4f.transform3v(rotator, animOnLine, null));
+					ModMatrix4f.transform3v(rotator, animOnLine, null));
 			keyTransform = Vector3fHelper.add(modifiedStart, toNewKeyTransform);
 		}
 	}

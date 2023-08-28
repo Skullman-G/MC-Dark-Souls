@@ -3,18 +3,18 @@ package com.skullmangames.darksouls.common.animation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skullmangames.darksouls.core.util.math.vector.PublicMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 public class Joint
 {
 	private final List<Joint> subJoints = new ArrayList<Joint>();
 	private final int jointId;
 	private final String jointName;
-	private final PublicMatrix4f localTransform;
-	private PublicMatrix4f inversedTransform = new PublicMatrix4f();
-	private PublicMatrix4f animatedTransform = new PublicMatrix4f();
+	private final ModMatrix4f localTransform;
+	private ModMatrix4f inversedTransform = new ModMatrix4f();
+	private ModMatrix4f animatedTransform = new ModMatrix4f();
 
-	public Joint(String name, int jointID, PublicMatrix4f localTransform)
+	public Joint(String name, int jointID, ModMatrix4f localTransform)
 	{
 		this.jointId = jointID;
 		this.jointName = name;
@@ -29,7 +29,7 @@ public class Joint
 		}
 	}
 
-	public void setAnimatedTransform(PublicMatrix4f animatedTransform)
+	public void setAnimatedTransform(ModMatrix4f animatedTransform)
 	{
 		this.animatedTransform.load(animatedTransform);
 	}
@@ -43,10 +43,10 @@ public class Joint
 		}
 	}
 
-	public void setInversedModelTransform(PublicMatrix4f parentTransform)
+	public void setInversedModelTransform(ModMatrix4f parentTransform)
 	{
-		PublicMatrix4f modelTransform = PublicMatrix4f.mul(parentTransform, this.localTransform, null);
-		PublicMatrix4f.invert(modelTransform, this.inversedTransform);
+		ModMatrix4f modelTransform = ModMatrix4f.mul(parentTransform, this.localTransform, null);
+		ModMatrix4f.invert(modelTransform, this.inversedTransform);
 
 		for (Joint joint : this.subJoints)
 		{
@@ -54,17 +54,17 @@ public class Joint
 		}
 	}
 
-	public PublicMatrix4f getLocalTransform()
+	public ModMatrix4f getLocalTransform()
 	{
 		return this.localTransform;
 	}
 
-	public PublicMatrix4f getAnimatedTransform()
+	public ModMatrix4f getAnimatedTransform()
 	{
 		return this.animatedTransform;
 	}
 
-	public PublicMatrix4f getInversedModelTransform()
+	public ModMatrix4f getInversedModelTransform()
 	{
 		return this.inversedTransform;
 	}
