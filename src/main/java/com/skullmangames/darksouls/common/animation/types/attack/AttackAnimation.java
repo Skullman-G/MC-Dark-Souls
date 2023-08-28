@@ -202,6 +202,8 @@ public class AttackAnimation extends ActionAnimation
 		Collider collider = this.getCollider(entityCap, elapsedTime);
 		LivingEntity entity = entityCap.getOriginalEntity();
 		
+		entityCap.weaponCollider = this.getCollider(entityCap, elapsedTime);
+		
 		if (spawner != null)
 		{
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F);

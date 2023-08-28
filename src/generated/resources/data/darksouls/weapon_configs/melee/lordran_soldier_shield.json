@@ -2,7 +2,7 @@
   "registry_name": "darksouls:lordran_soldier_shield",
   "category": "standard_shield",
   "moveset": "darksouls:shield",
-  "collider": "darksouls:fist",
+  "collider": "darksouls:shield",
   "weight": 3.5,
   "stability": 0.56,
   "critical": 1.0,

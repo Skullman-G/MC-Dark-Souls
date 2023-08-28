@@ -6,10 +6,12 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -46,6 +48,37 @@ public class ParryAnimation extends ActionAnimation
 		
 		if (!entityCap.isClientSide())
 		{
+			if (entityCap.getEntityState() == EntityState.CONTACT)
+			{
+				LivingEntity orgEntity = entityCap.getOriginalEntity();
+				List<Entity> entities = entityCap.getLevel().getEntities(orgEntity, orgEntity.getBoundingBox().inflate(2.0D));
+				MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(InteractionHand.OFF_HAND);
+				Collider collider = entityCap.getColliderMatching(InteractionHand.OFF_HAND);
+				collider.update(entityCap, this.jointName, 1.0F);
+				
+				for (Entity entity : entities)
+				{
+					if (entity instanceof LivingEntity livingEntity)
+					{
+						LivingCap<?> cap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+						if (cap != null && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
+						{
+							if (weapon != null) entityCap.playSound(weapon.getBlockSound());
+							cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
+							cap.playAnimationSynchronized(Animations.BIPED_DISARM_SHIELD_RIGHT, 0.0F);
+						}
+					}
+				}
+			}
+		}
+		else this.onClientUpdate(entityCap);
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	private void onClientUpdate(LivingCap<?> entityCap)
+	{
+		if (entityCap.getEntityState() == EntityState.CONTACT)
+		{
 			LivingEntity orgEntity = entityCap.getOriginalEntity();
 			List<Entity> entities = entityCap.getLevel().getEntities(orgEntity, orgEntity.getBoundingBox().inflate(2.0D));
 			Collider collider = entityCap.getColliderMatching(InteractionHand.OFF_HAND);
@@ -58,12 +91,18 @@ public class ParryAnimation extends ActionAnimation
 					LivingCap<?> cap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 					if (cap != null && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
 					{
-						cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
-						cap.playAnimationSynchronized(Animations.BIPED_DISARM_SHIELD_RIGHT, 0.0F);
+						entityCap.makeImpactParticles(collider.getMassCenter(), true);
 					}
 				}
 			}
 		}
+	}
+	
+	@Override
+	public <V> ParryAnimation addProperty(Property<V> propertyType, V value)
+	{
+		super.addProperty(propertyType, value);
+		return this;
 	}
 	
 	@Override

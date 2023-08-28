@@ -2,7 +2,7 @@
   "registry_name": "darksouls:cracked_round_shield",
   "category": "small_shield",
   "moveset": "darksouls:shield",
-  "collider": "darksouls:fist",
+  "collider": "darksouls:shield",
   "weight": 1.0,
   "stability": 0.3,
   "critical": 1.0,

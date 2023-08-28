@@ -2,7 +2,7 @@
   "registry_name": "darksouls:knight_shield",
   "category": "standard_shield",
   "moveset": "darksouls:shield",
-  "collider": "darksouls:fist",
+  "collider": "darksouls:shield",
   "weight": 5.5,
   "stability": 0.56,
   "critical": 1.0,

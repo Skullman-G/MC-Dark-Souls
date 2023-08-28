@@ -2,7 +2,7 @@
   "registry_name": "darksouls:heater_shield",
   "category": "standard_shield",
   "moveset": "darksouls:shield",
-  "collider": "darksouls:fist",
+  "collider": "darksouls:shield",
   "weight": 2.0,
   "stability": 0.55,
   "critical": 1.0,

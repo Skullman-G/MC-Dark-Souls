@@ -2,7 +2,7 @@
   "registry_name": "darksouls:balder_shield",
   "category": "standard_shield",
   "moveset": "darksouls:shield",
-  "collider": "darksouls:fist",
+  "collider": "darksouls:shield",
   "weight": 4.0,
   "stability": 0.63,
   "critical": 1.0,

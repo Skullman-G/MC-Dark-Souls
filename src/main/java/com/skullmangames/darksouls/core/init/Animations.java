@@ -876,8 +876,12 @@ public final class Animations
 		};
 		
 		// Parries
-		SHIELD_PARRY = new ParryAnimation(DarkSouls.rl("shield_parry"), 0.2F, 0.08F, 0.8F, "Tool_L",
+		SHIELD_PARRY = new ParryAnimation(DarkSouls.rl("shield_parry"), 0.1F, 0.32F, 0.8F, "Tool_L",
 				DarkSouls.rl("biped/combat/shield_parry"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
 				.register(builder);
 		
 		// Backstabs
@@ -1726,7 +1730,7 @@ public final class Animations
 							.addProperty(AttackProperty.STAMINA_USAGE, 23)
 							.addProperty(AttackProperty.POISE_DAMAGE, 20)
 							.register(builder),
-						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.48F, 0.42F, 1.6F, "Tool_R",
+						new AttackAnimation(DarkSouls.rl("straight_sword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.1F, 0.0F, 0.42F, 0.48F, 1.6F, "Tool_R",
 								DarkSouls.rl("biped/combat/straight_sword_th_la_2"), (models) -> models.ENTITY_BIPED)
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
