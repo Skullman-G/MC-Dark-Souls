@@ -115,6 +115,8 @@ public class AttackAnimation extends ActionAnimation
 		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		
+		entityCap.weaponCollider = this.getCollider(entityCap, elapsedTime);
+		
 		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
 			if (!prevState.shouldDetectCollision())
@@ -241,6 +243,7 @@ public class AttackAnimation extends ActionAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
+		entityCap.weaponCollider = null;
 		entityCap.currentlyAttackedEntities.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{

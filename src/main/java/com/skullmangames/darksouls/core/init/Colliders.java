@@ -28,10 +28,11 @@ public class Colliders
 	public static final Collider ULTRA_GREATSWORD = register("ultra_greatsword", new CubeCollider(-0.3F, -0.15F, -2.3F, 0.3F, 0.45F, -0.2F));
 	public static final Collider GREATSWORD = register("greatsword", new CubeCollider(-0.3F, -0.15F, -1.5F, 0.3F, 0.45F, -0.2F));
 	public static final Collider GREATAXE = register("greataxe", new CubeCollider(0.6F, 0.6F, 1.0F, 0.0F, 0.3F, -1.35F));
+	public static final Collider SHIELD = register("shield", new CubeCollider(-0.2F, -0.3F, -0.5F, 0.2F, 0.7F, 0.6F));
 	
 	//Stray Demon
 	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.getWeaponScale());
-	public static final Collider STRAY_DEMON_BODY = new CubeCollider(-2F, -1F, -2F, 2F, 1F, 2F);
+	public static final Collider STRAY_DEMON_BODY = new CubeCollider(0F, 0F, 0F, 2F, 2F, 2F);
 	
 	//Taurus Demon
 	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.getWeaponScale());

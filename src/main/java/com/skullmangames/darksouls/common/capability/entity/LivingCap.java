@@ -85,7 +85,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public void performParry()
 	{
-		this.playAnimationSynchronized(Animations.SHIELD_PARRY, 1.0F);
+		this.playAnimationSynchronized(Animations.SHIELD_PARRY, 0.0F);
 	}
 	
 	public ShieldHoldType getShieldHoldType()

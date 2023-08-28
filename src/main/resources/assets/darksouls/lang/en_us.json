@@ -339,6 +339,8 @@
 	"key.darksouls.attunement_slot_up": "Attunement Slot Up",
 	"key.darksouls.attunement_slot_down": "Attunement Slot Down",
 	"key.darksouls.target_lock_on": "Target Lock On",
+	"key.darksouls.two_handing": "Two Handing",
+	"key.darksouls.parry": "Parry",
 	
 	"config.long_press_count": "Button Long Press Count",
 	"config.show_health_indicator": "Show Health Bar Indicator",

@@ -876,7 +876,7 @@ public final class Animations
 		};
 		
 		// Parries
-		SHIELD_PARRY = new ParryAnimation(DarkSouls.rl("shield_parry"), 0.1F, 0.08F, 0.8F, "Tool_L",
+		SHIELD_PARRY = new ParryAnimation(DarkSouls.rl("shield_parry"), 0.2F, 0.08F, 0.8F, "Tool_L",
 				DarkSouls.rl("biped/combat/shield_parry"), (models) -> models.ENTITY_BIPED)
 				.register(builder);
 		
