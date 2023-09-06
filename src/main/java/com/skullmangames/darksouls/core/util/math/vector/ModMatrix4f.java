@@ -213,6 +213,11 @@ public class ModMatrix4f
 		
 		return this;
 	}
+	
+	public ModMatrix4f rotateDeg(float angle, Vector3f axis)
+	{
+		return this.rotate((float)Math.toRadians(angle), axis);
+	}
 
 	public ModMatrix4f rotate(float angle, Vector3f axis)
 	{

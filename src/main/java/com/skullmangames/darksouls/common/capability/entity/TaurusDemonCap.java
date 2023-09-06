@@ -52,4 +52,11 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	{
 		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, partialTicks, 1, 1, 1);
 	}
+
+	@Override
+	public boolean canBeParried()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

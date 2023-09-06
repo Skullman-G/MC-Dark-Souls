@@ -81,7 +81,7 @@ public class ModEntities
 
 	public static final RegistryObject<EntityType<StrayDemon>> STRAY_DEMON = register("stray_demon",
 			EntityType.Builder.<StrayDemon>of(StrayDemon::new, MobCategory.MONSTER)
-				.sized(3.5F, 7.7F)
+				.sized(2.3F, 5.0F)
 				.canSpawnFarFromPlayer());
 	
 	public static final RegistryObject<EntityType<CrestfallenWarrior>> CRESTFALLEN_WARRIOR = register("crestfallen_warrior",

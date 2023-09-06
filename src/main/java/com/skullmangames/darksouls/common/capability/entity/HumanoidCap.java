@@ -43,6 +43,12 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	{
 		return Animations.HOLLOW_DEFLECTED;
 	}
+	
+	@Override
+	public boolean canBeParried()
+	{
+		return true;
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setAttackGoals(WeaponCategory category)

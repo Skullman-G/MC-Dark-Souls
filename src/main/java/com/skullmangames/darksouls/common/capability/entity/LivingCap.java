@@ -91,6 +91,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 	}
 	
+	public abstract boolean canBeParried();
+	
 	public ShieldHoldType getShieldHoldType()
 	{
 		return ShieldHoldType.VERTICAL;

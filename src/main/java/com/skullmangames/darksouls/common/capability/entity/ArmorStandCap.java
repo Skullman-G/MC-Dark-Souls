@@ -26,4 +26,10 @@ public class ArmorStandCap extends LivingCap<ArmorStand>
 	{
 		return modelDB.ENTITY_ARMOR_STAND;
 	}
+
+	@Override
+	public boolean canBeParried()
+	{
+		return false;
+	}
 }

@@ -86,6 +86,7 @@ public abstract class Collider
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
 		
 		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks));
+		
 		this.transform(transformMatrix);
 	}
 

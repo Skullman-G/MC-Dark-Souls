@@ -64,8 +64,12 @@ public class ParryAnimation extends ActionAnimation
 						if (cap != null && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
 						{
 							if (weapon != null) entityCap.playSound(weapon.getBlockSound());
-							cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
-							cap.playAnimationSynchronized(Animations.BIPED_DISARM_SHIELD_RIGHT, 0.0F);
+							
+							if (cap.canBeParried())
+							{
+								cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
+								cap.playAnimationSynchronized(Animations.BIPED_DISARM_SHIELD_RIGHT, 0.0F);
+							}
 						}
 					}
 				}

@@ -132,6 +132,12 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	}
 	
 	@Override
+	public boolean canBeParried()
+	{
+		return true;
+	}
+	
+	@Override
 	public boolean isTwohanding()
 	{
 		return this.twoHanding;

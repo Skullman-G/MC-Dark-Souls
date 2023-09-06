@@ -7,7 +7,6 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,7 +18,7 @@ public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonC
 	
 	public StrayDemonRenderer()
 	{
-		this.layers.add(new HeldItemLayer<>(StrayDemonCap.getWeaponScale(), new Vector3d(0.0D, 0.0D, 0.1D)));
+		this.layers.add(new HeldItemLayer<>(StrayDemonCap.getWeaponScale(), new Vector3d(0.0D, 0.0D, 0.0D)));
 	}
 	
 	@Override
@@ -31,8 +30,6 @@ public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonC
 	@Override
 	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemonCap entityCap, float partialTicks)
 	{
-		float scale = 1.4F;
-		matStack.scale(scale, scale, scale);
 		super.applyRotations(matStack, armature, entityCap, partialTicks);
 		this.transformJoint(2, armature, entityCap.getHeadMatrix(partialTicks));
 	}

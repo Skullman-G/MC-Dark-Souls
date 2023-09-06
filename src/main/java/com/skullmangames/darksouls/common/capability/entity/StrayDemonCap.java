@@ -35,7 +35,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	
 	public static float getWeaponScale()
 	{
-		return 1.5F;
+		return 1.4F;
 	}
 	
 	@Override
@@ -51,10 +51,10 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	{
 		super.initAI();
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false, false)
-				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_LIGHT_ATTACK))
-				.addAttack(new AttackInstance(4, 5.0F, Animations.STRAY_DEMON_HAMMER_DRIVE))
-				.addAttack(new AttackInstance(1, 10.0F, 15.0F, Animations.STRAY_DEMON_JUMP_ATTACK))
-				.addAttack(new AttackInstance(2, 5.0F, Animations.STRAY_DEMON_GROUND_POUND)));
+				.addAttack(new AttackInstance(4, 2.5F, Animations.STRAY_DEMON_LIGHT_ATTACK))
+				.addAttack(new AttackInstance(4, 2.5F, Animations.STRAY_DEMON_HAMMER_DRIVE))
+				.addAttack(new AttackInstance(1, 10.0F, 12.0F, Animations.STRAY_DEMON_JUMP_ATTACK))
+				.addAttack(new AttackInstance(2, 2.5F, Animations.STRAY_DEMON_GROUND_POUND)));
 	}
 	
 	@Override
@@ -74,5 +74,12 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	public ModMatrix4f getHeadMatrix(float partialTicks)
 	{
 		return ModMatrix4f.createModelMatrix(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, partialTicks, 1, 1, 1);
+	}
+
+	@Override
+	public boolean canBeParried()
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
