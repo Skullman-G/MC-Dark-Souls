@@ -271,9 +271,18 @@ public class EntityEvents
 		if (entityCap != null && !entityCap.isClientSide())
 		{
 			entityCap.playSound(ModSoundEvents.GENERIC_KILL.get());
-			DeathAnimation animation = entityCap.getDeathAnimation(ExtendedDamageSource.getFrom(event.getSource(), 0));
-			if (animation == null) entityCap.onDeath();
-			else entityCap.playAnimationSynchronized(animation, 0);
+			DeathAnimation animation = entityCap.getAnimator().getMainPlayer().getPlay().getDeathAnimation();
+			if (animation != null)
+			{
+				float time = entityCap.getAnimator().getMainPlayer().getElapsedTime() + 0.05F;
+				entityCap.playAnimationSynchronized(animation, time);
+			}
+			else
+			{
+				animation = entityCap.getDeathAnimation(ExtendedDamageSource.getFrom(event.getSource(), 0));
+				if (animation == null) entityCap.onDeath();
+				else entityCap.playAnimationSynchronized(animation, 0);
+			}
 		}
 	}
 	

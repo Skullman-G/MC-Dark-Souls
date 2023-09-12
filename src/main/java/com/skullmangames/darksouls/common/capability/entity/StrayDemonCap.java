@@ -79,7 +79,18 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public boolean canBeParried()
 	{
-		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canBePunished()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canBeBackstabbed()
+	{
 		return false;
 	}
 }

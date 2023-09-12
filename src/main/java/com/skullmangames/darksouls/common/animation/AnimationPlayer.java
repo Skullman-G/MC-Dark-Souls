@@ -14,6 +14,7 @@ public class AnimationPlayer
 	private boolean isEnd;
 	private boolean doNotResetNext;
 	private boolean reversed;
+	
 	private DynamicAnimation play;
 	private TransformSheet movementAnimation = new TransformSheet();
 

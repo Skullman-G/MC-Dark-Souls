@@ -93,6 +93,19 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public abstract boolean canBeParried();
 	
+	public boolean canPunish(Entity target)
+	{
+		if (!(target instanceof LivingEntity)) return false;
+		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - this.orgEntity.getX(), target.getZ() - this.orgEntity.getZ())) + 360F) % 360F;
+		float yRotTarget = target.getYRot() - 180;
+		if (yRotTarget < -180) yRotTarget += 360F;
+		float angleBetween = Math.abs(-yRotTarget - attackAngle);
+		LivingCap<?> cap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		return cap != null && cap.canBePunished() && (angleBetween >= 315 || angleBetween <= 45);
+	}
+	
+	public abstract boolean canBePunished();
+	
 	public ShieldHoldType getShieldHoldType()
 	{
 		return ShieldHoldType.VERTICAL;
@@ -248,8 +261,10 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (yRotTarget < -180) yRotTarget += 360F;
 		float angleBetween = Math.abs(-yRotTarget - attackAngle);
 		LivingCap<?> cap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		return cap != null && (cap instanceof HumanoidCap || cap instanceof PlayerCap) && !cap.getEntityState().isInvincible() && angleBetween <= 225 && angleBetween >= 135;
+		return cap != null && cap.canBeBackstabbed() && angleBetween <= 225 && angleBetween >= 135;
 	}
+	
+	public abstract boolean canBeBackstabbed();
 
 	@Override
 	protected void updateOnServer()
@@ -518,7 +533,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
 		EntityCapability<?> cap = (EntityCapability<?>)hitTarget.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (cap != null && cap.isInvincible()) return false;
+		StunType stunType = source.getStunType();
+		if (cap != null && (cap.isInvincible() && stunType != StunType.INVINCIBILITY_BYPASS)) return false;
 		
 		boolean succeed = hitTarget.hurt((DamageSource) source, source.getAmount());
 

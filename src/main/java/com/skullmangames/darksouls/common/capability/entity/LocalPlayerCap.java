@@ -172,6 +172,11 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 					type = AttackType.BACKSTAB;
 					break;
 				}
+				else if (this.canPunish(target))
+				{
+					type = AttackType.PUNISH;
+					break;
+				}
 			}
 		}
 		

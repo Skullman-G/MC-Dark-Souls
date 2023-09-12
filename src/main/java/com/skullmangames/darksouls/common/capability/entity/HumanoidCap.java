@@ -39,6 +39,18 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	}
 	
 	@Override
+	public boolean canBeBackstabbed()
+	{
+		return !this.getEntityState().isInvincible();
+	}
+	
+	@Override
+	public boolean canBePunished()
+	{
+		return this.getEntityState() == EntityState.PUNISHABLE;
+	}
+	
+	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
 		return Animations.HOLLOW_DEFLECTED;
@@ -131,6 +143,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 			case SMASH: return Animations.BIPED_DEATH_SMASH;
 			
 			case BACKSTABBED: return Animations.BIPED_DEATH_BACKSTAB;
+			
+			case PUNISHED: return Animations.BIPED_DEATH_PUNISH;
 				
 			default: return Animations.BIPED_DEATH;
 		}
@@ -191,8 +205,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 				switch (stunType)
 				{
 					case DISARMED:
-						if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARM_SHIELD_RIGHT;
-						return Animations.BIPED_DISARM_SHIELD_LEFT;
+						if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARMED_RIGHT;
+						return Animations.BIPED_DISARMED_LEFT;
 						
 					case LIGHT:
 						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
@@ -217,6 +231,9 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 								
 					case BACKSTABBED:
 						return Animations.BIPED_HIT_BACKSTAB;
+						
+					case PUNISHED:
+						return Animations.BIPED_HIT_PUNISH;
 						
 					default:
 						return null;

@@ -16,7 +16,7 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -190,7 +190,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		@Override
 		public StaticAnimation build()
 		{
-			return new CriticalCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model, this.followUp.build(), this.phases);
+			return new BackstabCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model, this.followUp.build(), this.phases);
 		}
 	}
 	

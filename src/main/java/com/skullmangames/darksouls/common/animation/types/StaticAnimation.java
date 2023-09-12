@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -172,6 +173,25 @@ public class StaticAnimation extends DynamicAnimation
 		float speed = super.getPlaySpeed(entityCap);
 		if (entityCap.getOriginalEntity().isUnderWater()) speed *= 0.75F;
 		return speed;
+	}
+	
+	@Override
+	public DeathAnimation getDeathAnimation()
+	{
+		ResourceLocation rl = this.getProperty(StaticAnimationProperty.DEATH_ANIMATION).orElse(null);
+		if (rl != null)
+		{
+			try
+			{
+				StaticAnimation deathAnimation = DarkSouls.getInstance().animationManager.getAnimation(rl);
+				return deathAnimation instanceof DeathAnimation ? (DeathAnimation)deathAnimation : null;
+			}
+			catch (IllegalArgumentException e)
+			{
+				DarkSouls.LOGGER.error(e);
+			}
+		}
+		return null;
 	}
 
 	@Nullable

@@ -534,6 +534,7 @@ public class GameOverlayManager
 	private void renderHealth(ForgeIngameGui gui, int width, int height, PoseStack poseStack)
 	{
 		LocalPlayerCap playerCap = getCameraPlayerCap();
+		if (playerCap == null) return;
 		LocalPlayer player = playerCap.getOriginalEntity();
 		RenderSystem.enableBlend();
 		boolean dsLayout = ConfigManager.CLIENT_CONFIG.darkSoulsHUDLayout.getValue();

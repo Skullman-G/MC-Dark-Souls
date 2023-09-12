@@ -25,7 +25,7 @@ public class AnimationLayer
 {
 	public final AnimationPlayer animationPlayer;
 	protected DynamicAnimation nextAnimation;
-	protected LinkAnimation linkAnimationStorage;
+	protected LinkAnimation linkAnimation;
 	protected LayerOffAnimation layerOffAnimation;
 	protected boolean disabled;
 	protected boolean paused;
@@ -34,7 +34,7 @@ public class AnimationLayer
 	public AnimationLayer(LayerPart part)
 	{
 		this.animationPlayer = new AnimationPlayer();
-		this.linkAnimationStorage = new LinkAnimation();
+		this.linkAnimation = new LinkAnimation();
 		this.layerOffAnimation = new LayerOffAnimation(part);
 		this.disabled = true;
 		if (part == LayerPart.RIGHT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R"));
@@ -48,15 +48,15 @@ public class AnimationLayer
 		return this.jointMask.contains(joint);
 	}
 
-	public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float convertTimeModifier)
+	public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float startAt)
 	{
 		Pose lastPose = entityCap.getAnimator().getPose(Minecraft.getInstance().getFrameTime());
 		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer.isEnd());
 		this.resume();
 		nextAnimation.onStart(entityCap);
 
-		this.setLinkAnimation(nextAnimation, entityCap, lastPose, convertTimeModifier);
-		this.linkAnimationStorage.putOnPlayer(this.animationPlayer);
+		this.setLinkAnimation(nextAnimation, entityCap, lastPose, startAt);
+		this.linkAnimation.putOnPlayer(this.animationPlayer);
 		this.nextAnimation = nextAnimation;
 	}
 
@@ -70,9 +70,9 @@ public class AnimationLayer
 	}
 
 	public void setLinkAnimation(DynamicAnimation nextAnimation, LivingCap<?> entityCap, Pose lastPose,
-			float convertTimeModifier)
+			float startAt)
 	{
-		nextAnimation.setLinkAnimation(lastPose, convertTimeModifier, entityCap, this.linkAnimationStorage);
+		nextAnimation.setLinkAnimation(lastPose, startAt, entityCap, this.linkAnimation);
 	}
 
 	public void update(LivingCap<?> entityCap)

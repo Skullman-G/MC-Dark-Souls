@@ -32,4 +32,16 @@ public class ArmorStandCap extends LivingCap<ArmorStand>
 	{
 		return false;
 	}
+
+	@Override
+	public boolean canBePunished()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canBeBackstabbed()
+	{
+		return false;
+	}
 }

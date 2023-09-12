@@ -59,11 +59,11 @@ public class ClientAnimator extends Animator
 	}
 
 	@Override
-	public void playAnimation(StaticAnimation nextAnimation, float convertTimeModifier)
+	public void playAnimation(StaticAnimation nextAnimation, float startAt)
 	{
 		AnimationLayer layer = this.baseLayer.mixLayers.get(nextAnimation.getLayerPart());
 		layer.paused = false;
-		layer.playAnimation(nextAnimation, this.entityCap, convertTimeModifier);
+		layer.playAnimation(nextAnimation, this.entityCap, startAt);
 	}
 
 	@Override

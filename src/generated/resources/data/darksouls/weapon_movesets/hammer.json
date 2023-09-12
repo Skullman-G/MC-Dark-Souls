@@ -24,6 +24,12 @@
         "darksouls:backstab_strike_check"
       ]
     },
+    "punish": {
+      "repeating": true,
+      "animations": [
+        "darksouls:punish_strike_check"
+      ]
+    },
     "two_handed_light": {
       "repeating": true,
       "animations": [

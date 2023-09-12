@@ -26,12 +26,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class CriticalCheckAnimation extends AttackAnimation
+public class PunishCheckAnimation extends AttackAnimation
 {
 	private final StaticAnimation followUp;
 	private final boolean isWeak;
 	
-	public CriticalCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
+	public PunishCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
 			String index, ResourceLocation path, Function<Models<?>, Model> model, StaticAnimation followUp)
 	{
 		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model);
@@ -39,7 +39,7 @@ public class CriticalCheckAnimation extends AttackAnimation
 		this.isWeak = isWeak;
 	}
 	
-	public CriticalCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
+	public PunishCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
 			StaticAnimation followUp, AttackAnimation.Phase... phases)
 	{
 		super(id, attackType, convertTime, path, model, phases);
@@ -52,18 +52,18 @@ public class CriticalCheckAnimation extends AttackAnimation
 	{
 		LivingEntity attacker = entityCap.getOriginalEntity();
 		LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (entityCap == null || targetCap == null || !entityCap.canBackstab(target)) return false;
+		if (entityCap == null || targetCap == null || !entityCap.canPunish(target)) return false;
 		
 		double yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()));
 		double dist = 1.0D;
 		Vec3 dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
 		target.setPos(attacker.position().add(dir));
 		yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()) - 90);
-		dist = 0.5D;
+		dist = 0.25D;
 		dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
 		target.setPos(target.position().add(dir));
-		target.yRot = attacker.yRot;
-		target.yRotO = attacker.yRot;
+		target.yRot = attacker.yRot - 180;
+		target.yRotO = attacker.yRot - 180;
 		ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCSetPos(target.position(), target.getYRot(), target.getXRot(), target.getId(), true), target);
 		if (target instanceof ServerPlayer)
 		{
@@ -83,9 +83,9 @@ public class CriticalCheckAnimation extends AttackAnimation
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(phase.hand);
-		boolean canBackstab = entityCap.canBackstab(target);
-		damages.mul(canBackstab && !this.isWeak ? weapon.getCritical() : 0.1F);
-		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
+		boolean canPunish = entityCap.canPunish(target);
+		damages.mul(canPunish && !this.isWeak ? weapon.getCritical() : 0.01F);
+		StunType stunType = canPunish ? StunType.PUNISHED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
 		DamageType damageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
 		damages.replace(CoreDamageType.PHYSICAL, damageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);

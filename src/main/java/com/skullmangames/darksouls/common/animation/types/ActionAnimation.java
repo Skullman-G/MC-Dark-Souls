@@ -17,6 +17,7 @@ import com.skullmangames.darksouls.common.animation.Property.MovementAnimationSe
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
@@ -165,26 +166,22 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 
 	@Override
-	public void setLinkAnimation(Pose lastPose, float convertTimeModifier, LivingCap<?> entityCap, LinkAnimation dest)
+	public void setLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap, LinkAnimation dest)
 	{
-		float totalTime = convertTimeModifier > 0.0F ? convertTimeModifier : this.convertTime;
-		float nextStart = 0.05F;
+		float totalTime = this.convertTime;
+		startAt = MathUtils.clamp(startAt, 0.05F, this.getTotalTime());
 		
-		if (convertTimeModifier < 0.0F)
-		{
-			nextStart -= convertTimeModifier;
-		}
-		dest.startsAt = nextStart;
+		dest.startsAt = startAt;
 		
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
 		
-		Pose pose = this.getPoseByTime(entityCap, nextStart, 1.0F);
+		Pose pose = this.getPoseByTime(entityCap, startAt, 1.0F);
 		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
 		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
 		JointTransform rootTransform = pose.getTransformByName("Root");
-		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation().getInterpolatedTranslation(nextStart);
+		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation().getInterpolatedTranslation(startAt);
 		
 		rootTransform.translation().set(withPosition.x(), rootTransform.translation().y(), withPosition.z());
 

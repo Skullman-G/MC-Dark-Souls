@@ -56,7 +56,18 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	@Override
 	public boolean canBeParried()
 	{
-		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canBePunished()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canBeBackstabbed()
+	{
 		return false;
 	}
 }

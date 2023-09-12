@@ -138,6 +138,18 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	}
 	
 	@Override
+	public boolean canBeBackstabbed()
+	{
+		return !this.getEntityState().isInvincible();
+	}
+	
+	@Override
+	public boolean canBePunished()
+	{
+		return this.getEntityState() == EntityState.PUNISHABLE;
+	}
+	
+	@Override
 	public boolean isTwohanding()
 	{
 		return this.twoHanding;

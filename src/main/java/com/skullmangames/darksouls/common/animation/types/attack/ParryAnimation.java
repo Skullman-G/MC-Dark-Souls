@@ -68,7 +68,7 @@ public class ParryAnimation extends ActionAnimation
 							if (cap.canBeParried())
 							{
 								cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
-								cap.playAnimationSynchronized(Animations.BIPED_DISARM_SHIELD_RIGHT, 0.0F);
+								cap.playAnimationSynchronized(Animations.BIPED_DISARMED_RIGHT, 0.0F);
 							}
 						}
 					}

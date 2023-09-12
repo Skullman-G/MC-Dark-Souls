@@ -10,6 +10,8 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public abstract class Property<T>
@@ -19,6 +21,7 @@ public abstract class Property<T>
 		public static final StaticAnimationProperty<StaticAnimation.Event[]> EVENTS = new StaticAnimationProperty<StaticAnimation.Event[]>();
 		public static final StaticAnimationProperty<Boolean> SHOULD_SYNC = new StaticAnimationProperty<Boolean>();
 		public static final StaticAnimationProperty<AnimationLayer.LayerPart> LAYER_PART = new StaticAnimationProperty<AnimationLayer.LayerPart>();
+		public static final StaticAnimationProperty<ResourceLocation> DEATH_ANIMATION = new StaticAnimationProperty<ResourceLocation>();
 	}
 
 	public static class ActionAnimationProperty<T> extends Property<T>

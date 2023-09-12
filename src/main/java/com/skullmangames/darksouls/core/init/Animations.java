@@ -23,6 +23,7 @@ import com.skullmangames.darksouls.common.animation.types.HitAnimation;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
+import com.skullmangames.darksouls.common.animation.types.PunishableAnimation;
 import com.skullmangames.darksouls.common.animation.types.ReboundAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event;
@@ -30,9 +31,10 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation.Event.
 import com.skullmangames.darksouls.common.animation.types.SupplierAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
-import com.skullmangames.darksouls.common.animation.types.attack.CriticalCheckAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnimation;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.core.util.DamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -87,6 +89,7 @@ public final class Animations
 	public static DeathAnimation BIPED_DEATH_FLY_LEFT;
 	public static DeathAnimation BIPED_DEATH_FLY_RIGHT;
 	public static DeathAnimation BIPED_DEATH_BACKSTAB;
+	public static DeathAnimation BIPED_DEATH_PUNISH;
 	
 	public static StaticAnimation BIPED_DIG;
 	public static StaticAnimation BIPED_TOUCH_BONFIRE;
@@ -124,8 +127,8 @@ public final class Animations
 	public static StaticAnimation BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_TH_SWORD_FLY;
 	
-	public static StaticAnimation BIPED_DISARM_SHIELD_LEFT;
-	public static StaticAnimation BIPED_DISARM_SHIELD_RIGHT;
+	public static StaticAnimation BIPED_DISARMED_LEFT;
+	public static StaticAnimation BIPED_DISARMED_RIGHT;
 	
 	public static StaticAnimation BIPED_HORSEBACK_IDLE;
 	
@@ -169,6 +172,7 @@ public final class Animations
 	public static StaticAnimation BIPED_HIT_LAND_HEAVY;
 	
 	public static StaticAnimation BIPED_HIT_BACKSTAB;
+	public static StaticAnimation BIPED_HIT_PUNISH;
 	
 	public static StaticAnimation BIPED_ROLL;
 	public static StaticAnimation BIPED_FAT_ROLL;
@@ -205,6 +209,10 @@ public final class Animations
 	// Backstabs
 	public static AttackAnimation BACKSTAB_THRUST;
 	public static AttackAnimation BACKSTAB_STRIKE;
+	
+	// Punishes
+	public static AttackAnimation PUNISH_THRUST;
+	public static AttackAnimation PUNISH_STRIKE;
 	
 	// Greatsword
 	public static AttackAnimation[] GREATSWORD_LIGHT_ATTACK;
@@ -443,6 +451,19 @@ public final class Animations
 						}),
 						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
+		BIPED_DEATH_PUNISH = new DeathAnimation(DarkSouls.rl("biped_death_punish"), 0.05F,
+				DarkSouls.rl("biped/death/punish"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.44F, Side.CLIENT, (cap) ->
+						{
+							double yRot = Math.toRadians(MathUtils.toNormalRot(cap.getYRot()));
+							float y = cap.getOriginalEntity().getBbHeight() * 0.5F;
+							Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
+							cap.makeImpactParticles(pos, false);
+						}),
+						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+				}).register(builder);
 		
 		BIPED_DIG = new StaticAnimation(new ResourceLocation(DarkSouls.MOD_ID, "biped_dig"), 0.2F, true,
 				DarkSouls.rl("biped/living/dig"), (models) -> models.ENTITY_BIPED)
@@ -532,11 +553,11 @@ public final class Animations
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
 		
-		BIPED_DISARM_SHIELD_LEFT = new ActionAnimation(DarkSouls.rl("biped_disarm_shield_left"), 0.05F,
+		BIPED_DISARMED_LEFT = new PunishableAnimation(DarkSouls.rl("biped_disarm_shield_left"), 0.05F,
 				DarkSouls.rl("biped/combat/disarmed_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) }).register(builder);
-		BIPED_DISARM_SHIELD_RIGHT = new ActionAnimation(DarkSouls.rl("biped_disarm_shield_right"), 0.05F,
+		BIPED_DISARMED_RIGHT = new PunishableAnimation(DarkSouls.rl("biped_disarm_shield_right"), 0.05F,
 				DarkSouls.rl("biped/combat/disarmed_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) }).register(builder);
@@ -662,6 +683,7 @@ public final class Animations
 		
 		BIPED_HIT_BACKSTAB = new InvincibleAnimation(DarkSouls.rl("biped_hit_backstab"), 0.05F,
 				DarkSouls.rl("biped/hit/backstab_thrust"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.DEATH_ANIMATION, DarkSouls.rl("biped_death_backstab"))
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.44F, Side.CLIENT, (cap) ->
@@ -672,6 +694,21 @@ public final class Animations
 							cap.makeImpactParticles(pos, false);
 						}),
 						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+				}).register(builder);
+		
+		BIPED_HIT_PUNISH = new InvincibleAnimation(DarkSouls.rl("biped_hit_punish"), 0.05F,
+				DarkSouls.rl("biped/hit/punish"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.DEATH_ANIMATION, DarkSouls.rl("biped_death_punish"))
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+								Event.create(0.44F, Side.CLIENT, (cap) ->
+								{
+									double yRot = Math.toRadians(MathUtils.toNormalRot(cap.getYRot()));
+									float y = cap.getOriginalEntity().getBbHeight() * 0.5F;
+									Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
+									cap.makeImpactParticles(pos, false);
+								}),
+								Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		
 		BIPED_ROLL = new DodgingAnimation(DarkSouls.rl("biped_roll"), 0.1F, DarkSouls.rl("biped/combat/roll"), (models) -> models.ENTITY_BIPED)
@@ -885,7 +922,7 @@ public final class Animations
 				.register(builder);
 		
 		// Backstabs
-		BACKSTAB_THRUST = new CriticalCheckAnimation(DarkSouls.rl("backstab_thrust_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.36F, 0.64F, 1.44F, false, "Tool_R",
+		BACKSTAB_THRUST = new BackstabCheckAnimation(DarkSouls.rl("backstab_thrust_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.36F, 0.64F, 1.44F, false, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_thrust_check"), (models) -> models.ENTITY_BIPED,
 				new InvincibleAnimation(DarkSouls.rl("backstab_thrust"), 0.05F, DarkSouls.rl("biped/combat/backstab_thrust"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
@@ -893,9 +930,27 @@ public final class Animations
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
 						Event.create(0.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
 				}).register(builder)).register(builder);
-		BACKSTAB_STRIKE = new CriticalCheckAnimation(DarkSouls.rl("backstab_strike_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
+		BACKSTAB_STRIKE = new BackstabCheckAnimation(DarkSouls.rl("backstab_strike_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_strike_check"), (models) -> models.ENTITY_BIPED,
 				new CriticalHitAnimation(DarkSouls.rl("backstab_strike"), 0.05F, 0.84F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
+						Event.create(0.84F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+				}).register(builder)).register(builder);
+		
+		// Punishes
+		PUNISH_THRUST = new PunishCheckAnimation(DarkSouls.rl("punish_thrust_check"), AttackType.PUNISH, 0.2F, 0.0F, 0.36F, 0.64F, 1.44F, false, "Tool_R",
+				DarkSouls.rl("biped/combat/backstab_thrust_check"), (models) -> models.ENTITY_BIPED,
+				new InvincibleAnimation(DarkSouls.rl("punish_thrust"), 0.05F, DarkSouls.rl("biped/combat/backstab_thrust"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
+						Event.create(0.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
+				}).register(builder)).register(builder);
+		PUNISH_STRIKE = new PunishCheckAnimation(DarkSouls.rl("punish_strike_check"), AttackType.PUNISH, 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
+				DarkSouls.rl("biped/combat/backstab_strike_check"), (models) -> models.ENTITY_BIPED,
+				new CriticalHitAnimation(DarkSouls.rl("punish_strike"), 0.05F, 0.84F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),

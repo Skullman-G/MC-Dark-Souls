@@ -239,7 +239,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	{
 		LIGHT("light"), HEAVY("heavy"), DASH("dash"), BACKSTAB("backstab"),
 		TWO_HANDED_LIGHT("two_handed_light"), TWO_HANDED_HEAVY("two_handed_heavy"),
-		TWO_HANDED_DASH("two_handed_dash");
+		TWO_HANDED_DASH("two_handed_dash"), PUNISH("punish");
 		
 		private String id;
 		

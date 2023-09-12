@@ -20,7 +20,7 @@ public abstract class Animator
 
 	protected LivingCap<?> entityCap;
 
-	public abstract void playAnimation(StaticAnimation nextAnimation, float convertTimeModifier);
+	public abstract void playAnimation(StaticAnimation nextAnimation, float startAt);
 
 	public abstract void playAnimationInstantly(StaticAnimation nextAnimation);
 
@@ -36,10 +36,9 @@ public abstract class Animator
 
 	public abstract void updatePose();
 
-	public final void playAnimation(ResourceLocation id, float convertTimeModifier)
+	public final void playAnimation(ResourceLocation id, float startAt)
 	{
-		this.playAnimation(DarkSouls.getInstance().animationManager.getAnimation(id),
-				convertTimeModifier);
+		this.playAnimation(DarkSouls.getInstance().animationManager.getAnimation(id), startAt);
 	}
 
 	public final void playAnimationInstantly(ResourceLocation id)

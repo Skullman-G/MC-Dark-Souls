@@ -27,14 +27,15 @@ public class ServerAnimator extends Animator
 	}
 
 	@Override
-	public void playAnimation(StaticAnimation nextAnimation, float modifyTime)
+	public void playAnimation(StaticAnimation nextAnimation, float startAt)
 	{
 		this.pause = false;
 		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
 		nextAnimation.onStart(this.entityCap);
-		nextAnimation.setLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F), modifyTime,
+		nextAnimation.setLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F), startAt,
 				this.entityCap, this.linkAnimation);
 		this.linkAnimation.putOnPlayer(this.animationPlayer);
+		
 		this.nextPlaying = nextAnimation;
 	}
 

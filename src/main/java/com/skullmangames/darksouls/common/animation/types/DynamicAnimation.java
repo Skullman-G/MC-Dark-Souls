@@ -18,6 +18,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
@@ -85,26 +86,24 @@ public class DynamicAnimation
 	
 	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time) {}
 
-	public void setLinkAnimation(Pose pose1, float convertTimeModifier, LivingCap<?> entityCap,
-			LinkAnimation dest)
+	public void setLinkAnimation(Pose pose1, float startAt, LivingCap<?> entityCap, LinkAnimation dest)
 	{
 		if (!entityCap.isClientSide())
 		{
 			pose1 = Animations.DUMMY_ANIMATION.getPoseByTime(entityCap, 0.0F, 1.0F);
 		}
 
-		float totalTime = convertTimeModifier >= 0.0F ? convertTimeModifier + this.convertTime : this.convertTime;
-		boolean isNeg = convertTimeModifier < 0.0F;
-		float nextStart = isNeg ? -convertTimeModifier : 0.05F;
+		float totalTime = this.convertTime;
+		startAt = MathUtils.clamp(startAt, 0.05F, this.getTotalTime());
 
-		if (isNeg) dest.startsAt = nextStart;
+		dest.startsAt = startAt;
 
 		dest.getTransfroms().clear();
 		dest.setTotalTime(totalTime);
 		dest.setNextAnimation(this);
 
 		Map<String, JointTransform> data1 = pose1.getJointTransformData();
-		Map<String, JointTransform> data2 = this.getPoseByTime(entityCap, nextStart, 1.0F).getJointTransformData();
+		Map<String, JointTransform> data2 = this.getPoseByTime(entityCap, startAt, 1.0F).getJointTransformData();
 
 		for (String jointName : data1.keySet())
 		{
@@ -164,6 +163,12 @@ public class DynamicAnimation
 	public DynamicAnimation getRealAnimation()
 	{
 		return this;
+	}
+	
+	@Nullable
+	public DeathAnimation getDeathAnimation()
+	{
+		return null;
 	}
 
 	public void setTotalTime(float totalTime)
