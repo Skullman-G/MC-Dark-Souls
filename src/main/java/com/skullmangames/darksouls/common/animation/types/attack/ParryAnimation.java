@@ -61,13 +61,13 @@ public class ParryAnimation extends ActionAnimation
 					if (entity instanceof LivingEntity livingEntity)
 					{
 						LivingCap<?> cap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-						if (cap != null && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
+						if (cap != null && cap.getEntityState().getContactLevel() == 2 && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
 						{
 							if (weapon != null) entityCap.playSound(weapon.getBlockSound());
 							
 							if (cap.canBeParried())
 							{
-								cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get());
+								cap.playSound(ModSoundEvents.GENERIC_PARRY_SUCCESS.get());
 								cap.playAnimationSynchronized(Animations.BIPED_DISARMED_RIGHT, 0.0F);
 							}
 						}

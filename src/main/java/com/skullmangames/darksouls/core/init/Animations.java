@@ -439,7 +439,7 @@ public final class Animations
 						Event.create(0.92F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		BIPED_DEATH_BACKSTAB = new DeathAnimation(DarkSouls.rl("biped_death_backstab"), 0.05F,
-				DarkSouls.rl("biped/death/backstab_thrust"), (models) -> models.ENTITY_BIPED)
+				DarkSouls.rl("biped/death/backstab"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.44F, Side.CLIENT, (cap) ->
@@ -449,7 +449,7 @@ public final class Animations
 							Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
 							cap.makeImpactParticles(pos, false);
 						}),
-						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+						Event.create(1.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		BIPED_DEATH_PUNISH = new DeathAnimation(DarkSouls.rl("biped_death_punish"), 0.05F,
 				DarkSouls.rl("biped/death/punish"), (models) -> models.ENTITY_BIPED)
@@ -462,7 +462,7 @@ public final class Animations
 							Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
 							cap.makeImpactParticles(pos, false);
 						}),
-						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+						Event.create(1.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		
 		BIPED_DIG = new StaticAnimation(new ResourceLocation(DarkSouls.MOD_ID, "biped_dig"), 0.2F, true,
@@ -535,32 +535,53 @@ public final class Animations
 		BIPED_HIT_BLOCKED_FLY_LEFT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_fly_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_fly_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+				{
+					Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get()))
+				})
+				.register(builder);
 		BIPED_HIT_BLOCKED_FLY_RIGHT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_fly_right"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_fly_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+				{
+					Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get()))
+				})
+				.register(builder);
 		BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_vertical_fly_left"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_vertical_fly_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+				{
+					Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get()))
+				})
+				.register(builder);
 		BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_vertical_fly_right"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_vertical_fly_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+				{
+					Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get()))
+				})
+				.register(builder);
 		BIPED_HIT_BLOCKED_TH_SWORD_FLY = new InvincibleAnimation(DarkSouls.rl("biped_hit_blocked_th_sword_fly"), 0.05F,
 				DarkSouls.rl("biped/hit/blocked_th_sword_fly"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
+				{
+					Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get()))
+				})
+				.register(builder);
 		
 		BIPED_DISARMED_LEFT = new PunishableAnimation(DarkSouls.rl("biped_disarm_shield_left"), 0.05F,
 				DarkSouls.rl("biped/combat/disarmed_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) }).register(builder);
+				{
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+				})
+				.register(builder);
 		BIPED_DISARMED_RIGHT = new PunishableAnimation(DarkSouls.rl("biped_disarm_shield_right"), 0.05F,
 				DarkSouls.rl("biped/combat/disarmed_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-				{ Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())) }).register(builder);
+				{
+					Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+				})
+				.register(builder);
 		
 		BIPED_HORSEBACK_IDLE = new StaticAnimation(DarkSouls.rl("biped_horseback_idle"), 0.2F, true,
 				DarkSouls.rl("biped/horseback/horseback_idle"), (models) -> models.ENTITY_BIPED)
@@ -682,7 +703,7 @@ public final class Animations
 				.register(builder);
 		
 		BIPED_HIT_BACKSTAB = new InvincibleAnimation(DarkSouls.rl("biped_hit_backstab"), 0.05F,
-				DarkSouls.rl("biped/hit/backstab_thrust"), (models) -> models.ENTITY_BIPED)
+				DarkSouls.rl("biped/hit/backstab"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.DEATH_ANIMATION, DarkSouls.rl("biped_death_backstab"))
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
@@ -693,7 +714,7 @@ public final class Animations
 							Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
 							cap.makeImpactParticles(pos, false);
 						}),
-						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+						Event.create(1.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		
 		BIPED_HIT_PUNISH = new InvincibleAnimation(DarkSouls.rl("biped_hit_punish"), 0.05F,
@@ -708,7 +729,7 @@ public final class Animations
 									Vec3 pos = cap.getOriginalEntity().position().add(Math.cos(yRot), y, Math.sin(yRot));
 									cap.makeImpactParticles(pos, false);
 								}),
-								Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
+								Event.create(1.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		
 		BIPED_ROLL = new DodgingAnimation(DarkSouls.rl("biped_roll"), 0.1F, DarkSouls.rl("biped/combat/roll"), (models) -> models.ENTITY_BIPED)
@@ -928,15 +949,15 @@ public final class Animations
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
-						Event.create(0.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
+						Event.create(1.08F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
 				}).register(builder)).register(builder);
 		BACKSTAB_STRIKE = new BackstabCheckAnimation(DarkSouls.rl("backstab_strike_check"), AttackType.BACKSTAB, 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_strike_check"), (models) -> models.ENTITY_BIPED,
-				new CriticalHitAnimation(DarkSouls.rl("backstab_strike"), 0.05F, 0.84F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
+				new CriticalHitAnimation(DarkSouls.rl("backstab_strike"), 0.05F, 1.24F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
-						Event.create(0.84F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+						Event.create(1.24F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
 				}).register(builder)).register(builder);
 		
 		// Punishes
@@ -946,15 +967,15 @@ public final class Animations
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
-						Event.create(0.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
+						Event.create(1.08F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_KICK.get()))
 				}).register(builder)).register(builder);
 		PUNISH_STRIKE = new PunishCheckAnimation(DarkSouls.rl("punish_strike_check"), AttackType.PUNISH, 0.2F, 0.0F, 0.4F, 0.8F, 1.44F, true, "Tool_R",
 				DarkSouls.rl("biped/combat/backstab_strike_check"), (models) -> models.ENTITY_BIPED,
-				new CriticalHitAnimation(DarkSouls.rl("punish_strike"), 0.05F, 0.84F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
+				new CriticalHitAnimation(DarkSouls.rl("punish_strike"), 0.05F, 1.24F, DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(Event.ON_BEGIN, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get())),
-						Event.create(0.84F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
+						Event.create(1.24F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.PLAYER_SHIELD_DISARMED.get()))
 				}).register(builder)).register(builder);
 		
 		// Greatsword

@@ -1,4 +1,13 @@
 {
+	"entity.generic.parry_success":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/parry_success"
+		]
+	},
+	
 	"entity.taurus_demon.death":
 	{
 		"category": "entity",

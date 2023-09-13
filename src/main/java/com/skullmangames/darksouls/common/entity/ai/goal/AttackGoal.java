@@ -154,7 +154,7 @@ public class AttackGoal extends Goal
     		if (this.mobCap.isInaction()) this.setPhase(Phase.NONE);
     		else if (this.strafingTime <= 0 || this.strafingBlocked(inAttackRange))
         	{
-    			if (this.strafeLength < this.strafeMinLength || this.attacker.getRandom().nextBoolean()) this.setPhase(Phase.STRAFING);
+    			if (this.strafeLength < this.strafeMinLength || this.attacker.getRandom().nextFloat() > 0.75F) this.setPhase(Phase.STRAFING);
     			else if (inAttackRange) this.setPhase(Phase.ATTACKING);
         		else this.setPhase(Phase.CHASING);
         	}
@@ -362,6 +362,7 @@ public class AttackGoal extends Goal
     public void stop()
     {
     	this.attacker.setSprinting(false);
+    	this.attacker.stopUsingItem();
     }
     
     protected enum Phase
