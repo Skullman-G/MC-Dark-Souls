@@ -136,13 +136,20 @@ public class AttackAnimation extends ActionAnimation
 			Collider collider = this.getCollider(entityCap, elapsedTime);
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 			Vec3 prevColPos = collider.getMassCenter();
-			List<Entity> list = collider.updateAndFilterCollideEntity(entityCap, phase.getColliderJointName(), 1.0F);
+			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
+			List<Entity> shields = collider.getShieldCollisions(entity);
+			List<Entity> entities = collider.getEntityCollisions(entity);
+			entities.removeIf((e) -> shields.contains(e));
 			
-			if (list.size() > 0)
+			if (!shields.isEmpty() || !entities.isEmpty())
 			{
-				AttackResult attackResult = new AttackResult(entity, list);
+				AttackResult attackResult = new AttackResult(entity);
+				attackResult.addEntities(entities, false);
+				attackResult.addEntities(shields, true);
+				
 				boolean flag1 = true;
 				boolean shouldBreak = false;
+				
 				do
 				{
 					Entity e = attackResult.getEntity();
@@ -150,6 +157,7 @@ public class AttackAnimation extends ActionAnimation
 					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && (trueEntity instanceof LivingEntity
 						|| trueEntity instanceof BreakableObject))
 					{
+						// Check if a block is in the way
 						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
 										new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
 										ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
@@ -157,6 +165,7 @@ public class AttackAnimation extends ActionAnimation
 						{
 							Damages damages = this.getDamageAmount(entityCap, e, phase);
 							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, damages);
+							source.setWasBlocked(attackResult.wasBlocked());
 							
 							shouldBreak = this.onDamageTarget(entityCap, e);
 							if (entityCap.hurtEntity(e, phase.hand, source))

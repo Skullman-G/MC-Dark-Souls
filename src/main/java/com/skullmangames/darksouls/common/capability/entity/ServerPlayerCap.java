@@ -287,10 +287,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	public boolean blockingAttack(ExtendedDamageSource damageSource)
 	{
 		Entity attacker = damageSource.getSource();
-		if (attacker == null) return false;
-		float dir = damageSource.getAttackAngle(this.orgEntity);
-		if (!(dir <= 60 || dir >= 300) || !this.isBlocking()) return false;
-		else if (this.isCreativeOrSpectator()) return super.blockingAttack(damageSource);
+		if (attacker == null || !damageSource.wasBlocked() || !this.isBlocking()) return false;
 
 		Shield shield = (Shield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
 		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));

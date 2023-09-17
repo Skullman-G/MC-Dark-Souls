@@ -428,6 +428,11 @@ public class ModMatrix4f
 	{
 		return t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
 	}
+	
+	public ModMatrix4f translate(Vec3 vec)
+	{
+		return this.translate((float)vec.x, (float)vec.y, (float)vec.z);
+	}
 
 	public ModMatrix4f translate(Vector3f vec)
 	{

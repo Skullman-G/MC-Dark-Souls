@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.util.physics;
 
-import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
@@ -76,7 +75,6 @@ public class CubeCollider extends Collider
 	public void transform(ModMatrix4f mat)
 	{
 		ModMatrix4f rot = mat.removeTranslation();
-		rot.rotateDeg(5, Vector3f.XP);
 		
 		for (int i = 0; i < this.modelVertices.length; i++)
 		{

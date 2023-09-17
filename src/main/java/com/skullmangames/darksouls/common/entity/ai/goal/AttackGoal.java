@@ -154,14 +154,14 @@ public class AttackGoal extends Goal
     		if (this.mobCap.isInaction()) this.setPhase(Phase.NONE);
     		else if (this.strafingTime <= 0 || this.strafingBlocked(inAttackRange))
         	{
-    			if (this.strafeLength < this.strafeMinLength || this.attacker.getRandom().nextFloat() > 0.75F) this.setPhase(Phase.STRAFING);
+    			if (this.strafeLength < this.strafeMinLength || this.attacker.getRandom().nextFloat() < 0.25F) this.setPhase(Phase.STRAFING);
     			else if (inAttackRange) this.setPhase(Phase.ATTACKING);
         		else this.setPhase(Phase.CHASING);
         	}
     		break;
     	case ATTACKING:
     		if (!this.targetInAttackRange(target) || this.pathBlocked(target)) this.setPhase(Phase.CHASING);
-    		else if (this.shouldStrafe && !this.mobCap.isInaction() && this.attacker.getRandom().nextBoolean())
+    		else if (this.shouldStrafe && !this.mobCap.isInaction() && this.attacker.getRandom().nextFloat() < 0.25F)
     		{
     			this.strafeLength = 0;
     			this.setPhase(Phase.STRAFING);

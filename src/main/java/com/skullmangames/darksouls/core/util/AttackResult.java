@@ -1,8 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import net.minecraft.world.entity.Entity;
 
@@ -11,57 +10,55 @@ public class AttackResult
 	private Entity attacker;
 	private List<Double> distanceToAttacker;
 	private List<Entity> hitEntites;
+	private List<Boolean> blocked;
 	private int index;
 	
 	public AttackResult(Entity attacker)
 	{
 		this.attacker = attacker;
-		this.distanceToAttacker = Lists.<Double>newArrayList();
-		this.hitEntites = Lists.<Entity>newArrayList();
+		this.distanceToAttacker = new ArrayList<>();
+		this.hitEntites = new ArrayList<>();
+		this.blocked = new ArrayList<>();
 		this.index = 0;
 	}
 	
-	public AttackResult(Entity attacker, List<Entity> entities)
-	{
-		this(attacker);
-		this.addEntities(entities);
-	}
-	
-	private void addEntities(List<Entity> entities)
+	public void addEntities(List<Entity> entities, boolean blocked)
 	{
 		for(Entity entity : entities)
 		{
-			this.addNewEntity(entity);
+			this.addEntity(entity, blocked);
 		}
 	}
 	
-	private void addNewEntity(Entity newHitEntity)
+	private void addEntity(Entity entity, boolean blocked)
 	{
-		double distance = attacker.distanceToSqr(newHitEntity);
+		double distance = this.attacker.distanceToSqr(entity);
 		int index = 0;
 		
-		for(; index < hitEntites.size(); index++)
+		for(; index < this.hitEntites.size(); index++)
 		{
-			if(distance < distanceToAttacker.get(index))
-			{
-				hitEntites.add(index, newHitEntity);
-				distanceToAttacker.add(index, distance);
-				return;
-			}
+			if(distance < this.distanceToAttacker.get(index)) break;
+			
 		}
 		
-		hitEntites.add(index, newHitEntity);
-		distanceToAttacker.add(index, distance);
+		this.hitEntites.add(index, entity);
+		this.distanceToAttacker.add(index, distance);
+		this.blocked.add(index, blocked);
 	}
 	
 	public Entity getEntity()
 	{
-		return hitEntites.get(index);
+		return this.hitEntites.get(this.index);
+	}
+	
+	public boolean wasBlocked()
+	{
+		return this.blocked.get(this.index);
 	}
 	
 	public boolean next()
 	{
-		index++;
-		return hitEntites.size() > index;
+		this.index++;
+		return hitEntites.size() > this.index;
 	}
 }
