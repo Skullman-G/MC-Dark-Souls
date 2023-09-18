@@ -2,7 +2,7 @@
   "registry_name": "minecraft:netherite_axe",
   "category": "axe",
   "moveset": "darksouls:axe",
-  "collider": "darksouls:tool",
+  "collider": "darksouls:axe",
   "weight": 1.0,
   "stability": 0.3,
   "critical": 1.0,

@@ -76,7 +76,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.32F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.WOODEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 0.75F)
+			MeleeWeaponCap.builder(Items.WOODEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 0.75F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -91,7 +91,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.STONE_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 0.8F)
+			MeleeWeaponCap.builder(Items.STONE_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 0.8F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -106,7 +106,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.IRON_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 1.0F)
+			MeleeWeaponCap.builder(Items.IRON_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 1.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -121,7 +121,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.GOLDEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 1.0F)
+			MeleeWeaponCap.builder(Items.GOLDEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 1.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -136,7 +136,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.DIAMOND_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 1.0F)
+			MeleeWeaponCap.builder(Items.DIAMOND_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 1.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -151,7 +151,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.NETHERITE_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 1.0F)
+			MeleeWeaponCap.builder(Items.NETHERITE_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 1.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 150, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -166,7 +166,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(ModItems.BATTLE_AXE.get(), WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.TOOL.getId(), 4.0F)
+			MeleeWeaponCap.builder(ModItems.BATTLE_AXE.get(), WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.BATTLE_AXE.getId(), 4.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 125, 0.45F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.25F)
@@ -181,7 +181,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.WOODEN_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.WOODEN_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -196,7 +196,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.STONE_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.STONE_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -211,7 +211,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.STONE_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.IRON_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.IRON_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -226,7 +226,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.GOLDEN_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.GOLDEN_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -241,7 +241,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.DIAMOND_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.DIAMOND_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -256,7 +256,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(Items.NETHERITE_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(Items.NETHERITE_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
@@ -271,7 +271,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(ModItems.MACE.get(), WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.TOOL.getId(), 5.0F)
+			MeleeWeaponCap.builder(ModItems.MACE.get(), WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.MACE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 115, 0.45F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.25F)

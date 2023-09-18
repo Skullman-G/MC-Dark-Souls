@@ -2,7 +2,7 @@
   "registry_name": "minecraft:wooden_axe",
   "category": "axe",
   "moveset": "darksouls:axe",
-  "collider": "darksouls:tool",
+  "collider": "darksouls:axe",
   "weight": 0.75,
   "stability": 0.3,
   "critical": 1.0,

@@ -2,7 +2,7 @@
   "registry_name": "minecraft:diamond_pickaxe",
   "category": "hammer",
   "moveset": "darksouls:hammer",
-  "collider": "darksouls:tool",
+  "collider": "darksouls:pickaxe",
   "weight": 5.0,
   "stability": 0.4,
   "critical": 1.0,

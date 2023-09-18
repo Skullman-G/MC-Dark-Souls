@@ -29,7 +29,7 @@ public class RenderItemBase
 	public RenderItemBase()
 	{
 		this.transform = new ModMatrix4f();
-		this.transform.rotate((float)Math.toRadians(-80), Vector3f.XP);
+		this.transform.rotate((float)Math.toRadians(-85D), Vector3f.XP);
 		this.transform.translate(0, 0.1F, 0);
 		
 		this.backTransform = new ModMatrix4f();

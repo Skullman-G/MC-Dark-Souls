@@ -2,7 +2,7 @@
   "registry_name": "darksouls:mace",
   "category": "hammer",
   "moveset": "darksouls:hammer",
-  "collider": "darksouls:tool",
+  "collider": "darksouls:mace",
   "weight": 5.0,
   "stability": 0.3,
   "critical": 1.0,
