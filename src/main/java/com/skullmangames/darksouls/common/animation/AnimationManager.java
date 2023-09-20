@@ -11,7 +11,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -72,9 +71,9 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 				StaticAnimation animation = AnimBuilder.fromJson(location, json.getAsJsonObject()).build();
 				builder.put(location, animation);
 			}
-			catch (IllegalArgumentException | JsonParseException jsonparseexception)
+			catch (Exception e)
 			{
-				LOGGER.error("Parsing error loading additional animation {}", location, jsonparseexception);
+				LOGGER.error("Parsing error loading additional animation {}", location, e);
 			}
 		});
 		
@@ -102,7 +101,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		protected final boolean isRepeat;
 		protected final Function<Models<?>, Model> model;
 		
-		protected AnimBuilder(ResourceLocation location, JsonObject json)
+		protected AnimBuilder(ResourceLocation location, JsonObject json) throws Exception
 		{
 			this.id = location;
 			this.location = new ResourceLocation(json.get("location").getAsString());
@@ -121,7 +120,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 			return new StaticAnimation(this.id, this.convertTime, this.isRepeat, this.location, this.model);
 		}
 		
-		public static AnimBuilder fromJson(ResourceLocation location, JsonObject json)
+		public static AnimBuilder fromJson(ResourceLocation location, JsonObject json) throws Exception
 		{
 			AnimationType type = AnimationType.fromString(json.get("animation_type").getAsString());
 			switch(type)
@@ -138,7 +137,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		protected final AttackType attackType;
 		protected final AttackAnimation.Phase[] phases;
 		
-		protected AttackAnimBuilder(ResourceLocation location, JsonObject json)
+		protected AttackAnimBuilder(ResourceLocation location, JsonObject json) throws Exception
 		{
 			super(location, json);
 			
@@ -175,7 +174,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		protected final boolean isWeak;
 		protected final AnimBuilder followUp;
 		
-		protected CriticalAnimBuilder(ResourceLocation location, JsonObject json)
+		protected CriticalAnimBuilder(ResourceLocation location, JsonObject json) throws Exception
 		{
 			super(location, json);
 			

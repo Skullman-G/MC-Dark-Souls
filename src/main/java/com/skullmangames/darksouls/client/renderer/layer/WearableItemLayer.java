@@ -1,16 +1,11 @@
 package com.skullmangames.darksouls.client.renderer.layer;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.common.capability.item.ArmorCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,7 +28,6 @@ import net.minecraftforge.client.ForgeHooksClient;
 @OnlyIn(Dist.CLIENT)
 public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> extends Layer<E, T>
 {
-	private static final Map<ResourceLocation, ClientModel> ARMOR_MODEL_MAP = new HashMap<ResourceLocation, ClientModel>();
 	private final EquipmentSlot slot;
 	
 	public WearableItemLayer(EquipmentSlot slotType)
@@ -64,7 +58,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		if (item instanceof ArmorItem)
 		{
 			ArmorItem armorItem = (ArmorItem) stack.getItem();
-			ClientModel model = this.getArmorModel(entity, armorItem, stack);
+			ClientModel model = ClientManager.INSTANCE.renderEngine.getArmorModel(armorItem);
 			
 			boolean hasEffect = stack.isEnchanted();
 			float a = Math.min(entityCap.getAlpha() + 0.5F, 1.0F);
@@ -91,32 +85,6 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		}
 		
 		poseStack.popPose();
-	}
-	
-	private ClientModel getArmorModel(E entity, ArmorItem armorItem, ItemStack stack)
-	{
-		ResourceLocation registryName = armorItem.getRegistryName();
-		if (ARMOR_MODEL_MAP.containsKey(registryName))
-		{
-			return ARMOR_MODEL_MAP.get(registryName);
-		}
-		else
-		{
-			ClientModel model;
-			
-			ArmorCap cap = (ArmorCap) stack.getCapability(ModCapabilities.CAPABILITY_ITEM, null).orElse(null);
-			
-			if (cap == null)
-			{
-				model = ArmorCap.getDefaultArmorModel(this.slot);
-			}
-			else
-			{
-				model = cap.getArmorModel();
-			}
-			ARMOR_MODEL_MAP.put(registryName, model);
-			return model;
-		}
 	}
 	
 	private ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type)

@@ -88,20 +88,20 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 				.build());
 		
 		//ARMOR
-		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), (models) -> models.ITEM_SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), (models) -> models.ITEM_ONE_SHOE));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT));
-		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM));
-		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM, 5F, 8F));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR, 13F, 21F));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS, 7F, 17F));
-		putCap(new ArmorCap(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM));
-		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR));
-		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get(), (models) -> models.BALDER_LEGGINGS));
-		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS));
+		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get()));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get()));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get()));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get()));
+		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get()));
+		putCap(new ArmorCap(ModItems.FALCONER_HELM.get()));
+		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get()));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), 5F, 8F));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), 13F, 21F));
+		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), 7F, 17F));
+		putCap(new ArmorCap(ModItems.BALDER_HELM.get()));
+		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get()));
+		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get()));
+		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get()));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);

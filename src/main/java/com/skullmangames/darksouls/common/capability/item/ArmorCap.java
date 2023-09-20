@@ -1,18 +1,13 @@
 package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.List;
-import java.util.function.Function;
-
 import com.google.common.collect.Multimap;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
-import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
-import com.skullmangames.darksouls.core.init.ClientModels;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -23,14 +18,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ArmorCap extends AttributeItemCap
 {
 	private final EquipmentSlot equipSlot;
-	private Function<ClientModels, ClientModel> customModel;
 	
 	protected final float standardDef;
 	protected final float strikeDef;
@@ -44,20 +36,14 @@ public class ArmorCap extends AttributeItemCap
 	
 	public ArmorCap(Item item)
 	{
-		this(item, null);
+		this(item, 0F, ((ArmorItem)item).getDefense() * 2.0F);
 	}
 	
-	public ArmorCap(Item item, Function<ClientModels, ClientModel> customModel)
-	{
-		this(item, customModel, 0F, ((ArmorItem)item).getDefense() * 2.0F);
-	}
-	
-	public ArmorCap(Item item, Function<ClientModels, ClientModel> customModel, float weight, float poise)
+	public ArmorCap(Item item, float weight, float poise)
 	{
 		super(item);
 		ArmorItem armorItem = this.getOriginalItem();
 		this.equipSlot = armorItem.getSlot();
-		this.customModel = customModel;
 		this.poise = poise;
 		this.weight = weight;
 		
@@ -141,34 +127,4 @@ public class ArmorCap extends AttributeItemCap
 		
         return map;
     }
-	
-	@OnlyIn(Dist.CLIENT)
-	public ClientModel getArmorModel()
-	{
-		return this.customModel != null ? this.customModel.apply(ClientModels.CLIENT) : getDefaultArmorModel(this.equipSlot);
-	}
-	
-	@OnlyIn(Dist.CLIENT)
-	public static ClientModel getDefaultArmorModel(EquipmentSlot slot)
-	{
-		ClientModels models = ClientModels.CLIENT;
-		
-		switch (slot)
-		{
-				case HEAD:
-					return models.ITEM_HELMET;
-					
-				case CHEST:
-					return models.ITEM_CHESTPLATE;
-					
-				case LEGS:
-					return models.ITEM_LEGGINS;
-					
-				case FEET:
-					return models.ITEM_BOOTS;
-					
-				default:
-					return null;
-		}
-	}
 }

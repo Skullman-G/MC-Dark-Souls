@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.client.renderer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,6 +24,7 @@ import com.skullmangames.darksouls.client.renderer.entity.TaurusDemonRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.PlayerRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.SimpleHumanoidRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.additional.AdditionalEntityRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap;
 import com.skullmangames.darksouls.common.capability.entity.FalconerCap;
@@ -44,6 +46,8 @@ import com.skullmangames.darksouls.common.entity.PetrusOfThorolund;
 import com.skullmangames.darksouls.common.item.HasDarkSoulsUseAction;
 import com.skullmangames.darksouls.common.item.ModShieldItem;
 import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.CameraType;
@@ -58,6 +62,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
@@ -82,33 +87,34 @@ import net.minecraftforge.fml.common.Mod;
 public class RenderEngine
 {
 	public static final ResourceLocation NULL_TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/gui/null.png");
-	public AimHelperRenderer aimHelper;
-	private Minecraft minecraft;
-	private ModMatrix4f projectionMatrix;
-	@SuppressWarnings("rawtypes")
-	private Map<EntityType<?>, ArmatureRenderer> entityRendererMap;
-	private Map<Item, RenderItemBase> itemRendererMapByInstance;
-	private Map<Class<? extends Item>, RenderItemBase> itemRendererMapByClass;
-	private FirstPersonRenderer firstPersonRenderer;
-	private PlayerGuiRenderer playerGuiRenderer;
+	public final AimHelperRenderer aimHelper;
+	private final Minecraft minecraft;
+	private final ModMatrix4f projectionMatrix;
+	private final Map<EntityType<?>, ArmatureRenderer<?, ?>> entityRendererMap;
+	private final Map<Item, RenderItemBase> itemRendererMapByInstance;
+	private final Map<Class<? extends Item>, RenderItemBase> itemRendererMapByClass;
+	private final Map<Item, Function<ClientModels, ClientModel>> armorModelMap;
+	private final FirstPersonRenderer firstPersonRenderer;
+	private final PlayerGuiRenderer playerGuiRenderer;
 	private boolean aiming;
 	private int zoomOutTimer = 0;
 	private int zoomCount;
 	private int zoomMaxCount = 20;
 	
-	@SuppressWarnings("rawtypes")
 	public RenderEngine()
 	{
 		Events.renderEngine = this;
 		RenderItemBase.renderEngine = this;
 		AdditionalEntityRenderer.init();
 		this.minecraft = Minecraft.getInstance();
-		this.entityRendererMap = new HashMap<EntityType<?>, ArmatureRenderer>();
-		this.itemRendererMapByInstance = new HashMap<Item, RenderItemBase>();
-		this.itemRendererMapByClass = new HashMap<Class<? extends Item>, RenderItemBase>();
+		this.entityRendererMap = new HashMap<>();
+		this.itemRendererMapByInstance = new HashMap<>();
+		this.itemRendererMapByClass = new HashMap<>();
+		this.armorModelMap = new HashMap<>();
 		this.projectionMatrix = new ModMatrix4f();
 		this.firstPersonRenderer = new FirstPersonRenderer();
 		this.playerGuiRenderer = new PlayerGuiRenderer();
+		this.aimHelper = new AimHelperRenderer();
 		
 		this.minecraft.renderBuffers().fixedBuffers.put(ModRenderTypes.getEnchantedArmor(), 
 				new BufferBuilder(ModRenderTypes.getEnchantedArmor().bufferSize()));
@@ -116,6 +122,7 @@ public class RenderEngine
 	
 	public void buildRenderer()
 	{
+		// Init Entity Renderers
 		this.entityRendererMap.put(EntityType.PLAYER, new PlayerRenderer());
 		this.entityRendererMap.put(EntityType.ARMOR_STAND, new ArmorStandRenderer());
 		this.entityRendererMap.put(EntityType.ZOMBIE, new SimpleHumanoidRenderer<Zombie, SimpleHumanoidCap<Zombie>>("zombie/zombie"));
@@ -133,6 +140,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.BLACK_KNIGHT.get(), new BlackKnightRenderer());
 		this.entityRendererMap.put(ModEntities.TAURUS_DEMON.get(), new TaurusDemonRenderer());
 		
+		// Init Item Renderers
 		RenderBow bowRenderer = new RenderBow();
 		RenderCrossbow crossbowRenderer = new RenderCrossbow();
 		RenderElytra elytraRenderer = new RenderElytra();
@@ -140,27 +148,69 @@ public class RenderEngine
 		RenderShield shieldRenderer = new RenderShield();
 		RenderTrident tridentRenderer = new RenderTrident();
 		
-		itemRendererMapByInstance.put(Items.AIR, new RenderItemBase());
-		itemRendererMapByInstance.put(Items.BOW, bowRenderer);
-		itemRendererMapByInstance.put(Items.ELYTRA, elytraRenderer);
-		itemRendererMapByInstance.put(Items.CREEPER_HEAD, hatRenderer);
-		itemRendererMapByInstance.put(Items.DRAGON_HEAD, hatRenderer);
-		itemRendererMapByInstance.put(Items.PLAYER_HEAD, hatRenderer);
-		itemRendererMapByInstance.put(Items.ZOMBIE_HEAD, hatRenderer);
-		itemRendererMapByInstance.put(Items.SKELETON_SKULL, hatRenderer);
-		itemRendererMapByInstance.put(Items.WITHER_SKELETON_SKULL, hatRenderer);
-		itemRendererMapByInstance.put(Items.CARVED_PUMPKIN, hatRenderer);
-		itemRendererMapByInstance.put(Items.CROSSBOW, crossbowRenderer);
-		itemRendererMapByInstance.put(Items.TRIDENT, tridentRenderer);
+		this.itemRendererMapByInstance.put(Items.AIR, new RenderItemBase());
+		this.itemRendererMapByInstance.put(Items.BOW, bowRenderer);
+		this.itemRendererMapByInstance.put(Items.ELYTRA, elytraRenderer);
+		this.itemRendererMapByInstance.put(Items.CREEPER_HEAD, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.DRAGON_HEAD, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.PLAYER_HEAD, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.ZOMBIE_HEAD, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.SKELETON_SKULL, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.WITHER_SKELETON_SKULL, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.CARVED_PUMPKIN, hatRenderer);
+		this.itemRendererMapByInstance.put(Items.CROSSBOW, crossbowRenderer);
+		this.itemRendererMapByInstance.put(Items.TRIDENT, tridentRenderer);
 		
-		itemRendererMapByClass.put(BlockItem.class, hatRenderer);
-		itemRendererMapByClass.put(BowItem.class, bowRenderer);
-		itemRendererMapByClass.put(CrossbowItem.class, crossbowRenderer);
-		itemRendererMapByClass.put(ElytraItem.class, elytraRenderer);
-		itemRendererMapByClass.put(ShieldItem.class, shieldRenderer);
-		itemRendererMapByClass.put(ModShieldItem.class, shieldRenderer);
-		itemRendererMapByClass.put(TridentItem.class, tridentRenderer);
-		aimHelper = new AimHelperRenderer();
+		this.itemRendererMapByClass.put(BlockItem.class, hatRenderer);
+		this.itemRendererMapByClass.put(BowItem.class, bowRenderer);
+		this.itemRendererMapByClass.put(CrossbowItem.class, crossbowRenderer);
+		this.itemRendererMapByClass.put(ElytraItem.class, elytraRenderer);
+		this.itemRendererMapByClass.put(ShieldItem.class, shieldRenderer);
+		this.itemRendererMapByClass.put(ModShieldItem.class, shieldRenderer);
+		this.itemRendererMapByClass.put(TridentItem.class, tridentRenderer);
+		
+		// Init Armor Models
+		this.armorModelMap.put(ModItems.BLOOD_STAINED_SKIRT.get(), (models) -> models.ITEM_SKIRT);
+		this.armorModelMap.put(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
+		this.armorModelMap.put(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
+		this.armorModelMap.put(ModItems.LORDRAN_WARRIOR_BOOTS.get(), (models) -> models.ITEM_ONE_SHOE);
+		this.armorModelMap.put(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT);
+		this.armorModelMap.put(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM);
+		this.armorModelMap.put(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR);
+		this.armorModelMap.put(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM);
+		this.armorModelMap.put(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR);
+		this.armorModelMap.put(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS);
+		this.armorModelMap.put(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM);
+		this.armorModelMap.put(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR);
+		this.armorModelMap.put(ModItems.BALDER_LEGGINGS.get(), (models) -> models.BALDER_LEGGINGS);
+		this.armorModelMap.put(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS);
+	}
+	
+	public ClientModel getArmorModel(ArmorItem armor)
+	{
+		ClientModels models = ClientModels.CLIENT;
+		ClientModel model = this.armorModelMap.get(armor).apply(models);
+		if (model == null)
+		{
+			switch (armor.getSlot())
+			{
+					case HEAD:
+						model = models.ITEM_HELMET;
+						
+					case CHEST:
+						model = models.ITEM_CHESTPLATE;
+						
+					case LEGS:
+						model = models.ITEM_LEGGINS;
+						
+					case FEET:
+						model = models.ITEM_BOOTS;
+						
+					default:
+						model = null;
+			}
+		}
+		return model;
 	}
 	
 	public RenderItemBase getItemRenderer(Item item)
@@ -188,10 +238,16 @@ public class RenderEngine
 		return renderer;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void renderEntityArmatureModel(LivingCap<?> entityCap, EntityRenderer<? extends Entity> renderer, MultiBufferSource buffer, PoseStack matStack, int packedLightIn, float partialTicks)
+	public <E extends LivingEntity> void renderEntityArmatureModel(LivingCap<E> entityCap, EntityRenderer<E> renderer, MultiBufferSource buffer,
+			PoseStack matStack, int packedLightIn, float partialTicks)
 	{
-		this.entityRendererMap.get(entityCap.getOriginalEntity().getType()).render(entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
+		this.getArmatureRenderer(entityCap).render(entityCap, renderer, buffer, matStack, packedLightIn, partialTicks);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <E extends LivingEntity, T extends LivingCap<E>> ArmatureRenderer<E, T> getArmatureRenderer(T entityCap)
+	{
+		return (ArmatureRenderer<E, T>) this.entityRendererMap.get(entityCap.getOriginalEntity().getType());
 	}
 	
 	public boolean isEntityContained(Entity entity)
@@ -228,7 +284,8 @@ public class RenderEngine
 		private static final Minecraft minecraft = Minecraft.getInstance();
 		
 		@SubscribeEvent
-		public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event)
+		public static <E extends LivingEntity> void renderLivingEvent(
+				RenderLivingEvent.Pre<E, ? extends EntityModel<E>>event)
 		{
 			LivingEntity livingentity = event.getEntity();
 			if (renderEngine.isEntityContained(livingentity))
@@ -244,7 +301,8 @@ public class RenderEngine
 					return;
 				}
 				
-				LivingCap<?> entityCap = (LivingCap<?>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
+				@SuppressWarnings("unchecked")
+				LivingCap<E> entityCap = (LivingCap<E>)livingentity.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 				if (entityCap != null)
 				{
 					event.setCanceled(true);
