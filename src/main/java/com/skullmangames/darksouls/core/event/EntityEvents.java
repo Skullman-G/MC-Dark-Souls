@@ -300,6 +300,8 @@ public class EntityEvents
 				entityCap.getAnimator().playAnimation(Animations.BIPED_HIT_LAND_HEAVY, 0);
 			}
 		}
+		
+		event.setDamageMultiplier(50);
 	}
 	
 	@SubscribeEvent

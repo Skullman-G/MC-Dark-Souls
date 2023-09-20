@@ -26,6 +26,13 @@ public class Stats
 	
 	public static final Stat VIGOR = register(new Stat("vigor", "35031b47-45fa-401b-92dc-12b6d258e553", AttributeList.of(() -> Attributes.MAX_HEALTH))
 	{
+		public void init(PlayerCap<?> playerCap, int value)
+		{
+			super.init(playerCap, value);
+			Player player = playerCap.getOriginalEntity();
+			player.setHealth(player.getMaxHealth());
+		}
+		
 		@Override
 		public void onChange(PlayerCap<?> playerCap, int value)
 		{

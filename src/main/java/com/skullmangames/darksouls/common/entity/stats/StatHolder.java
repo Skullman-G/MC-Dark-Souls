@@ -43,6 +43,14 @@ public class StatHolder
 			request.set(name, value);
 		}
 		request.finish();
+		
+		if (nbt.isEmpty())
+		{
+			for (Stat stat : Stats.STATS.values())
+			{
+				stat.init(this.playerCap, this.getStatValue(stat));
+			}
+		}
 	}
 	
 	public void saveStats(CompoundTag nbt)

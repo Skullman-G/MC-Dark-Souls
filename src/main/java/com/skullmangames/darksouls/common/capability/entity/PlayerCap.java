@@ -103,7 +103,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 			this.covenantProgresses[i] = nbt.getInt(Covenants.COVENANTS.get(i).toString());
 		}
 		
-		this.stats.loadStats(nbt);
+		this.stats.loadStats(nbt.getCompound("Stats"));
 	}
 	
 	public final void onSave()
@@ -128,7 +128,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 			nbt.putInt(Covenants.COVENANTS.get(i).toString(), this.covenantProgresses[i]);
 		}
 		
-		this.stats.saveStats(nbt);
+		CompoundTag statsNbt = new CompoundTag();
+		this.stats.saveStats(statsNbt);
+		nbt.put("Stats", statsNbt);
 	}
 	
 	@Override

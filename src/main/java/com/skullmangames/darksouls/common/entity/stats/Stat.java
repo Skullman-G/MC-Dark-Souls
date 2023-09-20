@@ -50,6 +50,8 @@ public abstract class Stat
 		this.modifyAttributes(playerCap, value);
 	}
 	
+	public void init(PlayerCap<?> playerCap, int value) {}
+	
 	public double getModifyValue(PlayerCap<?> playerCap, Attribute attribute, int value)
 	{
 		return 0D;
