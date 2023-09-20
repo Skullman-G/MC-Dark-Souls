@@ -156,30 +156,37 @@ public class PlayerStatsScreen extends Screen
 
 		int secondX = x + 195;
 		
+		int i = 0;
 		this.font.draw(poseStack, "Base Power", secondX, y + 36, this.color);
 		
 		int maxhealth = this.maxHealthBase + (int)Stats.VIGOR.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VIGOR));
 		int maxhealthcolor = (int)this.player.getAttributeValue(Attributes.MAX_HEALTH) != maxhealth ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Max Health: " + maxhealth, secondX, y + 52, maxhealthcolor);
+		this.font.draw(poseStack, "Max Health: " + maxhealth, secondX, y + 52 + 12 * i++, maxhealthcolor);
+		
+		int health = (int)this.player.getHealth();
+		this.font.draw(poseStack, "Health: "+ health, secondX, y + 52 + 12 * i++, this.color);
 		
 		int maxfp = this.maxFPBase + (int)Stats.ATTUNEMENT.getModifyValue(this.playerCap, ModAttributes.MAX_FOCUS_POINTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxfpcolor = (int)this.player.getAttributeValue(ModAttributes.MAX_FOCUS_POINTS.get()) != maxfp ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Max Focus Points: " + maxfp, secondX, y + 64, maxfpcolor);
+		this.font.draw(poseStack, "Max Focus Points: " + maxfp, secondX, y + 52 + 12 * i++, maxfpcolor);
+		
+		int fp = (int)this.playerCap.getFP();
+		this.font.draw(poseStack, "Focus Points: "+ fp, secondX, y + 52 + 12 * i++, this.color);
 
 		int maxstamina = this.maxStaminaBase + (int)Stats.ENDURANCE.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.ENDURANCE));
 		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Max Stamina: " + maxstamina, secondX, y + 76, maxstaminacolor);
+		this.font.draw(poseStack, "Max Stamina: " + maxstamina, secondX, y + 52 + 12 * i++, maxstaminacolor);
 		
 		float maxEquipLoad = MathUtils.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VITALITY)), 1);
 		int maxEquipLoadColor = MathUtils.round((float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()), 1) != maxEquipLoad ? 0x8cc9ff : this.color;
 		double equipLoad = this.player.getAttributeValue(ModAttributes.EQUIP_LOAD.get());
-		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 88, maxEquipLoadColor);
+		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 52 + 12 * i++, maxEquipLoadColor);
 		
 		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.playerCap, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;
-		this.font.draw(poseStack, "Attunement Slots: " + maxAttunementSlots, secondX, y + 100, maxAttunementSlotsColor);
+		this.font.draw(poseStack, "Attunement Slots: " + maxAttunementSlots, secondX, y + 52 + 12 * i++, maxAttunementSlotsColor);
 		
-		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 112, this.color);
+		this.font.draw(poseStack, "Covenant: " + this.playerCap.getCovenant().getRegistryName(), secondX, y + 52 + 12 * i++, this.color);
 		
 		Map<Attribute, String> damageValues = new HashMap<>();
 		this.damageMod.forEach((attribute, mod) ->
@@ -192,14 +199,17 @@ public class PlayerStatsScreen extends Screen
 			
 			damageValues.put(attribute, color + value);
 		});
-		this.font.draw(poseStack, "Attack power", secondX, y + 144, this.color);
-		this.font.draw(poseStack, "Mainhand:", secondX, y + 160, this.color);
-		this.font.draw(poseStack, "\u00A77Physical: " + damageValues.get(Attributes.ATTACK_DAMAGE), secondX, y + 172, this.color);
-		this.font.draw(poseStack, "\u00A73Magic: " + damageValues.get(ModAttributes.MAGIC_DAMAGE.get()), secondX, y + 184, this.color);
-		this.font.draw(poseStack, "\u00A7cFire: " + damageValues.get(ModAttributes.FIRE_DAMAGE.get()), secondX, y + 196, this.color);
-		this.font.draw(poseStack, "\u00A7eLightning: " + damageValues.get(ModAttributes.LIGHTNING_DAMAGE.get()), secondX, y + 208, this.color);
-		this.font.draw(poseStack, "\u00A76Holy: " + damageValues.get(ModAttributes.HOLY_DAMAGE.get()), secondX, y + 220, this.color);
-		this.font.draw(poseStack, "\u00A75Dark: " + damageValues.get(ModAttributes.DARK_DAMAGE.get()), secondX, y + 232, this.color);
+		
+		i = 0;
+		int y0 = y + 184;
+		this.font.draw(poseStack, "Attack power", secondX, y + 168, this.color);
+		this.font.draw(poseStack, "Mainhand:", secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A77Physical: " + damageValues.get(Attributes.ATTACK_DAMAGE), secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A73Magic: " + damageValues.get(ModAttributes.MAGIC_DAMAGE.get()), secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A7cFire: " + damageValues.get(ModAttributes.FIRE_DAMAGE.get()), secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A7eLightning: " + damageValues.get(ModAttributes.LIGHTNING_DAMAGE.get()), secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A76Holy: " + damageValues.get(ModAttributes.HOLY_DAMAGE.get()), secondX, y0 + 12 * i++, this.color);
+		this.font.draw(poseStack, "\u00A75Dark: " + damageValues.get(ModAttributes.DARK_DAMAGE.get()), secondX, y0 + 12 * i++, this.color);
 
 		int thirdX = x + 366;
 		int fourthX = thirdX + 12;

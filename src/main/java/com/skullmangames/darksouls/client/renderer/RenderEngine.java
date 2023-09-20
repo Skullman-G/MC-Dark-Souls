@@ -189,11 +189,12 @@ public class RenderEngine
 	public ClientModel getArmorModel(ArmorItem armor)
 	{
 		ClientModels models = ClientModels.CLIENT;
-		ClientModel model = this.armorModelMap.get(armor).apply(models);
+		ClientModel model = this.armorModelMap.getOrDefault(armor, (m) -> null).apply(models);
 		if (model == null)
 		{
 			switch (armor.getSlot())
 			{
+					default:
 					case HEAD:
 						model = models.ITEM_HELMET;
 						
@@ -205,9 +206,6 @@ public class RenderEngine
 						
 					case FEET:
 						model = models.ITEM_BOOTS;
-						
-					default:
-						model = null;
 			}
 		}
 		return model;
