@@ -197,15 +197,19 @@ public class RenderEngine
 					default:
 					case HEAD:
 						model = models.ITEM_HELMET;
+						break;
 						
 					case CHEST:
 						model = models.ITEM_CHESTPLATE;
+						break;
 						
 					case LEGS:
 						model = models.ITEM_LEGGINS;
+						break;
 						
 					case FEET:
 						model = models.ITEM_BOOTS;
+						break;
 			}
 		}
 		return model;
