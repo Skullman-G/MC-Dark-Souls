@@ -42,6 +42,12 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	}
 	
 	@Override
+	public int getSoulReward()
+	{
+		return 3000;
+	}
+	
+	@Override
 	public void updateMotion()
 	{
 		this.baseMotion = LivingMotion.IDLE;

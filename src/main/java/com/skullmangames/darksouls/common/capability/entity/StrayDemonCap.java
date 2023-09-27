@@ -47,6 +47,12 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	}
 	
 	@Override
+	public int getSoulReward()
+	{
+		return 100;
+	}
+	
+	@Override
 	protected void initAI()
 	{
 		super.initAI();

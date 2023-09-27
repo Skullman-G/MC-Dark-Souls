@@ -15,6 +15,12 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE);
 		animatorClient.setCurrentMotionsToDefault();
 	}
+	
+	@Override
+	public int getSoulReward()
+	{
+		return 50;
+	}
 
 	@Override
 	public void updateMotion()

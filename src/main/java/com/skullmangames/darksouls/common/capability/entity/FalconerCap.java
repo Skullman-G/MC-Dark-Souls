@@ -37,6 +37,12 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
+	
+	@Override
+	public int getSoulReward()
+	{
+		return 100;
+	}
 
 	@Override
 	public void setAttackGoals(WeaponCategory category)

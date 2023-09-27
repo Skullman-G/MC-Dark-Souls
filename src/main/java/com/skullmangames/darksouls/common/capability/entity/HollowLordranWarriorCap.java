@@ -39,6 +39,12 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	}
 	
 	@Override
+	public int getSoulReward()
+	{
+		return 60;
+	}
+	
+	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
 		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));

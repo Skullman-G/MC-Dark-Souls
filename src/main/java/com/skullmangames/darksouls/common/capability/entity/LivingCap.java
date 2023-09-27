@@ -375,6 +375,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		net.minecraftforge.event.ForgeEventFactory.onUseItemStop(this.orgEntity, this.orgEntity.getUseItem(),
 				this.orgEntity.getUseItemRemainingTicks());
 	}
+	
+	public int getSoulReward()
+	{
+		return 0;
+	}
 
 	public ItemCapability getHeldItemCapability(InteractionHand hand)
 	{

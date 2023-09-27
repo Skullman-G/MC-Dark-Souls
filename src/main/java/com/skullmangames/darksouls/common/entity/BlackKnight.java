@@ -38,12 +38,6 @@ public class BlackKnight extends ArmoredMob
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, StrayDemon.class, true));
 	}
-	
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 1800;
-	}
 
 	@Override
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)

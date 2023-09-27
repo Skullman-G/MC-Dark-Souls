@@ -336,6 +336,9 @@ public class ModItems
 	public static final RegistryObject<SpawnEggItem> BLACK_KNIGHT_SPAWN_EGG = ITEMS.register("black_knight_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BLACK_KNIGHT, 0x333333, 0x171717, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<SpawnEggItem> BALDER_KNIGHT_SPAWN_EGG = ITEMS.register("balder_knight_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BALDER_KNIGHT, 0x590808, 0x4a754a, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	public static void registerDescriptionItems()
 	{

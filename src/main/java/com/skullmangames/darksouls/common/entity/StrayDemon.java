@@ -53,12 +53,6 @@ public class StrayDemon extends PathfinderMob implements Demon
 		return super.calculateFallDamage(distance, p_225508_2_);
 	}
 	
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 100;
-	}
-	
 	public static boolean checkSpawnRules(EntityType<StrayDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)
 	{
 		return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entitytype, level, spawntype, pos, random);

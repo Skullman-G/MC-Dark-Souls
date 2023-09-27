@@ -37,10 +37,10 @@ public class RenderShield extends RenderItemMirror
 		this.leftHorizontalTransform.translate(0.05F, 0.01F, -0.2F);
 		
 		this.rightReverseTransform = new ModMatrix4f();
-		this.rightReverseTransform.translate(0, 0.3F, 0.11F);
+		this.rightReverseTransform.translate(0, 0.45F, -0.11F);
 		this.rightReverseTransform.rotate((float)Math.toRadians(95), Vector3f.XP);
 		this.leftReverseTransform = new ModMatrix4f();
-		this.leftReverseTransform.translate(0, 0.3F, -0.11F);
+		this.leftReverseTransform.translate(0, 0.45F, -0.11F);
 		this.leftReverseTransform.rotate((float)Math.toRadians(90), Vector3f.XP);
 		this.leftReverseTransform.rotate((float)Math.toRadians(180), Vector3f.ZP);
 		this.leftReverseTransform.rotate((float)Math.toRadians(-5), Vector3f.XP);

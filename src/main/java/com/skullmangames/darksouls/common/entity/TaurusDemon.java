@@ -22,7 +22,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -64,12 +63,6 @@ public class TaurusDemon extends PathfinderMob implements Demon
 	{
 		if (distance <= 30.0F) return 0;
 		return super.calculateFallDamage(distance, p_225508_2_);
-	}
-	
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 3000;
 	}
 	
 	public static boolean checkSpawnRules(EntityType<StrayDemon> entitytype, ServerLevelAccessor level, MobSpawnType spawntype, BlockPos pos, Random random)

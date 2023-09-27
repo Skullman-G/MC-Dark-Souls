@@ -89,6 +89,7 @@
 	"item.darksouls.breakable_barrel": "Breakable Barrel",
 	"item.darksouls.moss_wall": "Moss Wall",
 	"item.darksouls.small_stone_brick_window": "Small Stone Brick Window",
+	"item.darksouls.balder_knight_spawn_egg": "Balder Knight Spawn Egg",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -126,6 +127,7 @@
 	"entity.darksouls.terracotta_vase": "Terracotta Vase",
 	"entity.darksouls.taurus_demon": "Taurus Demon",
 	"entity.darksouls.breakable_barrel": "Breakable Barrel",
+	"entity.darksouls.balder_knight": "Balder Knight",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",

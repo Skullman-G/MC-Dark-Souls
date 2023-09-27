@@ -231,6 +231,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.TERRACOTTA_VASE.get(), TerracottaVaseRenderer::new);
 		EntityRenderers.register(ModEntities.TAURUS_DEMON.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.BREAKABLE_BARREL.get(), BreakableBarrelRenderer::new);
+		EntityRenderers.register(ModEntities.BALDER_KNIGHT.get(), VanillaHumanoidRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

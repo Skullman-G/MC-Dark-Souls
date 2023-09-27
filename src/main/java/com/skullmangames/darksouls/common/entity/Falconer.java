@@ -48,12 +48,6 @@ public class Falconer extends ArmoredMob implements RangedAttackMob
 	}
 
 	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 100;
-	}
-
-	@Override
 	public Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
 		if (percentage <= 75)

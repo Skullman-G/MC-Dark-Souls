@@ -16,8 +16,8 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	public void initAnimator(ClientAnimator animatorClient)
 	{
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BLACK_KNIGHT_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALKING);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUNNING);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUN);
 		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
 		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
@@ -36,6 +36,12 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 				.addAttack(new AttackInstance(1, 5.0F, Animations.BLACK_KNIGHT_SWORD_DA))
 				.addAttack(new AttackInstance(2, 4.0F, Animations.BLACK_KNIGHT_SHIELD_ATTACK))
 				.addDodge(Animations.BIPED_JUMP_BACK));
+	}
+	
+	@Override
+	public int getSoulReward()
+	{
+		return 1800;
 	}
 
 	@Override

@@ -129,10 +129,4 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	{
 		return ProjectileUtil.getMobArrow(this, itemstack, p_213624_2_);
 	}
-	
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 20;
-	}
 }

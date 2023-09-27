@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoa
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.BalderKnight;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
@@ -148,6 +149,7 @@ public class ModAttributes
 		event.put(ModEntities.FALCONER.get(), Falconer.createAttributes().build());
 		event.put(ModEntities.BLACK_KNIGHT.get(), BlackKnight.createAttributes().build());
 		event.put(ModEntities.TAURUS_DEMON.get(), TaurusDemon.createAttributes().build());
+		event.put(ModEntities.BALDER_KNIGHT.get(), BalderKnight.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -160,6 +162,7 @@ public class ModAttributes
 		general(ModEntities.FALCONER.get(), event);
 		general(ModEntities.BLACK_KNIGHT.get(), event);
 		general(ModEntities.TAURUS_DEMON.get(), event);
+		general(ModEntities.BALDER_KNIGHT.get(), event);
 		
 		general(EntityType.ARMOR_STAND, event);
 		general(EntityType.ZOMBIE, event);

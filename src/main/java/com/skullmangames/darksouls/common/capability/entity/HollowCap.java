@@ -42,6 +42,12 @@ public class HollowCap extends HumanoidCap<Hollow>
 	}
 	
 	@Override
+	public int getSoulReward()
+	{
+		return 20;
+	}
+	
+	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);

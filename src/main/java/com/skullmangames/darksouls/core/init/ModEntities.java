@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.BalderKnight;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.BreakableBarrel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
@@ -49,6 +50,10 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<HollowLordranSoldier>> HOLLOW_LORDRAN_SOLDIER = register("hollow_lordran_soldier",
 			EntityType.Builder.<HollowLordranSoldier>of(HollowLordranSoldier::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F));
+	
+	public static final RegistryObject<EntityType<BalderKnight>> BALDER_KNIGHT = register("balder_knight",
+			EntityType.Builder.<BalderKnight>of(BalderKnight::new, MobCategory.MONSTER)
 			.sized(0.6F, 1.95F));
 	
 	public static final RegistryObject<EntityType<Falconer>> FALCONER = register("falconer",

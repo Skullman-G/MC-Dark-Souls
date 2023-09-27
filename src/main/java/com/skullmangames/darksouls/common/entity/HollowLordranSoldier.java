@@ -48,12 +48,6 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 60;
-	}
-
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
 		if (percentage <= 75)

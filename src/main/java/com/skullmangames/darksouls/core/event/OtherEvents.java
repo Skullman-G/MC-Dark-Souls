@@ -1,7 +1,9 @@
 package com.skullmangames.darksouls.core.event;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.entity.SoulEntity;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
@@ -41,7 +43,11 @@ public class OtherEvents
 	public static void onLivingExperienceDrop(final LivingExperienceDropEvent event)
 	{
 		LivingEntity entity = event.getEntityLiving();
-		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), event.getDroppedExperience()));
+		LivingCap<?> cap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+		int soulReward = 0;
+		if (cap != null) soulReward = cap.getSoulReward();
+		if (soulReward == 0) soulReward = event.getDroppedExperience() * 10;
+		entity.level.addFreshEntity(new SoulEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), soulReward));
 	}
 	
 	@SubscribeEvent

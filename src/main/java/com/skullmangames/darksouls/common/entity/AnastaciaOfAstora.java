@@ -57,12 +57,6 @@ public class AnastaciaOfAstora extends AbstractFireKeeper
 	}
 	
 	@Override
-	protected int getExperienceReward(Player p_21511_)
-	{
-		return 50;
-	}
-	
-	@Override
 	protected Item getEquipmentForSlot(EquipmentSlot slot)
 	{
 		switch (slot)

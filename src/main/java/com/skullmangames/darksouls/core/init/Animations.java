@@ -332,10 +332,15 @@ public final class Animations
 	
 	public static AttackAnimation[] FALCONER_LIGHT_ATTACKS;
 	
+	// Balder Knight
+	public static StaticAnimation BALDER_KNIGHT_IDLE;
+	public static StaticAnimation BALDER_KNIGHT_WALK;
+	public static StaticAnimation BALDER_KNIGHT_RUN;
+	
 	// Black Knight
 	public static StaticAnimation BLACK_KNIGHT_IDLE;
-	public static StaticAnimation BLACK_KNIGHT_WALKING;
-	public static StaticAnimation BLACK_KNIGHT_RUNNING;
+	public static StaticAnimation BLACK_KNIGHT_WALK;
+	public static StaticAnimation BLACK_KNIGHT_RUN;
 	public static StaticAnimation BLACK_KNIGHT_BLOCK;
 	public static DeathAnimation BLACK_KNIGHT_DEATH;
 	
@@ -2130,7 +2135,8 @@ public final class Animations
 						.register(builder);
 		
 		// Falconer
-		FALCONER_IDLE = new StaticAnimation(DarkSouls.rl("falconer_idle"), 1.0F, true, DarkSouls.rl("falconer/idle"), (models) -> models.ENTITY_BIPED).register(builder);
+		FALCONER_IDLE = new StaticAnimation(DarkSouls.rl("falconer_idle"), 1.0F, true,
+				DarkSouls.rl("falconer/idle"), (models) -> models.ENTITY_BIPED).register(builder);
 		FALCONER_WALK = new MovementAnimation(DarkSouls.rl("falconer_walk"), 0.2F, true,
 				DarkSouls.rl("falconer/walking"), (models) -> models.ENTITY_BIPED).register(builder);
 		FALCONER_RUN = new MovementAnimation(DarkSouls.rl("falconer_run"), 0.2F, true,
@@ -2166,11 +2172,20 @@ public final class Animations
 		};
 		
 		
+		// Balder Knight
+		BALDER_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("balder_knight_idle"), 0.3F, true,
+				DarkSouls.rl("balder_knight/idle"), (models) -> models.ENTITY_BIPED).register(builder);
+		BALDER_KNIGHT_WALK = new StaticAnimation(DarkSouls.rl("balder_knight_walk"), 0.1F, true,
+				DarkSouls.rl("balder_knight/walking"), (models) -> models.ENTITY_BIPED).register(builder);
+		BALDER_KNIGHT_RUN = new StaticAnimation(DarkSouls.rl("balder_knight_run"), 0.1F, true,
+				DarkSouls.rl("balder_knight/run"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		
 		// Black Knight
 		BLACK_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("black_knight_idle"), 0.3F, true, DarkSouls.rl("black_knight/idle"), (models) -> models.ENTITY_BIPED)
 				.register(builder);
 		
-		BLACK_KNIGHT_WALKING = new StaticAnimation(DarkSouls.rl("black_knight_walking"), 0.1F, true, DarkSouls.rl("black_knight/walking"), (models) -> models.ENTITY_BIPED)
+		BLACK_KNIGHT_WALK = new StaticAnimation(DarkSouls.rl("black_knight_walking"), 0.1F, true, DarkSouls.rl("black_knight/walking"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
 								Event.create(0.24F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get())),
@@ -2178,7 +2193,7 @@ public final class Animations
 						})
 				.register(builder);
 		
-		BLACK_KNIGHT_RUNNING = new StaticAnimation(DarkSouls.rl("black_knight_running"), 0.1F, true, DarkSouls.rl("black_knight/running"), (models) -> models.ENTITY_BIPED)
+		BLACK_KNIGHT_RUN = new StaticAnimation(DarkSouls.rl("black_knight_running"), 0.1F, true, DarkSouls.rl("black_knight/running"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
 								Event.create(0.12F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get())),

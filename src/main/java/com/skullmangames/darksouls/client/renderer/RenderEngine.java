@@ -27,6 +27,7 @@ import com.skullmangames.darksouls.client.renderer.entity.additional.AdditionalE
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.AnastaciaOfAstoraCap;
+import com.skullmangames.darksouls.common.capability.entity.BalderKnightCap;
 import com.skullmangames.darksouls.common.capability.entity.FalconerCap;
 import com.skullmangames.darksouls.common.capability.entity.FireKeeperCap;
 import com.skullmangames.darksouls.common.capability.entity.HollowCap;
@@ -36,6 +37,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.SimpleHumanoidCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
+import com.skullmangames.darksouls.common.entity.BalderKnight;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.Falconer;
 import com.skullmangames.darksouls.common.entity.AbstractFireKeeper;
@@ -139,6 +141,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.FALCONER.get(), new SimpleHumanoidRenderer<Falconer, FalconerCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.BLACK_KNIGHT.get(), new BlackKnightRenderer());
 		this.entityRendererMap.put(ModEntities.TAURUS_DEMON.get(), new TaurusDemonRenderer());
+		this.entityRendererMap.put(ModEntities.BALDER_KNIGHT.get(), new SimpleHumanoidRenderer<BalderKnight, BalderKnightCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
 		
 		// Init Item Renderers
 		RenderBow bowRenderer = new RenderBow();
