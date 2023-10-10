@@ -4,8 +4,8 @@
 	{
 		"parent": "item/shortsword_3d",
 		"textures": {
-			"0": "darksouls:items/golden_sword",
-			"particle": "darksouls:items/golden_sword"
+			"0": "darksouls:items/golden_sword_3d",
+			"particle": "darksouls:items/golden_sword_3d"
 		}
 	},
 	"gui_light": "front",

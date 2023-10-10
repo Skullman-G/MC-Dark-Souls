@@ -4,8 +4,8 @@
 	{
 		"parent": "item/shortsword_3d",
 		"textures": {
-			"0": "darksouls:items/netherite_sword",
-			"particle": "darksouls:items/netherite_sword"
+			"0": "darksouls:items/netherite_sword_3d",
+			"particle": "darksouls:items/netherite_sword_3d"
 		}
 	},
 	"gui_light": "front",

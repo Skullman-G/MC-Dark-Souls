@@ -87,9 +87,7 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	}
 
 	@Override
-	public void setChargingCrossbow(boolean value)
-	{
-	}
+	public void setChargingCrossbow(boolean value) {}
 
 	@Override
 	public void shootCrossbowProjectile(LivingEntity target, ItemStack crossbow, Projectile ammo, float f)
@@ -104,11 +102,11 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 	}
 
 	@Override
-	public ItemStack getProjectile(ItemStack p_33038_)
+	public ItemStack getProjectile(ItemStack stack)
 	{
-		if (p_33038_.getItem() instanceof ProjectileWeaponItem)
+		if (stack.getItem() instanceof ProjectileWeaponItem)
 		{
-			Predicate<ItemStack> predicate = ((ProjectileWeaponItem) p_33038_.getItem()).getSupportedHeldProjectiles();
+			Predicate<ItemStack> predicate = ((ProjectileWeaponItem) stack.getItem()).getSupportedHeldProjectiles();
 			ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
 			return itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack;
 		} else

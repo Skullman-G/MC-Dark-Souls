@@ -54,26 +54,23 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 		{
 			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal<HollowLordranSoldier, HollowLordranSoldierCap>(this));
 		}
-		else
+		else if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
-			if (category == WeaponCategory.STRAIGHT_SWORD)
-			{
-				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))
-						.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_DA))
-						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST))
-						.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO))
-						.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
-						.addDodge(Animations.BIPED_JUMP_BACK));
-			}
-			else if (category == WeaponCategory.SPEAR)
-			{
-				this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 1.0F, true, true, true)
-						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS))
-						.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS))
-						.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
-						.addDodge(Animations.BIPED_JUMP_BACK));
-			}
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA))
+					.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_DA))
+					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST))
+					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO))
+					.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
+					.addDodge(Animations.BIPED_JUMP_BACK));
+		}
+		else if (category == WeaponCategory.SPEAR)
+		{
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 1.0F, true, true, true)
+					.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS))
+					.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS))
+					.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH))
+					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 	}
 	

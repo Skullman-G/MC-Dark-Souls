@@ -3,8 +3,13 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.Random;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
@@ -32,6 +37,8 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 
 public class Hollow extends ArmoredMob implements RangedAttackMob
 {
+	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Hollow.class, EntityDataSerializers.BYTE);
+	
 	public Hollow(EntityType<? extends Hollow> entitytype, Level level)
 	{
 		super(entitytype, level);
@@ -43,6 +50,38 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 				.add(Attributes.MAX_HEALTH, 53D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.25D);
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(DATA_FLAGS_ID, (byte)this.random.nextInt(3));
+	}
+	
+	private void setTextureId(int value)
+	{
+		value = MathUtils.clamp(value, 0, 2);
+		this.entityData.set(DATA_FLAGS_ID, (byte)value);
+	}
+	
+	public int getTextureId()
+	{
+		return this.entityData.get(DATA_FLAGS_ID).intValue();
+	}
+	
+	@Override
+	public void addAdditionalSaveData(CompoundTag nbt)
+	{
+		super.addAdditionalSaveData(nbt);
+		nbt.putInt("TextureId", this.getTextureId());
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt)
+	{
+		super.readAdditionalSaveData(nbt);
+		this.setTextureId(nbt.getInt("TextureId"));
 	}
 	
 	@Override

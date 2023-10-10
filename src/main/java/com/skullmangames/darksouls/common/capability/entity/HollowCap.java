@@ -87,9 +87,8 @@ public class HollowCap extends HumanoidCap<Hollow>
 		{
 			this.orgEntity.goalSelector.addGoal(0, new BowAttackGoal<Hollow, HollowCap>(this, 40, 15.0F));
 		}
-		else
+		else if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
-			if (category != WeaponCategory.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
