@@ -102,7 +102,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		Entity attacker = damageSource.getSource();
 		if (attacker == null || !damageSource.wasBlocked() || !this.isBlocking()) return false;
 
-		Shield shield = (Shield)this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		Shield shield = (Shield)this.getHeldMeleeWeaponCap(this.orgEntity.getUsedItemHand());
 		this.increaseStamina(-damageSource.getStaminaDamage() * (1 - shield.getStability()));
 		if (this.getStamina() > 0.0F) return super.blockingAttack(damageSource);
 		

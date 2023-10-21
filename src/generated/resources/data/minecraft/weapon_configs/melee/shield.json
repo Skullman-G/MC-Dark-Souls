@@ -1,7 +1,8 @@
 {
   "registry_name": "minecraft:shield",
-  "category": "standard_shield",
+  "category": "medium_shield",
   "moveset": "darksouls:shield",
+  "skill": "minecraft:empty",
   "collider": "darksouls:shield",
   "weight": 4.0,
   "stability": 0.57,

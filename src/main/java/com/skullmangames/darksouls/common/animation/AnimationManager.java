@@ -12,6 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
@@ -39,6 +40,11 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	public AnimationManager()
 	{
 		super(GSON, "animation_data");
+	}
+	
+	public static AnimationManager getInstance()
+	{
+		return DarkSouls.getInstance().animationManager;
 	}
 
 	public StaticAnimation getAnimation(ResourceLocation resourceLocation)

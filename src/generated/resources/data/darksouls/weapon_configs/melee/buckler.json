@@ -1,0 +1,41 @@
+{
+  "registry_name": "darksouls:buckler",
+  "category": "small_shield",
+  "moveset": "darksouls:shield",
+  "skill": "darksouls:fast_parry",
+  "collider": "darksouls:shield",
+  "weight": 1.0,
+  "stability": 0.43,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 67,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0,
+    "HOLY": 0
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 7,
+    "stat.darksouls.dexterity": 13,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "E",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "SMALL",
+  "weapon_material": "metal_shield",
+  "defense": {
+    "PHYSICAL": 0.49,
+    "MAGIC": 0.35,
+    "FIRE": 0.3,
+    "LIGHTNING": 0.11,
+    "DARK": 0.28,
+    "HOLY": 0.28
+  }
+}

@@ -63,6 +63,7 @@ import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.WeaponSkills;
 import com.skullmangames.darksouls.core.util.QuestFlags;
 import com.skullmangames.darksouls.core.init.ModRecipes;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
@@ -88,6 +89,7 @@ public class DarkSouls
 	private static DarkSouls instance;
 	public final AnimationManager animationManager;
 	public final WeaponMovesets weaponMovesets;
+	public final WeaponSkills weaponSkills;
 	public final MeleeWeaponConfigs meleeWeaponConfigs;
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
@@ -98,10 +100,11 @@ public class DarkSouls
 
 	public DarkSouls()
 	{
+		instance = this;
 		this.animationManager = new AnimationManager();
 		this.weaponMovesets = new WeaponMovesets();
+		this.weaponSkills = new WeaponSkills();
 		this.meleeWeaponConfigs = new MeleeWeaponConfigs();
-		instance = this;
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);
@@ -159,6 +162,7 @@ public class DarkSouls
 	{
 		event.addListener(this.animationManager);
 		event.addListener(this.weaponMovesets);
+		event.addListener(this.weaponSkills);
 		event.addListener(this.meleeWeaponConfigs);
 	}
 	

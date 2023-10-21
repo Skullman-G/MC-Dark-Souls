@@ -19,6 +19,7 @@ import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.WeaponSkills;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 
@@ -61,6 +62,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 	{
 		return ImmutableList.of
 		(
+			// Greathammers
 			MeleeWeaponCap.builder(ModItems.DEMON_GREAT_HAMMER.get(), WeaponCategory.GREAT_HAMMER, WeaponMovesets.GREAT_HAMMER, Colliders.GREAT_HAMMER.getId(), 22.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 138, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
@@ -76,6 +78,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.32F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
+			// Axes
 			MeleeWeaponCap.builder(Items.WOODEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 0.75F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
@@ -181,6 +184,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.30F)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			// Hammers
 			MeleeWeaponCap.builder(Items.WOODEN_PICKAXE, WeaponCategory.HAMMER, WeaponMovesets.HAMMER, Colliders.PICKAXE.getId(), 5.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 140, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
@@ -286,6 +290,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			// Straight Swords
 			MeleeWeaponCap.builder(Items.WOODEN_SWORD, WeaponCategory.STRAIGHT_SWORD, WeaponMovesets.STRAIGHT_SWORD, Colliders.SHORTSWORD.getId(), 2.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 79, 0.45F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
@@ -391,7 +396,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
-			MeleeWeaponCap.builder(ModItems.STRAIGHT_SWORD_HILT.get(), WeaponCategory.STRAIGHT_SWORD, WeaponMovesets.STRAIGHT_SWORD, Colliders.BROKEN_SWORD.getId(), 1.0F)
+			MeleeWeaponCap.builder(ModItems.STRAIGHT_SWORD_HILT.get(), WeaponCategory.STRAIGHT_SWORD, WeaponMovesets.STRAIGHT_SWORD, Colliders.FIST.getId(), 1.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 20, 0.20F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.05F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.15F)
@@ -421,6 +426,22 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			MeleeWeaponCap.builder(ModItems.BALDER_SIDE_SWORD.get(), WeaponCategory.STRAIGHT_SWORD, WeaponMovesets.STRAIGHT_SWORD, Colliders.LONGSWORD.getId(), 3.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 80, 0.5F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.10F)
+			.setCritical(1.00F)
+			.setStability(0.32F)
+			.putStatInfo(Stats.STRENGTH, 10, Scaling.E)
+			.putStatInfo(Stats.DEXTERITY, 14, Scaling.B)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
+			
+			// Greatswords
 			MeleeWeaponCap.builder(ModItems.BLACK_KNIGHT_SWORD.get(), WeaponCategory.GREATSWORD, WeaponMovesets.BLACK_KNIGHT_SWORD, Colliders.GREATSWORD.getId(), 10.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 173, 0.45F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.40F)
@@ -452,6 +473,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			// Spears
 			MeleeWeaponCap.builder(ModItems.SPEAR.get(), WeaponCategory.SPEAR, WeaponMovesets.SPEAR, Colliders.SPEAR.getId(), 4.5F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 104, 0.40F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.25F)
@@ -482,6 +504,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			// Ultra Greatswords
 			MeleeWeaponCap.builder(ModItems.ZWEIHANDER.get(), WeaponCategory.ULTRA_GREATSWORD, WeaponMovesets.ULTRA_GREATSWORD, Colliders.ULTRA_GREATSWORD.getId(), 10.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 145, 0.50F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.40F)
@@ -513,8 +536,24 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
+			// Thrusting Swords
+			MeleeWeaponCap.builder(ModItems.RAPIER.get(), WeaponCategory.THRUSTING_SWORD, WeaponMovesets.THRUSTING_SWORD, Colliders.LONGSWORD.getId(), 20.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 95, 0.35F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.20F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.15F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.15F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.20F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.20F)
+			.setCritical(1.30F)
+			.setStability(0.15F)
+			.putStatInfo(Stats.STRENGTH, 7, Scaling.E)
+			.putStatInfo(Stats.DEXTERITY, 12, Scaling.C)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
+			
 			// Shields
-			MeleeWeaponCap.builder(Items.SHIELD, WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			MeleeWeaponCap.builder(Items.SHIELD, WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 88, 0.84F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.47F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.69F)
@@ -530,7 +569,8 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.WOODEN_SHIELD)
 			.setShieldType(ShieldType.STANDARD),
 			
-			MeleeWeaponCap.builder(ModItems.HEATER_SHIELD.get(), WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 2.0F)
+			MeleeWeaponCap.builder(ModItems.HEATER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 2.0F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 60, 1.00F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.60F)
@@ -547,6 +587,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setShieldType(ShieldType.STANDARD),
 			
 			MeleeWeaponCap.builder(ModItems.CRACKED_ROUND_SHIELD.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 1.0F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 46, 0.65F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.55F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.10F)
@@ -562,7 +603,8 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.WOODEN_SHIELD)
 			.setShieldType(ShieldType.CRACKED_ROUND_SHIELD),
 			
-			MeleeWeaponCap.builder(ModItems.LORDRAN_SOLDIER_SHIELD.get(), WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 3.5F)
+			MeleeWeaponCap.builder(ModItems.LORDRAN_SOLDIER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 3.5F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 66, 1.00F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.65F)
@@ -578,7 +620,8 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
 			.setShieldType(ShieldType.STANDARD),
 			
-			MeleeWeaponCap.builder(ModItems.KNIGHT_SHIELD.get(), WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 5.5F)
+			MeleeWeaponCap.builder(ModItems.KNIGHT_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 5.5F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 68, 1.00F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.30F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.60F)
@@ -595,6 +638,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setShieldType(ShieldType.STANDARD),
 			
 			MeleeWeaponCap.builder(ModItems.GOLDEN_FALCON_SHIELD.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 2.5F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 75, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.45F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.39F)
@@ -610,7 +654,8 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
 			.setShieldType(ShieldType.SMALL),
 			
-			MeleeWeaponCap.builder(ModItems.BALDER_SHIELD.get(), WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			MeleeWeaponCap.builder(ModItems.BALDER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 66, 1.00F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.20F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.60F)
@@ -626,7 +671,8 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
 			.setShieldType(ShieldType.STANDARD),
 			
-			MeleeWeaponCap.builder(ModItems.BLACK_KNIGHT_SHIELD.get(), WeaponCategory.STANDARD_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			MeleeWeaponCap.builder(ModItems.BLACK_KNIGHT_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			.setSkill(WeaponSkills.PARRY)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 113, 1.00F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.65F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.85F)
@@ -640,7 +686,24 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD)
+			.setShieldType(ShieldType.STANDARD),
+			
+			MeleeWeaponCap.builder(ModItems.BUCKLER.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 1.0F)
+			.setSkill(WeaponSkills.FAST_PARRY)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 67, 0.49F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.11F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.28F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.28F)
+			.setCritical(1.00F)
+			.setStability(0.43F)
+			.putStatInfo(Stats.STRENGTH, 7, Scaling.E)
+			.putStatInfo(Stats.DEXTERITY, 13, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
+			.setShieldType(ShieldType.SMALL)
 		);
 	}
 

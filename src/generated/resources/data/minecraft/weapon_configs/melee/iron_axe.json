@@ -2,6 +2,7 @@
   "registry_name": "minecraft:iron_axe",
   "category": "axe",
   "moveset": "darksouls:axe",
+  "skill": "minecraft:empty",
   "collider": "darksouls:axe",
   "weight": 1.0,
   "stability": 0.3,

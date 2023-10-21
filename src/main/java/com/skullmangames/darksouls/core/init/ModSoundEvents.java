@@ -24,6 +24,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> SOUL_CONTAINER_FINISH = register("item.soul_container.finish");
 	
 	public static final RegistryObject<SoundEvent> SWORD_SWING = register("item.sword.swing");
+	public static final RegistryObject<SoundEvent> SWORD_PULLOUT = register("item.sword.pullout");
 	public static final RegistryObject<SoundEvent> FIST_SWING = register("item.fist.swing");
 	public static final RegistryObject<SoundEvent> AXE_SWING = register("item.axe.swing");
 	public static final RegistryObject<SoundEvent> SPEAR_SWING = register("item.spear.swing");
@@ -49,6 +50,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> GENERIC_LAND = register("entity.generic.land");
 	public static final RegistryObject<SoundEvent> GENERIC_KICK = register("entity.generic.kick");
 	public static final RegistryObject<SoundEvent> GENERIC_PARRY_SUCCESS = register("entity.generic.parry_success");
+	public static final RegistryObject<SoundEvent> GENERIC_KILL_CHANCE = register("entity.generic.kill_chance");
 	
 	public static final RegistryObject<SoundEvent> PLAYER_SHIELD_DISARMED = register("entity.player.shield_disarmed");
 	
@@ -69,6 +71,11 @@ public class ModSoundEvents
 	
 	public static final RegistryObject<SoundEvent> TAURUS_DEMON_AMBIENT = register("entity.taurus_demon.ambient");
 	public static final RegistryObject<SoundEvent> TAURUS_DEMON_DEATH = register("entity.taurus_demon.death");
+	
+	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_DAMAGE = register("entity.balder_knight.damage");
+	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_DEATH = register("entity.balder_knight.death");
+	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_FOOT = register("entity.balder_knight.foot");
+	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_AMBIENT = register("entity.balder_knight.ambient");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

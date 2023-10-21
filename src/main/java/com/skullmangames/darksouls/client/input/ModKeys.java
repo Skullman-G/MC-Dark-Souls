@@ -25,7 +25,7 @@ public class ModKeys
 	public static final KeyMapping ATTUNEMENT_SLOT_DOWN = makeKeyBinding("attunement_slot_down", Type.KEYSYM, 264, "gui");
 	public static final KeyMapping TARGET_LOCK_ON = makeKeyBinding("target_lock_on", Type.MOUSE, 2, "combat");
 	public static final KeyMapping TWO_HANDING = makeKeyBinding("two_handing", Type.KEYSYM, 70, "combat");
-	public static final KeyMapping PARRY = makeKeyBinding("parry", Type.KEYSYM, 67, "combat");
+	public static final KeyMapping PERFORM_SKILL = makeKeyBinding("perform_skill", Type.KEYSYM, 67, "combat");
 	
 	// For temporary use
 	public static final KeyMapping VISIBLE_HITBOXES = new KeyMapping("visible_hitboxes", 79, "debug");

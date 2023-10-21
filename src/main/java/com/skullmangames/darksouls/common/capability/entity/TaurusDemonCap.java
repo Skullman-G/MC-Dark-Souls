@@ -36,7 +36,7 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	@Override
 	public Collider getColliderMatching(InteractionHand hand)
 	{
-		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
 		if (cap.getWeaponCollider() == Colliders.GREATAXE) return Colliders.TAURUS_DEMON_GREATAXE;
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}

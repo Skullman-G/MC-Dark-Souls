@@ -54,6 +54,8 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	public static final ResourceLocation DAGGER = DarkSouls.rl("dagger");
 	
 	public static final ResourceLocation GREAT_HAMMER = DarkSouls.rl("great_hammer");
+	
+	public static final ResourceLocation THRUSTING_SWORD = DarkSouls.rl("thrusting_sword");
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
@@ -91,11 +93,5 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	{
 		WeaponMoveset moveset = DarkSouls.getInstance().weaponMovesets.movesets.get(location);
 		return Optional.ofNullable(moveset);
-	}
-	
-	public static Optional<WeaponMoveset> getByName(String name)
-	{
-		ResourceLocation location = new ResourceLocation(name);
-		return getByLocation(location);
 	}
 }

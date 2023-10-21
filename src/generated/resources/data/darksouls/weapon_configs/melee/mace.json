@@ -2,6 +2,7 @@
   "registry_name": "darksouls:mace",
   "category": "hammer",
   "moveset": "darksouls:hammer",
+  "skill": "minecraft:empty",
   "collider": "darksouls:mace",
   "weight": 5.0,
   "stability": 0.3,

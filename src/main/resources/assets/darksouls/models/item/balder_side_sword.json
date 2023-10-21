@@ -1,0 +1,39 @@
+{
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"parent": "darksouls:item/balder_side_sword_3d",
+		"textures": {
+			"0": "darksouls:items/balder_side_sword_3d",
+			"particle": "darksouls:items/balder_side_sword_3d"
+		}
+	},
+	"gui_light": "front",
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/balder_side_sword"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/balder_side_sword"
+			}
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/balder_side_sword"
+			}
+		}
+	}
+}

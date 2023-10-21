@@ -1,7 +1,8 @@
 {
   "registry_name": "darksouls:lordran_soldier_shield",
-  "category": "standard_shield",
+  "category": "medium_shield",
   "moveset": "darksouls:shield",
+  "skill": "darksouls:parry",
   "collider": "darksouls:shield",
   "weight": 3.5,
   "stability": 0.56,

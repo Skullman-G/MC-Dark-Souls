@@ -1,0 +1,41 @@
+{
+  "registry_name": "darksouls:balder_side_sword",
+  "category": "straight_sword",
+  "moveset": "darksouls:straight_sword",
+  "skill": "minecraft:empty",
+  "collider": "darksouls:longsword",
+  "weight": 3.0,
+  "stability": 0.32,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 80,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0,
+    "HOLY": 0
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 10,
+    "stat.darksouls.dexterity": 14,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "E",
+    "stat.darksouls.dexterity": "B",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "shield_type": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.5,
+    "MAGIC": 0.1,
+    "FIRE": 0.35,
+    "LIGHTNING": 0.35,
+    "DARK": 0.1,
+    "HOLY": 0.1
+  }
+}

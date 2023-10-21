@@ -27,7 +27,9 @@ import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.WeaponSkills;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
+import com.skullmangames.darksouls.core.util.WeaponSkill;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
@@ -58,13 +60,13 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	private final ImmutableMap<CoreDamageType, Float> defense;
 	private final float stability;
 	
-	public MeleeWeaponCap(Item item, WeaponCategory category, ResourceLocation moveset, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+	public MeleeWeaponCap(Item item, WeaponCategory category, ResourceLocation moveset, WeaponSkill skill, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 						  float critical, float weight,
 						  ShieldType shieldType, WeaponMaterial weaponMaterial,
 						  ImmutableMap<CoreDamageType, Float> defense, float stability,
 						  ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, category, damage, auxEffects, critical, weight, statRequirements, statScaling);
+		super(item, category, skill, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		this.movesetId = moveset;
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.collider = collider;
@@ -78,6 +80,9 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SHIELD);
 			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SHIELD);
 			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SHIELD);
 		}
 		if (this.getWeaponCategory().isHeavy())
 		{
@@ -92,12 +97,18 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_BIG_WEAPON);
 		}
 		else if (this.getWeaponCategory().isLong())
 		{
 			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SPEAR);
 			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SPEAR);
 			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SPEAR);
 		}
 	}
 	
@@ -316,6 +327,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		private Item item;
 		private WeaponCategory category;
 		private ResourceLocation movesetId;
+		private ResourceLocation skillId;
 		private ResourceLocation colliderId;
 		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
 		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
@@ -334,6 +346,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			this.item = item;
 			this.category = category;
 			this.movesetId = movesetId;
+			this.skillId = new ResourceLocation("empty");
 			this.colliderId = colliderId;
 			this.weight = weight;
 		}
@@ -341,6 +354,12 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		public ResourceLocation getLocation()
 		{
 			return this.item.getRegistryName();
+		}
+		
+		public Builder setSkill(ResourceLocation id)
+		{
+			this.skillId = id;
+			return this;
 		}
 		
 		public Builder addAuxEffect(AuxEffect auxEffect)
@@ -393,6 +412,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			root.addProperty("registry_name", this.item.getRegistryName().toString());
 			root.addProperty("category", this.category.toString());
 			root.addProperty("moveset", this.movesetId.toString());
+			root.addProperty("skill", this.skillId.toString());
 			root.addProperty("collider", this.colliderId.toString());
 			root.addProperty("weight", this.weight);
 			root.addProperty("stability", this.stability);
@@ -453,6 +473,9 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			
 			Builder builder = new Builder(item, category, movesetId, colliderId, weight);
 			
+			JsonElement skillJson = json.get("skill");
+			if (skillJson != null) builder.setSkill(new ResourceLocation(skillJson.getAsString()));
+			
 			JsonElement criticalJson = json.get("critical");
 			if (criticalJson != null) builder.setCritical(criticalJson.getAsFloat());
 			
@@ -512,7 +535,8 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		public MeleeWeaponCap build()
 		{
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.category, this.movesetId, collider, this.damage.build(), this.auxEffects.build(),
+			return new MeleeWeaponCap(this.item, this.category, this.movesetId, WeaponSkills.getFromLocation(this.skillId),
+					collider, this.damage.build(), this.auxEffects.build(),
 					this.critical, this.weight,
 					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability,
 					this.statRequirements.build(), this.statScaling.build());

@@ -8,12 +8,12 @@ public enum WeaponCategory
 	HAMMER(true, false, false), GREAT_HAMMER(true, true, false),
 	DAGGER(true, false, false),
 	CURVED_SWORD(true, false, false), KATANA(true, false, false), CURVED_GREATSWORD(true, true, false),
-	PIERCING_SWORD(true, false, false),
+	THRUSTING_SWORD(true, false, false),
 	AXE(true, false, false), GREATAXE(true, true, false),
 	FIST(true, false, false), CLAW(true, false, false),
 	SPEAR(true, false, true), HALBERD(true, false, true), SCYTHE(true, false, true),
 	WHIP(true, false, false),
-	SMALL_SHIELD(true, false, false), STANDARD_SHIELD(true, false, false), GREATSHIELD(true, false, false);
+	SMALL_SHIELD(true, false, false), MEDIUM_SHIELD(true, false, false), GREATSHIELD(true, false, false);
 	
 	private final boolean melee;
 	private final boolean heavy;

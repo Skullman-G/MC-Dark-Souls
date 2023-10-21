@@ -90,6 +90,9 @@
 	"item.darksouls.moss_wall": "Moss Wall",
 	"item.darksouls.small_stone_brick_window": "Small Stone Brick Window",
 	"item.darksouls.balder_knight_spawn_egg": "Balder Knight Spawn Egg",
+	"item.darksouls.balder_side_sword": "Balder Side Sword",
+	"item.darksouls.rapier": "Rapier",
+	"item.darksouls.buckler": "Buckler",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -240,6 +243,9 @@
 	"tooltip.darksouls.balder_shield.extended": "Shield of the knights of the ancient kingdom of Balder. Tweaked for improved stability. Balder was the home of Knight King Rendal, but the kingdom was reduced to ruins after a widespread outbreak of Undead",
 	"tooltip.darksouls.black_knight_shield.extended": "Shield of the Black Knights who roam the lands. A flowing canal is chiseled deeply into its face. Long ago, the black knights faced the chaos demons, and were charred black, but their shields became highly resistant to fire.",
 	"tooltip.darksouls.balder_leggings.extended": "Leggings worn by the knights of the ancient kingdom of Balder. Balder was the homeland of the Knight King Rendal, but it came to ruin after a great many Undead were spawned.",
+	"tooltip.darksouls.balder_side_sword.extended": "The knights of the ancient kingdom of Balder wielded these rock-solid, long swords which are excellent for thrust attacks.",
+	"tooltip.darksouls.rapier.extended": "A lightweight thrusting sword used in noble duels employing refined techniques. The primary attack of a thrusting sword is a series of stabs that render foes vulnerable for a devastating final thrust. Can also attack with shield up.",
+	"tooltip.darksouls.buckler.extended": "A very small round metal shield. It features a large central protrusion designed for parrying attacks.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	
@@ -342,7 +348,7 @@
 	"key.darksouls.attunement_slot_down": "Attunement Slot Down",
 	"key.darksouls.target_lock_on": "Target Lock On",
 	"key.darksouls.two_handing": "Two Handing",
-	"key.darksouls.parry": "Parry",
+	"key.darksouls.perform_skill": "Perform Skill",
 	
 	"config.long_press_count": "Button Long Press Count",
 	"config.show_health_indicator": "Show Health Bar Indicator",

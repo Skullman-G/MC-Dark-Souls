@@ -1,0 +1,84 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "darksouls:items/broken_straight_sword_3d",
+		"particle": "darksouls:items/broken_straight_sword_3d"
+	},
+	"elements": [
+		{
+			"from": [7.8, -0.2, 6.8],
+			"to": [9.2, 1.2, 8.2],
+			"faces": {
+				"north": {"uv": [0.5, 0.5, 1, 1], "texture": "#0"},
+				"east": {"uv": [0, 0.5, 0.5, 1], "texture": "#0"},
+				"south": {"uv": [1.5, 0.5, 2, 1], "texture": "#0"},
+				"west": {"uv": [1, 0.5, 1.5, 1], "texture": "#0"},
+				"up": {"uv": [1, 0.5, 0.5, 0], "texture": "#0"},
+				"down": {"uv": [1.5, 0, 1, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 0, 7],
+			"to": [9, 6, 8],
+			"faces": {
+				"north": {"uv": [5.5, 3.5, 6, 6.5], "texture": "#0"},
+				"east": {"uv": [5, 3.5, 5.5, 6.5], "texture": "#0"},
+				"south": {"uv": [6.5, 3.5, 7, 6.5], "texture": "#0"},
+				"west": {"uv": [6, 3.5, 6.5, 6.5], "texture": "#0"},
+				"up": {"uv": [6, 3.5, 5.5, 3], "texture": "#0"},
+				"down": {"uv": [6.5, 3, 6, 3.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.8, 5.8, 4.8],
+			"to": [9.2, 7.2, 10.2],
+			"faces": {
+				"north": {"uv": [5.5, 2.5, 6, 3], "texture": "#0"},
+				"east": {"uv": [3, 2.5, 5.5, 3], "texture": "#0"},
+				"south": {"uv": [8.5, 2.5, 9, 3], "texture": "#0"},
+				"west": {"uv": [6, 2.5, 8.5, 3], "texture": "#0"},
+				"up": {"uv": [6, 2.5, 5.5, 0], "texture": "#0"},
+				"down": {"uv": [6.5, 0, 6, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 7, 7],
+			"to": [9, 8, 8],
+			"faces": {
+				"north": {"uv": [3.5, 3.5, 4, 4], "texture": "#0"},
+				"east": {"uv": [3, 3.5, 3.5, 4], "texture": "#0"},
+				"south": {"uv": [4.5, 3.5, 5, 4], "texture": "#0"},
+				"west": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"up": {"uv": [4, 3.5, 3.5, 3], "texture": "#0"},
+				"down": {"uv": [4.5, 3, 4, 3.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.5, 7, 6],
+			"to": [8.5, 9, 9],
+			"faces": {
+				"north": {"uv": [1.5, 1.5, 1.5, 2.5], "texture": "#0"},
+				"east": {"uv": [0, 1.5, 1.5, 2.5], "texture": "#0"},
+				"south": {"uv": [3, 1.5, 3, 2.5], "texture": "#0"},
+				"west": {"uv": [1.5, 1.5, 3, 2.5], "texture": "#0"},
+				"up": {"uv": [1.5, 1.5, 1.5, 0], "texture": "#0"},
+				"down": {"uv": [1.5, 0, 1.5, 1.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [-0.25, 2.5, 2]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0.5, 2.5, 2]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 1.5, 0]
+		},
+		"firstperson_lefthand": {
+			"translation": [3, 1.5, 0]
+		}
+	}
+}

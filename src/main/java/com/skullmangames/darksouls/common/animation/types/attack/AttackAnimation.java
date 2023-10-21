@@ -382,8 +382,8 @@ public class AttackAnimation extends ActionAnimation
 	{
 		protected final Map<Property<?>, Object> properties = new HashMap<Property<?>, Object>();
 		protected final float begin;
-		protected final float contactStart;
-		protected final float contactEnd;
+		public final float contactStart;
+		public final float contactEnd;
 		protected final float end;
 		protected final String jointName;
 		protected final InteractionHand hand;

@@ -2,6 +2,7 @@
   "registry_name": "darksouls:zweihander",
   "category": "ultra_greatsword",
   "moveset": "darksouls:ultra_greatsword",
+  "skill": "minecraft:empty",
   "collider": "darksouls:ultra_greatsword",
   "weight": 10.0,
   "stability": 0.4,

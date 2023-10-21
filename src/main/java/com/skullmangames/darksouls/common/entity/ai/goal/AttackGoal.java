@@ -3,11 +3,20 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
+import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
+import com.skullmangames.darksouls.network.ModNetworkManager;
+import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -27,6 +36,10 @@ public class AttackGoal extends Goal
 	
 	protected StaticAnimation dodge;
 	private int dodgeTime;
+	
+	private boolean parryMode;
+	protected AdaptableAnimation parryStance;
+	protected ParryAnimation parry;
 	
 	protected int combo = 0;
 	protected int currentAttack = -1;
@@ -67,6 +80,13 @@ public class AttackGoal extends Goal
 		this.shouldStrafe = shouldStrafe;
 		this.strafeMinLength = defensive ? 4 : 1;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+	}
+	
+	public AttackGoal addParry(AdaptableAnimation stance, ParryAnimation parry)
+	{
+		this.parryStance = stance;
+		this.parry = parry;
+		return this;
 	}
 	
 	public AttackGoal addDodge(StaticAnimation dodge)
@@ -127,13 +147,14 @@ public class AttackGoal extends Goal
     private void updatePhase()
     {
     	LivingEntity target = this.attacker.getTarget();
+    	boolean inAttackRange = this.targetInAttackRange(target);
     	switch(this.phase)
     	{
     	default:
     	case NONE:
     		if (!this.mobCap.isInaction())
     		{
-    			if (this.targetInAttackRange(target))
+    			if (inAttackRange)
     			{
     				if (this.shouldStrafe && this.defensive) this.setPhase(Phase.STRAFING);
     				else this.setPhase(Phase.ATTACKING);
@@ -143,30 +164,36 @@ public class AttackGoal extends Goal
     		break;
     	case CHASING:
     		if (this.mobCap.isInaction()) this.setPhase(Phase.NONE);
-    		else if (this.targetInAttackRange(target) && !this.pathBlocked(target))
+    		else if (inAttackRange && !this.pathBlocked(target))
         	{
         		if (this.shouldStrafe && this.defensive && this.strafeLength == 0) this.setPhase(Phase.STRAFING);
         		else this.setPhase(Phase.ATTACKING);
         	}
     		break;
     	case STRAFING:
-    		boolean inAttackRange = this.targetInAttackRange(target);
     		if (this.mobCap.isInaction()) this.setPhase(Phase.NONE);
     		else if (this.strafingTime <= 0 || this.strafingBlocked(inAttackRange))
         	{
-    			if (this.strafeLength < this.strafeMinLength || this.attacker.getRandom().nextFloat() < 0.25F) this.setPhase(Phase.STRAFING);
+    			if (this.strafeLength < this.strafeMinLength || this.rndmPercentage(0.3F)) this.setPhase(Phase.STRAFING);
     			else if (inAttackRange) this.setPhase(Phase.ATTACKING);
         		else this.setPhase(Phase.CHASING);
         	}
     		break;
     	case ATTACKING:
-    		if (!this.targetInAttackRange(target) || this.pathBlocked(target)) this.setPhase(Phase.CHASING);
-    		else if (this.shouldStrafe && !this.mobCap.isInaction() && this.attacker.getRandom().nextFloat() < 0.25F)
+    		if (!inAttackRange || this.pathBlocked(target)) this.setPhase(Phase.CHASING);
+    		else if (this.shouldStrafe && !this.mobCap.isInaction() && this.rndmPercentage(0.25F))
     		{
+    			this.currentAttack = -1;
     			this.strafeLength = 0;
     			this.setPhase(Phase.STRAFING);
     		}
+    		break;
     	}
+    }
+    
+    private boolean rndmPercentage(float percentage)
+    {
+    	return this.attacker.getRandom().nextFloat() <= percentage;
     }
     
     private boolean strafingBlocked(boolean inAttackRange)
@@ -234,7 +261,21 @@ public class AttackGoal extends Goal
     
     private void startStrafing()
     {
-    	if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof Shield && this.mobCap.canBlock())
+    	if (this.parryStance != null && this.parry != null && this.rndmPercentage(1.0F))
+    	{
+    		LivingCap<?> targetCap = (LivingCap<?>)this.attacker.getTarget().getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+    		if (targetCap != null && targetCap.canBeParried())
+    		{
+    			this.parryMode = true;
+        		STCLivingMotionChange msg = new STCLivingMotionChange(this.attacker.getId(), false);
+        		for (LivingMotion motion : this.parryStance.getAvailableMotions())
+        		{
+        			msg.put(motion, this.parryStance.getForMotion(motion));
+        		}
+        		ModNetworkManager.sendToAllPlayerTrackingThisEntity(msg, this.attacker);
+    		}
+    	}
+    	else if (ModCapabilities.getItemCapability(this.attacker.getOffhandItem()) instanceof Shield && this.mobCap.canBlock())
 			this.attacker.startUsingItem(InteractionHand.OFF_HAND);
     	
     	this.strafingDir = this.strafeLength == 0 && this.getTargetRange(this.attacker.getTarget()) < this.minDist ? BACK : this.strafingDir == RIGHT ? LEFT : RIGHT;
@@ -243,14 +284,43 @@ public class AttackGoal extends Goal
 	
 	private void strafe()
     {
-		this.mobCap.rotateTo(this.attacker.getTarget(), 60, false);
-		this.attacker.getMoveControl().strafe(this.strafingDir.x, this.strafingDir.y);
-		--this.strafingTime;
+		LivingEntity target = this.attacker.getTarget();
+		this.mobCap.rotateTo(target, 60, false);
+		
+		if (this.parryMode)
+		{
+			LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+			if (targetCap != null)
+			{
+				AnimationPlayer animPlayer = targetCap.getAnimator().getMainPlayer();
+				float elapsedTime = animPlayer.getElapsedTime();
+				if (animPlayer.getPlay() instanceof AttackAnimation anim)
+				{
+					float parryTimeDist = anim.getPhaseByTime(elapsedTime).contactStart - elapsedTime;
+					if (parryTimeDist < 2.0F)
+					{
+						this.mobCap.playAnimationSynchronized(this.parry, 0.0F);
+					}
+				}
+			}
+		}
+		else
+		{
+			this.attacker.getMoveControl().strafe(this.strafingDir.x, this.strafingDir.y);
+			--this.strafingTime;
+		}
     }
 	
 	private void stopStrafing()
     {
-    	this.attacker.getMoveControl().strafe(0, 0);
+    	if (this.parryMode)
+    	{
+    		this.parryMode = false;
+    		STCLivingMotionChange msg = new STCLivingMotionChange(this.attacker.getId(), false);
+    		ModNetworkManager.sendToAllPlayerTrackingThisEntity(msg, this.attacker);
+    	}
+		
+		this.attacker.getMoveControl().strafe(0, 0);
 		this.attacker.stopUsingItem();
 		this.attacker.zza = 0;
 		this.attacker.xxa = 0;
@@ -309,12 +379,16 @@ public class AttackGoal extends Goal
     	else
     	{
     		double targetRange = this.getTargetRange(this.attacker.getTarget());
-    		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.attacker.getRandom().nextBoolean())
+    		
+    		// Dodge
+    		if (this.dodge != null && this.dodgeTime <= 0 && targetRange <= 2.0D && this.currentAttack >= 0
+    				&& this.rndmPercentage(0.25F))
     		{
     			this.mobCap.playAnimationSynchronized(this.dodge, 0);
     	    	this.dodgeTime = 3;
     	    	return;
     		}
+    		// Attacks
     		for (AttackInstance a : this.attacks)
         	{
     			if (a.isValidRange(targetRange) && (attack == null

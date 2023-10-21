@@ -1,0 +1,54 @@
+{
+  "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_light_attack"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_heavy_attack_1",
+        "darksouls:thrusting_sword_heavy_attack_2"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_dash_attack"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_thrust_check"
+      ]
+    },
+    "punish": {
+      "repeating": true,
+      "animations": [
+        "darksouls:punish_thrust_check"
+      ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_th_light_attack"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_th_heavy_attack_1",
+        "darksouls:thrusting_sword_th_heavy_attack_2"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:thrusting_sword_th_dash_attack"
+      ]
+    }
+  }
+}

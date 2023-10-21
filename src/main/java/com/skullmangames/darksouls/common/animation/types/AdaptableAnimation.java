@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableMap;
@@ -33,8 +34,19 @@ public class AdaptableAnimation extends StaticAnimation
 		else return Animations.DUMMY_ANIMATION;
 	}
 	
+	public StaticAnimation getForMotion(LivingMotion motion)
+	{
+		if (this.animations.containsKey(motion)) return this.animations.get(motion);
+		else return Animations.DUMMY_ANIMATION;
+	}
+	
+	public Set<LivingMotion> getAvailableMotions()
+	{
+		return this.animations.keySet();
+	}
+	
 	@Override
-	public StaticAnimation register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder)
+	public AdaptableAnimation register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder)
 	{
 		for (StaticAnimation a : this.animations.values()) a.register(builder);
 		return this;

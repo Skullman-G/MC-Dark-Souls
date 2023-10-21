@@ -35,6 +35,8 @@ public interface ModPlayNetHandler
 	
 	void shakeCam(Vec3 source, int duration, float magnitude);
 	
+	void shakeCamForEntity(Entity entity, int duration, float magnitude);
+	
 	void playEntitySound(Entity entity, SoundEvent sound, float volume);
 	
 	void playSound(Entity entity, SoundEvent sound, float volume);

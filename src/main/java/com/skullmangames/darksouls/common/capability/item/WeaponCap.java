@@ -24,12 +24,14 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
+import com.skullmangames.darksouls.core.util.WeaponSkill;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -50,8 +52,9 @@ public abstract class WeaponCap extends AttributeItemCap
 	private final ImmutableSet<AuxEffect> auxEffects;
 	private final float weight;
 	private final float critical;
+	private final WeaponSkill skill;
 
-	public WeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+	public WeaponCap(Item item, WeaponCategory category, WeaponSkill skill, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 			float critical, float weight,
 			ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
@@ -63,10 +66,21 @@ public abstract class WeaponCap extends AttributeItemCap
 		this.statRequirements = statRequirements;
 		this.statScaling = statScaling;
 		this.weight = weight;
+		this.skill = skill;
 		
 		this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH);
 		this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_WALK_TH);
 		this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_RUN_TH);
+	}
+	
+	public void performSkill(LivingCap<?> cap, InteractionHand hand)
+	{
+		this.skill.perform(cap, hand);
+	}
+	
+	public boolean hasSkill()
+	{
+		return this.skill != null;
 	}
 	
 	public Set<AuxEffect> getAuxEffects()

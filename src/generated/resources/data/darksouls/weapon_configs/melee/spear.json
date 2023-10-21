@@ -2,6 +2,7 @@
   "registry_name": "darksouls:spear",
   "category": "spear",
   "moveset": "darksouls:spear",
+  "skill": "minecraft:empty",
   "collider": "darksouls:spear",
   "weight": 4.5,
   "stability": 0.3,

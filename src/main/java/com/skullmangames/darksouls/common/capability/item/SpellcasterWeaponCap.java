@@ -26,7 +26,7 @@ public class SpellcasterWeaponCap extends WeaponCap
 	public SpellcasterWeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 			float critical, float spellBuff, float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, category, damage, auxEffects, critical, weight, statRequirements, statScaling);
+		super(item, category, null, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		this.spellBuff = spellBuff;
 	}
 	

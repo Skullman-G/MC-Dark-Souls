@@ -1,7 +1,8 @@
 {
   "registry_name": "darksouls:balder_shield",
-  "category": "standard_shield",
+  "category": "medium_shield",
   "moveset": "darksouls:shield",
+  "skill": "darksouls:parry",
   "collider": "darksouls:shield",
   "weight": 4.0,
   "stability": 0.63,

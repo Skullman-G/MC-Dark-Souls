@@ -50,6 +50,13 @@ public class ModItems
 	public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword", () -> new SwordItem(Tiers.IRON, 80, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BALDER_SIDE_SWORD = ITEMS.register("balder_side_sword", () -> new SwordItem(Tiers.IRON, 80, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	//Thrusting Swords
+	public static final RegistryObject<Item> RAPIER = ITEMS.register("rapier", () -> new SwordItem(Tiers.IRON, 95, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Greatswords
 	public static final RegistryObject<Item> BLACK_KNIGHT_SWORD = ITEMS.register("black_knight_sword", () -> new SwordItem(Tiers.IRON, 220, -2.4F, new Item.Properties()
@@ -118,6 +125,10 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> BLACK_KNIGHT_SHIELD = ITEMS.register("black_knight_shield", () -> new ModShieldItem(new Item.Properties()
+			.stacksTo(1)
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> BUCKLER = ITEMS.register("buckler", () -> new ModShieldItem(new Item.Properties()
 			.stacksTo(1)
 			.tab(DarkSouls.TAB)));
 			

@@ -83,11 +83,17 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator.init();
 	}
 	
-	public void performParry()
+	public void performSkill()
 	{
 		if (!this.isTwohanding() && !this.isInaction())
 		{
-			this.playAnimationSynchronized(Animations.SHIELD_PARRY, 0.0F);
+			WeaponCap offWeapon = this.getHeldWeaponCap(InteractionHand.OFF_HAND);
+			if (offWeapon != null && offWeapon.hasSkill()) offWeapon.performSkill(this, InteractionHand.OFF_HAND);
+			else
+			{
+				WeaponCap mainWeapon = this.getHeldWeaponCap(InteractionHand.MAIN_HAND);
+				if (mainWeapon != null && mainWeapon.hasSkill()) mainWeapon.performSkill(this, InteractionHand.MAIN_HAND);
+			}
 		}
 	}
 	
@@ -130,6 +136,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.stamina = this.getMaxStamina();
 		this.modifyLivingMotions();
 	}
+	
+	public void onParrySuccess() {}
 	
 	public float getSpellBuff()
 	{
@@ -391,7 +399,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return ModCapabilities.getSpellcasterWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
 
-	public MeleeWeaponCap getHeldWeaponCapability(InteractionHand hand)
+	public MeleeWeaponCap getHeldMeleeWeaponCap(InteractionHand hand)
 	{
 		return ModCapabilities.getMeleeWeaponCap(this.orgEntity.getItemInHand(hand));
 	}
@@ -491,7 +499,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		if (!this.isBlocking()) return false;
 
-		Shield shield = this.getHeldWeaponCapability(this.orgEntity.getUsedItemHand());
+		Shield shield = this.getHeldMeleeWeaponCap(this.orgEntity.getUsedItemHand());
 		Entity attacker = damageSource.getOwner();
 		if (attacker == null) return false;
 		
@@ -806,7 +814,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public SoundEvent getWeaponHitSound(InteractionHand hand)
 	{
-		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
 		if (cap == null)
 			return null;
 		return cap.getHitSound();
@@ -814,7 +822,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public SoundEvent getSwingSound(InteractionHand hand)
 	{
-		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
 		if (cap == null)
 			return ModSoundEvents.FIST_SWING.get();
 		return cap.getSwingSound();
@@ -822,7 +830,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public Collider getColliderMatching(InteractionHand hand)
 	{
-		MeleeWeaponCap cap = this.getHeldWeaponCapability(hand);
+		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
 		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
 	}
 

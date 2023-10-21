@@ -2,6 +2,7 @@
   "registry_name": "darksouls:longsword",
   "category": "straight_sword",
   "moveset": "darksouls:straight_sword",
+  "skill": "minecraft:empty",
   "collider": "darksouls:longsword",
   "weight": 3.0,
   "stability": 0.3,

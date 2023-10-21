@@ -2,6 +2,7 @@
   "registry_name": "darksouls:claymore",
   "category": "greatsword",
   "moveset": "darksouls:claymore",
+  "skill": "minecraft:empty",
   "collider": "darksouls:greatsword",
   "weight": 9.0,
   "stability": 0.35,

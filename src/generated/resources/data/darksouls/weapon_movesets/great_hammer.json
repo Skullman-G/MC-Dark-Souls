@@ -1,7 +1,7 @@
 {
   "moveset": {
     "light": {
-      "repeating": true,
+      "repeating": false,
       "animations": [
         "darksouls:great_hammer_light_attack_1",
         "darksouls:great_hammer_light_attack_2"

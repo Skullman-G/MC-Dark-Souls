@@ -2,6 +2,7 @@
   "registry_name": "darksouls:black_knight_sword",
   "category": "greatsword",
   "moveset": "darksouls:black_knight_sword",
+  "skill": "minecraft:empty",
   "collider": "darksouls:greatsword",
   "weight": 10.0,
   "stability": 0.4,

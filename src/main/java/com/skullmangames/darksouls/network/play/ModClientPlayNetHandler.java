@@ -121,6 +121,15 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 			ClientManager.INSTANCE.mainCamera.shake(duration, magnitude);
 		}
 	}
+	
+	@Override
+	public void shakeCamForEntity(Entity entity, int duration, float magnitude)
+	{
+		if (this.minecraft.player == entity)
+		{
+			ClientManager.INSTANCE.mainCamera.shake(duration, magnitude);
+		}
+	}
 
 	@Override
 	public void playEntitySound(Entity entity, SoundEvent sound, float volume)

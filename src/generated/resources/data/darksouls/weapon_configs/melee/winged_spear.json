@@ -2,6 +2,7 @@
   "registry_name": "darksouls:winged_spear",
   "category": "spear",
   "moveset": "darksouls:spear",
+  "skill": "minecraft:empty",
   "collider": "darksouls:winged_spear",
   "weight": 6.0,
   "stability": 0.2,

@@ -82,7 +82,7 @@ public class PunishCheckAnimation extends AttackAnimation
 	@Override
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
-		MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(phase.hand);
+		MeleeWeaponCap weapon = entityCap.getHeldMeleeWeaponCap(phase.hand);
 		boolean canPunish = entityCap.canPunish(target);
 		damages.mul(canPunish && !this.isWeak ? weapon.getCritical() : 0.01F);
 		StunType stunType = canPunish ? StunType.PUNISHED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);

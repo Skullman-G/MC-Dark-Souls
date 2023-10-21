@@ -137,14 +137,23 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
 			new WeaponMoveset.Builder(WeaponMovesets.GREAT_HAMMER)
-			.putMove(AttackType.LIGHT, true, Animations.GREAT_HAMMER_LIGHT_ATTACK)
+			.putMove(AttackType.LIGHT, false, Animations.GREAT_HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, false, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
 			.putMove(AttackType.PUNISH, true, Animations.PUNISH_STRIKE)
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREAT_HAMMER_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREAT_HAMMER_TH_HEAVY_ATTACK)
-			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREAT_HAMMER_TH_DASH_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREAT_HAMMER_TH_DASH_ATTACK),
+			new WeaponMoveset.Builder(WeaponMovesets.THRUSTING_SWORD)
+			.putMove(AttackType.LIGHT, true, Animations.THRUSTING_SWORD_LIGHT_ATTACK)
+			.putMove(AttackType.HEAVY, true, Animations.THRUSTING_SWORD_HEAVY_ATTACK)
+			.putMove(AttackType.DASH, true, Animations.THRUSTING_SWORD_DASH_ATTACK)
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST)
+			.putMove(AttackType.PUNISH, true, Animations.PUNISH_THRUST)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.THRUSTING_SWORD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.THRUSTING_SWORD_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.THRUSTING_SWORD_TH_DASH_ATTACK)
 		);
 	}
 	

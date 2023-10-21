@@ -2,6 +2,7 @@
   "registry_name": "minecraft:netherite_pickaxe",
   "category": "hammer",
   "moveset": "darksouls:hammer",
+  "skill": "minecraft:empty",
   "collider": "darksouls:pickaxe",
   "weight": 5.0,
   "stability": 0.4,

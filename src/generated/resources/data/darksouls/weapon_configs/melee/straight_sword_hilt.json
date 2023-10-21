@@ -2,6 +2,7 @@
   "registry_name": "darksouls:straight_sword_hilt",
   "category": "straight_sword",
   "moveset": "darksouls:straight_sword",
+  "skill": "minecraft:empty",
   "collider": "darksouls:broken_sword",
   "weight": 1.0,
   "stability": 0.1,

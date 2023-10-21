@@ -304,7 +304,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
-			Shield shield = cap.getHeldWeaponCapability(cap.getOriginalEntity().getUsedItemHand());
+			Shield shield = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
 			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));

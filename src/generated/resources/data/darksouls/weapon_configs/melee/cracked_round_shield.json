@@ -2,6 +2,7 @@
   "registry_name": "darksouls:cracked_round_shield",
   "category": "small_shield",
   "moveset": "darksouls:shield",
+  "skill": "darksouls:parry",
   "collider": "darksouls:shield",
   "weight": 1.0,
   "stability": 0.3,

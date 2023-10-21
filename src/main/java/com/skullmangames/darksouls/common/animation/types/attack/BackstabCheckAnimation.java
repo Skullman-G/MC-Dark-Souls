@@ -82,7 +82,7 @@ public class BackstabCheckAnimation extends AttackAnimation
 	@Override
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
-		MeleeWeaponCap weapon = entityCap.getHeldWeaponCapability(phase.hand);
+		MeleeWeaponCap weapon = entityCap.getHeldMeleeWeaponCap(phase.hand);
 		boolean canBackstab = entityCap.canBackstab(target);
 		damages.mul(canBackstab && !this.isWeak ? weapon.getCritical() : 0.01F);
 		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);

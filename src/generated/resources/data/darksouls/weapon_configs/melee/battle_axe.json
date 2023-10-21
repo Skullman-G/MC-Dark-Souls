@@ -2,6 +2,7 @@
   "registry_name": "darksouls:battle_axe",
   "category": "axe",
   "moveset": "darksouls:axe",
+  "skill": "minecraft:empty",
   "collider": "darksouls:battle_axe",
   "weight": 4.0,
   "stability": 0.3,

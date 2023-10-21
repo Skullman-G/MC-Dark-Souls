@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
@@ -32,11 +32,6 @@ public class WeaponMoveset
 	public ResourceLocation getName()
 	{
 		return this.name;
-	}
-	
-	public Map<AttackType, Pair<Boolean, AttackAnimation[]>> getMoveset()
-	{
-		return this.moveset;
 	}
 	
 	public AttackAnimation[] getAttacks(AttackType type)
@@ -120,7 +115,7 @@ public class WeaponMoveset
 				for (int i = 0; i < animations.size(); i++)
 				{
 					JsonElement a = animations.get(i);
-					StaticAnimation anim = DarkSouls.getInstance().animationManager.getAnimation(new ResourceLocation(a.getAsString()));
+					StaticAnimation anim = AnimationManager.getInstance().getAnimation(new ResourceLocation(a.getAsString()));
 					if (anim instanceof AttackAnimation)
 					{
 						animList[i] = (AttackAnimation)anim;

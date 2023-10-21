@@ -2,6 +2,7 @@
   "registry_name": "darksouls:demon_greataxe",
   "category": "greataxe",
   "moveset": "darksouls:ultra_greatsword",
+  "skill": "minecraft:empty",
   "collider": "darksouls:greataxe",
   "weight": 22.0,
   "stability": 0.38,

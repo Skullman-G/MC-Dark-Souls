@@ -59,7 +59,7 @@ public class BreakableBarrelItem extends Item
 
 					float f = (float) Mth.floor((Mth.wrapDegrees(ctx.getRotation() - 180.0F) + 22.5F) / 45.0F)
 							* 45.0F;
-					barrel.moveTo(barrel.getX(), barrel.getY(), barrel.getZ(), f, 0.0F);
+					barrel.moveTo(vec3.x(), vec3.y(), vec3.z(), f, 0.0F);
 					serverlevel.addFreshEntityWithPassengers(barrel);
 					level.playSound((Player) null, barrel.getX(), barrel.getY(), barrel.getZ(),
 							SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);

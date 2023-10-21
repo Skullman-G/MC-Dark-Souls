@@ -84,7 +84,7 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.ATTUNEMENT_SLOT_DOWN, this::onAttunementSlotDown);
 		this.keyFunctionMap.put(ModKeys.TARGET_LOCK_ON, this::onTrySelectTarget);
 		this.keyFunctionMap.put(ModKeys.TWO_HANDING, this::onTwoHanding);
-		this.keyFunctionMap.put(ModKeys.PARRY, this::onParry);
+		this.keyFunctionMap.put(ModKeys.PERFORM_SKILL, this::onPerformSkill);
 		
 		try
 		{
@@ -142,11 +142,11 @@ public class InputManager
 				&& this.minecraft.screen == null;
 	}
 	
-	private void onParry(int key, int action)
+	private void onPerformSkill(int key, int action)
 	{
 		if (action == 1 && ClientManager.INSTANCE.isCombatModeActive())
 		{
-			this.playerCap.performParry();
+			this.playerCap.performSkill();
 		}
 	}
 	

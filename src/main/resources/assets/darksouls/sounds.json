@@ -1,4 +1,65 @@
 {
+	"item.sword.pullout":
+	{
+		"category": "item",
+		"sounds":
+		[
+			"darksouls:items/sword/pullout"
+		]
+	},
+	
+	"entity.generic.kill_chance":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/kill_chance"
+		]
+	},
+	
+	"entity.balder_knight.ambient":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/balder_knight/ambient_1",
+			"darksouls:entities/balder_knight/ambient_2"
+		]
+	},
+	
+	"entity.balder_knight.foot":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/balder_knight/foot_1",
+			"darksouls:entities/balder_knight/foot_2",
+			"darksouls:entities/balder_knight/foot_3"
+		]
+	},
+	
+	"entity.balder_knight.death":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/balder_knight/death_1",
+			"darksouls:entities/balder_knight/death_2",
+			"darksouls:entities/balder_knight/death_3"
+		]
+	},
+	
+	"entity.balder_knight.damage":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/balder_knight/damage_1",
+			"darksouls:entities/balder_knight/damage_2",
+			"darksouls:entities/balder_knight/damage_3"
+		]
+	},
+	
 	"entity.generic.parry_success":
 	{
 		"category": "entity",

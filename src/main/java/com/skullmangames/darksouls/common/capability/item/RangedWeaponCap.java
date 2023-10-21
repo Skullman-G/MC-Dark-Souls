@@ -17,7 +17,7 @@ public abstract class RangedWeaponCap extends WeaponCap
 			ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects, float critical,
 			 float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
-		super(item, category, damage, auxEffects, critical, weight, statRequirements, statScaling);
+		super(item, category, null, damage, auxEffects, critical, weight, statRequirements, statScaling);
 		if(reload != null)
 		{
 			this.animationOverrides.put(LivingMotion.RELOADING, reload);

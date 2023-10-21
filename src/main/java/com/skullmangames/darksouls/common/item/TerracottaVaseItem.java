@@ -59,7 +59,7 @@ public class TerracottaVaseItem extends Item
 
 					float f = (float) Mth.floor((Mth.wrapDegrees(ctx.getRotation() - 180.0F) + 22.5F) / 45.0F)
 							* 45.0F;
-					vase.moveTo(vase.getX(), vase.getY(), vase.getZ(), f, 0.0F);
+					vase.moveTo(vec3.x(), vec3.y(), vec3.z(), f, 0.0F);
 					serverlevel.addFreshEntityWithPassengers(vase);
 					level.playSound((Player) null, vase.getX(), vase.getY(), vase.getZ(),
 							SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
