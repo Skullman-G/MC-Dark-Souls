@@ -55,7 +55,7 @@ public class DodgingAnimation extends ActionAnimation
 		super(id, convertTime, delayTime, path, model);
 		this.canRotate = canRotate;
 		
-		this.start = this.totalTime * (float)(1.0D - ConfigManager.SERVER_CONFIG.iFramesPercentage);
+		this.start = this.totalTime * (float)(1.0D - ConfigManager.SERVER_CONFIG.iFramesPercentage.get());
 		this.end = this.totalTime - this.start;
 	}
 	

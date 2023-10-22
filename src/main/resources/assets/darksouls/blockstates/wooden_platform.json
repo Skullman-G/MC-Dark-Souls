@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "darksouls:block/wooden_platform_slab"
+    },
+    "type=double": {
+      "model": "darksouls:block/wooden_platform"
+    },
+    "type=top": {
+      "model": "darksouls:block/wooden_platform_slab_top"
+    }
+  }
+}

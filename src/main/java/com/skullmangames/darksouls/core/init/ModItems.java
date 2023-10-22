@@ -309,7 +309,7 @@ public class ModItems
 	public static final RegistryObject<Item> IRON_BAR_DOOR = ITEMS.register("iron_bar_door", () -> new BlockItem(ModBlocks.IRON_BAR_DOOR.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> OAK_PLATFORM = ITEMS.register("oak_platform", () -> new BlockItem(ModBlocks.OAK_PLATFORM.get(),
+	public static final RegistryObject<Item> WOODEN_PLATFORM = ITEMS.register("wooden_platform", () -> new BlockItem(ModBlocks.WOODEN_PLATTFORM.get(),
 			new Item.Properties().tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> STONE_BRICK_WINDOW = ITEMS.register("stone_brick_window", () -> new BlockItem(ModBlocks.STONE_BRICK_WINDOW.get(),

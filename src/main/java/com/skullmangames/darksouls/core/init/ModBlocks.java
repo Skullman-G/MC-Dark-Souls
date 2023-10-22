@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.block.BigDoorBlock;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
-import com.skullmangames.darksouls.common.block.CustomShapedBlock;
 import com.skullmangames.darksouls.common.block.DirectionalCustomShapedBlock;
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.block.MossWallBlock;
@@ -85,12 +84,11 @@ public class ModBlocks
 			.sound(SoundType.METAL)
 			.noOcclusion()));
 	
-	public static final RegistryObject<Block> OAK_PLATFORM = BLOCKS.register("oak_platform", () -> new CustomShapedBlock(BlockBehaviour.Properties
+	public static final RegistryObject<Block> WOODEN_PLATTFORM = BLOCKS.register("wooden_platform", () -> new SlabBlock(BlockBehaviour.Properties
 			.of(Material.WOOD, Blocks.OAK_PLANKS.defaultMaterialColor())
 			.strength(3.0F)
 			.sound(SoundType.WOOD)
-			.noOcclusion(),
-			Block.box(0, 0, 0, 16, 4, 16)));
+			.noOcclusion()));
 	
 	public static final RegistryObject<Block> STONE_BRICK_WINDOW = BLOCKS.register("stone_brick_window", () -> new DirectionalCustomShapedBlock(BlockBehaviour.Properties
 			.of(Material.STONE)
