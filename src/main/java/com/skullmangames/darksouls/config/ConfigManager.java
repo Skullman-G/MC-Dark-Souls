@@ -23,7 +23,7 @@ public class ConfigManager
 		ForgeConfigSpec.Builder server = new ForgeConfigSpec.Builder();
 		
 		CLIENT_CONFIG = new ClientConfig(client);
-		SERVER_CONFIG = new ServerConfig(server, file.valueMap());
+		SERVER_CONFIG = new ServerConfig(server);
 		
 		CLIENT_CONFIG_BUILDER = client.build();
 		SERVER_CONFIG_BUILDER = server.build();

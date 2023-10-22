@@ -10,7 +10,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ClientConfig
 {
-	private final ForgeConfigSpec.Builder config;
 	public final List<Option<?>> OPTIONS = new ArrayList<Option<?>>();
 	
 	public static final float A_TICK = 0.05F;
@@ -26,15 +25,13 @@ public class ClientConfig
 	
 	public ClientConfig(ForgeConfigSpec.Builder config)
 	{
-		this.config = config;
+		this.longPressCount = this.registerInt(config, "long_press_count", 2, 1, 10);
 		
-		this.longPressCount = this.registerInt("long_press_count", 2, 1, 10);
-		
-		this.showHealthIndicator = this.registerBoolean("show_health_indicator", true);
-		this.darkSoulsUI = this.registerBoolean("dark_souls_ui", true);
-		this.darkSoulsHUDLayout = this.registerBoolean("dark_souls_hud_layout", false);
-		this.onlyShoulderSurfWhenAiming = this.registerBoolean("only_shouldersurf_when_aiming", false);
-		this.hideBossBars = this.registerBoolean("hide_boss_bars", false);
+		this.showHealthIndicator = this.registerBoolean(config, "show_health_indicator", true);
+		this.darkSoulsUI = this.registerBoolean(config, "dark_souls_ui", true);
+		this.darkSoulsHUDLayout = this.registerBoolean(config, "dark_souls_hud_layout", false);
+		this.onlyShoulderSurfWhenAiming = this.registerBoolean(config, "only_shouldersurf_when_aiming", false);
+		this.hideBossBars = this.registerBoolean(config, "hide_boss_bars", false);
 	}
 	
 	public void populateDefaultValues()
@@ -54,18 +51,18 @@ public class ClientConfig
 		ClientManager.INSTANCE.gui.reloadOverlayElements();
 	}
 	
-	private Option<Boolean> registerBoolean(String name, boolean defaultValue)
+	private Option<Boolean> registerBoolean(ForgeConfigSpec.Builder config, String name, boolean defaultValue)
 	{
 		name = "config."+name;
-		Option<Boolean> option = new Option.BooleanOption(this.config.define(name, () -> defaultValue), name, defaultValue);
+		Option<Boolean> option = new Option.BooleanOption(config.define(name, () -> defaultValue), name, defaultValue);
 		OPTIONS.add(option);
 		return option;
 	}
 	
-	private Option<Integer> registerInt(String name, int defaultValue, int min, int max)
+	private Option<Integer> registerInt(ForgeConfigSpec.Builder config, String name, int defaultValue, int min, int max)
 	{
 		name = "config."+name;
-		Option<Integer> option = new Option.IntegerOption(this.config.defineInRange(name, defaultValue, min, max), name, defaultValue, min, max);
+		Option<Integer> option = new Option.IntegerOption(config.defineInRange(name, defaultValue, min, max), name, defaultValue, min, max);
 		OPTIONS.add(option);
 		return option;
 	}

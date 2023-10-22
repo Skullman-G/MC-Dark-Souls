@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -34,8 +35,10 @@ import net.minecraftforge.entity.PartEntity;
 
 public class DodgingAnimation extends ActionAnimation
 {
-	protected float encumbrance = 0.0F;
 	private final boolean canRotate;
+	
+	private final float start;
+	private final float end;
 	
 	public DodgingAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
@@ -51,25 +54,23 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		super(id, convertTime, delayTime, path, model);
 		this.canRotate = canRotate;
+		
+		this.start = this.totalTime * (float)(1.0D - ConfigManager.SERVER_CONFIG.iFramesPercentage);
+		this.end = this.totalTime - this.start;
 	}
 	
 	@Override
 	public void onStart(LivingCap<?> entityCap)
 	{
 		super.onStart(entityCap);
-		if (entityCap instanceof EquipLoaded loaded)
-		{
-			this.encumbrance = loaded.getEncumbrance();
-		}
-		
 		entityCap.currentlyAttackedEntities.clear();
 	}
 	
 	public Entity getTrueEntity(Entity entity)
 	{
-		if (entity instanceof PartEntity)
+		if (entity instanceof PartEntity<?> part)
 		{
-			return ((PartEntity<?>) entity).getParent();
+			return part.getParent();
 		}
 
 		return entity;
@@ -134,26 +135,35 @@ public class DodgingAnimation extends ActionAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
-		this.encumbrance = 0.0F;
 	}
 	
 	@Override
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
 		Vector3f vec = super.getCoordVector(entityCap, animation);
-		vec.mul(1.01F - this.encumbrance);
+		float encumbrance = 0.0F;
+		if (entityCap instanceof EquipLoaded loaded)
+		{
+			encumbrance = loaded.getEncumbrance();
+		}
+		vec.mul(1.01F - encumbrance);
 		return vec;
 	}
 	
 	@Override
 	public EntityState getState(float time)
 	{
-		return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
+		if (this.start < time && time < this.end)
+		{
+			return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
+		}
+		return EntityState.PRE_CONTACT;
 	}
 	
 	@Override
 	public DodgingAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
 	{
-		return (DodgingAnimation)super.register(builder);
+		super.register(builder);
+		return this;
 	}
 }
