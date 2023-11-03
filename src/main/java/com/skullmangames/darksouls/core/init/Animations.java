@@ -377,12 +377,14 @@ public final class Animations
 
 	// Stray Demon
 	public static StaticAnimation STRAY_DEMON_IDLE;
-	public static StaticAnimation STRAY_DEMON_MOVE;
+	public static StaticAnimation STRAY_DEMON_WALK;
 	public static DeathAnimation STRAY_DEMON_DEATH;
 
-	public static AttackAnimation[] STRAY_DEMON_LIGHT_ATTACK;
+	public static AttackAnimation[] STRAY_DEMON_HAMMER_LIGHT_ATTACK;
+	public static AttackAnimation[] STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK;
+	public static AttackAnimation[] STRAY_DEMON_HAMMER_HEAVY_ATTACK;
 	public static AttackAnimation STRAY_DEMON_HAMMER_DRIVE;
-	public static AttackAnimation STRAY_DEMON_JUMP_ATTACK;
+	public static AttackAnimation STRAY_DEMON_HAMMER_DASH_ATTACK;
 	public static AttackAnimation STRAY_DEMON_GROUND_POUND;
 	
 	public static StaticAnimation TAURUS_DEMON_IDLE;
@@ -762,29 +764,29 @@ public final class Animations
 								Event.create(1.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get()))
 				}).register(builder);
 		
-		BIPED_ROLL = new DodgingAnimation(DarkSouls.rl("biped_roll"), 0.1F, DarkSouls.rl("biped/combat/roll"), (models) -> models.ENTITY_BIPED)
+		BIPED_ROLL = new DodgingAnimation(DarkSouls.rl("biped_roll"), 0.05F, DarkSouls.rl("biped/combat/roll"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
-		BIPED_FAT_ROLL = new DodgingAnimation(DarkSouls.rl("biped_fat_roll"), 0.1F, DarkSouls.rl("biped/combat/fat_roll"), (models) -> models.ENTITY_BIPED)
+		BIPED_FAT_ROLL = new DodgingAnimation(DarkSouls.rl("biped_fat_roll"), 0.05F, DarkSouls.rl("biped/combat/fat_roll"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
 						Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 						Event.create(0.48F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.25F))
 				}).register(builder);
-		BIPED_ROLL_TOO_FAT = new ActionAnimation(DarkSouls.rl("biped_roll_too_fat"), 0.1F,
+		BIPED_ROLL_TOO_FAT = new ActionAnimation(DarkSouls.rl("biped_roll_too_fat"), 0.05F,
 				DarkSouls.rl("biped/combat/roll_too_fat"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
 							Event.create(0.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_LAND.get())),
 							Event.create(0.4F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.25F))
 						}).register(builder);
-		BIPED_ROLL_BACK = new DodgingAnimation(DarkSouls.rl("biped_roll_back"), 0.1F, DarkSouls.rl("biped/combat/roll_back"), (models) -> models.ENTITY_BIPED)
+		BIPED_ROLL_BACK = new DodgingAnimation(DarkSouls.rl("biped_roll_back"), 0.05F, DarkSouls.rl("biped/combat/roll_back"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
-		BIPED_ROLL_LEFT = new DodgingAnimation(DarkSouls.rl("biped_roll_left"), 0.1F, true, DarkSouls.rl("biped/combat/roll_left"), (models) -> models.ENTITY_BIPED)
+		BIPED_ROLL_LEFT = new DodgingAnimation(DarkSouls.rl("biped_roll_left"), 0.05F, true, DarkSouls.rl("biped/combat/roll_left"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
-		BIPED_ROLL_RIGHT = new DodgingAnimation(DarkSouls.rl("biped_roll_right"), 0.1F, true, DarkSouls.rl("biped/combat/roll_right"), (models) -> models.ENTITY_BIPED)
+		BIPED_ROLL_RIGHT = new DodgingAnimation(DarkSouls.rl("biped_roll_right"), 0.05F, true, DarkSouls.rl("biped/combat/roll_right"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{ Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.GENERIC_ROLL.get())) }).register(builder);
 		BIPED_JUMP_BACK = new DodgingAnimation(DarkSouls.rl("biped_jump_back"), 0.08F, DarkSouls.rl("biped/combat/jump_back"), (models) -> models.ENTITY_BIPED)
@@ -2720,28 +2722,32 @@ public final class Animations
 		
 		
 		// Stray Demon
-		STRAY_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("stray_demon_idle"), 1.0F, true, DarkSouls.rl("stray_demon/idle"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_IDLE = new StaticAnimation(DarkSouls.rl("stray_demon_idle"), 0.5F, true, DarkSouls.rl("stray_demon/idle"), (models) -> models.ENTITY_STRAY_DEMON)
 				.register(builder);
-		STRAY_DEMON_MOVE = new StaticAnimation(DarkSouls.rl("stray_demon_move"), 0.5F, true, DarkSouls.rl("stray_demon/move"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_WALK = new StaticAnimation(DarkSouls.rl("stray_demon_walk"), 0.5F, true, DarkSouls.rl("stray_demon/walk"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
-						Event.create(0.4F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
-						Event.create(1.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
-						Event.create(1.2F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+						Event.create(0.7F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(0.7F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+						Event.create(1.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(1.5F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 				}).register(builder);
 		STRAY_DEMON_DEATH = new DeathAnimation(DarkSouls.rl("stray_demon_death"), 0.5F, DarkSouls.rl("stray_demon/death"), (models) -> models.ENTITY_STRAY_DEMON)
-				.addProperty(DeathProperty.DISAPPEAR_AT, 1.0F)
+				.addProperty(DeathProperty.DISAPPEAR_AT, 1.5F)
 				.register(builder);
 
-		STRAY_DEMON_LIGHT_ATTACK = new AttackAnimation[]
+		STRAY_DEMON_HAMMER_LIGHT_ATTACK = new AttackAnimation[]
 		{
-				new AttackAnimation(DarkSouls.rl("stray_demon_light_attack_1"), AttackType.LIGHT, 1.0F, 0.0F, 0.52F, 1.0F, 2.0F, "Tool_R",
-					DarkSouls.rl("stray_demon/light_attack_1"), (models) -> models.ENTITY_STRAY_DEMON)
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_la_1"), AttackType.LIGHT, 1.0F, 0.0F, 0.12F, 0.44F, 1.6F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_la_1"), (models) -> models.ENTITY_STRAY_DEMON)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(0.52F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
-							Event.create(0.52F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+							Event.create(0.12F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+							Event.create(0.12F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+							Event.create(0.36F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+							Event.create(0.36F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+							Event.create(1.52F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+							Event.create(1.52F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 					})
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
@@ -2749,25 +2755,16 @@ public final class Animations
 					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder),
-				new AttackAnimation(DarkSouls.rl("stray_demon_light_attack_2"), AttackType.LIGHT, 1.0F, 0.0F, 0.6F, 0.92F, 2.0F, "Tool_R",
-					DarkSouls.rl("stray_demon/light_attack_2"), (models) -> models.ENTITY_STRAY_DEMON)
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_la_2"), AttackType.LIGHT, 1.0F, 0.0F, 0.44F, 0.64F, 2.0F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_la_2"), (models) -> models.ENTITY_STRAY_DEMON)
 					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 					{
-							Event.create(0.6F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
-							Event.create(0.6F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
-					})
-					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
-					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
-					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
-					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-					.addProperty(AttackProperty.POISE_DAMAGE, 28)
-					.register(builder),
-				new AttackAnimation(DarkSouls.rl("stray_demon_light_attacks_3"), AttackType.LIGHT, 1.0F, 0.0F, 0.6F, 0.84F, 1.2F, "Tool_R",
-					DarkSouls.rl("stray_demon/light_attack_3"), (models) -> models.ENTITY_STRAY_DEMON)
-					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
-					{
-							Event.create(0.72F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
-							Event.create(0.72F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+							Event.create(0.44F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+							Event.create(0.44F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+							Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+							Event.create(0.48F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+							Event.create(1.8F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+							Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
 					})
 					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
@@ -2776,12 +2773,74 @@ public final class Animations
 					.addProperty(AttackProperty.POISE_DAMAGE, 28)
 					.register(builder)
 		};
-		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_heavy_attack"), AttackType.HEAVY, 1.0F, 0.0F, 0.64F, 1.15F, 2.8F, "Tool_R",
-				DarkSouls.rl("stray_demon/heavy_attack"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK = new AttackAnimation[]
+		{
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_la_alt_1"), AttackType.LIGHT, 1.0F, 0.0F, 0.16F, 0.3F, 1.6F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_la_alt_1"), (models) -> models.ENTITY_STRAY_DEMON)
+					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.16F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+							Event.create(0.16F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+					})
+					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
+					.register(builder),
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_la_alt_2"), AttackType.LIGHT, 1.0F, 0.0F, 0.48F, 0.8F, 2.0F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_la_alt_2"), (models) -> models.ENTITY_STRAY_DEMON)
+					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.44F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SWING.get())),
+							Event.create(0.44F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F))
+					})
+					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)
+					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
+					.register(builder)
+		};
+		STRAY_DEMON_HAMMER_HEAVY_ATTACK = new AttackAnimation[]
+		{
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_ha_1"), AttackType.HEAVY, 0.2F, 0.0F, 1.08F, 1.24F, 2.6F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_ha_1"), (models) -> models.ENTITY_STRAY_DEMON)
+					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(1.0F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+						Event.create(1.12F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(1.12F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+					})
+					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
+					.register(builder),
+				new AttackAnimation(DarkSouls.rl("stray_demon_hammer_ha_2"), AttackType.HEAVY, 0.2F, 0.0F, 1.76F, 1.92F, 3.6F, "Tool_R",
+					DarkSouls.rl("stray_demon/hammer_ha_2"), (models) -> models.ENTITY_STRAY_DEMON)
+					.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+						Event.create(1.68F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_FOOT.get())),
+						Event.create(1.68F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 10, 0.5F)),
+						Event.create(1.8F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(1.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+					})
+					.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+					.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+					.addProperty(AttackProperty.PARTICLE, new CircleParticleSpawner(ModParticles.DUST_CLOUD, 3, 0.1F))
+					.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
+					.addProperty(AttackProperty.POISE_DAMAGE, 28)
+					.register(builder)
+		};
+		STRAY_DEMON_HAMMER_DRIVE = new AttackAnimation(DarkSouls.rl("stray_demon_hammer_drive"), AttackType.HEAVY, 0.1F, 0.0F, 0.72F, 0.96F, 2.8F, "Tool_R",
+				DarkSouls.rl("stray_demon/hammer_drive"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.92F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
-						Event.create(0.92F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+						Event.create(0.88F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(0.88F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -2789,13 +2848,16 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
-		STRAY_DEMON_JUMP_ATTACK = new AttackAnimation(DarkSouls.rl("stray_demon_jump_attack"), AttackType.DASH, 1.0F, 0.0F, 0.6F, 1.2F, 2.0F,
-				"Tool_R", DarkSouls.rl("stray_demon/dash_attack"), (models) -> models.ENTITY_STRAY_DEMON)
+		STRAY_DEMON_HAMMER_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("stray_demon_hammer_da"), AttackType.DASH, 0.5F, 0.0F, 1.0F, 1.2F, 2.4F,
+				"Tool_R", DarkSouls.rl("stray_demon/hammer_da"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.04F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-						Event.create(0.8F, Side.SERVER, (cap) -> { cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get()); cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get()); }),
-						Event.create(0.8F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
+						Event.create(0.24F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+						Event.create(0.56F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+						Event.create(0.76F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
+						Event.create(0.76F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F)),
+						Event.create(1.06F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_SMASH.get())),
+						Event.create(1.06F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 25, 1.5F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -2803,15 +2865,14 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 				.addProperty(AttackProperty.POISE_DAMAGE, 28)
 				.register(builder);
-		STRAY_DEMON_GROUND_POUND = new AttackAnimation(DarkSouls.rl("stray_demon_ground_pound"), AttackType.HEAVY, 1.0F, 0.0F, 2.48F, 2.76F, 4.0F, Colliders.STRAY_DEMON_BODY, "Root",
+		STRAY_DEMON_GROUND_POUND = new AttackAnimation(DarkSouls.rl("stray_demon_ground_pound"), AttackType.HEAVY, 0.05F, 0.0F, 1.6F, 1.88F, 3.2F, Colliders.STRAY_DEMON_BODY, "Root",
 				DarkSouls.rl("stray_demon/ground_pound"), (models) -> models.ENTITY_STRAY_DEMON)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 				{
-						Event.create(0.4F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
+						Event.create(0.52F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
 						Event.create(1.0F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-						Event.create(1.76F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_WING.get())),
-						Event.create(2.76F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
-						Event.create(2.76F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 40, 3.0F))
+						Event.create(1.76F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.STRAY_DEMON_LAND.get())),
+						Event.create(1.76F, Side.CLIENT, (cap) -> ModNetworkManager.connection.shakeCam(cap.getOriginalEntity().position(), 40, 3.0F))
 				})
 				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 				.addProperty(AttackProperty.STUN_TYPE, StunType.FLY)

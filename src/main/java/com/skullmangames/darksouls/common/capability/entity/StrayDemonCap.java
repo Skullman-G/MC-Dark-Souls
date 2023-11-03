@@ -6,10 +6,11 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
-import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
+import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
@@ -20,6 +21,17 @@ import net.minecraft.world.InteractionHand;
 public class StrayDemonCap extends MobCap<StrayDemon>
 {
 	@Override
+	protected void initAttributes()
+	{
+		super.initAttributes();
+		
+		this.orgEntity.getAttribute(ModAttributes.STANDARD_PROTECTION.get()).setBaseValue(20D);
+		this.orgEntity.getAttribute(ModAttributes.STRIKE_PROTECTION.get()).setBaseValue(20D);
+		this.orgEntity.getAttribute(ModAttributes.SLASH_PROTECTION.get()).setBaseValue(20D);
+		this.orgEntity.getAttribute(ModAttributes.THRUST_PROTECTION.get()).setBaseValue(20D);
+	}
+	
+	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
 		return modelDB.ENTITY_STRAY_DEMON;
@@ -29,13 +41,13 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	public void initAnimator(ClientAnimator animatorClient)
 	{
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_MOVE);
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_WALK);
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
 	public static float getWeaponScale()
 	{
-		return 1.4F;
+		return 2.5F;
 	}
 	
 	@Override
@@ -57,10 +69,12 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	{
 		super.initAI();
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false, false)
-				.addAttack(new AttackInstance(4, 2.5F, Animations.STRAY_DEMON_LIGHT_ATTACK))
-				.addAttack(new AttackInstance(4, 2.5F, Animations.STRAY_DEMON_HAMMER_DRIVE))
-				.addAttack(new AttackInstance(1, 10.0F, 12.0F, Animations.STRAY_DEMON_JUMP_ATTACK))
-				.addAttack(new AttackInstance(2, 2.5F, Animations.STRAY_DEMON_GROUND_POUND)));
+				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK))
+				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK))
+				.addAttack(new AttackInstance(5, 8F, 10F, Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK))
+				.addAttack(new AttackInstance(4, 4F, Animations.STRAY_DEMON_HAMMER_DRIVE))
+				.addAttack(new AttackInstance(5, 10.0F, 12.0F, Animations.STRAY_DEMON_HAMMER_DASH_ATTACK))
+				.addAttack(new AttackInstance(4, 3F, Animations.STRAY_DEMON_GROUND_POUND)));
 	}
 	
 	@Override

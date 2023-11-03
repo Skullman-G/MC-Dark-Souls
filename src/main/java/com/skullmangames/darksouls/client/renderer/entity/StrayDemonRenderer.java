@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonCap>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/asylum_demon/asylum_demon.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/stray_demon.png");
 	
 	public StrayDemonRenderer()
 	{
@@ -31,6 +31,6 @@ public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonC
 	protected void applyRotations(PoseStack matStack, Armature armature, StrayDemonCap entityCap, float partialTicks)
 	{
 		super.applyRotations(matStack, armature, entityCap, partialTicks);
-		this.transformJoint(2, armature, entityCap.getHeadMatrix(partialTicks));
+		this.transformJoint(3, armature, entityCap.getHeadMatrix(partialTicks));
 	}
 }

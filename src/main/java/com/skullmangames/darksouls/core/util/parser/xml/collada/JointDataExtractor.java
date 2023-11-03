@@ -28,9 +28,9 @@ public class JointDataExtractor
 	
 	public Joint extractSkeletonData()
 	{
-		XmlNode rootNode = skeleton.getChild("node");
-		Joint root = getRootJoint(rootNode);
-		bindJointData(root, rootNode.getChildren("node"));
+		XmlNode rootNode = this.skeleton.getChild("node");
+		Joint root = this.getRootJoint(rootNode);
+		this.bindJointData(root, rootNode.getChildren("node"));
 		
 		return root;
 	}
@@ -39,9 +39,9 @@ public class JointDataExtractor
 	{
 		for(XmlNode node : nodes)
 		{
-			Joint joint = getJoint(node);
+			Joint joint = this.getJoint(node);
 			root.addSubJoint(joint);
-			bindJointData(joint, node.getChildren("node"));
+			this.bindJointData(joint, node.getChildren("node"));
 		}
 	}
 	
@@ -59,13 +59,14 @@ public class JointDataExtractor
 	
 	private Joint getJoint(XmlNode node)
 	{
-		jointNumber++;
+		this.jointNumber++;
 		
 		String name = node.getAttributeValue("sid");
 		String[] matrixData = node.getChild("matrix").getData().split(" ");
-		ModMatrix4f jointTransform = convertStringToMatrix(matrixData);
-		Joint joint = new Joint(name, rawJointMap.get(name), jointTransform);
-		joints.put(joint.getName(), joint);
+		ModMatrix4f jointTransform = this.convertStringToMatrix(matrixData);
+		
+		Joint joint = new Joint(name, this.rawJointMap.get(name), jointTransform);
+		this.joints.put(joint.getName(), joint);
 		
 		return joint;
 	}

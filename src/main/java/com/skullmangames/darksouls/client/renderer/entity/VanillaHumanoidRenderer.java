@@ -14,7 +14,12 @@ public class VanillaHumanoidRenderer<T extends Mob> extends HumanoidMobRenderer<
 	
 	public VanillaHumanoidRenderer(EntityRendererProvider.Context context)
 	{
-		super(context, new HumanoidModel<T>(context.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);
+		this(context, 0.5F);
+	}
+	
+	public VanillaHumanoidRenderer(EntityRendererProvider.Context context, float shadowRadius)
+	{
+		super(context, new HumanoidModel<T>(context.bakeLayer(ModelLayers.ZOMBIE)), shadowRadius);
 	}
 
 	@Override

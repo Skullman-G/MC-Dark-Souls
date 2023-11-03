@@ -37,9 +37,6 @@ public class DodgingAnimation extends ActionAnimation
 {
 	private final boolean canRotate;
 	
-	private final float start;
-	private final float end;
-	
 	public DodgingAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
 		this(id, convertTime, false, path, model);
@@ -54,9 +51,6 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		super(id, convertTime, delayTime, path, model);
 		this.canRotate = canRotate;
-		
-		this.start = this.totalTime * (float)(1.0D - ConfigManager.SERVER_CONFIG.iFramesPercentage.get());
-		this.end = this.totalTime - this.start;
 	}
 	
 	@Override
@@ -153,7 +147,7 @@ public class DodgingAnimation extends ActionAnimation
 	@Override
 	public EntityState getState(float time)
 	{
-		if (this.start < time && time < this.end)
+		if (time < this.totalTime * ConfigManager.SERVER_CONFIG.iFramesPercentage.get())
 		{
 			return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
 		}

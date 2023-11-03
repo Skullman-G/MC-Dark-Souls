@@ -248,7 +248,7 @@ public class Stats
 			double mul = Stats.getDamageMultiplier(playerCap, attribute, (stat) -> playerCap.getStatValue(stat));
 			AttributeInstance instance = playerCap.getOriginalEntity().getAttribute(attribute);
 			if (instance.getModifier(uuid) != null) instance.removeModifier(uuid);
-			instance.addTransientModifier(new AttributeModifier(uuid, "weapon scaling", mul, Operation.MULTIPLY_TOTAL));
+			instance.addTransientModifier(new AttributeModifier(uuid, "weapon scaling", mul - 1D, Operation.MULTIPLY_TOTAL));
 		}
 	}
 	

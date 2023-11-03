@@ -116,7 +116,7 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	@Override
 	public void shakeCam(Vec3 source, int duration, float magnitude)
 	{
-		if (this.minecraft.player.isOnGround() && this.minecraft.player.distanceToSqr(source) < 20)
+		if (this.minecraft.player.isOnGround() && this.minecraft.player.distanceToSqr(source) < 400)
 		{
 			ClientManager.INSTANCE.mainCamera.shake(duration, magnitude);
 		}
