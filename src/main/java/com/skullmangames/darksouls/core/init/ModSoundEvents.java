@@ -76,6 +76,8 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_DEATH = register("entity.balder_knight.death");
 	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_FOOT = register("entity.balder_knight.foot");
 	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_AMBIENT = register("entity.balder_knight.ambient");
+	
+	public static final RegistryObject<SoundEvent> BOMB_EXPLOSION = register("entity.generic.bomb");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

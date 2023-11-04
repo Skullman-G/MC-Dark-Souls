@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
@@ -34,6 +35,7 @@ public class ModItems
 {
 	public static final List<Item> DESCRIPTION_ITEMS = new ArrayList<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DarkSouls.MOD_ID);
+	public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
 	
 	//Dagger
 	/*public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new SwordItem(Tiers.WOOD, 2, -2.4F, new Item.Properties()
@@ -220,6 +222,13 @@ public class ModItems
 	public static final RegistryObject<Item> BALDER_LEGGINGS = ITEMS.register("balder_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "balder_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	public static final RegistryObject<Item> BALDER_BOOTS = ITEMS.register("balder_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "balder_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	//Throwable
+	public static final RegistryObject<Item> SNOWBALL = VANILLA_ITEMS.register("snowball", () -> new Item(new Item.Properties()
+			.stacksTo(16)
+			.tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> FIREBOMB = ITEMS.register("firebomb", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

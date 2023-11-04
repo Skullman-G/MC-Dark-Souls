@@ -9,9 +9,11 @@ import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
+import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
@@ -20,6 +22,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -86,6 +90,10 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 				.putStatInfo(Stats.FAITH, 10, Scaling.B)
 				.build());
+		
+		//Throwables
+		putCap(new ThrowableCap(Items.SNOWBALL, Snowball::new, () -> SoundEvents.SNOWBALL_THROW));
+		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::new, () -> SoundEvents.SNOWBALL_THROW));
 		
 		//ARMOR
 		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get()));

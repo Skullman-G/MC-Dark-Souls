@@ -46,12 +46,14 @@ import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
+import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -110,6 +112,8 @@ public final class Animations
 	public static StaticAnimation BIPED_EAT;
 	public static StaticAnimation BIPED_DRINK;
 	public static StaticAnimation BIPED_CONSUME_SOUL;
+	
+	public static StaticAnimation BIPED_THROW;
 
 	public static StaticAnimation BIPED_BLOCK_HORIZONTAL;
 	public static StaticAnimation BIPED_BLOCK_VERTICAL;
@@ -524,6 +528,19 @@ public final class Animations
 				DarkSouls.rl("biped/living/drink_r"), DarkSouls.rl("biped/living/drink_l"), (models) -> models.ENTITY_BIPED).register(builder);
 		BIPED_CONSUME_SOUL = new MirrorAnimation(DarkSouls.rl("biped_consume_soul"), 0.2F, true, DarkSouls.rl("biped/living/consume_soul_r"),
 				DarkSouls.rl("biped/living/consume_soul_l"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		BIPED_THROW = new ActionAnimation(DarkSouls.rl("biped_throw"), 0.2F, DarkSouls.rl("biped/combat/throw"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.6F, Side.SERVER, (cap) ->
+						{
+							if (cap.getHeldItemCapability(InteractionHand.MAIN_HAND) instanceof ThrowableCap throwable)
+							{
+								throwable.spawnProjectile(cap);
+							}
+						})
+				})
+				.register(builder);
 
 		BIPED_BLOCK_HORIZONTAL = new AdaptableAnimation.Builder(DarkSouls.rl("biped_block"), 0.1F, true, (models) -> models.ENTITY_BIPED)
 				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_mirror"), DarkSouls.rl("biped/combat/block"), false)

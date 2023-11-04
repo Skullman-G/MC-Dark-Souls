@@ -1,4 +1,14 @@
 {
+	"entity.generic.bomb":
+	{
+		"category": "entity",
+		"subtitle": "entity.generic.bomb.sub",
+		"sounds":
+		[
+			"darksouls:entities/generic/bomb"
+		]
+	},
+	
 	"item.sword.pullout":
 	{
 		"category": "item",

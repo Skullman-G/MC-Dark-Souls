@@ -53,7 +53,7 @@ public class LightningParticle extends TextureSheetParticle
 	    {
 	    	LightningParticle particle = new LightningParticle(level, this.sprite, x, y, z, xSpeed, ySpeed, zSpeed);
 	    	particle.pickSprite(this.sprite);
-	         return particle;
+	        return particle;
 	    }
 	}
 }

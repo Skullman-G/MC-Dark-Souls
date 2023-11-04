@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.particles.BloodParticle;
 import com.skullmangames.darksouls.client.particles.DustCloudParticle;
 import com.skullmangames.darksouls.client.particles.EntityboundParticleOptions;
+import com.skullmangames.darksouls.client.particles.FireParticle;
 import com.skullmangames.darksouls.client.particles.ForceParticle;
 import com.skullmangames.darksouls.client.particles.HumanityParticle;
 import com.skullmangames.darksouls.client.particles.LightningParticle;
@@ -19,6 +20,7 @@ import com.skullmangames.darksouls.client.particles.VaseShardParticle;
 import com.skullmangames.darksouls.client.particles.WoodSplinterParticle;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -52,6 +54,7 @@ public class ModParticles
 	public static final RegistryObject<SimpleParticleType> SPARK = register("spark", true);
 	public static final RegistryObject<SimpleParticleType> VASE_SHARD = register("vase_shard", true);
 	public static final RegistryObject<SimpleParticleType> WOOD_SPLINTER = register("wood_splinter", true);
+	public static final RegistryObject<SimpleParticleType> FIRE = register("fire", true);
 	
 	private static RegistryObject<SimpleParticleType> register(String name, boolean overrideLimiter)
 	{
@@ -75,21 +78,23 @@ public class ModParticles
 	public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		minecraft.particleEngine.register(DUST_CLOUD.get(), DustCloudParticle.Factory::new);
-		minecraft.particleEngine.register(SOUL.get(), SoulParticle.Factory::new);
-		minecraft.particleEngine.register(HUMANITY.get(), HumanityParticle.Factory::new);
-		minecraft.particleEngine.register(MIRACLE_GLOW.get(), MiracleGlowParticle::normal);
-		minecraft.particleEngine.register(FAST_MIRACLE_GLOW.get(), MiracleGlowParticle::fast);
-		minecraft.particleEngine.register(TINY_MIRACLE_CIRCLE.get(), MiracleCircleParticle::tiny);
-		minecraft.particleEngine.register(MEDIUM_MIRACLE_CIRCLE.get(), MiracleCircleParticle::medium);
-		minecraft.particleEngine.register(LARGE_MIRACLE_CIRCLE.get(), MiracleCircleParticle::large);
-		minecraft.particleEngine.register(FORCE.get(), ForceParticle.Factory::new);
-		minecraft.particleEngine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle::lightningSpear);
-		minecraft.particleEngine.register(GREAT_LIGHTNING_SPEAR.get(), LightningSpearParticle::greatLightningSpear);
-		minecraft.particleEngine.register(LIGHTNING.get(), LightningParticle.Factory::new);
-		minecraft.particleEngine.register(BLOOD.get(), BloodParticle.Factory::new);
-		minecraft.particleEngine.register(SPARK.get(), SparkParticle.Factory::new);
-		minecraft.particleEngine.register(VASE_SHARD.get(), VaseShardParticle.Factory::new);
-		minecraft.particleEngine.register(WOOD_SPLINTER.get(), WoodSplinterParticle.Factory::new);
+		ParticleEngine engine = minecraft.particleEngine;
+		engine.register(DUST_CLOUD.get(), DustCloudParticle.Factory::new);
+		engine.register(SOUL.get(), SoulParticle.Factory::new);
+		engine.register(HUMANITY.get(), HumanityParticle.Factory::new);
+		engine.register(MIRACLE_GLOW.get(), MiracleGlowParticle::normal);
+		engine.register(FAST_MIRACLE_GLOW.get(), MiracleGlowParticle::fast);
+		engine.register(TINY_MIRACLE_CIRCLE.get(), MiracleCircleParticle::tiny);
+		engine.register(MEDIUM_MIRACLE_CIRCLE.get(), MiracleCircleParticle::medium);
+		engine.register(LARGE_MIRACLE_CIRCLE.get(), MiracleCircleParticle::large);
+		engine.register(FORCE.get(), ForceParticle.Factory::new);
+		engine.register(LIGHTNING_SPEAR.get(), LightningSpearParticle::lightningSpear);
+		engine.register(GREAT_LIGHTNING_SPEAR.get(), LightningSpearParticle::greatLightningSpear);
+		engine.register(LIGHTNING.get(), LightningParticle.Factory::new);
+		engine.register(BLOOD.get(), BloodParticle.Factory::new);
+		engine.register(SPARK.get(), SparkParticle.Factory::new);
+		engine.register(VASE_SHARD.get(), VaseShardParticle.Factory::new);
+		engine.register(WOOD_SPLINTER.get(), WoodSplinterParticle.Factory::new);
+		engine.register(FIRE.get(), FireParticle.Factory::new);
 	}
 }

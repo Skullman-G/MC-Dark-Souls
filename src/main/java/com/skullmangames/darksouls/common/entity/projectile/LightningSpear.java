@@ -107,8 +107,19 @@ public class LightningSpear extends Projectile
 	protected void onHit(HitResult hitresult)
 	{
 		super.onHit(hitresult);
-		LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.5F);
-		if (this.level.isClientSide)
+		if (!this.level.isClientSide)
+		{
+			this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 1.0F, 1.0F);
+			LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.5F);
+			this.level.broadcastEntityEvent(this, (byte)3);
+			this.discard();
+		}
+	}
+	
+	@Override
+	public void handleEntityEvent(byte event)
+	{
+		if (event == 3)
 		{
 			Vec3 pos = this.position();
 			for (int i = 0; i < 360; i++)
@@ -119,11 +130,6 @@ public class LightningSpear extends Projectile
 				}
 			}
 		}
-		else
-		{
-			this.level.playSound(null, this.blockPosition(), ModSoundEvents.LIGHTNING_SPEAR_IMPACT.get(), this.getSoundSource(), 1.0F, 1.0F);
-		}
-		this.remove(RemovalReason.DISCARDED);
 	}
 	
 	@Override

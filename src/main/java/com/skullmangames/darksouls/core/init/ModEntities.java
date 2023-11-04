@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.entity.BreakableBarrel;
 import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.common.entity.TerracottaVase;
+import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.common.entity.CrestfallenWarrior;
 import com.skullmangames.darksouls.common.entity.FireKeeper;
@@ -124,6 +125,10 @@ public class ModEntities
 	public static final RegistryObject<EntityType<LightningSpear>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear",
 			EntityType.Builder.<LightningSpear>of(LightningSpear::greatLightningSpear, MobCategory.MISC)
 			.sized(2.0F, 1.0F));
+	
+	public static final RegistryObject<EntityType<Firebomb>> FIREBOMB = register("firebomb",
+			EntityType.Builder.<Firebomb>of(Firebomb::new, MobCategory.MISC)
+			.sized(0.25F, 0.25F));
 	
 	public static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder)
 	{

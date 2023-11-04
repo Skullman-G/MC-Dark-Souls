@@ -92,6 +92,7 @@
 	"item.darksouls.balder_side_sword": "Balder Side Sword",
 	"item.darksouls.rapier": "Rapier",
 	"item.darksouls.buckler": "Buckler",
+	"item.darksouls.firebomb": "Firebomb",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -130,6 +131,7 @@
 	"entity.darksouls.taurus_demon": "Taurus Demon",
 	"entity.darksouls.breakable_barrel": "Breakable Barrel",
 	"entity.darksouls.balder_knight": "Balder Knight",
+	"entity.darksouls.firebomb": "Firebomb",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -245,6 +247,8 @@
 	"tooltip.darksouls.balder_side_sword.extended": "The knights of the ancient kingdom of Balder wielded these rock-solid, long swords which are excellent for thrust attacks.",
 	"tooltip.darksouls.rapier.extended": "A lightweight thrusting sword used in noble duels employing refined techniques. The primary attack of a thrusting sword is a series of stabs that render foes vulnerable for a devastating final thrust. Can also attack with shield up.",
 	"tooltip.darksouls.buckler.extended": "A very small round metal shield. It features a large central protrusion designed for parrying attacks.",
+	"tooltip.darksouls.firebomb": "Bisque urn filled with black powder. Explodes, inflicting fire damage.",
+	"tooltip.darksouls.firebomb.extended": "Fire damage, which differs from physical damage, is highly effective against creatures of flesh, beasts, and other foes that might naturally have cause to fear the flame.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	
@@ -317,6 +321,7 @@
 	"entity.generic.human_form.sub": "Human Form achieved",
 	"entity.lightning_spear.shot.sub": "Lightning Spear gets shot",
 	"entity.lightning_spear.impact.sub": "Lightning Spear impacts",
+	"entity.generic.bomb.sub": "Bomb explodes",
 	
 	
 	"itemGroup.darksouls": "Dark Souls",

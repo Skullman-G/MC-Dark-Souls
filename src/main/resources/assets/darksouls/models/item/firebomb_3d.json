@@ -1,0 +1,60 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "darksouls:items/firebomb_3d",
+		"particle": "darksouls:items/firebomb_3d"
+	},
+	"elements": [
+		{
+			"from": [5.75, 6, 5.25],
+			"to": [10.75, 10, 10.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 10.25, 8]},
+			"faces": {
+				"north": {"uv": [0, 10, 5, 14], "texture": "#0"},
+				"east": {"uv": [5, 0, 10, 4], "texture": "#0"},
+				"south": {"uv": [5, 4, 10, 8], "texture": "#0"},
+				"west": {"uv": [5, 8, 10, 12], "texture": "#0"},
+				"up": {"uv": [5, 5, 0, 0], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [5, 5, 0, 10], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.75, 10, 6.25],
+			"to": [9.75, 11, 9.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 10.25, 8]},
+			"faces": {
+				"north": {"uv": [12, 8, 15, 9], "texture": "#0"},
+				"east": {"uv": [5, 12, 8, 13], "texture": "#0"},
+				"south": {"uv": [12, 6, 15, 7], "texture": "#0"},
+				"west": {"uv": [12, 7, 15, 8], "texture": "#0"},
+				"up": {"uv": [13, 3, 10, 0], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [13, 3, 10, 6], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.75, 11, 8.25],
+			"to": [9.75, 14, 8.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 10.25, 8]},
+			"faces": {
+				"north": {"uv": [10, 10, 12, 13], "texture": "#0"},
+				"east": {"uv": [16, 12, 16, 15], "texture": "#0"},
+				"south": {"uv": [10, 6, 12, 9], "texture": "#0"},
+				"west": {"uv": [16, 12, 16, 15], "texture": "#0"},
+				"up": {"uv": [16, 14, 16, 12], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [16, 12, 16, 14], "rotation": 270, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [45, 0, 0],
+			"translation": [-0.15, 0.75, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [45, 0, 0],
+			"translation": [0.15, 0.75, 0],
+			"scale": [0.75, 0.75, 0.75]
+		}
+	}
+}

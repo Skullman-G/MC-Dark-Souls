@@ -5,10 +5,10 @@ import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -154,67 +154,75 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 	
 	public void performAttack(AttackType type)
 	{
-		AttackAnimation animation = null;
-		WeaponCap weapon = ModCapabilities.getWeaponCap(this.orgEntity.getItemInHand(InteractionHand.MAIN_HAND));
+		ItemCapability itemCap = this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		
-		if (this.isTwohanding()) type = type.getTwoHanded();
-		
-		if (type == AttackType.LIGHT)
+		if (itemCap instanceof ThrowableCap throwable)
 		{
-			double yRot = Math.toRadians(MathUtils.toNormalRot(this.getYRot()));
-			double dist = 1.25D;
-			AABB aabb = this.orgEntity.getBoundingBox().inflate(Math.sin(yRot) * dist, 0, Math.cos(yRot) * dist);
-			List<Entity> entities = this.getLevel().getEntities(this.orgEntity, aabb);
-			for (Entity target : entities)
-			{
-				if (this.canBackstab(target))
-				{
-					type = AttackType.BACKSTAB;
-					break;
-				}
-				else if (this.canPunish(target))
-				{
-					type = AttackType.PUNISH;
-					break;
-				}
-			}
+			throwable.use(this);
 		}
-		
-		if (weapon != null)
+		else if (itemCap instanceof WeaponCap weapon)
 		{
-			weapon.performAttack(type, this);
-		}
-		else
-		{
-			if (this.isMounted())
+			AttackAnimation animation = null;
+			
+			if (this.isTwohanding()) type = type.getTwoHanded();
+			
+			if (type == AttackType.LIGHT)
 			{
-				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
-				int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-				if (combo + 1 < animations.size()) combo += 1;
-				else combo = 0;
-				animation = animations.get(combo);
-			}
-			else
-			{
-				WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
-				Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
-				if (move != null)
+				double yRot = Math.toRadians(MathUtils.toNormalRot(this.getYRot()));
+				double dist = 1.25D;
+				AABB aabb = this.orgEntity.getBoundingBox().inflate(Math.sin(yRot) * dist, 0, Math.cos(yRot) * dist);
+				List<Entity> entities = this.getLevel().getEntities(this.orgEntity, aabb);
+				for (Entity target : entities)
 				{
-					AttackAnimation[] animations = move.getSecond();
-					if (animations != null)
+					if (this.canBackstab(target))
 					{
-						List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
-						int combo = animationList.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-						if (combo + 1 < animations.length) combo += 1;
-						else if (move.getFirst()) combo = 0;
-						animation = animations[combo];
+						type = AttackType.BACKSTAB;
+						break;
+					}
+					else if (this.canPunish(target))
+					{
+						type = AttackType.PUNISH;
+						break;
 					}
 				}
 			}
 			
-			if (animation == null) return;
-			this.animator.playAnimation(animation, 0.0F);
-			ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
+			if (weapon != null)
+			{
+				weapon.performAttack(type, this);
+			}
+			else
+			{
+				if (this.isMounted())
+				{
+					List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
+					int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+					if (combo + 1 < animations.size()) combo += 1;
+					else combo = 0;
+					animation = animations.get(combo);
+				}
+				else
+				{
+					WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
+					Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
+					if (move != null)
+					{
+						AttackAnimation[] animations = move.getSecond();
+						if (animations != null)
+						{
+							List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
+							int combo = animationList.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+							if (combo + 1 < animations.length) combo += 1;
+							else if (move.getFirst()) combo = 0;
+							animation = animations[combo];
+						}
+					}
+				}
+				
+				if (animation == null) return;
+				this.animator.playAnimation(animation, 0.0F);
+				ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
+			}
 		}
 	}
 	
