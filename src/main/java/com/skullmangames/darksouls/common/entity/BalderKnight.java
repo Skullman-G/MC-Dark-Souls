@@ -56,7 +56,7 @@ public class BalderKnight extends ArmoredMob implements CrossbowAttackMob
 			if (slot == EquipmentSlot.MAINHAND) return ModItems.BALDER_SIDE_SWORD.get();
 			if (slot == EquipmentSlot.OFFHAND) return ModItems.BALDER_SHIELD.get();
 		}
-		else if (percentage <= 80)
+		else if (percentage <= 70)
 		{
 			if (slot == EquipmentSlot.MAINHAND) return ModItems.RAPIER.get();
 			if (slot == EquipmentSlot.OFFHAND) return ModItems.BUCKLER.get();

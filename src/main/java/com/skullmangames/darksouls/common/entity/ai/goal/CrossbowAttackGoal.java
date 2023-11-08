@@ -20,18 +20,18 @@ import net.minecraft.world.phys.Vec3;
 public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends HumanoidCap<T>> extends Goal
 {
 	private final T mob;
-	private final D mobdata;
+	private final D mobCap;
 	private int attackCooldown;
 	
 	private Vec3 targetPos = Vec3.ZERO;
 	
 	private CrossbowState crossbowState = CrossbowState.UNCHARGED;
 
-	public CrossbowAttackGoal(D mobdata)
+	public CrossbowAttackGoal(D mobCap)
 	{
 		super();
-		this.mobdata = mobdata;
-		this.mob = mobdata.getOriginalEntity();
+		this.mobCap = mobCap;
+		this.mob = mobCap.getOriginalEntity();
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 
@@ -60,7 +60,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 	
 	private void move(LivingEntity target)
 	{
-		if (this.mobdata.isInaction() || (this.targetPos != Vec3.ZERO && target.distanceToSqr(this.targetPos) <= 1.0D)) return;
+		if (this.mobCap.isInaction() || (this.targetPos != Vec3.ZERO && target.distanceToSqr(this.targetPos) <= 1.0D)) return;
 		this.mob.getLookControl().setLookAt(target);
 		this.targetPos = target.position();
 		Path path = this.mob.getNavigation().createPath(target, 8);
@@ -69,7 +69,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 
 	private void crossbowAttack(LivingEntity target)
 	{
-		this.mobdata.rotateTo(target, 60, false);
+		this.mobCap.rotateTo(target, 60, false);
 		if (this.crossbowState == CrossbowState.UNCHARGED)
 		{
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_RELOAD, mob.getId(), 0.0F), mob);

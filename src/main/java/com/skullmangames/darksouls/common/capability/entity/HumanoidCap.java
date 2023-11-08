@@ -6,7 +6,6 @@ import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
-
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;

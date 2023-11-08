@@ -162,8 +162,6 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		}
 		else if (itemCap instanceof WeaponCap weapon)
 		{
-			AttackAnimation animation = null;
-			
 			if (this.isTwohanding()) type = type.getTwoHanded();
 			
 			if (type == AttackType.LIGHT)
@@ -187,42 +185,41 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 				}
 			}
 			
-			if (weapon != null)
+			weapon.performAttack(type, this);
+		}
+		else
+		{
+			AttackAnimation animation = null;
+			
+			if (this.isMounted())
 			{
-				weapon.performAttack(type, this);
+				List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
+				int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+				if (combo + 1 < animations.size()) combo += 1;
+				else combo = 0;
+				animation = animations.get(combo);
 			}
 			else
 			{
-				if (this.isMounted())
+				WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
+				Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
+				if (move != null)
 				{
-					List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
-					int combo = animations.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-					if (combo + 1 < animations.size()) combo += 1;
-					else combo = 0;
-					animation = animations.get(combo);
-				}
-				else
-				{
-					WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
-					Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
-					if (move != null)
+					AttackAnimation[] animations = move.getSecond();
+					if (animations != null)
 					{
-						AttackAnimation[] animations = move.getSecond();
-						if (animations != null)
-						{
-							List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
-							int combo = animationList.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
-							if (combo + 1 < animations.length) combo += 1;
-							else if (move.getFirst()) combo = 0;
-							animation = animations[combo];
-						}
+						List<AttackAnimation> animationList = new ArrayList<AttackAnimation>(Arrays.asList(animations));
+						int combo = animationList.indexOf(this.getClientAnimator().baseLayer.animationPlayer.getPlay());
+						if (combo + 1 < animations.length) combo += 1;
+						else if (move.getFirst()) combo = 0;
+						animation = animations[combo];
 					}
 				}
-				
-				if (animation == null) return;
-				this.animator.playAnimation(animation, 0.0F);
-				ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 			}
+			
+			if (animation == null) return;
+			this.animator.playAnimation(animation, 0.0F);
+			ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
 		}
 	}
 	

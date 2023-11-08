@@ -68,11 +68,11 @@ public class Firebomb extends ThrowableItemProjectile
 		super.onHit(result);
 		if (!this.level.isClientSide)
 		{
-			this.playSound(ModSoundEvents.BOMB_EXPLOSION.get(), 1.0F, 0.4F / (this.level.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(ModSoundEvents.BOMB_EXPLOSION.get(), 1.5F, 0.4F / (this.level.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.level.broadcastEntityEvent(this, (byte)3);
 			LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.5F);
 			
-			List<Entity> targets = this.level.getEntities(this, this.getBoundingBox().inflate(2.0F));
+			List<Entity> targets = this.level.getEntities(this, this.getBoundingBox().inflate(1.15F));
 			for (Entity entity : targets)
 			{
 				entity.hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(),

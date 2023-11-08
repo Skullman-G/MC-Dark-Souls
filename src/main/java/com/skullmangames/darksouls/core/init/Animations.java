@@ -45,6 +45,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
@@ -78,6 +79,9 @@ public final class Animations
 	public static StaticAnimation BIPED_IDLE_TH_SPEAR;
 	
 	public static StaticAnimation BIPED_IDLE_TH_SHIELD;
+	
+	public static StaticAnimation BIPED_CHANGE_ITEM_RIGHT;
+	public static StaticAnimation BIPED_CHANGE_ITEM_LEFT;
 	
 	public static StaticAnimation BIPED_SWIM;
 	public static StaticAnimation BIPED_FLOAT;
@@ -431,6 +435,34 @@ public final class Animations
 		BIPED_IDLE_TH_SHIELD = new StaticAnimation(DarkSouls.rl("biped_idle_th_shield"), 0.1F, true,
 				DarkSouls.rl("biped/living/idle_th_shield"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP)
+				.register(builder);
+		
+		BIPED_CHANGE_ITEM_RIGHT = new StaticAnimation(DarkSouls.rl("biped_change_item_right"), 0.1F, false,
+				DarkSouls.rl("biped/living/change_item_right"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.2F, Side.SERVER, (cap) ->
+						{
+							if (cap instanceof MobCap<?> mob)
+							{
+								mob.changeItem();
+							}
+						})
+				})
+				.register(builder);
+		
+		BIPED_CHANGE_ITEM_LEFT = new StaticAnimation(DarkSouls.rl("biped_change_item_left"), 0.1F, false,
+				DarkSouls.rl("biped/living/change_item_left"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.2F, Side.SERVER, (cap) ->
+						{
+							if (cap instanceof MobCap<?> mob)
+							{
+								mob.changeItem();
+							}
+						})
+				})
 				.register(builder);
 		
 		BIPED_SWIM = new MovementAnimation(DarkSouls.rl("biped_swim"), 0.08F, true,

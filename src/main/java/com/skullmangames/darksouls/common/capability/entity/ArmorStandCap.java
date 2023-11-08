@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
+
 import net.minecraft.world.entity.decoration.ArmorStand;
 
 public class ArmorStandCap extends LivingCap<ArmorStand>

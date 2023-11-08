@@ -13,6 +13,7 @@ import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.MobCap;
 import com.skullmangames.darksouls.common.capability.item.Shield;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -116,6 +117,11 @@ public class AttackGoal extends Goal
     public boolean canUse()
     {
 		if (this.attacks.isEmpty()) return false;
+		
+		//Check if mob is holding the right weapon
+		WeaponCap weaponCap = this.mobCap.getHeldWeaponCap(InteractionHand.MAIN_HAND);
+		if (weaponCap == null || !weaponCap.getWeaponCategory().isMelee()) return false;
+		
 		LivingEntity target = this.attacker.getTarget();
 		if (!this.isValidTarget(target)) return false;
 		this.updatePhase();

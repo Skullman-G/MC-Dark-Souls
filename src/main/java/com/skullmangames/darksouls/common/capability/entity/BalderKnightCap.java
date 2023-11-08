@@ -7,10 +7,10 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
-
-import net.minecraft.world.entity.monster.CrossbowAttackMob;
 
 public class BalderKnightCap extends HumanoidCap<BalderKnight>
 {
@@ -30,14 +30,33 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	@Override
 	public void setAttackGoals(WeaponCategory category)
 	{
-		this.orgEntity.goalSelector.addGoal(0, new DrinkingEstusGoal(this));
+		SwitchWeaponGoal weaponGoal = new SwitchWeaponGoal(this).addDefaultEstusCondition();
+		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
 		
-		if (category == WeaponCategory.CROSSBOW && this.orgEntity instanceof CrossbowAttackMob)
+		if (category == WeaponCategory.CROSSBOW)
 		{
-			this.orgEntity.goalSelector.addGoal(0, new CrossbowAttackGoal<BalderKnight, BalderKnightCap>(this));
+			weaponGoal.addSwitchCondition(this.orgEntity.getMainHandItem(), () ->
+			{
+				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) > 10D;
+			});
+			this.orgEntity.goalSelector.addGoal(1, new CrossbowAttackGoal<>(this));
+			
+			weaponGoal.addSwitchCondition(ModItems.BALDER_SIDE_SWORD.get().getDefaultInstance(), () ->
+			{
+				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D && this.orgEntity.getRandom().nextFloat() <= 0.1D;
+			});
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, true, true)
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA))
+					.addDodge(Animations.BIPED_JUMP_BACK));
 		}
 		else if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
+			weaponGoal.addSwitchCondition(this.orgEntity.getMainHandItem(), () ->
+			{
+				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
+			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_HA))
@@ -48,6 +67,10 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 		}
 		else if (category == WeaponCategory.THRUSTING_SWORD)
 		{
+			weaponGoal.addSwitchCondition(this.orgEntity.getMainHandItem(), () ->
+			{
+				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
+			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_LA))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_HA))
@@ -55,6 +78,8 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 					.addDodge(Animations.BIPED_JUMP_BACK)
 					.addParry(Animations.BALDER_KNIGHT_RAPIER_BLOCK, Animations.BALDER_KNIGHT_RAPIER_PARRY));
 		}
+		
+		this.orgEntity.goalSelector.addGoal(0, weaponGoal);
 	}
 	
 	@Override
@@ -79,6 +104,7 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	@Override
 	public ShieldHoldType getShieldHoldType()
 	{
+		if (this.orgEntity.getOffhandItem().is(ModItems.BUCKLER.get())) return ShieldHoldType.HORIZONTAL;
 		return ShieldHoldType.VERTICAL_REVERSE;
 	}
 }
