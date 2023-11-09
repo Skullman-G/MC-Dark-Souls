@@ -93,6 +93,7 @@
 	"item.darksouls.rapier": "Rapier",
 	"item.darksouls.buckler": "Buckler",
 	"item.darksouls.firebomb": "Firebomb",
+	"item.darksouls.gargoyle_shield": "Gargoyle's Shield",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -249,6 +250,7 @@
 	"tooltip.darksouls.buckler.extended": "A very small round metal shield. It features a large central protrusion designed for parrying attacks.",
 	"tooltip.darksouls.firebomb": "Bisque urn filled with black powder. Explodes, inflicting fire damage.",
 	"tooltip.darksouls.firebomb.extended": "Fire damage, which differs from physical damage, is highly effective against creatures of flesh, beasts, and other foes that might naturally have cause to fear the flame.",
+	"tooltip.darksouls.gargoyle_shield.extended": "The gargoyle's skin is tough by itself, and perhaps its shield may have been a prop, for it is a rare example of a metal shield that does not reduce physical damage 100%.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

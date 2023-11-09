@@ -10,6 +10,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.init.Models;
@@ -114,7 +115,7 @@ public class DodgingAnimation extends ActionAnimation
 					{
 						Damages damages = Damages.create();
 						ExtendedDamageSource source = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE,
-								0, 0, damages);
+								Deflection.NONE, 0, damages);
 						
 						entityCap.hurtEntity(e, InteractionHand.MAIN_HAND, source);
 						entityCap.currentlyAttackedEntities.add(trueEntity);

@@ -91,7 +91,7 @@ public class PunishCheckAnimation extends AttackAnimation
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
 		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType,
-				this.getRequiredDeflectionLevel(phase), poiseDamage, damages);
+				this.getRequiredDeflection(phase), poiseDamage, damages);
 		return extDmgSource;
 	}
 }

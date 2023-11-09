@@ -20,13 +20,13 @@ import net.minecraft.world.phys.Vec3;
 public interface ExtendedDamageSource
 {
 	public static DamageSourceExtended causePlayerDamage(Player player, Vec3 attackPos, StunType stunType,
-			int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
+			Deflection reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("player", player, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
 	
 	public static DamageSourceExtended causeMobDamage(LivingEntity mob, Vec3 attackPos, StunType stunType,
-			int reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
+			Deflection reqDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
         return new DamageSourceExtended("mob", mob, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
     }
@@ -40,14 +40,14 @@ public interface ExtendedDamageSource
 	public static DamageSourceExtended getDirectFrom(ExtendedDamageSource org)
 	{
 		DamageSourceExtended source = new DamageSourceExtended(org.getType(), org.getOwner(), org.getAttackPos(), org.getStunType(),
-				org.getRequiredDeflectionLevel(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
+				org.getRequiredDeflection(), org.getPoiseDamage(), org.getStaminaDamage(), org.getDamages());
 		source.addAuxEffects(org.getAuxEffects());
 		return source;
 	}
 	
 	public static DamageSourceExtended getDirectFrom(DamageSource org, float amount)
 	{
-		int reqDeflection = amount > 5.0F ? Deflection.MEDIUM.getLevel() : amount > 10.0F ? Deflection.HEAVY.getLevel() : Deflection.LIGHT.getLevel();
+		Deflection reqDeflection = amount > 5.0F ? Deflection.MEDIUM : amount > 10.0F ? Deflection.HEAVY : Deflection.LIGHT;
 		StunType stunType = amount > 10.0F ? StunType.SMASH : StunType.LIGHT;
 		float poiseDamage = 1.0F;
 		float staminaDamage = 1.0F;
@@ -82,7 +82,7 @@ public interface ExtendedDamageSource
 	public Entity getOwner();
 	public Entity getSource();
 	public String getType();
-	public int getRequiredDeflectionLevel();
+	public Deflection getRequiredDeflection();
 	public Damages getDamages();
 	public float getPoiseDamage();
 	public boolean isHeadshot();

@@ -6,13 +6,13 @@ import net.minecraft.sounds.SoundEvent;
 public interface Shield
 {
 	float getDefense(CoreDamageType damageType);
-	ShieldType getShieldType();
 	SoundEvent getBlockSound();
 	float getStability();
+	Deflection getDeflection();
 	
-	default int getDeflectionLevel()
+	default boolean canDeflect(Deflection other)
 	{
-		return this.getShieldType().getDeflection().getLevel();
+		return this.getDeflection().canDeflect(other);
 	}
 	
 	
@@ -22,37 +22,14 @@ public interface Shield
 		
 		private final int level;
 		
-		Deflection(int level)
+		private Deflection(int level)
 		{
 			this.level = level;
 		}
 		
-		public int getLevel()
+		public boolean canDeflect(Deflection other)
 		{
-			return this.level;
-		}
-	}
-	
-	enum ShieldType
-	{
-		NONE(Deflection.NONE),
-		SMALL(Deflection.LIGHT),
-		STANDARD(Deflection.MEDIUM),
-		GREAT(Deflection.HEAVY),
-		UNIQUE(Deflection.LIGHT),
-		CRACKED_ROUND_SHIELD(Deflection.NONE),
-		IRON_ROUND_SHIELD(Deflection.HEAVY);
-		
-		private final Deflection deflection;
-		
-		ShieldType(Deflection deflection)
-		{
-			this.deflection = deflection;
-		}
-		
-		public Deflection getDeflection()
-		{
-			return this.deflection;
+			return this.level > other.level;
 		}
 	}
 }

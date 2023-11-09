@@ -14,8 +14,13 @@
                     "name": "minecraft:rotten_flesh"
                 },
                 {
+                	"type": "item",
+                    "weight": 20,
+                    "name": "darksouls:firebomb"
+                },
+                {
                     "type": "item",
-                    "weight": 60,
+                    "weight": 40,
                     "name": "minecraft:air"
                 }
             ]

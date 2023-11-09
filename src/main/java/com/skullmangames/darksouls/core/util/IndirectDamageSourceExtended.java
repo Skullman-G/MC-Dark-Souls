@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.util;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
@@ -62,9 +63,9 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	}
 
 	@Override
-	public int getRequiredDeflectionLevel()
+	public Deflection getRequiredDeflection()
 	{
-		return 0;
+		return Deflection.NONE;
 	}
 
 	@Override

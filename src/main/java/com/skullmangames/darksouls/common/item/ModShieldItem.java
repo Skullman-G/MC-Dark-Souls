@@ -6,6 +6,6 @@ public class ModShieldItem extends Item
 {
 	public ModShieldItem(Properties properties)
 	{
-		super(properties);
+		super(properties.stacksTo(1));
 	}
 }

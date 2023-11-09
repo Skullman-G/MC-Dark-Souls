@@ -1,14 +1,14 @@
 {
-  "registry_name": "darksouls:knight_shield",
+  "registry_name": "darksouls:gargoyle_shield",
   "category": "medium_shield",
   "moveset": "darksouls:shield",
   "skill": "darksouls:parry",
   "collider": "darksouls:shield",
-  "weight": 5.5,
+  "weight": 4.0,
   "stability": 0.56,
   "critical": 1.0,
   "damage": {
-    "PHYSICAL": 68,
+    "PHYSICAL": 62,
     "MAGIC": 0,
     "FIRE": 0,
     "LIGHTNING": 0,
@@ -17,8 +17,8 @@
   },
   "aux_effects": [],
   "stat_requirements": {
-    "stat.darksouls.strength": 10,
-    "stat.darksouls.dexterity": 0,
+    "stat.darksouls.strength": 12,
+    "stat.darksouls.dexterity": 13,
     "stat.darksouls.intelligence": 0,
     "stat.darksouls.faith": 0
   },
@@ -31,11 +31,11 @@
   "deflection": "MEDIUM",
   "weapon_material": "metal_shield",
   "defense": {
-    "PHYSICAL": 1.0,
-    "MAGIC": 0.3,
-    "FIRE": 0.6,
-    "LIGHTNING": 0.4,
-    "DARK": 0.3,
-    "HOLY": 0.3
+    "PHYSICAL": 0.85,
+    "MAGIC": 0.4,
+    "FIRE": 0.75,
+    "LIGHTNING": 0.7,
+    "DARK": 0.4,
+    "HOLY": 0.4
   }
 }

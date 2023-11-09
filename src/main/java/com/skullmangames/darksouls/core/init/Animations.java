@@ -934,9 +934,9 @@ public final class Animations
 										{
 											DamageSourceExtended dmgSource = cap.getOriginalEntity() instanceof Player ?
 													ExtendedDamageSource.causePlayerDamage((Player)cap.getOriginalEntity(), cap.getOriginalEntity().position(),
-															StunType.FLY, 0, 0, 0, Damages.create().put(CoreDamageType.PHYSICAL, 0))
+															StunType.FLY, Deflection.NONE, 0, 0, Damages.create().put(CoreDamageType.PHYSICAL, 0))
 													: ExtendedDamageSource.causeMobDamage(cap.getOriginalEntity(), cap.getOriginalEntity().position(),
-															StunType.FLY, 0, 0, 0, Damages.create().put(CoreDamageType.PHYSICAL, 0));
+															StunType.FLY, Deflection.NONE, 0, 0, Damages.create().put(CoreDamageType.PHYSICAL, 0));
 											target.hurt(dmgSource, 0);
 										}
 										else cap.knockBackEntity(target, 0.5F);

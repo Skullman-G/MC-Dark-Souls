@@ -312,9 +312,9 @@ public class AttackAnimation extends ActionAnimation
 		return entityCap.getDamageToEntity(target, phase.hand);
 	}
 
-	protected int getRequiredDeflectionLevel(Phase phase)
+	protected Deflection getRequiredDeflection(Phase phase)
 	{
-		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE).getLevel();
+		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE);
 	}
 
 	protected SoundEvent getSwingSound(LivingCap<?> entityCap, Phase phase)
@@ -336,7 +336,7 @@ public class AttackAnimation extends ActionAnimation
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
 		WeaponCap weapon = entityCap.getHeldWeaponCap(phase.hand);
 		Set<AuxEffect> auxEffects = weapon == null ? new HashSet<>() : weapon.getAuxEffects();
-		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflectionLevel(phase), poiseDamage, damages).addAuxEffects(auxEffects);
+		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflection(phase), poiseDamage, damages).addAuxEffects(auxEffects);
 	}
 
 	public <V> AttackAnimation addProperty(Property<V> propertyType, V value)

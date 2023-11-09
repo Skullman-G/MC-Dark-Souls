@@ -28,7 +28,7 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
-  "shield_type": "STANDARD",
+  "deflection": "MEDIUM",
   "weapon_material": "wooden_shield",
   "defense": {
     "PHYSICAL": 0.84,

@@ -55,14 +55,14 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	private WeaponMoveset moveset;
 	private final Collider collider;
 	
-	private final ShieldType shieldType;
+	private final Deflection deflection;
 	private final WeaponMaterial weaponMaterial;
 	private final ImmutableMap<CoreDamageType, Float> defense;
 	private final float stability;
 	
 	public MeleeWeaponCap(Item item, WeaponCategory category, ResourceLocation moveset, WeaponSkill skill, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 						  float critical, float weight,
-						  ShieldType shieldType, WeaponMaterial weaponMaterial,
+						  Deflection deflection, WeaponMaterial weaponMaterial,
 						  ImmutableMap<CoreDamageType, Float> defense, float stability,
 						  ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
@@ -71,11 +71,11 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 		this.collider = collider;
 		this.weaponMaterial = weaponMaterial;
-		this.shieldType = shieldType;
+		this.deflection = deflection;
 		this.defense = defense;
 		this.stability = stability;
 		
-		if (this.getShieldType() != ShieldType.NONE)
+		if (this.getWeaponCategory().isShield())
 		{
 			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SHIELD);
 			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SHIELD);
@@ -199,6 +199,12 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	{
 		return null;
 	}
+	
+	@Override
+	public Deflection getDeflection()
+	{
+		return this.deflection;
+	}
 
 	public Collider getWeaponCollider()
 	{
@@ -233,12 +239,6 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	public float getDefense(CoreDamageType damageType)
 	{
 		return this.defense.get(damageType);
-	}
-
-	@Override
-	public ShieldType getShieldType()
-	{
-		return this.shieldType;
 	}
 	
 	public static Builder builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
@@ -337,7 +337,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
-		private ShieldType shieldType = ShieldType.NONE;
+		private Deflection deflection;
 		private WeaponMaterial weaponMaterial = WeaponMaterial.METAL_WEAPON;
 		private ImmutableMap.Builder<CoreDamageType, Float> defense = ImmutableMap.builder();
 		
@@ -349,6 +349,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			this.skillId = new ResourceLocation("empty");
 			this.colliderId = colliderId;
 			this.weight = weight;
+			this.deflection = category.getDeflection();
 		}
 		
 		public ResourceLocation getLocation()
@@ -393,9 +394,9 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			return this;
 		}
 		
-		public Builder setShieldType(ShieldType value)
+		public Builder setDeflection(Deflection value)
 		{
-			this.shieldType = value;
+			this.deflection = value;
 			return this;
 		}
 		
@@ -446,7 +447,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 				statScaling.addProperty(stat.getName(), scaling.toString());
 			});
 			
-			root.addProperty("shield_type", this.shieldType.toString());
+			root.addProperty("deflection", this.deflection.toString());
 			root.addProperty("weapon_material", this.weaponMaterial.toString());
 			
 			JsonObject defense = new JsonObject();
@@ -497,11 +498,11 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 				builder.putStatInfo(stat, requirement, scaling);
 			}
 			
-			JsonElement shieldTypeJson = json.get("shield_type");
-			if (shieldTypeJson != null)
+			JsonElement deflectionJson = json.get("deflection");
+			if (deflectionJson != null)
 			{
-				ShieldType shieldType = ShieldType.valueOf(shieldTypeJson.getAsString());
-				builder.setShieldType(shieldType);
+				Deflection deflection = Deflection.valueOf(deflectionJson.getAsString());
+				builder.setDeflection(deflection);
 			}
 			
 			JsonElement weaponMaterialJson = json.get("weapon_material");
@@ -538,7 +539,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			return new MeleeWeaponCap(this.item, this.category, this.movesetId, WeaponSkills.getFromLocation(this.skillId),
 					collider, this.damage.build(), this.auxEffects.build(),
 					this.critical, this.weight,
-					this.shieldType, this.weaponMaterial, this.defense.build(), this.stability,
+					this.deflection, this.weaponMaterial, this.defense.build(), this.stability,
 					this.statRequirements.build(), this.statScaling.build());
 		}
 	}

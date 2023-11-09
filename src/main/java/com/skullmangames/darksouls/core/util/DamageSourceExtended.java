@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
 {
-	private final int requiredDeflectionLevel;
+	private final Deflection requiredDeflection;
 	private final float poiseDamage;
 	private final float staminaDamage;
 	private final Vec3 attackPos;
@@ -21,14 +22,14 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	private final Set<AuxEffect> auxEffects = new HashSet<>();
 	
 	public DamageSourceExtended(String damageTypeIn, Entity source, Vec3 attackPos, StunType stunType,
-			int requiredDeflectionLevel, float poiseDamage, float staminaDamage, Damages damages)
+			Deflection requiredDeflection, float poiseDamage, float staminaDamage, Damages damages)
 	{
 		super(damageTypeIn, source);
 		
 		this.stunType = stunType;
 		this.damages = damages;
 		this.poiseDamage = poiseDamage;
-		this.requiredDeflectionLevel = requiredDeflectionLevel;
+		this.requiredDeflection = requiredDeflection;
 		this.staminaDamage = staminaDamage;
 		this.attackPos = attackPos;
 	}
@@ -46,9 +47,9 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	}
 	
 	@Override
-	public int getRequiredDeflectionLevel()
+	public Deflection getRequiredDeflection()
 	{
-		return this.requiredDeflectionLevel;
+		return this.requiredDeflection;
 	}
 
 	@Override

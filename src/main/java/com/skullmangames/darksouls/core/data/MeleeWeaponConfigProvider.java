@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.common.capability.item.Shield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.WeaponMaterial;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
@@ -566,8 +566,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.WOODEN_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.WOODEN_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.HEATER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 2.0F)
 			.setSkill(WeaponSkills.PARRY)
@@ -583,8 +582,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.CRACKED_ROUND_SHIELD.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 1.0F)
 			.setSkill(WeaponSkills.PARRY)
@@ -601,7 +599,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_SHIELD)
-			.setShieldType(ShieldType.CRACKED_ROUND_SHIELD),
+			.setDeflection(Deflection.NONE),
 			
 			MeleeWeaponCap.builder(ModItems.LORDRAN_SOLDIER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 3.5F)
 			.setSkill(WeaponSkills.PARRY)
@@ -617,8 +615,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.KNIGHT_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 5.5F)
 			.setSkill(WeaponSkills.PARRY)
@@ -634,8 +631,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.GOLDEN_FALCON_SHIELD.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 2.5F)
 			.setSkill(WeaponSkills.PARRY)
@@ -651,8 +647,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.SMALL),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.BALDER_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
 			.setSkill(WeaponSkills.PARRY)
@@ -668,8 +663,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.BLACK_KNIGHT_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
 			.setSkill(WeaponSkills.PARRY)
@@ -685,8 +679,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.STANDARD),
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
 			
 			MeleeWeaponCap.builder(ModItems.BUCKLER.get(), WeaponCategory.SMALL_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 1.0F)
 			.setSkill(WeaponSkills.FAST_PARRY)
@@ -702,8 +695,23 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 13, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
+			
+			MeleeWeaponCap.builder(ModItems.GARGOYLE_SHIELD.get(), WeaponCategory.MEDIUM_SHIELD, WeaponMovesets.SHIELD, Colliders.SHIELD.getId(), 4.0F)
+			.setSkill(WeaponSkills.PARRY)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 62, 0.85F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.75F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.70F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.40F)
+			.setCritical(1.00F)
+			.setStability(0.56F)
+			.putStatInfo(Stats.STRENGTH, 12, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 13, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
-			.setShieldType(ShieldType.SMALL)
 		);
 	}
 

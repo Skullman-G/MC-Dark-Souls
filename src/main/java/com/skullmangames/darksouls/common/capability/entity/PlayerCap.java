@@ -4,8 +4,7 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.capability.item.Shield;
-import com.skullmangames.darksouls.common.capability.item.Shield.ShieldType;
+import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
@@ -24,6 +23,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -305,8 +305,8 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
-			Shield shield = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
-			return shield == null || shield.getShieldType() == ShieldType.NONE ? Animations.BIPED_BLOCK_HORIZONTAL
+			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
+			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));
 		animatorClient.setCurrentMotionsToDefault();
@@ -366,9 +366,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	
 	@Override
 	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDmg,
-			StunType stunType, int requireddeflectionlevel, float poiseDamage, Damages damages)
+			StunType stunType, Deflection reqDeflection, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDmg, damages);
+		return ExtendedDamageSource.causePlayerDamage(this.orgEntity, attackPos, stunType, reqDeflection, poiseDamage, staminaDmg, damages);
 	}
 	
 	public void discard()

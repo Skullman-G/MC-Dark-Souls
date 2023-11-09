@@ -28,7 +28,7 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
-  "shield_type": "SMALL",
+  "deflection": "LIGHT",
   "weapon_material": "metal_shield",
   "defense": {
     "PHYSICAL": 0.55,

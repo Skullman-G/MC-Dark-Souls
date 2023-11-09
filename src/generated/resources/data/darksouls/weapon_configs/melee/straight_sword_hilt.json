@@ -3,7 +3,7 @@
   "category": "straight_sword",
   "moveset": "darksouls:straight_sword",
   "skill": "minecraft:empty",
-  "collider": "darksouls:broken_sword",
+  "collider": "darksouls:fist",
   "weight": 1.0,
   "stability": 0.1,
   "critical": 1.0,
@@ -28,7 +28,7 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
-  "shield_type": "NONE",
+  "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {
     "PHYSICAL": 0.2,

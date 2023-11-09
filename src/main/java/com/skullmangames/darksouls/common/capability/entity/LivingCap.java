@@ -20,6 +20,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.Shield;
+import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
@@ -513,7 +514,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		this.playSound(shield.getBlockSound());
 
-		if (attacker != null && damageSource.getRequiredDeflectionLevel() <= shield.getDeflectionLevel() && !damageSource.isIndirect())
+		if (attacker != null && shield.canDeflect(damageSource.getRequiredDeflection()) && !damageSource.isIndirect())
 		{
 			LivingCap<?> attackerCap = (LivingCap<?>) attacker.getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 			if (attackerCap == null) return true;
@@ -528,9 +529,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	}
 
 	public ExtendedDamageSource getDamageSource(Vec3 attackPos, int staminaDamage, StunType stunType,
-			int requireddeflectionlevel, float poiseDamage, Damages damages)
+			Deflection reqDeflection, float poiseDamage, Damages damages)
 	{
-		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, requireddeflectionlevel, poiseDamage, staminaDamage, damages);
+		return ExtendedDamageSource.causeMobDamage(this.orgEntity, attackPos, stunType, reqDeflection, poiseDamage, staminaDamage, damages);
 	}
 
 	public Damages getDamageToEntity(Entity targetEntity, InteractionHand hand)
