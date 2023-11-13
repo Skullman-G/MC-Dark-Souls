@@ -110,6 +110,9 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get()));
 		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get()));
 		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get()));
+		putCap(new ArmorCap(ModItems.BURNT_SHIRT.get()));
+		putCap(new ArmorCap(ModItems.BURNT_TROUSERS.get()));
+		putCap(new ArmorCap(ModItems.FANG_BOAR_HELM.get()));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);

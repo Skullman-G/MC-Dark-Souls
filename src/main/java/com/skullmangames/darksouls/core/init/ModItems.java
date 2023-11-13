@@ -219,6 +219,14 @@ public class ModItems
 	public static final RegistryObject<Item> BALDER_BOOTS = ITEMS.register("balder_boots", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.FEET, "balder_set", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BURNT_SHIRT = ITEMS.register("burnt_shirt", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.CHEST, "burnt_clothes", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BURNT_TROUSERS = ITEMS.register("burnt_trousers", () -> new ModArmorItem(ArmorMaterials.LEATHER, EquipmentSlot.LEGS, "burnt_clothes", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> FANG_BOAR_HELM = ITEMS.register("fang_boar_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "fang_boar_helm", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	//Throwable
 	public static final RegistryObject<Item> SNOWBALL = VANILLA_ITEMS.register("snowball", () -> new Item(new Item.Properties()
 			.stacksTo(16)

@@ -41,6 +41,6 @@ public class ThrowableGoal extends Goal
 		ThrowableCap throwable = (ThrowableCap)this.mobCap.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		this.mobCap.rotateTo(this.mobCap.getTarget(), 60F, true);
 		throwable.use(this.mobCap);
-		this.timeout = 5;
+		this.timeout = 20;
 	}
 }

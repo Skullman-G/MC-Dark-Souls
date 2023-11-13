@@ -186,6 +186,7 @@ public class RenderEngine
 		this.armorModelMap.put(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR);
 		this.armorModelMap.put(ModItems.BALDER_LEGGINGS.get(), (models) -> models.BALDER_LEGGINGS);
 		this.armorModelMap.put(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS);
+		this.armorModelMap.put(ModItems.FANG_BOAR_HELM.get(), (models) -> models.FANG_BOAR_HELM);
 	}
 	
 	public ClientModel getArmorModel(ArmorItem armor)

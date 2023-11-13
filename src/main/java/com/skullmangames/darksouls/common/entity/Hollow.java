@@ -109,19 +109,36 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	@Override
 	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
 	{
-		if (slot != EquipmentSlot.MAINHAND) return null;
-		if (percentage <= 75)
+		if (slot == EquipmentSlot.MAINHAND)
 		{
-			return ModItems.BROKEN_STRAIGHT_SWORD.get();
+			if (percentage <= 75)
+			{
+				return ModItems.BROKEN_STRAIGHT_SWORD.get();
+			}
+			else if (percentage <= 90)
+			{
+				return Items.BOW;
+			}
+			else
+			{
+				return ModItems.STRAIGHT_SWORD_HILT.get();
+			}
 		}
-		else if (percentage <= 90)
+		
+		if (this.random.nextFloat() < 0.2F)
 		{
-			return Items.BOW;
+			switch (slot)
+			{
+				default:
+					return null;
+				case CHEST:
+					return ModItems.BURNT_SHIRT.get();
+				case LEGS:
+					return ModItems.BURNT_TROUSERS.get();
+			}
 		}
-		else
-		{
-			return ModItems.STRAIGHT_SWORD_HILT.get();
-		}
+		
+		return null;
 	}
 	
 	@Override

@@ -68,7 +68,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 			
 			weaponGoal.addSwitchCondition(ModItems.FIREBOMB.get().getDefaultInstance(), () ->
 			{
-				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) > 10D;
+				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) > 10D && this.orgEntity.getRandom().nextDouble() < 0.2F;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new ThrowableGoal(this));
 		}
