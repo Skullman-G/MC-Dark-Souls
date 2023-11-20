@@ -5,6 +5,33 @@ import net.minecraft.sounds.SoundEvent;
 
 public interface Shield
 {
+	public static final Shield EMPTY_SHIELD = new Shield()
+	{
+		@Override
+		public float getDefense(CoreDamageType damageType)
+		{
+			return 0;
+		}
+
+		@Override
+		public SoundEvent getBlockSound()
+		{
+			return null;
+		}
+
+		@Override
+		public float getStability()
+		{
+			return 0;
+		}
+
+		@Override
+		public Deflection getDeflection()
+		{
+			return null;
+		}
+	};
+	
 	float getDefense(CoreDamageType damageType);
 	SoundEvent getBlockSound();
 	float getStability();

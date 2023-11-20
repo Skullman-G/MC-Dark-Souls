@@ -179,11 +179,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return (float) this.orgEntity.getAttributeValue(ModAttributes.MAX_STAMINA.get());
 	}
 
-	public float getPoiseDef()
-	{
-		return this.poiseDef;
-	}
-
 	public boolean decreasePoiseDef(float decr)
 	{
 		this.poiseDef = Math.max(0, this.poiseDef - decr);

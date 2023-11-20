@@ -96,23 +96,34 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::new, () -> SoundEvents.SNOWBALL_THROW));
 		
 		//ARMOR
-		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get()));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get()));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get()));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get()));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get()));
-		putCap(new ArmorCap(ModItems.FALCONER_HELM.get()));
-		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get()));
+		putCap(new ArmorCap(ModItems.DINGY_HOOD.get(), 0.8F, 0F));
+		putCap(new ArmorCap(ModItems.DINGY_ROBE.get(), 3F, 0F));
+		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), 1.4F, 0F));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_HELM.get(), 3F, 5F));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_ARMOR.get(), 7.8F, 12F));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), 1.5F, 7F));
+		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_BOOTS.get(), 1F, 2F));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_HELM.get(), 2.6F, 3F));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_ARMOR.get(), 6.6F, 8F));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), 1.4F, 5F));
+		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), 1F, 0F));
+		putCap(new ArmorCap(ModItems.ELITE_CLERIC_HELM.get(), 4.8F, 8F));
+		putCap(new ArmorCap(ModItems.ELITE_CLERIC_ARMOR.get(), 12.5F, 20F));
+		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), 7.4F, 12F));
+		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), 4.5F, 6F));
+		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), 7.7F, 12F));
+		putCap(new ArmorCap(ModItems.FALCONER_LEGGINGS.get(), 5.8F, 8F));
+		putCap(new ArmorCap(ModItems.FALCONER_BOOTS.get(), 3.2F, 4F));
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), 5F, 8F));
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), 13F, 21F));
 		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), 7F, 17F));
-		putCap(new ArmorCap(ModItems.BALDER_HELM.get()));
-		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get()));
-		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get()));
-		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get()));
-		putCap(new ArmorCap(ModItems.BURNT_SHIRT.get()));
-		putCap(new ArmorCap(ModItems.BURNT_TROUSERS.get()));
-		putCap(new ArmorCap(ModItems.FANG_BOAR_HELM.get()));
+		putCap(new ArmorCap(ModItems.BALDER_HELM.get(), 4.2F, 6F));
+		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get(), 10.9F, 16F));
+		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get(), 6.4F, 9F));
+		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), 3.5F, 5F));
+		putCap(new ArmorCap(ModItems.BURNT_SHIRT.get(), 0.8F, 0F));
+		putCap(new ArmorCap(ModItems.BURNT_TROUSERS.get(), 0.8F, 0F));
+		putCap(new ArmorCap(ModItems.FANG_BOAR_HELM.get(), 8F, 12F));
 		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);

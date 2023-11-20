@@ -1,6 +1,8 @@
 package com.skullmangames.darksouls.client.input;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -41,6 +43,7 @@ import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.InputEvent.MouseScrollEvent;
 import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,6 +67,22 @@ public class InputManager
 	private double tracingMouseX;
 	private double tracingMouseY;
 	private AttackType reservedAttack;
+	public final List<InputConstants.Key> pressedKeyOverride = new LinkedList<>();
+	
+	public static final IKeyConflictContext WALK_CONFLICT = new IKeyConflictContext()
+	{
+		@Override
+		public boolean isActive()
+		{
+			return true;
+		}
+
+		@Override
+		public boolean conflicts(IKeyConflictContext other)
+		{
+			return true;
+		}
+	};
 	
 	
 	public InputManager()
@@ -260,6 +279,15 @@ public class InputManager
 	public void tick()
 	{
 		if (this.playerCap == null) return;
+		
+		if (!this.pressedKeyOverride.isEmpty())
+		{
+			for (InputConstants.Key key : this.pressedKeyOverride)
+			{
+				KeyMapping.set(key, true);
+			}
+			this.pressedKeyOverride.clear();
+		}
 
 		EntityState playerState = this.playerCap.getEntityState();
 		
@@ -598,7 +626,7 @@ public class InputManager
 					in.forwardImpulse = forward;
 					in.leftImpulse = left;
 				}
-				else if (!inputManager.playerCap.shouldShoulderSurf())
+				else
 				{
 					boolean w = in.up;
 					boolean s = in.down;

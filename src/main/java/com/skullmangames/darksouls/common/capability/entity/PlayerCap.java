@@ -11,7 +11,6 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.StatHolder;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.common.inventory.SpellInventory;
-
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -65,6 +64,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
+		
 		this.tickSinceLastAction = 40;
 		
 		if (!this.orgEntity.getInventory().contains(new ItemStack(ModItems.DARKSIGN.get())))
@@ -107,7 +107,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		this.stats.loadStats(nbt.getCompound("Stats"));
 	}
 	
-	public final void onSave()
+	public final void save()
 	{
 		CompoundTag nbt = new CompoundTag();
 		this.onSave(nbt);

@@ -50,7 +50,7 @@ public abstract class WeaponCap extends AttributeItemCap
 	private final ImmutableMap<Stat, Integer> statRequirements;
 	private final ImmutableMap<Stat, Scaling> statScaling;
 	private final ImmutableSet<AuxEffect> auxEffects;
-	private final float weight;
+	public final float weight;
 	private final float critical;
 	private final WeaponSkill skill;
 
@@ -174,23 +174,19 @@ public abstract class WeaponCap extends AttributeItemCap
 
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Requirements:"));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.STRENGTH, playerCap)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.DEXTERITY, playerCap)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.INTELLIGENCE.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.INTELLIGENCE, playerCap)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
-					+ this.getStatStringValue(Stats.FAITH, playerCap)));
+			for (Stat stat : Stats.SCALING_STATS)
+			{
+				itemTooltip.add(new TextComponent("  " + new TranslatableComponent(stat.toString()).getString() + ": "
+						+ this.getStatStringValue(stat, playerCap)));
+			}
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TextComponent("Scaling:"));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.STRENGTH.toString()).getString() + ": "
-					+ this.getScaling(Stats.STRENGTH)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.DEXTERITY.toString()).getString() + ": "
-					+ this.getScaling(Stats.DEXTERITY)));
-			itemTooltip.add(new TextComponent("  " + new TranslatableComponent(Stats.FAITH.toString()).getString() + ": "
-					+ this.getScaling(Stats.FAITH)));
+			for (Stat stat : Stats.SCALING_STATS)
+			{
+				itemTooltip.add(new TextComponent("  " + new TranslatableComponent(stat.toString()).getString() + ": "
+						+ this.getScaling(stat)));
+			}
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
@@ -198,7 +194,7 @@ public abstract class WeaponCap extends AttributeItemCap
 		}
 	}
 
-	private String getStatStringValue(Stat stat, PlayerCap<?> playerCap)
+	public String getStatStringValue(Stat stat, PlayerCap<?> playerCap)
 	{
 		return this.getStatColor(stat, playerCap) + this.statRequirements.get(stat);
 	}

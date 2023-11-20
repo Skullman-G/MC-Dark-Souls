@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
 import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.client.gui.screens.DSSelectMenuScreen;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -79,15 +81,15 @@ public class ScreenManager
 				if (minecraft.getOverlay() instanceof ModLoadingScreen)
 				{
 					Overlay overlay = minecraft.getOverlay();
-					if (overlay instanceof ModLoadingScreen)
+					if (overlay instanceof ModLoadingScreen screen)
 					{
-						((ModLoadingScreen) overlay).setCanFadeOut(true);
+						screen.setCanFadeOut(true);
 					}
 				}
 				
-				if (gui instanceof TitleScreen)
+				if (gui instanceof TitleScreen screen)
 				{
-					event.setScreen(new ModTitleScreen(((TitleScreen)gui).fading));
+					event.setScreen(new ModTitleScreen(screen.fading));
 				}
 				else if (gui instanceof LevelLoadingScreen)
 				{
@@ -97,11 +99,17 @@ public class ScreenManager
 			}
 			else
 			{
-				if (gui instanceof ModTitleScreen)
+				if (gui instanceof ModTitleScreen screen)
 				{
-					ModTitleScreen screen = (ModTitleScreen) gui;
 					event.setScreen(new TitleScreen(screen.fading));
 				}
+			}
+			
+			if (gui instanceof EffectRenderingInventoryScreen<?> craftingScreen
+					&& ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue()
+					&& !(minecraft.screen instanceof DSSelectMenuScreen))
+			{
+				event.setScreen(new DSSelectMenuScreen(craftingScreen));
 			}
 		}
 	}

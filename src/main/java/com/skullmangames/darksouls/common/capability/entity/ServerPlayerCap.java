@@ -101,7 +101,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		this.setHuman(false);
 		this.setSouls(0);
 		this.setFP(this.getMaxFP());
-		this.onSave();
+		this.save();
 	}
 	
 	@Override

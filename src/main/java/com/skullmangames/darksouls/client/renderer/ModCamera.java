@@ -25,6 +25,8 @@ public class ModCamera extends Camera
 	private int shakeDuration;
 	private float shakeMagnitude;
 	private final Random random = new Random();
+	private boolean forceShoulderSurf = false;
+	private boolean shoulderSurfO = false;
 	
 	@Override
 	public void setup(BlockGetter world, Entity entity, boolean detached, boolean mirror, float partialTick)
@@ -39,7 +41,17 @@ public class ModCamera extends Camera
 	    
 	    if (detached)
 	    {
-	    	if (ClientManager.INSTANCE.getPlayerCap().shouldShoulderSurf())
+	    	if (this.forceShoulderSurf)
+	    	{
+	    		float xRot = this.getPivotXRot(partialTick);
+	    		float yRot = this.getPivotYRot(partialTick);
+	    		this.setRotation(xRot, yRot);
+	    		this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
+	    		
+	    		if (this.anim >= 1 && this.zo != 2.5D) this.anim = 0;
+	    		this.updatePosO(3.0D, 0.25D, 2.5D, partialTick);
+	    	}
+	    	else if (ClientManager.INSTANCE.getPlayerCap().shouldShoulderSurf())
 	    	{
 	    		this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
 	    		
@@ -48,14 +60,18 @@ public class ModCamera extends Camera
 	    		this.pivotRot.y = entity.xRot;
 	    		this.pivotRot.x = entity.yRot;
 	    		
-	    		if (this.zo > 0D) this.anim = 0;
+	    		if (!this.shoulderSurfO)
+	    		{
+	    			this.anim = 0;
+	    			this.shoulderSurfO = true;
+	    		}
 	    		this.updatePosO(3.0D, 0.25D, -1D, partialTick);
 	    	}
 	    	else
 	    	{
 	    		float xRot = this.getPivotXRot(partialTick);
 	    		float yRot = this.getPivotYRot(partialTick);
-	    		this.setRotation(this.pivotRot.x, this.pivotRot.y);
+	    		this.setRotation(xRot, yRot);
 		    	this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
 		    	
 		    	entity.xRotO = 0;
@@ -63,8 +79,12 @@ public class ModCamera extends Camera
 		    	this.pivotRotOld.x = xRot;
 		    	this.pivotRotOld.y = yRot;
 		    	
-		    	if (this.zo < 0D) this.anim = 0;
-		    	this.updatePosO(4.0D, 0.25D, 0D, partialTick);
+		    	if (this.shoulderSurfO)
+	    		{
+	    			this.anim = 0;
+	    			this.shoulderSurfO = false;
+	    		}
+		    	this.updatePosO(4D, 0.25D, 0D, partialTick);
 	    	}
 	    }
 	    else if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping())
@@ -82,11 +102,17 @@ public class ModCamera extends Camera
 	    }
 	}
 	
+	public void forceShoulderSurf(boolean value)
+	{
+		this.forceShoulderSurf = value;
+		this.anim = 0;
+	}
+	
 	private void updatePosO(double x, double y, double z, float partialTick)
 	{
 		if (this.anim < 1)
 		{
-			this.anim = MathUtils.clamp(this.anim + 0.05F * partialTick, 0, 1);
+			this.anim = MathUtils.clamp(this.anim + 0.01F * partialTick, 0, 1);
 			this.xo = Mth.lerp(this.anim, this.xo, x);
 			this.yo = Mth.lerp(this.anim, this.yo, y);
 			this.zo = Mth.lerp(this.anim, this.zo, z);

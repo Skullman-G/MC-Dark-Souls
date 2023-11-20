@@ -81,7 +81,7 @@ public class PlayerEvents
 	{
 		PlayerCap<?> playerCap = (PlayerCap<?>)event.getPlayer().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerCap == null) return;
-		playerCap.onSave();
+		playerCap.save();
 	}
 	
 	@SubscribeEvent
@@ -90,6 +90,6 @@ public class PlayerEvents
 		if (!(event.getEntityLiving() instanceof ServerPlayer)) return;
 		PlayerCap<?> playerCap = (PlayerCap<?>)event.getEntityLiving().getCapability(ModCapabilities.CAPABILITY_ENTITY, null).orElse(null);
 		if (playerCap == null) return;
-		playerCap.onSave();
+		playerCap.save();
 	}
 }
