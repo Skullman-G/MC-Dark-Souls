@@ -56,6 +56,8 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	public static final ResourceLocation GREAT_HAMMER = DarkSouls.rl("great_hammer");
 	
 	public static final ResourceLocation THRUSTING_SWORD = DarkSouls.rl("thrusting_sword");
+	
+	public static final ResourceLocation GREATAXE = DarkSouls.rl("greataxe");
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)

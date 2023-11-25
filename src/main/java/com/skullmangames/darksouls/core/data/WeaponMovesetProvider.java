@@ -153,7 +153,16 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.PUNISH, true, Animations.PUNISH_THRUST)
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.THRUSTING_SWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.THRUSTING_SWORD_TH_HEAVY_ATTACK)
-			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.THRUSTING_SWORD_TH_DASH_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.THRUSTING_SWORD_TH_DASH_ATTACK),
+			new WeaponMoveset.Builder(WeaponMovesets.GREATAXE)
+			.putMove(AttackType.LIGHT, true, Animations.GREATAXE_LIGHT_ATTACK)
+			.putMove(AttackType.HEAVY, true, Animations.GREATAXE_HEAVY_ATTACK)
+			.putMove(AttackType.DASH, true, Animations.GREATAXE_DASH_ATTACK)
+			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
+			.putMove(AttackType.PUNISH, true, Animations.PUNISH_STRIKE)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATAXE_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATAXE_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATAXE_TH_DASH_ATTACK)
 		);
 	}
 	

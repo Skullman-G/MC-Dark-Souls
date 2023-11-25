@@ -521,7 +521,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
 			// Greataxes
-			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.ULTRA_GREATSWORD, Colliders.GREATAXE.getId(), 22.0F)
+			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.GREATAXE, Colliders.GREATAXE.getId(), 22.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 114, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)

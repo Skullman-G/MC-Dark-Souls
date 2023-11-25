@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +39,10 @@ public class DSSelectMenuScreen extends Screen
 	{
 		super(new TextComponent("Select Menu"));
 		
-		this.craftingScreen = craftingScreen;
+		Minecraft minecraft = Minecraft.getInstance();
+		
+		this.craftingScreen = minecraft.gameMode.hasInfiniteItems() ? new CreativeModeInventoryScreen(minecraft.player)
+				: craftingScreen;
 		
 		this.textureWidth = 126;
 		this.textureHeight = 103;
@@ -46,7 +50,6 @@ public class DSSelectMenuScreen extends Screen
 		this.imageWidth = 126;
 		this.imageHeight = 62;
 		
-		Minecraft minecraft = Minecraft.getInstance();
 		List<InputConstants.Key> keyOverrides = ClientManager.INSTANCE.inputManager.pressedKeyOverride;
 		if (minecraft.options.keyUp.isDown()) keyOverrides.add(minecraft.options.keyUp.getKey());
 		if (minecraft.options.keyDown.isDown()) keyOverrides.add(minecraft.options.keyDown.getKey());

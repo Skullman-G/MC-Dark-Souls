@@ -1,0 +1,54 @@
+{
+  "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_la_1",
+        "darksouls:greataxe_la_2"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_ha"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_da"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_strike_check"
+      ]
+    },
+    "punish": {
+      "repeating": true,
+      "animations": [
+        "darksouls:punish_strike_check"
+      ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_th_la_1",
+        "darksouls:greataxe_th_la_2"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_th_ha"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_th_da"
+      ]
+    }
+  }
+}
