@@ -3,7 +3,6 @@ package com.skullmangames.darksouls.common.animation;
 import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
-import com.skullmangames.darksouls.client.particles.spawner.ParticleSpawner;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -48,10 +47,7 @@ public abstract class Property<T>
 		public static final AttackProperty<Integer> STAMINA_DAMAGE = new AttackProperty<Integer>();
 		public static final AttackProperty<Integer> POISE_DAMAGE = new AttackProperty<Integer>();
 
-		public static final AttackProperty<Supplier<SoundEvent>> SWING_SOUND = new AttackProperty<Supplier<SoundEvent>>();
 		public static final AttackProperty<Supplier<SoundEvent>> HIT_SOUND = new AttackProperty<Supplier<SoundEvent>>();
-
-		public static final AttackProperty<ParticleSpawner> PARTICLE = new AttackProperty<ParticleSpawner>();
 
 		public static final AttackProperty<Boolean> BLOCKING = new AttackProperty<Boolean>();
 	}
@@ -60,4 +56,6 @@ public abstract class Property<T>
 	{
 		public static final DeathProperty<Float> DISAPPEAR_AT = new DeathProperty<Float>();
 	}
+	
+	
 }

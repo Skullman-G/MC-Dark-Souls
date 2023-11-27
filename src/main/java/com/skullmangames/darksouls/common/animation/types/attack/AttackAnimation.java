@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skullmangames.darksouls.client.particles.spawner.ParticleSpawner;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -29,7 +28,6 @@ import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
-import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.AuxEffect;
@@ -48,7 +46,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -203,25 +200,8 @@ public class AttackAnimation extends ActionAnimation
 	{
 		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
-		float prevElapsedTime = animPlayer.getPrevElapsedTime();
-		EntityState state = this.getState(elapsedTime);
-		EntityState prevState = this.getState(prevElapsedTime);
-		Phase phase = this.getPhaseByTime(elapsedTime);
-		ParticleSpawner spawner = phase.getProperty(AttackProperty.PARTICLE).orElse(null);
-		Collider collider = this.getCollider(entityCap, elapsedTime);
-		LivingEntity entity = entityCap.getOriginalEntity();
 		
 		entityCap.weaponCollider = this.getCollider(entityCap, elapsedTime);
-		
-		if (spawner != null)
-		{
-			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
-			if (elapsedTime >= phase.contactEnd && prevElapsedTime - ClientConfig.A_TICK <= phase.contactEnd) spawner.spawnParticles((ClientLevel)entity.level, collider.getMassCenter());
-		}
-		if (state.shouldDetectCollision() && !prevState.shouldDetectCollision())
-		{
-			entityCap.playSound(this.getSwingSound(entityCap, phase));
-		}
 	}
 	
 	@Override
@@ -315,11 +295,6 @@ public class AttackAnimation extends ActionAnimation
 	protected Deflection getRequiredDeflection(Phase phase)
 	{
 		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE);
-	}
-
-	protected SoundEvent getSwingSound(LivingCap<?> entityCap, Phase phase)
-	{
-		return phase.getProperty(AttackProperty.SWING_SOUND).orElse(() -> entityCap.getSwingSound(phase.hand)).get();
 	}
 
 	protected SoundEvent getHitSound(LivingCap<?> entityCap, Phase phase)

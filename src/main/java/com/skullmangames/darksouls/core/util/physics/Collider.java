@@ -18,7 +18,10 @@ import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -94,6 +97,14 @@ public abstract class Collider
 		this.transform(transformMatrix);
 	}
 	
+	public BlockHitResult getBlockCollisions(BlockGetter level)
+	{
+		AABB aabb = this.getHitboxAABB();
+		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(aabb.minX, aabb.minY, aabb.minZ), new Vec3(aabb.maxX, aabb.maxY, aabb.maxZ),
+				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null));
+		return hitResult;
+	}
+	
 	public abstract Collider getScaledCollider(float scale);
 	
 	public List<Entity> getShieldCollisions(Entity self)
@@ -124,6 +135,8 @@ public abstract class Collider
 		this.filterHitEntities(list);
 		return list;
 	}
+	
+	public abstract Collider clone();
 
 	@OnlyIn(Dist.CLIENT)
 	public abstract void drawInternal(boolean red);

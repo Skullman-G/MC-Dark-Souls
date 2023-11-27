@@ -4,7 +4,9 @@ import java.util.function.Supplier;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -39,7 +41,9 @@ public class STCEntityImpactParticles
 	{
 		ctx.get().enqueueWork(()->
 		{
-			ModNetworkManager.connection.makeImpactParticles(msg.entityId, msg.impactPos, msg.blocked);
+			Minecraft minecraft = Minecraft.getInstance();
+			Entity entity = minecraft.level.getEntity(msg.entityId);
+			ModNetworkManager.connection.makeImpactParticles(entity, msg.impactPos, msg.blocked);
 		});
 		
 		ctx.get().setPacketHandled(true);

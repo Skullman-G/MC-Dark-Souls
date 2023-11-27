@@ -189,11 +189,6 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		else if (move.getFirst()) combo = 0;
 		return animations[combo];
 	}
-	
-	public SoundEvent getSwingSound()
-	{
-		return null;
-	}
 
 	public SoundEvent getHitSound()
 	{

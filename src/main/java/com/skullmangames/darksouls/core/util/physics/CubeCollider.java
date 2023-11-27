@@ -26,6 +26,44 @@ public class CubeCollider extends Collider
 		this.moveTo(offset);
 	}
 	
+	/*
+	 * This constructor is purely used to make a clone of another CubeCollider
+	 */
+	public CubeCollider(AABB aabb, Vec3[] modelVertices, Vec3[] modelNormals)
+	{
+		super(aabb);
+		this.modelVertices = new Vec3[8];
+		this.vertices = new Vec3[8];
+		this.modelNormals = new Vec3[3];
+		this.normals = new Vec3[3];
+		
+		this.modelVertices[0] = modelVertices[0];
+		this.modelVertices[1] = modelVertices[1];
+		this.modelVertices[2] = modelVertices[2];
+		this.modelVertices[3] = modelVertices[3];
+		this.modelVertices[4] = modelVertices[4];
+		this.modelVertices[5] = modelVertices[5];
+		this.modelVertices[6] = modelVertices[6];
+		this.modelVertices[7] = modelVertices[7];
+		
+		this.vertices[0] = this.modelVertices[0];
+		this.vertices[1] = this.modelVertices[1];
+		this.vertices[2] = this.modelVertices[2];
+		this.vertices[3] = this.modelVertices[3];
+		this.vertices[4] = this.modelVertices[4];
+		this.vertices[5] = this.modelVertices[5];
+		this.vertices[6] = this.modelVertices[6];
+		this.vertices[7] = this.modelVertices[7];
+		
+		this.modelNormals[0] = modelNormals[0];
+		this.modelNormals[1] = modelNormals[1];
+		this.modelNormals[2] = modelNormals[2];
+		
+		this.normals[0] = this.modelNormals[0];
+		this.normals[1] = this.modelNormals[1];
+		this.normals[2] = this.modelNormals[2];
+	}
+	
 	public CubeCollider(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
 	{
 		super(createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
@@ -146,6 +184,12 @@ public class CubeCollider extends Collider
 	{
 		CubeCollider collider = new CubeCollider(entity.getBoundingBox());
 		return this.collidesWith(collider);
+	}
+	
+	@Override
+	public CubeCollider clone()
+	{
+		return new CubeCollider(this.outerAABB, this.modelVertices, this.modelNormals);
 	}
 
 	@Override

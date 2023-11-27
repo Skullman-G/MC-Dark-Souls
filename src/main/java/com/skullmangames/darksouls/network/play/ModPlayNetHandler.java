@@ -6,42 +6,46 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 
-public interface ModPlayNetHandler
+public class ModPlayNetHandler
 {
-	void setTitle(Component text, int fadein, int stay, int fadeout);
+	public void setTitle(Component text, int fadein, int stay, int fadeout) {}
+
+	public void setOverlayMessage(Component text) {}
+
+	public void openBonfireNameScreen(BlockPos blockPos) {}
+
+	public void openBonfireScreen(BlockPos blockPos) {}
+
+	public void tryPlayBonfireAmbientSound(BlockPos blockPos) {}
+
+	public void removeBonfireAmbientSound(BlockPos blockPos) {}
+
+	public void openFireKeeperScreen(int entityId) {}
+
+	public void openJoinCovenantScreen(Covenant covenant) {}
+
+	public void openCovenantScreen(Covenant covenant) {}
+
+	public void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports) {}
+
+	public void shakeCam(Vec3 source, int duration, float magnitude) {}
+
+	public void shakeCamForEntity(Entity entity, int duration, float magnitude) {}
+
+	public void playEntitySound(Entity entity, SoundEvent sound, float volume) {}
+
+	public void playSound(Entity entity, SoundEvent sound, float volume) {}
+
+	public void bonfireKindleEffect(BlockPos pos) {}
+
+	public void makeImpactParticles(Entity entity, Vec3 impactPos, boolean blocked) {}
 	
-	void setOverlayMessage(Component text);
-	
-	void openBonfireNameScreen(BlockPos blockPos);
-	
-	void openBonfireScreen(BlockPos blockPos);
-	
-	void tryPlayBonfireAmbientSound(BlockPos blockPos);
-	
-	void removeBonfireAmbientSound(BlockPos blockPos);
-	
-	void openFireKeeperScreen(int entityId);
-	
-	void openJoinCovenantScreen(Covenant covenant);
-	
-	void openCovenantScreen(Covenant covenant);
-	
-	void openBonfireTeleportScreen(BlockPos blockPos, List<Pair<String, BlockPos>> teleports);
-	
-	void shakeCam(Vec3 source, int duration, float magnitude);
-	
-	void shakeCamForEntity(Entity entity, int duration, float magnitude);
-	
-	void playEntitySound(Entity entity, SoundEvent sound, float volume);
-	
-	void playSound(Entity entity, SoundEvent sound, float volume);
-	
-	void bonfireKindleEffect(BlockPos pos);
-	
-	void makeImpactParticles(int entityId, Vec3 impactPos, boolean blocked);
+	public void spawnParticlesCircle(RegistryObject<SimpleParticleType> particle, Vec3 pos, float radius) {}
 }

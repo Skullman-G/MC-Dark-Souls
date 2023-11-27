@@ -26,8 +26,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.ModParticles;
-import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
@@ -56,7 +54,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class LivingCap<T extends LivingEntity> extends EntityCapability<T>
@@ -228,29 +225,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		if (this.isClientSide())
 		{
-			AABB bb = this.orgEntity.getBoundingBox();
-			double x = this.getX() + MathUtils.clamp(impactPos.x - this.getX(), bb.getXsize() / 3);
-			double y = this.getY() + MathUtils.clamp(impactPos.y - this.getY(), bb.getYsize() / 3);
-			double z = this.getZ() + MathUtils.clamp(impactPos.z - this.getZ(), bb.getZsize() / 3);
-			
-			if (blocked)
-			{
-				for (int i = 0; i < 10; i++)
-				{
-					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.25F * this.orgEntity.getRandom().nextDouble();
-					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.25F * this.orgEntity.getRandom().nextDouble();
-					this.getLevel().addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * this.orgEntity.getRandom().nextDouble(), zd);
-				}
-			}
-			else
-			{
-				for (int i = 0; i < 20; i++)
-				{
-					double xd = MathUtils.dir(impactPos.x - this.getX()) * 0.5F * this.orgEntity.getRandom().nextDouble();
-					double zd = MathUtils.dir(impactPos.z - this.getZ()) * 0.5F * this.orgEntity.getRandom().nextDouble();
-					this.getLevel().addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
-				}
-			}
+			ModNetworkManager.connection.makeImpactParticles(this.orgEntity, impactPos, blocked);
 		}
 		else
 		{
@@ -815,14 +790,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (cap == null)
 			return null;
 		return cap.getHitSound();
-	}
-
-	public SoundEvent getSwingSound(InteractionHand hand)
-	{
-		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		if (cap == null)
-			return ModSoundEvents.FIST_SWING.get();
-		return cap.getSwingSound();
 	}
 
 	public Collider getColliderMatching(InteractionHand hand)

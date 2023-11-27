@@ -58,7 +58,7 @@ public class ModNetworkManager
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DarkSouls.MOD_ID, "network_manager"),
 			() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public static ModPlayNetHandler connection;
+	public static ModPlayNetHandler connection = new ModPlayNetHandler();
 
 	public static <MSG> void sendToServer(MSG message)
 	{

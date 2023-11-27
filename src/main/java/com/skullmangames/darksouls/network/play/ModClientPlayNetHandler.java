@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.network.play;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import com.mojang.datafixers.util.Pair;
@@ -15,22 +16,25 @@ import com.skullmangames.darksouls.client.gui.screens.JoinCovenantScreen;
 import com.skullmangames.darksouls.client.sound.BonfireAmbientSoundInstance;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
-import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModParticles;
+import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.RegistryObject;
 
 @OnlyIn(Dist.CLIENT)
-public class ModClientPlayNetHandler implements ModPlayNetHandler
+public class ModClientPlayNetHandler extends ModPlayNetHandler
 {
 	private final Minecraft minecraft;
 	
@@ -150,13 +154,46 @@ public class ModClientPlayNetHandler implements ModPlayNetHandler
 	}
 
 	@Override
-	public void makeImpactParticles(int entityId, Vec3 impactPos, boolean blocked)
+	public void makeImpactParticles(Entity entity, Vec3 impactPos, boolean blocked)
 	{
-		Entity entity = this.minecraft.level.getEntity(entityId);
-		LivingCap<?> cap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (cap != null)
+		Random random = this.minecraft.level.random;
+		AABB bb = entity.getBoundingBox();
+		double x = entity.getX() + MathUtils.clamp(impactPos.x - entity.getX(), bb.getXsize() / 3);
+		double y = entity.getY() + MathUtils.clamp(impactPos.y - entity.getY(), bb.getYsize() / 3);
+		double z = entity.getZ() + MathUtils.clamp(impactPos.z - entity.getZ(), bb.getZsize() / 3);
+		
+		if (blocked)
 		{
-			cap.makeImpactParticles(impactPos, blocked);
+			for (int i = 0; i < 10; i++)
+			{
+				double xd = MathUtils.dir(impactPos.x - entity.getX()) * 0.25F * random.nextDouble();
+				double zd = MathUtils.dir(impactPos.z - entity.getZ()) * 0.25F * random.nextDouble();
+				entity.level.addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * random.nextDouble(), zd);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 20; i++)
+			{
+				double xd = MathUtils.dir(impactPos.x - entity.getX()) * 0.5F * random.nextDouble();
+				double zd = MathUtils.dir(impactPos.z - entity.getZ()) * 0.5F * random.nextDouble();
+				entity.level.addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+			}
+		}
+	}
+	
+	@Override
+	public void spawnParticlesCircle(RegistryObject<SimpleParticleType> particle, Vec3 pos, float radius)
+	{
+		SimpleParticleType p = particle.get();
+		
+		for (int i = 0; i < 360; i++)
+		{
+			if (i % 40 == 0)
+			{
+				double a = Math.toRadians(i);
+				this.minecraft.level.addParticle(p, pos.x, pos.y, pos.z, Math.sin(a) * radius, 0, Math.cos(a) * radius);
+			}
 		}
 	}
 }
