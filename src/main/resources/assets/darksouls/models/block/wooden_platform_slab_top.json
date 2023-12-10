@@ -1,9 +1,8 @@
 {
 	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
 	"textures": {
-		"0": "darksouls:blocks/wooden_platform",
-		"particle": "darksouls:blocks/wooden_platform"
+		"0": "block/stripped_oak_log",
+		"particle": "block/stripped_oak_log"
 	},
 	"elements": [
 		{

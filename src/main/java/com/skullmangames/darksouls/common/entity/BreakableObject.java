@@ -19,6 +19,7 @@ public abstract class BreakableObject extends Entity
 	public BreakableObject(EntityType<? extends BreakableObject> type, Level level)
 	{
 		super(type, level);
+		this.blocksBuilding = true;
 	}
 	
 	@Override

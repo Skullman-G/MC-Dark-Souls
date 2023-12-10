@@ -1,8 +1,6 @@
 package com.skullmangames.darksouls.client.input;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -22,6 +20,8 @@ import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.network.client.CTSTwoHanding;
 import com.skullmangames.darksouls.client.ClientManager;
+import com.skullmangames.darksouls.client.gui.screens.DSEquipmentScreen;
+import com.skullmangames.darksouls.client.gui.screens.DSSelectMenuScreen;
 import com.skullmangames.darksouls.client.gui.screens.PlayerStatsScreen;
 
 import net.minecraft.client.CameraType;
@@ -54,6 +54,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class InputManager
 {
 	private final Map<KeyMapping, BiConsumer<Integer, Integer>> keyFunctionMap;
+	private final Map<KeyMapping, BiConsumer<Integer, Integer>> guiKeyFunctionMap;
 	private LocalPlayer player;
 	private LocalPlayerCap playerCap;
 	private KeyBindingMap keyHash;
@@ -67,7 +68,6 @@ public class InputManager
 	private double tracingMouseX;
 	private double tracingMouseY;
 	private AttackType reservedAttack;
-	public final List<InputConstants.Key> pressedKeyOverride = new LinkedList<>();
 	
 	public static final IKeyConflictContext WALK_CONFLICT = new IKeyConflictContext()
 	{
@@ -76,7 +76,7 @@ public class InputManager
 		{
 			return true;
 		}
-
+		
 		@Override
 		public boolean conflicts(IKeyConflictContext other)
 		{
@@ -84,13 +84,13 @@ public class InputManager
 		}
 	};
 	
-	
 	public InputManager()
 	{
 		Events.inputManager = this;
 		this.minecraft = Minecraft.getInstance();
 		this.options = this.minecraft.options;
 		this.keyFunctionMap = new HashMap<KeyMapping, BiConsumer<Integer, Integer>>();
+		this.guiKeyFunctionMap = new HashMap<KeyMapping, BiConsumer<Integer, Integer>>();
 		
 		this.keyFunctionMap.put(this.options.keyAttack, this::onAttackKeyPressed);
 		this.keyFunctionMap.put(this.options.keySwapOffhand, this::onSwapHandKeyPressed);
@@ -105,13 +105,25 @@ public class InputManager
 		this.keyFunctionMap.put(ModKeys.TWO_HANDING, this::onTwoHanding);
 		this.keyFunctionMap.put(ModKeys.PERFORM_SKILL, this::onPerformSkill);
 		
+		this.guiKeyFunctionMap.put(this.options.keyUp, this::walk);
+		this.guiKeyFunctionMap.put(this.options.keyDown, this::walk);
+		this.guiKeyFunctionMap.put(this.options.keyLeft, this::walk);
+		this.guiKeyFunctionMap.put(this.options.keyRight, this::walk);
+		
+		this.minecraft.options.keyUp.setKeyConflictContext(InputManager.WALK_CONFLICT);
+		this.minecraft.options.keyDown.setKeyConflictContext(InputManager.WALK_CONFLICT);
+		this.minecraft.options.keyLeft.setKeyConflictContext(InputManager.WALK_CONFLICT);
+		this.minecraft.options.keyRight.setKeyConflictContext(InputManager.WALK_CONFLICT);
+		
 		try
 		{
 			this.keyHash = (KeyBindingMap)ObfuscationReflectionHelper.findField(KeyMapping.class, "f_90810_").get(null);
-		} catch (IllegalArgumentException e)
+		}
+		catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
-		} catch (IllegalAccessException e)
+		}
+		catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -159,6 +171,15 @@ public class InputManager
 				&& this.player.getVehicle() == null
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	private void walk(int key, int action)
+	{
+		if (this.minecraft.screen instanceof DSEquipmentScreen || this.minecraft.screen instanceof DSSelectMenuScreen)
+		{
+			InputConstants.Key k = InputConstants.Type.KEYSYM.getOrCreate(key);
+			KeyMapping.set(k, action > 0);
+		}
 	}
 	
 	private void onPerformSkill(int key, int action)
@@ -279,15 +300,6 @@ public class InputManager
 	public void tick()
 	{
 		if (this.playerCap == null) return;
-		
-		if (!this.pressedKeyOverride.isEmpty())
-		{
-			for (InputConstants.Key key : this.pressedKeyOverride)
-			{
-				KeyMapping.set(key, true);
-			}
-			this.pressedKeyOverride.clear();
-		}
 
 		EntityState playerState = this.playerCap.getEntityState();
 		
@@ -496,14 +508,18 @@ public class InputManager
 		@SubscribeEvent
 		public static void onKeyboardInput(KeyInputEvent event)
 		{
-			if (minecraft.player != null && minecraft.screen == null)
+			if (minecraft.player != null)
 			{
 				InputConstants.Key input = InputConstants.Type.KEYSYM.getOrCreate(event.getKey());
 				for (KeyMapping keybinding : inputManager.keyHash.lookupAll(input))
 				{
-					if(inputManager.keyFunctionMap.containsKey(keybinding))
+					if (minecraft.screen == null && inputManager.keyFunctionMap.containsKey(keybinding))
 					{
 						inputManager.keyFunctionMap.get(keybinding).accept(event.getKey(), event.getAction());
+					}
+					else if (inputManager.guiKeyFunctionMap.containsKey(keybinding))
+					{
+						inputManager.guiKeyFunctionMap.get(keybinding).accept(event.getKey(), event.getAction());
 					}
 				}
 			}

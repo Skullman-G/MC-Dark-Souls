@@ -81,9 +81,28 @@ public abstract class Collider
 		return this.vertices[6];
 	}
 	
+	public Vec3 top()
+	{
+		Vec3 from = this.vertices[1];
+		Vec3 to = this.vertices[3];
+		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
+	}
+	
+	public Vec3 bottom()
+	{
+		Vec3 from = this.vertices[5];
+		Vec3 to = this.vertices[7];
+		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
+	}
+	
 	public abstract boolean collidesWith(Collider other);
 	
 	public void update(LivingCap<?> entityCap, String jointName, float partialTicks)
+	{
+		this.update(entityCap, jointName, partialTicks, false);
+	}
+	
+	public void update(LivingCap<?> entityCap, String jointName, float partialTicks, boolean safe)
 	{
 		ModMatrix4f transformMatrix;
 		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
@@ -93,6 +112,8 @@ public abstract class Collider
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
 		
 		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks));
+		
+		if (safe) entityCap.lastColTransform = transformMatrix;
 		
 		this.transform(transformMatrix);
 	}

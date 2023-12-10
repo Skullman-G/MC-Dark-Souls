@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class HealthBarIndicator extends AdditionalEntityRenderer
 {
-	private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/additional/health_bar_indicator.png");
+	private static final ResourceLocation TEXTURE_LOCATION = DarkSouls.rl("textures/entities/additional/health_bar_indicator.png");
 	private static final RenderType RENDER_TYPE = ModRenderTypes.getEntityIndicator(TEXTURE_LOCATION);
 	
 	private final Map<Integer, HealthInfo> healthInfoMap = new HashMap<>();

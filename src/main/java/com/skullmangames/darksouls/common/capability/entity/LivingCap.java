@@ -64,6 +64,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public final List<Entity> currentlyAttackedEntities = new ArrayList<>();
 	public Collider weaponCollider;
+	public ModMatrix4f lastColTransform;
 	
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());

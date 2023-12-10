@@ -82,7 +82,10 @@ public class ModRenderTypes extends RenderType
 		RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-				.setDepthTestState(LEQUAL_DEPTH_TEST).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setCullState(NO_CULL)
+				.setLightmapState(LIGHTMAP)
+				.setOverlayState(OVERLAY)
 				.setShaderState(RENDERTYPE_ENTITY_CUTOUT_SHADER)
 				.setLayeringState(VIEW_OFFSET_Z_LAYERING).createCompositeState(true);
 
@@ -116,6 +119,19 @@ public class ModRenderTypes extends RenderType
 		
 		return create(DarkSouls.MOD_ID + ":effect_entity", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, state);
 	}
+	
+	public static RenderType getWeaponTrail(ResourceLocation locationIn)
+	{
+		RenderType.CompositeState state = RenderType.CompositeState.builder()
+				.setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false))
+				.setShaderState(POSITION_TEX_SHADER)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+				.createCompositeState(false);
+		
+		return create(DarkSouls.MOD_ID + ":sword_trail", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.TRIANGLES, 256, false, false, state);
+	} 
 
 	public static RenderType getBoundingBox()
 	{

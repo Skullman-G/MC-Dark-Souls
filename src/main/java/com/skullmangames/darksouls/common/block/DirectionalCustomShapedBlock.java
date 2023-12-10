@@ -52,7 +52,6 @@ public class DirectionalCustomShapedBlock extends HorizontalDirectionalBlock
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context)
 	{
-		if (context.getLevel().isEmptyBlock(context.getClickedPos().below())) return null;
 		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
 	}
 	

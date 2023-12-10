@@ -10,7 +10,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.InputManager;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.Shield;
@@ -19,8 +18,6 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -37,7 +34,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.settings.KeyConflictContext;
 
 @OnlyIn(Dist.CLIENT)
 public class DSEquipmentScreen extends Screen
@@ -77,13 +73,6 @@ public class DSEquipmentScreen extends Screen
 		this.playerCap = ClientManager.INSTANCE.getPlayerCap();
 		this.player = this.playerCap.getOriginalEntity();
 		this.invItems.addAll(this.player.inventoryMenu.slots);
-		
-		Minecraft minecraft = Minecraft.getInstance();
-		List<InputConstants.Key> keyOverrides = ClientManager.INSTANCE.inputManager.pressedKeyOverride;
-		if (minecraft.options.keyUp.isDown()) keyOverrides.add(minecraft.options.keyUp.getKey());
-		if (minecraft.options.keyDown.isDown()) keyOverrides.add(minecraft.options.keyDown.getKey());
-		if (minecraft.options.keyLeft.isDown()) keyOverrides.add(minecraft.options.keyLeft.getKey());
-		if (minecraft.options.keyRight.isDown()) keyOverrides.add(minecraft.options.keyRight.getKey());
 	}
 	
 	@Override
@@ -202,10 +191,6 @@ public class DSEquipmentScreen extends Screen
 		}
 		
 		ClientManager.INSTANCE.mainCamera.forceShoulderSurf(true);
-		this.minecraft.options.keyUp.setKeyConflictContext(InputManager.WALK_CONFLICT);
-		this.minecraft.options.keyLeft.setKeyConflictContext(InputManager.WALK_CONFLICT);
-		this.minecraft.options.keyDown.setKeyConflictContext(InputManager.WALK_CONFLICT);
-		this.minecraft.options.keyRight.setKeyConflictContext(InputManager.WALK_CONFLICT);
 	}
 	
 	private void openSelectTab(Button btn)
@@ -241,7 +226,9 @@ public class DSEquipmentScreen extends Screen
 				if (!freeSlot.hasItem())
 				{
 					freeSlot.set(this.selected.getItem());
+					freeSlot.setChanged();
 					this.selected.set(ItemStack.EMPTY);
+					this.selected.setChanged();
 					break;
 				}
 			}
@@ -250,7 +237,9 @@ public class DSEquipmentScreen extends Screen
 		{
 			ItemStack itemStack = this.selected.getItem();
 			this.selected.set(slot.getItem());
+			this.selected.setChanged();
 			slot.set(itemStack);
+			slot.setChanged();
 		}
 		this.player.inventoryMenu.broadcastChanges();
 		for (ImageButton b : this.itemButtons) b.visible = false;
@@ -445,10 +434,6 @@ public class DSEquipmentScreen extends Screen
 	{
 		super.onClose();
 		ClientManager.INSTANCE.mainCamera.forceShoulderSurf(false);
-		this.minecraft.options.keyUp.setKeyConflictContext(KeyConflictContext.IN_GAME);
-		this.minecraft.options.keyLeft.setKeyConflictContext(KeyConflictContext.IN_GAME);
-		this.minecraft.options.keyDown.setKeyConflictContext(KeyConflictContext.IN_GAME);
-		this.minecraft.options.keyRight.setKeyConflictContext(KeyConflictContext.IN_GAME);
 	}
 	
 	public boolean isPauseScreen()
@@ -487,29 +472,6 @@ public class DSEquipmentScreen extends Screen
 			this.onClose();
 			return true;
 		}
-		else if (this.minecraft.options.keyUp.getKey() == key
-				|| this.minecraft.options.keyDown.getKey() == key
-				|| this.minecraft.options.keyLeft.getKey() == key
-				|| this.minecraft.options.keyRight.getKey() == key)
-		{
-			KeyMapping.set(key, true);
-			return true;
-		}
 		else return super.keyPressed(p_96552_, p_96553_, p_96554_);
-	}
-	
-	@Override
-	public boolean keyReleased(int p_94715_, int p_94716_, int p_94717_)
-	{
-		InputConstants.Key key = InputConstants.getKey(p_94715_, p_94716_);
-		if (this.minecraft.options.keyUp.getKey() == key
-				|| this.minecraft.options.keyDown.getKey() == key
-				|| this.minecraft.options.keyLeft.getKey() == key
-				|| this.minecraft.options.keyRight.getKey() == key)
-		{
-			KeyMapping.set(key, false);
-			return true;
-		}
-		else return super.keyReleased(p_94715_, p_94716_, p_94717_);
 	}
 }

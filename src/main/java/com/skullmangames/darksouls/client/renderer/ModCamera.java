@@ -12,6 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class ModCamera extends Camera
@@ -46,14 +48,16 @@ public class ModCamera extends Camera
 	    		float xRot = this.getPivotXRot(partialTick);
 	    		float yRot = this.getPivotYRot(partialTick);
 	    		this.setRotation(xRot, yRot);
-	    		this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
+	    		Vec3 vo = this.getCorrectedPos(this.xo, this.yo, this.zo);
+	    		this.move(-vo.x, vo.y, vo.z);
 	    		
 	    		if (this.anim >= 1 && this.zo != 2.5D) this.anim = 0;
 	    		this.updatePosO(3.0D, 0.25D, 2.5D, partialTick);
 	    	}
 	    	else if (ClientManager.INSTANCE.getPlayerCap().shouldShoulderSurf())
 	    	{
-	    		this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
+	    		Vec3 vo = this.getCorrectedPos(this.xo, this.yo, this.zo);
+	    		this.move(-vo.x, vo.y, vo.z);
 	    		
 	    		this.pivotRotOld.y = entity.xRotO;
 	    		this.pivotRotOld.x = entity.yRotO;
@@ -72,7 +76,8 @@ public class ModCamera extends Camera
 	    		float xRot = this.getPivotXRot(partialTick);
 	    		float yRot = this.getPivotYRot(partialTick);
 	    		this.setRotation(xRot, yRot);
-		    	this.move(-this.getMaxZoom(this.xo), this.yo, this.zo);
+	    		Vec3 vo = this.getCorrectedPos(this.xo, this.yo, this.zo);
+	    		this.move(-vo.x, vo.y, vo.z);
 		    	
 		    	entity.xRotO = 0;
 		    	entity.xRot = 0;
@@ -100,6 +105,40 @@ public class ModCamera extends Camera
 	    	this.move(0, y, 0);
 	    	this.shakeDuration--;
 	    }
+	}
+	
+	public Vec3 getCorrectedPos(double x, double y, double z)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			float f = (float) ((i & 1) * 2 - 1);
+			float f1 = (float) ((i >> 1 & 1) * 2 - 1);
+			float f2 = (float) ((i >> 2 & 1) * 2 - 1);
+			f *= 0.1F;
+			f1 *= 0.1F;
+			f2 *= 0.1F;
+			Vec3 vec3 = this.getPosition().add((double) f, (double) f1 + y, (double) f2 + z);
+			Vec3 vec31 = new Vec3(this.getPosition().x - (double) this.getLookVector().x() * x + (double) f + (double) f2,
+					this.getPosition().y - (double) this.getLookVector().y() * x + (double) f1 + y,
+					this.getPosition().z - (double) this.getLookVector().z() * x + (double) f2 + z);
+			HitResult hitresult = this.level
+					.clip(new ClipContext(vec3, vec31, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, this.entity));
+			if (hitresult.getType() != HitResult.Type.MISS)
+			{
+				double d0 = hitresult.getLocation().distanceTo(this.getPosition());
+				if (d0 < x)
+				{
+					x = d0;
+				}
+			}
+		}
+		
+		if (x < 0.75D)
+		{
+			y = Math.max(0, (x / 0.75D) * y);
+		}
+
+		return new Vec3(x, y, z);
 	}
 	
 	public void forceShoulderSurf(boolean value)

@@ -132,8 +132,14 @@ public class AttackAnimation extends ActionAnimation
 
 			Collider collider = this.getCollider(entityCap, elapsedTime);
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-			Vec3 prevColPos = collider.getMassCenter();
-			collider.update(entityCap, phase.getColliderJointName(), 1.0F);
+			Vec3 prevColPos = null;
+			if (entityCap.lastColTransform != null)
+			{
+				collider.transform(entityCap.lastColTransform);
+				prevColPos = collider.getMassCenter();
+			}
+			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
+			if (entityCap.lastColTransform == null) prevColPos = collider.getMassCenter();
 			List<Entity> shields = collider.getShieldCollisions(entity);
 			List<Entity> entities = collider.getEntityCollisions(entity);
 			entities.removeIf((e) -> shields.contains(e));
@@ -242,7 +248,7 @@ public class AttackAnimation extends ActionAnimation
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
-		for (Phase phase : this.phases) phase.smashed = false;
+		entityCap.lastColTransform = null;
 	}
 
 	@Override
@@ -363,7 +369,6 @@ public class AttackAnimation extends ActionAnimation
 		protected final String jointName;
 		protected final InteractionHand hand;
 		protected Collider collider;
-		protected boolean smashed = false;
 
 		public Phase(float antic, float preDelay, float contact, float recovery, String jointName)
 		{

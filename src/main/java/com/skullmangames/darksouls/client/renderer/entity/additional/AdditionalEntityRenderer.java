@@ -25,15 +25,16 @@ public abstract class AdditionalEntityRenderer extends GuiComponent
 	{
 		new HealthBarIndicator();
 		new TargetIndicator();
+		new WeaponTrailRenderer();
 	}
 	
-	public void drawTextured2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
+	public void drawTextured2DPlane(Matrix4f matrix, VertexConsumer vertexBuilder,
 			float minX, float minY, float maxX, float maxY, float minTexU, float minTexV, float maxTexU, float maxTexV)
     {
 		this.drawTextured3DPlane(matrix, vertexBuilder, minX, minY, this.getBlitOffset(), maxX, maxY, this.getBlitOffset(), minTexU, minTexV, maxTexU, maxTexV);
     }
 	
-	public void drawTextured3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder, 
+	public void drawTextured3DPlane(Matrix4f matrix, VertexConsumer vertexBuilder,
 			float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float minU, float minV, float maxU, float maxV)
     {
         float cor = 0.00390625F;
