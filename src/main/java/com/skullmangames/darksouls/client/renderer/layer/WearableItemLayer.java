@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.client.renderer.layer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -35,11 +38,12 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		this.slot = slotType;
 	}
 	
-	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model, float r, float g, float b, float a, ResourceLocation armorResource, ModMatrix4f[] poses)
+	private void renderArmor(PoseStack matStack, MultiBufferSource buf, int packedLight, boolean hasEffect, ClientModel model,
+			float r, float g, float b, float a, ResourceLocation armorResource, ModMatrix4f[] poses)
 	{
 		RenderType rt = ModRenderTypes.getAnimatedArmorModel(armorResource);
 		VertexConsumer vertexConsumer = ModRenderTypes.getArmorVertexBuilder(buf, rt, hasEffect);
-		model.draw(matStack, vertexConsumer, packedLight, r, g, b, a, poses);
+		model.draw(matStack, vertexConsumer, packedLight, r, g, b, a, poses, new HashSet<>());
 	}
 	
 	@Override
@@ -55,9 +59,8 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 			poseStack.translate(0.0D, 0.1D, 0.0D);
 		}
 		
-		if (item instanceof ArmorItem)
+		if (item instanceof ArmorItem armorItem)
 		{
-			ArmorItem armorItem = (ArmorItem) stack.getItem();
 			ClientModel model = ClientManager.INSTANCE.renderEngine.getArmorModel(armorItem);
 			
 			boolean hasEffect = stack.isEnchanted();
@@ -110,5 +113,17 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingCap<E>> e
 		}
 
 		return resourcelocation;
+	}
+	
+	@Override
+	public Set<Integer> getJointMask(LivingCap<?> entityCap)
+	{
+		LivingEntity entity = entityCap.getOriginalEntity();
+		Item item = entity.getItemBySlot(this.slot).getItem();
+		if (item instanceof ArmorItem armorItem)
+		{
+			return ClientManager.INSTANCE.renderEngine.getArmorJointMask(armorItem);
+		}
+		return new HashSet<>();
 	}
 }

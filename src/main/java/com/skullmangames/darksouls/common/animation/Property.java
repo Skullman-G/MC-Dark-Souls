@@ -46,6 +46,7 @@ public abstract class Property<T>
 		public static final AttackProperty<Integer> STAMINA_USAGE = new AttackProperty<Integer>();
 		public static final AttackProperty<Integer> STAMINA_DAMAGE = new AttackProperty<Integer>();
 		public static final AttackProperty<Integer> POISE_DAMAGE = new AttackProperty<Integer>();
+		public static final AttackProperty<Boolean> DEPENDS_ON_WEAPON = new AttackProperty<Boolean>();
 
 		public static final AttackProperty<Supplier<SoundEvent>> HIT_SOUND = new AttackProperty<Supplier<SoundEvent>>();
 

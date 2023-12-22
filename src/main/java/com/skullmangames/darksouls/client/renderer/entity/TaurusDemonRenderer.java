@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TaurusDemonRenderer extends ArmatureRenderer<TaurusDemon, TaurusDemonCap>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/taurus_demon.png");
+	private static final ResourceLocation TEXTURE = DarkSouls.rl("textures/entities/taurus_demon.png");
 	
 	public TaurusDemonRenderer()
 	{
-		this.layers.add(new HeldItemLayer<>(TaurusDemonCap.getWeaponScale(), new Vector3d(0.0D, 0.35D, 0.0D)));
+		this.layers.add(new HeldItemLayer<>(TaurusDemonCap.WEAPON_SCALE, new Vector3d(0.0D, 0.35D, 0.0D)));
 	}
 	
 	@Override

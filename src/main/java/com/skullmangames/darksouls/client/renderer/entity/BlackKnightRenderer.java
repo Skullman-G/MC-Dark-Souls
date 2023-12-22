@@ -22,11 +22,10 @@ public class BlackKnightRenderer extends BipedRenderer<BlackKnight, BlackKnightC
 	}
 	
 	@Override
-	protected void applyRotations(PoseStack matStack, Armature armature, BlackKnightCap entityCap, float partialTicks)
+	protected void applyRotations(PoseStack poseStack, Armature armature, BlackKnightCap entityCap, float partialTicks)
 	{
 		float scale = 1.2F;
-		matStack.scale(scale, scale, scale);
-		super.applyRotations(matStack, armature, entityCap, partialTicks);
-		this.transformJoint(2, armature, entityCap.getHeadMatrix(partialTicks));
+		poseStack.scale(scale, scale, scale);
+		super.applyRotations(poseStack, armature, entityCap, partialTicks);
 	}
 }

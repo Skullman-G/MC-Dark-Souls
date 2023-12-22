@@ -126,7 +126,7 @@ public class TransformSheet
 			ModMatrix4f rotator = ModMatrix4f.createRotatorDeg(pitchDeg, new Vector3f(1.0F, 0.0F, 0.0F))
 					.mulFront(ModMatrix4f.createRotatorDeg(yawDeg, new Vector3f(0.0F, 1.0F, 0.0F)));
 			Vector3f toNewKeyTransform = Vector3fHelper.add(modifiedLine,
-					ModMatrix4f.transform3v(rotator, animOnLine, null));
+					ModMatrix4f.transform3v(rotator, animOnLine));
 			keyTransform = Vector3fHelper.add(modifiedStart, toNewKeyTransform);
 		}
 	}

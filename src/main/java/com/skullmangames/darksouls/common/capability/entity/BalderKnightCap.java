@@ -104,7 +104,7 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	@Override
 	public ShieldHoldType getShieldHoldType()
 	{
-		if (this.orgEntity.getOffhandItem().is(ModItems.BUCKLER.get())) return ShieldHoldType.HORIZONTAL;
-		return ShieldHoldType.VERTICAL_REVERSE;
+		return this.orgEntity.getOffhandItem().is(ModItems.BUCKLER.get()) ? ShieldHoldType.HORIZONTAL
+		: ShieldHoldType.VERTICAL_REVERSE;
 	}
 }

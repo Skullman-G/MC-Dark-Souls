@@ -1,19 +1,24 @@
 package com.skullmangames.darksouls.client.renderer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
+import com.skullmangames.darksouls.client.renderer.layer.Layer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
 import com.skullmangames.darksouls.common.animation.types.AimingAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.Vec4f;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -31,10 +36,10 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 	public FirstPersonRenderer()
 	{
 		super();
-		layers.add(new HeldItemLayer<>());
-		layers.add(new WearableItemLayer<>(EquipmentSlot.CHEST));
-		layers.add(new WearableItemLayer<>(EquipmentSlot.LEGS));
-		layers.add(new WearableItemLayer<>(EquipmentSlot.FEET));
+		this.layers.add(new HeldItemLayer<>());
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.CHEST));
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.LEGS));
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.FEET));
 	}
 	
 	@Override
@@ -53,8 +58,8 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		ModMatrix4f[] poses = armature.getJointTransforms();
 		
 		poseStack.pushPose();
-		Vector4f headPos = new Vector4f(0, player.getEyeHeight(), 0, 1.0F);
-		ModMatrix4f.transform(poses[9], headPos, headPos);
+		Vec4f headPos = new Vec4f(0, player.getEyeHeight(), 0, 1.0F);
+		headPos = poses[9].transform(headPos);
 		float pitch = camera.getXRot();
 		
 		boolean flag1 = entityCap.getClientAnimator().baseLayer.animationPlayer.getPlay() instanceof ActionAnimation;
@@ -70,11 +75,11 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		}
 		
 		float zCoord = flag1 ? 0 : poses[0].m32;
-		float posZ = Math.min(headPos.z() - zCoord, 0);
+		float posZ = Math.min(headPos.z - zCoord, 0);
 		
-		if (headPos.z() > poses[0].m32)
+		if (headPos.z > poses[0].m32)
 		{
-			posZ += (poses[0].m32 - headPos.z());
+			posZ += (poses[0].m32 - headPos.z);
 		}
 		
 		if (!flag2)
@@ -85,8 +90,12 @@ public class FirstPersonRenderer extends ArmatureRenderer<LocalPlayer, LocalPlay
 		float interpolation = pitch > 0.0F ? pitch / 90.0F : 0.0F;
 		poseStack.translate(x, y - 0.1D - (0.2D * (flag2 ? 0.8D : interpolation)), z + 0.1D + (0.7D * (flag2 ? 0.0D : interpolation)) - posZ);
 		
-		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(poseStack, buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
-				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses);
+		Set<Integer> jointMask = new HashSet<>();
+		for (Layer<?, ?> layer : this.layers) jointMask.addAll(layer.getJointMask(entityCap));
+		
+		ClientModels.CLIENT.ENTITY_BIPED_FIRST_PERSON.draw(poseStack,
+				buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation())),
+				packedLightIn, 1.0F, 1.0F, 1.0F, 1.0F, poses, jointMask);
 		
 		if(!player.isSpectator())
 		{

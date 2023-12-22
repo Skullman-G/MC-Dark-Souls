@@ -1,4 +1,63 @@
 {
+	"entity.berenike_knight.ambient":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/ambient_1",
+			"darksouls:entities/berenike_knight/ambient_2"
+		]
+	},
+	
+	"entity.berenike_knight.fall_big":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/fall_big"
+		]
+	},
+	
+	"entity.berenike_knight.fall_small":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/fall_small"
+		]
+	},
+	
+	"entity.berenike_knight.damage":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/damage_1",
+			"darksouls:entities/berenike_knight/damage_2",
+			"darksouls:entities/berenike_knight/damage_3"
+		]
+	},
+	
+	"entity.berenike_knight.death":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/death_1",
+			"darksouls:entities/berenike_knight/death_2",
+			"darksouls:entities/berenike_knight/death_3"
+		]
+	},
+	
+	"entity.berenike_knight.foot":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/berenike_knight/foot"
+		]
+	},
+	
 	"entity.generic.bomb":
 	{
 		"category": "entity",

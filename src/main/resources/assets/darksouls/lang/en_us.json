@@ -97,6 +97,9 @@
 	"item.darksouls.burnt_shirt": "Burnt Shirt",
 	"item.darksouls.burnt_trousers": "Burnt Trousers",
 	"item.darksouls.fang_boar_helm": "Fang Boar Helm",
+	"item.darksouls.berenike_helm": "Berenike Helm",
+	"item.darksouls.berenike_armor": "Berenike Armor",
+	"item.darksouls.berenike_leggings": "Berenike Leggings",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -135,6 +138,7 @@
 	"entity.darksouls.taurus_demon": "Taurus Demon",
 	"entity.darksouls.breakable_barrel": "Breakable Barrel",
 	"entity.darksouls.balder_knight": "Balder Knight",
+	"entity.darksouls.berenike_knight": "Berenike Knight",
 	"entity.darksouls.firebomb": "Firebomb",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
@@ -257,6 +261,9 @@
 	"tooltip.darksouls.burnt_shirt.extended": "A shirt that was worn by a hollow. It seems to be greatly damaged by fire.",
 	"tooltip.darksouls.burnt_trousers.extended": "Trousers that were worn by a hollow. They seem to be greatly damaged by fire.",
 	"tooltip.darksouls.fang_boar_helm.extended": "Severed head of the fully-armored Fang Boar taken by the one who killed it as proof of his victory, just as the Gods once did with the head of the ancient dragon. Can be worn on the head as a surprisingly sound piece of protective gear.",
+	"tooltip.darksouls.berenike_helm.extended": "Helm of the Knights of Berenike, known for their heavy armaments and armor. Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
+	"tooltip.darksouls.berenike_armor.extended": "Armor of the Knights of Berenike, known for their heavy armaments and armor. Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
+	"tooltip.darksouls.berenike_leggings.extended": "Leggings of the Knights of Berenike, known for their heavy armaments and armor Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

@@ -1,11 +1,14 @@
 package com.skullmangames.darksouls.client.renderer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.item.AimHelperRenderer;
@@ -18,6 +21,7 @@ import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.ArmorStandRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.BerenikeKnightRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.BlackKnightRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HollowRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.StrayDemonRenderer;
@@ -94,7 +98,7 @@ public class RenderEngine
 	private final Map<EntityType<?>, ArmatureRenderer<?, ?>> entityRendererMap;
 	private final Map<Item, RenderItemBase> itemRendererMapByInstance;
 	private final Map<Class<? extends Item>, RenderItemBase> itemRendererMapByClass;
-	private final Map<Item, Function<ClientModels, ClientModel>> armorModelMap;
+	private final Map<Item, Pair<Function<ClientModels, ClientModel>, Set<Integer>>> armorModelMap;
 	private final FirstPersonRenderer firstPersonRenderer;
 	private final PlayerGuiRenderer playerGuiRenderer;
 	private boolean aiming;
@@ -141,6 +145,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.BLACK_KNIGHT.get(), new BlackKnightRenderer());
 		this.entityRendererMap.put(ModEntities.TAURUS_DEMON.get(), new TaurusDemonRenderer());
 		this.entityRendererMap.put(ModEntities.BALDER_KNIGHT.get(), new SimpleHumanoidRenderer<BalderKnight, BalderKnightCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
+		this.entityRendererMap.put(ModEntities.BERENIKE_KNIGHT.get(), new BerenikeKnightRenderer());
 		
 		// Init Item Renderers
 		RenderBow bowRenderer = new RenderBow();
@@ -172,27 +177,37 @@ public class RenderEngine
 		this.itemRendererMapByClass.put(TridentItem.class, tridentRenderer);
 		
 		// Init Armor Models
-		this.armorModelMap.put(ModItems.BLOOD_STAINED_SKIRT.get(), (models) -> models.ITEM_SKIRT);
-		this.armorModelMap.put(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
-		this.armorModelMap.put(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
-		this.armorModelMap.put(ModItems.LORDRAN_WARRIOR_BOOTS.get(), (models) -> models.ITEM_ONE_SHOE);
-		this.armorModelMap.put(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT);
-		this.armorModelMap.put(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM);
-		this.armorModelMap.put(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR);
-		this.armorModelMap.put(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM);
-		this.armorModelMap.put(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR);
-		this.armorModelMap.put(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS);
-		this.armorModelMap.put(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM);
-		this.armorModelMap.put(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR);
-		this.armorModelMap.put(ModItems.BALDER_LEGGINGS.get(), (models) -> models.BALDER_LEGGINGS);
-		this.armorModelMap.put(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS);
-		this.armorModelMap.put(ModItems.FANG_BOAR_HELM.get(), (models) -> models.FANG_BOAR_HELM);
+		this.putArmorModel(ModItems.BLOOD_STAINED_SKIRT.get(), (models) -> models.ITEM_SKIRT);
+		this.putArmorModel(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
+		this.putArmorModel(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), (models) -> models.ITEM_SKIRT);
+		this.putArmorModel(ModItems.LORDRAN_WARRIOR_BOOTS.get(), (models) -> models.ITEM_ONE_SHOE);
+		this.putArmorModel(ModItems.ELITE_CLERIC_LEGGINGS.get(), (models) -> models.ITEM_SKIRT);
+		this.putArmorModel(ModItems.FALCONER_HELM.get(), (models) -> models.ITEM_FALCONER_HELM);
+		this.putArmorModel(ModItems.FALCONER_ARMOR.get(), (models) -> models.ITEM_FALCONER_ARMOR);
+		this.putArmorModel(ModItems.BLACK_KNIGHT_HELM.get(), (models) -> models.BLACK_KNIGHT_HELM, 9);
+		this.putArmorModel(ModItems.BLACK_KNIGHT_ARMOR.get(), (models) -> models.BLACK_KNIGHT_ARMOR, 7, 8, 11, 12, 16, 17);
+		this.putArmorModel(ModItems.BLACK_KNIGHT_LEGGINGS.get(), (models) -> models.BLACK_KNIGHT_LEGGINGS, 1, 2, 4, 5);
+		this.putArmorModel(ModItems.BALDER_HELM.get(), (models) -> models.BALDER_HELM);
+		this.putArmorModel(ModItems.BALDER_ARMOR.get(), (models) -> models.BALDER_ARMOR);
+		this.putArmorModel(ModItems.BALDER_LEGGINGS.get(), (models) -> models.BALDER_LEGGINGS);
+		this.putArmorModel(ModItems.BALDER_BOOTS.get(), (models) -> models.BALDER_BOOTS);
+		this.putArmorModel(ModItems.FANG_BOAR_HELM.get(), (models) -> models.FANG_BOAR_HELM);
+		this.putArmorModel(ModItems.BERENIKE_HELM.get(), (models) -> models.BERENIKE_HELM);
+		this.putArmorModel(ModItems.BERENIKE_ARMOR.get(), (models) -> models.BERENIKE_ARMOR, 7, 8, 11, 12, 16, 17);
+		this.putArmorModel(ModItems.BERENIKE_LEGGINGS.get(), (models) -> models.BERENIKE_LEGGINGS, 1, 2, 4, 5);
+	}
+	
+	private void putArmorModel(Item item, Function<ClientModels, ClientModel> model, int... jointMask)
+	{
+		Set<Integer> maskSet = new HashSet<>();
+		for (int j : jointMask) maskSet.add(j);
+		this.armorModelMap.put(item, new Pair<>(model, maskSet));
 	}
 	
 	public ClientModel getArmorModel(ArmorItem armor)
 	{
 		ClientModels models = ClientModels.CLIENT;
-		ClientModel model = this.armorModelMap.getOrDefault(armor, (m) -> null).apply(models);
+		ClientModel model = this.armorModelMap.getOrDefault(armor, new Pair<>((m) -> null, null)).getFirst().apply(models);
 		if (model == null)
 		{
 			switch (armor.getSlot())
@@ -216,6 +231,11 @@ public class RenderEngine
 			}
 		}
 		return model;
+	}
+	
+	public Set<Integer> getArmorJointMask(ArmorItem armor)
+	{
+		return this.armorModelMap.getOrDefault(armor, new Pair<>(null, new HashSet<>())).getSecond();
 	}
 	
 	public RenderItemBase getItemRenderer(Item item)

@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.client.renderer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,6 +12,7 @@ import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.client.renderer.entity.model.ClientModel;
 import com.skullmangames.darksouls.client.renderer.layer.HeldItemLayer;
+import com.skullmangames.darksouls.client.renderer.layer.Layer;
 import com.skullmangames.darksouls.client.renderer.layer.WearableItemLayer;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
@@ -25,11 +29,11 @@ public class PlayerGuiRenderer extends ArmatureRenderer<LocalPlayer, LocalPlayer
 	public PlayerGuiRenderer()
 	{
 		super();
-		layers.add(new HeldItemLayer<>());
-		layers.add(new WearableItemLayer<>(EquipmentSlot.HEAD));
-		layers.add(new WearableItemLayer<>(EquipmentSlot.CHEST));
-		layers.add(new WearableItemLayer<>(EquipmentSlot.LEGS));
-		layers.add(new WearableItemLayer<>(EquipmentSlot.FEET));
+		this.layers.add(new HeldItemLayer<>());
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.HEAD));
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.CHEST));
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.LEGS));
+		this.layers.add(new WearableItemLayer<>(EquipmentSlot.FEET));
 	}
 	
 	@Override
@@ -46,7 +50,12 @@ public class PlayerGuiRenderer extends ArmatureRenderer<LocalPlayer, LocalPlayer
 		ModMatrix4f.scaleStack(poseStack1, new ModMatrix4f(poseStack.last().pose()));
 		poseStack1.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.getAnimatedModel(entityCap.getOriginalEntity().getSkinTextureLocation()));
-		ClientModels.CLIENT.ENTITY_BIPED.draw(poseStack1, vc, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses);
+		
+		Set<Integer> jointMask = new HashSet<>();
+		for (Layer<?, ?> layer : this.layers) jointMask.addAll(layer.getJointMask(entityCap));
+		
+		ClientModels.CLIENT.ENTITY_BIPED.draw(poseStack1, vc, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses, jointMask);
+		
 		this.renderLayer(entityCap, poses, buffer, poseStack1, packedLight, partialTicks);
 	}
 	

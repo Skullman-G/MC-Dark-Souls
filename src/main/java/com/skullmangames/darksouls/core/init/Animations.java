@@ -378,6 +378,21 @@ public final class Animations
 	public static AttackAnimation BALDER_KNIGHT_RAPIER_HA;
 	public static AttackAnimation BALDER_KNIGHT_RAPIER_DA;
 	
+	// Berenike Knight
+	public static StaticAnimation BERENIKE_KNIGHT_IDLE;
+	public static StaticAnimation BERENIKE_KNIGHT_WALK;
+	public static StaticAnimation BERENIKE_KNIGHT_RUN;
+	public static StaticAnimation BERENIKE_KNIGHT_BLOCK;
+	
+	public static AttackAnimation[] BERENIKE_KNIGHT_SWORD_LA;
+	public static AttackAnimation[] BERENIKE_KNIGHT_SWORD_HA;
+	public static AttackAnimation BERENIKE_KNIGHT_SWORD_DA;
+	
+	public static AttackAnimation[] BERENIKE_KNIGHT_MACE_LA;
+	public static AttackAnimation BERENIKE_KNIGHT_MACE_HA;
+	
+	public static AttackAnimation BERENIKE_KNIGHT_KICK;
+	
 	// Black Knight
 	public static StaticAnimation BLACK_KNIGHT_IDLE;
 	public static StaticAnimation BLACK_KNIGHT_WALK;
@@ -1947,7 +1962,7 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 30)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.28F, 0.48F, 1.4F, "Tool_R",
+		HAMMER_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.28F, 0.6F, 1.4F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_heavy_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.32F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
@@ -1957,7 +1972,7 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 50)
 				.addProperty(AttackProperty.POISE_DAMAGE, 36)
 				.register(builder);
-		HAMMER_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.3F, 0.0F, 0.24F, 0.48F, 1.2F, "Tool_R",
+		HAMMER_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.3F, 0.0F, 0.24F, 0.6F, 1.2F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_light_attack"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.28F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
@@ -1966,7 +1981,7 @@ public final class Animations
 				.addProperty(AttackProperty.STAMINA_USAGE, 25)
 				.addProperty(AttackProperty.POISE_DAMAGE, 23)
 				.register(builder);
-		HAMMER_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.24F, 0.48F, 1.6F, "Tool_R",
+		HAMMER_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("hammer_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.24F, 0.6F, 1.6F, "Tool_R",
 				DarkSouls.rl("biped/combat/hammer_th_la"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[] { Event.create(0.2F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.AXE_SWING.get())) })
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
@@ -2903,10 +2918,161 @@ public final class Animations
 				.register(builder);
 		
 		
+		// Berenike Knight
+		BERENIKE_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("berenike_knight_idle"), 0.3F, true,
+				DarkSouls.rl("berenike_knight/idle"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		BERENIKE_KNIGHT_SWORD_LA = new AttackAnimation[]
+				{
+					new AttackAnimation(DarkSouls.rl("berenike_knight_sword_la_1"), AttackType.LIGHT, 0.2F, 0.0F, 1.04F, 1.5F, 2.4F, "Tool_R",
+							DarkSouls.rl("berenike_knight/sword_la_1"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(1.04F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.SWORD_SWING.get())),
+										Event.create(1.08F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(2.36F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get()))
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
+							.addProperty(AttackProperty.POISE_DAMAGE, 32)
+							.register(builder),
+					new AttackAnimation(DarkSouls.rl("berenike_knight_sword_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.32F, 0.7F, 1.6F, "Tool_R",
+							DarkSouls.rl("berenike_knight/sword_la_2"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(0.2F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(0.32F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.SWORD_SWING.get())),
+										Event.create(1.56F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get()))
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
+							.addProperty(AttackProperty.POISE_DAMAGE, 32)
+							.register(builder)
+				};
+		BERENIKE_KNIGHT_SWORD_HA = new AttackAnimation[]
+				{
+					new AttackAnimation(DarkSouls.rl("berenike_knight_sword_ha_1"), AttackType.HEAVY, 0.2F, 0.0F, 1.48F, 1.8F, 2.8F, "Tool_R",
+							DarkSouls.rl("berenike_knight/sword_ha_1"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(1.4F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.SWORD_THRUST.get())),
+										Event.create(1.56F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(2.64F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										SmashEvent.BIG_MONSTER_HAMMER_SWING.create(1.8F)
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 85)
+							.addProperty(AttackProperty.POISE_DAMAGE, 38)
+							.register(builder),
+					new AttackAnimation(DarkSouls.rl("berenike_knight_sword_ha_2"), AttackType.HEAVY, 0.2F, 0.0F, 1.24F, 1.7F, 2.4F, "Tool_R",
+							DarkSouls.rl("berenike_knight/sword_ha_2"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(1.24F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.SWORD_SWING.get())),
+										Event.create(1.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(2.36F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										SmashEvent.BIG_MONSTER_HAMMER_SWING.create(1.7F)
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 85)
+							.addProperty(AttackProperty.POISE_DAMAGE, 38)
+							.register(builder)
+				};
+		BERENIKE_KNIGHT_SWORD_DA = new AttackAnimation(DarkSouls.rl("berenike_knight_sword_da"), AttackType.DASH, 0.05F, 0.0F, 0.88F, 1.3F, 2.8F, "Tool_R",
+				DarkSouls.rl("berenike_knight/sword_da"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.16F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+						Event.create(0.56F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+						Event.create(0.64F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.SWORD_SWING.get())),
+						Event.create(0.86F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+						Event.create(2.76F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+						SmashEvent.BIG_MONSTER_HAMMER.create(1.3F)
+				})
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 79)
+				.addProperty(AttackProperty.POISE_DAMAGE, 35)
+				.register(builder);
+		
+		BERENIKE_KNIGHT_MACE_LA = new AttackAnimation[]
+				{
+					new AttackAnimation(DarkSouls.rl("berenike_knight_mace_la_1"), AttackType.LIGHT, 0.2F, 0.0F, 1.24F, 1.7F, 2.4F, "Tool_R",
+							DarkSouls.rl("berenike_knight/mace_la_1"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(0.52F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(1.24F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+										Event.create(1.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(2.36F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										SmashEvent.BIG_MONSTER_HAMMER.create(1.5F)
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
+							.addProperty(AttackProperty.POISE_DAMAGE, 32)
+							.register(builder),
+					new AttackAnimation(DarkSouls.rl("berenike_knight_mace_la_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.6F, 0.76F, 2F, "Tool_R",
+							DarkSouls.rl("berenike_knight/mace_la_2"), (models) -> models.ENTITY_BIPED)
+							.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+								{
+										Event.create(0.6F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+										Event.create(0.62F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										Event.create(1.96F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+										SmashEvent.BIG_MONSTER_HAMMER.create(0.72F)
+								})
+							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+							.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+							.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
+							.addProperty(AttackProperty.POISE_DAMAGE, 32)
+							.register(builder)
+				};
+		BERENIKE_KNIGHT_MACE_HA = new AttackAnimation(DarkSouls.rl("berenike_knight_mace_ha"), AttackType.HEAVY, 0.2F, 0.0F, 1.24F, 1.7F, 2.8F, "Tool_R",
+				DarkSouls.rl("berenike_knight/mace_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(1.24F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+							Event.create(1.28F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+							Event.create(2.76F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get())),
+							SmashEvent.BIG_MONSTER_HAMMER.create(1.7F)
+					})
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 85)
+				.addProperty(AttackProperty.POISE_DAMAGE, 38)
+				.register(builder);
+		
+		BERENIKE_KNIGHT_KICK = new AttackAnimation(DarkSouls.rl("berenike_knight_kick"), AttackType.HEAVY, 0.2F, 0.0F, 0.56F, 0.9F, 1.6F,
+				Colliders.FIST, "Leg_L", DarkSouls.rl("berenike_knight/kick"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+					{
+							Event.create(0.56F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+							Event.create(1.56F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BERENIKE_KNIGHT_FOOT.get()))
+					})
+				.addProperty(AttackProperty.DEPENDS_ON_WEAPON, false)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, Integer.MAX_VALUE)
+				.addProperty(AttackProperty.POISE_DAMAGE, 38)
+				.register(builder);
+		
+		
 		// Black Knight
 		BLACK_KNIGHT_IDLE = new StaticAnimation(DarkSouls.rl("black_knight_idle"), 0.3F, true, DarkSouls.rl("black_knight/idle"), (models) -> models.ENTITY_BIPED)
 				.register(builder);
-		
 		BLACK_KNIGHT_WALK = new StaticAnimation(DarkSouls.rl("black_knight_walking"), 0.1F, true, DarkSouls.rl("black_knight/walking"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
@@ -2914,7 +3080,6 @@ public final class Animations
 								Event.create(0.8F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get()))
 						})
 				.register(builder);
-		
 		BLACK_KNIGHT_RUN = new StaticAnimation(DarkSouls.rl("black_knight_running"), 0.1F, true, DarkSouls.rl("black_knight/running"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
@@ -2922,14 +3087,12 @@ public final class Animations
 								Event.create(0.5F, Side.CLIENT, (cap) -> cap.playSound(ModSoundEvents.BLACK_KNIGHT_FOOT.get()))
 						})
 				.register(builder);
-		
 		BLACK_KNIGHT_BLOCK = new AdaptableAnimation.Builder(DarkSouls.rl("black_knight_block"), 0.2F, true, (models) -> models.ENTITY_BIPED)
 				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("black_knight/block"), false)
 				.addEntry(LivingMotion.WALKING, DarkSouls.rl("black_knight/block_walk"), true)
 				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("black_knight/block_run"), true)
 				.build()
 				.register(builder);
-		
 		BLACK_KNIGHT_DEATH = new DeathAnimation(DarkSouls.rl("black_knight_death"), 0.1F, DarkSouls.rl("black_knight/death"), (models) -> models.ENTITY_BIPED)
 				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
 						{
@@ -2950,6 +3113,7 @@ public final class Animations
 								})
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),
@@ -2963,6 +3127,7 @@ public final class Animations
 								})
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),
@@ -3007,6 +3172,7 @@ public final class Animations
 								})
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),
@@ -3020,6 +3186,7 @@ public final class Animations
 								})
 							.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 							.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
+							.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 							.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 							.addProperty(AttackProperty.POISE_DAMAGE, 23)
 							.register(builder),

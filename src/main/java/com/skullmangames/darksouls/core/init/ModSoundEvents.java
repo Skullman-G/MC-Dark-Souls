@@ -77,6 +77,13 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_FOOT = register("entity.balder_knight.foot");
 	public static final RegistryObject<SoundEvent> BALDER_KNIGHT_AMBIENT = register("entity.balder_knight.ambient");
 	
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_FOOT = register("entity.berenike_knight.foot");
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_DAMAGE = register("entity.berenike_knight.damage");
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_FALL_BIG = register("entity.berenike_knight.fall_big");
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_FALL_SMALL = register("entity.berenike_knight.fall_small");
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_DEATH = register("entity.berenike_knight.death");
+	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_AMBIENT = register("entity.berenike_knight.ambient");
+	
 	public static final RegistryObject<SoundEvent> BOMB_EXPLOSION = register("entity.generic.bomb");
 
 	

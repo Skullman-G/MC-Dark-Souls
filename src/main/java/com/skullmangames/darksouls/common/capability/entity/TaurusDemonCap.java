@@ -15,6 +15,8 @@ import net.minecraft.world.InteractionHand;
 
 public class TaurusDemonCap extends MobCap<TaurusDemon>
 {
+	public static final float WEAPON_SCALE = 1.3F;
+	
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
 	{
@@ -28,9 +30,10 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
-	public static float getWeaponScale()
+	@Override
+	public float getWeaponScale()
 	{
-		return 1.3F;
+		return WEAPON_SCALE;
 	}
 	
 	@Override

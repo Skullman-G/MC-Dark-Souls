@@ -18,7 +18,7 @@ public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonC
 	
 	public StrayDemonRenderer()
 	{
-		this.layers.add(new HeldItemLayer<>(StrayDemonCap.getWeaponScale(), new Vector3d(0.0D, 0.0D, 0.0D)));
+		this.layers.add(new HeldItemLayer<>(StrayDemonCap.WEAPON_SCALE, new Vector3d(0.0D, 0.0D, 0.0D)));
 	}
 	
 	@Override

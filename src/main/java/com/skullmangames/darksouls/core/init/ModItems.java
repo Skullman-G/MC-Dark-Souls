@@ -227,6 +227,13 @@ public class ModItems
 	public static final RegistryObject<Item> FANG_BOAR_HELM = ITEMS.register("fang_boar_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "fang_boar_helm", new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> BERENIKE_HELM = ITEMS.register("berenike_helm", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.HEAD, "berenike_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BERENIKE_ARMOR = ITEMS.register("berenike_armor", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.CHEST, "berenike_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BERENIKE_LEGGINGS = ITEMS.register("berenike_leggings", () -> new ModArmorItem(ArmorMaterials.IRON, EquipmentSlot.LEGS, "berenike_set", new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	//Throwable
 	public static final RegistryObject<Item> SNOWBALL = VANILLA_ITEMS.register("snowball", () -> new Item(new Item.Properties()
 			.stacksTo(16)

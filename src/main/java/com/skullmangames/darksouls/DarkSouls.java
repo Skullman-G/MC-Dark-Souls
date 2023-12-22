@@ -220,6 +220,7 @@ public class DarkSouls
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.STONE_BRICK_WINDOW.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.MOSS_WALL.get(), RenderType.cutout());
 
+		// Vanilla Entity Renderers
 		EntityRenderers.register(ModEntities.FIRE_KEEPER.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.HOLLOW_LORDRAN_WARRIOR.get(), VanillaHumanoidRenderer::new);
@@ -238,6 +239,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.TAURUS_DEMON.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.BREAKABLE_BARREL.get(), BreakableBarrelRenderer::new);
 		EntityRenderers.register(ModEntities.BALDER_KNIGHT.get(), VanillaHumanoidRenderer::new);
+		EntityRenderers.register(ModEntities.BERENIKE_KNIGHT.get(), (ctx) -> new VanillaHumanoidRenderer<>(ctx, 1F));
 		EntityRenderers.register(ModEntities.FIREBOMB.get(), FirebombRenderer::new);
 
 		ModItems.registerDescriptionItems();

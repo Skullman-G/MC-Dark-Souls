@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.capability.entity.BerenikeKnightCap;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.capability.entity.TaurusDemonCap;
 import com.skullmangames.darksouls.core.util.physics.Collider;
@@ -34,11 +35,15 @@ public class Colliders
 	public static final Collider MACE = register("mace", new CubeCollider(-0.2F, -0.1F, -1.1F, 0.2F, 0.35F, -0.45F));
 	
 	//Stray Demon
-	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.getWeaponScale());
+	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.WEAPON_SCALE);
 	public static final Collider STRAY_DEMON_BODY = new CubeCollider(-2F, -2F, -2F, 2F, 2F, 2F);
 	
 	//Taurus Demon
-	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.getWeaponScale());
+	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.WEAPON_SCALE);
+	
+	//Berenike Knight
+	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = ULTRA_GREATSWORD.getScaledCollider(BerenikeKnightCap.WEAPON_SCALE);
+	public static final Collider BERENIKE_KNIGHT_MACE = MACE.getScaledCollider(BerenikeKnightCap.WEAPON_SCALE);
 	
 	private static Collider register(String name, Collider collider)
 	{

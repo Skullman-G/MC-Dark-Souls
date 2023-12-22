@@ -1,10 +1,10 @@
 package com.skullmangames.darksouls.core.util.parser.xml.collada;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.google.common.collect.Lists;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
@@ -81,12 +81,12 @@ public class VertexData
 	
 	public static Mesh loadVertexInformation(List<VertexData> vertices, int[] indices, boolean animated)
 	{
-		List<Float> positions = Lists.<Float>newArrayList();
-		List<Float> normals = Lists.<Float>newArrayList();
-		List<Float> texCoords = Lists.<Float>newArrayList();
-		List<Integer> jointIndices = Lists.<Integer>newArrayList();
-		List<Float> jointWeights = Lists.<Float>newArrayList();
-		List<Integer> effectJointCount = Lists.<Integer>newArrayList();
+		List<Float> positions = new ArrayList<>();
+		List<Float> normals = new ArrayList<>();
+		List<Float> texCoords = new ArrayList<>();
+		List<Integer> jointIndices = new ArrayList<>();
+		List<Float> jointWeights = new ArrayList<>();
+		List<Integer> effectJointCount = new ArrayList<>();
 		
 		for (int i = 0; i < vertices.size(); i++)
 		{

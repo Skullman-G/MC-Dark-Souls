@@ -361,6 +361,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		return 0;
 	}
+	
+	public float getWeaponScale()
+	{
+		return 1.0F;
+	}
 
 	public ItemCapability getHeldItemCapability(InteractionHand hand)
 	{
@@ -709,15 +714,16 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		float scaleY = 1.0F;
 		float scaleZ = 1.0F;
 
-		if (orgEntity.getControllingPassenger() instanceof LivingEntity)
+		if (this.orgEntity.getControllingPassenger() instanceof LivingEntity)
 		{
-			LivingEntity ridingEntity = (LivingEntity) orgEntity.getControllingPassenger();
+			LivingEntity ridingEntity = (LivingEntity)this.orgEntity.getControllingPassenger();
 			prevRotYaw = ridingEntity.yBodyRotO;
 			rotyaw = ridingEntity.yBodyRot;
-		} else
+		}
+		else
 		{
-			prevRotYaw = (this.isInaction() ? orgEntity.yRot : orgEntity.yBodyRotO);
-			rotyaw = (this.isInaction() ? orgEntity.yRot : orgEntity.yBodyRot);
+			prevRotYaw = (this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO);
+			rotyaw = (this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRot);
 		}
 
 		if (this.orgEntity.isBaby())
@@ -727,8 +733,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			scaleZ *= 0.5F;
 		}
 
-		return ModMatrix4f.createModelMatrix((float) orgEntity.xOld, (float) orgEntity.getX(),
-				(float) orgEntity.yOld, (float) orgEntity.getY(), (float) orgEntity.zOld, (float) orgEntity.getZ(), 0,
+		return ModMatrix4f.createModelMatrix((float)this.orgEntity.xOld, (float)this.orgEntity.getX(),
+				(float)this.orgEntity.yOld, (float)this.orgEntity.getY(), (float)this.orgEntity.zOld, (float)this.orgEntity.getZ(), 0,
 				0, prevRotYaw, rotyaw, partialTicks, scaleX, scaleY, scaleZ);
 	}
 

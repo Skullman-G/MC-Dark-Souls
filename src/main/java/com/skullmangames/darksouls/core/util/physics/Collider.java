@@ -111,7 +111,8 @@ public abstract class Collider
 		if (pathIndex == -1) transformMatrix = new ModMatrix4f();
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
 		
-		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks));
+		float weaponScale = entityCap.getWeaponScale();
+		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks).scale(weaponScale, weaponScale, weaponScale));
 		
 		if (safe) entityCap.lastColTransform = transformMatrix;
 		

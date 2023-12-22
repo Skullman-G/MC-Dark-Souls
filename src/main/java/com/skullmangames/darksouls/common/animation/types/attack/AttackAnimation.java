@@ -139,7 +139,7 @@ public class AttackAnimation extends ActionAnimation
 				prevColPos = collider.getMassCenter();
 			}
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
-			if (entityCap.lastColTransform == null) prevColPos = collider.getMassCenter();
+			if (prevColPos == null) prevColPos = collider.getMassCenter();
 			List<Entity> shields = collider.getShieldCollisions(entity);
 			List<Entity> entities = collider.getEntityCollisions(entity);
 			entities.removeIf((e) -> shields.contains(e));
@@ -311,12 +311,20 @@ public class AttackAnimation extends ActionAnimation
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
-		DamageType movDamageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
-		damages.replace(CoreDamageType.PHYSICAL, movDamageType);
+		Set<AuxEffect> auxEffects = new HashSet<>();
+		
+		if (phase.getProperty(AttackProperty.DEPENDS_ON_WEAPON).orElse(true))
+		{
+			DamageType movDamageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
+			damages.replace(CoreDamageType.PHYSICAL, movDamageType);
+			WeaponCap weapon = entityCap.getHeldWeaponCap(phase.hand);
+			auxEffects = weapon == null ? new HashSet<>() : weapon.getAuxEffects();
+		}
+		else damages.mul(0);
+		
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
-		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
-		WeaponCap weapon = entityCap.getHeldWeaponCap(phase.hand);
-		Set<AuxEffect> auxEffects = weapon == null ? new HashSet<>() : weapon.getAuxEffects();
+		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(0);
+		
 		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflection(phase), poiseDamage, damages).addAuxEffects(auxEffects);
 	}
 

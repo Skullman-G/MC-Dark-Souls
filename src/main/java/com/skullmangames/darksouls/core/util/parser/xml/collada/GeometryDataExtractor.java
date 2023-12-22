@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.Vec4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
 
@@ -44,9 +44,9 @@ public class GeometryDataExtractor
 		String[] polyList = getPolyList(geometryNode);
 		for(int i = 0; i < rawPositionData.length; i+=3)
 		{
-			Vector4f original = new Vector4f(Float.parseFloat(rawPositionData[i]), Float.parseFloat(rawPositionData[i+1]), Float.parseFloat(rawPositionData[i+2]), 1);
-			ModMatrix4f.transform(CORRECTION, original, original);
-			Vector3f corrected = new Vector3f(original.x(), original.y(), original.z());
+			Vec4f original = new Vec4f(Float.parseFloat(rawPositionData[i]), Float.parseFloat(rawPositionData[i+1]), Float.parseFloat(rawPositionData[i+2]), 1);
+			original = CORRECTION.transform(original);
+			Vector3f corrected = new Vector3f(original.x, original.y, original.z);
 			vertices.get(i/3).setPosition(corrected);
 		}
 		
@@ -64,9 +64,9 @@ public class GeometryDataExtractor
 			float coordY = Float.parseFloat(rawTextureCoordData[textureIndex*2 + 1]);
 			
 			Vector2f textureCoord = new Vector2f(coordX, (1-coordY));
-			Vector4f normal = new Vector4f(normX, normY, normZ, 1.0f);
-			ModMatrix4f.transform(CORRECTION, normal, normal);
-			Vector3f normalCorrected = new Vector3f(normal.x(), normal.y(), normal.z());
+			Vec4f normal = new Vec4f(normX, normY, normZ, 1.0f);
+			normal = CORRECTION.transform(normal);
+			Vector3f normalCorrected = new Vector3f(normal.x, normal.y, normal.z);
 			VertexData vertex = vertices.get(positionIndex);
 			
 			switch(vertex.compareTextureCoordinateAndNormal(normalCorrected, textureCoord))

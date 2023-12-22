@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.client.renderer.layer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3d;
 import com.skullmangames.darksouls.client.ClientManager;
@@ -63,5 +66,11 @@ public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> exten
 			}
 		}
 		poseStack.popPose();
+	}
+	
+	@Override
+	public Set<Integer> getJointMask(LivingCap<?> entityCap)
+	{
+		return new HashSet<>();
 	}
 }

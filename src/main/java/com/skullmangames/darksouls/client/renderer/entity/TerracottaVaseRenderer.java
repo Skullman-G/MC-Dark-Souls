@@ -43,7 +43,7 @@ public class TerracottaVaseRenderer extends EntityRenderer<TerracottaVase>
 		poseStack.pushPose();
 		float scale = 0.9F;
 		poseStack.scale(scale, scale, scale);
-		model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses);
+		model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, poses, null);
 		poseStack.popPose();
 	}
 }

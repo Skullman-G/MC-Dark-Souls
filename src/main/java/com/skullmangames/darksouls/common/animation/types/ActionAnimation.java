@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -19,6 +18,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
+import com.skullmangames.darksouls.core.util.math.vector.Vec4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
@@ -154,14 +154,14 @@ public class ActionAnimation extends ImmovableAnimation
 		ModMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
 				.searchJointByName("Root").getLocalTransform().removeTranslation();
 		ModMatrix4f toOrigin = ModMatrix4f.invert(toRootTransformApplied, null);
-		Vector3f worldPosition = ModMatrix4f.transform3v(toRootTransformApplied, rootPosition, null);
+		Vector3f worldPosition = ModMatrix4f.transform3v(toRootTransformApplied, rootPosition);
 		worldPosition.setX(0.0F);
 		worldPosition.setY(
 				(this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false) && worldPosition.y() > 0.0F)
 						? 0.0F
 						: worldPosition.y());
 		worldPosition.setZ(0.0F);
-		ModMatrix4f.transform3v(toOrigin, worldPosition, worldPosition);
+		worldPosition = ModMatrix4f.transform3v(toOrigin, worldPosition);
 		rootPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
 	}
 
@@ -213,8 +213,8 @@ public class ActionAnimation extends ImmovableAnimation
 			JointTransform jt = rootTransforms.getInterpolatedTransform(player.getElapsedTime());
 			JointTransform prevJt = rootTransforms.getInterpolatedTransform(player.getPrevElapsedTime());
 			
-			Vector4f currentpos = new Vector4f(jt.translation().x(), jt.translation().y(), jt.translation().z(), 1.0F);
-			Vector4f prevpos = new Vector4f(prevJt.translation().x(), prevJt.translation().y(), prevJt.translation().z(), 1.0F);
+			Vec4f currentpos = new Vec4f(jt.translation().x(), jt.translation().y(), jt.translation().z(), 1.0F);
+			Vec4f prevpos = new Vec4f(prevJt.translation().x(), prevJt.translation().y(), prevJt.translation().z(), 1.0F);
 			ModMatrix4f rotationTransform = entityCap.getModelMatrix(1.0F).removeTranslation();
 			ModMatrix4f localTransform = entityCap.getEntityModel(Models.SERVER).getArmature().searchJointByName("Root").getLocalTransform().removeTranslation();
 			rotationTransform.mulBack(localTransform);
@@ -222,13 +222,13 @@ public class ActionAnimation extends ImmovableAnimation
 			prevpos = rotationTransform.transform(prevpos);
 			boolean hasNoGravity = entityCap.getOriginalEntity().isNoGravity();
 			boolean moveVertical = this.getProperty(ActionAnimationProperty.MOVE_VERTICAL).orElse(false);
-			float dx = prevpos.x() - currentpos.x();
-			float dy = (moveVertical || hasNoGravity) ? currentpos.y() - prevpos.y() : 0.0F;
-			float dz = prevpos.z() - currentpos.z();
+			float dx = prevpos.x - currentpos.x;
+			float dy = (moveVertical || hasNoGravity) ? currentpos.y - prevpos.y : 0.0F;
+			float dz = prevpos.z - currentpos.z;
 			dx = Math.abs(dx) > 0.0000001F ? dx : 0.0F;
 			dz = Math.abs(dz) > 0.0000001F ? dz : 0.0F;
 
-			if (moveVertical && currentpos.y() > 0.0F && !hasNoGravity)
+			if (moveVertical && currentpos.y > 0.0F && !hasNoGravity)
 			{
 				Vec3 motion = livingentity.getDeltaMovement();
 				livingentity.setDeltaMovement(motion.x, motion.y <= 0 ? (motion.y + 0.08D) : motion.y, motion.z);

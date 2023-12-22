@@ -6,7 +6,6 @@ import org.lwjgl.BufferUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 
 import net.minecraft.world.phys.Vec3;
@@ -154,14 +153,9 @@ public class ModMatrix4f
 		return this;
 	}
 
-	public Vector4f transform(Vector4f right)
+	public Vec4f transform(Vec4f right)
 	{
 		return transform(this, right);
-	}
-
-	public static Vector4f transform(ModMatrix4f left, Vector4f right)
-	{
-		return transform(left, right, new Vector4f());
 	}
 	
 	public static Vec3 transform(ModMatrix4f matrix, Vec3 src)
@@ -173,22 +167,14 @@ public class ModMatrix4f
 		return new Vec3(x, y ,z);
 	}
 
-	public static Vector4f transform(ModMatrix4f left, Vector4f right, Vector4f dest)
+	public static Vec4f transform(ModMatrix4f left, Vec4f right)
 	{
-		if (dest == null)
-			dest = new Vector4f();
+		float x = left.m00 * right.x + left.m10 * right.y + left.m20 * right.z + left.m30 * right.w;
+		float y = left.m01 * right.x + left.m11 * right.y + left.m21 * right.z + left.m31 * right.w;
+		float z = left.m02 * right.x + left.m12 * right.y + left.m22 * right.z + left.m32 * right.w;
+		float w = left.m03 * right.x + left.m13 * right.y + left.m23 * right.z + left.m33 * right.w;
 
-		float x = left.m00 * right.x() + left.m10 * right.y() + left.m20 * right.z() + left.m30 * right.w();
-		float y = left.m01 * right.x() + left.m11 * right.y() + left.m21 * right.z() + left.m31 * right.w();
-		float z = left.m02 * right.x() + left.m12 * right.y() + left.m22 * right.z() + left.m32 * right.w();
-		float w = left.m03 * right.x() + left.m13 * right.y() + left.m23 * right.z() + left.m33 * right.w();
-
-		dest.setX(x);
-		dest.setY(y);
-		dest.setZ(z);
-		dest.setW(w);
-
-		return dest;
+		return new Vec4f(x, y, z, w);
 	}
 
 	public ModMatrix4f scale(Vector3f vec)
@@ -493,15 +479,10 @@ public class ModMatrix4f
 		return new ModMatrix4f().rotate((float)Math.toRadians(angle), axis);
 	}
 
-	public static Vector3f transform3v(ModMatrix4f matrix, Vector3f src, Vector3f dest)
+	public static Vector3f transform3v(ModMatrix4f matrix, Vector3f src)
 	{
-		if (dest == null)
-			dest = new Vector3f();
-
-		Vector4f result = transform(matrix, new Vector4f(src.x(), src.y(), src.z(), 1.0F), null);
-		dest.set(result.x(), result.y(), result.z());
-
-		return dest;
+		Vec4f v = transform(matrix, new Vec4f(src.x(), src.y(), src.z(), 1.0F));
+		return new Vector3f(v.x, v.y, v.z);
 	}
 
 	private static Vector3f getScaleFromMatrix(ModMatrix4f mat)

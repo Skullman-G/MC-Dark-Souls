@@ -20,6 +20,8 @@ import net.minecraft.world.InteractionHand;
 
 public class StrayDemonCap extends MobCap<StrayDemon>
 {
+	public static final float WEAPON_SCALE = 2.5F;
+	
 	@Override
 	protected void initAttributes()
 	{
@@ -45,9 +47,10 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
-	public static float getWeaponScale()
+	@Override
+	public float getWeaponScale()
 	{
-		return 2.5F;
+		return WEAPON_SCALE;
 	}
 	
 	@Override
@@ -61,7 +64,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public int getSoulReward()
 	{
-		return 100;
+		return 1000;
 	}
 	
 	@Override

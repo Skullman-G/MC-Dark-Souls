@@ -36,6 +36,9 @@ public class ClientModels extends Models<ClientModel>
 	public final ClientModel BALDER_LEGGINGS;
 	public final ClientModel BALDER_BOOTS;
 	public final ClientModel FANG_BOAR_HELM;
+	public final ClientModel BERENIKE_HELM;
+	public final ClientModel BERENIKE_ARMOR;
+	public final ClientModel BERENIKE_LEGGINGS;
 	
 	public final ClientModel TERRACOTTA_VASE;
 	public final ClientModel BREAKABLE_BARREL;
@@ -68,6 +71,9 @@ public class ClientModels extends Models<ClientModel>
 		this.BALDER_LEGGINGS = this.registerMeshOnly("balder_leggings");
 		this.BALDER_BOOTS = this.registerMeshOnly("balder_boots");
 		this.FANG_BOAR_HELM = this.registerMeshOnly("fang_boar_helm");
+		this.BERENIKE_HELM = this.registerMeshOnly("berenike_helm");
+		this.BERENIKE_ARMOR = this.registerMeshOnly("berenike_armor");
+		this.BERENIKE_LEGGINGS = this.registerMeshOnly("berenike_leggings");
 		
 		this.TERRACOTTA_VASE = this.registerMeshOnly("terracotta_vase");
 		this.BREAKABLE_BARREL = this.registerMeshOnly("breakable_barrel");

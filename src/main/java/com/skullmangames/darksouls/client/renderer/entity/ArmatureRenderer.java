@@ -1,7 +1,9 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -67,9 +69,14 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 			this.applyRotations(poseStack, armature, entityCap, partialTicks);
 			entityCap.getClientAnimator().setPoseToModel(partialTicks);
 			ModMatrix4f[] poses = armature.getJointTransforms();
+			
 			float scale = 0.95F;
 			poseStack.scale(scale, scale, scale);
-			model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : entityCap.getAlpha(), poses);
+			
+			Set<Integer> jointMask = new HashSet<>();
+			for (Layer<?, ?> layer : this.layers) jointMask.addAll(layer.getJointMask(entityCap));
+			
+			model.draw(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, visibleToPlayer ? 0.15F : entityCap.getAlpha(), poses, jointMask);
 
 			if (!entity.isSpectator())
 				this.renderLayer(entityCap, poses, buffer, poseStack, packedLight, partialTicks);
@@ -125,12 +132,12 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 		ModMatrix4f.mul(joint.getAnimatedTransform(), mat, joint.getAnimatedTransform());
 	}
 
-	protected void applyRotations(PoseStack matStack, Armature armature, T entityCap, float partialTicks)
+	protected void applyRotations(PoseStack poseStack, Armature armature, T entityCap, float partialTicks)
 	{
 		ModMatrix4f transpose = entityCap.getModelMatrix(partialTicks).transpose();
-		matStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-		ModMatrix4f.rotateStack(matStack, transpose);
-		ModMatrix4f.scaleStack(matStack, transpose);
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		ModMatrix4f.rotateStack(poseStack, transpose);
+		ModMatrix4f.scaleStack(poseStack, transpose);
 	}
 
 	protected boolean shouldRenderNameTag(T entityCap)

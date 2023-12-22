@@ -221,9 +221,12 @@ public interface ExtendedDamageSource
 		
 		public void replace(DamageType org, DamageType replacer)
 		{
-			float amount = this.damages.get(org);
-			this.damages.remove(org);
-			this.damages.put(replacer, amount);
+			if (this.damages.containsKey(org))
+			{
+				float amount = this.damages.get(org);
+				this.damages.remove(org);
+				this.damages.put(replacer, amount);
+			}
 		}
 		
 		public float getFullAmount()
