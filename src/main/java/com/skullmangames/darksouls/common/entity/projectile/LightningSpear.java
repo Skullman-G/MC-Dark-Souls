@@ -25,10 +25,10 @@ public class LightningSpear extends Projectile
 	private int particle;
 	private final float damage;
 	
-	private LightningSpear(EntityType<? extends LightningSpear> type, Level level, float baseDamage)
+	public LightningSpear(EntityType<? extends LightningSpear> type, Level level)
 	{
 		super(type, level);
-		this.damage = baseDamage;
+		this.damage = 0F;
 	}
 	
 	private LightningSpear(EntityType<? extends LightningSpear> type, LivingCap<?> entityCap, float baseDamage)
@@ -42,19 +42,9 @@ public class LightningSpear extends Projectile
 		this.damage = baseDamage;
 	}
 	
-	public static LightningSpear lightningSpear(EntityType<? extends LightningSpear> type, Level level)
-	{
-		return new LightningSpear(type, level, 0F);
-	}
-	
 	public static LightningSpear lightningSpear(LivingCap<?> entityCap)
 	{
 		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap, 145 * entityCap.getSpellBuff());
-	}
-	
-	public static LightningSpear greatLightningSpear(EntityType<? extends LightningSpear> type, Level level)
-	{
-		return new LightningSpear(type, level, 0F);
 	}
 	
 	public static LightningSpear greatLightningSpear(LivingCap<?> entityCap)

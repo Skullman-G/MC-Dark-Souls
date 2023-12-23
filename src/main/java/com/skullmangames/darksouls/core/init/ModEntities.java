@@ -122,16 +122,20 @@ public class ModEntities
 	
 	//Projectiles
 	public static final RegistryObject<EntityType<LightningSpear>> LIGHTNING_SPEAR = register("lightning_spear",
-			EntityType.Builder.<LightningSpear>of(LightningSpear::lightningSpear, MobCategory.MISC)
+			EntityType.Builder.<LightningSpear>of(LightningSpear::new, MobCategory.MISC)
 			.sized(1.5F, 0.5F)
 			.clientTrackingRange(6)
 			.updateInterval(20));
 	
 	public static final RegistryObject<EntityType<LightningSpear>> GREAT_LIGHTNING_SPEAR = register("great_lightning_spear",
-			EntityType.Builder.<LightningSpear>of(LightningSpear::greatLightningSpear, MobCategory.MISC)
+			EntityType.Builder.<LightningSpear>of(LightningSpear::new, MobCategory.MISC)
 			.sized(2.0F, 1.0F));
 	
 	public static final RegistryObject<EntityType<Firebomb>> FIREBOMB = register("firebomb",
+			EntityType.Builder.<Firebomb>of(Firebomb::new, MobCategory.MISC)
+			.sized(0.25F, 0.25F));
+	
+	public static final RegistryObject<EntityType<Firebomb>> BLACK_FIREBOMB = register("black_firebomb",
 			EntityType.Builder.<Firebomb>of(Firebomb::new, MobCategory.MISC)
 			.sized(0.25F, 0.25F));
 	

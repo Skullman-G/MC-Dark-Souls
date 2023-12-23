@@ -241,6 +241,7 @@ public class DarkSouls
 		EntityRenderers.register(ModEntities.BALDER_KNIGHT.get(), VanillaHumanoidRenderer::new);
 		EntityRenderers.register(ModEntities.BERENIKE_KNIGHT.get(), (ctx) -> new VanillaHumanoidRenderer<>(ctx, 1F));
 		EntityRenderers.register(ModEntities.FIREBOMB.get(), FirebombRenderer::new);
+		EntityRenderers.register(ModEntities.BLACK_FIREBOMB.get(), FirebombRenderer::new);
 
 		ModItems.registerDescriptionItems();
 

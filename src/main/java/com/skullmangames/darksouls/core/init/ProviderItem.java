@@ -93,7 +93,8 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		
 		//Throwables
 		putCap(new ThrowableCap(Items.SNOWBALL, Snowball::new, () -> SoundEvents.SNOWBALL_THROW));
-		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::new, () -> SoundEvents.SNOWBALL_THROW));
+		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::firebomb, () -> SoundEvents.SNOWBALL_THROW));
+		putCap(new ThrowableCap(ModItems.BLACK_FIREBOMB.get(), Firebomb::blackFirebomb, () -> SoundEvents.SNOWBALL_THROW));
 		
 		//ARMOR
 		putCap(new ArmorCap(ModItems.DINGY_HOOD.get(), 0.8F, 0F));

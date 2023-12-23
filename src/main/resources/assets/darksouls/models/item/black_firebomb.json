@@ -1,0 +1,39 @@
+{
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"parent": "darksouls:item/black_firebomb_3d",
+		"textures": {
+			"0": "darksouls:items/black_firebomb_3d",
+			"particle": "darksouls:items/black_firebomb_3d"
+		}
+	},
+	"gui_light": "front",
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/black_firebomb"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/black_firebomb"
+			}
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/black_firebomb"
+			}
+		}
+	}
+}

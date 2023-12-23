@@ -31,7 +31,8 @@ public class FireParticle extends TextureSheetParticle
 	public void tick()
 	{
 		super.tick();
-		this.pickSprite(this.sprites);
+		
+		if (this.age % 2 == 0) this.pickSprite(this.sprites);
 		
 		if (this.age > 30)
 		{

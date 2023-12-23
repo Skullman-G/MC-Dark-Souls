@@ -100,6 +100,7 @@
 	"item.darksouls.berenike_helm": "Berenike Helm",
 	"item.darksouls.berenike_armor": "Berenike Armor",
 	"item.darksouls.berenike_leggings": "Berenike Leggings",
+	"item.darksouls.black_firebomb": "Black Firebomb",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -264,6 +265,8 @@
 	"tooltip.darksouls.berenike_helm.extended": "Helm of the Knights of Berenike, known for their heavy armaments and armor. Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
 	"tooltip.darksouls.berenike_armor.extended": "Armor of the Knights of Berenike, known for their heavy armaments and armor. Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
 	"tooltip.darksouls.berenike_leggings.extended": "Leggings of the Knights of Berenike, known for their heavy armaments and armor Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
+	"tooltip.darksouls.black_firebomb": "More powerful bisque urn filled with special black powder. Explodes, inflicting great fire damage.",
+	"tooltip.darksouls.black_firebomb.extended": "Fire damage, which differs from physical damage, is highly effective against creatures of flesh, beasts, and other foes that might naturally have cause to fear the flame.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

@@ -23,14 +23,28 @@ import net.minecraft.world.phys.HitResult;
 
 public class Firebomb extends ThrowableItemProjectile
 {
+	private final float damage;
+	
 	public Firebomb(EntityType<? extends Firebomb> entityType, Level level)
 	{
 		super(entityType, level);
+		this.damage = 0F;
 	}
 	
-	public Firebomb(Level level, LivingEntity entity)
+	private Firebomb(EntityType<? extends Firebomb> entityType, Level level, LivingEntity entity, float damage)
 	{
-		super(ModEntities.FIREBOMB.get(), entity, level);
+		super(entityType, entity, entity.level);
+		this.damage = damage;
+	}
+	
+	public static Firebomb firebomb(Level level, LivingEntity entity)
+	{
+		return new Firebomb(ModEntities.FIREBOMB.get(), level, entity, 100F);
+	}
+	
+	public static Firebomb blackFirebomb(Level level, LivingEntity entity)
+	{
+		return new Firebomb(ModEntities.BLACK_FIREBOMB.get(), level, entity, 140F);
 	}
 	
 	@Override
@@ -70,13 +84,13 @@ public class Firebomb extends ThrowableItemProjectile
 		{
 			this.playSound(ModSoundEvents.BOMB_EXPLOSION.get(), 1.5F, 0.4F / (this.level.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.level.broadcastEntityEvent(this, (byte)3);
-			LightSource.setLightSource(this.level, this.blockPosition(), 15, 0.5F);
+			LightSource.setLightSource(this.level, this.blockPosition(), 15, 1.5F);
 			
 			List<Entity> targets = this.level.getEntities(this, this.getBoundingBox().inflate(1.15F));
 			for (Entity entity : targets)
 			{
 				entity.hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(),
-						StunType.HEAVY, 1.0F, 1.0F, Damages.create().put(CoreDamageType.FIRE, 100)), 100);
+						StunType.HEAVY, 1.0F, 1.0F, Damages.create().put(CoreDamageType.FIRE, this.damage)), this.damage);
 			}
 			
 			this.discard();

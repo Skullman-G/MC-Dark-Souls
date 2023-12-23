@@ -240,6 +240,8 @@ public class ModItems
 			.tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> FIREBOMB = ITEMS.register("firebomb", () -> new Item(new Item.Properties()
 			.tab(DarkSouls.TAB)));
+	public static final RegistryObject<Item> BLACK_FIREBOMB = ITEMS.register("black_firebomb", () -> new Item(new Item.Properties()
+			.tab(DarkSouls.TAB)));
 	
 	
 	//Other
