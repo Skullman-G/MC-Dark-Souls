@@ -101,6 +101,8 @@
 	"item.darksouls.berenike_armor": "Berenike Armor",
 	"item.darksouls.berenike_leggings": "Berenike Leggings",
 	"item.darksouls.black_firebomb": "Black Firebomb",
+	"item.darksouls.berenike_greatshield": "Berenike Greatshield",
+	"item.darksouls.greatsword": "Greatsword",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -267,6 +269,8 @@
 	"tooltip.darksouls.berenike_leggings.extended": "Leggings of the Knights of Berenike, known for their heavy armaments and armor Countless Knights of Berenike, once extolled as the mightiest of mighty, became Undead and ventured to Lordran. But their journey was for naught, as they went Hollow, and became a threat to all Undead.",
 	"tooltip.darksouls.black_firebomb": "More powerful bisque urn filled with special black powder. Explodes, inflicting great fire damage.",
 	"tooltip.darksouls.black_firebomb.extended": "Fire damage, which differs from physical damage, is highly effective against creatures of flesh, beasts, and other foes that might naturally have cause to fear the flame.",
+	"tooltip.darksouls.berenike_greatshield.extended": "Metal Greatshield. Used by the Knights of Berenike, known for their heavy armour. This plate of iron is very defensive but also heavy. Greatshields are very stable, and deflect attacks. However, one cannot parry, and instead bashes with the shield.",
+	"tooltip.darksouls.greatsword.extended": "One of the gigantic straight greatswords. Very few have what it takes to wield this incredibly heavy, damage-dealing monster. A favorite of the Knights Berenike, known for their heavy armor, and Black iron Tarkus.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

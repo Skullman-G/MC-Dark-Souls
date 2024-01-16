@@ -1,4 +1,13 @@
 {
+	"item.shield.iron_large.block":
+	{
+		"category": "item",
+		"sounds":
+		[
+			"darksouls:items/shield/iron_large/block"
+		]
+	},
+	
 	"entity.berenike_knight.ambient":
 	{
 		"category": "entity",

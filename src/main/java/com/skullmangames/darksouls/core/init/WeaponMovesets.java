@@ -47,6 +47,8 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	
 	public static final ResourceLocation SHIELD = DarkSouls.rl("shield");
 	
+	public static final ResourceLocation GREATSHIELD = DarkSouls.rl("greatshield");
+	
 	public static final ResourceLocation SPEAR = DarkSouls.rl("spear");
 	
 	public static final ResourceLocation HAMMER = DarkSouls.rl("hammer");

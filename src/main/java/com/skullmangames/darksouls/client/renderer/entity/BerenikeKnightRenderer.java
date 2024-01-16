@@ -15,11 +15,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BerenikeKnightRenderer extends BipedRenderer<BerenikeKnight, BerenikeKnightCap>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/lordran_hollow.png");
+	private final HeldItemLayer<BerenikeKnight, BerenikeKnightCap> layer;
 	
 	public BerenikeKnightRenderer()
 	{
 		this.layers.remove(0);
-		this.layers.add(new HeldItemLayer<>(BerenikeKnightCap.WEAPON_SCALE, new Vector3d(0.0D, 0.0D, 0.0D)));
+		this.layer = new HeldItemLayer<>(BerenikeKnightCap.WEAPON_SCALE, new Vector3d(0.0D, 0.0D, 0.0D));
+		this.layers.add(this.layer);
 	}
 	
 	@Override
@@ -33,6 +35,9 @@ public class BerenikeKnightRenderer extends BipedRenderer<BerenikeKnight, Bereni
 	{
 		float scale = 1.5F;
 		poseStack.scale(scale, scale, scale);
+		this.layer.scale = entityCap.getWeaponScale();
 		super.applyRotations(poseStack, armature, entityCap, partialTicks);
 	}
+	
+	
 }

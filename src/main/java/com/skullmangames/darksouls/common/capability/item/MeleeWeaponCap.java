@@ -285,7 +285,8 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		METAL_WEAPON("metal_weapon", ModSoundEvents.WEAPON_BLOCK), STONE_WEAPON("stone_weapon", ModSoundEvents.WEAPON_BLOCK),
 		WOODEN_WEAPON("wooden_weapon", ModSoundEvents.WOODEN_SHIELD_BLOCK),
 		WOODEN_SHIELD("wooden_shield", ModSoundEvents.WOODEN_SHIELD_BLOCK),
-		METAL_SHIELD("metal_shield", ModSoundEvents.IRON_SHIELD_BLOCK);
+		METAL_SHIELD("metal_shield", ModSoundEvents.IRON_SHIELD_BLOCK),
+		LARGE_IRON_SHIELD("large_iron_shield", ModSoundEvents.LARGE_IRON_SHIELD_BLOCK);
 		
 		private final String id;
 		private final Supplier<SoundEvent> blockSound;

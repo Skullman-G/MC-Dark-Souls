@@ -122,6 +122,7 @@ public final class Animations
 	public static StaticAnimation BIPED_BLOCK_HORIZONTAL;
 	public static StaticAnimation BIPED_BLOCK_VERTICAL;
 	public static StaticAnimation BIPED_BLOCK_TH_SWORD;
+	public static StaticAnimation BIPED_BLOCK_GREATSHIELD;
 	
 	public static StaticAnimation BIPED_HIT_BLOCKED_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_RIGHT;
@@ -308,6 +309,15 @@ public final class Animations
 	public static AttackAnimation SHIELD_TH_LIGHT_ATTACK;
 	public static AttackAnimation[] SHIELD_TH_HEAVY_ATTACK;
 	public static AttackAnimation SHIELD_TH_DASH_ATTACK;
+	
+	// Greatshield
+	public static AttackAnimation GREATSHIELD_LIGHT_ATTACK;
+	public static AttackAnimation GREATSHIELD_HEAVY_ATTACK;
+	public static AttackAnimation GREATSHIELD_DASH_ATTACK;
+	public static AttackAnimation GREATSHIELD_TH_LIGHT_ATTACK;
+	public static AttackAnimation GREATSHIELD_TH_HEAVY_ATTACK;
+	public static AttackAnimation GREATSHIELD_TH_DASH_ATTACK;
+	public static AttackAnimation GREATSHIELD_BASH;
 
 	// Straight Sword
 	public static AttackAnimation[] STRAIGHT_SWORD_LIGHT_ATTACK;
@@ -619,6 +629,14 @@ public final class Animations
 				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_sword"), true)
 				.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_sword"), true)
 				.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+				.build().register(builder);
+		
+		BIPED_BLOCK_GREATSHIELD = new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_greatshield"), 0.1F, true, (models) -> models.ENTITY_BIPED)
+				.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_greatshield_right"), DarkSouls.rl("biped/combat/block_greatshield_left"), false)
+				.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_greatshield_walk_right"), DarkSouls.rl("biped/combat/block_greatshield_walk_left"), true)
+				.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_greatshield_run_right"), DarkSouls.rl("biped/combat/block_greatshield_run_left"), true)
+				.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_greatshield_right"), DarkSouls.rl("biped/combat/block_greatshield_left"), true)
+				.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_greatshield_right"), DarkSouls.rl("biped/combat/block_greatshield_left"), true)
 				.build().register(builder);
 		
 		BIPED_HIT_BLOCKED_LEFT = new BlockedAnimation(DarkSouls.rl("biped_hit_blocked_left"), 0.05F,
@@ -2073,7 +2091,7 @@ public final class Animations
 			.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 			.addProperty(AttackProperty.STAMINA_DAMAGE, 45)
 			.addProperty(AttackProperty.STAMINA_USAGE, 22)
-			.addProperty(AttackProperty.POISE_DAMAGE, 25)
+			.addProperty(AttackProperty.POISE_DAMAGE, 20)
 			.register(builder);
 		SHIELD_HEAVY_ATTACK = new AttackAnimation[]
 		{
@@ -2087,7 +2105,7 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 51)
 				.addProperty(AttackProperty.STAMINA_USAGE, 28)
-				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder),
 				new AttackAnimation(DarkSouls.rl("shield_ha_2"), AttackType.HEAVY, 0.2F, 0.0F, 0.28F, 0.48F, 1.4F, "Tool_R",
 						DarkSouls.rl("biped/combat/shield_ha_2"), (models) -> models.ENTITY_BIPED)
@@ -2099,7 +2117,7 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 51)
 				.addProperty(AttackProperty.STAMINA_USAGE, 28)
-				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder),
 		};
 		SHIELD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("shield_da"), AttackType.DASH, 0.05F, 0.0F, 0.32F, 0.52F, 1.4F, "Tool_R",
@@ -2112,7 +2130,7 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 49)
 				.addProperty(AttackProperty.STAMINA_USAGE, 25)
-				.addProperty(AttackProperty.POISE_DAMAGE, 27)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		SHIELD_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("shield_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F, 0.12F, 0.32F, 1.2F, "Tool_R",
 				DarkSouls.rl("biped/combat/shield_th_la"), (models) -> models.ENTITY_BIPED)
@@ -2124,7 +2142,7 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 48)
 				.addProperty(AttackProperty.STAMINA_USAGE, 26)
-				.addProperty(AttackProperty.POISE_DAMAGE, 28)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
 				.register(builder);
 		SHIELD_TH_HEAVY_ATTACK = new AttackAnimation[]
 				{
@@ -2138,7 +2156,7 @@ public final class Animations
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 						.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
 						.addProperty(AttackProperty.STAMINA_USAGE, 33)
-						.addProperty(AttackProperty.POISE_DAMAGE, 35)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder),
 						new AttackAnimation(DarkSouls.rl("shield_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.2F, 0.0F, 0.12F, 0.32F, 1.2F, "Tool_R",
 								DarkSouls.rl("biped/combat/shield_th_ha_2"), (models) -> models.ENTITY_BIPED)
@@ -2150,7 +2168,7 @@ public final class Animations
 						.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 						.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
 						.addProperty(AttackProperty.STAMINA_USAGE, 33)
-						.addProperty(AttackProperty.POISE_DAMAGE, 35)
+						.addProperty(AttackProperty.POISE_DAMAGE, 20)
 						.register(builder),
 				};
 		SHIELD_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("shield_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.12F, 0.32F, 1.4F, "Tool_R",
@@ -2163,7 +2181,103 @@ public final class Animations
 				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 				.addProperty(AttackProperty.STAMINA_DAMAGE, 52)
 				.addProperty(AttackProperty.STAMINA_USAGE, 29)
-				.addProperty(AttackProperty.POISE_DAMAGE, 33)
+				.addProperty(AttackProperty.POISE_DAMAGE, 20)
+				.register(builder);
+		
+		
+		// Greatshield
+		GREATSHIELD_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_light_attack"), AttackType.LIGHT, 0.2F, 0.0F, 0.36F, 0.75F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.36F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 35)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F, 0.42F, 0.7F, 1.5F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.42F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+						SmashEvent.BIG_SWORD.create(0.7F)
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 60)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_dash_attack"), AttackType.DASH, 0.05F, 0.0F, 0.48F, 0.85F, 1.32F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_da"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 45)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_TH_LIGHT_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_th_light_attack"), AttackType.TWO_HANDED_LIGHT, 0.2F, 0.0F, 0.36F, 0.75F, 1.2F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_th_la"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.36F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 45)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_TH_HEAVY_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_th_heavy_attack"), AttackType.TWO_HANDED_HEAVY, 0.2F, 0.0F, 0.42F, 0.7F, 1.5F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_th_ha"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.42F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get())),
+						SmashEvent.BIG_SWORD.create(0.7F)
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 80)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_TH_DASH_ATTACK = new AttackAnimation(DarkSouls.rl("greatshield_th_dash_attack"), AttackType.TWO_HANDED_DASH, 0.05F, 0.0F, 0.48F, 0.85F, 1.32F, "Tool_R",
+				DarkSouls.rl("biped/combat/greatshield_th_da"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.48F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 55)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
+				.register(builder);
+		GREATSHIELD_BASH = new AttackAnimation(DarkSouls.rl("greatshield_bash"), AttackType.LIGHT, 0.2F, 0.0F, 0.36F, 0.64F, 1.2F, "Tool_L",
+				DarkSouls.rl("biped/combat/greatshield_bash"), (models) -> models.ENTITY_BIPED)
+				.addProperty(StaticAnimationProperty.EVENTS, new Event[]
+				{
+						Event.create(0.36F, Side.SERVER, (cap) -> cap.playSound(ModSoundEvents.FIST_SWING.get()))
+				})
+				.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+				.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
+				.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+				.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
+				.addProperty(AttackProperty.STAMINA_USAGE, 35)
+				.addProperty(AttackProperty.POISE_DAMAGE, 30)
 				.register(builder);
 		
 		// Straight Sword

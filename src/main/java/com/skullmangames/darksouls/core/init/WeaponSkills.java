@@ -28,8 +28,13 @@ public class WeaponSkills extends SimpleJsonResourceReloadListener
 		super(GSON, "weapon_skills");
 	}
 	
+	
 	public static final ResourceLocation PARRY = DarkSouls.rl("parry");
+	
 	public static final ResourceLocation FAST_PARRY = DarkSouls.rl("fast_parry");
+	
+	public static final ResourceLocation GREATSHIELD_BASH = DarkSouls.rl("greatshield_bash");
+	
 	
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)

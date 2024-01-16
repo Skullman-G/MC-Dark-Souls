@@ -42,7 +42,7 @@ public class Colliders
 	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.WEAPON_SCALE);
 	
 	//Berenike Knight
-	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = ULTRA_GREATSWORD.getScaledCollider(BerenikeKnightCap.WEAPON_SCALE);
+	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = ULTRA_GREATSWORD.getScaledCollider(1.0F);
 	public static final Collider BERENIKE_KNIGHT_MACE = MACE.getScaledCollider(BerenikeKnightCap.WEAPON_SCALE);
 	
 	private static Collider register(String name, Collider collider)

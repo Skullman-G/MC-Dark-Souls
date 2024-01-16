@@ -55,7 +55,8 @@ public class WeaponSkillProvider implements DataProvider
 		return ImmutableList.of
 		(
 			new WeaponSkill.MirrorBuilder(WeaponSkills.PARRY, Animations.SHIELD_PARRY_LEFT, Animations.SHIELD_PARRY_RIGHT),
-			new WeaponSkill.MirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_LEFT, Animations.BUCKLER_PARRY_RIGHT)
+			new WeaponSkill.MirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_LEFT, Animations.BUCKLER_PARRY_RIGHT),
+			new WeaponSkill.MirrorBuilder(WeaponSkills.GREATSHIELD_BASH, Animations.GREATSHIELD_BASH, Animations.GREATSHIELD_LIGHT_ATTACK)
 		);
 	}
 	

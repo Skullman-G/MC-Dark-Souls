@@ -1,0 +1,5 @@
+{
+  "skill_type": "two_sides",
+  "left": "darksouls:greatshield_bash",
+  "right": "darksouls:greatshield_light_attack"
+}

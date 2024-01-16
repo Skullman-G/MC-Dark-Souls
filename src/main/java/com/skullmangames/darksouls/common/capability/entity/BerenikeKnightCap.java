@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.capability.entity;
 
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BerenikeKnight;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -68,7 +69,9 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	@Override
 	public float getWeaponScale()
 	{
-		return WEAPON_SCALE;
+		WeaponCap weapon = this.getHeldWeaponCap(InteractionHand.MAIN_HAND);
+		return weapon == null || weapon.getWeaponCategory() != WeaponCategory.ULTRA_GREATSWORD ? WEAPON_SCALE
+				: 0.9F;
 	}
 	
 	@Override
@@ -95,6 +98,6 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	@Override
 	public ShieldHoldType getShieldHoldType()
 	{
-		return ShieldHoldType.VERTICAL;
+		return ShieldHoldType.HORIZONTAL;
 	}
 }

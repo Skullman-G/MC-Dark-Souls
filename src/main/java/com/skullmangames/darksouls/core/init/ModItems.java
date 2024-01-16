@@ -90,6 +90,9 @@ public class ModItems
 	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 130, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> GREATSWORD = ITEMS.register("greatsword", () -> new SwordItem(Tiers.IRON, 130, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Great Hammer
 	public static final RegistryObject<Item> DEMON_GREAT_HAMMER = ITEMS.register("demon_great_hammer", () -> new SwordItem(Tiers.WOOD, 138, -2.4F, new Item.Properties()
@@ -127,6 +130,9 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	public static final RegistryObject<Item> GARGOYLE_SHIELD = ITEMS.register("gargoyle_shield", () -> new ModShieldItem(new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	public static final RegistryObject<Item> BERENIKE_GREATSHIELD = ITEMS.register("berenike_greatshield", () -> new ModShieldItem(new Item.Properties()
 			.tab(DarkSouls.TAB)));
 			
 	

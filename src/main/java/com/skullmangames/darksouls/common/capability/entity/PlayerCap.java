@@ -19,6 +19,7 @@ import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
@@ -150,6 +151,14 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	public boolean canBePunished()
 	{
 		return this.getEntityState() == EntityState.PUNISHABLE;
+	}
+	
+	@Override
+	public ShieldHoldType getShieldHoldType()
+	{
+		MeleeWeaponCap weapon = this.getHeldMeleeWeaponCap(this.orgEntity.getUsedItemHand());
+		return weapon != null && weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? ShieldHoldType.VERTICAL_REVERSE
+				: ShieldHoldType.VERTICAL;
 	}
 	
 	@Override
@@ -307,6 +316,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
 			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
 			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
+					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));
 		animatorClient.setCurrentMotionsToDefault();

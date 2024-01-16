@@ -520,6 +520,21 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			MeleeWeaponCap.builder(ModItems.GREATSWORD.get(), WeaponCategory.ULTRA_GREATSWORD, WeaponMovesets.ULTRA_GREATSWORD, Colliders.ULTRA_GREATSWORD.getId(), 12.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 130, 0.70F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.50F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.50F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.10F)
+			.setCritical(1.00F)
+			.setStability(0.44F)
+			.putStatInfo(Stats.STRENGTH, 28, Scaling.C)
+			.putStatInfo(Stats.DEXTERITY, 10, Scaling.D)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
+			
 			// Greataxes
 			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.GREATAXE, Colliders.GREATAXE.getId(), 22.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 114, 0.55F)
@@ -711,7 +726,23 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.DEXTERITY, 13, Scaling.NONE)
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD)
+			.setWeaponMaterial(WeaponMaterial.METAL_SHIELD),
+			
+			MeleeWeaponCap.builder(ModItems.BERENIKE_GREATSHIELD.get(), WeaponCategory.GREATSHIELD, WeaponMovesets.GREATSHIELD, Colliders.SHIELD.getId(), 13.0F)
+			.setSkill(WeaponSkills.GREATSHIELD_BASH)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 80, 1.0F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.75F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.50F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.40F)
+			.setCritical(1.00F)
+			.setStability(0.72F)
+			.putStatInfo(Stats.STRENGTH, 30, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.LARGE_IRON_SHIELD)
 		);
 	}
 

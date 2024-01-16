@@ -57,6 +57,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> WOODEN_SHIELD_BLOCK = register("item.shield.wood.block");
 	public static final RegistryObject<SoundEvent> IRON_SHIELD_BLOCK = register("item.shield.iron.block");
 	public static final RegistryObject<SoundEvent> WEAPON_BLOCK = register("item.sword.block");
+	public static final RegistryObject<SoundEvent> LARGE_IRON_SHIELD_BLOCK = register("item.shield.iron_large.block");
 	
 	public static final RegistryObject<SoundEvent> LIGHTNING_SPEAR_APPEAR = register("entity.lightning_spear.appear");
 	public static final RegistryObject<SoundEvent> LIGHTNING_SPEAR_SHOT = register("entity.lightning_spear.shot");

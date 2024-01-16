@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class HeldItemLayer<E extends LivingEntity, T extends LivingCap<E>> extends Layer<E, T>
 {
-	private final float scale;
+	public float scale;
 	private final Vector3d translation;
 	
 	

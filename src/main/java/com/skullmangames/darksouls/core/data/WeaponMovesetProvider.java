@@ -113,6 +113,13 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.SHIELD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.SHIELD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.SHIELD_TH_DASH_ATTACK),
+			new WeaponMoveset.Builder(WeaponMovesets.GREATSHIELD)
+			.putMove(AttackType.LIGHT, true, Animations.GREATSHIELD_LIGHT_ATTACK)
+			.putMove(AttackType.HEAVY, true, Animations.GREATSHIELD_HEAVY_ATTACK)
+			.putMove(AttackType.DASH, true, Animations.GREATSHIELD_DASH_ATTACK)
+			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSHIELD_TH_LIGHT_ATTACK)
+			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSHIELD_TH_HEAVY_ATTACK)
+			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSHIELD_TH_DASH_ATTACK),
 			new WeaponMoveset.Builder(WeaponMovesets.SPEAR)
 			.putMove(AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK)

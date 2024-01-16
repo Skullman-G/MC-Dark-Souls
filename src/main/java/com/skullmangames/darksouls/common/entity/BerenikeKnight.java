@@ -45,14 +45,14 @@ public class BerenikeKnight extends ArmoredMob
 	{
 		if (percentage <= 40)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.ZWEIHANDER.get();
-			if (slot == EquipmentSlot.OFFHAND) return ModItems.BALDER_SHIELD.get();
+			if (slot == EquipmentSlot.MAINHAND) return ModItems.GREATSWORD.get();
 		}
 		else
 		{
 			if (slot == EquipmentSlot.MAINHAND) return ModItems.MACE.get();
-			if (slot == EquipmentSlot.OFFHAND) return ModItems.BUCKLER.get();
 		}
+		
+		if (slot == EquipmentSlot.OFFHAND) return ModItems.BERENIKE_GREATSHIELD.get();
 		
 		switch (slot)
 		{
