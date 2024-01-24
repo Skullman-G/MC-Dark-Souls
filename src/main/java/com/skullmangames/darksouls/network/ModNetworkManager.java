@@ -34,6 +34,7 @@ import com.skullmangames.darksouls.network.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.server.STCPlayAnimationAndSetTarget;
 import com.skullmangames.darksouls.network.server.STCPlayBonfireAmbientSound;
 import com.skullmangames.darksouls.network.server.STCPotion;
+import com.skullmangames.darksouls.network.server.STCSetMaxPlayerLevel;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 import com.skullmangames.darksouls.network.server.STCSoulMerchantOffers;
 import com.skullmangames.darksouls.network.server.STCSouls;
@@ -133,5 +134,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCBonfireKindleEffect.class, STCBonfireKindleEffect::toBytes, STCBonfireKindleEffect::fromBytes, STCBonfireKindleEffect::handle);
 		INSTANCE.registerMessage(id++, STCEntityImpactParticles.class, STCEntityImpactParticles::toBytes, STCEntityImpactParticles::fromBytes, STCEntityImpactParticles::handle);
 		INSTANCE.registerMessage(id++, STCChangeEquipment.class, STCChangeEquipment::toBytes, STCChangeEquipment::fromBytes, STCChangeEquipment::handle);
+		INSTANCE.registerMessage(id++, STCSetMaxPlayerLevel.class, STCSetMaxPlayerLevel::toBytes, STCSetMaxPlayerLevel::fromBytes, STCSetMaxPlayerLevel::handle);
 	}
 }

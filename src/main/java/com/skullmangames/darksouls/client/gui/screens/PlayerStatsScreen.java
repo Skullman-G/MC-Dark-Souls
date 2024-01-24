@@ -113,6 +113,11 @@ public class PlayerStatsScreen extends Screen
 	
 	protected boolean canUpgrade()
 	{
+		return this.canPurchase() && this.displayedLevel < ClientManager.INSTANCE.maxPlayerLevel;
+	}
+	
+	protected boolean canPurchase()
+	{
 		return this.playerCap.hasEnoughSouls(this.upgradeCost() + Stats.getCost(this.displayedLevel));
 	}
 
@@ -134,8 +139,8 @@ public class PlayerStatsScreen extends Screen
 		this.font.draw(poseStack, this.title, x + 10, y + 10, 16777215);
 
 		int firstX = x + 19;
-		this.font.draw(poseStack, "Level: " + this.displayedLevel, firstX, y + 36, this.color);
-		int soulsColor = !this.canUpgrade() ? 0xde2f18 : this.color;
+		this.font.draw(poseStack, "Level: " + this.displayedLevel + " / " + ClientManager.INSTANCE.maxPlayerLevel, firstX, y + 36, this.color);
+		int soulsColor = !this.canPurchase() ? 0xde2f18 : this.color;
 		this.font.draw(poseStack, "Souls: " + (this.playerCap.isCreativeOrSpectator() ? "INFINITE" : this.playerCap.getSouls() - this.upgradeCost()), firstX, y + 60,
 				soulsColor);
 		this.font.draw(poseStack, "Cost: " + Stats.getCost(this.displayedLevel), firstX, y + 72, this.color);

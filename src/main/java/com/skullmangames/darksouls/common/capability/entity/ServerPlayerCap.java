@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
 import com.skullmangames.darksouls.common.inventory.AttunementsMenu;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModGameRules;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
@@ -27,6 +28,7 @@ import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 import com.skullmangames.darksouls.network.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.server.STCSetMaxPlayerLevel;
 import com.skullmangames.darksouls.network.server.STCSouls;
 import com.skullmangames.darksouls.network.server.STCStamina;
 
@@ -54,6 +56,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		CompoundTag nbt = entityIn.getPersistentData().getCompound(DarkSouls.MOD_ID);
 		this.onLoad(nbt);
 		ModNetworkManager.sendToPlayer(new STCLoadPlayerData(nbt), entityIn);
+		ModNetworkManager.sendToPlayer(new STCSetMaxPlayerLevel(entityIn.level.getGameRules().getInt(ModGameRules.MAX_PLAYER_LEVEL)), entityIn);
 	}
 	
 	@Override

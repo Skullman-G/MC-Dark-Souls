@@ -56,6 +56,7 @@ import com.skullmangames.darksouls.core.init.ModArgumentTypes;
 import com.skullmangames.darksouls.core.init.ModContainers;
 import com.skullmangames.darksouls.core.init.ModCriteriaTriggers;
 import com.skullmangames.darksouls.core.init.ModEntities;
+import com.skullmangames.darksouls.core.init.ModGameRules;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.ModParticles;
@@ -129,6 +130,7 @@ public class DarkSouls
 		
 		modBus.addGenericListener(DataSerializerEntry.class, this::registerDataSerializers);
 		
+		ModGameRules.call();
 		ModAttributes.ATTRIBUTES.register(modBus);
 		ModSoundEvents.SOUND_EVENTS.register(modBus);
 		ModBlocks.BLOCKS.register(modBus);

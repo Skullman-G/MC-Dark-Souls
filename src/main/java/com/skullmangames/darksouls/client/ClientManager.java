@@ -35,6 +35,7 @@ public class ClientManager
 	public final NPCChat npcChat;
 	private Options options;
 	private boolean combatModeActive;
+	public int maxPlayerLevel;
 	
 	private LocalPlayerCap playerCap;
 	
