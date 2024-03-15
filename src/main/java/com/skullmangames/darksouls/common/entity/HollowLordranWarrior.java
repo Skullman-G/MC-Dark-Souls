@@ -23,7 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class HollowLordranWarrior extends ArmoredMob
+public class HollowLordranWarrior extends ArmedMob
 {
 	public HollowLordranWarrior(EntityType<? extends HollowLordranWarrior> entitytype, Level level)
 	{
@@ -52,16 +52,21 @@ public class HollowLordranWarrior extends ArmoredMob
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 	
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
-		if (percentage <= 75)
+		switch (equipmentType)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return Items.IRON_SWORD;
-			else if (slot == EquipmentSlot.OFFHAND) return ModItems.CRACKED_ROUND_SHIELD.get();
-		}
-		else
-		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.BATTLE_AXE.get();
+			default:
+				break;
+				
+			case 0:
+				if (slot == EquipmentSlot.MAINHAND) return Items.IRON_SWORD;
+				else if (slot == EquipmentSlot.OFFHAND) return ModItems.CRACKED_ROUND_SHIELD.get();
+				break;
+				
+			case 1:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.BATTLE_AXE.get();
+				break;
 		}
 		
 		switch (slot)
@@ -72,6 +77,12 @@ public class HollowLordranWarrior extends ArmoredMob
 			case LEGS: return ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get();
 			case FEET: return ModItems.LORDRAN_WARRIOR_BOOTS.get();
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 2;
 	}
 	
 	@Override

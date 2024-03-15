@@ -35,7 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.npc.AbstractVillager;
 
-public class Hollow extends ArmoredMob implements RangedAttackMob
+public class Hollow extends ArmedMob implements RangedAttackMob
 {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Hollow.class, EntityDataSerializers.BYTE);
 	
@@ -107,15 +107,15 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 	}
 	
 	@Override
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
 		if (slot == EquipmentSlot.MAINHAND)
 		{
-			if (percentage <= 75)
+			if (equipmentType % 2 == 0)
 			{
 				return ModItems.BROKEN_STRAIGHT_SWORD.get();
 			}
-			else if (percentage <= 90)
+			else if (equipmentType % 2 != 0)
 			{
 				return Items.BOW;
 			}
@@ -125,20 +125,23 @@ public class Hollow extends ArmoredMob implements RangedAttackMob
 			}
 		}
 		
-		if (this.random.nextFloat() < 0.2F)
+		if (equipmentType < 2)
 		{
 			switch (slot)
 			{
-				default:
-					return null;
-				case CHEST:
-					return ModItems.BURNT_SHIRT.get();
-				case LEGS:
-					return ModItems.BURNT_TROUSERS.get();
+				default: return null;
+				case CHEST: return ModItems.BURNT_SHIRT.get();
+				case LEGS: return ModItems.BURNT_TROUSERS.get();
 			}
 		}
 		
 		return null;
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 4;
 	}
 	
 	@Override

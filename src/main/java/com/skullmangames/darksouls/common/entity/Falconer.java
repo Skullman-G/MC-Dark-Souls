@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class Falconer extends ArmoredMob implements RangedAttackMob
+public class Falconer extends ArmedMob implements RangedAttackMob
 {
 	public Falconer(EntityType<? extends Falconer> entitytype, Level level)
 	{
@@ -48,31 +48,37 @@ public class Falconer extends ArmoredMob implements RangedAttackMob
 	}
 
 	@Override
-	public Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	public Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
-		if (percentage <= 75)
+		switch (equipmentType)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
-			else if (slot == EquipmentSlot.OFFHAND) return ModItems.GOLDEN_FALCON_SHIELD.get();
-		}
-		else
-		{
-			if (slot == EquipmentSlot.MAINHAND) return Items.BOW;
+			default:
+				break;
+				
+			case 0:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
+				else if (slot == EquipmentSlot.OFFHAND) return ModItems.GOLDEN_FALCON_SHIELD.get();
+				break;
+				
+			case 1:
+				if (slot == EquipmentSlot.MAINHAND) return Items.BOW;
+				break;
 		}
 
 		switch (slot)
 		{
-		default:
-			return null;
-		case HEAD:
-			return ModItems.FALCONER_HELM.get();
-		case CHEST:
-			return ModItems.FALCONER_ARMOR.get();
-		case LEGS:
-			return ModItems.FALCONER_LEGGINGS.get();
-		case FEET:
-			return ModItems.FALCONER_BOOTS.get();
+			default: return null;
+			case HEAD: return ModItems.FALCONER_HELM.get();
+			case CHEST: return ModItems.FALCONER_ARMOR.get();
+			case LEGS: return ModItems.FALCONER_LEGGINGS.get();
+			case FEET: return ModItems.FALCONER_BOOTS.get();
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 2;
 	}
 
 	@Override

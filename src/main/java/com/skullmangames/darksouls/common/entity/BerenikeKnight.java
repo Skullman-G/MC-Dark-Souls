@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
-public class BerenikeKnight extends ArmoredMob
+public class BerenikeKnight extends ArmedMob
 {
 	public BerenikeKnight(EntityType<? extends BerenikeKnight> entitytype, Level level)
 	{
@@ -41,30 +41,37 @@ public class BerenikeKnight extends ArmoredMob
 	}
 
 	@Override
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
-		if (percentage <= 40)
+		switch (equipmentType)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.GREATSWORD.get();
-		}
-		else
-		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.MACE.get();
+			default:
+				break;
+				
+			case 0:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.GREATSWORD.get();
+				break;
+				
+			case 1:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.MACE.get();
+				break;
 		}
 		
 		if (slot == EquipmentSlot.OFFHAND) return ModItems.BERENIKE_GREATSHIELD.get();
 		
 		switch (slot)
 		{
-		default:
-			return null;
-		case HEAD:
-			return ModItems.BERENIKE_HELM.get();
-		case CHEST:
-			return ModItems.BERENIKE_ARMOR.get();
-		case LEGS:
-			return ModItems.BERENIKE_LEGGINGS.get();
+			default: return null;
+			case HEAD: return ModItems.BERENIKE_HELM.get();
+			case CHEST: return ModItems.BERENIKE_ARMOR.get();
+			case LEGS: return ModItems.BERENIKE_LEGGINGS.get();
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 2;
 	}
 	
 	@Override

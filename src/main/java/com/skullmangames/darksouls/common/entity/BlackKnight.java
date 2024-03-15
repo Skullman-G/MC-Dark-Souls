@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
-public class BlackKnight extends ArmoredMob
+public class BlackKnight extends ArmedMob
 {
 	public BlackKnight(EntityType<? extends BlackKnight> entitytype, Level level)
 	{
@@ -40,24 +40,25 @@ public class BlackKnight extends ArmoredMob
 	}
 
 	@Override
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
 		if (slot == EquipmentSlot.MAINHAND) return ModItems.BLACK_KNIGHT_SWORD.get();
 		else if (slot == EquipmentSlot.OFFHAND) return ModItems.BLACK_KNIGHT_SHIELD.get();
 
 		switch (slot)
 		{
-		default:
-			return null;
-		case HEAD:
-			return ModItems.BLACK_KNIGHT_HELM.get();
-		case CHEST:
-			return ModItems.BLACK_KNIGHT_ARMOR.get();
-		case LEGS:
-			return ModItems.BLACK_KNIGHT_LEGGINGS.get();
-		case FEET:
-			return null;
+			default: return null;
+			case HEAD: return ModItems.BLACK_KNIGHT_HELM.get();
+			case CHEST: return ModItems.BLACK_KNIGHT_ARMOR.get();
+			case LEGS: return ModItems.BLACK_KNIGHT_LEGGINGS.get();
+			case FEET: return null;
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 1;
 	}
 	
 	@Override

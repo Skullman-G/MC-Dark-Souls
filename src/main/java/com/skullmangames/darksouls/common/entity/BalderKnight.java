@@ -25,7 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 
-public class BalderKnight extends ArmoredMob implements CrossbowAttackMob
+public class BalderKnight extends ArmedMob implements CrossbowAttackMob
 {
 	public BalderKnight(EntityType<? extends BalderKnight> entitytype, Level level)
 	{
@@ -49,36 +49,42 @@ public class BalderKnight extends ArmoredMob implements CrossbowAttackMob
 	}
 
 	@Override
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
-		if (percentage <= 40)
+		switch (equipmentType)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.BALDER_SIDE_SWORD.get();
-			if (slot == EquipmentSlot.OFFHAND) return ModItems.BALDER_SHIELD.get();
-		}
-		else if (percentage <= 70)
-		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.RAPIER.get();
-			if (slot == EquipmentSlot.OFFHAND) return ModItems.BUCKLER.get();
-		}
-		else
-		{
-			if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
+			default:
+				break;
+				
+			case 0:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.BALDER_SIDE_SWORD.get();
+				if (slot == EquipmentSlot.OFFHAND) return ModItems.BALDER_SHIELD.get();
+				break;
+				
+			case 1:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.RAPIER.get();
+				if (slot == EquipmentSlot.OFFHAND) return ModItems.BUCKLER.get();
+				break;
+				
+			case 2:
+				if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
+				break;
 		}
 		
 		switch (slot)
 		{
-		default:
-			return null;
-		case HEAD:
-			return ModItems.BALDER_HELM.get();
-		case CHEST:
-			return ModItems.BALDER_ARMOR.get();
-		case LEGS:
-			return ModItems.BALDER_LEGGINGS.get();
-		case FEET:
-			return ModItems.BALDER_BOOTS.get();
+			default: return null;
+			case HEAD: return ModItems.BALDER_HELM.get();
+			case CHEST: return ModItems.BALDER_ARMOR.get();
+			case LEGS: return ModItems.BALDER_LEGGINGS.get();
+			case FEET: return ModItems.BALDER_BOOTS.get();
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 3;
 	}
 	
 	@Override

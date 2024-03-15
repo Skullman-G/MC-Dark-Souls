@@ -24,7 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 
-public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMob
+public class HollowLordranSoldier extends ArmedMob implements CrossbowAttackMob
 {
 	public HollowLordranSoldier(EntityType<? extends HollowLordranSoldier> entitytype, Level level)
 	{
@@ -48,36 +48,42 @@ public class HollowLordranSoldier extends ArmoredMob implements CrossbowAttackMo
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hollow.class, true));
 	}
 
-	protected Item getEquipmentForSlot(int percentage, EquipmentSlot slot)
+	protected Item getEquipmentForSlot(int equipmentType, EquipmentSlot slot)
 	{
-		if (percentage <= 75)
+		switch (equipmentType)
 		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
-			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
-		}
-		else if (percentage <= 90)
-		{
-			if (slot == EquipmentSlot.MAINHAND) return ModItems.SPEAR.get();
-			else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
-		}
-		else
-		{
-			if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
+			default:
+				break;
+				
+			case 0:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.LONGSWORD.get();
+				else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
+				break;
+				
+			case 1:
+				if (slot == EquipmentSlot.MAINHAND) return ModItems.SPEAR.get();
+				else if (slot == EquipmentSlot.OFFHAND) return ModItems.LORDRAN_SOLDIER_SHIELD.get();
+				break;
+				
+			case 2:
+				if (slot == EquipmentSlot.MAINHAND) return Items.CROSSBOW;
+				break;
 		}
 
 		switch (slot)
 		{
-		default:
-			return null;
-		case HEAD:
-			return ModItems.LORDRAN_SOLDIER_HELM.get();
-		case CHEST:
-			return ModItems.LORDRAN_SOLDIER_ARMOR.get();
-		case LEGS:
-			return ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get();
-		case FEET:
-			return ModItems.LORDRAN_SOLDIER_BOOTS.get();
+			default: return null;
+			case HEAD: return ModItems.LORDRAN_SOLDIER_HELM.get();
+			case CHEST: return ModItems.LORDRAN_SOLDIER_ARMOR.get();
+			case LEGS: return ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get();
+			case FEET: return ModItems.LORDRAN_SOLDIER_BOOTS.get();
 		}
+	}
+	
+	@Override
+	protected int getMaxEquipmentTypes()
+	{
+		return 3;
 	}
 
 	@Override
