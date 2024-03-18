@@ -405,6 +405,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
 		
+		if (this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
+		{
+			extSource.getDamages().mul(0);
+			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
+			return false;
+		}
+		
 		// Aux Effects
 		extSource.getAuxEffects().forEach((aux) ->
 		{
@@ -443,18 +450,21 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		if (!extSource.getDamages().isEmpty())
 			this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
 		
-		// Stun Animation
-		boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
-		if (!poiseBroken && !headshot) extSource.setStunType(stunType.downgrade());
-		StaticAnimation hitAnimation = this.getHitAnimation(extSource);
-		
-		if(hitAnimation != null)
+		if (!(this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS))
 		{
-			if (stunType.getLevel() == 3)
+			// Stun Animation
+			boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
+			if (!poiseBroken && !headshot) extSource.setStunType(stunType.downgrade());
+			StaticAnimation hitAnimation = this.getHitAnimation(extSource);
+			
+			if(hitAnimation != null)
 			{
-				if (this.isMounted()) this.orgEntity.stopRiding();
+				if (stunType.getLevel() == 3)
+				{
+					if (this.isMounted()) this.orgEntity.stopRiding();
+				}
+				this.playAnimationSynchronized(hitAnimation, 0.0F);
 			}
-			this.playAnimationSynchronized(hitAnimation, 0.0F);
 		}
 	}
 
@@ -523,10 +533,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
-		EntityCapability<?> cap = (EntityCapability<?>)hitTarget.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		StunType stunType = source.getStunType();
-		if (cap != null && (cap.isInvincible() && stunType != StunType.INVINCIBILITY_BYPASS)) return false;
-		
 		boolean succeed = hitTarget.hurt((DamageSource) source, source.getAmount());
 
 		if (succeed)
