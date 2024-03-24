@@ -16,12 +16,6 @@ buildscript {
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-
-mixin {
-       add sourceSets.main, "darksouls.mixin-refmap.json"
-       config "darksouls.mixin.json"
-}
 
 version = '1.0'
 group = 'com.skullmangames.darksouls'
