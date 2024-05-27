@@ -1,20 +1,23 @@
 package com.skullmangames.darksouls.common.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
 
-public abstract class BreakableObject extends Entity
+public abstract class BreakableObject extends LivingEntity
 {
 	public BreakableObject(EntityType<? extends BreakableObject> type, Level level)
 	{
@@ -97,17 +100,29 @@ public abstract class BreakableObject extends Entity
 	protected abstract SoundEvent getBreakSound();
 
 	@Override
-	protected void defineSynchedData() {}
-
-	@Override
-	protected void readAdditionalSaveData(CompoundTag nbt) {}
-
-	@Override
-	protected void addAdditionalSaveData(CompoundTag nbt) {}
-
-	@Override
 	public Packet<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
+	public HumanoidArm getMainArm()
+	{
+		return HumanoidArm.RIGHT;
+	}
+	
+	@Override
+	public void setItemSlot(EquipmentSlot slot, ItemStack item) {}
+	
+	@Override
+	public ItemStack getItemBySlot(EquipmentSlot slot)
+	{
+		return ItemStack.EMPTY;
+	}
+	
+	@Override
+	public Iterable<ItemStack> getArmorSlots()
+	{
+		return NonNullList.withSize(1, ItemStack.EMPTY);
 	}
 }

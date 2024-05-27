@@ -152,6 +152,8 @@ public class ModAttributes
 		event.put(ModEntities.TAURUS_DEMON.get(), TaurusDemon.createAttributes().build());
 		event.put(ModEntities.BALDER_KNIGHT.get(), BalderKnight.createAttributes().build());
 		event.put(ModEntities.BERENIKE_KNIGHT.get(), BerenikeKnight.createAttributes().build());
+		event.put(ModEntities.TERRACOTTA_VASE.get(), LivingEntity.createLivingAttributes().build());
+		event.put(ModEntities.BREAKABLE_BARREL.get(), LivingEntity.createLivingAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)

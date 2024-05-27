@@ -8,6 +8,9 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -17,11 +20,18 @@ import net.minecraft.world.phys.AABB;
 
 public class TerracottaVase extends BreakableObject
 {
-	private ItemStack itemInside = ItemStack.EMPTY;
+	protected static final EntityDataAccessor<ItemStack> ITEM_INSIDE = SynchedEntityData.defineId(TerracottaVase.class, EntityDataSerializers.ITEM_STACK);
 	
 	public TerracottaVase(EntityType<? extends TerracottaVase> type, Level level)
 	{
 		super(type, level);
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(ITEM_INSIDE, ItemStack.EMPTY);
 	}
 	
 	@Override
@@ -35,17 +45,28 @@ public class TerracottaVase extends BreakableObject
 		if (!items.isEmpty())
 		{
 			ItemEntity item = items.get(0);
-			if (this.itemInside.isEmpty())
+			ItemStack itemInside = this.getItemInside();
+			if (itemInside.isEmpty())
 			{
-				this.itemInside = item.getItem();
+				this.setItemInside(item.getItem());
 				item.discard();
 			}
-			else if (this.itemInside.getItem() == item.getItem().getItem())
+			else if (itemInside.getItem() == item.getItem().getItem())
 			{
-				this.itemInside.grow(item.getItem().getCount());
+				itemInside.grow(item.getItem().getCount());
 				item.discard();
 			}
 		}
+	}
+	
+	public void setItemInside(ItemStack item)
+	{
+		this.entityData.set(ITEM_INSIDE, item);
+	}
+	
+	public ItemStack getItemInside()
+	{
+		return this.entityData.get(ITEM_INSIDE);
 	}
 	
 	@Override
@@ -53,24 +74,27 @@ public class TerracottaVase extends BreakableObject
 	{
 		if (!this.level.isClientSide)
 		{
-			ItemEntity itemEntity = new ItemEntity(this.level, this.getX(), this.getY() + 1, this.getZ(), this.itemInside, 0, 0, 0);
+			ItemEntity itemEntity = new ItemEntity(this.level, this.getX(), this.getY() + 1, this.getZ(), this.getItemInside(), 0, 0, 0);
 			this.level.addFreshEntity(itemEntity);
 		}
 		super.kill();
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag nbt)
+	public void readAdditionalSaveData(CompoundTag nbt)
 	{
-		this.itemInside = ItemStack.of(nbt.getCompound("item_inside"));
+		super.readAdditionalSaveData(nbt);
+		this.setItemInside(ItemStack.of(nbt.getCompound("item_inside")));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag nbt)
+	public void addAdditionalSaveData(CompoundTag nbt)
 	{
-		if (!this.itemInside.isEmpty())
+		super.addAdditionalSaveData(nbt);
+		ItemStack itemInside = this.getItemInside();
+		if (!itemInside.isEmpty())
 		{
-			nbt.put("item_inside", this.itemInside.save(new CompoundTag()));
+			nbt.put("item_inside", itemInside.save(new CompoundTag()));
 		}
 	}
 
