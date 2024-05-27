@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:black_knight_helm",
+  "weight": 5.0,
+  "poise": 8.0,
+  "defense": {
+    "REGULAR": 21.0,
+    "STRIKE": 19.9,
+    "SLASH": 23.7,
+    "THRUST": 20.6,
+    "MAGIC": 11.0,
+    "FIRE": 18.0,
+    "LIGHTNING": 6.0,
+    "HOLY": 11.0,
+    "DARK": 11.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:berenike_helm",
+  "weight": 5.4,
+  "poise": 9.0,
+  "defense": {
+    "REGULAR": 16.0,
+    "STRIKE": 15.0,
+    "SLASH": 18.4,
+    "THRUST": 18.4,
+    "MAGIC": 8.0,
+    "FIRE": 8.0,
+    "LIGHTNING": 5.0,
+    "HOLY": 8.0,
+    "DARK": 8.0
+  }
+}

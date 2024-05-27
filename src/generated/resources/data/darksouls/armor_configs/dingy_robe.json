@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:dingy_robe",
+  "weight": 3.0,
+  "poise": 0.0,
+  "defense": {
+    "REGULAR": 23.0,
+    "STRIKE": 28.7,
+    "SLASH": 23.0,
+    "THRUST": 23.0,
+    "MAGIC": 33.0,
+    "FIRE": 19.0,
+    "LIGHTNING": 25.0,
+    "HOLY": 33.0,
+    "DARK": 33.0
+  }
+}

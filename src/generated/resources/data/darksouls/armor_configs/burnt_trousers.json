@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:burnt_trousers",
+  "weight": 0.8,
+  "poise": 0.0,
+  "defense": {
+    "REGULAR": 12.0,
+    "STRIKE": 11.6,
+    "SLASH": 16.8,
+    "THRUST": 11.1,
+    "MAGIC": 7.0,
+    "FIRE": 12.0,
+    "LIGHTNING": 4.0,
+    "HOLY": 7.0,
+    "DARK": 7.0
+  }
+}

@@ -183,7 +183,11 @@ public class DSEquipmentScreen extends Screen
 			{
 				ImageButton itemBtn = new ImageButton(x + 20 * s, y + 23 * i, buttonwidth, buttonheight, 277, 209, 22, TEXTURE_LOCATION,
 						this.textureWidth, this.textureHeight, this::closeSelectTab,
-						(btn, ps, i0, i2) -> this.hovered = this.shownInvItems.get(this.itemButtons.indexOf(btn)).getItem(), TextComponent.EMPTY);
+						(btn, ps, i0, i2) ->
+				{
+					int btnIndex = this.itemButtons.indexOf(btn);
+					this.hovered = btnIndex < this.shownInvItems.size() ? this.shownInvItems.get(btnIndex).getItem() : null;
+				}, TextComponent.EMPTY);
 				itemBtn.visible = this.itemSelect;
 				this.itemButtons.add(itemBtn);
 				this.addRenderableWidget(itemBtn);

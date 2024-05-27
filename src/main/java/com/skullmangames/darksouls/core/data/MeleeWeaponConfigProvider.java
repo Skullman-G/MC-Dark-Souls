@@ -39,6 +39,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 	{
 		this.generator = generator;
 	}
+	
 	@Override
 	public void run(HashCache cache) throws IOException
 	{

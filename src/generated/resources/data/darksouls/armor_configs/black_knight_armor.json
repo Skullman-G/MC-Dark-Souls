@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:black_knight_armor",
+  "weight": 13.0,
+  "poise": 21.0,
+  "defense": {
+    "REGULAR": 57.0,
+    "STRIKE": 54.2,
+    "SLASH": 64.4,
+    "THRUST": 55.9,
+    "MAGIC": 29.0,
+    "FIRE": 48.0,
+    "LIGHTNING": 17.0,
+    "HOLY": 29.0,
+    "DARK": 29.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:elite_cleric_leggings",
+  "weight": 7.4,
+  "poise": 12.0,
+  "defense": {
+    "REGULAR": 24.0,
+    "STRIKE": 24.0,
+    "SLASH": 27.6,
+    "THRUST": 24.0,
+    "MAGIC": 13.0,
+    "FIRE": 12.0,
+    "LIGHTNING": 9.0,
+    "HOLY": 13.0,
+    "DARK": 13.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:berenike_armor",
+  "weight": 14.0,
+  "poise": 23.0,
+  "defense": {
+    "REGULAR": 42.0,
+    "STRIKE": 39.5,
+    "SLASH": 48.3,
+    "THRUST": 42.0,
+    "MAGIC": 22.0,
+    "FIRE": 21.0,
+    "LIGHTNING": 13.0,
+    "HOLY": 22.0,
+    "DARK": 22.0
+  }
+}

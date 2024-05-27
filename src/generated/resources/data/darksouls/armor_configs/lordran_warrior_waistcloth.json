@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:lordran_warrior_waistcloth",
+  "weight": 1.4,
+  "poise": 5.0,
+  "defense": {
+    "REGULAR": 13.0,
+    "STRIKE": 12.5,
+    "SLASH": 13.4,
+    "THRUST": 12.3,
+    "MAGIC": 8.0,
+    "FIRE": 6.0,
+    "LIGHTNING": 8.0,
+    "HOLY": 8.0,
+    "DARK": 8.0
+  }
+}

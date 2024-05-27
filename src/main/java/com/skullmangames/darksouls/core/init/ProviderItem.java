@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.common.capability.item.TridentCap;
-import com.skullmangames.darksouls.common.capability.item.VanillaArmorCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
@@ -24,7 +22,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.projectile.Snowball;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -96,42 +93,8 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::firebomb, () -> SoundEvents.SNOWBALL_THROW));
 		putCap(new ThrowableCap(ModItems.BLACK_FIREBOMB.get(), Firebomb::blackFirebomb, () -> SoundEvents.SNOWBALL_THROW));
 		
-		//ARMOR
-		putCap(new ArmorCap(ModItems.DINGY_HOOD.get(), 0.8F, 0F));
-		putCap(new ArmorCap(ModItems.DINGY_ROBE.get(), 3F, 0F));
-		putCap(new ArmorCap(ModItems.BLOOD_STAINED_SKIRT.get(), 1.4F, 0F));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_HELM.get(), 3F, 5F));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_ARMOR.get(), 7.8F, 12F));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_WAISTCLOTH.get(), 1.5F, 7F));
-		putCap(new ArmorCap(ModItems.LORDRAN_SOLDIER_BOOTS.get(), 1F, 2F));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_HELM.get(), 2.6F, 3F));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_ARMOR.get(), 6.6F, 8F));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_WAISTCLOTH.get(), 1.4F, 5F));
-		putCap(new ArmorCap(ModItems.LORDRAN_WARRIOR_BOOTS.get(), 1F, 0F));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_HELM.get(), 4.8F, 8F));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_ARMOR.get(), 12.5F, 20F));
-		putCap(new ArmorCap(ModItems.ELITE_CLERIC_LEGGINGS.get(), 7.4F, 12F));
-		putCap(new ArmorCap(ModItems.FALCONER_HELM.get(), 4.5F, 6F));
-		putCap(new ArmorCap(ModItems.FALCONER_ARMOR.get(), 7.7F, 12F));
-		putCap(new ArmorCap(ModItems.FALCONER_LEGGINGS.get(), 5.8F, 8F));
-		putCap(new ArmorCap(ModItems.FALCONER_BOOTS.get(), 3.2F, 4F));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_HELM.get(), 5F, 8F));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_ARMOR.get(), 13F, 21F));
-		putCap(new ArmorCap(ModItems.BLACK_KNIGHT_LEGGINGS.get(), 7F, 17F));
-		putCap(new ArmorCap(ModItems.BALDER_HELM.get(), 4.2F, 6F));
-		putCap(new ArmorCap(ModItems.BALDER_ARMOR.get(), 10.9F, 16F));
-		putCap(new ArmorCap(ModItems.BALDER_LEGGINGS.get(), 6.4F, 9F));
-		putCap(new ArmorCap(ModItems.BALDER_BOOTS.get(), 3.5F, 5F));
-		putCap(new ArmorCap(ModItems.BURNT_SHIRT.get(), 0.8F, 0F));
-		putCap(new ArmorCap(ModItems.BURNT_TROUSERS.get(), 0.8F, 0F));
-		putCap(new ArmorCap(ModItems.FANG_BOAR_HELM.get(), 8F, 12F));
-		putCap(new ArmorCap(ModItems.BERENIKE_HELM.get(), 5.4F, 9F));
-		putCap(new ArmorCap(ModItems.BERENIKE_ARMOR.get(), 14F, 23F));
-		putCap(new ArmorCap(ModItems.BERENIKE_LEGGINGS.get(), 8.3F, 14F));
-		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
-		CAPABILITY_BY_CLASS.put(ArmorItem.class, VanillaArmorCap::new);
 		
 		CAPABILITIES.putAll(DEFAULT_CAPABILITIES);
 	}

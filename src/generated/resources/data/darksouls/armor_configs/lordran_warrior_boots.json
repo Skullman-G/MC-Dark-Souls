@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:lordran_warrior_boots",
+  "weight": 1.0,
+  "poise": 0.0,
+  "defense": {
+    "REGULAR": 13.0,
+    "STRIKE": 13.8,
+    "SLASH": 13.0,
+    "THRUST": 13.0,
+    "MAGIC": 12.0,
+    "FIRE": 7.0,
+    "LIGHTNING": 13.0,
+    "HOLY": 12.0,
+    "DARK": 12.0
+  }
+}

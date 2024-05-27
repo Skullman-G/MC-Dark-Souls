@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:black_knight_leggings",
+  "weight": 7.0,
+  "poise": 17.0,
+  "defense": {
+    "REGULAR": 30.0,
+    "STRIKE": 28.5,
+    "SLASH": 33.9,
+    "THRUST": 29.4,
+    "MAGIC": 15.0,
+    "FIRE": 26.0,
+    "LIGHTNING": 9.0,
+    "HOLY": 15.0,
+    "DARK": 15.0
+  }
+}

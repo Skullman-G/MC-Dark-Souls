@@ -28,5 +28,5 @@ public abstract class MeleeAttackGoalMixin
 		cir.setReturnValue(this.adjustedTickDelay(1000));
 	}
 	
-	@Shadow protected abstract int adjustedTickDelay(int delay);
+	/*@Shadow*/ protected abstract int adjustedTickDelay(int delay);
 }

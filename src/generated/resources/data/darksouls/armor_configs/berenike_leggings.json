@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:berenike_leggings",
+  "weight": 8.3,
+  "poise": 14.0,
+  "defense": {
+    "REGULAR": 25.0,
+    "STRIKE": 23.5,
+    "SLASH": 28.8,
+    "THRUST": 25.0,
+    "MAGIC": 13.0,
+    "FIRE": 12.0,
+    "LIGHTNING": 8.0,
+    "HOLY": 13.0,
+    "DARK": 13.0
+  }
+}

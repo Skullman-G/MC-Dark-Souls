@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:lordran_soldier_helm",
+  "weight": 3.0,
+  "poise": 5.0,
+  "defense": {
+    "REGULAR": 10.0,
+    "STRIKE": 10.0,
+    "SLASH": 11.1,
+    "THRUST": 8.8,
+    "MAGIC": 6.0,
+    "FIRE": 6.0,
+    "LIGHTNING": 4.0,
+    "HOLY": 6.0,
+    "DARK": 6.0
+  }
+}

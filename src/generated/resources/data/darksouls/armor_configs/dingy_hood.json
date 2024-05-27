@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:dingy_hood",
+  "weight": 0.8,
+  "poise": 0.0,
+  "defense": {
+    "REGULAR": 6.0,
+    "STRIKE": 7.5,
+    "SLASH": 6.0,
+    "THRUST": 6.0,
+    "MAGIC": 8.0,
+    "FIRE": 5.0,
+    "LIGHTNING": 6.0,
+    "HOLY": 8.0,
+    "DARK": 8.0
+  }
+}

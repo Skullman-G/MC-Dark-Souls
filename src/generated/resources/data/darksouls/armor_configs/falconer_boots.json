@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:falconer_boots",
+  "weight": 3.2,
+  "poise": 4.0,
+  "defense": {
+    "REGULAR": 35.0,
+    "STRIKE": 39.0,
+    "SLASH": 34.0,
+    "THRUST": 34.0,
+    "MAGIC": 7.0,
+    "FIRE": 4.0,
+    "LIGHTNING": 9.0,
+    "HOLY": 7.0,
+    "DARK": 7.0
+  }
+}

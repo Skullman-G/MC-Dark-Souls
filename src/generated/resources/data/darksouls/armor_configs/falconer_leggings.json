@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:falconer_leggings",
+  "weight": 5.8,
+  "poise": 8.0,
+  "defense": {
+    "REGULAR": 55.0,
+    "STRIKE": 59.0,
+    "SLASH": 54.0,
+    "THRUST": 54.0,
+    "MAGIC": 17.0,
+    "FIRE": 14.0,
+    "LIGHTNING": 19.0,
+    "HOLY": 17.0,
+    "DARK": 17.0
+  }
+}

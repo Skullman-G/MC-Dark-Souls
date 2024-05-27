@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:lordran_soldier_armor",
+  "weight": 7.8,
+  "poise": 12.0,
+  "defense": {
+    "REGULAR": 26.0,
+    "STRIKE": 26.0,
+    "SLASH": 28.9,
+    "THRUST": 22.9,
+    "MAGIC": 16.0,
+    "FIRE": 17.0,
+    "LIGHTNING": 10.0,
+    "HOLY": 16.0,
+    "DARK": 16.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:fang_boar_helm",
+  "weight": 8.0,
+  "poise": 12.0,
+  "defense": {
+    "REGULAR": 26.0,
+    "STRIKE": 23.4,
+    "SLASH": 31.2,
+    "THRUST": 26.0,
+    "MAGIC": 5.0,
+    "FIRE": 4.0,
+    "LIGHTNING": 4.0,
+    "HOLY": 5.0,
+    "DARK": 5.0
+  }
+}

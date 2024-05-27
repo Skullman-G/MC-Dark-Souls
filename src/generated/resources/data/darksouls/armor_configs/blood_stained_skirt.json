@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:blood_stained_skirt",
+  "weight": 1.4,
+  "poise": 0.0,
+  "defense": {
+    "REGULAR": 13.0,
+    "STRIKE": 16.3,
+    "SLASH": 13.0,
+    "THRUST": 13.0,
+    "MAGIC": 27.0,
+    "FIRE": 16.0,
+    "LIGHTNING": 21.0,
+    "HOLY": 27.0,
+    "DARK": 27.0
+  }
+}

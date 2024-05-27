@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:falconer_helm",
+  "weight": 4.5,
+  "poise": 6.0,
+  "defense": {
+    "REGULAR": 43.0,
+    "STRIKE": 38.0,
+    "SLASH": 47.0,
+    "THRUST": 44.0,
+    "MAGIC": 13.0,
+    "FIRE": 19.0,
+    "LIGHTNING": 7.0,
+    "HOLY": 13.0,
+    "DARK": 13.0
+  }
+}

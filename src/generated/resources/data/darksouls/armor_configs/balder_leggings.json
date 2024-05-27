@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:balder_leggings",
+  "weight": 6.4,
+  "poise": 9.0,
+  "defense": {
+    "REGULAR": 22.0,
+    "STRIKE": 21.6,
+    "SLASH": 26.8,
+    "THRUST": 21.1,
+    "MAGIC": 12.0,
+    "FIRE": 14.0,
+    "LIGHTNING": 9.0,
+    "HOLY": 12.0,
+    "DARK": 12.0
+  }
+}

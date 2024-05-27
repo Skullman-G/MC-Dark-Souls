@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:elite_cleric_helm",
+  "weight": 4.8,
+  "poise": 8.0,
+  "defense": {
+    "REGULAR": 15.0,
+    "STRIKE": 15.0,
+    "SLASH": 17.2,
+    "THRUST": 15.0,
+    "MAGIC": 9.0,
+    "FIRE": 8.0,
+    "LIGHTNING": 6.0,
+    "HOLY": 9.0,
+    "DARK": 9.0
+  }
+}

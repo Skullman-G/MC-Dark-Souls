@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:balder_helm",
+  "weight": 4.2,
+  "poise": 6.0,
+  "defense": {
+    "REGULAR": 14.0,
+    "STRIKE": 13.7,
+    "SLASH": 17.1,
+    "THRUST": 13.4,
+    "MAGIC": 6.0,
+    "FIRE": 8.0,
+    "LIGHTNING": 6.0,
+    "HOLY": 6.0,
+    "DARK": 6.0
+  }
+}

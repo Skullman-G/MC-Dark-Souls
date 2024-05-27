@@ -1,0 +1,16 @@
+{
+  "registry_name": "darksouls:balder_armor",
+  "weight": 10.9,
+  "poise": 16.0,
+  "defense": {
+    "REGULAR": 37.0,
+    "STRIKE": 36.3,
+    "SLASH": 45.1,
+    "THRUST": 35.5,
+    "MAGIC": 15.0,
+    "FIRE": 18.0,
+    "LIGHTNING": 15.0,
+    "HOLY": 15.0,
+    "DARK": 15.0
+  }
+}
