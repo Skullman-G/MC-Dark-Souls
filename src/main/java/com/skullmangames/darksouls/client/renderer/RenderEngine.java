@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.client.renderer.item.RenderShield;
 import com.skullmangames.darksouls.client.renderer.item.RenderTrident;
 import com.skullmangames.darksouls.client.renderer.entity.ArmatureRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.ArmorStandRenderer;
+import com.skullmangames.darksouls.client.renderer.entity.BellGargoyleRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.BerenikeKnightRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.BlackKnightRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.HollowRenderer;
@@ -146,6 +147,7 @@ public class RenderEngine
 		this.entityRendererMap.put(ModEntities.TAURUS_DEMON.get(), new TaurusDemonRenderer());
 		this.entityRendererMap.put(ModEntities.BALDER_KNIGHT.get(), new SimpleHumanoidRenderer<BalderKnight, BalderKnightCap>(DarkSouls.MOD_ID, "hollow/lordran_hollow"));
 		this.entityRendererMap.put(ModEntities.BERENIKE_KNIGHT.get(), new BerenikeKnightRenderer());
+		this.entityRendererMap.put(ModEntities.BELL_GARGOYLE.get(), new BellGargoyleRenderer());
 		
 		// Init Item Renderers
 		RenderBow bowRenderer = new RenderBow();

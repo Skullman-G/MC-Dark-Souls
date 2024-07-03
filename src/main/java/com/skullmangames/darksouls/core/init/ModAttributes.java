@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.BalderKnight;
+import com.skullmangames.darksouls.common.entity.BellGargoyle;
 import com.skullmangames.darksouls.common.entity.BerenikeKnight;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.Falconer;
@@ -154,6 +155,7 @@ public class ModAttributes
 		event.put(ModEntities.BERENIKE_KNIGHT.get(), BerenikeKnight.createAttributes().build());
 		event.put(ModEntities.TERRACOTTA_VASE.get(), LivingEntity.createLivingAttributes().build());
 		event.put(ModEntities.BREAKABLE_BARREL.get(), LivingEntity.createLivingAttributes().build());
+		event.put(ModEntities.BELL_GARGOYLE.get(), BellGargoyle.createAttributes().build());
 	}
 	
 	public static void modifyAttributeMap(EntityAttributeModificationEvent event)
@@ -168,6 +170,7 @@ public class ModAttributes
 		general(ModEntities.TAURUS_DEMON.get(), event);
 		general(ModEntities.BALDER_KNIGHT.get(), event);
 		general(ModEntities.BERENIKE_KNIGHT.get(), event);
+		general(ModEntities.BELL_GARGOYLE.get(), event);
 		
 		general(EntityType.ARMOR_STAND, event);
 		general(EntityType.ZOMBIE, event);

@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BerenikeKnightRenderer extends BipedRenderer<BerenikeKnight, BerenikeKnightCap>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/lordran_hollow.png");
+	private static final ResourceLocation TEXTURE = DarkSouls.rl("textures/entities/hollow/lordran_hollow.png");
 	private final HeldItemLayer<BerenikeKnight, BerenikeKnightCap> layer;
 	
 	public BerenikeKnightRenderer()

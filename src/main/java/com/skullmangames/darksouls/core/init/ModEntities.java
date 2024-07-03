@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.entity.AnastaciaOfAstora;
 import com.skullmangames.darksouls.common.entity.BalderKnight;
+import com.skullmangames.darksouls.common.entity.BellGargoyle;
 import com.skullmangames.darksouls.common.entity.BerenikeKnight;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.BreakableBarrel;
@@ -118,6 +119,11 @@ public class ModEntities
 	public static final RegistryObject<EntityType<TaurusDemon>> TAURUS_DEMON = register("taurus_demon",
 			EntityType.Builder.<TaurusDemon>of(TaurusDemon::new, MobCategory.MONSTER)
 			.sized(3.5F, 5F)
+			.canSpawnFarFromPlayer());
+	
+	public static final RegistryObject<EntityType<BellGargoyle>> BELL_GARGOYLE = register("bell_gargoyle",
+			EntityType.Builder.<BellGargoyle>of(BellGargoyle::new, MobCategory.MONSTER)
+			.sized(3F, 3F)
 			.canSpawnFarFromPlayer());
 	
 	//Projectiles

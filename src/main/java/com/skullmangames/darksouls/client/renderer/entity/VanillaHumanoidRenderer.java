@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Mob;
 
 public class VanillaHumanoidRenderer<T extends Mob> extends HumanoidMobRenderer<T, HumanoidModel<T>>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png");
+	private static final ResourceLocation TEXTURE = DarkSouls.rl("textures/entities/hollow/hollow.png");
 	
 	public VanillaHumanoidRenderer(EntityRendererProvider.Context context)
 	{

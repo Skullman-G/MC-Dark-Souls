@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BlackKnightRenderer extends BipedRenderer<BlackKnight, BlackKnightCap>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/hollow/hollow.png");
+	private static final ResourceLocation TEXTURE = DarkSouls.rl("textures/entities/hollow/hollow.png");
 	
 	@Override
 	protected ResourceLocation getEntityTexture(BlackKnight entityIn)

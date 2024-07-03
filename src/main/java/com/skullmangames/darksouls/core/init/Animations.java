@@ -433,6 +433,9 @@ public final class Animations
 	// Anastacia of Astora
 	public static StaticAnimation ANASTACIA_IDLE;
 	
+	// Bell Gargoyle
+	public static StaticAnimation BELL_GARGOYLE_IDLE;
+	
 	public static ImmutableMap.Builder<ResourceLocation, StaticAnimation> init()
 	{
 		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
@@ -3516,6 +3519,10 @@ public final class Animations
 		// Anastacia of Astora
 		ANASTACIA_IDLE = new StaticAnimation(DarkSouls.rl("anastacia_idle"), 0.4F, true,
 				DarkSouls.rl("anastacia_of_astora/idle"), (models) -> models.ENTITY_BIPED).register(builder);
+		
+		// Bell Gargoyle
+		BELL_GARGOYLE_IDLE = new StaticAnimation(DarkSouls.rl("bell_gargoyle_idle"), 0.2F, true, DarkSouls.rl("bell_gargoyle/idle"), (models) -> models.ENTITY_BELL_GARGOYLE)
+				.register(builder);
 		
 		return builder;
 	}

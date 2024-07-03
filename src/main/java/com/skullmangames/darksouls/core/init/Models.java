@@ -20,6 +20,18 @@ public abstract class Models<T extends Model>
 	public T ENTITY_ARMOR_STAND;
 	public T ENTITY_STRAY_DEMON;
 	public T ENTITY_TAURUS_DEMON;
+	public T ENTITY_BELL_GARGOYLE;
+	
+	protected void init()
+	{
+		this.ENTITY_BIPED = this.register("biped");
+		this.ENTITY_BIPED_64_32_TEX = this.register("biped_old_texture", "biped");
+		this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
+		this.ENTITY_ARMOR_STAND = this.register("armor_stand", "biped");
+		this.ENTITY_STRAY_DEMON = this.register("stray_demon");
+		this.ENTITY_TAURUS_DEMON = this.register("taurus_demon");
+		this.ENTITY_BELL_GARGOYLE = this.register("bell_gargoyle");
+	}
 	
 	protected abstract T register(String name);
 	protected abstract T register(String name, String armaturePath);
@@ -36,12 +48,7 @@ public abstract class Models<T extends Model>
 		
 		public ServerModels()
 		{
-			this.ENTITY_BIPED = this.register("biped");
-			this.ENTITY_BIPED_64_32_TEX = this.register("biped_old_texture", "biped");
-			this.ENTITY_BIPED_SLIM_ARM = this.register("biped_slim_arm", "biped");
-			this.ENTITY_ARMOR_STAND = this.register("armor_stand", "biped");
-			this.ENTITY_STRAY_DEMON = this.register("stray_demon");
-			this.ENTITY_TAURUS_DEMON = this.register("taurus_demon");
+			this.init();
 		}
 		
 		@Override
@@ -66,7 +73,7 @@ public abstract class Models<T extends Model>
 		@Override
 		protected Model registerMeshOnly(String name)
 		{
-			return new Model(new ResourceLocation(DarkSouls.MOD_ID, name));
+			return new Model(DarkSouls.rl(name));
 		}
 		
 		@Nullable

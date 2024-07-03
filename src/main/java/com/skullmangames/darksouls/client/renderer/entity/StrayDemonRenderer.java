@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class StrayDemonRenderer extends ArmatureRenderer<StrayDemon, StrayDemonCap>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(DarkSouls.MOD_ID, "textures/entities/stray_demon.png");
+	private static final ResourceLocation TEXTURE = DarkSouls.rl("textures/entities/stray_demon.png");
 	
 	public StrayDemonRenderer()
 	{

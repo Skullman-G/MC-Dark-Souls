@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 {
-	private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/particle/lightning_spear.png");
+	private static final ResourceLocation TEXTURE_LOCATION = DarkSouls.rl("textures/particle/lightning_spear.png");
 	private static final RenderType RENDER_TYPE = ModRenderTypes.getEffectEntity(TEXTURE_LOCATION);
 	private final float scale;
 	
