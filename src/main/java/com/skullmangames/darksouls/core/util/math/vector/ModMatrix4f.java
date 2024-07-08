@@ -158,6 +158,11 @@ public class ModMatrix4f
 		return transform(this, right);
 	}
 	
+	public Vec3 transform(Vec3 right)
+	{
+		return transform(this, right);
+	}
+	
 	public static Vec3 transform(ModMatrix4f matrix, Vec3 src)
 	{
 		double x = matrix.m00 * src.x + matrix.m10 * src.y + matrix.m20 * src.z + matrix.m30 * 1.0F;

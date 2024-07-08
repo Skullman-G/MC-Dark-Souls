@@ -111,11 +111,11 @@ public abstract class WeaponSkill
 			switch(type)
 			{
 			default: case BASIC:
-				StaticAnimation animation = AnimationManager.getInstance().getAnimation(new ResourceLocation(json.get("animation").getAsString()));
+				StaticAnimation animation = AnimationManager.getAnimation(new ResourceLocation(json.get("animation").getAsString()));
 				return new BaseBuilder(location, animation);
 			case TWO_SIDES:
-				StaticAnimation left = AnimationManager.getInstance().getAnimation(new ResourceLocation(json.get("left").getAsString()));
-				StaticAnimation right = AnimationManager.getInstance().getAnimation(new ResourceLocation(json.get("right").getAsString()));
+				StaticAnimation left = AnimationManager.getAnimation(new ResourceLocation(json.get("left").getAsString()));
+				StaticAnimation right = AnimationManager.getAnimation(new ResourceLocation(json.get("right").getAsString()));
 				return new MirrorBuilder(location, left, right);
 			}
 		}

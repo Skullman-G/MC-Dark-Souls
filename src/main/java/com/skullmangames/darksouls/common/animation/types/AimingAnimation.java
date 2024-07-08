@@ -2,16 +2,20 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
+import com.skullmangames.darksouls.common.animation.Property.AimingAnimationProperty;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
@@ -24,7 +28,8 @@ public class AimingAnimation extends StaticAnimation
 	public StaticAnimation lookUp;
 	public StaticAnimation lookDown;
 
-	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3, Function<Models<?>, Model> model)
+	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
+			Function<Models<?>, Model> model)
 	{
 		super(id, convertTime, repeatPlay, path1, model);
 		this.lookUp = new StaticAnimation(null, convertTime, repeatPlay, path2, model);
@@ -50,6 +55,19 @@ public class AimingAnimation extends StaticAnimation
 			if (player.getElapsedTime() >= this.totalTime - 0.06F)
 				layer.pause();
 		}
+	}
+	
+	@Override
+	public EntityState getState(float time)
+	{
+		if (this.isReboundAnimation()) return EntityState.POST_CONTACT;
+		return super.getState(time);
+	}
+	
+	@Override
+	public boolean isReboundAnimation()
+	{
+		return this.getProperty(AimingAnimationProperty.IS_REBOUND).orElse(false);
 	}
 
 	@Override
@@ -100,5 +118,47 @@ public class AimingAnimation extends StaticAnimation
 		load(resourceManager, models, this);
 		load(resourceManager, models, this.lookUp);
 		load(resourceManager, models, this.lookDown);
+	}
+	
+	public static class Builder extends StaticAnimation.Builder
+	{
+		protected final ResourceLocation lookUpLocation;
+		protected final ResourceLocation lookDownLocation;
+
+		public Builder(ResourceLocation id, float convertTime, boolean repeat, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
+				Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, repeat, path1, model);
+			this.lookUpLocation = path2;
+			this.lookDownLocation = path3;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.lookUpLocation = new ResourceLocation(json.get("look_up_location").getAsString());
+			this.lookDownLocation = new ResourceLocation(json.get("look_down_location").getAsString());
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("look_up_location", this.lookUpLocation.toString());
+			json.addProperty("look_down_location", this.lookDownLocation.toString());
+			return json;
+		}
+
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.AIMING;
+		}
+		
+		@Override
+		public AimingAnimation build()
+		{
+			return new AimingAnimation(this.id, this.convertTime, this.repeat, this.location, this.lookUpLocation, this.lookDownLocation, this.model);
+		}
 	}
 }

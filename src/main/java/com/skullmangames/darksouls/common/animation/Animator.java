@@ -2,7 +2,6 @@ package com.skullmangames.darksouls.common.animation;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -38,12 +37,12 @@ public abstract class Animator
 
 	public final void playAnimation(ResourceLocation id, float startAt)
 	{
-		this.playAnimation(DarkSouls.getInstance().animationManager.getAnimation(id), startAt);
+		this.playAnimation(AnimationManager.getAnimation(id), startAt);
 	}
 
 	public final void playAnimationInstantly(ResourceLocation id)
 	{
-		this.playAnimationInstantly(DarkSouls.getInstance().animationManager.getAnimation(id));
+		this.playAnimationInstantly(AnimationManager.getAnimation(id));
 	}
 
 	public Pose getPose(float partialTicks)

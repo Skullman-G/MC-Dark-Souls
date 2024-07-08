@@ -13,17 +13,16 @@ import com.skullmangames.darksouls.core.util.ProjectileUtil;
 import com.skullmangames.darksouls.core.util.math.MathUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class LightningSpear extends Projectile
+public class LightningSpear extends MagicProjectile
 {
 	private int particle;
-	private final float damage;
+	private float damage;
 	
 	public LightningSpear(EntityType<? extends LightningSpear> type, Level level)
 	{
@@ -31,25 +30,34 @@ public class LightningSpear extends Projectile
 		this.damage = 0F;
 	}
 	
-	private LightningSpear(EntityType<? extends LightningSpear> type, LivingCap<?> entityCap, float baseDamage)
+	private LightningSpear(EntityType<? extends LightningSpear> type, LivingCap<?> entityCap)
 	{
 		super(type, entityCap.getLevel());
-		this.setOwner(entityCap.getOriginalEntity());
+		this.initProjectile(entityCap);
+	}
+	
+	@Override
+	public void initProjectile(LivingCap<?> cap)
+	{
+		this.setOwner(cap.getOriginalEntity());
 		
-		double yRot = Math.toRadians(MathUtils.toNormalRot(entityCap.getYRot()));
-		this.setPos(entityCap.getX() + Math.sin(yRot) * 0.5F, entityCap.getY() + 1.75F, entityCap.getZ() + Math.cos(yRot) * 1.75F);
-		this.yRot = entityCap.getYRot();
-		this.damage = baseDamage;
+		double yRot = Math.toRadians(MathUtils.toNormalRot(cap.getYRot()));
+		this.setPos(cap.getX() + Math.sin(yRot) * 0.5F, cap.getY() + 1.75F, cap.getZ() + Math.cos(yRot) * 1.75F);
+		this.yRot = cap.getYRot();
+		this.damage = 0F;
+		if (this.getType() == ModEntities.LIGHTNING_SPEAR.get()) this.damage += 145F;
+		else if (this.getType() == ModEntities.GREAT_LIGHTNING_SPEAR.get()) this.damage += 185;
+		this.damage *= cap.getSpellBuff();
 	}
 	
 	public static LightningSpear lightningSpear(LivingCap<?> entityCap)
 	{
-		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap, 145 * entityCap.getSpellBuff());
+		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap);
 	}
 	
 	public static LightningSpear greatLightningSpear(LivingCap<?> entityCap)
 	{
-		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap, 185 * entityCap.getSpellBuff());
+		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap);
 	}
 	
 	@Override

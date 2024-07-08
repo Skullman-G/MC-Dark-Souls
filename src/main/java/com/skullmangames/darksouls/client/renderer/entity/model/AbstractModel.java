@@ -11,6 +11,11 @@ public abstract class AbstractModel
 		this.location = location;
 	}
 	
+	public ResourceLocation getId()
+	{
+		return this.location;
+	}
+	
 	public String getName()
 	{
 		return location.getPath();

@@ -797,14 +797,6 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return orgEntity;
 	}
 
-	public SoundEvent getWeaponHitSound(InteractionHand hand)
-	{
-		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		if (cap == null)
-			return null;
-		return cap.getHitSound();
-	}
-
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);

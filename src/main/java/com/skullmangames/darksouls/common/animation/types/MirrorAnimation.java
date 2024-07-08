@@ -2,9 +2,10 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
-import com.google.common.collect.ImmutableMap.Builder;
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -72,11 +73,51 @@ public class MirrorAnimation extends StaticAnimation
 		load(resourceManager, models, this.left);
 	}
 	
-	@Override
-	public MirrorAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	public static class Builder extends StaticAnimation.Builder
 	{
-		this.right.register(builder);
-		this.left.register(builder);
-		return this;
+		protected final ResourceLocation location2;
+		protected final boolean applyLayerParts;
+		
+		public Builder(ResourceLocation id, float convertTime, boolean isRepeat,
+				ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
+		{
+			this(id, convertTime, isRepeat, true, path1, path2, model);
+		}
+
+		public Builder(ResourceLocation id, float convertTime, boolean isRepeat, boolean applyLayerParts,
+				ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, isRepeat, path1, model);
+			this.location2 = path2;
+			this.applyLayerParts = applyLayerParts;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.location2 = new ResourceLocation(json.get("mirrored_location").getAsString());
+			this.applyLayerParts = json.get("apply_layer_parts").getAsBoolean();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("mirrored_location", this.location2.toString());
+			json.addProperty("apply_layer_parts", this.applyLayerParts);
+			return json;
+		}
+
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.MIRROR;
+		}
+		
+		@Override
+		public MirrorAnimation build()
+		{
+			return new MirrorAnimation(this.id, this.convertTime, this.repeat, this.location, this.location2, this.model);
+		}
 	}
 }

@@ -3,10 +3,11 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.List;
 import java.util.function.Function;
 
-import com.google.common.collect.ImmutableMap.Builder;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -155,10 +156,50 @@ public class DodgingAnimation extends ActionAnimation
 		return EntityState.PRE_CONTACT;
 	}
 	
-	@Override
-	public DodgingAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	public static class Builder extends ActionAnimation.Builder
 	{
-		super.register(builder);
-		return this;
+		protected final boolean canRotate;
+		
+		public Builder(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, convertTime, false, path, model);
+		}
+		
+		public Builder(ResourceLocation id, float convertTime, boolean canRotate, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, convertTime, canRotate, 0.0F, path, model);
+		}
+		
+		public Builder(ResourceLocation id, float convertTime, boolean canRotate, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, delayTime, path, model);
+			this.canRotate = canRotate;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.canRotate = json.get("can_rotate").getAsBoolean();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("can_rotate", this.canRotate);
+			return json;
+		}
+		
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.DODGE;
+		}
+		
+		@Override
+		public DodgingAnimation build()
+		{
+			return new DodgingAnimation(this.id, this.convertTime, this.canRotate, this.delayTime, this.location, this.model);
+		}
 	}
 }

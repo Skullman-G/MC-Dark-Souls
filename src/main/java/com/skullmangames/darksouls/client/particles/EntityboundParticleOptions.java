@@ -25,7 +25,7 @@ public class EntityboundParticleOptions implements ParticleOptions
 		}
 	};
 
-	private final ParticleType<EntityboundParticleOptions> type;
+	private final ParticleType<?> type;
 	private final int entityId;
 
 	public static Codec<EntityboundParticleOptions> codec(ParticleType<EntityboundParticleOptions> type)

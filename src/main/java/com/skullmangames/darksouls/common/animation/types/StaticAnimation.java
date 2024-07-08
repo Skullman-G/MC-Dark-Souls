@@ -3,20 +3,23 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
-
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimBuilder;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.animation.events.AnimEvent;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
@@ -53,12 +56,6 @@ public class StaticAnimation extends DynamicAnimation
 		this.animationId = id;
 		this.path = path;
 		this.model = model;
-	}
-	
-	public StaticAnimation register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder)
-	{
-		builder.put(this.getId(), this);
-		return this;
 	}
 	
 	public StaticAnimation get(LivingCap<?> entityCap, LayerPart layerPart)
@@ -113,9 +110,9 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{
-			for (Event event : events)
+			for (AnimEvent event : events)
 			{
-				if (event.time == Event.ON_BEGIN)
+				if (event.time == AnimEvent.ON_BEGIN)
 				{
 					event.tryExecuting(entityCap);
 				}
@@ -135,9 +132,9 @@ public class StaticAnimation extends DynamicAnimation
 				float prevElapsed = player.getPrevElapsedTime();
 				float elapsed = player.getElapsedTime();
 
-				for (Event event : events)
+				for (AnimEvent event : events)
 				{
-					if (event.time != Event.ON_BEGIN && event.time != Event.ON_END)
+					if (event.time != AnimEvent.ON_BEGIN && event.time != AnimEvent.ON_END)
 					{
 						if (event.time < prevElapsed || event.time >= elapsed)
 						{
@@ -157,9 +154,9 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{
-			for (Event event : events)
+			for (AnimEvent event : events)
 			{
-				if (event.time == Event.ON_END)
+				if (event.time == AnimEvent.ON_END)
 				{
 					event.tryExecuting(entityCap);
 				}
@@ -183,7 +180,7 @@ public class StaticAnimation extends DynamicAnimation
 		{
 			try
 			{
-				StaticAnimation deathAnimation = DarkSouls.getInstance().animationManager.getAnimation(rl);
+				StaticAnimation deathAnimation = AnimationManager.getAnimation(rl);
 				return deathAnimation instanceof DeathAnimation ? (DeathAnimation)deathAnimation : null;
 			}
 			catch (IllegalArgumentException e)
@@ -205,53 +202,100 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		return this.animationId.toString();
 	}
-
-	public static class Event implements Comparable<Event>
+	
+	public static class Builder extends AnimBuilder
 	{
-		public static final float ON_BEGIN = Float.MIN_VALUE;
-		public static final float ON_END = Float.MAX_VALUE;
-		final float time;
-		final Side executionSide;
-		final Consumer<LivingCap<?>> event;
-
-		private Event(float time, Side executionSide, Consumer<LivingCap<?>> event)
+		protected final ResourceLocation id;
+		protected final ResourceLocation location;
+		protected final float convertTime;
+		protected final boolean repeat;
+		protected final Function<Models<?>, Model> model;
+		
+		protected final ImmutableMap.Builder<Property<?>, Object> properties = new ImmutableMap.Builder<>();
+		
+		public Builder()
 		{
-			this.time = time;
-			this.executionSide = executionSide;
-			this.event = event;
+			this.id = new ResourceLocation("null", "null");
+			this.location = null;
+			this.model = null;
+			this.convertTime = 0.0F;
+			this.repeat = false;
 		}
 
-		@Override
-		public int compareTo(Event arg0)
+		public Builder(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 		{
-			if (this.time == arg0.time) return 0;
-			else return this.time > arg0.time ? 1 : -1;
+			this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
 		}
 
-		public void tryExecuting(LivingCap<?> entityCap)
+		public Builder(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 		{
-			if (this.executionSide.predicate.test(entityCap.isClientSide()))
+			this.id = id;
+			this.location = path;
+			this.model = model;
+			this.convertTime = convertTime;
+			this.repeat = isRepeat;
+		}
+		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			this.id = location;
+			this.location = new ResourceLocation(json.get("location").getAsString());
+			
+			this.convertTime = json.get("convert_time").getAsFloat();
+			this.repeat = json.get("repeat").getAsBoolean();
+			
+			ResourceLocation modelName = new ResourceLocation(json.get("model").getAsString());
+			this.model = (models) -> models.findModel(modelName);
+			
+			JsonObject properties = json.get("properties").getAsJsonObject();
+			for (Map.Entry<String, JsonElement> entry : properties.entrySet())
 			{
-				this.event.accept(entityCap);
+				Property property = Property.GET_BY_NAME.get(entry.getKey());
+				this.addProperty(property, property.jsonConverter.fromJson(entry.getValue()));
 			}
 		}
-
-		public static Event create(float time, Side isRemote, Consumer<LivingCap<?>> event)
+		
+		public JsonObject toJson()
 		{
-			return new Event(time, isRemote, event);
-		}
-
-		public enum Side
-		{
-			CLIENT((isLogicalClient) -> isLogicalClient), SERVER((isLogicalClient) -> !isLogicalClient),
-			BOTH((isLogicalClient) -> true);
-
-			Predicate<Boolean> predicate;
-
-			Side(Predicate<Boolean> predicate)
+			JsonObject root = new JsonObject();
+			
+			root.addProperty("animation_type", this.getAnimType().toString());
+			root.addProperty("location", this.location.toString());
+			root.addProperty("convert_time", this.convertTime);
+			root.addProperty("repeat", this.repeat);
+			root.addProperty("model", this.model.apply(Models.SERVER).getId().toString());
+			
+			JsonObject properties = new JsonObject();
+			root.add("properties", properties);
+			
+			this.properties.build().forEach((p, v) ->
 			{
-				this.predicate = predicate;
-			}
+				properties.add(p.name, p.jsonConverter.toJson(v));
+			});
+			
+			return root;
+		}
+		
+		public <V> Builder addProperty(Property<V> property, V value)
+		{
+			this.properties.put(property, value);
+			return this;
+		}
+		
+		public ResourceLocation getId()
+		{
+			return this.id;
+		}
+		
+		public AnimationType getAnimType()
+		{
+			return AnimationType.STATIC;
+		}
+		
+		public StaticAnimation build()
+		{
+			return new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model);
 		}
 	}
 }

@@ -2,7 +2,10 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 
 import java.util.function.Function;
 
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -28,11 +31,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class PunishCheckAnimation extends AttackAnimation
 {
-	private final StaticAnimation followUp;
+	private final ResourceLocation followUp;
 	private final boolean isWeak;
 	
 	public PunishCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
-			String index, ResourceLocation path, Function<Models<?>, Model> model, StaticAnimation followUp)
+			String index, ResourceLocation path, Function<Models<?>, Model> model, ResourceLocation followUp)
 	{
 		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model);
 		this.followUp = followUp;
@@ -40,7 +43,7 @@ public class PunishCheckAnimation extends AttackAnimation
 	}
 	
 	public PunishCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak, ResourceLocation path, Function<Models<?>, Model> model,
-			StaticAnimation followUp, AttackAnimation.Phase... phases)
+			ResourceLocation followUp, AttackAnimation.Phase... phases)
 	{
 		super(id, attackType, convertTime, path, model, phases);
 		this.followUp = followUp;
@@ -69,14 +72,17 @@ public class PunishCheckAnimation extends AttackAnimation
 		{
 			ModNetworkManager.sendToPlayer(new STCSetPos(target.position(), target.getYRot(), target.getXRot(), target.getId()), (ServerPlayer)target);
 		}
-		if (this.followUp instanceof CriticalHitAnimation) entityCap.criticalTarget = target;
+		
+		StaticAnimation followUpAnim = AnimationManager.getAnimation(followUp);
+		if (followUpAnim instanceof CriticalHitAnimation) entityCap.criticalTarget = target;
 		return true;
 	}
 	
 	@Override
 	protected void onAttackFinish(LivingCap<?> entityCap, boolean critical)
 	{
-		if (critical) entityCap.playAnimationSynchronized(this.followUp, 0);
+		StaticAnimation followUpAnim = AnimationManager.getAnimation(followUp);
+		if (critical) entityCap.playAnimationSynchronized(followUpAnim, 0);
 	}
 	
 	@Override
@@ -93,5 +99,57 @@ public class PunishCheckAnimation extends AttackAnimation
 		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType,
 				this.getRequiredDeflection(phase), poiseDamage, damages);
 		return extDmgSource;
+	}
+	
+	public static class Builder extends AttackAnimation.Builder
+	{
+		protected final ResourceLocation followUp;
+		protected final boolean isWeak;
+		
+		public Builder(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak,
+				ResourceLocation path, Function<Models<?>, Model> model, ResourceLocation followUp, AttackAnimation.Phase... phases)
+		{
+			super(id, attackType, convertTime, path, model, phases);
+			this.followUp = followUp;
+			this.isWeak = isWeak;
+		}
+		
+		public Builder(ResourceLocation id, AttackType attackType, float convertTime, float begin, float contactStart, float contactEnd,
+				float end, boolean isWeak,
+				String index, ResourceLocation path, Function<Models<?>, Model> model, ResourceLocation followUp)
+		{
+			super(id, attackType, convertTime, begin, contactStart, contactEnd, end, index, path, model);
+			this.followUp = followUp;
+			this.isWeak = isWeak;
+		}
+
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.followUp = new ResourceLocation(json.get("followup_animation").getAsString());
+			this.isWeak = json.get("is_weak").getAsBoolean();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("followup_animation", this.followUp.toString());
+			json.addProperty("is_weak", this.isWeak);
+			return json;
+		}
+		
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.PUNISH_CHECK;
+		}
+		
+		@Override
+		public PunishCheckAnimation build()
+		{
+			return new PunishCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model,
+			this.followUp, this.phases);
+		}
 	}
 }

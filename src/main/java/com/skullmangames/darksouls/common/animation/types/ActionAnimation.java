@@ -3,9 +3,11 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.Pose;
@@ -46,10 +48,10 @@ public class ActionAnimation extends ImmovableAnimation
 		this(id, convertTime, Float.MAX_VALUE, path, model);
 	}
 
-	public ActionAnimation(ResourceLocation id, float convertTime, float postDelay, ResourceLocation path, Function<Models<?>, Model> model)
+	public ActionAnimation(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
 	{
 		super(id, convertTime, path, model);
-		this.delayTime = postDelay;
+		this.delayTime = delayTime;
 	}
 
 	public <V> ActionAnimation addProperty(Property<V> propertyType, V value)
@@ -136,6 +138,16 @@ public class ActionAnimation extends ImmovableAnimation
 	@Override
 	public EntityState getState(float time)
 	{
+		if (this.getProperty(ActionAnimationProperty.IS_HIT).orElse(false))
+		{
+			return EntityState.HIT;
+		}
+		
+		if (this.getProperty(ActionAnimationProperty.PUNISHABLE).orElse(false))
+		{
+			return EntityState.PUNISHABLE;
+		}
+		
 		if (time <= this.delayTime)
 		{
 			return EntityState.PRE_CONTACT;
@@ -238,6 +250,48 @@ public class ActionAnimation extends ImmovableAnimation
 		} else
 		{
 			return new Vector3f(0, 0, 0);
+		}
+	}
+	
+	public static class Builder extends StaticAnimation.Builder
+	{
+		protected final float delayTime;
+		
+		public Builder(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, convertTime, Float.MAX_VALUE, path, model);
+		}
+
+		public Builder(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, false, path, model);
+			this.delayTime = delayTime;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.delayTime = json.get("delay_time").getAsFloat();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("delay_time", this.delayTime);
+			return json;
+		}
+
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.ACTION;
+		}
+		
+		@Override
+		public ActionAnimation build()
+		{
+			return new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model);
 		}
 	}
 }

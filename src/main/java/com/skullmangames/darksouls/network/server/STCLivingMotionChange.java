@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -46,7 +46,7 @@ public class STCLivingMotionChange
 		return new STCLivingMotionChange(buf.readInt(), buf.readBoolean())
 				.putEntries(buf.readMap((b) -> b.readEnum(LivingMotion.class), (b) ->
 				{
-					return DarkSouls.getInstance().animationManager.getAnimation(b.readResourceLocation());
+					return AnimationManager.getAnimation(b.readResourceLocation());
 				}));
 	}
 

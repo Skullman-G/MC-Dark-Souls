@@ -10,14 +10,15 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableMap.Builder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -48,7 +49,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
@@ -174,7 +174,6 @@ public class AttackAnimation extends ActionAnimation
 							if (entityCap.hurtEntity(e, phase.hand, source))
 							{
 								e.invulnerableTime = 0;
-								e.level.playSound(null, e.getX(), e.getY(), e.getZ(), this.getHitSound(entityCap, phase), e.getSoundSource(), 1.0F, 1.0F);
 								if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
 								{
 									entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
@@ -303,11 +302,6 @@ public class AttackAnimation extends ActionAnimation
 		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE);
 	}
 
-	protected SoundEvent getHitSound(LivingCap<?> entityCap, Phase phase)
-	{
-		return phase.getProperty(AttackProperty.HIT_SOUND).orElse(() -> entityCap.getWeaponHitSound(phase.hand)).get();
-	}
-
 	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
@@ -359,12 +353,6 @@ public class AttackAnimation extends ActionAnimation
 			}
 		}
 		return currentPhase;
-	}
-	
-	@Override
-	public AttackAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
-	{
-		return (AttackAnimation)super.register(builder);
 	}
 
 	public static class Phase
@@ -422,6 +410,110 @@ public class AttackAnimation extends ActionAnimation
 		public String getColliderJointName()
 		{
 			return this.jointName;
+		}
+	}
+	
+	public static class Builder extends ActionAnimation.Builder
+	{
+		protected final AttackType attackType;
+		protected final Phase[] phases;
+		
+		public Builder(ResourceLocation id, AttackType attackType,
+				float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
+				Function<Models<?>, Model> model)
+		{
+			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
+		}
+
+		public Builder(ResourceLocation id, AttackType attackType,
+				float convertTime, float antic, float preDelay, float contact, float recovery,
+				@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
+		}
+
+		public Builder(ResourceLocation id, AttackType attackType,
+				float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
+				@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		}
+		
+		public Builder(ResourceLocation id, AttackType attackType, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
+		{
+			super(id, convertTime, path, model);
+			this.attackType = attackType;
+			this.phases = phases;
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.attackType = AttackType.fromString(json.get("attack_type").getAsString());
+			
+			JsonArray jsonPhases = json.get("phases").getAsJsonArray();
+			int phasesLength = jsonPhases.size();
+			AttackAnimation.Phase[] ps = new AttackAnimation.Phase[phasesLength];
+			
+			for (int i = 0; i < phasesLength; i++)
+			{
+				JsonObject jsonPhase = jsonPhases.get(i).getAsJsonObject();
+				float start = jsonPhase.get("begin").getAsFloat();
+				float preDelay = jsonPhase.get("contact_start").getAsFloat();
+				float contact = jsonPhase.get("contact_end").getAsFloat();
+				float end = jsonPhase.get("end").getAsFloat();
+				String weaponBoneName = jsonPhase.get("weapon_bone_name").getAsString();
+				ps[i] = new AttackAnimation.Phase(start, preDelay, contact, end, weaponBoneName);
+				
+				JsonObject properties = jsonPhase.get("properties").getAsJsonObject();
+				for (Map.Entry<String, JsonElement> entry : properties.entrySet())
+				{
+					Property property = Property.GET_BY_NAME.get(entry.getKey());
+					this.addProperty(property, property.jsonConverter.fromJson(entry.getValue()));
+				}
+			}
+			
+			this.phases = ps;
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			
+			json.addProperty("attack_type", this.attackType.toString());
+			
+			JsonArray jsonPhases = new JsonArray();
+			json.add("phases", jsonPhases);
+			
+			for (AttackAnimation.Phase phase : this.phases)
+			{
+				JsonObject jsonPhase = new JsonObject();
+				jsonPhases.add(jsonPhase);
+				jsonPhase.addProperty("begin", phase.begin);
+				jsonPhase.addProperty("contact_start", phase.contactStart);
+				jsonPhase.addProperty("contact_end", phase.contactEnd);
+				jsonPhase.addProperty("end", phase.end);
+				jsonPhase.addProperty("weapon_bone_name", phase.jointName);
+				
+				JsonObject properties = new JsonObject();
+				jsonPhase.add("properties", properties);
+				
+				this.properties.build().forEach((p, v) ->
+				{
+					properties.add(p.name, p.jsonConverter.toJson(v));
+				});
+			}
+			
+			return json;
+		}
+		
+		@Override
+		public AttackAnimation build()
+		{
+			return new AttackAnimation(this.id, this.attackType, this.convertTime, this.location, this.model, this.phases);
 		}
 	}
 }

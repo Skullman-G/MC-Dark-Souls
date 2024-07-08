@@ -2,7 +2,9 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ClientConfig;
@@ -17,9 +19,9 @@ public class MovementAnimation extends StaticAnimation
 		super(id, convertTime, isRepeat, path, model);
 	}
 
-	public MovementAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path, Function<Models<?>, Model> model)
+	public MovementAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
 	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
 	}
 	
 	@Override
@@ -43,5 +45,35 @@ public class MovementAnimation extends StaticAnimation
 		}
 
 		return movementSpeed;
+	}
+	
+	public static class Builder extends StaticAnimation.Builder
+	{
+		public Builder(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			super(id, isRepeat, path, model);
+		}
+
+		public Builder(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, isRepeat, path, model);
+		}
+		
+		public Builder(ResourceLocation id, JsonObject json)
+		{
+			super(id, json);
+		}
+
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.MOVEMENT;
+		}
+		
+		@Override
+		public StaticAnimation build()
+		{
+			return new MovementAnimation(this.id, this.convertTime, this.repeat, this.location, this.model);
+		}
 	}
 }

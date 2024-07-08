@@ -115,7 +115,7 @@ public class WeaponMoveset
 				for (int i = 0; i < animations.size(); i++)
 				{
 					JsonElement a = animations.get(i);
-					StaticAnimation anim = AnimationManager.getInstance().getAnimation(new ResourceLocation(a.getAsString()));
+					StaticAnimation anim = AnimationManager.getAnimation(new ResourceLocation(a.getAsString()));
 					if (anim instanceof AttackAnimation)
 					{
 						animList[i] = (AttackAnimation)anim;

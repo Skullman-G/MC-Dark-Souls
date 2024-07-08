@@ -3,13 +3,13 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 import java.util.List;
 import java.util.function.Function;
 
-import com.google.common.collect.ImmutableMap.Builder;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
-import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -139,10 +139,49 @@ public class ParryAnimation extends ActionAnimation
 		else return EntityState.POST_CONTACT;
 	}
 	
-	@Override
-	public ParryAnimation register(Builder<ResourceLocation, StaticAnimation> builder)
+	public static class Builder extends ActionAnimation.Builder
 	{
-		super.register(builder);
-		return this;
+		protected final float start;
+		protected final float end;
+		protected final String jointName;
+		
+		public Builder(ResourceLocation id, float convertTime, float start, float end, String jointName, ResourceLocation path,
+				Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, path, model);
+			this.start = start;
+			this.end = end;
+			this.jointName = jointName;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.start = json.get("start").getAsFloat();
+			this.end = json.get("end").getAsFloat();
+			this.jointName = json.get("joint_name").getAsString();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("start", this.start);
+			json.addProperty("end", this.end);
+			json.addProperty("joint_name", this.jointName);
+			return json;
+		}
+		
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.PARRY;
+		}
+		
+		@Override
+		public ParryAnimation build()
+		{
+			return new ParryAnimation(this.id, this.convertTime, this.start, this.end, this.jointName, this.location, this.model);
+		}
 	}
 }

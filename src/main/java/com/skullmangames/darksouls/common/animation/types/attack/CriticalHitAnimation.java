@@ -2,7 +2,9 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 
 import java.util.function.Function;
 
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -43,6 +45,43 @@ public class CriticalHitAnimation extends InvincibleAnimation
 					Deflection.NONE, 0, damages);
 			entityCap.hurtEntity(target, InteractionHand.MAIN_HAND, extDmgSource);
 			entityCap.criticalTarget = null;
+		}
+	}
+	
+	public static class Builder extends InvincibleAnimation.Builder
+	{
+		protected float hit;
+		
+		public Builder(ResourceLocation id, float convertTime, float hit, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			super(id, convertTime, path, model);
+			this.hit = hit;
+		}
+		
+		public Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.hit = json.get("hit").getAsFloat();
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			json.addProperty("hit", this.hit);
+			return json;
+		}
+		
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.CRITICAL_HIT;
+		}
+		
+		@Override
+		public CriticalHitAnimation build()
+		{
+			return new CriticalHitAnimation(this.id, this.convertTime, this.hit, this.location, this.model);
 		}
 	}
 }
