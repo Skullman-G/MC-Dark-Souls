@@ -1,0 +1,88 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:balder_knight/rapier_la",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.1,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.25,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.64,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.72,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 2.0,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.1,
+      "contact_end": 0.4,
+      "end": 0.4,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 15,
+        "stun_type": "LIGHT",
+        "movement_damage_type": "REGULAR",
+        "deflection": "LIGHT",
+        "stamina_damage": 37
+      }
+    },
+    {
+      "begin": 0.4,
+      "contact_start": 0.72,
+      "contact_end": 0.8,
+      "end": 2.0,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 15,
+        "stun_type": "LIGHT",
+        "movement_damage_type": "REGULAR",
+        "deflection": "LIGHT",
+        "stamina_damage": 37
+      }
+    }
+  ]
+}

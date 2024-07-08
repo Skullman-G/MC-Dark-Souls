@@ -1,0 +1,39 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/fist_heavy_attack",
+  "convert_time": 0.5,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.35,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.fist.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.35,
+      "contact_end": 0.5,
+      "end": 1.25,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 15,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "STRIKE",
+        "deflection": "LIGHT",
+        "stamina_usage": 36,
+        "stamina_damage": 28
+      }
+    }
+  ]
+}

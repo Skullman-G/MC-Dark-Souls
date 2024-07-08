@@ -1,0 +1,56 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:balder_knight/shield_ha",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 1.4E-45,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.08,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.fist.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.1,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.08,
+      "contact_end": 0.24,
+      "end": 1.2,
+      "weapon_bone_name": "Tool_L",
+      "properties": {
+        "poise_damage": 15,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "REGULAR",
+        "deflection": "IMPOSSIBLE",
+        "stamina_damage": 37
+      }
+    }
+  ]
+}

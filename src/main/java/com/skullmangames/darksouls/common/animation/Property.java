@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.common.animation;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.common.animation.events.AnimEvent;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
@@ -15,7 +16,17 @@ import net.minecraft.resources.ResourceLocation;
 
 public abstract class Property<T>
 {
-	public static Map<String, Property<? extends Object>> GET_BY_NAME = new HashMap<>();
+	static
+	{
+		GET_BY_NAME = new HashMap<>();
+		StaticAnimationProperty.call();
+		ActionAnimationProperty.call();
+		AimingAnimationProperty.call();
+		AttackProperty.call();
+		DeathProperty.call();
+	}
+	
+	public static final Map<String, Property<?>> GET_BY_NAME;
 	
 	public final String name;
 	public final JsonElementConverter<T> jsonConverter;
@@ -34,6 +45,8 @@ public abstract class Property<T>
 			super(name, jsonConverter);
 		}
 		
+		private static void call() {}
+		
 		public static final StaticAnimationProperty<AnimEvent[]> EVENTS = new StaticAnimationProperty<>("events", JsonElementConverter.EVENTS);
 		public static final StaticAnimationProperty<Boolean> SHOULD_SYNC = new StaticAnimationProperty<>("should_sync", JsonElementConverter.BOOLEAN);
 		public static final StaticAnimationProperty<AnimationLayer.LayerPart> LAYER_PART = new StaticAnimationProperty<>("layer_part", JsonElementConverter.ENUM(AnimationLayer.LayerPart.class));
@@ -46,6 +59,8 @@ public abstract class Property<T>
 		{
 			super(name, jsonConverter);
 		}
+		
+		private static void call() {}
 		
 		public static final ActionAnimationProperty<Boolean> INTERRUPT_PREVIOUS_DELTA_MOVEMENT = new ActionAnimationProperty<>("interrupt_previous_delta_movement", JsonElementConverter.BOOLEAN);
 		public static final ActionAnimationProperty<Boolean> MOVE_VERTICAL = new ActionAnimationProperty<>("move_vertical", JsonElementConverter.BOOLEAN);
@@ -63,6 +78,8 @@ public abstract class Property<T>
 			super(name, jsonConverter);
 		}
 		
+		private static void call() {}
+		
 		public static final AimingAnimationProperty<Boolean> IS_REBOUND = new AimingAnimationProperty<>("is_rebound", JsonElementConverter.BOOLEAN);
 	}
 	
@@ -79,6 +96,8 @@ public abstract class Property<T>
 			super(name, jsonConverter);
 		}
 		
+		private static void call() {}
+		
 		public static final AttackProperty<MovementDamageType> MOVEMENT_DAMAGE_TYPE = new AttackProperty<>("movement_damage_type", JsonElementConverter.ENUM(MovementDamageType.class));
 		public static final AttackProperty<StunType> STUN_TYPE = new AttackProperty<>("stun_type", JsonElementConverter.ENUM(StunType.class));
 		public static final AttackProperty<Deflection> DEFLECTION = new AttackProperty<>("deflection", JsonElementConverter.ENUM(Deflection.class));
@@ -86,7 +105,6 @@ public abstract class Property<T>
 		public static final AttackProperty<Integer> STAMINA_DAMAGE = new AttackProperty<>("stamina_damage", JsonElementConverter.INTEGER);
 		public static final AttackProperty<Integer> POISE_DAMAGE = new AttackProperty<>("poise_damage", JsonElementConverter.INTEGER);
 		public static final AttackProperty<Boolean> DEPENDS_ON_WEAPON = new AttackProperty<>("depends_on_weapon", JsonElementConverter.BOOLEAN);
-
 		public static final AttackProperty<Boolean> BLOCKING = new AttackProperty<>("blocking", JsonElementConverter.BOOLEAN);
 	}
 	
@@ -97,8 +115,8 @@ public abstract class Property<T>
 			super(name, jsonConverter);
 		}
 		
+		private static void call() {}
+		
 		public static final DeathProperty<Float> DISAPPEAR_AT = new DeathProperty<>("disappear_at", JsonElementConverter.FLOAT);
 	}
-	
-	
 }

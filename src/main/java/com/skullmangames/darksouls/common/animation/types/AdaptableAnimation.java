@@ -14,12 +14,14 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimBuilder;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 
 public class AdaptableAnimation extends StaticAnimation
 {
@@ -48,6 +50,15 @@ public class AdaptableAnimation extends StaticAnimation
 	public Set<LivingMotion> getAvailableMotions()
 	{
 		return this.animations.keySet();
+	}
+	
+	@Override
+	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
+	{
+		for (StaticAnimation anim : this.animations.values())
+		{
+			anim.loadAnimation(resourceManager, models);
+		}
 	}
 	
 	public static class Builder extends AnimBuilder
@@ -127,6 +138,7 @@ public class AdaptableAnimation extends StaticAnimation
 					jsonEntry.addProperty("location_1", entry.path1.toString());
 					jsonEntry.addProperty("location_2", ((MirrorEntry)entry).path2.toString());
 				}
+				jsonEntries.add(jsonEntry);
 			});
 			
 			return root;
@@ -148,7 +160,7 @@ public class AdaptableAnimation extends StaticAnimation
 		{
 			this.entries.forEach((motion, entry) ->
 			{
-				this.animations.put(motion, entry.build(this.id, motion, this.convertTime, this.repeat, this.model));
+				this.animations.put(motion, entry.build(this.id, motion, this.convertTime, this.repeat, this.model, ImmutableMap.builder()));
 			});
 			return new AdaptableAnimation(this.animations.build());
 		}
@@ -177,16 +189,16 @@ public class AdaptableAnimation extends StaticAnimation
 			this.applyLayerParts = applyLayerParts;
 		}
 		
-		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay, Function<Models<?>, Model> model)
+		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay,
+				Function<Models<?>, Model> model, ImmutableMap.Builder<Property<?>, Object> properties)
 		{
-			StaticAnimation anim = new StaticAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
-					convertTime, repeatPlay, this.path1, model);
 			if (this.applyLayerParts)
 			{
-				anim.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
-				anim.addProperty(StaticAnimationProperty.SHOULD_SYNC, true);
+				properties.put(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
+				properties.put(StaticAnimationProperty.SHOULD_SYNC, true);
 			}
-			return anim;
+			return new StaticAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
+					convertTime, repeatPlay, this.path1, model, properties.build());
 		}
 	}
 	
@@ -201,12 +213,12 @@ public class AdaptableAnimation extends StaticAnimation
 		}
 		
 		@Override
-		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay, Function<Models<?>, Model> model)
+		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay,
+				Function<Models<?>, Model> model, ImmutableMap.Builder<Property<?>, Object> properties)
 		{
-			MirrorAnimation anim = new MirrorAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
-					convertTime, repeatPlay, this.applyLayerParts, this.path1, this.path2, model);
-			if (this.applyLayerParts) anim.addProperty(StaticAnimationProperty.SHOULD_SYNC, true);
-			return anim;
+			if (this.applyLayerParts) properties.put(StaticAnimationProperty.SHOULD_SYNC, true);
+			return new MirrorAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
+					convertTime, repeatPlay, this.applyLayerParts, this.path1, this.path2, model, properties.build());
 		}
 	}
 }

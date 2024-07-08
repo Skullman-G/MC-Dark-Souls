@@ -1,0 +1,8 @@
+{
+  "animation_type": "movement",
+  "location": "darksouls:biped/living/swim",
+  "convert_time": 0.08,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

@@ -1,0 +1,10 @@
+{
+  "animation_type": "mirror",
+  "location": "darksouls:biped/living/consume_soul_r",
+  "convert_time": 0.2,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {},
+  "mirrored_location": "darksouls:biped/living/consume_soul_l",
+  "apply_layer_parts": true
+}

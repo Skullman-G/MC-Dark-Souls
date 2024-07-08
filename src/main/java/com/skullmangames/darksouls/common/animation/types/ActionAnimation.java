@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -43,14 +44,16 @@ public class ActionAnimation extends ImmovableAnimation
 {
 	protected float delayTime;
 
-	public ActionAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public ActionAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, convertTime, Float.MAX_VALUE, path, model);
+		this(id, convertTime, Float.MAX_VALUE, path, model, properties);
 	}
 
-	public ActionAnimation(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public ActionAnimation(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model);
+		super(id, convertTime, path, model, properties);
 		this.delayTime = delayTime;
 	}
 
@@ -291,7 +294,7 @@ public class ActionAnimation extends ImmovableAnimation
 		@Override
 		public ActionAnimation build()
 		{
-			return new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model);
+			return new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model, this.properties.build());
 		}
 	}
 }

@@ -3,11 +3,13 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.List;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationType;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -39,19 +41,22 @@ public class DodgingAnimation extends ActionAnimation
 {
 	private final boolean canRotate;
 	
-	public DodgingAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, convertTime, false, path, model);
+		this(id, convertTime, false, path, model, properties);
 	}
 	
-	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, ResourceLocation path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, convertTime, canRotate, 0.0F, path, model);
+		this(id, convertTime, canRotate, 0.0F, path, model, properties);
 	}
 	
-	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, float delayTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, delayTime, path, model);
+		super(id, convertTime, delayTime, path, model, properties);
 		this.canRotate = canRotate;
 	}
 	
@@ -199,7 +204,7 @@ public class DodgingAnimation extends ActionAnimation
 		@Override
 		public DodgingAnimation build()
 		{
-			return new DodgingAnimation(this.id, this.convertTime, this.canRotate, this.delayTime, this.location, this.model);
+			return new DodgingAnimation(this.id, this.convertTime, this.canRotate, this.delayTime, this.location, this.model, this.properties.build());
 		}
 	}
 }

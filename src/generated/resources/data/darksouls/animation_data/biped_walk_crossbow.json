@@ -1,0 +1,8 @@
+{
+  "animation_type": "movement",
+  "location": "darksouls:biped/living/walk_crossbow",
+  "convert_time": 0.2,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

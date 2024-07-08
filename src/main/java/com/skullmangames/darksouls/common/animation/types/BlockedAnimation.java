@@ -2,9 +2,11 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationType;
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Models;
 
@@ -12,9 +14,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BlockedAnimation extends ActionAnimation
 {
-	public BlockedAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public BlockedAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model);
+		super(id, convertTime, path, model, properties);
 	}
 	
 	@Override
@@ -44,7 +47,7 @@ public class BlockedAnimation extends ActionAnimation
 		@Override
 		public BlockedAnimation build()
 		{
-			return new BlockedAnimation(this.id, this.convertTime, this.location, this.model);
+			return new BlockedAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build());
 		}
 	}
 }

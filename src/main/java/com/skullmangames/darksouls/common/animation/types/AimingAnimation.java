@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.animation.AnimationLayer;
@@ -29,17 +30,17 @@ public class AimingAnimation extends StaticAnimation
 	public StaticAnimation lookDown;
 
 	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
-			Function<Models<?>, Model> model)
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, repeatPlay, path1, model);
-		this.lookUp = new StaticAnimation(null, convertTime, repeatPlay, path2, model);
-		this.lookDown = new StaticAnimation(null, convertTime, repeatPlay, path3, model);
-		this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
+		super(id, convertTime, repeatPlay, path1, model, properties);
+		this.lookUp = new StaticAnimation(null, convertTime, repeatPlay, path2, model, properties);
+		this.lookDown = new StaticAnimation(null, convertTime, repeatPlay, path3, model, properties);
 	}
 
-	public AimingAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3, Function<Models<?>, Model> model)
+	public AimingAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model, properties);
 	}
 
 	@Override
@@ -104,15 +105,6 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
-	{
-		super.addProperty(propertyType, value);
-		this.lookDown.addProperty(propertyType, value);
-		this.lookUp.addProperty(propertyType, value);
-		return this;
-	}
-
-	@Override
 	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
 	{
 		load(resourceManager, models, this);
@@ -131,6 +123,7 @@ public class AimingAnimation extends StaticAnimation
 			super(id, convertTime, repeat, path1, model);
 			this.lookUpLocation = path2;
 			this.lookDownLocation = path3;
+			this.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
 		}
 		
 		public Builder(ResourceLocation location, JsonObject json)
@@ -158,7 +151,8 @@ public class AimingAnimation extends StaticAnimation
 		@Override
 		public AimingAnimation build()
 		{
-			return new AimingAnimation(this.id, this.convertTime, this.repeat, this.location, this.lookUpLocation, this.lookDownLocation, this.model);
+			return new AimingAnimation(this.id, this.convertTime, this.repeat, this.location,
+					this.lookUpLocation, this.lookDownLocation, this.model, this.properties.build());
 		}
 	}
 }

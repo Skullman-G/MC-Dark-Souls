@@ -1,0 +1,45 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:stray_demon/walk",
+  "convert_time": 0.5,
+  "repeat": true,
+  "model": "darksouls:stray_demon",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.7,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.stray_demon.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "shake_cam_global",
+        "time": 0.7,
+        "execution_side": "CLIENT",
+        "duration": 10,
+        "magnitude": 0.5,
+        "anchor": "ENTITY"
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.5,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.stray_demon.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "shake_cam_global",
+        "time": 1.5,
+        "execution_side": "CLIENT",
+        "duration": 10,
+        "magnitude": 0.5,
+        "anchor": "ENTITY"
+      }
+    ]
+  }
+}

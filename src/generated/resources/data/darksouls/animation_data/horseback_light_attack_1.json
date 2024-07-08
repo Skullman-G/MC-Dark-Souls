@@ -1,0 +1,23 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/horseback_light_attack_1",
+  "convert_time": 0.5,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {},
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.2,
+      "contact_end": 0.52,
+      "end": 1.6,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "movement_damage_type": "REGULAR",
+        "deflection": "MEDIUM"
+      }
+    }
+  ]
+}

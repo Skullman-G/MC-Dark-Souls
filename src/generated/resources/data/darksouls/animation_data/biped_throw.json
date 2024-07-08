@@ -1,0 +1,17 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/combat/throw",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "shoot_throwable_projectile",
+        "time": 0.6,
+        "execution_side": "SERVER"
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

@@ -1,0 +1,56 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:black_knight/black_knight_sword_ha",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.4,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.48,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.44,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.4,
+      "contact_end": 0.64,
+      "end": 1.68,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 23,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "REGULAR",
+        "deflection": "HEAVY",
+        "stamina_damage": 56
+      }
+    }
+  ]
+}

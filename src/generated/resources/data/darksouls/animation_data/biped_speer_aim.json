@@ -1,0 +1,12 @@
+{
+  "animation_type": "aiming",
+  "location": "darksouls:biped/combat/javelin_aim_mid",
+  "convert_time": 0.16,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "layer_part": "UP"
+  },
+  "look_up_location": "darksouls:biped/combat/javelin_aim_up",
+  "look_down_location": "darksouls:biped/combat/javelin_aim_down"
+}

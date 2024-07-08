@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:biped/living/fall",
+  "convert_time": 0.08,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {}
+}

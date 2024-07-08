@@ -1,0 +1,16 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:biped/living/change_item_right",
+  "convert_time": 0.1,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "change_item",
+        "time": 0.2,
+        "execution_side": "SERVER"
+      }
+    ]
+  }
+}

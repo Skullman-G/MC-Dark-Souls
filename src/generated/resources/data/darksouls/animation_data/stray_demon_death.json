@@ -1,0 +1,11 @@
+{
+  "animation_type": "death",
+  "location": "darksouls:stray_demon/death",
+  "convert_time": 0.5,
+  "repeat": false,
+  "model": "darksouls:stray_demon",
+  "properties": {
+    "disappear_at": 1.5
+  },
+  "delay_time": 3.4028235E38
+}

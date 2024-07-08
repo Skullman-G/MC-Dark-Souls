@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:black_knight/idle",
+  "convert_time": 0.3,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

@@ -1,0 +1,24 @@
+{
+  "animation_type": "parry",
+  "location": "darksouls:biped/combat/buckler_parry",
+  "convert_time": 0.15,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.32,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.fist.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "start": 0.32,
+  "end": 0.8,
+  "joint_name": "Tool_L"
+}

@@ -1,0 +1,39 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/greatsword_th_la_2",
+  "convert_time": 0.3,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.28,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "two_handed_light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.28,
+      "contact_end": 0.48,
+      "end": 2.0,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 26,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "REGULAR",
+        "deflection": "HEAVY",
+        "stamina_usage": 62,
+        "stamina_damage": 35
+      }
+    }
+  ]
+}

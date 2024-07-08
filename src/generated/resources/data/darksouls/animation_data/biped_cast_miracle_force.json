@@ -1,0 +1,48 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/combat/cast_miracle_force",
+  "convert_time": 0.3,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "set_light_source",
+        "time": 1.4E-45,
+        "execution_side": "SERVER",
+        "light_emmission": 15,
+        "duration": 1.85
+      },
+      {
+        "event_type": "add_simple_particle",
+        "time": 0.56,
+        "execution_side": "CLIENT",
+        "particle_type": "darksouls:force",
+        "spawner": "SINGLE",
+        "anchor": "ENTITY",
+        "x_offset": 0.0,
+        "y_offset": 1.0,
+        "z_offset": 0.0,
+        "x_speed": 0.0,
+        "y_speed": 0.0,
+        "z_speed": 0.0
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.56,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.miracle.force",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "shock_wave",
+        "time": 0.6,
+        "execution_side": "SERVER",
+        "radius": 3.0
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

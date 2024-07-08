@@ -1,0 +1,61 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/greataxe_th_da",
+  "convert_time": 0.1,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "shake_cam_global",
+        "time": 0.72,
+        "execution_side": "CLIENT",
+        "duration": 20,
+        "magnitude": 1.0,
+        "anchor": "WEAPON"
+      },
+      {
+        "event_type": "add_simple_particle",
+        "time": 0.72,
+        "execution_side": "CLIENT",
+        "particle_type": "darksouls:dust_cloud",
+        "spawner": "CIRCLE",
+        "anchor": "WEAPON",
+        "x_offset": 0.0,
+        "y_offset": 0.0,
+        "z_offset": 0.0,
+        "x_speed": 0.10000000149011612,
+        "y_speed": 0.10000000149011612,
+        "z_speed": 0.10000000149011612
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.72,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.great_hammer.smash",
+        "anchor": "WEAPON",
+        "volume": 0.75,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "two_handed_dash",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.68,
+      "contact_end": 0.96,
+      "end": 2.0,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 30,
+        "stun_type": "SMASH",
+        "movement_damage_type": "STRIKE",
+        "deflection": "HEAVY",
+        "stamina_usage": 55,
+        "stamina_damage": 75
+      }
+    }
+  ]
+}

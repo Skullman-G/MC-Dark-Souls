@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:anastacia_of_astora/idle",
+  "convert_time": 0.4,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

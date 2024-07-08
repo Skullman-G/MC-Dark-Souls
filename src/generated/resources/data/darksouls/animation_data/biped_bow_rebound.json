@@ -1,0 +1,13 @@
+{
+  "animation_type": "aiming",
+  "location": "darksouls:biped/combat/bow_shot_mid",
+  "convert_time": 0.04,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "layer_part": "UP",
+    "is_rebound": true
+  },
+  "look_up_location": "darksouls:biped/combat/bow_shot_up",
+  "look_down_location": "darksouls:biped/combat/bow_shot_down"
+}

@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.animation.types.attack;
 import java.util.List;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -36,9 +37,9 @@ public class ParryAnimation extends ActionAnimation
 	private final String jointName;
 	
 	public ParryAnimation(ResourceLocation id, float convertTime, float start, float end, String jointName, ResourceLocation path,
-			Function<Models<?>, Model> model)
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model);
+		super(id, convertTime, path, model, properties);
 		this.start = start;
 		this.end = end;
 		this.jointName = jointName;
@@ -181,7 +182,7 @@ public class ParryAnimation extends ActionAnimation
 		@Override
 		public ParryAnimation build()
 		{
-			return new ParryAnimation(this.id, this.convertTime, this.start, this.end, this.jointName, this.location, this.model);
+			return new ParryAnimation(this.id, this.convertTime, this.start, this.end, this.jointName, this.location, this.model, this.properties.build());
 		}
 	}
 }

@@ -1,0 +1,39 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/spear_light_blocking_attack",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.35,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.spear.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.35,
+      "contact_end": 0.5,
+      "end": 1.25,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "blocking": true,
+        "poise_damage": 20,
+        "movement_damage_type": "THRUST",
+        "deflection": "LIGHT",
+        "stamina_usage": 25,
+        "stamina_damage": 40
+      }
+    }
+  ]
+}

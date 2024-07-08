@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:falconer/idle",
+  "convert_time": 1.0,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

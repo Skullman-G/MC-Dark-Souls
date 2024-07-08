@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -11,13 +12,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
+import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ImmovableAnimation extends StaticAnimation
 {
-	public ImmovableAnimation(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
+	public ImmovableAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, false, path, model);
+		super(id, convertTime, false, path, model, properties);
 	}
 
 	@Override

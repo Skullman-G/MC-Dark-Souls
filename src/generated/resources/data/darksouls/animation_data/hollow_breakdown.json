@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:hollow/breakdown",
+  "convert_time": 0.2,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {}
+}

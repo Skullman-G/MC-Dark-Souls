@@ -1,0 +1,11 @@
+{
+  "animation_type": "blocked",
+  "location": "darksouls:biped/hit/blocked_left",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "allow_mix_layers": true
+  },
+  "delay_time": 3.4028235E38
+}

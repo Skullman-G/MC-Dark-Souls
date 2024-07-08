@@ -13,6 +13,7 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.common.animation.AnimBuilder;
+import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.SmashEvents;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
@@ -83,8 +84,9 @@ public class AnimationDataProvider implements DataProvider
 	public void run(HashCache cache) throws IOException
 	{
 		Path path = this.generator.getOutputFolder();
+		List<AnimBuilder> configs = defaultConfigs();
 		
-		for (AnimBuilder builder : defaultConfigs())
+		for (AnimBuilder builder : configs)
 		{
 			Path path1 = createPath(path, builder.getId());
 			try
@@ -96,6 +98,8 @@ public class AnimationDataProvider implements DataProvider
 				LOGGER.error("Couldn't save animation data {}", path1, ioexception);
 			}
 		}
+		
+		AnimationManager.initForDataGenerator(configs);
 	}
 	
 	private static List<AnimBuilder> defaultConfigs()

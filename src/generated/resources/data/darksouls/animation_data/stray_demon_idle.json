@@ -1,0 +1,8 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:stray_demon/idle",
+  "convert_time": 0.5,
+  "repeat": true,
+  "model": "darksouls:stray_demon",
+  "properties": {}
+}

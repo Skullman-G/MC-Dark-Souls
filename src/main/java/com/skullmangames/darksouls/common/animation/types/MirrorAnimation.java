@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.animation.types;
 
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
@@ -20,34 +21,25 @@ public class MirrorAnimation extends StaticAnimation
 	public StaticAnimation right;
 	public StaticAnimation left;
 	
-	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, convertTime, repeatPlay, true, path1, path2, model);
+		this(id, convertTime, repeatPlay, true, path1, path2, model, properties);
 	}
 	
-	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, boolean applyLayerParts, ResourceLocation path1, ResourceLocation path2, Function<Models<?>, Model> model)
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, boolean applyLayerParts, ResourceLocation path1, ResourceLocation path2,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
 		super();
 		
 		ResourceLocation rightId = new ResourceLocation(id.getNamespace(), id.getPath()+"_right");
 		ResourceLocation leftId = new ResourceLocation(id.getNamespace(), id.getPath()+"_left");
 		
-		this.right = new StaticAnimation(rightId, convertTime, repeatPlay, path1, model);
-		this.left = new StaticAnimation(leftId, convertTime, repeatPlay, path2, model);
-		
-		if (applyLayerParts)
-		{
-			this.right.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT);
-			this.left.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT);
-		}
-	}
-	
-	@Override
-	public <V> MirrorAnimation addProperty(Property<V> propertyType, V value)
-	{
-		this.right.addProperty(propertyType, value);
-		this.left.addProperty(propertyType, value);
-		return this;
+		ImmutableMap<Property<?>, Object> p = properties;
+		if (applyLayerParts) p = ImmutableMap.<Property<?>, Object>builder().putAll(properties).put(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT).build();
+		this.right = new StaticAnimation(rightId, convertTime, repeatPlay, path1, model, p);
+		if (applyLayerParts) p = ImmutableMap.<Property<?>, Object>builder().putAll(properties).put(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT).build();
+		this.left = new StaticAnimation(leftId, convertTime, repeatPlay, path2, model, p);
 	}
 	
 	@Override
@@ -92,9 +84,9 @@ public class MirrorAnimation extends StaticAnimation
 			this.applyLayerParts = applyLayerParts;
 		}
 		
-		public Builder(ResourceLocation location, JsonObject json)
+		public Builder(ResourceLocation id, JsonObject json)
 		{
-			super(location, json);
+			super(id, json);
 			this.location2 = new ResourceLocation(json.get("mirrored_location").getAsString());
 			this.applyLayerParts = json.get("apply_layer_parts").getAsBoolean();
 		}
@@ -117,7 +109,7 @@ public class MirrorAnimation extends StaticAnimation
 		@Override
 		public MirrorAnimation build()
 		{
-			return new MirrorAnimation(this.id, this.convertTime, this.repeat, this.location, this.location2, this.model);
+			return new MirrorAnimation(this.id, this.convertTime, this.repeat, this.location, this.location2, this.model, this.properties.build());
 		}
 	}
 }

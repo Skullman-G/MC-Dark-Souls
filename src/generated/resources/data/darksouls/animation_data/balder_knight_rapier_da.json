@@ -1,0 +1,65 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:balder_knight/rapier_da",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.28,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.64,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.76,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.56,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.balder_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "dash",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.64,
+      "contact_end": 0.84,
+      "end": 1.6,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 15,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "THRUST",
+        "deflection": "HEAVY",
+        "stamina_damage": 37
+      }
+    }
+  ]
+}

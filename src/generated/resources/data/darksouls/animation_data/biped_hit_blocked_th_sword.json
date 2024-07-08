@@ -1,0 +1,9 @@
+{
+  "animation_type": "blocked",
+  "location": "darksouls:biped/hit/blocked_th_sword",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {},
+  "delay_time": 3.4028235E38
+}

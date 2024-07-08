@@ -10,12 +10,14 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
@@ -60,29 +62,35 @@ public class AttackAnimation extends ActionAnimation
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
 			float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
-			Function<Models<?>, Model> model)
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
+		this(id, attackType, convertTime, path, model, properties,
+				new Phase(antic, preDelay, contact, recovery, index, null));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
 			float convertTime, float antic, float preDelay, float contact, float recovery,
-			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+			@Nullable Collider collider, String index, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
+		this(id, attackType, convertTime, path, model, properties,
+				new Phase(antic, preDelay, contact, recovery, index, collider));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
 			float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
-			@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+			@Nullable Collider collider, String index, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+		this(id, attackType, convertTime, path, model, properties,
+				new Phase(antic, preDelay, contact, recovery, hand, index, collider));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
+			float convertTime, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, Phase... phases)
 	{
-		super(id, convertTime, path, model);
+		super(id, convertTime, path, model, properties);
 		this.attackType = attackType;
 		this.phases = phases;
 	}
@@ -322,25 +330,6 @@ public class AttackAnimation extends ActionAnimation
 		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflection(phase), poiseDamage, damages).addAuxEffects(auxEffects);
 	}
 
-	public <V> AttackAnimation addProperty(Property<V> propertyType, V value)
-	{
-		if (propertyType instanceof AttackProperty)
-		{
-			for (int i = 0; i < this.phases.length; i++)
-			{
-				this.addProperty(propertyType, value, i);
-			}
-		}
-		else super.addProperty(propertyType, value);
-		return this;
-	}
-
-	public <V> AttackAnimation addProperty(Property<V> propertyType, V value, int index)
-	{
-		this.phases[index].addProperty(propertyType, value);
-		return this;
-	}
-
 	public Phase getPhaseByTime(float elapsedTime)
 	{
 		Phase currentPhase = null;
@@ -357,7 +346,7 @@ public class AttackAnimation extends ActionAnimation
 
 	public static class Phase
 	{
-		protected final Map<Property<?>, Object> properties = new HashMap<Property<?>, Object>();
+		protected final Map<Property<?>, Object> properties = new HashMap<>();
 		protected final float begin;
 		public final float contactStart;
 		public final float contactEnd;
@@ -386,19 +375,10 @@ public class AttackAnimation extends ActionAnimation
 			this.hand = hand;
 			this.jointName = jointName;
 		}
-
-		public <V> Phase addProperty(Property<V> propertyType, V value)
+		
+		public void addProperty(Property<?> property, Object value)
 		{
-			this.properties.put(propertyType, value);
-			return this;
-		}
-
-		public void addProperties(Set<Map.Entry<AttackProperty<?>, Object>> set)
-		{
-			for (Map.Entry<AttackProperty<?>, Object> entry : set)
-			{
-				this.properties.put(entry.getKey(), entry.getValue());
-			}
+			this.properties.put(property, value);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -446,7 +426,7 @@ public class AttackAnimation extends ActionAnimation
 			this.phases = phases;
 		}
 		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@SuppressWarnings({ "rawtypes" })
 		public Builder(ResourceLocation location, JsonObject json)
 		{
 			super(location, json);
@@ -471,7 +451,7 @@ public class AttackAnimation extends ActionAnimation
 				for (Map.Entry<String, JsonElement> entry : properties.entrySet())
 				{
 					Property property = Property.GET_BY_NAME.get(entry.getKey());
-					this.addProperty(property, property.jsonConverter.fromJson(entry.getValue()));
+					ps[i].addProperty(property, property.jsonConverter.fromJson(entry.getValue()));
 				}
 			}
 			
@@ -501,7 +481,7 @@ public class AttackAnimation extends ActionAnimation
 				JsonObject properties = new JsonObject();
 				jsonPhase.add("properties", properties);
 				
-				this.properties.build().forEach((p, v) ->
+				phase.properties.forEach((p, v) ->
 				{
 					properties.add(p.name, p.jsonConverter.toJson(v));
 				});
@@ -511,9 +491,26 @@ public class AttackAnimation extends ActionAnimation
 		}
 		
 		@Override
+		public <V> Builder addProperty(Property<V> property, V value)
+		{
+			if (property instanceof AttackProperty)
+			{
+				for (Phase phase : this.phases) phase.addProperty(property, value);
+			}
+			else super.addProperty(property, value);
+			return this;
+		}
+		
+		@Override
+		public AnimationType getAnimType()
+		{
+			return AnimationType.ATTACK;
+		}
+		
+		@Override
 		public AttackAnimation build()
 		{
-			return new AttackAnimation(this.id, this.attackType, this.convertTime, this.location, this.model, this.phases);
+			return new AttackAnimation(this.id, this.attackType, this.convertTime, this.location, this.model, this.properties.build(), this.phases);
 		}
 	}
 }

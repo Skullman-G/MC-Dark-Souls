@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class StaticAnimation extends DynamicAnimation
 {
 	protected final ResourceLocation animationId;
-	protected final Map<Property<?>, Object> properties = new HashMap<>();
+	protected final Map<Property<?>, Object> properties;
 	protected final Function<Models<?>, Model> model;
 	protected final ResourceLocation path;
 
@@ -43,19 +42,23 @@ public class StaticAnimation extends DynamicAnimation
 		this.animationId = new ResourceLocation("null", "null");
 		this.path = null;
 		this.model = null;
+		this.properties = ImmutableMap.of();
 	}
 
-	public StaticAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
+	public StaticAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model,
+			ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model, properties);
 	}
 
-	public StaticAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model)
+	public StaticAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model,
+			ImmutableMap<Property<?>, Object> properties)
 	{
 		super(convertTime, isRepeat);
 		this.animationId = id;
 		this.path = path;
 		this.model = model;
+		this.properties = properties;
 	}
 	
 	public StaticAnimation get(LivingCap<?> entityCap, LayerPart layerPart)
@@ -67,12 +70,6 @@ public class StaticAnimation extends DynamicAnimation
 	public AnimationLayer.LayerPart getLayerPart()
 	{
 		return this.getProperty(StaticAnimationProperty.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
-	}
-
-	public <V> StaticAnimation addProperty(Property<V> propertyType, V value)
-	{
-		this.properties.put(propertyType, value);
-		return this;
 	}
 
 	public ResourceLocation getPath()
@@ -237,9 +234,9 @@ public class StaticAnimation extends DynamicAnimation
 		}
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Builder(ResourceLocation location, JsonObject json)
+		public Builder(ResourceLocation id, JsonObject json)
 		{
-			this.id = location;
+			this.id = id;
 			this.location = new ResourceLocation(json.get("location").getAsString());
 			
 			this.convertTime = json.get("convert_time").getAsFloat();
@@ -295,7 +292,7 @@ public class StaticAnimation extends DynamicAnimation
 		
 		public StaticAnimation build()
 		{
-			return new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model);
+			return new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build());
 		}
 	}
 }

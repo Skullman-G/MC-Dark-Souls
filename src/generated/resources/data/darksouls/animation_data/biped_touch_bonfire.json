@@ -1,0 +1,66 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/living/touching_bonfire",
+  "convert_time": 0.5,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "teleport_particle",
+        "time": 0.5,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 1.0,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 1.5,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 2.0,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 2.5,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 3.0,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 3.5,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "teleport_particle",
+        "time": 4.0,
+        "execution_side": "CLIENT"
+      },
+      {
+        "event_type": "play_sound",
+        "time": 2.5,
+        "execution_side": "SERVER",
+        "sound": "darksouls:block.bonfire.teleport",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "teleport",
+        "time": 3.2,
+        "execution_side": "SERVER"
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

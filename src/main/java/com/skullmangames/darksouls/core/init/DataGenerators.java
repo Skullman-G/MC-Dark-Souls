@@ -22,11 +22,11 @@ public class DataGenerators
         {
 			DataGenerator generator = event.getGenerator();
 			//ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+			generator.addProvider(new AnimationDataProvider(generator));
 			generator.addProvider(new WeaponMovesetProvider(generator));
 			generator.addProvider(new WeaponSkillProvider(generator));
 			generator.addProvider(new MeleeWeaponConfigProvider(generator));
 			generator.addProvider(new ArmorConfigProvider(generator));
-			generator.addProvider(new AnimationDataProvider(generator));
         }
 	}
 }

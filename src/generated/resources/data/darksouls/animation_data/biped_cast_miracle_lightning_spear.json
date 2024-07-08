@@ -1,0 +1,51 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/combat/cast_miracle_spear",
+  "convert_time": 0.3,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "set_light_source",
+        "time": 1.4E-45,
+        "execution_side": "SERVER",
+        "light_emmission": 15,
+        "duration": 1.2
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.4E-45,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.lightning_spear.appear",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "add_entitybound_particle",
+        "time": 1.4E-45,
+        "execution_side": "CLIENT",
+        "particle_type": "darksouls:lightning_spear",
+        "x_offset": 0.0,
+        "y_offset": 1.0,
+        "z_offset": 0.0
+      },
+      {
+        "event_type": "shoot_magic_projectile",
+        "time": 0.9,
+        "execution_side": "SERVER"
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.9,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.lightning_spear.shot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

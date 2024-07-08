@@ -1,0 +1,29 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/combat/roll_too_fat",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.4,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.generic.land",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "shake_cam_global",
+        "time": 0.4,
+        "execution_side": "CLIENT",
+        "duration": 10,
+        "magnitude": 0.25,
+        "anchor": "ENTITY"
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

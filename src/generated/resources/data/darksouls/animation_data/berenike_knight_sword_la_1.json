@@ -1,0 +1,56 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:berenike_knight/sword_la_1",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 1.04,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.08,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.berenike_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 2.36,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.berenike_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 1.04,
+      "contact_end": 1.5,
+      "end": 2.4,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 32,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "REGULAR",
+        "deflection": "IMPOSSIBLE",
+        "stamina_damage": 75
+      }
+    }
+  ]
+}

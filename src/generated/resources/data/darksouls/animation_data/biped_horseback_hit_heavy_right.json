@@ -1,0 +1,12 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:biped/hit/horseback_heavy_right",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "allow_mix_layers": true,
+    "is_hit": true
+  },
+  "delay_time": 3.4028235E38
+}

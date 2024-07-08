@@ -1,0 +1,11 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:hollow/deflected",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "is_hit": true
+  },
+  "delay_time": 3.4028235E38
+}

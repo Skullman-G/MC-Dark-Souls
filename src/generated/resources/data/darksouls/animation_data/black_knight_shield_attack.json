@@ -1,0 +1,56 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:black_knight/black_knight_shield_attack",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.52,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.axe.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.6,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.52,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.52,
+      "contact_end": 0.8,
+      "end": 1.6,
+      "weapon_bone_name": "Tool_L",
+      "properties": {
+        "poise_damage": 20,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "REGULAR",
+        "deflection": "IMPOSSIBLE",
+        "stamina_damage": 40
+      }
+    }
+  ]
+}

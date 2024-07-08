@@ -1,0 +1,10 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:biped/combat/crossbow_reload",
+  "convert_time": 0.16,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "layer_part": "UP"
+  }
+}

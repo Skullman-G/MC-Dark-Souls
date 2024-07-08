@@ -1,0 +1,38 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:hollow_lordran_warrior/axe_th_la_2",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.68,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.axe.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.68,
+      "contact_end": 1.0,
+      "end": 2.0,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 23,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "SLASH",
+        "deflection": "HEAVY",
+        "stamina_damage": 50
+      }
+    }
+  ]
+}

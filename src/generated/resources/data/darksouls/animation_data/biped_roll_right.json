@@ -1,0 +1,22 @@
+{
+  "animation_type": "dodge",
+  "location": "darksouls:biped/combat/roll_right",
+  "convert_time": 0.05,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.28,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.generic.roll",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 0.0,
+  "can_rotate": true
+}

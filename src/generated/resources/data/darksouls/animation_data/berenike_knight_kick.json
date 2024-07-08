@@ -1,0 +1,48 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:berenike_knight/kick",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.56,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:item.fist.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.56,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.berenike_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.56,
+      "contact_end": 0.9,
+      "end": 1.6,
+      "weapon_bone_name": "Leg_L",
+      "properties": {
+        "poise_damage": 38,
+        "stun_type": "LIGHT",
+        "movement_damage_type": "REGULAR",
+        "deflection": "IMPOSSIBLE",
+        "depends_on_weapon": false,
+        "stamina_damage": 2147483647
+      }
+    }
+  ]
+}

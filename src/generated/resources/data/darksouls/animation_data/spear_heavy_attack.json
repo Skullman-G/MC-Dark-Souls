@@ -1,0 +1,39 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:biped/combat/spear_heavy_attack",
+  "convert_time": 0.35,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.65,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.spear.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.65,
+      "contact_end": 0.8,
+      "end": 1.75,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 20,
+        "stun_type": "HEAVY",
+        "movement_damage_type": "THRUST",
+        "deflection": "MEDIUM",
+        "stamina_usage": 55,
+        "stamina_damage": 40
+      }
+    }
+  ]
+}

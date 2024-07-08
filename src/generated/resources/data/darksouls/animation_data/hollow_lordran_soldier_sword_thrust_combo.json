@@ -1,0 +1,59 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:hollow_lordran_soldier/sword_thrust_combo",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.52,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 1.2,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.52,
+      "contact_end": 0.72,
+      "end": 0.72,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 23,
+        "movement_damage_type": "THRUST",
+        "deflection": "LIGHT",
+        "stamina_damage": 50
+      }
+    },
+    {
+      "begin": 0.72,
+      "contact_start": 1.2,
+      "contact_end": 1.4,
+      "end": 2.0,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 23,
+        "movement_damage_type": "THRUST",
+        "deflection": "LIGHT",
+        "stamina_damage": 50
+      }
+    }
+  ]
+}

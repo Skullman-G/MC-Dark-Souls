@@ -1,0 +1,29 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:black_knight/walking",
+  "convert_time": 0.1,
+  "repeat": true,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.24,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.8,
+        "execution_side": "CLIENT",
+        "sound": "darksouls:entity.black_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  }
+}

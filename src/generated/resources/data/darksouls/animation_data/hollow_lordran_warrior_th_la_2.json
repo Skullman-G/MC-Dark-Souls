@@ -1,0 +1,37 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:hollow_lordran_warrior/sword_th_la_2",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:biped",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.68,
+        "execution_side": "SERVER",
+        "sound": "darksouls:item.sword.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "light",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.68,
+      "contact_end": 1.08,
+      "end": 1.6,
+      "weapon_bone_name": "Tool_R",
+      "properties": {
+        "poise_damage": 20,
+        "movement_damage_type": "SLASH",
+        "deflection": "MEDIUM",
+        "stamina_damage": 44
+      }
+    }
+  ]
+}

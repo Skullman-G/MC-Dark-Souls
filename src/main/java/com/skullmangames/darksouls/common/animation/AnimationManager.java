@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.animation;
 
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -112,6 +113,27 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		{
 			animation.loadAnimation(resourceManager, models);
 		}
+		
+		Animations.init();
+	}
+	
+	
+	/*
+	 * Use only to initialize animations while generating data
+	 */
+	public static void initForDataGenerator(List<AnimBuilder> builders)
+	{
+		AnimationManager manager = DarkSouls.getInstance().animationManager;
+		
+		//Load animation data from json
+		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
+		for (AnimBuilder a : builders)
+		{
+			builder.put(a.getId(), a.build());
+		}
+		
+		manager.animations = builder.build();
+		LOGGER.info("Loaded "+manager.animations.size()+" animations");
 		
 		Animations.init();
 	}
