@@ -83,10 +83,10 @@
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 28,
-        "stun_type": "FLY",
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 80
+        "stamina_damage": 80,
+        "stun_type": "FLY",
+        "poise_damage": 28
       }
     }
   ]

@@ -1,5 +1,5 @@
 {
-  "animation_type": "punish_check",
+  "animation_type": "backstab_check",
   "location": "darksouls:biped/combat/backstab_thrust_check",
   "convert_time": 0.2,
   "repeat": false,

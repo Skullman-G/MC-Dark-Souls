@@ -72,9 +72,9 @@
       "end": 1.72,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     },
     {
@@ -84,9 +84,9 @@
       "end": 1.92,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     },
     {
@@ -96,9 +96,9 @@
       "end": 2.24,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     },
     {
@@ -108,9 +108,9 @@
       "end": 2.56,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     },
     {
@@ -120,9 +120,9 @@
       "end": 2.88,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     },
     {
@@ -132,9 +132,9 @@
       "end": 4.2,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "poise_damage": 20,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "stamina_damage": 44,
+        "poise_damage": 20
       }
     }
   ]

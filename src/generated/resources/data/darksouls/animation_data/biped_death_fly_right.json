@@ -24,7 +24,8 @@
         "volume": 1.0,
         "moves": false
       }
-    ]
+    ],
+    "disappear_at": 2.2
   },
   "delay_time": 3.4028235E38
 }

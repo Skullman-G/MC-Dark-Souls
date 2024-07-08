@@ -5,16 +5,16 @@
   "model": "darksouls:biped",
   "animations": [
     {
-      "motion": "WALKING",
-      "apply_layer_parts": true,
-      "mirrored": false,
-      "location": "darksouls:balder_knight/block_walk"
-    },
-    {
       "motion": "BLOCKING",
       "apply_layer_parts": false,
       "mirrored": false,
       "location": "darksouls:balder_knight/block"
+    },
+    {
+      "motion": "WALKING",
+      "apply_layer_parts": true,
+      "mirrored": false,
+      "location": "darksouls:balder_knight/block_walk"
     },
     {
       "motion": "RUNNING",

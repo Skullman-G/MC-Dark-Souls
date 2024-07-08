@@ -15,8 +15,8 @@
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "REGULAR",
-        "deflection": "MEDIUM"
+        "deflection": "MEDIUM",
+        "movement_damage_type": "REGULAR"
       }
     }
   ]

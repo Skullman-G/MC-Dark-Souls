@@ -146,7 +146,7 @@ public class BackstabCheckAnimation extends AttackAnimation
 		@Override
 		public AnimationType getAnimType()
 		{
-			return AnimationType.PUNISH_CHECK;
+			return AnimationType.BACKSTAB_CHECK;
 		}
 		
 		@Override

@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnimation;
@@ -31,6 +32,7 @@ public enum AnimationType
 	BLOCKED("blocked", BlockedAnimation.Builder::new),
 	INVINCIBLE("invincible", InvincibleAnimation.Builder::new),
 	PUNISH_CHECK("punish_check", PunishCheckAnimation.Builder::new),
+	BACKSTAB_CHECK("backstab_check", BackstabCheckAnimation.Builder::new),
 	PARRY("parry", ParryAnimation.Builder::new),
 	AIMING("aiming", AimingAnimation.Builder::new),
 	DODGE("dodge", DodgingAnimation.Builder::new);

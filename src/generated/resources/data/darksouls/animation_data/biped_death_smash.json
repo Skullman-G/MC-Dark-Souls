@@ -4,6 +4,8 @@
   "convert_time": 0.05,
   "repeat": false,
   "model": "darksouls:biped",
-  "properties": {},
+  "properties": {
+    "disappear_at": 1.52
+  },
   "delay_time": 3.4028235E38
 }
