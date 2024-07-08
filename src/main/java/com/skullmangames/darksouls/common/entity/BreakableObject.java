@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -47,18 +48,18 @@ public abstract class BreakableObject extends LivingEntity
 	@Override
 	public boolean hurt(DamageSource source, float amount)
 	{
-		this.kill();
+		this.die(source);
 		return true;
 	}
 	
 	@Override
-	public void kill()
+	public void die(DamageSource source)
 	{
 		if (!this.level.isClientSide)
 		{
 			this.playSound(this.getBreakSound(), this.random.nextFloat() * 0.5F + 1.0F, 1.0F);
 		}
-		super.kill();
+		this.remove(Entity.RemovalReason.KILLED);
 	}
 	
 	@Override

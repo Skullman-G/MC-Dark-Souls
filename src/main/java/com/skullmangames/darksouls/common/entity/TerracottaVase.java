@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -70,14 +71,14 @@ public class TerracottaVase extends BreakableObject
 	}
 	
 	@Override
-	public void kill()
+	public void die(DamageSource source)
 	{
 		if (!this.level.isClientSide)
 		{
 			ItemEntity itemEntity = new ItemEntity(this.level, this.getX(), this.getY() + 1, this.getZ(), this.getItemInside(), 0, 0, 0);
 			this.level.addFreshEntity(itemEntity);
 		}
-		super.kill();
+		super.die(source);
 	}
 
 	@Override
