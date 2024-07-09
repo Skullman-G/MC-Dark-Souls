@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
@@ -82,9 +83,9 @@ public class CriticalHitAnimation extends InvincibleAnimation
 		}
 		
 		@Override
-		public CriticalHitAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new CriticalHitAnimation(this.id, this.convertTime, this.hit, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new CriticalHitAnimation(this.id, this.convertTime, this.hit, this.location, this.model, this.properties.build()));
 		}
 	}
 }

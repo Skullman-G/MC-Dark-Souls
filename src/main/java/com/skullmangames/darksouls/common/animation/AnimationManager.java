@@ -94,8 +94,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 			try
 			{
 				AnimationType type = AnimationType.fromString(json.getAsJsonObject().get("animation_type").getAsString());
-				StaticAnimation animation = type.getAnimBuilder(location, json.getAsJsonObject()).build();
-				builder.put(location, animation);
+				type.getAnimBuilder(location, json.getAsJsonObject()).register(builder);
 			}
 			catch (Exception e)
 			{
@@ -129,7 +128,7 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
 		for (AnimBuilder a : builders)
 		{
-			builder.put(a.getId(), a.build());
+			a.register(builder);
 		}
 		
 		manager.animations = builder.build();

@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
@@ -180,9 +181,10 @@ public class ParryAnimation extends ActionAnimation
 		}
 		
 		@Override
-		public ParryAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new ParryAnimation(this.id, this.convertTime, this.start, this.end, this.jointName, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new ParryAnimation(this.id, this.convertTime,
+					this.start, this.end, this.jointName, this.location, this.model, this.properties.build()));
 		}
 	}
 }

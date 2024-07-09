@@ -202,9 +202,10 @@ public class DodgingAnimation extends ActionAnimation
 		}
 		
 		@Override
-		public DodgingAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new DodgingAnimation(this.id, this.convertTime, this.canRotate, this.delayTime, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new DodgingAnimation(this.id, this.convertTime, this.canRotate, this.delayTime,
+					this.location, this.model, this.properties.build()));
 		}
 	}
 }

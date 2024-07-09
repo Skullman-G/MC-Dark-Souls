@@ -150,10 +150,10 @@ public class PunishCheckAnimation extends AttackAnimation
 		}
 		
 		@Override
-		public PunishCheckAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new PunishCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model, this.properties.build(),
-			this.followUp, this.phases);
+			register.put(this.getId(), new PunishCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak,
+					this.location, this.model, this.properties.build(), this.followUp, this.phases));
 		}
 	}
 }

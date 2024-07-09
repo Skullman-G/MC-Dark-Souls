@@ -290,9 +290,9 @@ public class StaticAnimation extends DynamicAnimation
 			return AnimationType.STATIC;
 		}
 		
-		public StaticAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build()));
 		}
 	}
 }

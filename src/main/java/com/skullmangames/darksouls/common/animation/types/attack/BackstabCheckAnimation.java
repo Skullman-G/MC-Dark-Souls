@@ -150,10 +150,10 @@ public class BackstabCheckAnimation extends AttackAnimation
 		}
 		
 		@Override
-		public BackstabCheckAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new BackstabCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak, this.location, this.model, this.properties.build(),
-			this.followUp, this.phases);
+			register.put(this.getId(), new BackstabCheckAnimation(this.id, this.attackType, this.convertTime,
+					this.isWeak, this.location, this.model, this.properties.build(), this.followUp, this.phases));
 		}
 	}
 }

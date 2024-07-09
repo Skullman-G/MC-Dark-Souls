@@ -14,7 +14,6 @@ import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimBuilder;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
-import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -68,7 +67,7 @@ public class AdaptableAnimation extends StaticAnimation
 		private final boolean repeat;
 		private final Function<Models<?>, Model> model;
 		
-		private final Map<LivingMotion, Entry> entries = new HashMap<>();
+		private final Map<LivingMotion, AnimBuilder> entries = new HashMap<>();
 		private final ImmutableMap.Builder<LivingMotion, StaticAnimation> animations = ImmutableMap.builder();
 		
 		public Builder(ResourceLocation id, float convertTime, boolean repeatPlay, Function<Models<?>, Model> model)
@@ -94,6 +93,7 @@ public class AdaptableAnimation extends StaticAnimation
 				boolean mirrored = o.get("mirrored").getAsBoolean();
 				LivingMotion motion = LivingMotion.valueOf(o.get("motion").getAsString());
 				boolean applyLayerParts = o.get("apply_layer_parts").getAsBoolean();
+				
 				if (!mirrored)
 				{
 					ResourceLocation path = new ResourceLocation(o.get("location").getAsString());
@@ -120,25 +120,28 @@ public class AdaptableAnimation extends StaticAnimation
 			
 			JsonArray jsonEntries = new JsonArray();
 			root.add("animations", jsonEntries);
-			this.entries.forEach((motion, entry) ->
+			this.entries.forEach((motion, e) ->
 			{
-				JsonObject jsonEntry = new JsonObject();
-				jsonEntry.addProperty("motion", motion.name());
-				jsonEntry.addProperty("apply_layer_parts", entry.applyLayerParts);
-				
-				boolean mirrored = entry instanceof MirrorEntry;
-				jsonEntry.addProperty("mirrored", mirrored);
-				
-				if (!mirrored)
+				if (e instanceof StaticAnimation.Builder entry)
 				{
-					jsonEntry.addProperty("location", entry.path1.toString());
+					JsonObject jsonEntry = new JsonObject();
+					jsonEntry.addProperty("motion", motion.name());
+					jsonEntry.addProperty("apply_layer_parts", (boolean)entry.properties.build().getOrDefault(StaticAnimationProperty.SHOULD_SYNC, false));
+					
+					boolean mirrored = entry instanceof MirrorAnimation.Builder;
+					jsonEntry.addProperty("mirrored", mirrored);
+					
+					if (!mirrored)
+					{
+						jsonEntry.addProperty("location", entry.location.toString());
+					}
+					else
+					{
+						jsonEntry.addProperty("location_1", entry.location.toString());
+						jsonEntry.addProperty("location_2", ((MirrorAnimation.Builder)entry).location2.toString());
+					}
+					jsonEntries.add(jsonEntry);
 				}
-				else
-				{
-					jsonEntry.addProperty("location_1", entry.path1.toString());
-					jsonEntry.addProperty("location_2", ((MirrorEntry)entry).path2.toString());
-				}
-				jsonEntries.add(jsonEntry);
 			});
 			
 			return root;
@@ -146,23 +149,34 @@ public class AdaptableAnimation extends StaticAnimation
 		
 		public Builder addEntry(LivingMotion motion, ResourceLocation path, boolean applyLayerParts)
 		{
-			this.entries.put(motion, new Entry(path, applyLayerParts));
+			ResourceLocation entryId = new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase());
+			StaticAnimation.Builder anim = new StaticAnimation.Builder(entryId, this.convertTime, this.repeat, path, this.model);
+			if (applyLayerParts)
+			{
+				anim.addProperty(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
+				anim.addProperty(StaticAnimationProperty.SHOULD_SYNC, true);
+			}
+			this.entries.put(motion, anim);
 			return this;
 		}
 		
 		public Builder addEntry(LivingMotion motion, ResourceLocation path1, ResourceLocation path2, boolean applyLayerParts)
 		{
-			this.entries.put(motion, new MirrorEntry(path1, path2, applyLayerParts));
+			ResourceLocation entryId = new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase());
+			MirrorAnimation.Builder anim = new MirrorAnimation.Builder(entryId, this.convertTime, this.repeat, applyLayerParts, path1, path2, this.model);
+			if (applyLayerParts) anim.addProperty(StaticAnimationProperty.SHOULD_SYNC, true);
+			this.entries.put(motion, anim);
 			return this;
 		}
 		
-		public AdaptableAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
 			this.entries.forEach((motion, entry) ->
 			{
-				this.animations.put(motion, entry.build(this.id, motion, this.convertTime, this.repeat, this.model, ImmutableMap.builder()));
+				entry.register(register);
+				this.animations.put(motion, register.build().get(entry.getId()));
 			});
-			return new AdaptableAnimation(this.animations.build());
+			register.put(this.getId(), new AdaptableAnimation(this.animations.build()));
 		}
 
 		@Override
@@ -175,50 +189,6 @@ public class AdaptableAnimation extends StaticAnimation
 		public AnimationType getAnimType()
 		{
 			return AnimationType.ADAPTABLE;
-		}
-	}
-	
-	private static class Entry
-	{
-		protected final ResourceLocation path1;
-		protected final boolean applyLayerParts;
-		
-		public Entry(ResourceLocation path1, boolean applyLayerParts)
-		{
-			this.path1 = path1;
-			this.applyLayerParts = applyLayerParts;
-		}
-		
-		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay,
-				Function<Models<?>, Model> model, ImmutableMap.Builder<Property<?>, Object> properties)
-		{
-			if (this.applyLayerParts)
-			{
-				properties.put(StaticAnimationProperty.LAYER_PART, LayerPart.UP);
-				properties.put(StaticAnimationProperty.SHOULD_SYNC, true);
-			}
-			return new StaticAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
-					convertTime, repeatPlay, this.path1, model, properties.build());
-		}
-	}
-	
-	private static class MirrorEntry extends Entry
-	{
-		private final ResourceLocation path2;
-		
-		public MirrorEntry(ResourceLocation path1, ResourceLocation path2, boolean applyLayerParts)
-		{
-			super(path1, applyLayerParts);
-			this.path2 = path2;
-		}
-		
-		@Override
-		protected StaticAnimation build(ResourceLocation id, LivingMotion motion, float convertTime, boolean repeatPlay,
-				Function<Models<?>, Model> model, ImmutableMap.Builder<Property<?>, Object> properties)
-		{
-			if (this.applyLayerParts) properties.put(StaticAnimationProperty.SHOULD_SYNC, true);
-			return new MirrorAnimation(new ResourceLocation(id.getNamespace(), id.getPath()+"_"+motion.toString().toLowerCase()),
-					convertTime, repeatPlay, this.applyLayerParts, this.path1, this.path2, model, properties.build());
 		}
 	}
 }

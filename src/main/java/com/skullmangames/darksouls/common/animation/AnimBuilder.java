@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.common.animation;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 
@@ -16,5 +17,5 @@ public abstract class AnimBuilder
 	
 	public abstract AnimationType getAnimType();
 	
-	public abstract StaticAnimation build();
+	public abstract void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register);
 }

@@ -45,9 +45,9 @@ public class InvincibleAnimation extends ActionAnimation
 		}
 		
 		@Override
-		public InvincibleAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new InvincibleAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new InvincibleAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build()));
 		}
 	}
 }

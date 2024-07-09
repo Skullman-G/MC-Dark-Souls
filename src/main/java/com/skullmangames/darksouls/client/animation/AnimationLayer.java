@@ -164,6 +164,18 @@ public class AnimationLayer
 			this.mixLayers.put(LayerPart.FULL, this);
 		}
 		
+		public AnimationLayer getHigherActiveLayer(LayerPart layerPart)
+		{
+			layerPart = layerPart.higherLayer();
+			AnimationLayer layer = this.mixLayers.get(layerPart);
+			while (layer.isDisabled())
+			{
+				layerPart = layerPart.higherLayer();
+				layer = this.mixLayers.get(layerPart);
+			}
+			return layer;
+		}
+		
 		@Override
 		public boolean isJointEnabled(String joint)
 		{
@@ -210,11 +222,10 @@ public class AnimationLayer
 			return new LayerPart[] { UP, LEFT, RIGHT };
 		}
 		
-		public LayerPart[] otherMixLayers()
+		public LayerPart higherLayer()
 		{
-			if (this == UP) return new LayerPart[] { LEFT, RIGHT };
-			if (this == LEFT || this == RIGHT) return new LayerPart[] { UP };
-			return mixLayers();
+			if (this == LEFT || this == RIGHT) return UP;
+			else return FULL;
 		}
 		
 		public static LayerPart fromHand(InteractionHand hand)

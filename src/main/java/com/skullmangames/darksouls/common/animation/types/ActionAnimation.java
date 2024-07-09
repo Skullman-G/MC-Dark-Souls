@@ -292,9 +292,9 @@ public class ActionAnimation extends ImmovableAnimation
 		}
 		
 		@Override
-		public ActionAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model, this.properties.build()));
 		}
 	}
 }

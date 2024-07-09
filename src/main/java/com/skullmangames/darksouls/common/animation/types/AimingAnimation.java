@@ -149,10 +149,10 @@ public class AimingAnimation extends StaticAnimation
 		}
 		
 		@Override
-		public AimingAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new AimingAnimation(this.id, this.convertTime, this.repeat, this.location,
-					this.lookUpLocation, this.lookDownLocation, this.model, this.properties.build());
+			register.put(this.getId(), new AimingAnimation(this.id, this.convertTime, this.repeat, this.location,
+					this.lookUpLocation, this.lookDownLocation, this.model, this.properties.build()));
 		}
 	}
 }

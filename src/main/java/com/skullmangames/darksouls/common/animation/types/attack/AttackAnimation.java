@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -508,9 +509,10 @@ public class AttackAnimation extends ActionAnimation
 		}
 		
 		@Override
-		public AttackAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new AttackAnimation(this.id, this.attackType, this.convertTime, this.location, this.model, this.properties.build(), this.phases);
+			register.put(this.getId(), new AttackAnimation(this.id, this.attackType, this.convertTime,
+					this.location, this.model, this.properties.build(), this.phases));
 		}
 	}
 }

@@ -75,9 +75,9 @@ public class MovementAnimation extends StaticAnimation
 		}
 		
 		@Override
-		public MovementAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new MovementAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new MovementAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build()));
 		}
 	}
 }

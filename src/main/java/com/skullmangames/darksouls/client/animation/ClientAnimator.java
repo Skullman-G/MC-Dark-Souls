@@ -139,7 +139,7 @@ public class ClientAnimator extends Animator
 	public void updatePose()
 	{
 		this.prevPose = this.currentPose;
-		this.currentPose = this.getMixedLayerPose(1.0F);
+		this.currentPose = this.getDefinetivePose(1.0F);
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class ClientAnimator extends Animator
 		return this.baseLayer.mixLayers.get(layerPart);
 	}
 
-	public Pose getMixedLayerPose(float partialTicks)
+	public Pose getDefinetivePose(float partialTicks)
 	{
 		Pose composedPose = new Pose();
 		
@@ -216,36 +216,23 @@ public class ClientAnimator extends Animator
 				Pose layerPose = compositeLayer.animationPlayer.getCurrentPose(this.entityCap, compositeLayer.paused ? 1.0F : partialTicks);
 				layerPose.getJointTransformData().forEach((joint, transform) ->
 				{
-					if (compositeLayer.isJointEnabled(joint)) composedPose.getJointTransformData().put(joint, transform);
+					if (compositeLayer.isJointEnabled(joint)) composedPose.putJointData(joint, transform);
 				});
 			}
 		}
 		return composedPose;
 	}
 
-	public Pose getMixedLayerPoseFromOthers(AnimationLayer.LayerPart layerPart, float partialTicks)
+	public Pose getHigherPose(AnimationLayer.LayerPart layerPart, float partialTicks)
 	{
-		Pose composedPose = this.baseLayer.animationPlayer.getCurrentPose(this.entityCap, partialTicks);
+		Pose composedPose = new Pose();
+		AnimationLayer layer = this.baseLayer.getHigherActiveLayer(layerPart);
 
-		Pose currentBasePose = this.baseLayer.animationPlayer.getCurrentPose(this.entityCap, partialTicks);
-		currentBasePose.getJointTransformData().forEach((joint, transform) ->
+		Pose layerPose = layer.animationPlayer.getCurrentPose(this.entityCap, layer.paused ? 1.0F : partialTicks);
+		layerPose.getJointTransformData().forEach((joint, transform) ->
 		{
-			composedPose.putJointData(joint, transform);
+			if (layer.isJointEnabled(joint)) composedPose.putJointData(joint, transform);
 		});
-		
-		for (AnimationLayer.LayerPart part : layerPart.otherMixLayers())
-		{
-			AnimationLayer compositeLayer = this.baseLayer.mixLayers.get(part);
-
-			if (!compositeLayer.isDisabled())
-			{
-				Pose layerPose = compositeLayer.animationPlayer.getCurrentPose(this.entityCap, compositeLayer.paused ? 1.0F : partialTicks);
-				layerPose.getJointTransformData().forEach((joint, transform) ->
-				{
-					if (compositeLayer.isJointEnabled(joint)) composedPose.getJointTransformData().put(joint, transform);
-				});
-			}
-		}
 		return composedPose;
 	}
 

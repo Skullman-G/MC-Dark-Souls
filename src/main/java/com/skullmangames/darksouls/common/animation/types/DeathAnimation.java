@@ -89,9 +89,9 @@ public class DeathAnimation extends InvincibleAnimation
 		}
 		
 		@Override
-		public DeathAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new DeathAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build());
+			register.put(this.getId(), new DeathAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build()));
 		}
 	}
 }

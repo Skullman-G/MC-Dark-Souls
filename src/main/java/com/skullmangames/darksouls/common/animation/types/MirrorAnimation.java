@@ -21,25 +21,12 @@ public class MirrorAnimation extends StaticAnimation
 	public StaticAnimation right;
 	public StaticAnimation left;
 	
-	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
-	{
-		this(id, convertTime, repeatPlay, true, path1, path2, model, properties);
-	}
-	
-	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, boolean applyLayerParts, ResourceLocation path1, ResourceLocation path2,
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, StaticAnimation right, StaticAnimation left,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
 		super();
-		
-		ResourceLocation rightId = new ResourceLocation(id.getNamespace(), id.getPath()+"_right");
-		ResourceLocation leftId = new ResourceLocation(id.getNamespace(), id.getPath()+"_left");
-		
-		ImmutableMap<Property<?>, Object> p = properties;
-		if (applyLayerParts) p = ImmutableMap.<Property<?>, Object>builder().putAll(properties).put(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT).build();
-		this.right = new StaticAnimation(rightId, convertTime, repeatPlay, path1, model, p);
-		if (applyLayerParts) p = ImmutableMap.<Property<?>, Object>builder().putAll(properties).put(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT).build();
-		this.left = new StaticAnimation(leftId, convertTime, repeatPlay, path2, model, p);
+		this.right = right;
+		this.left = left;
 	}
 	
 	@Override
@@ -107,9 +94,25 @@ public class MirrorAnimation extends StaticAnimation
 		}
 		
 		@Override
-		public MirrorAnimation build()
+		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			return new MirrorAnimation(this.id, this.convertTime, this.repeat, this.location, this.location2, this.model, this.properties.build());
+			ResourceLocation rightId = new ResourceLocation(this.getId().getNamespace(), this.getId().getPath()+"_right");
+			ResourceLocation leftId = new ResourceLocation(this.getId().getNamespace(), this.getId().getPath()+"_left");
+			
+			ImmutableMap<Property<?>, Object> builtProperties = this.properties.build();
+			ImmutableMap<Property<?>, Object> tempProperties = this.properties.build();
+			
+			if (this.applyLayerParts)
+				tempProperties = ImmutableMap.<Property<?>, Object>builder().putAll(builtProperties).put(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT).build();
+			StaticAnimation right = new StaticAnimation(rightId, convertTime, this.repeat, this.location, model, tempProperties);
+			
+			if (this.applyLayerParts)
+				tempProperties = ImmutableMap.<Property<?>, Object>builder().putAll(builtProperties).put(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT).build();
+			StaticAnimation left = new StaticAnimation(leftId, convertTime, this.repeat, this.location2, model, tempProperties);
+			
+			register.put(this.getId(), new MirrorAnimation(this.id, this.convertTime, this.repeat, right, left, this.model, this.properties.build()));
+			register.put(rightId, right);
+			register.put(leftId, left);
 		}
 	}
 }
