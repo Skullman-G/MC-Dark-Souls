@@ -24,7 +24,9 @@ public abstract class ScalingStat extends Stat
 		if (value <= 40) percentage = value * (softCap1 / 40D);
 		else if (value <= 60) percentage = softCap1 + (value - 40) * ((softCap2 - softCap1) / 20D);
 		else if (value <= 99) percentage = softCap2 +  (value - 60) * ((hardCap - softCap2) / 39D);
-		return weapon.getScaling(this).getPercentage() * percentage;
+		percentage *= weapon.getScaling(this).getPercentage();
+		if (!weapon.meetsRequirement(this, playerCap)) percentage -= 1F;
+		return percentage;
 	}
 	
 	@Override

@@ -224,7 +224,7 @@ public class Stats
 		{
 			mul += stat.getModifyValue(playerCap, attribute, value.apply(stat));
 		}
-		return mul;
+		return Math.max(mul, 0.75D);
 	}
 	
 	public static Stat[] getForAttribute(Attribute attribute)

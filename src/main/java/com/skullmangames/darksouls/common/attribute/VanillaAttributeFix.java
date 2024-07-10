@@ -13,11 +13,11 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -72,8 +72,6 @@ public class VanillaAttributeFix
 	@SubscribeEvent
 	public static void modifyAttributes(EntityAttributeModificationEvent event)
 	{
-		@SuppressWarnings("deprecation")
-		Map<EntityType<? extends LivingEntity>, AttributeSupplier> values = ForgeHooks.getAttributesView();
 		for (EntityType<?> entry : ForgeRegistries.ENTITIES)
 		{
 			try
@@ -89,10 +87,10 @@ public class VanillaAttributeFix
 					}
 					else
 					{
-						AttributeSupplier supplier = values.get(entity);
-						if (supplier != null)
+						AttributeSupplier supplier = DefaultAttributes.getSupplier(entity);
+						if (supplier != null && supplier.hasAttribute(Attributes.MAX_HEALTH))
 						{
-							double value = supplier.getBaseValue(Attributes.MAX_HEALTH) * 1000D;
+							double value = supplier.getBaseValue(Attributes.MAX_HEALTH) * 50D;
 							event.add(entity, Attributes.MAX_HEALTH, value);
 						}
 					}
