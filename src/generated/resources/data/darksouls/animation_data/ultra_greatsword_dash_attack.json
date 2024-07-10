@@ -49,12 +49,12 @@
       "end": 3.45,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "deflection": "HEAVY",
-        "stamina_usage": 50,
-        "stamina_damage": 70,
+        "poise_damage": 28,
         "stun_type": "SMASH",
         "movement_damage_type": "REGULAR",
-        "poise_damage": 28
+        "deflection": "HEAVY",
+        "stamina_usage": 50,
+        "stamina_damage": 70
       }
     }
   ]

@@ -8,7 +8,7 @@
     "events": [
       {
         "event_type": "play_sound",
-        "time": 0.2,
+        "time": 0.6,
         "execution_side": "SERVER",
         "sound": "darksouls:item.sword.thrust",
         "anchor": "ENTITY",
@@ -22,17 +22,17 @@
   "phases": [
     {
       "begin": 0.0,
-      "contact_start": 0.2,
-      "contact_end": 0.36,
-      "end": 1.2,
+      "contact_start": 0.6,
+      "contact_end": 0.88,
+      "end": 1.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "deflection": "LIGHT",
-        "stamina_usage": 50,
-        "stamina_damage": 37,
+        "poise_damage": 15,
         "stun_type": "LIGHT",
         "movement_damage_type": "THRUST",
-        "poise_damage": 15
+        "deflection": "LIGHT",
+        "stamina_usage": 50,
+        "stamina_damage": 37
       }
     }
   ]

@@ -691,9 +691,9 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_dash_attack"), AttackType.DASH, 0.2F, 0.0F,
-						0.2F, 0.36F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_da"),
+						0.6F, 0.88F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_da"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-				{ new PlaySoundEvent(0.2F, Side.SERVER, ModSoundEvents.SWORD_THRUST) })
+				{ new PlaySoundEvent(0.6F, Side.SERVER, ModSoundEvents.SWORD_THRUST) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)

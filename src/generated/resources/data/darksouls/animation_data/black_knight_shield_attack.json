@@ -45,11 +45,11 @@
       "end": 1.6,
       "weapon_bone_name": "Tool_L",
       "properties": {
-        "deflection": "IMPOSSIBLE",
-        "stamina_damage": 40,
+        "poise_damage": 20,
         "stun_type": "HEAVY",
         "movement_damage_type": "REGULAR",
-        "poise_damage": 20
+        "deflection": "IMPOSSIBLE",
+        "stamina_damage": 40
       }
     }
   ]

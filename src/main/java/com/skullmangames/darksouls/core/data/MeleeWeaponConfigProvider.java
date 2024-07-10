@@ -553,7 +553,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
 			// Thrusting Swords
-			MeleeWeaponCap.builder(ModItems.RAPIER.get(), WeaponCategory.THRUSTING_SWORD, WeaponMovesets.THRUSTING_SWORD, Colliders.LONGSWORD.getId(), 20.0F)
+			MeleeWeaponCap.builder(ModItems.RAPIER.get(), WeaponCategory.THRUSTING_SWORD, WeaponMovesets.THRUSTING_SWORD, Colliders.LONGSWORD.getId(), 2.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 95, 0.35F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.20F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.15F)
