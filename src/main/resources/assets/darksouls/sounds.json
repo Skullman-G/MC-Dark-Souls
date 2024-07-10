@@ -1,4 +1,14 @@
 {
+	"entity.generic.blood":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/blood_1",
+			"darksouls:entities/generic/blood_2"
+		]
+	},
+	
 	"item.shield.iron_large.block":
 	{
 		"category": "item",

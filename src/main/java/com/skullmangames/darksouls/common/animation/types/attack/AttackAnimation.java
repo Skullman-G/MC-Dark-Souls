@@ -32,6 +32,7 @@ import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.AuxEffect;
@@ -42,10 +43,12 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -127,10 +130,10 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				if (entityCap instanceof ServerPlayerCap && !((ServerPlayerCap) entityCap).isCreativeOrSpectator())
+				if (entityCap instanceof ServerPlayerCap serverPlayer && !serverPlayer.isCreativeOrSpectator())
 				{
 					int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(25), -25);
-					((ServerPlayerCap)entityCap).increaseStamina(incr);
+					serverPlayer.increaseStamina(incr);
 				}
 				else if (entityCap instanceof MobCap)
 				{
@@ -170,10 +173,7 @@ public class AttackAnimation extends ActionAnimation
 						|| trueEntity instanceof BreakableObject))
 					{
 						// Check if a block is in the way
-						if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
-										new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
-										ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
-								.getType() == HitResult.Type.MISS)
+						if (this.hasBlockBetween(e, entity))
 						{
 							Damages damages = this.getDamageAmount(entityCap, e, phase);
 							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, damages);
@@ -212,10 +212,66 @@ public class AttackAnimation extends ActionAnimation
 	@OnlyIn(Dist.CLIENT)
 	public void onClientUpdate(LivingCap<?> entityCap)
 	{
+		LivingEntity entity = entityCap.getOriginalEntity();
+
 		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
+		float prevElapsedTime = animPlayer.getPrevElapsedTime();
+		EntityState state = this.getState(elapsedTime);
+		EntityState prevState = this.getState(prevElapsedTime);
+		Phase phase = this.getPhaseByTime(elapsedTime);
 		
 		entityCap.weaponCollider = this.getCollider(entityCap, elapsedTime);
+		
+		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
+		{
+			if (!prevState.shouldDetectCollision())
+			{
+				entityCap.currentlyAttackedEntities.clear();
+			}
+
+			Collider collider = this.getCollider(entityCap, elapsedTime);
+			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
+			Vec3 prevColPos = null;
+			if (entityCap.lastColTransform != null)
+			{
+				collider.transform(entityCap.lastColTransform);
+				prevColPos = collider.getMassCenter();
+			}
+			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
+			if (prevColPos == null) prevColPos = collider.getMassCenter();
+			List<Entity> shields = collider.getShieldCollisions(entity);
+			List<Entity> entities = collider.getEntityCollisions(entity);
+			entities.removeIf((e) -> shields.contains(e));
+			
+			if (!entities.isEmpty())
+			{
+				AttackResult attackResult = new AttackResult(entity);
+				attackResult.addEntities(entities, false);
+				
+				do
+				{
+					Entity e = attackResult.getEntity();
+					Entity trueEntity = this.getTrueEntity(e);
+					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof Player playerEntity
+							&& this.hasBlockBetween(e, entity))
+					{
+						PlayerCap<?> playerCap = (PlayerCap<?>)playerEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+						if (playerCap != null && playerCap.getEntityState() == EntityState.DODGING)
+						{
+							ModNetworkManager.connection.shakeCamForEntity(playerEntity, 10, 1.0F);
+						}
+					}
+				} while (attackResult.next());
+			}
+		}
+	}
+	
+	private boolean hasBlockBetween(Entity target, Entity attacker)
+	{
+		return attacker.level.clip(new ClipContext(new Vec3(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
+				new Vec3(attacker.getX(), attacker.getY() + attacker.getBbHeight() * 0.5F, attacker.getZ()),
+				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, attacker)).getType() == HitResult.Type.MISS;
 	}
 	
 	@Override

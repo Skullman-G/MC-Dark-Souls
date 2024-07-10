@@ -156,7 +156,7 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		if (time < this.totalTime * ConfigManager.SERVER_CONFIG.iFramesPercentage.get())
 		{
-			return this.canRotate ? EntityState.R_INVINCIBLE : EntityState.INVINCIBLE;
+			return this.canRotate ? EntityState.R_DODGING : EntityState.DODGING;
 		}
 		return EntityState.PRE_CONTACT;
 	}

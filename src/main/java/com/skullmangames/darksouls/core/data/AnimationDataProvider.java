@@ -682,7 +682,7 @@ public class AnimationDataProvider implements DataProvider
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_heavy_attack_2"), AttackType.HEAVY, 0.2F,
 						0.0F, 0.68F, 0.8F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_ha_2"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-				{ new PlaySoundEvent(0.68F, Side.SERVER, ModSoundEvents.SWORD_SWING), })
+				{ new PlaySoundEvent(0.68F, Side.SERVER, ModSoundEvents.SWORD_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
@@ -1985,13 +1985,13 @@ public class AnimationDataProvider implements DataProvider
 				new StaticAnimation.Builder(DarkSouls.rl("balder_knight_walk"), 0.1F, true,
 						DarkSouls.rl("balder_knight/walking"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new PlaySoundEvent(0.24F, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT),
-										new PlaySoundEvent(0.24F, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT) }),
+								{ new PlaySoundEvent(0.24F, Side.SERVER, ModSoundEvents.BALDER_KNIGHT_FOOT),
+										new PlaySoundEvent(0.48F, Side.SERVER, ModSoundEvents.BALDER_KNIGHT_FOOT) }),
 				new StaticAnimation.Builder(DarkSouls.rl("balder_knight_run"), 0.1F, true,
 						DarkSouls.rl("balder_knight/run"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new PlaySoundEvent(0.12F, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT),
-										new PlaySoundEvent(0.5F, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT) }),
+								{ new PlaySoundEvent(0.12F, Side.SERVER, ModSoundEvents.BALDER_KNIGHT_FOOT),
+										new PlaySoundEvent(0.5F, Side.SERVER, ModSoundEvents.BALDER_KNIGHT_FOOT) }),
 				new AdaptableAnimation.Builder(DarkSouls.rl("balder_knight_block"), 0.2F, true,
 						(models) -> models.ENTITY_BIPED)
 								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("balder_knight/block"), false)

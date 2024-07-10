@@ -26,6 +26,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
@@ -230,6 +231,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		else
 		{
+			this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
 		}
 	}

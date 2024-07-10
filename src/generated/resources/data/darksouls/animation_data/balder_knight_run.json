@@ -9,7 +9,7 @@
       {
         "event_type": "play_sound",
         "time": 0.12,
-        "execution_side": "CLIENT",
+        "execution_side": "SERVER",
         "sound": "darksouls:entity.balder_knight.foot",
         "anchor": "ENTITY",
         "volume": 1.0,
@@ -18,7 +18,7 @@
       {
         "event_type": "play_sound",
         "time": 0.5,
-        "execution_side": "CLIENT",
+        "execution_side": "SERVER",
         "sound": "darksouls:entity.balder_knight.foot",
         "anchor": "ENTITY",
         "volume": 1.0,
