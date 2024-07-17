@@ -360,12 +360,6 @@ public class CapsuleCollider extends Collider
 	}
 
 	@Override
-	public CapsuleCollider getScaledCollider(float scale)
-	{
-		return new CapsuleCollider(this.radius * scale, this.height * scale, this.min().scale(scale));
-	}
-
-	@Override
 	public CapsuleCollider clone()
 	{
 		return new CapsuleCollider(this.radius, this.height, this.min());

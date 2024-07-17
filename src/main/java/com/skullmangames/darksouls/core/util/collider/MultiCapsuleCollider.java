@@ -104,17 +104,6 @@ public class MultiCapsuleCollider extends Collider
 	}
 
 	@Override
-	public Collider getScaledCollider(float scale)
-	{
-		CapsuleCollider[] newColliders = new CapsuleCollider[this.colliders.length];
-		for (int i = 0; i < newColliders.length; i++)
-		{
-			newColliders[i] = this.colliders[i].getScaledCollider(scale);
-		}
-		return new MultiCapsuleCollider(newColliders);
-	}
-
-	@Override
 	public Collider clone()
 	{
 		CapsuleCollider[] newColliders = new CapsuleCollider[this.colliders.length];

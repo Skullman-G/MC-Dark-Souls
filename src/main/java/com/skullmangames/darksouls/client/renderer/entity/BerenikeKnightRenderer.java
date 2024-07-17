@@ -33,11 +33,9 @@ public class BerenikeKnightRenderer extends BipedRenderer<BerenikeKnight, Bereni
 	@Override
 	protected void applyRotations(PoseStack poseStack, Armature armature, BerenikeKnightCap entityCap, float partialTicks)
 	{
-		float scale = 1.5F;
+		float scale = entityCap.getModelScale();
 		poseStack.scale(scale, scale, scale);
 		this.layer.scale = entityCap.getWeaponScale();
 		super.applyRotations(poseStack, armature, entityCap, partialTicks);
 	}
-	
-	
 }

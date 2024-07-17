@@ -200,6 +200,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public abstract void updateMotion();
 
 	public abstract <M extends Model> M getEntityModel(Models<M> modelDB);
+	
+	public float getModelScale()
+	{
+		return 1.0F;
+	}
 
 	protected void initAttributes() {}
 

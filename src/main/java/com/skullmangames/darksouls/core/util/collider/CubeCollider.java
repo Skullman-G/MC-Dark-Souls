@@ -147,15 +147,6 @@ public class CubeCollider extends Collider
 		Vec3 max = this.max();
 		return new Vec3((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
 	}
-	
-	@Override
-	public Collider getScaledCollider(float scale)
-	{
-		Vec3 min = this.modelVertices[0];
-		Vec3 max = this.modelVertices[6];
-		return new CubeCollider(scale * min.x, scale * min.y, scale * min.z,
-				scale * max.x, scale * max.y, scale * max.z);
-	}
 
 	@Override
 	public boolean collidesWith(Entity opponent)

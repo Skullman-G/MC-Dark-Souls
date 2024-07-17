@@ -96,8 +96,8 @@ public abstract class Collider
 		if (pathIndex == -1) transformMatrix = new ModMatrix4f();
 		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
 		
-		float weaponScale = entityCap.getWeaponScale();
-		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks).scale(weaponScale, weaponScale, weaponScale));
+		float scale = entityCap.getModelScale();
+		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks).scale(scale, scale, scale));
 		
 		if (safe) entityCap.lastColTransform = transformMatrix;
 		
@@ -111,8 +111,6 @@ public abstract class Collider
 				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null));
 		return hitResult;
 	}
-	
-	public abstract Collider getScaledCollider(float scale);
 	
 	public List<Entity> getShieldCollisions(Entity self)
 	{

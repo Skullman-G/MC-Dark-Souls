@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.DarkSouls;
-import com.skullmangames.darksouls.common.capability.entity.BerenikeKnightCap;
-import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
-import com.skullmangames.darksouls.common.capability.entity.TaurusDemonCap;
 import com.skullmangames.darksouls.core.util.collider.CapsuleCollider;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.collider.CubeCollider;
@@ -54,15 +51,27 @@ public class Colliders
 	public static final Collider MACE = register("mace", new CapsuleCollider(0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0));
 	
 	//Stray Demon
-	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.WEAPON_SCALE);
+	public static final Collider STRAY_DEMON_GREAT_HAMMER = new MultiCapsuleCollider
+			(
+					new CapsuleCollider(2D, 4.5D, new Vec3(0, 0.05D, -2D), -4.5F, 0),
+					new CapsuleCollider(0.75D, 3.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+			);
 	public static final Collider STRAY_DEMON_BODY = new CapsuleCollider(4D, 8D, new Vec3(0, 0, 0), -90F, 0);
 	
 	//Taurus Demon
-	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.WEAPON_SCALE);
+	public static final Collider TAURUS_DEMON_GREATAXE = new MultiCapsuleCollider
+			(
+					new CapsuleCollider(2D, 4.5D, new Vec3(0, 0.05D, -2D), -4.5F, 0),
+					new CapsuleCollider(0.75D, 3.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+			);
 	
 	//Berenike Knight
-	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = ULTRA_GREATSWORD.getScaledCollider(1.0F);
-	public static final Collider BERENIKE_KNIGHT_MACE = MACE.getScaledCollider(BerenikeKnightCap.WEAPON_SCALE);
+	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = new CapsuleCollider(0.5D, 3D, new Vec3(0, 0.125D, 0), -5.5F, 0);
+	public static final Collider BERENIKE_KNIGHT_MACE = new MultiCapsuleCollider
+			(
+					new CapsuleCollider(0.5D, 1.0D, new Vec3(0, 0.1D, -0.4D), -4.5F, 0),
+					new CapsuleCollider(0.1D, 1.0D, new Vec3(0, 0.1D, 0), -4.5F, 0)
+			);
 	
 	private static Collider register(String name, Collider collider)
 	{

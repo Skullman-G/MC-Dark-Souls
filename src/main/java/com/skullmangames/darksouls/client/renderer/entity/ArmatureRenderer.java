@@ -70,9 +70,6 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 			entityCap.getClientAnimator().setPoseToModel(partialTicks);
 			ModMatrix4f[] poses = armature.getJointTransforms();
 			
-			float scale = 0.95F;
-			poseStack.scale(scale, scale, scale);
-			
 			Set<Integer> jointMask = new HashSet<>();
 			for (Layer<?, ?> layer : this.layers) jointMask.addAll(layer.getJointMask(entityCap));
 			

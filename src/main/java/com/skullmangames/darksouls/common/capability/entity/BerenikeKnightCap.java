@@ -100,4 +100,10 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	{
 		return ShieldHoldType.HORIZONTAL;
 	}
+	
+	@Override
+	public float getModelScale()
+	{
+		return 1.5F;
+	}
 }
