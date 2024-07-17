@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class MathUtils
+public class ModMath
 {
 	// Convert entity rotation into normal rotation
 	public static float toNormalRot(float rot)

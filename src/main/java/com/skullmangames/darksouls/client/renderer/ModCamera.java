@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.renderer;
 import java.util.Random;
 
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 
 import net.minecraft.client.Camera;
@@ -151,7 +151,7 @@ public class ModCamera extends Camera
 	{
 		if (this.anim < 1)
 		{
-			this.anim = MathUtils.clamp(this.anim + 0.01F * partialTick, 0, 1);
+			this.anim = ModMath.clamp(this.anim + 0.01F * partialTick, 0, 1);
 			this.xo = Mth.lerp(this.anim, this.xo, x);
 			this.yo = Mth.lerp(this.anim, this.yo, y);
 			this.zo = Mth.lerp(this.anim, this.zo, z);

@@ -8,7 +8,7 @@ import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -43,7 +43,7 @@ public class LightningSpearRenderer extends EntityRenderer<LightningSpear>
 	@Override
 	protected int getBlockLightLevel(LightningSpear entity, BlockPos blockPos)
 	{
-		return MathUtils.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
+		return ModMath.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
 	}
 	
 	@Override

@@ -42,7 +42,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.world.entity.Entity;

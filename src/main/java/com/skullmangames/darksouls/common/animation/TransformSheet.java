@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.animation;
 import java.util.List;
 
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModQuaternion;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
@@ -82,7 +82,7 @@ public class TransformSheet
 	public Vector3f getInterpolatedTranslation(float currentTime)
 	{
 		InterpolationInfo interpolInfo = this.getInterpolationInfo(currentTime);
-		Vector3f vec3f = MathUtils.lerpVector(this.keyframes[interpolInfo.prev].transform().translation(),
+		Vector3f vec3f = ModMath.lerpVector(this.keyframes[interpolInfo.prev].transform().translation(),
 				this.keyframes[interpolInfo.next].transform().translation(), interpolInfo.zero2One);
 		return vec3f;
 	}
@@ -110,15 +110,15 @@ public class TransformSheet
 		Keyframe endKeyframe = keyframes[keyframes.length - 1];
 		float pitchDeg = (float) Math.toDegrees(
 				Mth.atan2(modifiedStartToEnd.y() - startToEnd.y(), Vector3fHelper.length(modifiedStartToEnd)));
-		float yawDeg = (float) Math.toDegrees(MathUtils.getAngleBetween(
+		float yawDeg = (float) Math.toDegrees(ModMath.getAngleBetween(
 				Vector3fHelper.normalize(Vector3fHelper.mul(modifiedStartToEnd, 1.0F, 0.0F, 1.0F)),
 				Vector3fHelper.normalize(Vector3fHelper.mul(startToEnd, 1.0F, 0.0F, 1.0F))));
 
 		for (Keyframe kf : keyframes)
 		{
 			float lerp = (kf.time() - startKeyframe.time()) / (endKeyframe.time() - startKeyframe.time());
-			Vector3f line = MathUtils.lerpVector(new Vector3f(0F, 0F, 0F), startToEnd, lerp);
-			Vector3f modifiedLine = MathUtils.lerpVector(new Vector3f(0F, 0F, 0F), modifiedStartToEnd, lerp);
+			Vector3f line = ModMath.lerpVector(new Vector3f(0F, 0F, 0F), startToEnd, lerp);
+			Vector3f modifiedLine = ModMath.lerpVector(new Vector3f(0F, 0F, 0F), modifiedStartToEnd, lerp);
 			Vector3f keyTransform = kf.transform().translation();
 			Vector3f startToKeyTransform = Vector3fHelper.mul(Vector3fHelper.sub(keyTransform, startpos), -1.0F, 1.0F,
 					-1.0F);

@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.ProjectileUtil;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
@@ -41,7 +41,7 @@ public class LightningSpear extends MagicProjectile
 	{
 		this.setOwner(cap.getOriginalEntity());
 		
-		double yRot = Math.toRadians(MathUtils.toNormalRot(cap.getYRot()));
+		double yRot = Math.toRadians(ModMath.toNormalRot(cap.getYRot()));
 		this.setPos(cap.getX() + Math.sin(yRot) * 0.5F, cap.getY() + 1.75F, cap.getZ() + Math.cos(yRot) * 1.75F);
 		this.yRot = cap.getYRot();
 		this.damage = 0F;

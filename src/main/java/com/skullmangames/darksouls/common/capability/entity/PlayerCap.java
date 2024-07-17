@@ -22,7 +22,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -244,7 +244,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	
 	public void setFP(float value)
 	{
-		this.fp = MathUtils.clamp(value, 0, this.getMaxFP());
+		this.fp = ModMath.clamp(value, 0, this.getMaxFP());
 	}
 	
 	public void raiseFP(float value)
@@ -284,7 +284,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	
 	public void setHumanity(int value)
 	{
-		this.humanity = MathUtils.clamp(value, 0, 99);
+		this.humanity = ModMath.clamp(value, 0, 99);
 	}
 	
 	public void raiseHumanity(int value)

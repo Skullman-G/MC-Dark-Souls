@@ -32,9 +32,9 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
-import com.skullmangames.darksouls.core.util.physics.Collider;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
@@ -165,7 +165,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public void increaseStamina(float increment)
 	{
-		this.setStamina(MathUtils.clamp(this.stamina + increment, -5, this.getMaxStamina()));
+		this.setStamina(ModMath.clamp(this.stamina + increment, -5, this.getMaxStamina()));
 	}
 
 	public float getStamina()
@@ -699,13 +699,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			headRotDest = 0;
 		else
 		{
-			bodyRot = MathUtils.interpolateRotation(orgEntity.yBodyRotO, orgEntity.yBodyRot, partialTicks);
-			headRot = MathUtils.interpolateRotation(orgEntity.yHeadRotO, orgEntity.yHeadRot, partialTicks);
+			bodyRot = ModMath.interpolateRotation(orgEntity.yBodyRotO, orgEntity.yBodyRot, partialTicks);
+			headRot = ModMath.interpolateRotation(orgEntity.yHeadRotO, orgEntity.yHeadRot, partialTicks);
 			headRotDest = headRot - bodyRot;
 
 			if (orgEntity.getControllingPassenger() != null)
 			{
-				headRotDest = MathUtils.clamp(headRotDest, 45.0F);
+				headRotDest = ModMath.clamp(headRotDest, 45.0F);
 			}
 		}
 

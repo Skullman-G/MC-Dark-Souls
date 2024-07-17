@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.animation.events;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +45,7 @@ public class ImpactParticleEvent extends AnimEvent
 	@Override
 	protected void invoke(LivingCap<?> cap)
 	{
-		float yRot = MathUtils.toNormalRot(cap.getYRot());
+		float yRot = ModMath.toNormalRot(cap.getYRot());
 		float y = cap.getOriginalEntity().getBbHeight() * 0.5F;
 		Vec3 pos = new Vec3(this.xOffset, this.yOffset + y, this.zOffset);
 		pos = ModMatrix4f.createRotatorDeg(yRot, Vector3f.YP).transform(pos);

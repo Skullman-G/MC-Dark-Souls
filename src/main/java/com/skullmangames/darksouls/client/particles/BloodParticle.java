@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.particles;
 
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -22,7 +22,7 @@ public class BloodParticle extends TextureSheetParticle
 		this.xd = speedX;
 		this.yd = speedY;
 		this.zd = speedZ;
-		this.rCol = (float)MathUtils.clamp(level.random.nextDouble(), 0.8D, 0.9D);
+		this.rCol = (float)ModMath.clamp(level.random.nextDouble(), 0.8D, 0.9D);
 		this.lifetime = 5;
 		this.quadSize = 0.05F;
 	}

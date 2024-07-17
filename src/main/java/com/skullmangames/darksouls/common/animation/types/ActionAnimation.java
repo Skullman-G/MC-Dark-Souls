@@ -19,7 +19,7 @@ import com.skullmangames.darksouls.common.animation.Property.MovementAnimationSe
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vec4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -184,7 +184,7 @@ public class ActionAnimation extends ImmovableAnimation
 	public void setLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap, LinkAnimation dest)
 	{
 		float totalTime = this.convertTime;
-		startAt = MathUtils.clamp(startAt, 0.05F, this.getTotalTime());
+		startAt = ModMath.clamp(startAt, 0.05F, this.getTotalTime());
 		
 		dest.startsAt = startAt;
 		

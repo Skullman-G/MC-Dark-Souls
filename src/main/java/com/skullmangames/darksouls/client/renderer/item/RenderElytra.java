@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.client.Minecraft;
@@ -49,8 +49,8 @@ public class RenderElytra extends RenderItemBase
 		ModMatrix4f.translateStack(viewMatrixStack, modelMatrix);
 		ModMatrix4f.rotateStack(viewMatrixStack, transpose);
 
-		float f = MathUtils.interpolateRotation(entity.yBodyRotO, entity.yBodyRot, partialTicks);
-		float f1 = MathUtils.interpolateRotation(entity.yHeadRotO, entity.yHeadRot, partialTicks);
+		float f = ModMath.interpolateRotation(entity.yBodyRotO, entity.yBodyRot, partialTicks);
+		float f1 = ModMath.interpolateRotation(entity.yHeadRotO, entity.yHeadRot, partialTicks);
 		float f2 = f1 - f;
 		float f7 = entity.getViewXRot(partialTicks);
 

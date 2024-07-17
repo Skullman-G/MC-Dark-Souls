@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client.renderer.entity;
 
 import com.skullmangames.darksouls.common.entity.AbstractSoulEntity;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,6 +22,6 @@ public abstract class AbstractSoulRenderer extends EntityRenderer<AbstractSoulEn
 	@Override
 	protected int getBlockLightLevel(AbstractSoulEntity entity, BlockPos blockPos)
 	{
-		return MathUtils.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
+		return ModMath.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
 	}
 }

@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.collider.Collider;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

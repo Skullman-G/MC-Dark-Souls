@@ -19,7 +19,7 @@ import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -158,16 +158,16 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 	{
 		Random random = this.minecraft.level.random;
 		AABB bb = entity.getBoundingBox();
-		double x = entity.getX() + MathUtils.clamp(impactPos.x - entity.getX(), bb.getXsize() / 3);
-		double y = entity.getY() + MathUtils.clamp(impactPos.y - entity.getY(), bb.getYsize() / 3);
-		double z = entity.getZ() + MathUtils.clamp(impactPos.z - entity.getZ(), bb.getZsize() / 3);
+		double x = entity.getX() + ModMath.clamp(impactPos.x - entity.getX(), bb.getXsize() / 3);
+		double y = entity.getY() + ModMath.clamp(impactPos.y - entity.getY(), bb.getYsize() / 3);
+		double z = entity.getZ() + ModMath.clamp(impactPos.z - entity.getZ(), bb.getZsize() / 3);
 		
 		if (blocked)
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				double xd = MathUtils.dir(impactPos.x - entity.getX()) * 0.25F * random.nextDouble();
-				double zd = MathUtils.dir(impactPos.z - entity.getZ()) * 0.25F * random.nextDouble();
+				double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.25F * random.nextDouble();
+				double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.25F * random.nextDouble();
 				entity.level.addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * random.nextDouble(), zd);
 			}
 		}
@@ -175,8 +175,8 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 		{
 			for (int i = 0; i < 20; i++)
 			{
-				double xd = MathUtils.dir(impactPos.x - entity.getX()) * 0.5F * random.nextDouble();
-				double zd = MathUtils.dir(impactPos.z - entity.getZ()) * 0.5F * random.nextDouble();
+				double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.5F * random.nextDouble();
+				double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.5F * random.nextDouble();
 				entity.level.addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
 			}
 		}

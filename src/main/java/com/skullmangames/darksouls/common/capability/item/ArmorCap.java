@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -102,9 +102,9 @@ public class ArmorCap extends AttributeItemCap
 			
 			itemTooltip.add(new TextComponent(""));
 			itemTooltip.add(new TranslatableComponent(ModAttributes.POISE.get().getDescriptionId()).withStyle(ChatFormatting.WHITE)
-					.append(new TextComponent(ChatFormatting.WHITE+": "+MathUtils.round(this.poise, 2))));
+					.append(new TextComponent(ChatFormatting.WHITE+": "+ModMath.round(this.poise, 2))));
 			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.WHITE)
-					.append(new TextComponent(ChatFormatting.WHITE+": "+MathUtils.round(this.weight, 2))));
+					.append(new TextComponent(ChatFormatting.WHITE+": "+ModMath.round(this.weight, 2))));
 		}
 	}
 	

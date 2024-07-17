@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,7 +166,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 			
 			if (type == AttackType.LIGHT)
 			{
-				double yRot = Math.toRadians(MathUtils.toNormalRot(this.getYRot()));
+				double yRot = Math.toRadians(ModMath.toNormalRot(this.getYRot()));
 				double dist = 1.25D;
 				AABB aabb = this.orgEntity.getBoundingBox().inflate(Math.sin(yRot) * dist, 0, Math.cos(yRot) * dist);
 				List<Entity> entities = this.getLevel().getEntities(this.orgEntity, aabb);

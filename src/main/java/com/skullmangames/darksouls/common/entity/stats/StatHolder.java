@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.nbt.CompoundTag;
 
@@ -39,7 +39,7 @@ public class StatHolder
 		ChangeRequest request = this.requestChange();
 		for (String name : Stats.STATS.keySet())
 		{
-			int value = MathUtils.clamp(nbt.getInt(name), Stats.STANDARD_LEVEL, Stats.MAX_LEVEL);
+			int value = ModMath.clamp(nbt.getInt(name), Stats.STANDARD_LEVEL, Stats.MAX_LEVEL);
 			request.set(name, value);
 		}
 		request.finish();
@@ -103,7 +103,7 @@ public class StatHolder
 		
 		public ChangeRequest set(String stat, int value)
 		{
-			this.values.put(stat, MathUtils.clamp(value, Stats.STANDARD_LEVEL, Stats.MAX_LEVEL));
+			this.values.put(stat, ModMath.clamp(value, Stats.STANDARD_LEVEL, Stats.MAX_LEVEL));
 			return this;
 		}
 		

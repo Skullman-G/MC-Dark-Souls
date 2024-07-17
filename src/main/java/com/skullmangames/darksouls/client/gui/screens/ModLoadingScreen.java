@@ -7,7 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -101,9 +101,9 @@ public class ModLoadingScreen extends Overlay
 				this.minecraft.screen.render(poseStack, 0, 0, p_230430_4_);
 			}
 
-			int l = (int)Math.ceil((1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
+			int l = (int)Math.ceil((1.0F - ModMath.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
 			fill(poseStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | l << 24);
-			alpha = 1.0F - MathUtils.clamp(outf - 1.0F, 0.0F, 1.0F);
+			alpha = 1.0F - ModMath.clamp(outf - 1.0F, 0.0F, 1.0F);
 		} else
 		{
 			if (this.minecraft.screen != null && inf < 1.0F)
@@ -111,9 +111,9 @@ public class ModLoadingScreen extends Overlay
 				this.minecraft.screen.render(poseStack, p_230430_2_, p_230430_3_, p_230430_4_);
 			}
 
-			int i2 = (int)Math.ceil(MathUtils.clamp((double) inf, 0.15D, 1.0D) * 255.0D);
+			int i2 = (int)Math.ceil(ModMath.clamp((double) inf, 0.15D, 1.0D) * 255.0D);
 			fill(poseStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | i2 << 24);
-			alpha = MathUtils.clamp(inf, 0.0F, 1.0F);
+			alpha = ModMath.clamp(inf, 0.0F, 1.0F);
 		}
 
 		RenderSystem.enableBlend();

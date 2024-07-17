@@ -7,36 +7,55 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.BerenikeKnightCap;
 import com.skullmangames.darksouls.common.capability.entity.StrayDemonCap;
 import com.skullmangames.darksouls.common.capability.entity.TaurusDemonCap;
-import com.skullmangames.darksouls.core.util.physics.Collider;
-import com.skullmangames.darksouls.core.util.physics.CubeCollider;
+import com.skullmangames.darksouls.core.util.collider.CapsuleCollider;
+import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.CubeCollider;
+import com.skullmangames.darksouls.core.util.collider.MultiCapsuleCollider;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class Colliders
 {
 	public static final Map<ResourceLocation, Collider> COLLIDERS = new HashMap<>();
 	public static final Map<Collider, ResourceLocation> IDS = new HashMap<>();
 	
-	public static final Collider FIST = register("fist", new CubeCollider(-0.2F, -0.2F, -0.2F, 0.15F, 0.1F, 0.15F));
-	public static final Collider SHORTSWORD = register("shortsword", new CubeCollider(-0.2F, -0.15F, -1.1F, 0.2F, 0.25F, -0.15F));
-	public static final Collider LONGSWORD = register("longsword", new CubeCollider(-0.2F, -0.15F, -1.25F, 0.2F, 0.25F, -0.15F));
-	public static final Collider BROKEN_SWORD = register("broken_sword", new CubeCollider(-0.2F, -0.15F, -0.9F, 0.2F, 0.25F, -0.15F));
-	public static final Collider GREAT_HAMMER = register("great_hammer", new CubeCollider(-0.5F, -0.45F, -2.3F, 0.5F, 0.45F, -1.1F));
+	public static final Collider FIST = register("fist", new CapsuleCollider(0.5D, 1.0D, new Vec3(0, 0, 0.5D)));
+	public static final Collider SHORTSWORD = register("shortsword", new CapsuleCollider(0.5D, 1.5D, new Vec3(0, 0.05D, 0), -4.5F, 0));
+	public static final Collider LONGSWORD = register("longsword", new CapsuleCollider(0.5D, 1.75D, new Vec3(0, 0.05D, 0), -4.5F, 0));
+	public static final Collider BROKEN_SWORD = register("broken_sword", new CapsuleCollider(0.5D, 1.3D, new Vec3(0, 0.05D, 0), -4.5F, 0));
+	public static final Collider GREAT_HAMMER = register("great_hammer", new MultiCapsuleCollider
+			(
+				new CapsuleCollider(0.75D, 1.75D, new Vec3(0, 0.05D, -0.75D), -4.5F, 0),
+				new CapsuleCollider(0.25D, 1.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+			));
 	public static final Collider DAGGER = register("dagger", new CubeCollider(-0.3F, -0.15F, -0.7F, 0.3F, 0.45F, -0.2F));
-	public static final Collider SPEAR = register("spear", new CubeCollider(-0.2F, -0.15F, -1.8F, 0.15F, 0.2F, -1.3F));
-	public static final Collider WINGED_SPEAR = register("winged_spear", new CubeCollider(-0.2F, 0.1F, -2.2F, 0.2F, 0.7F, -1.7F));
-	public static final Collider ULTRA_GREATSWORD = register("ultra_greatsword", new CubeCollider(-0.3F, -0.15F, -2.3F, 0.3F, 0.45F, -0.2F));
-	public static final Collider GREATSWORD = register("greatsword", new CubeCollider(-0.25F, -0.1F, -1.5F, 0.2F, 0.35F, -0.2F));
-	public static final Collider GREATAXE = register("greataxe", new CubeCollider(-0.4F, -0.5F, -2.3F, 0.4F, 0.5F, -1.1F));
-	public static final Collider SHIELD = register("shield", new CubeCollider(-0.2F, -0.3F, -0.5F, 0.2F, 0.7F, 0.6F));
-	public static final Collider AXE = register("axe", new CubeCollider(-0.2F, -0.25F, -0.7F, 0.2F, 0.25F, -0.3F));
-	public static final Collider BATTLE_AXE = register("battle_axe", new CubeCollider(-0.2F, -0.45F, -1.15F, 0.2F, 0.45F, -0.65F));
-	public static final Collider PICKAXE = register("pickaxe", new CubeCollider(-0.2F, -0.25F, -0.7F, 0.2F, 0.25F, -0.3F));
-	public static final Collider MACE = register("mace", new CubeCollider(-0.2F, -0.1F, -1.1F, 0.2F, 0.35F, -0.45F));
+	public static final Collider SPEAR = register("spear", new MultiCapsuleCollider
+				(
+					new CapsuleCollider(0.3D, 0.9D, new Vec3(0, 0.05D, -1.1D), -4.5F, 0),
+					new CapsuleCollider(0.2D, 1.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+				));
+	public static final Collider WINGED_SPEAR = register("winged_spear", new MultiCapsuleCollider
+				(
+					new CapsuleCollider(0.35D, 1D, new Vec3(0, 0.05D, -1.5D), -4.5F, 0),
+					new CapsuleCollider(0.2D, 1.7D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+				));
+	public static final Collider ULTRA_GREATSWORD = register("ultra_greatsword", new CapsuleCollider(0.5D, 2.7D, new Vec3(0, 0.125D, 0), -5.5F, 0));
+	public static final Collider GREATSWORD = register("greatsword", new CapsuleCollider(0.5D, 2.1D, new Vec3(0, 0.1D, 0), -5.5F, 0));
+	public static final Collider GREATAXE = register("greataxe", new MultiCapsuleCollider
+			(
+				new CapsuleCollider(0.8D, 1.75D, new Vec3(0, -0.1D, -0.5D), -4.5F, 0),
+				new CapsuleCollider(0.25D, 1.5D, new Vec3(0, 0.2D, 0), -4.5F, 0)
+			));
+	public static final Collider SHIELD = register("shield", new CapsuleCollider(0.6D, 1.5D, new Vec3(0.15D, 0, 0.6D), -90F, 0));
+	public static final Collider AXE = register("axe", new CapsuleCollider(0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0));
+	public static final Collider BATTLE_AXE = register("battle_axe", new CapsuleCollider(0.5D, 1.1D, new Vec3(0, 0, -0.4D), -4.5F, 0));
+	public static final Collider PICKAXE = register("pickaxe", new CapsuleCollider(0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0));
+	public static final Collider MACE = register("mace", new CapsuleCollider(0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0));
 	
 	//Stray Demon
 	public static final Collider STRAY_DEMON_GREAT_HAMMER = GREAT_HAMMER.getScaledCollider(StrayDemonCap.WEAPON_SCALE);
-	public static final Collider STRAY_DEMON_BODY = new CubeCollider(-2F, -2F, -2F, 2F, 2F, 2F);
+	public static final Collider STRAY_DEMON_BODY = new CapsuleCollider(4D, 8D, new Vec3(0, 0, 0), -90F, 0);
 	
 	//Taurus Demon
 	public static final Collider TAURUS_DEMON_GREATAXE = GREATAXE.getScaledCollider(TaurusDemonCap.WEAPON_SCALE);

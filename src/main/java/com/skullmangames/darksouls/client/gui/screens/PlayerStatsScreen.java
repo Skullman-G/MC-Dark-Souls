@@ -16,7 +16,7 @@ import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.init.ModAttributes;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
@@ -182,10 +182,10 @@ public class PlayerStatsScreen extends Screen
 		int maxstaminacolor = (int)this.player.getAttributeValue(ModAttributes.MAX_STAMINA.get()) != maxstamina ? 0x8cc9ff : this.color;
 		this.font.draw(poseStack, "Max Stamina: " + maxstamina, secondX, y + 52 + 12 * i++, maxstaminacolor);
 		
-		float maxEquipLoad = MathUtils.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VITALITY)), 1);
-		int maxEquipLoadColor = MathUtils.round((float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()), 1) != maxEquipLoad ? 0x8cc9ff : this.color;
+		float maxEquipLoad = ModMath.round(this.maxEquipLoadBase + (float)Stats.VITALITY.getModifyValue(this.playerCap, null, this.displayedStats.get(Stats.VITALITY)), 1);
+		int maxEquipLoadColor = ModMath.round((float)this.player.getAttributeValue(ModAttributes.MAX_EQUIP_LOAD.get()), 1) != maxEquipLoad ? 0x8cc9ff : this.color;
 		double equipLoad = this.player.getAttributeValue(ModAttributes.EQUIP_LOAD.get());
-		this.font.draw(poseStack, "Equip Load: " + MathUtils.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 52 + 12 * i++, maxEquipLoadColor);
+		this.font.draw(poseStack, "Equip Load: " + ModMath.round(equipLoad, 1) + " / " + maxEquipLoad, secondX, y + 52 + 12 * i++, maxEquipLoadColor);
 		
 		int maxAttunementSlots = this.maxAttunementSlotsBase + (int)Stats.ATTUNEMENT.getModifyValue(this.playerCap, ModAttributes.ATTUNEMENT_SLOTS.get(), this.displayedStats.get(Stats.ATTUNEMENT));
 		int maxAttunementSlotsColor = (int)this.player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) != maxAttunementSlots ? 0x8cc9ff : this.color;

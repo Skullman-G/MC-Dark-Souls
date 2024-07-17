@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.util.Mth;
 
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 public class JointTransform
 {
@@ -73,9 +73,9 @@ public class JointTransform
 
 	private static JointTransform interpolateSimple(JointTransform prev, JointTransform next, float progression)
 	{
-		return new JointTransform(MathUtils.lerpVector(prev.translation, next.translation, progression),
+		return new JointTransform(ModMath.lerpVector(prev.translation, next.translation, progression),
 				ModQuaternion.lerp(prev.rotation, next.rotation, progression),
-				MathUtils.lerpVector(prev.scale, next.scale, progression));
+				ModMath.lerpVector(prev.scale, next.scale, progression));
 	}
 
 	public static JointTransform interpolate(JointTransform prev, JointTransform next, float progression)

@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -215,8 +215,8 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		}
 		else
 		{
-			float f = MathUtils.interpolateRotation(this.prevBodyYaw, this.bodyYaw, partialTick);
-			float f1 = MathUtils.interpolateRotation(entity.yHeadRotO, entity.yHeadRot, partialTick);
+			float f = ModMath.interpolateRotation(this.prevBodyYaw, this.bodyYaw, partialTick);
+			float f1 = ModMath.interpolateRotation(entity.yHeadRotO, entity.yHeadRot, partialTick);
 	        yaw = f1 - f;
 		}
         
@@ -238,8 +238,8 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		{
 			ModMatrix4f mat = ModMatrix4f.createModelMatrix((float)entity.xOld, (float)entity.getX(), (float)entity.yOld, (float)entity.getY(),
 					(float)entity.zOld, (float)entity.getZ(), 0, 0, 0, 0, partialTick, 1, 1, 1);
-			float yawDegree = MathUtils.interpolateRotation(orgEntity.yRotO, orgEntity.yRot, partialTick);
-			float pitchDegree = MathUtils.interpolateRotation(orgEntity.xRotO, orgEntity.xRot, partialTick) + 90.0F;
+			float yawDegree = ModMath.interpolateRotation(orgEntity.yRotO, orgEntity.yRot, partialTick);
+			float pitchDegree = ModMath.interpolateRotation(orgEntity.xRotO, orgEntity.xRot, partialTick) + 90.0F;
 			mat.rotate((float)-Math.toRadians(yawDegree), Vector3f.YP);
 			mat.rotate((float)-Math.toRadians(pitchDegree), Vector3f.XP);
 			mat.rotate((float)Math.toRadians((orgEntity.tickCount + partialTick) * -55.0), Vector3f.YP);
@@ -254,7 +254,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			mat.rotate((float)-Math.toRadians(entity.yBodyRot), Vector3f.YP);
 			
             float f = (float)orgEntity.getFallFlyingTicks() + Minecraft.getInstance().getFrameTime();
-            float f1 = MathUtils.clamp(f * f / 100.0F, 0.0F, 1.0F);
+            float f1 = ModMath.clamp(f * f / 100.0F, 0.0F, 1.0F);
             mat.rotate((float)Math.toRadians(f1 * (-90F - orgEntity.xRot)), Vector3f.XP);
             
             Vec3 vec3d = orgEntity.getEyePosition(Minecraft.getInstance().getFrameTime());
@@ -289,7 +289,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 			}
 			else
 			{
-				yaw = this.isInaction() ? MathUtils.interpolateRotation(this.prevYaw, this.yaw, partialTick) : 0;
+				yaw = this.isInaction() ? ModMath.interpolateRotation(this.prevYaw, this.yaw, partialTick) : 0;
 				prevRotYaw = this.prevBodyYaw + yaw;
 				rotyaw = this.bodyYaw + yaw;
 			}

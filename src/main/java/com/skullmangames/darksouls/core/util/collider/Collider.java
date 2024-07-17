@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.core.util.physics;
+package com.skullmangames.darksouls.core.util.collider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class Collider
 {
 	private Vec3 worldCenter;
+	
 	protected Vec3[] vertices;
-	protected Vec3[] normals;
+	protected Vec3[] modelVertices;
 	
 	/**
 	 * Test hitbox.
@@ -71,29 +72,13 @@ public abstract class Collider
 		}
 	}
 	
-	protected Vec3 min()
-	{
-		return this.vertices[0];
-	}
+	protected abstract Vec3 min();
 	
-	protected Vec3 max()
-	{
-		return this.vertices[6];
-	}
+	protected abstract Vec3 max();
 	
-	public Vec3 top()
-	{
-		Vec3 from = this.vertices[1];
-		Vec3 to = this.vertices[3];
-		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
-	}
+	public abstract Vec3 top();
 	
-	public Vec3 bottom()
-	{
-		Vec3 from = this.vertices[5];
-		Vec3 to = this.vertices[7];
-		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
-	}
+	public abstract Vec3 bottom();
 	
 	public abstract boolean collidesWith(Collider other);
 	
@@ -185,4 +170,11 @@ public abstract class Collider
 	}
 	
 	public abstract Vec3 getMassCenter();
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Center : [%f, %f, %f]", this.getWorldCenter().x, this.getWorldCenter().y,
+				this.getWorldCenter().z);
+	}
 }

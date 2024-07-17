@@ -21,7 +21,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCSetPos;
 
@@ -61,11 +61,11 @@ public class BackstabCheckAnimation extends AttackAnimation
 		LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		if (entityCap == null || targetCap == null || !entityCap.canBackstab(target)) return false;
 		
-		double yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()));
+		double yRotAttacker = Math.toRadians(ModMath.toNormalRot(attacker.getYRot()));
 		double dist = 1.0D;
 		Vec3 dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
 		target.setPos(attacker.position().add(dir));
-		yRotAttacker = Math.toRadians(MathUtils.toNormalRot(attacker.getYRot()) - 90);
+		yRotAttacker = Math.toRadians(ModMath.toNormalRot(attacker.getYRot()) - 90);
 		dist = 0.5D;
 		dir = new Vec3(Math.sin(yRotAttacker) * dist, 0, Math.cos(yRotAttacker) * dist);
 		target.setPos(target.position().add(dir));

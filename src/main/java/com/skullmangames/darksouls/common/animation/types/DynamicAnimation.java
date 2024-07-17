@@ -18,7 +18,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
@@ -94,7 +94,7 @@ public class DynamicAnimation
 		}
 
 		float totalTime = this.convertTime;
-		startAt = MathUtils.clamp(startAt, 0.05F, this.getTotalTime());
+		startAt = ModMath.clamp(startAt, 0.05F, this.getTotalTime());
 
 		dest.startsAt = startAt;
 

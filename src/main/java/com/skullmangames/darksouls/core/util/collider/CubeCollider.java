@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.core.util.physics;
+package com.skullmangames.darksouls.core.util.collider;
 
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
@@ -11,8 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CubeCollider extends Collider
 {
-	protected final Vec3[] modelVertices;
-	protected final Vec3[] modelNormals;
+	protected final Face[] faces;
 	
 	public CubeCollider(AABB aabb)
 	{
@@ -29,39 +28,23 @@ public class CubeCollider extends Collider
 	/*
 	 * This constructor is purely used to make a clone of another CubeCollider
 	 */
-	public CubeCollider(AABB aabb, Vec3[] modelVertices, Vec3[] modelNormals)
+	public CubeCollider(AABB aabb, Vec3[] modelVertices, Face[] faces)
 	{
 		super(aabb);
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
-		this.modelNormals = new Vec3[3];
-		this.normals = new Vec3[3];
+		this.faces = new Face[6];
 		
-		this.modelVertices[0] = modelVertices[0];
-		this.modelVertices[1] = modelVertices[1];
-		this.modelVertices[2] = modelVertices[2];
-		this.modelVertices[3] = modelVertices[3];
-		this.modelVertices[4] = modelVertices[4];
-		this.modelVertices[5] = modelVertices[5];
-		this.modelVertices[6] = modelVertices[6];
-		this.modelVertices[7] = modelVertices[7];
+		for (int i = 0; i < this.modelVertices.length && i < modelVertices.length; i++)
+		{
+			this.modelVertices[i] = modelVertices[i];
+			this.vertices[i] = modelVertices[i];
+		}
 		
-		this.vertices[0] = this.modelVertices[0];
-		this.vertices[1] = this.modelVertices[1];
-		this.vertices[2] = this.modelVertices[2];
-		this.vertices[3] = this.modelVertices[3];
-		this.vertices[4] = this.modelVertices[4];
-		this.vertices[5] = this.modelVertices[5];
-		this.vertices[6] = this.modelVertices[6];
-		this.vertices[7] = this.modelVertices[7];
-		
-		this.modelNormals[0] = modelNormals[0];
-		this.modelNormals[1] = modelNormals[1];
-		this.modelNormals[2] = modelNormals[2];
-		
-		this.normals[0] = this.modelNormals[0];
-		this.normals[1] = this.modelNormals[1];
-		this.normals[2] = this.modelNormals[2];
+		for (int i = 0; i < this.faces.length && i < faces.length; i++)
+		{
+			this.faces[i] = new Face(this, faces[i].modelNormal, faces[i].vertices);
+		}
 	}
 	
 	public CubeCollider(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
@@ -69,8 +52,7 @@ public class CubeCollider extends Collider
 		super(createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
-		this.modelNormals = new Vec3[3];
-		this.normals = new Vec3[3];
+		this.faces = new Face[6];
 		
 		this.modelVertices[0] = new Vec3(minX, minY, minZ);
 		this.modelVertices[1] = new Vec3(maxX, minY, minZ);
@@ -81,22 +63,14 @@ public class CubeCollider extends Collider
 		this.modelVertices[6] = new Vec3(maxX, maxY, maxZ);
 		this.modelVertices[7] = new Vec3(minX, maxY, maxZ);
 		
-		this.vertices[0] = this.modelVertices[0];
-		this.vertices[1] = this.modelVertices[1];
-		this.vertices[2] = this.modelVertices[2];
-		this.vertices[3] = this.modelVertices[3];
-		this.vertices[4] = this.modelVertices[4];
-		this.vertices[5] = this.modelVertices[5];
-		this.vertices[6] = this.modelVertices[6];
-		this.vertices[7] = this.modelVertices[7];
+		for (int i = 0; i < this.vertices.length; i++) this.vertices[i] = this.modelVertices[i];
 		
-		this.modelNormals[0] = new Vec3(1, 0, 0);
-		this.modelNormals[1] = new Vec3(0, 1, 0);
-		this.modelNormals[2] = new Vec3(0, 0, -1);
-		
-		this.normals[0] = this.modelNormals[0];
-		this.normals[1] = this.modelNormals[1];
-		this.normals[2] = this.modelNormals[2];
+		this.faces[0] = new Face(this, new Vec3(0, 0, -1), 0, 1, 2, 3);
+		this.faces[1] = new Face(this, new Vec3(0, 0, 1), 4, 5, 6, 7);
+		this.faces[2] = new Face(this, new Vec3(0, -1, 0), 0, 1, 5, 4);
+		this.faces[3] = new Face(this, new Vec3(0, 1, 0), 2, 3, 7, 6);
+		this.faces[4] = new Face(this, new Vec3(-1, 0, 0), 0, 3, 7, 4);
+		this.faces[5] = new Face(this, new Vec3(1, 0, 0), 1, 2, 6, 5);
 	}
 	
 	private static AABB createOuterAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
@@ -120,10 +94,10 @@ public class CubeCollider extends Collider
 			this.vertices[i] = new Vec3(-this.vertices[i].x, this.vertices[i].y, -this.vertices[i].z);
 		}
 		
-		for (int i = 0; i < this.modelNormals.length; i++)
+		for (Face face : this.faces)
 		{
-			this.normals[i] = ModMatrix4f.transform(rot, this.modelNormals[i]);
-			this.normals[i] = new Vec3(-this.normals[i].x, this.normals[i].y, -this.normals[i].z);
+			face.normal = ModMatrix4f.transform(rot, face.modelNormal);
+			face.normal = new Vec3(-face.normal.x, face.normal.y, -face.normal.z);
 		}
 
 		super.transform(mat);
@@ -132,13 +106,17 @@ public class CubeCollider extends Collider
 	@Override
 	public boolean collidesWith(Collider other)
 	{
-		return satCollisionDetection(this, other) && satCollisionDetection(other, this);
+		return other instanceof CubeCollider cube ? satCollisionDetection(this, cube) && satCollisionDetection(cube, this)
+				: other instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeDetection(capsule, this)
+				: false;
 	}
 	
-	private static boolean satCollisionDetection(Collider a, Collider b)
+	protected static boolean satCollisionDetection(CubeCollider a, CubeCollider b)
 	{
-		for (Vec3 axis : a.normals)
+		for (Face face : a.faces)
 		{
+			Vec3 axis = face.normal;
+			
 			double maxDistA = -Double.MAX_VALUE;
 			double minDistA = Double.MAX_VALUE;
 			for (Vec3 va : a.vertices)
@@ -180,23 +158,44 @@ public class CubeCollider extends Collider
 	}
 
 	@Override
-	public boolean collidesWith(Entity entity)
+	public boolean collidesWith(Entity opponent)
 	{
-		CubeCollider collider = new CubeCollider(entity.getBoundingBox());
+		CubeCollider collider = new CubeCollider(opponent.getBoundingBox());
 		return this.collidesWith(collider);
 	}
 	
 	@Override
 	public CubeCollider clone()
 	{
-		return new CubeCollider(this.outerAABB, this.modelVertices, this.modelNormals);
+		return new CubeCollider(this.outerAABB, this.modelVertices, this.faces);
 	}
-
+	
 	@Override
-	public String toString()
+	protected Vec3 min()
 	{
-		return String.format("Center : [%f, %f, %f]", this.getWorldCenter().x, this.getWorldCenter().y,
-				this.getWorldCenter().z);
+		return this.vertices[0];
+	}
+	
+	@Override
+	protected Vec3 max()
+	{
+		return this.vertices[6];
+	}
+	
+	@Override
+	public Vec3 top()
+	{
+		Vec3 from = this.vertices[1];
+		Vec3 to = this.vertices[3];
+		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
+	}
+	
+	@Override
+	public Vec3 bottom()
+	{
+		Vec3 from = this.vertices[5];
+		Vec3 to = this.vertices[7];
+		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
 	}
 
 	@OnlyIn(Dist.CLIENT)

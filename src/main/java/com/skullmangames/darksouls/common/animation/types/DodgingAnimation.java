@@ -21,8 +21,8 @@ import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.physics.Collider;
-import com.skullmangames.darksouls.core.util.physics.CubeCollider;
+import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.CubeCollider;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;

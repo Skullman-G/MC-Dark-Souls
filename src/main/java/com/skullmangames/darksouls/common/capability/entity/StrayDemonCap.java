@@ -13,8 +13,8 @@ import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
+import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
-import com.skullmangames.darksouls.core.util.physics.Collider;
 
 import net.minecraft.world.InteractionHand;
 

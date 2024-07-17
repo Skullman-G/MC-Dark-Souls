@@ -131,7 +131,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 
 		// Stamina
 		EntityState state = this.getEntityState();
-		if (!this.isCreativeOrSpectator() && (state.canAct() || state.getContactLevel() == 3))
+		if (!this.isCreativeOrSpectator() && state.canAct() && state.getContactLevel() != 3)
 		{
 			float staminaIncr = 1.8F;
 			if (this.orgEntity.isSprinting())

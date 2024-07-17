@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
-import com.skullmangames.darksouls.core.util.physics.Collider;
+import com.skullmangames.darksouls.core.util.collider.Collider;
 
 import net.minecraft.world.InteractionHand;
 

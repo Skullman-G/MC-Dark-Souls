@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.client.particles;
 
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.ParticleProvider;
@@ -32,7 +32,7 @@ public class SoulParticle extends TextureSheetParticle
 	public float getQuadSize(float partialTick)
 	{
 	    float per = ((float)this.age + partialTick) / (float)this.lifetime;
-	    return MathUtils.clamp(this.quadSize / per, 0.05F, 0.25F);
+	    return ModMath.clamp(this.quadSize / per, 0.05F, 0.25F);
 	 }
 	
 	@Override

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -145,7 +145,7 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	{
 		Vec3 attacker = this.getDirectEntity().position();
 		float attackAngle = ((float)Math.toDegrees(Math.atan2(target.getX() - attacker.x, target.getZ() - attacker.z)) + 360F) % 360F;
-		float yRot = MathUtils.toNormalRot(target.getYRot());
+		float yRot = ModMath.toNormalRot(target.getYRot());
 		return Math.abs(-yRot - attackAngle);
 	}
 

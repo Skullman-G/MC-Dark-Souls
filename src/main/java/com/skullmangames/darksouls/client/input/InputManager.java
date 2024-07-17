@@ -139,28 +139,28 @@ public class InputManager
 		this.playerCap = playerCap;
 	}
 	
-	public boolean playerCanMove(EntityState playerState)
+	private boolean playerCanMove(EntityState playerState)
 	{
 		return this.player.isAlive() && (!playerState.isMovementLocked() || this.player.isRidingJumpable());
 	}
 
-	public boolean playerCanAct(EntityState playerState)
-	{
-		return !this.player.isSpectator() && !(this.player.isFallFlying() || playerCap.baseMotion == LivingMotion.FALL || playerState.isMovementLocked());
-	}
-
-	public boolean playerCanAttack(EntityState playerState)
+	private boolean playerCanAttack(EntityState playerState)
 	{
 		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.baseMotion == LivingMotion.FALL || !playerState.canAct())
-				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
+				&& this.enoughStaminaToAttack()
 				&& (!this.player.isUnderWater() || this.player.isOnGround())
 				&& (this.player.isOnGround() || this.playerCap.isMounted())
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
 	}
 	
-	public boolean playerCanDodge(EntityState playerState)
+	private boolean enoughStaminaToAttack()
+	{
+		return this.playerCap.getStamina() >= 10.0F || this.player.isCreative();
+	}
+	
+	private boolean playerCanDodge(EntityState playerState)
 	{
 		return ClientManager.INSTANCE.isCombatModeActive() 
 				&&!this.player.isSpectator()
@@ -400,7 +400,7 @@ public class InputManager
 			if (this.rightHandPressCounter > ConfigManager.CLIENT_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
-				else if (this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) this.reservedAttack = AttackType.HEAVY;
+				else if (this.enoughStaminaToAttack()) this.reservedAttack = AttackType.HEAVY;
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -420,7 +420,7 @@ public class InputManager
 			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
 			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
-		else if ((this.playerCap.getStamina() >= 3.0F || this.player.isCreative()) && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
+		else if (this.enoughStaminaToAttack() && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;

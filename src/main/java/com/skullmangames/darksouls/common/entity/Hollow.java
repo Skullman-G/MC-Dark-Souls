@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.entity;
 import java.util.Random;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -61,7 +61,7 @@ public class Hollow extends ArmedMob implements RangedAttackMob
 	
 	private void setTextureId(int value)
 	{
-		value = MathUtils.clamp(value, 0, 2);
+		value = ModMath.clamp(value, 0, 2);
 		this.entityData.set(DATA_FLAGS_ID, (byte)value);
 	}
 	

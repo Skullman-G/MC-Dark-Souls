@@ -6,7 +6,7 @@ import org.lwjgl.BufferUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.core.util.math.MathUtils;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.world.phys.Vec3;
 
@@ -161,6 +161,12 @@ public class ModMatrix4f
 	public Vec3 transform(Vec3 right)
 	{
 		return transform(this, right);
+	}
+	
+	public Vector3f transform(Vector3f right)
+	{
+		Vec3 v = transform(this, new Vec3(right.x(), right.y(), right.z()));
+		return new Vector3f((float)v.x, (float)v.y, (float)v.z);
 	}
 	
 	public static Vec3 transform(ModMatrix4f matrix, Vec3 src)
@@ -449,8 +455,8 @@ public class ModMatrix4f
 				((prevPosY + (posY - prevPosY) * partialTick)), -(prevPosZ + (posZ - prevPosZ) * partialTick));
 
 		modelMatrix.translate(entityPosition);
-		float pitchDegree = MathUtils.interpolateRotation(prevPitch, pitch, partialTick);
-		float yawDegree = MathUtils.interpolateRotation(prevYaw, yaw, partialTick);
+		float pitchDegree = ModMath.interpolateRotation(prevPitch, pitch, partialTick);
+		float yawDegree = ModMath.interpolateRotation(prevYaw, yaw, partialTick);
 		modelMatrix.rotate((float) -Math.toRadians(yawDegree), Vector3f.YP);
 		modelMatrix.rotate((float) -Math.toRadians(pitchDegree), Vector3f.XP);
 		modelMatrix.scale(scaleX, scaleY, scaleZ);
@@ -502,6 +508,11 @@ public class ModMatrix4f
 	{
 		Vector3f vector = mat.toTranslationVector();
 		mStack.translate(vector.x(), vector.y(), vector.z());
+	}
+	
+	public Matrix4f export()
+	{
+		return exportMatrix(this);
 	}
 
 	public static Matrix4f exportMatrix(ModMatrix4f visibleMat)
