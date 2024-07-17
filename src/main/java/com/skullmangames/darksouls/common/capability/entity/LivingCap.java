@@ -236,7 +236,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		else
 		{
-			this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
+			if (!blocked) this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
 			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
 		}
 	}

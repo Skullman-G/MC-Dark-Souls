@@ -282,7 +282,7 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	{
 		if (!this.isClientSide())
 		{
-			this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
+			if (!blocked) this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
 			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
 		}
 	}
