@@ -982,20 +982,20 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 40),
 
 				// Greataxe
-				new AttackAnimation.Builder(DarkSouls.rl("greataxe_la_1"), AttackType.LIGHT, 0.3F, 0.0F, 0.64F, 0.88F,
+				new AttackAnimation.Builder(DarkSouls.rl("greataxe_la_1"), AttackType.LIGHT, 0.3F, 0.0F, 0.64F, 0.92F,
 						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_la_1"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.7F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.92F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
 								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
-				new AttackAnimation.Builder(DarkSouls.rl("greataxe_la_2"), AttackType.LIGHT, 0.3F, 0.0F, 0.76F, 0.96F,
+				new AttackAnimation.Builder(DarkSouls.rl("greataxe_la_2"), AttackType.LIGHT, 0.3F, 0.0F, 0.76F, 1.0F,
 						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_la_2"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.88F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(1.0F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1006,7 +1006,7 @@ public class AnimationDataProvider implements DataProvider
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_ha"), AttackType.HEAVY, 0.3F, 0.0F, 1.08F, 1.28F,
 						2.2F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_ha"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(1.16F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(1.28F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1016,7 +1016,7 @@ public class AnimationDataProvider implements DataProvider
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_da"), AttackType.DASH, 0.1F, 0.0F, 0.68F, 0.96F,
 						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_da"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.72F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.96F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1028,7 +1028,7 @@ public class AnimationDataProvider implements DataProvider
 						0.8F, 0.92F, 2.2F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_la_1"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.72F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.92F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1039,7 +1039,7 @@ public class AnimationDataProvider implements DataProvider
 						0.56F, 0.88F, 2.2F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_la_2"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.68F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.88F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1051,7 +1051,7 @@ public class AnimationDataProvider implements DataProvider
 						0.92F, 1.2F, 2.4F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_ha"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(1.0F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(1.2F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1062,7 +1062,7 @@ public class AnimationDataProvider implements DataProvider
 						0.68F, 0.96F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_da"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(0.72F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.96F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)

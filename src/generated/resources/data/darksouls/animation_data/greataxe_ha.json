@@ -8,7 +8,7 @@
     "events": [
       {
         "event_type": "shake_cam_global",
-        "time": 1.16,
+        "time": 1.28,
         "execution_side": "CLIENT",
         "duration": 20,
         "magnitude": 1.0,
@@ -16,7 +16,7 @@
       },
       {
         "event_type": "add_simple_particle",
-        "time": 1.16,
+        "time": 1.28,
         "execution_side": "CLIENT",
         "particle_type": "darksouls:dust_cloud",
         "spawner": "CIRCLE",
@@ -30,7 +30,7 @@
       },
       {
         "event_type": "play_sound",
-        "time": 1.16,
+        "time": 1.28,
         "execution_side": "CLIENT",
         "sound": "darksouls:item.great_hammer.smash",
         "anchor": "WEAPON",
@@ -49,12 +49,12 @@
       "end": 2.2,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stun_type": "SMASH",
-        "stamina_damage": 75,
+        "poise_damage": 30,
         "stamina_usage": 74,
+        "stamina_damage": 75,
         "movement_damage_type": "STRIKE",
         "deflection": "HEAVY",
-        "poise_damage": 30
+        "stun_type": "SMASH"
       }
     }
   ]

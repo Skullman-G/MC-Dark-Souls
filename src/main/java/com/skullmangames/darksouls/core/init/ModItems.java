@@ -103,6 +103,9 @@ public class ModItems
 	public static final RegistryObject<Item> DEMON_GREATAXE = ITEMS.register("demon_greataxe", () -> new SwordItem(Tiers.WOOD, 114, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
+	public static final RegistryObject<Item> GREATAXE = ITEMS.register("greataxe", () -> new SwordItem(Tiers.IRON, 188, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
 	
 	//Shields
 	public static final RegistryObject<Item> HEATER_SHIELD = ITEMS.register("heater_shield", () -> new ModShieldItem(new Item.Properties()

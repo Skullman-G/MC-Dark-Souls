@@ -1,0 +1,39 @@
+{
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"parent": "darksouls:item/greataxe_3d",
+		"textures": {
+			"0": "darksouls:items/greataxe_3d",
+			"particle": "darksouls:items/greataxe_3d"
+		}
+	},
+	"gui_light": "front",
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/greataxe"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/greataxe"
+			}
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/greataxe"
+			}
+		}
+	}
+}

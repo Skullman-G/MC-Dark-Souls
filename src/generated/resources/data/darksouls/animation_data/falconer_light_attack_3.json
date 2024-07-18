@@ -27,11 +27,11 @@
       "end": 1.88,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stun_type": "HEAVY",
+        "poise_damage": 20,
         "stamina_damage": 44,
         "movement_damage_type": "REGULAR",
         "deflection": "HEAVY",
-        "poise_damage": 20
+        "stun_type": "HEAVY"
       }
     }
   ]

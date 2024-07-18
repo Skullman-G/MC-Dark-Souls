@@ -67,10 +67,10 @@
       "end": 3.2,
       "weapon_bone_name": "Root",
       "properties": {
-        "stun_type": "FLY",
+        "poise_damage": 28,
         "stamina_damage": 80,
         "deflection": "IMPOSSIBLE",
-        "poise_damage": 28
+        "stun_type": "FLY"
       }
     }
   ]

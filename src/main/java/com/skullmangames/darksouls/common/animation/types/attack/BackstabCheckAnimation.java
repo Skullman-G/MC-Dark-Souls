@@ -99,7 +99,7 @@ public class BackstabCheckAnimation extends AttackAnimation
 		DamageType damageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
 		damages.replace(CoreDamageType.PHYSICAL, damageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
-		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(1);
+		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(1);
 		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType,
 				this.getRequiredDeflection(phase), poiseDamage, damages);
 		return extDmgSource;

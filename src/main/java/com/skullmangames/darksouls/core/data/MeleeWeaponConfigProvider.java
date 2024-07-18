@@ -537,7 +537,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
 			// Greataxes
-			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.GREATAXE, Colliders.GREATAXE.getId(), 22.0F)
+			MeleeWeaponCap.builder(ModItems.DEMON_GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.GREATAXE, Colliders.DEMONS_GREATAXE.getId(), 22.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 114, 0.55F)
 			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
 			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
@@ -551,6 +551,21 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
+			
+			MeleeWeaponCap.builder(ModItems.GREATAXE.get(), WeaponCategory.GREATAXE, WeaponMovesets.GREATAXE, Colliders.GREATAXE.getId(), 25.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 188, 0.55F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.45F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.40F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.45F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.45F)
+			.setCritical(1.00F)
+			.setStability(0.40F)
+			.putStatInfo(Stats.STRENGTH, 46, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 11, Scaling.E)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
 			// Thrusting Swords
 			MeleeWeaponCap.builder(ModItems.RAPIER.get(), WeaponCategory.THRUSTING_SWORD, WeaponMovesets.THRUSTING_SWORD, Colliders.LONGSWORD.getId(), 2.0F)
