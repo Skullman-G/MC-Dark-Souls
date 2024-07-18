@@ -132,7 +132,7 @@ public class AttackAnimation extends ActionAnimation
 			{
 				if (entityCap instanceof ServerPlayerCap serverPlayer && !serverPlayer.isCreativeOrSpectator())
 				{
-					int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(25), -25);
+					int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(10), -10);
 					serverPlayer.increaseStamina(incr);
 				}
 				else if (entityCap instanceof MobCap)

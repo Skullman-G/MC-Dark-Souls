@@ -148,14 +148,14 @@ public class InputManager
 	{
 		return !this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.baseMotion == LivingMotion.FALL || !playerState.canAct())
-				&& this.enoughStaminaToAttack()
+				&& this.enoughStaminaToAct()
 				&& (!this.player.isUnderWater() || this.player.isOnGround())
 				&& (this.player.isOnGround() || this.playerCap.isMounted())
 				&& (!this.player.isUsingItem() || this.playerCap.isBlocking())
 				&& this.minecraft.screen == null;
 	}
 	
-	private boolean enoughStaminaToAttack()
+	private boolean enoughStaminaToAct()
 	{
 		return this.playerCap.getStamina() >= 10.0F || this.player.isCreative();
 	}
@@ -165,7 +165,7 @@ public class InputManager
 		return ClientManager.INSTANCE.isCombatModeActive() 
 				&&!this.player.isSpectator()
 				&& !(this.player.isFallFlying() || this.playerCap.baseMotion == LivingMotion.FALL || !playerState.canAct())
-				&& (this.playerCap.getStamina() >= 3.0F || this.player.isCreative())
+				&& this.enoughStaminaToAct()
 				&& !this.player.isUnderWater()
 				&& this.player.isOnGround()
 				&& this.player.getVehicle() == null
@@ -400,7 +400,7 @@ public class InputManager
 			if (this.rightHandPressCounter > ConfigManager.CLIENT_CONFIG.longPressCount.getValue())
 			{
 				if (this.playerCanAttack(playerState)) this.playerCap.performAttack(AttackType.HEAVY);
-				else if (this.enoughStaminaToAttack()) this.reservedAttack = AttackType.HEAVY;
+				else if (this.enoughStaminaToAct()) this.reservedAttack = AttackType.HEAVY;
 				
 				this.rightHandToggle = false;
 				this.rightHandPressCounter = 0;
@@ -420,7 +420,7 @@ public class InputManager
 			if (this.player.isSprinting()) this.playerCap.performAttack(AttackType.DASH);
 			else this.playerCap.performAttack(AttackType.LIGHT);
 		}
-		else if (this.enoughStaminaToAttack() && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
+		else if (this.enoughStaminaToAct() && this.player.getVehicle() == null) this.reservedAttack = AttackType.LIGHT;
 		
 		this.rightHandToggle = false;
 		this.rightHandPressCounter = 0;

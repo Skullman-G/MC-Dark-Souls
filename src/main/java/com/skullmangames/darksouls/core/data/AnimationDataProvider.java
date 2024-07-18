@@ -665,8 +665,8 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)
-								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 20)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_heavy_attack_1"), AttackType.HEAVY, 0.2F,
@@ -677,7 +677,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_heavy_attack_2"), AttackType.HEAVY, 0.2F,
 						0.0F, 0.68F, 0.8F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_ha_2"),
@@ -687,7 +687,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_dash_attack"), AttackType.DASH, 0.2F, 0.0F,
@@ -698,7 +698,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_th_light_attack"), AttackType.LIGHT, 0.2F,
 						0.0F, 0.28F, 0.4F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_th_la"),
@@ -708,7 +708,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 28)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_th_heavy_attack_1"), AttackType.HEAVY, 0.2F,
@@ -719,7 +719,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 60)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_th_heavy_attack_2"), AttackType.HEAVY, 0.2F,
 						0.0F, 0.68F, 0.8F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/thrusting_sword_th_ha_2"),
@@ -729,7 +729,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 76)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				new AttackAnimation.Builder(DarkSouls.rl("thrusting_sword_th_dash_attack"), AttackType.DASH, 0.2F, 0.0F,
@@ -740,7 +740,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
-								.addProperty(AttackProperty.STAMINA_USAGE, 70)
+								.addProperty(AttackProperty.STAMINA_USAGE, 24)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				// Greatsword
@@ -752,7 +752,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
-								.addProperty(AttackProperty.STAMINA_USAGE, 56)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_light_attack_2"), AttackType.LIGHT, 0.3F, 0.0F,
 						0.32F, 0.68F, 2.24F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_light_attack_2"),
@@ -762,7 +762,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
-								.addProperty(AttackProperty.STAMINA_USAGE, 56)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_thrust"), AttackType.HEAVY, 0.3F, 0.0F, 0.28F,
@@ -773,7 +773,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
-								.addProperty(AttackProperty.STAMINA_USAGE, 70)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_upward_slash"), AttackType.HEAVY, 0.3F, 0.0F,
 						0.28F, 0.56F, 2.4F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_upward_slash"),
@@ -783,7 +783,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_stylish_thrust"), AttackType.HEAVY, 0.3F, 0.0F,
 						0.64F, 0.76F, 2.8F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_stylish_thrust"),
@@ -793,7 +793,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
-								.addProperty(AttackProperty.STAMINA_USAGE, 70)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.4F,
 						0.72F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_dash_attack"),
@@ -803,7 +803,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 30)
-								.addProperty(AttackProperty.STAMINA_USAGE, 40)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.5F, 0.0F,
@@ -814,7 +814,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 35)
-								.addProperty(AttackProperty.STAMINA_USAGE, 62)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 26),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F,
 						0.28F, 0.48F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_th_la_2"),
@@ -824,7 +824,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 35)
-								.addProperty(AttackProperty.STAMINA_USAGE, 62)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 26),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_th_ha_1"), AttackType.TWO_HANDED_HEAVY, 0.5F, 0.0F,
@@ -835,7 +835,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
-								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 26),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.3F, 0.0F,
 						0.28F, 0.48F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_th_la_2"),
@@ -845,7 +845,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
-								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 26),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_th_da"), AttackType.TWO_HANDED_DASH, 0.05F, 0.0F,
@@ -856,7 +856,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
-								.addProperty(AttackProperty.STAMINA_USAGE, 72)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 25),
 
 				// Ultra Greatsword
@@ -870,7 +870,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_light_attack_2"), AttackType.LIGHT, 0.2F,
 						0.0F, 0.44F, 0.88F, 2.4F, "Tool_R",
@@ -882,7 +882,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_heavy_attack_1"), AttackType.HEAVY, 0.5F,
@@ -894,7 +894,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 80)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_heavy_attack_2"), AttackType.HEAVY, 0.5F,
 						0.0F, 1.35F, 1.6F, 3.45F, "Tool_R",
@@ -905,7 +905,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 80)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F,
@@ -918,7 +918,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.3F,
@@ -931,7 +931,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 51)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 32),
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.2F,
 						0.0F, 0.44F, 0.88F, 2.4F, "Tool_R", DarkSouls.rl("biped/combat/ultra_greatsword_th_la_2"),
@@ -943,7 +943,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 51)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 32),
 
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_th_ha_1"), AttackType.TWO_HANDED_HEAVY, 0.5F,
@@ -955,7 +955,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 76)
-								.addProperty(AttackProperty.STAMINA_USAGE, 84)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 40),
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.5F,
 						0.0F, 1.35F, 1.6F, 3.45F, "Tool_R", DarkSouls.rl("biped/combat/ultra_greatsword_th_ha_2"),
@@ -966,7 +966,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 76)
-								.addProperty(AttackProperty.STAMINA_USAGE, 84)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 40),
 
 				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_th_da"), AttackType.TWO_HANDED_DASH, 0.1F,
@@ -978,7 +978,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 76)
-								.addProperty(AttackProperty.STAMINA_USAGE, 84)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 40),
 
 				// Greataxe
@@ -990,7 +990,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_la_2"), AttackType.LIGHT, 0.3F, 0.0F, 0.76F, 1.0F,
 						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_la_2"), (models) -> models.ENTITY_BIPED)
@@ -1000,7 +1000,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_ha"), AttackType.HEAVY, 0.3F, 0.0F, 1.08F, 1.28F,
@@ -1011,7 +1011,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_da"), AttackType.DASH, 0.1F, 0.0F, 0.68F, 0.96F,
 						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_da"), (models) -> models.ENTITY_BIPED)
@@ -1021,7 +1021,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F,
@@ -1033,7 +1033,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 48)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F,
 						0.56F, 0.88F, 2.2F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_la_2"),
@@ -1044,7 +1044,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 48)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.3F, 0.0F,
@@ -1056,7 +1056,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 85)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greataxe_th_da"), AttackType.TWO_HANDED_DASH, 0.1F, 0.0F,
 						0.68F, 0.96F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_th_da"),
@@ -1067,7 +1067,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 75)
-								.addProperty(AttackProperty.STAMINA_USAGE, 55)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 
 				// Spear
@@ -1079,7 +1079,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
-								.addProperty(AttackProperty.STAMINA_USAGE, 30)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_heavy_attack"), AttackType.HEAVY, 0.35F, 0.0F, 0.65F,
 						0.8F, 1.75F, "Tool_R", DarkSouls.rl("biped/combat/spear_heavy_attack"),
@@ -1089,7 +1089,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
-								.addProperty(AttackProperty.STAMINA_USAGE, 55)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_light_attack"), AttackType.LIGHT, 0.15F, 0.0F, 0.32F,
 						0.6F, 1.5F, "Tool_R", DarkSouls.rl("biped/combat/spear_light_attack"),
@@ -1098,7 +1098,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_light_blocking_attack"), AttackType.LIGHT, 0.2F, 0.0F,
 						0.35F, 0.5F, 1.25F, "Tool_R", DarkSouls.rl("biped/combat/spear_light_blocking_attack"),
@@ -1108,7 +1108,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.BLOCKING, true)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 40)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_th_la"), AttackType.TWO_HANDED_LIGHT, 0.15F, 0.0F, 0.4F,
 						0.64F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/spear_th_la"),
@@ -1117,7 +1117,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 42)
-								.addProperty(AttackProperty.STAMINA_USAGE, 27)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.35F, 0.0F, 0.6F,
 						0.8F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/spear_th_ha"), (models) -> models.ENTITY_BIPED)
@@ -1127,7 +1127,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 61)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 26),
 				new AttackAnimation.Builder(DarkSouls.rl("spear_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.36F,
 						0.55F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/spear_th_da"),
@@ -1137,7 +1137,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 24),
 
 				// Dagger
@@ -1169,7 +1169,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-								.addProperty(AttackProperty.STAMINA_USAGE, 74)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 32),
 
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_light_attack_1"), AttackType.LIGHT, 0.5F, 0.0F,
@@ -1181,7 +1181,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-								.addProperty(AttackProperty.STAMINA_USAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_light_attack_2"), AttackType.LIGHT, 0.5F, 0.0F,
 						1.15F, 1.7F, 3.45F, "Tool_R", DarkSouls.rl("biped/combat/great_hammer_light_attack_2"),
@@ -1192,7 +1192,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-								.addProperty(AttackProperty.STAMINA_USAGE, 35)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F,
@@ -1204,7 +1204,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_th_la_1"), AttackType.LIGHT, 0.5F, 0.0F, 0.32F,
@@ -1216,7 +1216,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
-								.addProperty(AttackProperty.STAMINA_USAGE, 40)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_th_la_2"), AttackType.LIGHT, 0.5F, 0.0F, 0.24F,
 						0.48F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/great_hammer_th_la_2"),
@@ -1227,7 +1227,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
-								.addProperty(AttackProperty.STAMINA_USAGE, 40)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_th_ha"), AttackType.HEAVY, 0.5F, 0.0F, 0.32F,
@@ -1239,7 +1239,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 95)
-								.addProperty(AttackProperty.STAMINA_USAGE, 82)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 39),
 				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_th_da"), AttackType.LIGHT, 0.5F, 0.0F, 0.32F,
 						0.56F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/great_hammer_th_la_1"),
@@ -1250,7 +1250,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 90)
-								.addProperty(AttackProperty.STAMINA_USAGE, 40)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 
 				// Axe
@@ -1262,7 +1262,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("axe_light_attack_1"), AttackType.LIGHT, 0.3F, 0.0F, 0.2F,
@@ -1272,7 +1272,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("axe_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F, 0.15F,
 						0.4F, 1.25F, "Tool_R", DarkSouls.rl("biped/combat/axe_light_attack_2"),
@@ -1281,7 +1281,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("axe_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.5F,
@@ -1292,7 +1292,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 30)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("axe_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.4F, 0.0F, 0.08F,
@@ -1302,7 +1302,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("axe_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.4F, 0.0F, 0.08F,
 						0.45F, 1.25F, "Tool_R", DarkSouls.rl("biped/combat/axe_th_la_2"),
@@ -1311,7 +1311,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
 				new AttackAnimation.Builder(DarkSouls.rl("axe_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.4F, 0.0F, 0.32F,
@@ -1322,7 +1322,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 50)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("axe_th_da"), AttackType.TWO_HANDED_DASH, 0.1F, 0.0F, 0.48F,
 						0.68F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/axe_th_da"), (models) -> models.ENTITY_BIPED)
@@ -1332,7 +1332,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				// Hammer
@@ -1344,7 +1344,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
-								.addProperty(AttackProperty.STAMINA_USAGE, 30)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("hammer_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.28F,
 						0.6F, 1.4F, "Tool_R", DarkSouls.rl("biped/combat/hammer_heavy_attack"),
@@ -1354,7 +1354,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 68)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 				new AttackAnimation.Builder(DarkSouls.rl("hammer_light_attack"), AttackType.LIGHT, 0.3F, 0.0F, 0.24F,
 						0.6F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/hammer_light_attack"),
@@ -1363,7 +1363,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("hammer_th_la"), AttackType.TWO_HANDED_LIGHT, 0.3F, 0.0F,
 						0.24F, 0.6F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/hammer_th_la"),
@@ -1372,7 +1372,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 63)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 32),
 				new AttackAnimation.Builder(DarkSouls.rl("hammer_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.4F, 0.0F,
 						0.24F, 0.44F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/hammer_th_ha"),
@@ -1381,7 +1381,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 69)
-								.addProperty(AttackProperty.STAMINA_USAGE, 50)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 47),
 				new AttackAnimation.Builder(DarkSouls.rl("hammer_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.24F,
 						0.48F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/hammer_th_la"),
@@ -1419,7 +1419,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
-								.addProperty(AttackProperty.STAMINA_USAGE, 27)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(DarkSouls.rl("fist_heavy_attack"), AttackType.HEAVY, 0.5F, 0.0F, 0.35F,
 						0.5F, 1.25F, "Tool_R", DarkSouls.rl("biped/combat/fist_heavy_attack"),
@@ -1429,7 +1429,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 28)
-								.addProperty(AttackProperty.STAMINA_USAGE, 36)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 
 				// Shield
@@ -1488,7 +1488,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
-								.addProperty(AttackProperty.STAMINA_USAGE, 33)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("shield_th_ha_2"), AttackType.TWO_HANDED_HEAVY, 0.2F, 0.0F,
 						0.12F, 0.32F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/shield_th_ha_2"),
@@ -1497,7 +1497,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 54)
-								.addProperty(AttackProperty.STAMINA_USAGE, 33)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(DarkSouls.rl("shield_th_da"), AttackType.TWO_HANDED_DASH, 0.2F, 0.0F, 0.12F,
@@ -1507,7 +1507,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 52)
-								.addProperty(AttackProperty.STAMINA_USAGE, 29)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				// Greatshield
@@ -1531,7 +1531,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 60)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greatshield_dash_attack"), AttackType.DASH, 0.05F, 0.0F,
 						0.48F, 0.85F, 1.32F, "Tool_R", DarkSouls.rl("biped/combat/greatshield_da"),
@@ -1541,7 +1541,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greatshield_th_light_attack"), AttackType.TWO_HANDED_LIGHT,
 						0.2F, 0.0F, 0.36F, 0.75F, 1.2F, "Tool_R", DarkSouls.rl("biped/combat/greatshield_th_la"),
@@ -1551,7 +1551,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greatshield_th_heavy_attack"), AttackType.TWO_HANDED_HEAVY,
 						0.2F, 0.0F, 0.42F, 0.7F, 1.5F, "Tool_R", DarkSouls.rl("biped/combat/greatshield_th_ha"),
@@ -1563,7 +1563,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 80)
+								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greatshield_th_dash_attack"), AttackType.TWO_HANDED_DASH,
 						0.05F, 0.0F, 0.48F, 0.85F, 1.32F, "Tool_R", DarkSouls.rl("biped/combat/greatshield_th_da"),
@@ -1573,7 +1573,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 70)
-								.addProperty(AttackProperty.STAMINA_USAGE, 55)
+								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(DarkSouls.rl("greatshield_bash"), AttackType.LIGHT, 0.2F, 0.0F, 0.36F,
 						0.64F, 1.2F, "Tool_L", DarkSouls.rl("biped/combat/greatshield_bash"),
@@ -1594,7 +1594,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 20)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_light_attack_2"), AttackType.LIGHT, 0.2F, 0.0F,
 						0.08F, 0.3F, 0.8F, "Tool_R", DarkSouls.rl("biped/combat/straight_sword_light_attack_2"),
@@ -1603,7 +1603,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 20)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_heavy_attack"), AttackType.HEAVY, 0.2F, 0.0F,
@@ -1614,7 +1614,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 45)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_dash_attack"), AttackType.DASH, 0.2F, 0.0F,
 						0.16F, 0.36F, 0.8F, "Tool_R", DarkSouls.rl("biped/combat/straight_sword_dash_attack"),
@@ -1624,7 +1624,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 25)
+								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_th_la_1"), AttackType.TWO_HANDED_LIGHT, 0.1F,
@@ -1634,7 +1634,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 23)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_th_la_2"), AttackType.TWO_HANDED_LIGHT, 0.1F,
 						0.0F, 0.42F, 0.48F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/straight_sword_th_la_2"),
@@ -1643,7 +1643,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 23)
+								.addProperty(AttackProperty.STAMINA_USAGE, 15)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_th_ha"), AttackType.TWO_HANDED_HEAVY, 0.2F,
@@ -1653,7 +1653,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 44)
-								.addProperty(AttackProperty.STAMINA_USAGE, 20)
+								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 				new AttackAnimation.Builder(DarkSouls.rl("straight_sword_th_da"), AttackType.TWO_HANDED_DASH, 0.2F,
 						0.0F, 0.48F, 0.72F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/straight_sword_th_da"),
