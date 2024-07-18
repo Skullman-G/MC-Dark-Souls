@@ -47,7 +47,7 @@ public class Colliders
 	public static final Collider GREATAXE = register("greataxe", new CapsuleCollider(0.8D, 1.75D, new Vec3(0, -0.1D, -0.25D), -4.5F, 0));
 	public static final Collider SHIELD = register("shield", new CapsuleCollider(0.6D, 1.5D, new Vec3(0.15D, 0, 0.6D), -90F, 0));
 	public static final Collider AXE = register("axe", new CapsuleCollider(0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0));
-	public static final Collider BATTLE_AXE = register("battle_axe", new CapsuleCollider(0.5D, 1.1D, new Vec3(0, 0, -0.4D), -4.5F, 0));
+	public static final Collider BATTLE_AXE = register("battle_axe", new CapsuleCollider(0.5D, 1.1D, new Vec3(0, 0, -0.25D), -4.5F, 0));
 	public static final Collider PICKAXE = register("pickaxe", new CapsuleCollider(0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0));
 	public static final Collider MACE = register("mace", new CapsuleCollider(0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0));
 	
