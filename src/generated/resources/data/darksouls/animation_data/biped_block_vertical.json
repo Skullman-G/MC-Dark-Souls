@@ -5,18 +5,11 @@
   "model": "darksouls:biped",
   "animations": [
     {
-      "motion": "RUNNING",
+      "motion": "WALKING",
       "apply_layer_parts": true,
       "mirrored": true,
-      "location_1": "darksouls:biped/combat/block_vertical_run_mirror",
-      "location_2": "darksouls:biped/combat/block_vertical_run"
-    },
-    {
-      "motion": "BLOCKING",
-      "apply_layer_parts": false,
-      "mirrored": true,
-      "location_1": "darksouls:biped/combat/block_vertical_mirror",
-      "location_2": "darksouls:biped/combat/block_vertical"
+      "location_1": "darksouls:biped/combat/block_vertical_walk_mirror",
+      "location_2": "darksouls:biped/combat/block_vertical_walk"
     },
     {
       "motion": "SNEAKING",
@@ -26,18 +19,25 @@
       "location_2": "darksouls:biped/combat/block_vertical"
     },
     {
-      "motion": "KNEELING",
-      "apply_layer_parts": true,
+      "motion": "BLOCKING",
+      "apply_layer_parts": false,
       "mirrored": true,
       "location_1": "darksouls:biped/combat/block_vertical_mirror",
       "location_2": "darksouls:biped/combat/block_vertical"
     },
     {
-      "motion": "WALKING",
+      "motion": "RUNNING",
       "apply_layer_parts": true,
       "mirrored": true,
-      "location_1": "darksouls:biped/combat/block_vertical_walk_mirror",
-      "location_2": "darksouls:biped/combat/block_vertical_walk"
+      "location_1": "darksouls:biped/combat/block_vertical_run_mirror",
+      "location_2": "darksouls:biped/combat/block_vertical_run"
+    },
+    {
+      "motion": "KNEELING",
+      "apply_layer_parts": true,
+      "mirrored": true,
+      "location_1": "darksouls:biped/combat/block_vertical_mirror",
+      "location_2": "darksouls:biped/combat/block_vertical"
     }
   ]
 }

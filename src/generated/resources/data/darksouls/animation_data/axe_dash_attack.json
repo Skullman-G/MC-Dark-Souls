@@ -23,16 +23,16 @@
     {
       "begin": 0.0,
       "contact_start": 0.4,
-      "contact_end": 0.5,
-      "end": 1.5,
+      "contact_end": 0.6,
+      "end": 1.35,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "REGULAR",
-        "stun_type": "HEAVY",
+        "deflection": "HEAVY",
         "poise_damage": 23,
         "stamina_usage": 25,
         "stamina_damage": 50,
-        "deflection": "HEAVY"
+        "movement_damage_type": "REGULAR",
+        "stun_type": "HEAVY"
       }
     }
   ]

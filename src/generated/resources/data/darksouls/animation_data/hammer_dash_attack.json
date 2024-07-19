@@ -1,7 +1,7 @@
 {
   "animation_type": "attack",
-  "location": "darksouls:biped/combat/hammer_light_attack",
-  "convert_time": 0.1,
+  "location": "darksouls:biped/combat/axe_dash_attack",
+  "convert_time": 0.2,
   "repeat": false,
   "model": "darksouls:biped",
   "properties": {
@@ -22,17 +22,17 @@
   "phases": [
     {
       "begin": 0.0,
-      "contact_start": 0.32,
+      "contact_start": 0.4,
       "contact_end": 0.6,
-      "end": 1.4,
+      "end": 1.35,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "STRIKE",
-        "stun_type": "HEAVY",
+        "deflection": "HEAVY",
         "poise_damage": 23,
         "stamina_usage": 25,
         "stamina_damage": 56,
-        "deflection": "HEAVY"
+        "movement_damage_type": "STRIKE",
+        "stun_type": "HEAVY"
       }
     }
   ]

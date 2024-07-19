@@ -22,17 +22,17 @@
   "phases": [
     {
       "begin": 0.0,
-      "contact_start": 0.4,
-      "contact_end": 0.72,
+      "contact_start": 0.48,
+      "contact_end": 0.84,
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "REGULAR",
-        "stun_type": "HEAVY",
+        "deflection": "HEAVY",
         "poise_damage": 23,
         "stamina_usage": 30,
         "stamina_damage": 30,
-        "deflection": "HEAVY"
+        "movement_damage_type": "REGULAR",
+        "stun_type": "HEAVY"
       }
     }
   ]

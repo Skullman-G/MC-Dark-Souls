@@ -745,7 +745,7 @@ public class AnimationDataProvider implements DataProvider
 
 				// Greatsword
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_light_attack_1"), AttackType.LIGHT, 0.3F, 0.0F,
-						0.44F, 0.68F, 2.4F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_light_attack_1"),
+						0.44F, 0.68F, 2.0F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_light_attack_1"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.44F, Side.SERVER, ModSoundEvents.SWORD_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -755,7 +755,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_USAGE, 25)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("greatsword_light_attack_2"), AttackType.LIGHT, 0.3F, 0.0F,
-						0.32F, 0.68F, 2.24F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_light_attack_2"),
+						0.32F, 0.68F, 1.8F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_light_attack_2"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.44F, Side.SERVER, ModSoundEvents.SWORD_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -795,8 +795,8 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 36)
 								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
-				new AttackAnimation.Builder(DarkSouls.rl("greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.4F,
-						0.72F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_dash_attack"),
+				new AttackAnimation.Builder(DarkSouls.rl("greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.48F,
+						0.84F, 1.6F, "Tool_R", DarkSouls.rl("biped/combat/greatsword_dash_attack"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.SWORD_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -908,11 +908,11 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_USAGE, 40)
 								.addProperty(AttackProperty.POISE_DAMAGE, 36),
 
-				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F,
-						1.35F, 1.6F, 3.45F, "Tool_R", DarkSouls.rl("biped/combat/ultra_greatsword_heavy_attack_1"),
+				new AttackAnimation.Builder(DarkSouls.rl("ultra_greatsword_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.68F, 0.96F,
+						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_da"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_SWORD.appendTo(1.6F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.93F, new AnimEvent[]
 										{}))
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
@@ -1071,10 +1071,10 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 
 				// Spear
-				new AttackAnimation.Builder(DarkSouls.rl("spear_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.15F, 0.3F,
-						1.0F, "Tool_R", DarkSouls.rl("biped/combat/spear_dash_attack"), (models) -> models.ENTITY_BIPED)
+				new AttackAnimation.Builder(DarkSouls.rl("spear_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.52F,
+						1.08F, "Tool_R", DarkSouls.rl("biped/combat/spear_dash_attack"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new PlaySoundEvent(0.15F, Side.SERVER, ModSoundEvents.SPEAR_SWING) })
+								{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.SPEAR_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.THRUST)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
@@ -1195,11 +1195,11 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_USAGE, 30)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
-				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F,
-						1.15F, 1.6F, 3.45F, "Tool_R", DarkSouls.rl("biped/combat/great_hammer_light_attack_1"),
+				new AttackAnimation.Builder(DarkSouls.rl("great_hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.68F, 0.96F,
+						2.0F, "Tool_R", DarkSouls.rl("biped/combat/greataxe_da"),
 						(models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS,
-										SmashEvents.BIG_HAMMER.appendTo(1.3F, new AnimEvent[]
+										SmashEvents.BIG_HAMMER.appendTo(0.93F, new AnimEvent[]
 										{})).addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
 								.addProperty(AttackProperty.DEFLECTION, Deflection.HEAVY)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.SMASH)
@@ -1284,8 +1284,8 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_USAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 
-				new AttackAnimation.Builder(DarkSouls.rl("axe_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.5F,
-						1.5F, "Tool_R", DarkSouls.rl("biped/combat/axe_dash_attack"), (models) -> models.ENTITY_BIPED)
+				new AttackAnimation.Builder(DarkSouls.rl("axe_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.6F,
+						1.35F, "Tool_R", DarkSouls.rl("biped/combat/axe_dash_attack"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.35F, Side.SERVER, ModSoundEvents.AXE_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -1336,8 +1336,8 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				// Hammer
-				new AttackAnimation.Builder(DarkSouls.rl("hammer_dash_attack"), AttackType.DASH, 0.1F, 0.0F, 0.32F,
-						0.6F, 1.4F, "Tool_R", DarkSouls.rl("biped/combat/hammer_light_attack"),
+				new AttackAnimation.Builder(DarkSouls.rl("hammer_dash_attack"), AttackType.DASH, 0.2F, 0.0F, 0.4F, 0.6F,
+						1.35F, "Tool_R", DarkSouls.rl("biped/combat/axe_dash_attack"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.32F, Side.SERVER, ModSoundEvents.AXE_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.STRIKE)
@@ -1936,7 +1936,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(DarkSouls.rl("hollow_lordran_soldier_shield_bash"), AttackType.HEAVY, 0.2F,
-						0.0F, 0.6F, 0.8F, 1.6F, "Tool_L", DarkSouls.rl("hollow_lordran_soldier/shield_bash"),
+						0.0F, 0.6F, 0.8F, 1.6F, Colliders.SHIELD, "Tool_L", DarkSouls.rl("hollow_lordran_soldier/shield_bash"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.6F, Side.SERVER, ModSoundEvents.FIST_SWING) })
 								.addProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE, MovementDamageType.REGULAR)
@@ -2397,7 +2397,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(DarkSouls.rl("black_knight_shield_attack"), AttackType.HEAVY, 0.2F, 0.0F,
-						0.52F, 0.8F, 1.6F, "Tool_L", DarkSouls.rl("black_knight/black_knight_shield_attack"),
+						0.52F, 0.8F, 1.6F, Colliders.SHIELD, "Tool_L", DarkSouls.rl("black_knight/black_knight_shield_attack"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.52F, Side.CLIENT, ModSoundEvents.AXE_SWING),
 						new PlaySoundEvent(0.6F, Side.CLIENT, ModSoundEvents.BLACK_KNIGHT_FOOT),

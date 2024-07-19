@@ -124,7 +124,7 @@ public abstract class Collider
 				if (cap != null && cap.isBlocking())
 				{
 					ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
-					ModMatrix4f mat = modelMat.translate(0.8F, e.getBbHeight() / 2, 0).scale(1.75F, 1.75F, 1.75F);
+					ModMatrix4f mat = modelMat.translate(0.4F, e.getBbHeight() / 2, 0);
 					Collider shieldCollider = Colliders.SHIELD;
 					shieldCollider.transform(mat);
 					if (this.collidesWith(shieldCollider)) newList.add(e);

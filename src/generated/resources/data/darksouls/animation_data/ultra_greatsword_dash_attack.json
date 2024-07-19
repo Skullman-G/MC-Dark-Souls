@@ -1,6 +1,6 @@
 {
   "animation_type": "attack",
-  "location": "darksouls:biped/combat/ultra_greatsword_heavy_attack_1",
+  "location": "darksouls:biped/combat/greataxe_da",
   "convert_time": 0.1,
   "repeat": false,
   "model": "darksouls:biped",
@@ -8,7 +8,7 @@
     "events": [
       {
         "event_type": "shake_cam_global",
-        "time": 1.6,
+        "time": 0.93,
         "execution_side": "CLIENT",
         "duration": 20,
         "magnitude": 1.0,
@@ -16,7 +16,7 @@
       },
       {
         "event_type": "add_simple_particle",
-        "time": 1.6,
+        "time": 0.93,
         "execution_side": "CLIENT",
         "particle_type": "darksouls:dust_cloud",
         "spawner": "CIRCLE",
@@ -30,9 +30,9 @@
       },
       {
         "event_type": "play_sound",
-        "time": 1.6,
+        "time": 0.93,
         "execution_side": "CLIENT",
-        "sound": "darksouls:item.ultra_greatsword.smash",
+        "sound": "darksouls:item.great_hammer.smash",
         "anchor": "WEAPON",
         "volume": 0.75,
         "moves": false
@@ -44,17 +44,17 @@
   "phases": [
     {
       "begin": 0.0,
-      "contact_start": 1.35,
-      "contact_end": 1.6,
-      "end": 3.45,
+      "contact_start": 0.68,
+      "contact_end": 0.96,
+      "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "REGULAR",
-        "stun_type": "SMASH",
+        "deflection": "HEAVY",
         "poise_damage": 28,
         "stamina_usage": 35,
         "stamina_damage": 70,
-        "deflection": "HEAVY"
+        "movement_damage_type": "REGULAR",
+        "stun_type": "SMASH"
       }
     }
   ]
