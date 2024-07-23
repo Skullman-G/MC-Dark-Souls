@@ -5,10 +5,10 @@
   "model": "darksouls:biped",
   "animations": [
     {
-      "motion": "WALKING",
+      "motion": "RUNNING",
       "apply_layer_parts": true,
       "mirrored": false,
-      "location": "darksouls:balder_knight/rapier_block_walk"
+      "location": "darksouls:balder_knight/rapier_block_run"
     },
     {
       "motion": "IDLE",
@@ -17,10 +17,10 @@
       "location": "darksouls:balder_knight/rapier_block"
     },
     {
-      "motion": "RUNNING",
+      "motion": "WALKING",
       "apply_layer_parts": true,
       "mirrored": false,
-      "location": "darksouls:balder_knight/rapier_block_run"
+      "location": "darksouls:balder_knight/rapier_block_walk"
     }
   ]
 }

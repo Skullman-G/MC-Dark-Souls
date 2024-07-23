@@ -12,6 +12,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 
+import net.minecraft.world.InteractionHand;
+
 public class BalderKnightCap extends HumanoidCap<BalderKnight>
 {
 	@Override
@@ -102,9 +104,9 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
-		return this.orgEntity.getOffhandItem().is(ModItems.BUCKLER.get()) ? ShieldHoldType.HORIZONTAL
+		return this.orgEntity.getItemInHand(hand).is(ModItems.BUCKLER.get()) ? ShieldHoldType.HORIZONTAL
 		: ShieldHoldType.VERTICAL_REVERSE;
 	}
 }

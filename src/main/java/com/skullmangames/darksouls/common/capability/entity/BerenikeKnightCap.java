@@ -96,7 +96,7 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
 		return ShieldHoldType.HORIZONTAL;
 	}

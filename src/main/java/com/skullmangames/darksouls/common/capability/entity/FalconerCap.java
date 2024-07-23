@@ -12,6 +12,7 @@ import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class FalconerCap extends HumanoidCap<Falconer>
@@ -63,7 +64,7 @@ public class FalconerCap extends HumanoidCap<Falconer>
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
 		return ShieldHoldType.VERTICAL_REVERSE;
 	}

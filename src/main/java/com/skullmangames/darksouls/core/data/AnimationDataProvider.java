@@ -223,6 +223,8 @@ public class AnimationDataProvider implements DataProvider
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new ShootThrowableProjectileEvent(0.6F) }),
 
+				
+				// Blocks
 				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block"), 0.1F, true, (models) -> models.ENTITY_BIPED)
 						.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_mirror"),
 								DarkSouls.rl("biped/combat/block"), false)
@@ -247,15 +249,7 @@ public class AnimationDataProvider implements DataProvider
 										DarkSouls.rl("biped/combat/block_vertical"), true)
 								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_vertical_mirror"),
 										DarkSouls.rl("biped/combat/block_vertical"), true),
-
-				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_sword"), 0.1F, true,
-						(models) -> models.ENTITY_BIPED)
-								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_sword"), false)
-								.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_sword"), true)
-								.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_sword"), true)
-								.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_sword"), true)
-								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_sword"), true),
-
+								
 				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_greatshield"), 0.1F, true,
 						(models) -> models.ENTITY_BIPED)
 								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_greatshield_right"),
@@ -270,6 +264,38 @@ public class AnimationDataProvider implements DataProvider
 										DarkSouls.rl("biped/combat/block_greatshield_left"), true)
 								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_greatshield_right"),
 										DarkSouls.rl("biped/combat/block_greatshield_left"), true),
+
+				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_sword"), 0.1F, true,
+						(models) -> models.ENTITY_BIPED)
+								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_sword"), false)
+								.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+								.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+								.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_sword"), true)
+								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_sword"), true),
+								
+				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_vertical"), 0.1F, true,
+						(models) -> models.ENTITY_BIPED)
+								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_vertical"), false)
+								.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_vertical"), true)
+								.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_vertical"), true)
+								.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_vertical"), true)
+								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_vertical"), true),
+								
+				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_horizontal"), 0.1F, true,
+						(models) -> models.ENTITY_BIPED)
+								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_horizontal"), false)
+								.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_horizontal"), true)
+								.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_horizontal"), true)
+								.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_horizontal"), true)
+								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_horizontal"), true),
+								
+				new AdaptableAnimation.Builder(DarkSouls.rl("biped_block_th_greatshield"), 0.1F, true,
+						(models) -> models.ENTITY_BIPED)
+								.addEntry(LivingMotion.BLOCKING, DarkSouls.rl("biped/combat/block_th_greatshield"), false)
+								.addEntry(LivingMotion.WALKING, DarkSouls.rl("biped/combat/block_th_greatshield"), true)
+								.addEntry(LivingMotion.RUNNING, DarkSouls.rl("biped/combat/block_th_greatshield"), true)
+								.addEntry(LivingMotion.KNEELING, DarkSouls.rl("biped/combat/block_th_greatshield"), true)
+								.addEntry(LivingMotion.SNEAKING, DarkSouls.rl("biped/combat/block_th_greatshield"), true),
 
 				new BlockedAnimation.Builder(DarkSouls.rl("biped_hit_blocked_left"), 0.05F,
 						DarkSouls.rl("biped/hit/blocked_left"), (models) -> models.ENTITY_BIPED)

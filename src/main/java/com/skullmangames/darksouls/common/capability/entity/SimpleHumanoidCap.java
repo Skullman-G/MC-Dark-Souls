@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
 
@@ -28,9 +29,15 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
-			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
 			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
+			if (this.isTwohanding())
+			{
+				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD
+						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD
+						: Animations.BIPED_BLOCK_TH_VERTICAL;
+			}
 			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
+					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD
 					: Animations.BIPED_BLOCK_VERTICAL;
 		}));
 		animatorClient.setCurrentMotionsToDefault();

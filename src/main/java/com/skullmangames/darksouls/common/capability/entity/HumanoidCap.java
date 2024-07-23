@@ -158,7 +158,8 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 		Entity attacker = dmgSource.getSource();
 		StunType stunType = dmgSource.getStunType();
 		boolean twoHanding = entityCap.isTwohanding();
-		boolean horizontalBlocking = entityCap.getShieldHoldType().isBlockingHorizontally();
+		InteractionHand usedHand = entityCap.getOriginalEntity().getUsedItemHand();
+		boolean horizontalBlocking = entityCap.getShieldHoldType(usedHand).isBlockingHorizontally();
 		if (attacker == null) return null;
 		else
 		{
@@ -174,10 +175,10 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					}
 					if (horizontalBlocking)
 					{
-						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+						return usedHand == InteractionHand.MAIN_HAND
 								? Animations.BIPED_HIT_BLOCKED_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
 					}
-					return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+					return usedHand == InteractionHand.MAIN_HAND
 							? Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT;
 				}
 				else
@@ -188,11 +189,11 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 					}
 					if (horizontalBlocking)
 					{
-						return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+						return usedHand == InteractionHand.MAIN_HAND
 								? Animations.BIPED_HIT_BLOCKED_RIGHT : Animations.BIPED_HIT_BLOCKED_LEFT;
 						
 					}
-					return entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND
+					return usedHand == InteractionHand.MAIN_HAND
 							? Animations.BIPED_HIT_BLOCKED_VERTICAL_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_LEFT;
 				}
 			}
@@ -202,7 +203,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 				switch (stunType)
 				{
 					case DISARMED:
-						if (entityCap.getOriginalEntity().getUsedItemHand() == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARMED_RIGHT;
+						if (usedHand == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARMED_RIGHT;
 						return Animations.BIPED_DISARMED_LEFT;
 						
 					case LIGHT:

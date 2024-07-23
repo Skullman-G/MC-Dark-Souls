@@ -25,6 +25,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -154,9 +155,9 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
-		MeleeWeaponCap weapon = this.getHeldMeleeWeaponCap(this.orgEntity.getUsedItemHand());
+		MeleeWeaponCap weapon = this.getHeldMeleeWeaponCap(hand);
 		return weapon != null && weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? ShieldHoldType.VERTICAL_REVERSE
 				: ShieldHoldType.VERTICAL;
 	}
@@ -313,8 +314,13 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 		animatorClient.putLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
-			if (this.isTwohanding()) return Animations.BIPED_BLOCK_TH_SWORD;
 			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
+			if (this.isTwohanding())
+			{
+				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD
+						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD
+						: Animations.BIPED_BLOCK_TH_VERTICAL;
+			}
 			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
 					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD
 					: Animations.BIPED_BLOCK_VERTICAL;

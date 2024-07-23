@@ -14,6 +14,8 @@ import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
 
+import net.minecraft.world.InteractionHand;
+
 public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 {
 	@Override
@@ -100,7 +102,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
 		return ShieldHoldType.HORIZONTAL;
 	}

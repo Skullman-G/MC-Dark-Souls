@@ -10,6 +10,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 
+import net.minecraft.world.InteractionHand;
+
 public class BlackKnightCap extends HumanoidCap<BlackKnight>
 {
 	@Override
@@ -51,7 +53,7 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	}
 	
 	@Override
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
 		return ShieldHoldType.VERTICAL_REVERSE;
 	}

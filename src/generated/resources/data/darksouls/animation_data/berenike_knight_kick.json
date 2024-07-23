@@ -36,12 +36,12 @@
       "end": 1.6,
       "weapon_bone_name": "Leg_L",
       "properties": {
-        "deflection": "IMPOSSIBLE",
-        "poise_damage": 38,
-        "stamina_damage": 2147483647,
         "movement_damage_type": "REGULAR",
         "stun_type": "LIGHT",
-        "depends_on_weapon": false
+        "poise_damage": 38,
+        "stamina_damage": 2147483647,
+        "depends_on_weapon": false,
+        "deflection": "IMPOSSIBLE"
       }
     }
   ]

@@ -29,12 +29,12 @@ public class RenderItemBase
 	public RenderItemBase()
 	{
 		this.transform = new ModMatrix4f();
-		this.transform.rotate((float)Math.toRadians(-85D), Vector3f.XP);
+		this.transform.rotateDeg(-85, Vector3f.XP);
 		this.transform.translate(0, 0.1F, 0);
 		
 		this.backTransform = new ModMatrix4f();
-		this.backTransform.rotate((float)Math.toRadians(130), Vector3f.ZP);
-		this.backTransform.rotate((float)Math.toRadians(90), Vector3f.YP);
+		this.backTransform.rotateDeg(130, Vector3f.ZP);
+		this.backTransform.rotateDeg(90, Vector3f.YP);
 		this.backTransform.translate(-0.2F, -0.5F, -0.1F);
 	}
 	

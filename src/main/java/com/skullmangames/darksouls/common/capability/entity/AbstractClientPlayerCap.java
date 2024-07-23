@@ -123,7 +123,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 				UseAnim useAction = this.orgEntity.getItemInHand(this.orgEntity.getUsedItemHand()).getUseAnimation();
 				if (this.baseMotion != LivingMotion.BLOCKING && this.isUsingShield())
 				{
-					this.mixMotions.put(layerPart, LivingMotion.BLOCKING);
+					this.mixMotions.put(this.isTwohanding() ? LayerPart.UP : layerPart, LivingMotion.BLOCKING);
 				}
 				else
 				{

@@ -113,7 +113,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	
 	public abstract boolean canBePunished();
 	
-	public ShieldHoldType getShieldHoldType()
+	public ShieldHoldType getShieldHoldType(InteractionHand hand)
 	{
 		return ShieldHoldType.VERTICAL;
 	}

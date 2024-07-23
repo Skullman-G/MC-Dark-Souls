@@ -61,8 +61,11 @@ public final class Animations
 
 	public static StaticAnimation BIPED_BLOCK_HORIZONTAL;
 	public static StaticAnimation BIPED_BLOCK_VERTICAL;
-	public static StaticAnimation BIPED_BLOCK_TH_SWORD;
 	public static StaticAnimation BIPED_BLOCK_GREATSHIELD;
+	public static StaticAnimation BIPED_BLOCK_TH_SWORD;
+	public static StaticAnimation BIPED_BLOCK_TH_VERTICAL;
+	public static StaticAnimation BIPED_BLOCK_TH_HORIZONTAL;
+	public static StaticAnimation BIPED_BLOCK_TH_GREATSHIELD;
 	
 	public static StaticAnimation BIPED_HIT_BLOCKED_LEFT;
 	public static StaticAnimation BIPED_HIT_BLOCKED_RIGHT;
@@ -427,9 +430,15 @@ public final class Animations
 
 		BIPED_BLOCK_VERTICAL = AnimationManager.getAnimation(DarkSouls.rl("biped_block_vertical"));
 		
+		BIPED_BLOCK_GREATSHIELD = AnimationManager.getAnimation(DarkSouls.rl("biped_block_greatshield"));
+		
 		BIPED_BLOCK_TH_SWORD = AnimationManager.getAnimation(DarkSouls.rl("biped_block_th_sword"));
 		
-		BIPED_BLOCK_GREATSHIELD = AnimationManager.getAnimation(DarkSouls.rl("biped_block_greatshield"));
+		BIPED_BLOCK_TH_VERTICAL = AnimationManager.getAnimation(DarkSouls.rl("biped_block_th_vertical"));
+		
+		BIPED_BLOCK_TH_HORIZONTAL = AnimationManager.getAnimation(DarkSouls.rl("biped_block_th_horizontal"));
+		
+		BIPED_BLOCK_TH_GREATSHIELD = AnimationManager.getAnimation(DarkSouls.rl("biped_block_th_greatshield"));
 		
 		BIPED_HIT_BLOCKED_LEFT = AnimationManager.getAnimation(DarkSouls.rl("biped_hit_blocked_left"));
 		BIPED_HIT_BLOCKED_RIGHT = AnimationManager.getAnimation(DarkSouls.rl("biped_hit_blocked_right"));

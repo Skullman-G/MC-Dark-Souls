@@ -5,13 +5,13 @@
   "model": "darksouls:biped",
   "animations": [
     {
-      "motion": "WALKING",
+      "motion": "RUNNING",
       "apply_layer_parts": true,
       "mirrored": false,
       "location": "darksouls:biped/combat/block_th_sword"
     },
     {
-      "motion": "SNEAKING",
+      "motion": "KNEELING",
       "apply_layer_parts": true,
       "mirrored": false,
       "location": "darksouls:biped/combat/block_th_sword"
@@ -23,13 +23,13 @@
       "location": "darksouls:biped/combat/block_th_sword"
     },
     {
-      "motion": "RUNNING",
+      "motion": "WALKING",
       "apply_layer_parts": true,
       "mirrored": false,
       "location": "darksouls:biped/combat/block_th_sword"
     },
     {
-      "motion": "KNEELING",
+      "motion": "SNEAKING",
       "apply_layer_parts": true,
       "mirrored": false,
       "location": "darksouls:biped/combat/block_th_sword"
