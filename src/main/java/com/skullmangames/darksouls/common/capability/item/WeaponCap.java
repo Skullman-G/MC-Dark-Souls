@@ -3,11 +3,16 @@ package com.skullmangames.darksouls.common.capability.item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
@@ -20,9 +25,11 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 
@@ -40,6 +47,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class WeaponCap extends AttributeItemCap
 {
@@ -280,6 +288,121 @@ public abstract class WeaponCap extends AttributeItemCap
 				if (scaling.name.equals(id)) return scaling;
 			}
 			return null;
+		}
+	}
+	
+	public static abstract class Builder<T extends WeaponCap> implements JsonBuilder<T>
+	{
+		protected Item item;
+		protected WeaponCategory category;
+		protected ResourceLocation skillId;
+		protected ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
+		protected ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
+		protected float critical = 1.00F;
+		protected float weight;
+		protected ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
+		protected ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
+		
+		protected Builder() {}
+		
+		protected Builder(Item item, WeaponCategory category, float weight)
+		{
+			this.item = item;
+			this.category = category;
+			this.skillId = new ResourceLocation("empty");
+			this.weight = weight;
+		}
+		
+		public ResourceLocation getId()
+		{
+			return this.item.getRegistryName();
+		}
+		
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			json.addProperty("registry_name", this.item.getRegistryName().toString());
+			json.addProperty("category", this.category.toString());
+			json.addProperty("skill", this.skillId.toString());
+			json.addProperty("weight", this.weight);
+			json.addProperty("critical", this.critical);
+			
+			JsonObject damage = new JsonObject();
+			json.add("damage", damage);
+			this.damage.build().forEach((type, dam) ->
+			{
+				damage.addProperty(type.toString(), dam);
+			});
+			
+			JsonArray auxEffects = new JsonArray();
+			json.add("aux_effects", auxEffects);
+			this.auxEffects.build().forEach((auxEffect) ->
+			{
+				auxEffects.add(auxEffect.toString());
+			});
+			
+			JsonObject statRequirements = new JsonObject();
+			json.add("stat_requirements", statRequirements);
+			this.statRequirements.build().forEach((stat, req) ->
+			{
+				statRequirements.addProperty(stat.getName(), req);
+			});
+			
+			JsonObject statScaling = new JsonObject();
+			json.add("stat_scaling", statScaling);
+			this.statScaling.build().forEach((stat, scaling) ->
+			{
+				statScaling.addProperty(stat.getName(), scaling.toString());
+			});
+			return json;
+		}
+		
+		public void initFromJson(ResourceLocation location, JsonObject json)
+		{
+			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
+			this.item = ForgeRegistries.ITEMS.getValue(itemId);
+			
+			this.category = WeaponCategory.fromString(json.get("category").getAsString());
+			
+			this.weight = json.get("weight").getAsFloat();
+			
+			JsonElement skillJson = json.get("skill");
+			if (skillJson != null) this.skillId = new ResourceLocation(skillJson.getAsString());
+			
+			JsonElement criticalJson = json.get("critical");
+			if (criticalJson != null) this.critical = criticalJson.getAsFloat();
+			
+			JsonObject statRequirements = json.get("stat_requirements").getAsJsonObject();
+			JsonObject statScaling = json.get("stat_scaling").getAsJsonObject();
+			for (Stat stat : Stats.SCALING_STATS)
+			{
+				int requirement = statRequirements.get(stat.getName()).getAsInt();
+				String statName = statScaling.get(stat.getName()).getAsString();
+				Scaling scaling = Scaling.fromString(statName);
+				if (scaling == null)
+				{
+					DarkSouls.LOGGER.error("Error while reading weapon config for "+location+". Could not find scaling for "+stat.getName()+" with name "+statName);
+					continue;
+				}
+				this.statRequirements.put(stat, requirement);
+				this.statScaling.put(stat, scaling);
+			}
+			
+			JsonObject damage = json.get("damage").getAsJsonObject();
+			for (CoreDamageType type : CoreDamageType.values())
+			{
+				int dam = Optional.ofNullable(damage.get(type.toString())).orElse(new JsonPrimitive(0)).getAsInt();
+				this.damage.put(type, dam);
+			}
+			
+			JsonElement auxEffects = json.get("aux_effects");
+			if (auxEffects != null)
+			{
+				for (JsonElement auxEffect : auxEffects.getAsJsonArray())
+				{
+					this.auxEffects.add(AuxEffects.fromId(ResourceLocation.tryParse(auxEffect.getAsString())));
+				}
+			}
 		}
 	}
 }

@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.WeaponSkills;
+import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 
 import net.minecraft.data.DataGenerator;
@@ -38,7 +38,7 @@ public class WeaponSkillProvider implements DataProvider
 		
 		for (WeaponSkill.Builder builder : defaultSkills())
 		{
-			Path path1 = createPath(path, builder.getLocation());
+			Path path1 = createPath(path, builder.getId());
 			try
 			{
 				DataProvider.save(GSON, cache, builder.toJson(), path1);
@@ -54,9 +54,9 @@ public class WeaponSkillProvider implements DataProvider
 	{
 		return ImmutableList.of
 		(
-			new WeaponSkill.MirrorBuilder(WeaponSkills.PARRY, Animations.SHIELD_PARRY_LEFT, Animations.SHIELD_PARRY_RIGHT),
-			new WeaponSkill.MirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_LEFT, Animations.BUCKLER_PARRY_RIGHT),
-			new WeaponSkill.MirrorBuilder(WeaponSkills.GREATSHIELD_BASH, Animations.GREATSHIELD_BASH, Animations.GREATSHIELD_LIGHT_ATTACK)
+			WeaponSkill.mirrorBuilder(WeaponSkills.PARRY, Animations.SHIELD_PARRY_LEFT, Animations.SHIELD_PARRY_RIGHT),
+			WeaponSkill.mirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_LEFT, Animations.BUCKLER_PARRY_RIGHT),
+			WeaponSkill.mirrorBuilder(WeaponSkills.GREATSHIELD_BASH, Animations.GREATSHIELD_BASH, Animations.GREATSHIELD_LIGHT_ATTACK)
 		);
 	}
 	

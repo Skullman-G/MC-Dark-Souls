@@ -8,12 +8,10 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
@@ -21,13 +19,11 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
-import com.skullmangames.darksouls.core.init.WeaponSkills;
+import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 import com.skullmangames.darksouls.core.util.AuxEffect;
@@ -47,11 +43,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
-public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
+public class MeleeWeaponCap extends WeaponCap implements Shield
 {
-	private final ResourceLocation movesetId;
 	private WeaponMoveset moveset;
 	private final Collider collider;
 	
@@ -60,15 +54,14 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 	private final ImmutableMap<CoreDamageType, Float> defense;
 	private final float stability;
 	
-	public MeleeWeaponCap(Item item, WeaponCategory category, ResourceLocation moveset, WeaponSkill skill, Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
-						  float critical, float weight,
-						  Deflection deflection, WeaponMaterial weaponMaterial,
-						  ImmutableMap<CoreDamageType, Float> defense, float stability,
-						  ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
+	public MeleeWeaponCap(Item item, WeaponCategory category, WeaponMoveset moveset, WeaponSkill skill,
+			Collider collider, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+			float critical, float weight, Deflection deflection, WeaponMaterial weaponMaterial,
+			ImmutableMap<CoreDamageType, Float> defense, float stability, ImmutableMap<Stat, Integer> statRequirements,
+			ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item, category, skill, damage, auxEffects, critical, weight, statRequirements, statScaling);
-		this.movesetId = moveset;
-		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
+		this.moveset = moveset;
 		this.collider = collider;
 		this.weaponMaterial = weaponMaterial;
 		this.deflection = deflection;
@@ -110,11 +103,6 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SPEAR);
 			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SPEAR);
 		}
-	}
-	
-	public void reload()
-	{
-		this.moveset = WeaponMovesets.getByLocation(this.movesetId).orElse(WeaponMoveset.EMPTY);
 	}
 	
 	@Override
@@ -201,11 +189,6 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		return this.collider;
 	}
 	
-	public ResourceLocation getWeaponMovesetId()
-	{
-		return this.movesetId;
-	}
-	
 	@Override
 	public SoundEvent getBlockSound()
 	{
@@ -231,9 +214,9 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		return this.defense.get(damageType);
 	}
 	
-	public static Builder builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
+	public static Builder builder(Item item, WeaponCategory category, WeaponMovesets.Getter moveset, ResourceLocation colliderId, float weight)
 	{
-		return new Builder(item, category, movesetId, colliderId, weight);
+		return new Builder(item, category, moveset.getId(), colliderId, weight);
 	}
 	
 	public enum AttackType
@@ -313,39 +296,24 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		}
 	}
 	
-	public static class Builder
+	public static class Builder extends WeaponCap.Builder<MeleeWeaponCap>
 	{
-		private Item item;
-		private WeaponCategory category;
 		private ResourceLocation movesetId;
-		private ResourceLocation skillId;
 		private ResourceLocation colliderId;
-		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
-		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
-		private float critical = 1.00F;
-		private float weight;
 		private float stability = 0.25F;
-		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
-		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
 		private Deflection deflection;
 		private WeaponMaterial weaponMaterial = WeaponMaterial.METAL_WEAPON;
 		private ImmutableMap.Builder<CoreDamageType, Float> defense = ImmutableMap.builder();
 		
+		private Builder() {}
+		
 		private Builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 		{
-			this.item = item;
-			this.category = category;
+			super(item, category, weight);
 			this.movesetId = movesetId;
-			this.skillId = new ResourceLocation("empty");
 			this.colliderId = colliderId;
-			this.weight = weight;
 			this.deflection = category.getDeflection();
-		}
-		
-		public ResourceLocation getLocation()
-		{
-			return this.item.getRegistryName();
 		}
 		
 		public Builder setSkill(ResourceLocation id)
@@ -400,134 +368,66 @@ public class MeleeWeaponCap extends WeaponCap implements Shield, ReloadableCap
 		
 		public JsonObject toJson()
 		{
-			JsonObject root = new JsonObject();
-			root.addProperty("registry_name", this.item.getRegistryName().toString());
-			root.addProperty("category", this.category.toString());
-			root.addProperty("moveset", this.movesetId.toString());
-			root.addProperty("skill", this.skillId.toString());
-			root.addProperty("collider", this.colliderId.toString());
-			root.addProperty("weight", this.weight);
-			root.addProperty("stability", this.stability);
-			root.addProperty("critical", this.critical);
+			JsonObject json = super.toJson();
+			json.addProperty("moveset", this.movesetId.toString());
+			json.addProperty("collider", this.colliderId.toString());
+			json.addProperty("stability", this.stability);
 			
-			JsonObject damage = new JsonObject();
-			root.add("damage", damage);
-			this.damage.build().forEach((type, dam) ->
-			{
-				damage.addProperty(type.toString(), dam);
-			});
-			
-			JsonArray auxEffects = new JsonArray();
-			root.add("aux_effects", auxEffects);
-			this.auxEffects.build().forEach((auxEffect) ->
-			{
-				auxEffects.add(auxEffect.toString());
-			});
-			
-			JsonObject statRequirements = new JsonObject();
-			root.add("stat_requirements", statRequirements);
-			this.statRequirements.build().forEach((stat, req) ->
-			{
-				statRequirements.addProperty(stat.getName(), req);
-			});
-			
-			JsonObject statScaling = new JsonObject();
-			root.add("stat_scaling", statScaling);
-			this.statScaling.build().forEach((stat, scaling) ->
-			{
-				statScaling.addProperty(stat.getName(), scaling.toString());
-			});
-			
-			root.addProperty("deflection", this.deflection.toString());
-			root.addProperty("weapon_material", this.weaponMaterial.toString());
+			json.addProperty("deflection", this.deflection.toString());
+			json.addProperty("weapon_material", this.weaponMaterial.toString());
 			
 			JsonObject defense = new JsonObject();
-			root.add("defense", defense);
+			json.add("defense", defense);
 			this.defense.build().forEach((type, def) ->
 			{
 				defense.addProperty(type.toString(), def);
 			});
-			return root;
+			return json;
 		}
 		
-		public static Builder fromJson(ResourceLocation location, JsonObject json)
+		public void initFromJson(ResourceLocation location, JsonObject json)
 		{
-			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
-			Item item = ForgeRegistries.ITEMS.getValue(itemId);
+			super.initFromJson(location, json);
 			
-			WeaponCategory category = WeaponCategory.fromString(json.get("category").getAsString());
+			this.movesetId = ResourceLocation.tryParse(json.get("moveset").getAsString());
 			
-			ResourceLocation movesetId = ResourceLocation.tryParse(json.get("moveset").getAsString());
-			
-			ResourceLocation colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
-			
-			float weight = json.get("weight").getAsFloat();
-			
-			Builder builder = new Builder(item, category, movesetId, colliderId, weight);
-			
-			JsonElement skillJson = json.get("skill");
-			if (skillJson != null) builder.setSkill(new ResourceLocation(skillJson.getAsString()));
-			
-			JsonElement criticalJson = json.get("critical");
-			if (criticalJson != null) builder.setCritical(criticalJson.getAsFloat());
+			this.colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
 			
 			JsonElement stabilityJson = json.get("stability");
-			if (stabilityJson != null) builder.setStability(stabilityJson.getAsFloat());
-			
-			JsonObject statRequirements = json.get("stat_requirements").getAsJsonObject();
-			JsonObject statScaling = json.get("stat_scaling").getAsJsonObject();
-			for (Stat stat : Stats.SCALING_STATS)
-			{
-				int requirement = statRequirements.get(stat.getName()).getAsInt();
-				String statName = statScaling.get(stat.getName()).getAsString();
-				Scaling scaling = Scaling.fromString(statName);
-				if (scaling == null)
-				{
-					DarkSouls.LOGGER.error("Error while reading weapon config for "+location+". Could not find scaling for "+stat.getName()+" with name "+statName);
-					continue;
-				}
-				builder.putStatInfo(stat, requirement, scaling);
-			}
+			if (stabilityJson != null) this.stability = stabilityJson.getAsFloat();
 			
 			JsonElement deflectionJson = json.get("deflection");
 			if (deflectionJson != null)
 			{
-				Deflection deflection = Deflection.valueOf(deflectionJson.getAsString());
-				builder.setDeflection(deflection);
+				this.deflection = Deflection.valueOf(deflectionJson.getAsString());
 			}
 			
 			JsonElement weaponMaterialJson = json.get("weapon_material");
 			if (weaponMaterialJson != null)
 			{
 				WeaponMaterial weaponMaterial = WeaponMaterial.fromString(weaponMaterialJson.getAsString());
-				if (weaponMaterial != null) builder.setWeaponMaterial(weaponMaterial);
+				if (weaponMaterial != null) this.weaponMaterial = weaponMaterial;
 			}
 			
-			JsonObject damage = json.get("damage").getAsJsonObject();
 			JsonObject defense = json.get("defense").getAsJsonObject();
 			for (CoreDamageType type : CoreDamageType.values())
 			{
-				int dam = Optional.ofNullable(damage.get(type.toString())).orElse(new JsonPrimitive(0)).getAsInt();
 				float def = Optional.ofNullable(defense.get(type.toString())).orElse(new JsonPrimitive(0)).getAsFloat();
-				builder.putDamageInfo(type, dam, def);
+				this.defense.put(type, def);
 			}
-			
-			JsonElement auxEffects = json.get("aux_effects");
-			if (auxEffects != null)
-			{
-				for (JsonElement auxEffect : auxEffects.getAsJsonArray())
-				{
-					builder.addAuxEffect(AuxEffects.fromId(ResourceLocation.tryParse(auxEffect.getAsString())));
-				}
-			}
-			
+		}
+		
+		public static Builder fromJson(ResourceLocation location, JsonObject json)
+		{
+			Builder builder = new Builder();
+			builder.initFromJson(location, json);
 			return builder;
 		}
 		
 		public MeleeWeaponCap build()
 		{
 			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.category, this.movesetId, WeaponSkills.getFromLocation(this.skillId),
+			return new MeleeWeaponCap(this.item, this.category, WeaponMovesets.getMoveset(this.movesetId), WeaponSkills.getFromLocation(this.skillId),
 					collider, this.damage.build(), this.auxEffects.build(),
 					this.critical, this.weight,
 					this.deflection, this.weaponMaterial, this.defense.build(), this.stability,

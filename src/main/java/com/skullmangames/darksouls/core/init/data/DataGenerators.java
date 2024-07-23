@@ -1,9 +1,10 @@
-package com.skullmangames.darksouls.core.init;
+package com.skullmangames.darksouls.core.init.data;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.data.AnimationDataProvider;
 import com.skullmangames.darksouls.core.data.ArmorConfigProvider;
 import com.skullmangames.darksouls.core.data.MeleeWeaponConfigProvider;
+import com.skullmangames.darksouls.core.data.SpellcastingWeaponConfigProvider;
 import com.skullmangames.darksouls.core.data.WeaponMovesetProvider;
 import com.skullmangames.darksouls.core.data.WeaponSkillProvider;
 
@@ -26,6 +27,7 @@ public class DataGenerators
 			generator.addProvider(new WeaponMovesetProvider(generator));
 			generator.addProvider(new WeaponSkillProvider(generator));
 			generator.addProvider(new MeleeWeaponConfigProvider(generator));
+			generator.addProvider(new SpellcastingWeaponConfigProvider(generator));
 			generator.addProvider(new ArmorConfigProvider(generator));
         }
 	}

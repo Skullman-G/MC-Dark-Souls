@@ -1,5 +1,5 @@
 {
   "skill_type": "two_sides",
-  "left": "darksouls:shield_parry",
-  "right": "darksouls:shield_parry_mirrored"
+  "right_animation": "darksouls:shield_parry",
+  "left_animation": "darksouls:shield_parry_mirrored"
 }

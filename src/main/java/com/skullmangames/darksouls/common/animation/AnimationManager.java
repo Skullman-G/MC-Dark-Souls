@@ -117,9 +117,9 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	}
 	
 	
-	/*
+	/**
 	 * Use only to initialize animations while generating data
-	 */
+	 **/
 	public static void initForDataGenerator(List<AnimBuilder> builders)
 	{
 		AnimationManager manager = DarkSouls.getInstance().animationManager;

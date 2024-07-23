@@ -10,8 +10,7 @@ import net.minecraft.world.item.Item;
 public class SpellItem extends Item
 {
 	private final Supplier<StaticAnimation> castingAnim;
-	@Nullable
-	private final Supplier<StaticAnimation> horsebackAnim;
+	@Nullable private final Supplier<StaticAnimation> horsebackAnim;
 	private final int reqFaith;
 	private final float fpConsumption;
 	

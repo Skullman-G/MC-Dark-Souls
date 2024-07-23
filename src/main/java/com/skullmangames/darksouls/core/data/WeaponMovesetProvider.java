@@ -9,10 +9,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 
 import net.minecraft.data.DataGenerator;
@@ -39,7 +39,7 @@ public class WeaponMovesetProvider implements DataProvider
 		
 		for (WeaponMoveset.Builder builder : defaultMovesets())
 		{
-			Path path1 = createPath(path, builder.getLocation());
+			Path path1 = createPath(path, builder.getId());
 			try
 			{
 				DataProvider.save(GSON, cache, builder.toJson(), path1);
@@ -55,13 +55,13 @@ public class WeaponMovesetProvider implements DataProvider
 	{
 		return ImmutableList.of
 		(
-			new WeaponMoveset.Builder(WeaponMovesets.FIST)
+			new WeaponMoveset.Builder(DarkSouls.rl("fist"))
 			.putMove(AttackType.LIGHT, true, Animations.FIST_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.FIST_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.FIST_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_STRIKE)
 			.putMove(AttackType.PUNISH, true, Animations.PUNISH_STRIKE),
-			new WeaponMoveset.Builder(WeaponMovesets.STRAIGHT_SWORD)
+			new WeaponMoveset.Builder(DarkSouls.rl("straight_sword"))
 			.putMove(AttackType.LIGHT, true, Animations.STRAIGHT_SWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.STRAIGHT_SWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
@@ -70,7 +70,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.STRAIGHT_SWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.STRAIGHT_SWORD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.STRAIGHT_SWORD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.AXE)
+			new WeaponMoveset.Builder(DarkSouls.rl("axe"))
 			.putMove(AttackType.LIGHT, true, Animations.AXE_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.AXE_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.AXE_DASH_ATTACK)
@@ -79,7 +79,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.AXE_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.AXE_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.AXE_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.BLACK_KNIGHT_SWORD)
+			new WeaponMoveset.Builder(DarkSouls.rl("black_knight_sword"))
 			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREATSWORD_STYLISH_THRUST)
 			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
@@ -88,7 +88,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSWORD_TH_THRUST_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSWORD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.CLAYMORE)
+			new WeaponMoveset.Builder(DarkSouls.rl("claymore"))
 			.putMove(AttackType.LIGHT, true, Animations.GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, new AttackAnimation[] {Animations.GREATSWORD_THRUST, Animations.GREATSWORD_UPWARD_SLASH})
 			.putMove(AttackType.DASH, true, Animations.GREATSWORD_DASH_ATTACK)
@@ -97,7 +97,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSWORD_TH_THRUST_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSWORD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.ULTRA_GREATSWORD)
+			new WeaponMoveset.Builder(DarkSouls.rl("ultra_greatsword"))
 			.putMove(AttackType.LIGHT, true, Animations.ULTRA_GREATSWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, false, Animations.ULTRA_GREATSWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.ULTRA_GREATSWORD_DASH_ATTACK)
@@ -106,21 +106,21 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.ULTRA_GREATSWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, false, Animations.ULTRA_GREATSWORD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.ULTRA_GREATSWORD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.SHIELD)
+			new WeaponMoveset.Builder(DarkSouls.rl("shield"))
 			.putMove(AttackType.LIGHT, true, Animations.SHIELD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.SHIELD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.SHIELD_DASH_ATTACK)
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.SHIELD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.SHIELD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.SHIELD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.GREATSHIELD)
+			new WeaponMoveset.Builder(DarkSouls.rl("greatshield"))
 			.putMove(AttackType.LIGHT, true, Animations.GREATSHIELD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREATSHIELD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREATSHIELD_DASH_ATTACK)
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREATSHIELD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREATSHIELD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREATSHIELD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.SPEAR)
+			new WeaponMoveset.Builder(DarkSouls.rl("spear"))
 			.putMove(AttackType.LIGHT, true, Animations.SPEAR_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.SPEAR_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.SPEAR_DASH_ATTACK)
@@ -129,7 +129,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.SPEAR_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.SPEAR_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.SPEAR_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.HAMMER)
+			new WeaponMoveset.Builder(DarkSouls.rl("hammer"))
 			.putMove(AttackType.LIGHT, true, Animations.HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.HAMMER_DASH_ATTACK)
@@ -138,12 +138,12 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.HAMMER_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.HAMMER_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.HAMMER_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.DAGGER)
+			new WeaponMoveset.Builder(DarkSouls.rl("dagger"))
 			.putMove(AttackType.LIGHT, true, Animations.DAGGER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.DAGGER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.STRAIGHT_SWORD_DASH_ATTACK)
 			.putMove(AttackType.BACKSTAB, true, Animations.BACKSTAB_THRUST),
-			new WeaponMoveset.Builder(WeaponMovesets.GREAT_HAMMER)
+			new WeaponMoveset.Builder(DarkSouls.rl("great_hammer"))
 			.putMove(AttackType.LIGHT, false, Animations.GREAT_HAMMER_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, false, Animations.GREAT_HAMMER_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREAT_HAMMER_DASH_ATTACK)
@@ -152,7 +152,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.GREAT_HAMMER_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.GREAT_HAMMER_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.GREAT_HAMMER_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.THRUSTING_SWORD)
+			new WeaponMoveset.Builder(DarkSouls.rl("thrusting_sword"))
 			.putMove(AttackType.LIGHT, true, Animations.THRUSTING_SWORD_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.THRUSTING_SWORD_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.THRUSTING_SWORD_DASH_ATTACK)
@@ -161,7 +161,7 @@ public class WeaponMovesetProvider implements DataProvider
 			.putMove(AttackType.TWO_HANDED_LIGHT, true, Animations.THRUSTING_SWORD_TH_LIGHT_ATTACK)
 			.putMove(AttackType.TWO_HANDED_HEAVY, true, Animations.THRUSTING_SWORD_TH_HEAVY_ATTACK)
 			.putMove(AttackType.TWO_HANDED_DASH, true, Animations.THRUSTING_SWORD_TH_DASH_ATTACK),
-			new WeaponMoveset.Builder(WeaponMovesets.GREATAXE)
+			new WeaponMoveset.Builder(DarkSouls.rl("greataxe"))
 			.putMove(AttackType.LIGHT, true, Animations.GREATAXE_LIGHT_ATTACK)
 			.putMove(AttackType.HEAVY, true, Animations.GREATAXE_HEAVY_ATTACK)
 			.putMove(AttackType.DASH, true, Animations.GREATAXE_DASH_ATTACK)

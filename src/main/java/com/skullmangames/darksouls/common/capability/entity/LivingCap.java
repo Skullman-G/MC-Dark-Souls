@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
-import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcastingWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
@@ -379,7 +379,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return ModCapabilities.getItemCapability(this.orgEntity.getItemInHand(hand));
 	}
 	
-	public SpellcasterWeaponCap getHeldSpellcasterWeaponCap(InteractionHand hand)
+	public SpellcastingWeaponCap getHeldSpellcasterWeaponCap(InteractionHand hand)
 	{
 		return ModCapabilities.getSpellcasterWeaponCap(this.orgEntity.getItemInHand(hand));
 	}

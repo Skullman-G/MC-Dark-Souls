@@ -1,7 +1,6 @@
-package com.skullmangames.darksouls.core.init;
+package com.skullmangames.darksouls.core.init.data;
 
 import java.util.Map;
-
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
@@ -30,9 +29,7 @@ public class WeaponSkills extends SimpleJsonResourceReloadListener
 	
 	
 	public static final ResourceLocation PARRY = DarkSouls.rl("parry");
-	
 	public static final ResourceLocation FAST_PARRY = DarkSouls.rl("fast_parry");
-	
 	public static final ResourceLocation GREATSHIELD_BASH = DarkSouls.rl("greatshield_bash");
 	
 	

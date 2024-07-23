@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.capability.item;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
@@ -14,16 +15,17 @@ import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.client.CTSCastSpell;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 
-public class SpellcasterWeaponCap extends WeaponCap
+public class SpellcastingWeaponCap extends WeaponCap
 {
 	private final float spellBuff;
 	
-	public SpellcasterWeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
+	public SpellcastingWeaponCap(Item item, WeaponCategory category, ImmutableMap<CoreDamageType, Integer> damage, ImmutableSet<AuxEffect> auxEffects,
 			float critical, float spellBuff, float weight, ImmutableMap<Stat, Integer> statRequirements, ImmutableMap<Stat, Scaling> statScaling)
 	{
 		super(item, category, null, damage, auxEffects, critical, weight, statRequirements, statScaling);
@@ -58,25 +60,23 @@ public class SpellcasterWeaponCap extends WeaponCap
 		return new Builder(item, category, critical, spellBuff, weight);
 	}
 	
-	public static class Builder
+	public static class Builder extends WeaponCap.Builder<SpellcastingWeaponCap>
 	{
-		private Item item;
-		private WeaponCategory category;
-		private float critical;
 		private float spellBuff;
-		private float weight;
-		private ImmutableMap.Builder<CoreDamageType, Integer> damage = ImmutableMap.builder();
-		private ImmutableSet.Builder<AuxEffect> auxEffects = ImmutableSet.builder();
-		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
-		private ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
+		
+		private Builder() {}
 		
 		private Builder(Item item, WeaponCategory category, float critical, float spellBuff, float weight)
 		{
-			this.item = item;
-			this.category = category;
+			super(item, category, weight);
 			this.critical = critical;
 			this.spellBuff = spellBuff;
-			this.weight = weight;
+		}
+		
+		@Override
+		public ResourceLocation getId()
+		{
+			return this.item.getRegistryName();
 		}
 		
 		public Builder addAuxEffect(AuxEffect auxEffect)
@@ -98,9 +98,31 @@ public class SpellcasterWeaponCap extends WeaponCap
 			return this;
 		}
 		
-		public SpellcasterWeaponCap build()
+		@Override
+		public JsonObject toJson()
 		{
-			return new SpellcasterWeaponCap(this.item, this.category, this.damage.build(), this.auxEffects.build(), this.critical, this.spellBuff, this.weight,
+			JsonObject json = super.toJson();
+			json.addProperty("spell_buff", this.spellBuff);
+			return json;
+		}
+		
+		@Override
+		public void initFromJson(ResourceLocation location, JsonObject json)
+		{
+			super.initFromJson(location, json);
+			this.spellBuff = json.get("spell_buff").getAsFloat();
+		}
+		
+		public static Builder fromJson(ResourceLocation location, JsonObject json)
+		{
+			Builder builder = new Builder();
+			builder.initFromJson(location, json);
+			return builder;
+		}
+		
+		public SpellcastingWeaponCap build()
+		{
+			return new SpellcastingWeaponCap(this.item, this.category, this.damage.build(), this.auxEffects.build(), this.critical, this.spellBuff, this.weight,
 					this.statRequirements.build(), this.statScaling.build());
 		}
 	}

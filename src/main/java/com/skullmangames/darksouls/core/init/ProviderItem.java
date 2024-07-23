@@ -7,15 +7,12 @@ import java.util.function.Function;
 import com.skullmangames.darksouls.common.capability.item.BowCap;
 import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.SpellcasterWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.common.capability.item.TridentCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
-import com.skullmangames.darksouls.core.util.WeaponCategory;
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -70,22 +67,6 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 				.putStatInfo(Stats.DEXTERITY, 9, Scaling.NONE)
 				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 				.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-				.build());
-		
-		//Talismans
-		putCap(SpellcasterWeaponCap.builder(ModItems.TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 1.00F, 0.5F)
-				.putDamage(CoreDamageType.PHYSICAL, 52)
-				.putStatInfo(Stats.STRENGTH, 4, Scaling.E)
-				.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
-				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
-				.putStatInfo(Stats.FAITH, 10, Scaling.B)
-				.build());
-		putCap(SpellcasterWeaponCap.builder(ModItems.THOROLUND_TALISMAN.get(), WeaponCategory.TALISMAN, 1.00F, 1.15F, 0.3F)
-				.putDamage(CoreDamageType.PHYSICAL, 52)
-				.putStatInfo(Stats.STRENGTH, 4, Scaling.E)
-				.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
-				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
-				.putStatInfo(Stats.FAITH, 10, Scaling.B)
 				.build());
 		
 		//Throwables

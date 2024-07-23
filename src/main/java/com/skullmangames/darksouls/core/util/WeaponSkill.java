@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
@@ -23,6 +25,16 @@ public abstract class WeaponSkill
 	}
 	
 	public abstract void perform(LivingCap<?> cap, InteractionHand hand);
+	
+	public static WeaponSkill.Builder basicBuilder(ResourceLocation location, StaticAnimation right)
+	{
+		return new Builder(location, right);
+	}
+	
+	public static WeaponSkill.Builder mirrorBuilder(ResourceLocation location, StaticAnimation right, StaticAnimation left)
+	{
+		return new Builder(location, right, left);
+	}
 	
 	public static class BaseWeaponSkill extends WeaponSkill
 	{
@@ -90,89 +102,94 @@ public abstract class WeaponSkill
 		}
 	}
 	
-	public static abstract class Builder
+	public static class Builder implements JsonBuilder<WeaponSkill>
 	{
-		protected final ResourceLocation location;
+		private ResourceLocation location;
+		private WeaponSkillType skillType;
+		private StaticAnimation rightAnim;
+		@Nullable private StaticAnimation leftAnim;
 		
-		public Builder(ResourceLocation location)
+		private Builder(ResourceLocation location)
 		{
 			this.location = location;
 		}
 		
-		public ResourceLocation getLocation()
+		private Builder(ResourceLocation location, StaticAnimation rightAnim)
+		{
+			this(location);
+			this.skillType = WeaponSkillType.BASIC;
+			this.rightAnim = rightAnim;
+		}
+		
+		private Builder(ResourceLocation location, StaticAnimation rightAnim, StaticAnimation leftAnim)
+		{
+			this(location);
+			this.skillType = WeaponSkillType.TWO_SIDES;
+			this.rightAnim = rightAnim;
+			this.leftAnim = leftAnim;
+		}
+		
+		public ResourceLocation getId()
 		{
 			return this.location;
 		}
 		
-		public static Builder fromJson(ResourceLocation location, JsonObject json)
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			json.addProperty("skill_type", this.skillType.toString());
+			
+			switch (this.skillType)
+			{
+				case BASIC:
+					json.addProperty("right_animation", this.rightAnim.getId().toString());
+					break;
+					
+				case TWO_SIDES:
+					json.addProperty("right_animation", this.rightAnim.getId().toString());
+					json.addProperty("left_animation", this.leftAnim.getId().toString());
+					break;
+			}
+			
+			return json;
+		}
+		
+		@Override
+		public void initFromJson(ResourceLocation location, JsonObject json)
 		{
 			WeaponSkillType type = WeaponSkillType.fromString(json.get("skill_type").getAsString());
 			
-			switch(type)
+			switch (type)
 			{
-			default: case BASIC:
-				StaticAnimation animation = AnimationManager.getAnimation(new ResourceLocation(json.get("animation").getAsString()));
-				return new BaseBuilder(location, animation);
-			case TWO_SIDES:
-				StaticAnimation left = AnimationManager.getAnimation(new ResourceLocation(json.get("left").getAsString()));
-				StaticAnimation right = AnimationManager.getAnimation(new ResourceLocation(json.get("right").getAsString()));
-				return new MirrorBuilder(location, left, right);
+				default: case BASIC:
+					this.rightAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("right_animation").getAsString()));
+					break;
+				case TWO_SIDES:
+					this.rightAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("right_animation").getAsString()));
+					this.leftAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("left_animation").getAsString()));
+					break;
 			}
 		}
 		
-		public abstract JsonObject toJson();
-		
-		public abstract WeaponSkill build();
-	}
-	
-	public static class BaseBuilder extends Builder
-	{
-		protected final StaticAnimation animation;
-		
-		public BaseBuilder(ResourceLocation location, StaticAnimation animation)
+		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			super(location);
-			this.animation = animation;
+			Builder builder = new Builder(location);
+			builder.initFromJson(location, json);
+			return builder;
 		}
 		
-		public JsonObject toJson()
-		{
-			JsonObject root = new JsonObject();
-			root.addProperty("skill_type", WeaponSkillType.BASIC.toString());
-			root.addProperty("animation", this.animation.getId().toString());
-			return root;
-		}
-		
+		@Override
 		public WeaponSkill build()
 		{
-			return new BaseWeaponSkill(this.location, this.animation);
-		}
-	}
-	
-	public static class MirrorBuilder extends Builder
-	{
-		protected final StaticAnimation left;
-		protected final StaticAnimation right;
-		
-		public MirrorBuilder(ResourceLocation location, StaticAnimation left, StaticAnimation right)
-		{
-			super(location);
-			this.left = left;
-			this.right = right;
-		}
-		
-		public JsonObject toJson()
-		{
-			JsonObject root = new JsonObject();
-			root.addProperty("skill_type", WeaponSkillType.TWO_SIDES.toString());
-			root.addProperty("left", this.left.getId().toString());
-			root.addProperty("right", this.right.getId().toString());
-			return root;
-		}
-		
-		public WeaponSkill build()
-		{
-			return new MirrorWeaponSkill(this.location, this.left, this.right);
+			switch (this.skillType)
+			{
+				default:
+				case BASIC:
+					return new BaseWeaponSkill(this.location, this.rightAnim);
+				case TWO_SIDES:
+					return new MirrorWeaponSkill(this.location, this.leftAnim, this.rightAnim);
+			}
 		}
 	}
 }

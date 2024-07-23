@@ -18,8 +18,8 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
-import com.skullmangames.darksouls.core.init.WeaponSkills;
+import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 
@@ -47,7 +47,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 		
 		for (MeleeWeaponCap.Builder builder : defaultConfigs())
 		{
-			Path path1 = createPath(path, builder.getLocation());
+			Path path1 = createPath(path, builder.getId());
 			try
 			{
 				DataProvider.save(GSON, cache, builder.toJson(), path1);

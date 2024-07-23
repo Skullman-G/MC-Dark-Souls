@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.core.init;
+package com.skullmangames.darksouls.core.init.data;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,44 +11,46 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.common.capability.item.ArmorCap;
+import com.skullmangames.darksouls.common.capability.item.SpellcastingWeaponCap;
+import com.skullmangames.darksouls.core.init.ProviderItem;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 
-public class ArmorConfigs extends SimpleJsonResourceReloadListener
+public class SpellcastingWeaponConfigs extends SimpleJsonResourceReloadListener
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	
-	public ArmorConfigs()
+	public SpellcastingWeaponConfigs()
 	{
-		super(GSON, "armor_configs");
+		super(GSON, "weapon_configs/spellcasting");
 	}
 
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
 	{
-		Collection<ArmorCap.Builder> configs = new HashSet<>();
+		Collection<SpellcastingWeaponCap.Builder> configs = new HashSet<>();
 		objects.forEach((location, json) ->
 		{
 			try
 			{
-				ArmorCap.Builder builder = ArmorCap.Builder.fromJson(location, json.getAsJsonObject());
+				SpellcastingWeaponCap.Builder builder = SpellcastingWeaponCap.Builder.fromJson(location, json.getAsJsonObject());
 				configs.add(builder);
 			}
 			catch (IllegalArgumentException | JsonParseException jsonparseexception)
 			{
-				LOGGER.error("Parsing error loading armor config {}", location, jsonparseexception);
+				LOGGER.error("Parsing error loading spellcasting weapon config {}", location, jsonparseexception);
 			}
 		});
-		LOGGER.info("Loaded "+configs.size()+" armor configs");
+		LOGGER.info("Loaded "+configs.size()+" spellcasting weapon configs");
 		
 		
-		for (ArmorCap.Builder builder : configs)
+		for (SpellcastingWeaponCap.Builder builder : configs)
 		{
-			ArmorCap cap = builder.build();
+			SpellcastingWeaponCap cap = builder.build();
 			ProviderItem.CAPABILITIES.put(cap.getOriginalItem(), cap);
 		}
 	}

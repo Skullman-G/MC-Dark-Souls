@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.WeaponMovesets;
+import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 
@@ -201,7 +201,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 			}
 			else
 			{
-				WeaponMoveset moveset = WeaponMovesets.getFistMoveset();
+				WeaponMoveset moveset = WeaponMovesets.FIST.get();
 				Pair<Boolean, AttackAnimation[]> move = moveset.get(type);
 				if (move != null)
 				{

@@ -20,18 +20,18 @@ public class WeaponMoveset
 {
 	public static final WeaponMoveset EMPTY = new WeaponMoveset(new ResourceLocation("empty"), ImmutableMap.of());
 	
-	private final ResourceLocation name;
+	private final ResourceLocation id;
 	private final ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset;
 	
 	private WeaponMoveset(ResourceLocation name, ImmutableMap<AttackType, Pair<Boolean, AttackAnimation[]>> moveset)
 	{
-		this.name = name;
+		this.id = name;
 		this.moveset = moveset;
 	}
 	
-	public ResourceLocation getName()
+	public ResourceLocation getId()
 	{
-		return this.name;
+		return this.id;
 	}
 	
 	public AttackAnimation[] getAttacks(AttackType type)
@@ -44,7 +44,7 @@ public class WeaponMoveset
 		return this.moveset.get(type);
 	}
 	
-	public static class Builder
+	public static class Builder implements JsonBuilder<WeaponMoveset>
 	{
 		private static final Logger LOGGER = LogUtils.getLogger();
 		private ResourceLocation location;
@@ -55,7 +55,7 @@ public class WeaponMoveset
 			this.location = location;
 		}
 		
-		public ResourceLocation getLocation()
+		public ResourceLocation getId()
 		{
 			return this.location;
 		}
@@ -93,9 +93,8 @@ public class WeaponMoveset
 			return root;
 		}
 		
-		public static WeaponMoveset.Builder fromJson(ResourceLocation location, JsonObject json)
+		public void initFromJson(ResourceLocation location, JsonObject json)
 		{
-			WeaponMoveset.Builder builder = new WeaponMoveset.Builder(location);
 			JsonObject moveset = json.get("moveset").getAsJsonObject();
 			for (Map.Entry<String, JsonElement> entry : moveset.entrySet())
 			{
@@ -127,9 +126,14 @@ public class WeaponMoveset
 					}
 				}
 				
-				if (!cancel) builder.putMove(type, repeating, animList);
+				if (!cancel) this.putMove(type, repeating, animList);
 			}
-			
+		}
+		
+		public static WeaponMoveset.Builder fromJson(ResourceLocation location, JsonObject json)
+		{
+			WeaponMoveset.Builder builder = new WeaponMoveset.Builder(location);
+			builder.initFromJson(location, json);
 			return builder;
 		}
 	}
