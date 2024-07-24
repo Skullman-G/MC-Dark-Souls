@@ -36,10 +36,10 @@
       "end": 0.72,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 50,
-        "deflection": "LIGHT",
         "movement_damage_type": "THRUST",
-        "poise_damage": 23
+        "poise_damage": 23,
+        "deflection": "LIGHT",
+        "stamina_damage": 50
       }
     },
     {
@@ -49,10 +49,10 @@
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 50,
-        "deflection": "LIGHT",
         "movement_damage_type": "THRUST",
-        "poise_damage": 23
+        "poise_damage": 23,
+        "deflection": "LIGHT",
+        "stamina_damage": 50
       }
     }
   ]

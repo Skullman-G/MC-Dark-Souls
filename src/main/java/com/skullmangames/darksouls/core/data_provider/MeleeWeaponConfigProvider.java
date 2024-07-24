@@ -79,6 +79,21 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.setStability(0.32F)
 			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
 			
+			MeleeWeaponCap.builder(ModItems.GREAT_CLUB.get(), WeaponCategory.GREAT_HAMMER, WeaponMovesets.GREAT_HAMMER, Colliders.GREAT_HAMMER.getId(), 12.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 125, 0.50F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.35F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.35F)
+			.setCritical(1.00F)
+			.putStatInfo(Stats.STRENGTH, 28, Scaling.B)
+			.putStatInfo(Stats.DEXTERITY, 0, Scaling.NONE)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setStability(0.32F)
+			.setWeaponMaterial(WeaponMaterial.WOODEN_WEAPON),
+			
 			// Axes
 			MeleeWeaponCap.builder(Items.WOODEN_AXE, WeaponCategory.AXE, WeaponMovesets.AXE, Colliders.AXE.getId(), 0.75F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 110, 0.55F)

@@ -1,0 +1,41 @@
+{
+  "registry_name": "darksouls:great_club",
+  "category": "great_hammer",
+  "skill": "minecraft:empty",
+  "weight": 12.0,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 125,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0,
+    "HOLY": 0
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 28,
+    "stat.darksouls.dexterity": 0,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "B",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "moveset": "darksouls:great_hammer",
+  "collider": "darksouls:great_hammer",
+  "stability": 0.32,
+  "deflection": "NONE",
+  "weapon_material": "wooden_weapon",
+  "defense": {
+    "PHYSICAL": 0.5,
+    "MAGIC": 0.1,
+    "FIRE": 0.35,
+    "LIGHTNING": 0.35,
+    "DARK": 0.35,
+    "HOLY": 0.35
+  }
+}

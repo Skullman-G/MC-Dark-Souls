@@ -1,0 +1,39 @@
+{
+	"loader": "forge:separate-perspective",
+	"base":
+	{
+		"parent": "darksouls:item/great_club_3d",
+		"textures": {
+			"0": "darksouls:items/great_club_3d",
+			"particle": "darksouls:items/great_club_3d"
+		}
+	},
+	"gui_light": "front",
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/great_club"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/great_club"
+			}
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "darksouls:items/great_club"
+			}
+		}
+	}
+}

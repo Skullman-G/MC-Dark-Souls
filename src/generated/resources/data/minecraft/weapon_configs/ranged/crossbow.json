@@ -21,11 +21,11 @@
     "stat.darksouls.faith": "-"
   },
   "animation_overrides": {
-    "RELOADING": "darksouls:biped_crossbow_reload",
     "AIMING": "darksouls:biped_crossbow_aim",
-    "IDLE": "darksouls:biped_idle_crossbow",
     "RUNNING": "darksouls:biped_walk_crossbow",
     "SHOOTING": "darksouls:biped_crossbow_shot",
+    "IDLE": "darksouls:biped_idle_crossbow",
+    "RELOADING": "darksouls:biped_crossbow_reload",
     "WALKING": "darksouls:biped_walk_crossbow"
   },
   "hand_property": "TWO_HANDED"

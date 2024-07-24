@@ -104,6 +104,7 @@
 	"item.darksouls.berenike_greatshield": "Berenike Greatshield",
 	"item.darksouls.greatsword": "Greatsword",
 	"item.darksouls.greataxe": "Greataxe",
+	"item.darksouls.great_club": "Great Club",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -273,6 +274,7 @@
 	"tooltip.darksouls.berenike_greatshield.extended": "Metal Greatshield. Used by the Knights of Berenike, known for their heavy armour. This plate of iron is very defensive but also heavy. Greatshields are very stable, and deflect attacks. However, one cannot parry, and instead bashes with the shield.",
 	"tooltip.darksouls.greatsword.extended": "One of the gigantic straight greatswords. Very few have what it takes to wield this incredibly heavy, damage-dealing monster. A favorite of the Knights Berenike, known for their heavy armor, and Black iron Tarkus.",
 	"tooltip.darksouls.greataxe.extended": "This greataxe is a veritable mass of iron. Its weight sends foes flying, but makes it difficult to handle without inhuman strength. Any miss makes one very vulnerable, as each swing requires the full force of the body.",
+	"tooltip.darksouls.great_club.extended": "A giant club made out of a tree stump.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

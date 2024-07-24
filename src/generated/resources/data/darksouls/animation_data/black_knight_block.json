@@ -11,16 +11,16 @@
       "location": "darksouls:black_knight/block_run"
     },
     {
-      "motion": "BLOCKING",
-      "apply_layer_parts": false,
-      "mirrored": false,
-      "location": "darksouls:black_knight/block"
-    },
-    {
       "motion": "WALKING",
       "apply_layer_parts": true,
       "mirrored": false,
       "location": "darksouls:black_knight/block_walk"
+    },
+    {
+      "motion": "BLOCKING",
+      "apply_layer_parts": false,
+      "mirrored": false,
+      "location": "darksouls:black_knight/block"
     }
   ]
 }
