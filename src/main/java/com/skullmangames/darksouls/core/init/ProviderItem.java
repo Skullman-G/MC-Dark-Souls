@@ -4,15 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.skullmangames.darksouls.common.capability.item.BowCap;
-import com.skullmangames.darksouls.common.capability.item.CrossbowCap;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
-import com.skullmangames.darksouls.common.capability.item.TridentCap;
-import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
-import com.skullmangames.darksouls.common.entity.stats.Stats;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,34 +35,6 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 
 	public static void initCapabilityMap()
 	{
-		//WEAPONS
-		//Bows
-		putCap(BowCap.builder(Items.BOW, 1.00F, 2.0F)
-				.putDamage(CoreDamageType.PHYSICAL, 77)
-				.putStatInfo(Stats.STRENGTH, 7, Scaling.E)
-				.putStatInfo(Stats.DEXTERITY, 12, Scaling.D)
-				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
-				.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-				.build());
-		
-		//Crossbows
-		putCap(CrossbowCap.builder(Items.CROSSBOW, 1.00F, 3.0F)
-				.putDamage(CoreDamageType.PHYSICAL, 64)
-				.putStatInfo(Stats.STRENGTH, 10, Scaling.NONE)
-				.putStatInfo(Stats.DEXTERITY, 8, Scaling.NONE)
-				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
-				.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-				.build());
-		
-		//Tridents
-		putCap(TridentCap.builder(Items.TRIDENT, 1.00F, 3.0F)
-				.putDamage(CoreDamageType.PHYSICAL, 64)
-				.putStatInfo(Stats.STRENGTH, 15, Scaling.NONE)
-				.putStatInfo(Stats.DEXTERITY, 9, Scaling.NONE)
-				.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
-				.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-				.build());
-		
 		//Throwables
 		putCap(new ThrowableCap(Items.SNOWBALL, Snowball::new, () -> SoundEvents.SNOWBALL_THROW));
 		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::firebomb, () -> SoundEvents.SNOWBALL_THROW));

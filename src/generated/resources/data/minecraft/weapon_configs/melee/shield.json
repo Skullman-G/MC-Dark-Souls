@@ -1,11 +1,8 @@
 {
   "registry_name": "minecraft:shield",
   "category": "medium_shield",
-  "moveset": "darksouls:shield",
   "skill": "minecraft:empty",
-  "collider": "darksouls:shield",
   "weight": 4.0,
-  "stability": 0.57,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 88,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:shield",
+  "collider": "darksouls:shield",
+  "stability": 0.57,
   "deflection": "MEDIUM",
   "weapon_material": "wooden_shield",
   "defense": {

@@ -22,7 +22,7 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_thrust_check"
+        "darksouls:backstab_thrust"
       ]
     }
   }

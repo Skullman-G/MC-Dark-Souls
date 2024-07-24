@@ -78,7 +78,7 @@ public class ParryAnimation extends ActionAnimation
 							if (targetCap.canBeParried())
 							{
 								targetCap.playSound(ModSoundEvents.GENERIC_PARRY_SUCCESS.get());
-								targetCap.playAnimationSynchronized(Animations.BIPED_DISARMED_RIGHT, 0.0F);
+								targetCap.playAnimationSynchronized(Animations.BIPED_DISARMED_RIGHT.get(), 0.0F);
 								entityCap.onParrySuccess();
 							}
 						}

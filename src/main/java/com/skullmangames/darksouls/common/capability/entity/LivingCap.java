@@ -263,11 +263,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	protected final void commonBipedAnimatorInit(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
 	}
 
 	protected final void commonMotionUpdate()

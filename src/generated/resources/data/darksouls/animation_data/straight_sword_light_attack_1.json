@@ -27,10 +27,10 @@
       "end": 0.88,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 44,
-        "poise_damage": 20,
         "deflection": "LIGHT",
         "stamina_usage": 15,
+        "poise_damage": 20,
+        "stamina_damage": 44,
         "movement_damage_type": "REGULAR"
       }
     }

@@ -1,0 +1,32 @@
+{
+  "registry_name": "minecraft:crossbow",
+  "category": "crossbow",
+  "skill": "minecraft:empty",
+  "weight": 3.0,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 64
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 10,
+    "stat.darksouls.dexterity": 8,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "-",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "animation_overrides": {
+    "RUNNING": "darksouls:biped_walk_crossbow",
+    "SHOOTING": "darksouls:biped_crossbow_shot",
+    "IDLE": "darksouls:biped_idle_crossbow",
+    "RELOADING": "darksouls:biped_crossbow_reload",
+    "AIMING": "darksouls:biped_crossbow_aim",
+    "WALKING": "darksouls:biped_walk_crossbow"
+  },
+  "hand_property": "TWO_HANDED"
+}

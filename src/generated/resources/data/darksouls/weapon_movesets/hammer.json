@@ -21,31 +21,31 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike_check"
+        "darksouls:backstab_strike"
       ]
     },
     "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_strike_check"
+        "darksouls:punish_strike"
       ]
     },
     "two_handed_light": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_th_la"
+        "darksouls:hammer_th_light_attack"
       ]
     },
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_th_ha"
+        "darksouls:hammer_th_heavy_attack"
       ]
     },
     "two_handed_dash": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_th_da"
+        "darksouls:hammer_th_dash_attack"
       ]
     }
   }

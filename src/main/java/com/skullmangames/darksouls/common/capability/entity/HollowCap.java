@@ -50,11 +50,11 @@ public class HollowCap extends HumanoidCap<Hollow>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -75,8 +75,8 @@ public class HollowCap extends HumanoidCap<Hollow>
 		
 		if (buf.readBoolean())
 		{
-			animator.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
-			animator.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK);
+			animator.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE.get());
+			animator.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_WALK.get());
 		}
 	}
 	
@@ -90,11 +90,11 @@ public class HollowCap extends HumanoidCap<Hollow>
 		else if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING))
-					.addAttack(new AttackInstance(5, 3.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS.get()))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE.get()))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_OVERHEAD_SWING.get()))
+					.addAttack(new AttackInstance(5, 3.0F, 4.0F, Animations.HOLLOW_JUMP_ATTACK.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 	}
 

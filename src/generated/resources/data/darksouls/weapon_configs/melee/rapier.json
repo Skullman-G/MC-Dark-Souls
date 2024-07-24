@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:rapier",
   "category": "thrusting_sword",
-  "moveset": "darksouls:thrusting_sword",
   "skill": "minecraft:empty",
-  "collider": "darksouls:longsword",
   "weight": 2.0,
-  "stability": 0.15,
   "critical": 1.3,
   "damage": {
     "PHYSICAL": 95,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:thrusting_sword",
+  "collider": "darksouls:longsword",
+  "stability": 0.15,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

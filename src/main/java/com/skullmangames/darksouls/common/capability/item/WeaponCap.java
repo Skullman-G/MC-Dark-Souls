@@ -76,9 +76,9 @@ public abstract class WeaponCap extends AttributeItemCap
 		this.weight = weight;
 		this.skill = skill;
 		
-		this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH);
-		this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_WALK_TH);
-		this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_RUN_TH);
+		this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH.get());
+		this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_WALK_TH.get());
+		this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_RUN_TH.get());
 	}
 	
 	public void performSkill(LivingCap<?> cap, InteractionHand hand)

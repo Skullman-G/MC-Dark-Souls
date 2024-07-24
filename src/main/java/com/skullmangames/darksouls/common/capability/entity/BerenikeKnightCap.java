@@ -22,13 +22,13 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BERENIKE_KNIGHT_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BALDER_KNIGHT_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BALDER_KNIGHT_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BALDER_KNIGHT_BLOCK);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BERENIKE_KNIGHT_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BALDER_KNIGHT_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BALDER_KNIGHT_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BALDER_KNIGHT_BLOCK.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -45,11 +45,11 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 8D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_LA))
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA[0]))
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA[1]))
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_DA))
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_KICK)));
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_LA.get()))
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA.get()[0]))
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA.get()[1]))
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_DA.get()))
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_KICK.get())));
 		}
 		else if (category == WeaponCategory.HAMMER)
 		{
@@ -58,9 +58,9 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 8D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_LA))
-					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_HA))
-					.addAttack(new AttackInstance(1, 6.0F, 8.0F, Animations.BERENIKE_KNIGHT_SWORD_DA)));
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_LA.get()))
+					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_HA.get()))
+					.addAttack(new AttackInstance(1, 6.0F, 8.0F, Animations.BERENIKE_KNIGHT_SWORD_DA.get())));
 		}
 		
 		this.orgEntity.goalSelector.addGoal(0, weaponGoal);

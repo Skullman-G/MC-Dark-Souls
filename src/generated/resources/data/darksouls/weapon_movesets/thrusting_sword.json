@@ -22,13 +22,13 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_thrust_check"
+        "darksouls:backstab_thrust"
       ]
     },
     "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_thrust_check"
+        "darksouls:punish_thrust"
       ]
     },
     "two_handed_light": {

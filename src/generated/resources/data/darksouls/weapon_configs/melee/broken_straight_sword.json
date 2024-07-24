@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:broken_straight_sword",
   "category": "straight_sword",
-  "moveset": "darksouls:straight_sword",
   "skill": "minecraft:empty",
-  "collider": "darksouls:broken_sword",
   "weight": 1.0,
-  "stability": 0.3,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 70,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:straight_sword",
+  "collider": "darksouls:broken_sword",
+  "stability": 0.3,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

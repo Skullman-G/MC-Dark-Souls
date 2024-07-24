@@ -297,7 +297,7 @@ public class EntityEvents
 
 			if (distance > 5.0F)
 			{
-				entityCap.getAnimator().playAnimation(Animations.BIPED_HIT_LAND_HEAVY, 0);
+				entityCap.getAnimator().playAnimation(Animations.BIPED_HIT_LAND_HEAVY.get(), 0);
 			}
 		}
 		

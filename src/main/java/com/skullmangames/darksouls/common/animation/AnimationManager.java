@@ -16,7 +16,6 @@ import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
-import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
 
@@ -112,8 +111,6 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		{
 			animation.loadAnimation(resourceManager, models);
 		}
-		
-		Animations.init();
 	}
 	
 	
@@ -133,7 +130,5 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 		
 		manager.animations = builder.build();
 		LOGGER.info("Loaded "+manager.animations.size()+" animations");
-		
-		Animations.init();
 	}
 }

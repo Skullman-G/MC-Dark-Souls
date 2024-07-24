@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:black_knight_sword",
   "category": "greatsword",
-  "moveset": "darksouls:black_knight_sword",
   "skill": "minecraft:empty",
-  "collider": "darksouls:greatsword",
   "weight": 10.0,
-  "stability": 0.4,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 173,
@@ -30,6 +27,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:black_knight_sword",
+  "collider": "darksouls:greatsword",
+  "stability": 0.4,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

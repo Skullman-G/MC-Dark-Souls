@@ -22,13 +22,13 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_thrust_check"
+        "darksouls:backstab_thrust"
       ]
     },
     "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_thrust_check"
+        "darksouls:punish_thrust"
       ]
     },
     "two_handed_light": {
@@ -41,13 +41,13 @@
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:straight_sword_th_ha"
+        "darksouls:straight_sword_th_heavy_attack"
       ]
     },
     "two_handed_dash": {
       "repeating": true,
       "animations": [
-        "darksouls:straight_sword_th_da"
+        "darksouls:straight_sword_th_dash_attack"
       ]
     }
   }

@@ -23,13 +23,13 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike_check"
+        "darksouls:backstab_strike"
       ]
     },
     "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_strike_check"
+        "darksouls:punish_strike"
       ]
     },
     "two_handed_light": {
@@ -49,7 +49,7 @@
     "two_handed_dash": {
       "repeating": true,
       "animations": [
-        "darksouls:ultra_greatsword_th_da"
+        "darksouls:ultra_greatsword_th_dash_attack"
       ]
     }
   }

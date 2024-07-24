@@ -22,13 +22,13 @@
     "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike_check"
+        "darksouls:backstab_strike"
       ]
     },
     "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_strike_check"
+        "darksouls:punish_strike"
       ]
     }
   }

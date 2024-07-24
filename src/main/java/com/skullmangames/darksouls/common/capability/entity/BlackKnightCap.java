@@ -17,13 +17,13 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BLACK_KNIGHT_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BLACK_KNIGHT_BLOCK);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BLACK_KNIGHT_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BLACK_KNIGHT_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BLACK_KNIGHT_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BLACK_KNIGHT_BLOCK.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -32,12 +32,12 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	{
 		if (category != WeaponCategory.GREATSWORD) return;
 		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-				.addAttack(new AttackInstance(5, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_SHORT))
-				.addAttack(new AttackInstance(4, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_LONG))
-				.addAttack(new AttackInstance(6, 4.0F, Animations.BLACK_KNIGHT_SWORD_HA))
-				.addAttack(new AttackInstance(1, 5.0F, Animations.BLACK_KNIGHT_SWORD_DA))
-				.addAttack(new AttackInstance(2, 4.0F, Animations.BLACK_KNIGHT_SHIELD_ATTACK))
-				.addDodge(Animations.BIPED_JUMP_BACK));
+				.addAttack(new AttackInstance(5, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_SHORT.get()))
+				.addAttack(new AttackInstance(4, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_LONG.get()))
+				.addAttack(new AttackInstance(6, 4.0F, Animations.BLACK_KNIGHT_SWORD_HA.get()))
+				.addAttack(new AttackInstance(1, 5.0F, Animations.BLACK_KNIGHT_SWORD_DA.get()))
+				.addAttack(new AttackInstance(2, 4.0F, Animations.BLACK_KNIGHT_SHIELD_ATTACK.get()))
+				.addDodge(Animations.BIPED_JUMP_BACK.get()));
 	}
 	
 	@Override
@@ -61,6 +61,6 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	@Override
 	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		return Animations.BLACK_KNIGHT_DEATH;
+		return Animations.BLACK_KNIGHT_DEATH.get();
 	}
 }

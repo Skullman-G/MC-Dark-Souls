@@ -27,9 +27,9 @@
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 44,
+        "deflection": "LIGHT",
         "poise_damage": 20,
-        "deflection": "LIGHT"
+        "stamina_damage": 44
       }
     }
   ]

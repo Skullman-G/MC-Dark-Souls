@@ -22,23 +22,23 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
 			if (this.isTwohanding())
 			{
-				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD
-						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD
-						: Animations.BIPED_BLOCK_TH_VERTICAL;
+				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD.get()
+						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD.get()
+						: Animations.BIPED_BLOCK_TH_VERTICAL.get();
 			}
-			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
-					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD
-					: Animations.BIPED_BLOCK_VERTICAL;
+			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL.get()
+					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD.get()
+					: Animations.BIPED_BLOCK_VERTICAL.get();
 		}));
 		animatorClient.setCurrentMotionsToDefault();
 	}
@@ -55,9 +55,9 @@ public class SimpleHumanoidCap<T extends Mob> extends HumanoidCap<T>
 		if (cap == null || !(cap instanceof MeleeWeaponCap))
 		{
 			this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_LIGHT_ATTACK))
-					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_HEAVY_ATTACK))
-					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_DASH_ATTACK)));
+					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_LIGHT_ATTACK.get()))
+					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_HEAVY_ATTACK.get()))
+					.addAttack(new AttackInstance(1, 1.0F, Animations.FIST_DASH_ATTACK.get())));
 		}
 		else
 		{

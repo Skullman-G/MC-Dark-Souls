@@ -70,38 +70,38 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 		
 		if (this.getWeaponCategory().isShield())
 		{
-			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SHIELD);
-			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SHIELD);
-			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SHIELD);
-			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SHIELD);
-			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SHIELD);
-			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SHIELD);
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SHIELD.get());
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SHIELD.get());
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SHIELD.get());
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SHIELD.get());
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SHIELD.get());
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SHIELD.get());
 		}
 		if (this.getWeaponCategory().isHeavy())
 		{
-			this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.WALKING, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.RUNNING, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.KNEELING, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_HOLDING_BIG_WEAPON);
-			this.animationOverrides.put(LivingMotion.BLOCKING, Animations.BIPED_HOLDING_BIG_WEAPON);
+			this.animationOverrides.put(LivingMotion.IDLE, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.WALKING, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.RUNNING, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.KNEELING, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_HOLDING_BIG_WEAPON.get());
+			this.animationOverrides.put(LivingMotion.BLOCKING, Animations.BIPED_HOLDING_BIG_WEAPON.get());
 			
-			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_BIG_WEAPON);
-			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
-			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
-			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
-			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_BIG_WEAPON);
-			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_BIG_WEAPON);
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_BIG_WEAPON.get());
 		}
 		else if (this.getWeaponCategory().isLong())
 		{
-			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SPEAR);
-			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SPEAR);
-			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SPEAR);
-			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SPEAR);
-			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SPEAR);
-			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SPEAR);
+			this.twoHandingOverrides.put(LivingMotion.IDLE, Animations.BIPED_IDLE_TH_SPEAR.get());
+			this.twoHandingOverrides.put(LivingMotion.WALKING, Animations.BIPED_IDLE_TH_SPEAR.get());
+			this.twoHandingOverrides.put(LivingMotion.RUNNING, Animations.BIPED_IDLE_TH_SPEAR.get());
+			this.twoHandingOverrides.put(LivingMotion.SNEAKING, Animations.BIPED_IDLE_TH_SPEAR.get());
+			this.twoHandingOverrides.put(LivingMotion.KNEELING, Animations.BIPED_IDLE_TH_SPEAR.get());
+			this.twoHandingOverrides.put(LivingMotion.MOUNTED, Animations.BIPED_IDLE_TH_SPEAR.get());
 		}
 	}
 	
@@ -160,7 +160,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 	{
 		if (playerCap.isMounted())
 		{
-			List<AttackAnimation> animations = new ArrayList<AttackAnimation>(Arrays.asList(Animations.HORSEBACK_LIGHT_ATTACK));
+			List<AttackAnimation> animations = Animations.HORSEBACK_LIGHT_ATTACK.getAsList();
 			int combo = animations.indexOf(playerCap.getClientAnimator().baseLayer.animationPlayer.getPlay());
 			if (combo + 1 < animations.size()) combo += 1;
 			else combo = 0;

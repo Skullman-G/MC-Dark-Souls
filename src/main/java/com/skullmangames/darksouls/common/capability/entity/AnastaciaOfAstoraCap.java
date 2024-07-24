@@ -12,7 +12,7 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.ANASTACIA_IDLE.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -31,6 +31,6 @@ public class AnastaciaOfAstoraCap extends HumanoidCap<AnastaciaOfAstora>
 	@Override
 	public StaticAnimation getHitAnimation(ExtendedDamageSource dmgSource)
 	{
-		return Animations.ANASTACIA_IDLE;
+		return Animations.ANASTACIA_IDLE.get();
 	}
 }

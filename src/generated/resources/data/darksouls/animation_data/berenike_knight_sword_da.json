@@ -94,10 +94,10 @@
       "end": 2.8,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 79,
-        "poise_damage": 35,
         "deflection": "IMPOSSIBLE",
+        "poise_damage": 35,
         "stun_type": "SMASH",
+        "stamina_damage": 79,
         "movement_damage_type": "STRIKE"
       }
     }

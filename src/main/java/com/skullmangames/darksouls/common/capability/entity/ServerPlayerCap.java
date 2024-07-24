@@ -156,26 +156,26 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		boolean fat = e == EquipLoadLevel.HEAVY;
 		StaticAnimation animation = null;
 		
-		if (e == EquipLoadLevel.OVERENCUMBERED) animation = Animations.BIPED_ROLL_TOO_FAT;
+		if (e == EquipLoadLevel.OVERENCUMBERED) animation = Animations.BIPED_ROLL_TOO_FAT.get();
 		else
 		{
 			switch (type)
 			{
 				default:
 				case JUMP_BACK:
-					animation = Animations.BIPED_JUMP_BACK;
+					animation = Animations.BIPED_JUMP_BACK.get();
 					break;
 				case FORWARD:
-					animation = fat ? Animations.BIPED_FAT_ROLL : Animations.BIPED_ROLL;
+					animation = fat ? Animations.BIPED_FAT_ROLL.get() : Animations.BIPED_ROLL.get();
 					break;
 				case BACK:
-					animation = Animations.BIPED_ROLL_BACK;
+					animation = Animations.BIPED_ROLL_BACK.get();
 					break;
 				case LEFT:
-					animation = Animations.BIPED_ROLL_LEFT;
+					animation = Animations.BIPED_ROLL_LEFT.get();
 					break;
 				case RIGHT:
-					animation = Animations.BIPED_ROLL_RIGHT;
+					animation = Animations.BIPED_ROLL_RIGHT.get();
 					break;
 			}
 		}

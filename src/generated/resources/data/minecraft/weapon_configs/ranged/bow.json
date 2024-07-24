@@ -1,0 +1,28 @@
+{
+  "registry_name": "minecraft:bow",
+  "category": "bow",
+  "skill": "minecraft:empty",
+  "weight": 2.0,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 77
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 7,
+    "stat.darksouls.dexterity": 12,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "E",
+    "stat.darksouls.dexterity": "D",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "animation_overrides": {
+    "SHOOTING": "darksouls:biped_bow_rebound",
+    "AIMING": "darksouls:biped_bow_aim"
+  },
+  "hand_property": "TWO_HANDED"
+}

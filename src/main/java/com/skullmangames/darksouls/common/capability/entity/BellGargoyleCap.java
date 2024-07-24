@@ -21,7 +21,7 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BELL_GARGOYLE_IDLE);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BELL_GARGOYLE_IDLE.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	

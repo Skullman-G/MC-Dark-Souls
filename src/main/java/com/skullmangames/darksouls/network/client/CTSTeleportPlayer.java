@@ -47,7 +47,7 @@ public class CTSTeleportPlayer
 			if (blockEntity instanceof BonfireBlockEntity && optPos.isPresent() && playerCap != null)
 			{
 				 playerCap.futureTeleport = optPos.get();
-				 playerCap.playAnimationSynchronized(Animations.BIPED_TOUCH_BONFIRE, 0.0F);
+				 playerCap.playAnimationSynchronized(Animations.BIPED_TOUCH_BONFIRE.get(), 0.0F);
 			}
 		});
 		ctx.get().setPacketHandled(true);

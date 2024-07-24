@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:greataxe",
   "category": "greataxe",
-  "moveset": "darksouls:greataxe",
   "skill": "minecraft:empty",
-  "collider": "darksouls:greataxe",
   "weight": 25.0,
-  "stability": 0.4,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 188,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:greataxe",
+  "collider": "darksouls:greataxe",
+  "stability": 0.4,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

@@ -29,13 +29,13 @@ public class FalconerCap extends HumanoidCap<Falconer>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.FALCONER_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.FALCONER_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.FALCONER_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.FALCONER_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.FALCONER_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.FALCONER_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BIPED_BLOCK_HORIZONTAL.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -58,8 +58,8 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		{
 			if (category != WeaponCategory.STRAIGHT_SWORD) return;
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_LIGHT_ATTACKS))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_LIGHT_ATTACKS.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 	}
 	

@@ -50,11 +50,12 @@ public class PetrusOfThorolund extends QuestEntity implements SoulMerchant
 		MobCap<?> cap = (MobCap<?>)this.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 		if (cap != null)
 		{
-			this.targetSelector.addGoal(0, new SpellAttackGoal(cap, ModItems.THOROLUND_TALISMAN.get().getDefaultInstance(), new SpellAttackInstance(Animations.BIPED_CAST_MIRACLE_FORCE, (mob) -> 
+			this.targetSelector.addGoal(0, new SpellAttackGoal(cap, ModItems.THOROLUND_TALISMAN.get().getDefaultInstance(),
+					new SpellAttackInstance(Animations.BIPED_CAST_MIRACLE_FORCE.get(), (mob) -> 
 			{
 				LivingEntity target = mob.getTarget();
 				return target != null && mob.getOriginalEntity().distanceTo(target) < 2;
-			}), new SpellAttackInstance(Animations.BIPED_CAST_MIRACLE_HEAL, (mob) -> 
+			}), new SpellAttackInstance(Animations.BIPED_CAST_MIRACLE_HEAL.get(), (mob) -> 
 			{
 				LivingEntity target = mob.getTarget();
 				float per = mob.getOriginalEntity().getHealth() / mob.getOriginalEntity().getMaxHealth();

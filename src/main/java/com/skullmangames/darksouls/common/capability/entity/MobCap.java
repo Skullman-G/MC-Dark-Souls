@@ -73,8 +73,8 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 		this.itemChange = new Pair<>(hand, itemStack);
 		this.afterItemChange = action;
 		
-		StaticAnimation animation = hand == InteractionHand.OFF_HAND ? Animations.BIPED_CHANGE_ITEM_LEFT :
-			Animations.BIPED_CHANGE_ITEM_RIGHT;
+		StaticAnimation animation = hand == InteractionHand.OFF_HAND ? Animations.BIPED_CHANGE_ITEM_LEFT.get() :
+			Animations.BIPED_CHANGE_ITEM_RIGHT.get();
 		
 		this.playAnimationSynchronized(animation, 0.0F);
 	}

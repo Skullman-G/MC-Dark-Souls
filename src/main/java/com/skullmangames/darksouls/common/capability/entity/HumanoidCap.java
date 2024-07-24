@@ -52,7 +52,7 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
-		return Animations.HOLLOW_DEFLECTED;
+		return Animations.HOLLOW_DEFLECTED.get();
 	}
 	
 	@Override
@@ -126,24 +126,24 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 	public static DeathAnimation getHumanoidDeathAnimation(LivingCap<?> entityCap, ExtendedDamageSource dmgSource)
 	{
 		Entity attacker = dmgSource.getSource();
-		if (attacker == null) return Animations.BIPED_DEATH;
+		if (attacker == null) return Animations.BIPED_DEATH.get();
 		float dir = dmgSource.getAttackAngle(entityCap.orgEntity);
 		
 		switch (dmgSource.getStunType())
 		{
 			case FLY:
-				return dir <= 315 && dir >= 225 ? Animations.BIPED_DEATH_FLY_LEFT
-						: dir <= 225 && dir >= 135 ? Animations.BIPED_DEATH_FLY_BACK
-						: dir <= 135 && dir >= 45 ? Animations.BIPED_DEATH_FLY_RIGHT
-						: Animations.BIPED_DEATH_FLY_FRONT;
+				return dir <= 315 && dir >= 225 ? Animations.BIPED_DEATH_FLY_LEFT.get()
+						: dir <= 225 && dir >= 135 ? Animations.BIPED_DEATH_FLY_BACK.get()
+						: dir <= 135 && dir >= 45 ? Animations.BIPED_DEATH_FLY_RIGHT.get()
+						: Animations.BIPED_DEATH_FLY_FRONT.get();
 			
-			case SMASH: return Animations.BIPED_DEATH_SMASH;
+			case SMASH: return Animations.BIPED_DEATH_SMASH.get();
 			
-			case BACKSTABBED: return Animations.BIPED_DEATH_BACKSTAB;
+			case BACKSTABBED: return Animations.BIPED_DEATH_BACKSTAB.get();
 			
-			case PUNISHED: return Animations.BIPED_DEATH_PUNISH;
+			case PUNISHED: return Animations.BIPED_DEATH_PUNISH.get();
 				
-			default: return Animations.BIPED_DEATH;
+			default: return Animations.BIPED_DEATH.get();
 		}
 	}
 	
@@ -171,30 +171,30 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 				{
 					if (twoHanding)
 					{
-						return Animations.BIPED_HIT_BLOCKED_TH_SWORD_FLY;
+						return Animations.BIPED_HIT_BLOCKED_TH_SWORD_FLY.get();
 					}
 					if (horizontalBlocking)
 					{
 						return usedHand == InteractionHand.MAIN_HAND
-								? Animations.BIPED_HIT_BLOCKED_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_FLY_LEFT;
+								? Animations.BIPED_HIT_BLOCKED_FLY_RIGHT.get() : Animations.BIPED_HIT_BLOCKED_FLY_LEFT.get();
 					}
 					return usedHand == InteractionHand.MAIN_HAND
-							? Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT;
+							? Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_RIGHT.get() : Animations.BIPED_HIT_BLOCKED_VERTICAL_FLY_LEFT.get();
 				}
 				else
 				{
 					if (twoHanding)
 					{
-						return Animations.BIPED_HIT_BLOCKED_TH_SWORD;
+						return Animations.BIPED_HIT_BLOCKED_TH_SWORD.get();
 					}
 					if (horizontalBlocking)
 					{
 						return usedHand == InteractionHand.MAIN_HAND
-								? Animations.BIPED_HIT_BLOCKED_RIGHT : Animations.BIPED_HIT_BLOCKED_LEFT;
+								? Animations.BIPED_HIT_BLOCKED_RIGHT.get() : Animations.BIPED_HIT_BLOCKED_LEFT.get();
 						
 					}
 					return usedHand == InteractionHand.MAIN_HAND
-							? Animations.BIPED_HIT_BLOCKED_VERTICAL_RIGHT : Animations.BIPED_HIT_BLOCKED_VERTICAL_LEFT;
+							? Animations.BIPED_HIT_BLOCKED_VERTICAL_RIGHT.get() : Animations.BIPED_HIT_BLOCKED_VERTICAL_LEFT.get();
 				}
 			}
 			// Hit
@@ -203,35 +203,35 @@ public abstract class HumanoidCap<T extends Mob> extends MobCap<T>
 				switch (stunType)
 				{
 					case DISARMED:
-						if (usedHand == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARMED_RIGHT;
-						return Animations.BIPED_DISARMED_LEFT;
+						if (usedHand == InteractionHand.MAIN_HAND) return Animations.BIPED_DISARMED_RIGHT.get();
+						return Animations.BIPED_DISARMED_LEFT.get();
 						
 					case LIGHT:
-						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT : Animations.BIPED_HIT_LIGHT_RIGHT
-								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK : Animations.BIPED_HIT_LIGHT_BACK
-								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT : Animations.BIPED_HIT_LIGHT_LEFT
-								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT : Animations.BIPED_HIT_LIGHT_FRONT;
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_RIGHT.get() : Animations.BIPED_HIT_LIGHT_RIGHT.get()
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_BACK.get() : Animations.BIPED_HIT_LIGHT_BACK.get()
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_LEFT.get() : Animations.BIPED_HIT_LIGHT_LEFT.get()
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_LIGHT_FRONT.get() : Animations.BIPED_HIT_LIGHT_FRONT.get();
 						
 					case HEAVY:
-						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT : Animations.BIPED_HIT_HEAVY_RIGHT
-								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK : Animations.BIPED_HIT_HEAVY_BACK
-								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT : Animations.BIPED_HIT_HEAVY_LEFT
-								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT : Animations.BIPED_HIT_HEAVY_FRONT;
+						return dir <= 315 && dir >= 225 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_RIGHT.get() : Animations.BIPED_HIT_HEAVY_RIGHT.get()
+								: dir <= 225 && dir >= 135 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_BACK.get() : Animations.BIPED_HIT_HEAVY_BACK.get()
+								: dir <= 135 && dir >= 45 ? entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_LEFT.get() : Animations.BIPED_HIT_HEAVY_LEFT.get()
+								: entityCap.isMounted() ? Animations.BIPED_HORSEBACK_HIT_HEAVY_FRONT.get() : Animations.BIPED_HIT_HEAVY_FRONT.get();
 						
 					case SMASH:
-						return Animations.BIPED_HIT_SMASH;
+						return Animations.BIPED_HIT_SMASH.get();
 						
 					case FLY:
-						return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT
-								: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK
-								: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT
-								: Animations.BIPED_HIT_FLY_FRONT;
+						return dir <= 315 && dir >= 225 ? Animations.BIPED_HIT_FLY_LEFT.get()
+								: dir <= 225 && dir >= 135 ? Animations.BIPED_HIT_FLY_BACK.get()
+								: dir <= 135 && dir >= 45 ? Animations.BIPED_HIT_FLY_RIGHT.get()
+								: Animations.BIPED_HIT_FLY_FRONT.get();
 								
 					case BACKSTABBED:
-						return Animations.BIPED_HIT_BACKSTAB;
+						return Animations.BIPED_HIT_BACKSTAB.get();
 						
 					case PUNISHED:
-						return Animations.BIPED_HIT_PUNISH;
+						return Animations.BIPED_HIT_PUNISH.get();
 						
 					default:
 						return null;

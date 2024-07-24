@@ -296,34 +296,34 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.SNEAKING, Animations.BIPED_SNEAK);
-		animatorClient.putLivingAnimation(LivingMotion.SWIMMING, Animations.BIPED_SWIM);
-		animatorClient.putLivingAnimation(LivingMotion.FLOATING, Animations.BIPED_FLOAT);
-		animatorClient.putLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
-		animatorClient.putLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL);
-		animatorClient.putLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT);
-		animatorClient.putLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM);
-		animatorClient.putLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD);
-		animatorClient.putLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND);
-		animatorClient.putLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BIPED_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BIPED_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BIPED_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.SNEAKING, Animations.BIPED_SNEAK.get());
+		animatorClient.putLivingAnimation(LivingMotion.SWIMMING, Animations.BIPED_SWIM.get());
+		animatorClient.putLivingAnimation(LivingMotion.FLOATING, Animations.BIPED_FLOAT.get());
+		animatorClient.putLivingAnimation(LivingMotion.KNEELING, Animations.BIPED_KNEEL.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
+		animatorClient.putLivingAnimation(LivingMotion.CONSUME_SOUL, Animations.BIPED_CONSUME_SOUL.get());
+		animatorClient.putLivingAnimation(LivingMotion.EATING, Animations.BIPED_EAT.get());
+		animatorClient.putLivingAnimation(LivingMotion.AIMING, Animations.BIPED_BOW_AIM.get());
+		animatorClient.putLivingAnimation(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD.get());
+		animatorClient.putLivingAnimation(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND.get());
+		animatorClient.putLivingAnimation(LivingMotion.DIGGING, Animations.BIPED_DIG.get());
 		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.createSupplier((cap, part) ->
 		{
 			MeleeWeaponCap weapon = cap.getHeldMeleeWeaponCap(cap.getOriginalEntity().getUsedItemHand());
 			if (this.isTwohanding())
 			{
-				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD
-						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD
-						: Animations.BIPED_BLOCK_TH_VERTICAL;
+				return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_TH_SWORD.get()
+						: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_TH_GREATSHIELD.get()
+						: Animations.BIPED_BLOCK_TH_VERTICAL.get();
 			}
-			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL
-					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD
-					: Animations.BIPED_BLOCK_VERTICAL;
+			return weapon == null || !weapon.getWeaponCategory().isShield() ? Animations.BIPED_BLOCK_HORIZONTAL.get()
+					: weapon.getWeaponCategory() == WeaponCategory.GREATSHIELD ? Animations.BIPED_BLOCK_GREATSHIELD.get()
+					: Animations.BIPED_BLOCK_VERTICAL.get();
 		}));
 		animatorClient.setCurrentMotionsToDefault();
 	}
@@ -355,7 +355,7 @@ public abstract class PlayerCap<T extends Player> extends LivingCap<T> implement
 	@Override
 	public StaticAnimation getDeflectAnimation()
 	{
-		return Animations.HOLLOW_DEFLECTED;
+		return Animations.HOLLOW_DEFLECTED.get();
 	}
 	
 	@Override

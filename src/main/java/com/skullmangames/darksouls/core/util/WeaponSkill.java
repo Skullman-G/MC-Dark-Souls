@@ -88,9 +88,9 @@ public abstract class WeaponSkill
 		
 		public static WeaponSkillType fromString(String id)
 		{
-			for (WeaponSkillType category : WeaponSkillType.values())
+			for (WeaponSkillType type : WeaponSkillType.values())
 			{
-				if (category.toString().equals(id)) return category;
+				if (type.toString().equals(id)) return type;
 			}
 			return null;
 		}
@@ -158,9 +158,9 @@ public abstract class WeaponSkill
 		@Override
 		public void initFromJson(ResourceLocation location, JsonObject json)
 		{
-			WeaponSkillType type = WeaponSkillType.fromString(json.get("skill_type").getAsString());
+			this.skillType = WeaponSkillType.fromString(json.get("skill_type").getAsString());
 			
-			switch (type)
+			switch (this.skillType)
 			{
 				default: case BASIC:
 					this.rightAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("right_animation").getAsString()));

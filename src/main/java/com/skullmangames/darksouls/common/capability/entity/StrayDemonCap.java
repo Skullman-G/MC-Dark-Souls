@@ -42,8 +42,8 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_WALK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.STRAY_DEMON_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.STRAY_DEMON_WALK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -72,12 +72,12 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	{
 		super.initAI();
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false, false)
-				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK))
-				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK))
-				.addAttack(new AttackInstance(5, 8F, 10F, Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK))
-				.addAttack(new AttackInstance(4, 4F, Animations.STRAY_DEMON_HAMMER_DRIVE))
-				.addAttack(new AttackInstance(5, 10.0F, 12.0F, Animations.STRAY_DEMON_HAMMER_DASH_ATTACK))
-				.addAttack(new AttackInstance(4, 3F, Animations.STRAY_DEMON_GROUND_POUND)));
+				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK.get()))
+				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK.get()))
+				.addAttack(new AttackInstance(5, 8F, 10F, Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK.get()))
+				.addAttack(new AttackInstance(4, 4F, Animations.STRAY_DEMON_HAMMER_DRIVE.get()))
+				.addAttack(new AttackInstance(5, 10.0F, 12.0F, Animations.STRAY_DEMON_HAMMER_DASH_ATTACK.get()))
+				.addAttack(new AttackInstance(4, 3F, Animations.STRAY_DEMON_GROUND_POUND.get())));
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	@Override
 	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
-		return Animations.STRAY_DEMON_DEATH;
+		return Animations.STRAY_DEMON_DEATH.get();
 	}
 	
 	@Override

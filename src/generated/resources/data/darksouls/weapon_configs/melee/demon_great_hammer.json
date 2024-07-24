@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:demon_great_hammer",
   "category": "great_hammer",
-  "moveset": "darksouls:great_hammer",
   "skill": "minecraft:empty",
-  "collider": "darksouls:great_hammer",
   "weight": 22.0,
-  "stability": 0.32,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 138,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:great_hammer",
+  "collider": "darksouls:great_hammer",
+  "stability": 0.32,
   "deflection": "NONE",
   "weapon_material": "wooden_weapon",
   "defense": {

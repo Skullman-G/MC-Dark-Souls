@@ -1,0 +1,24 @@
+{
+  "registry_name": "darksouls:talisman",
+  "category": "talisman",
+  "skill": "minecraft:empty",
+  "weight": 0.5,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 52
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 4,
+    "stat.darksouls.dexterity": 0,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 10
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "E",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "B"
+  },
+  "spell_buff": 1.0
+}

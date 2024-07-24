@@ -1,11 +1,8 @@
 {
   "registry_name": "minecraft:netherite_pickaxe",
   "category": "hammer",
-  "moveset": "darksouls:hammer",
   "skill": "minecraft:empty",
-  "collider": "darksouls:pickaxe",
   "weight": 5.0,
-  "stability": 0.4,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 140,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:hammer",
+  "collider": "darksouls:pickaxe",
+  "stability": 0.4,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:berenike_greatshield",
   "category": "greatshield",
-  "moveset": "darksouls:greatshield",
   "skill": "darksouls:greatshield_bash",
-  "collider": "darksouls:shield",
   "weight": 13.0,
-  "stability": 0.72,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 80,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:greatshield",
+  "collider": "darksouls:shield",
+  "stability": 0.72,
   "deflection": "HEAVY",
   "weapon_material": "large_iron_shield",
   "defense": {

@@ -1,0 +1,28 @@
+{
+  "registry_name": "minecraft:trident",
+  "category": "none_weaon",
+  "skill": "minecraft:empty",
+  "weight": 3.0,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 64
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 15,
+    "stat.darksouls.dexterity": 9,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "-",
+    "stat.darksouls.dexterity": "-",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "animation_overrides": {
+    "SHOOTING": "darksouls:biped_speer_rebound",
+    "AIMING": "darksouls:biped_speer_aim"
+  },
+  "hand_property": "MAINHAND_ONLY"
+}

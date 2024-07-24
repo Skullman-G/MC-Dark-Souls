@@ -72,7 +72,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 		this.mobCap.rotateTo(target, 60, false);
 		if (this.crossbowState == CrossbowState.UNCHARGED)
 		{
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_RELOAD, mob.getId(), 0.0F), mob);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_RELOAD.get(), mob.getId(), 0.0F), mob);
 			this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
 			this.crossbowState = CrossbowState.CHARGING;
 			this.mob.setChargingCrossbow(true);
@@ -108,7 +108,7 @@ public class CrossbowAttackGoal<T extends Mob & CrossbowAttackMob, D extends Hum
 					.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
 			CrossbowItem.setCharged(itemstack1, false);
 			this.crossbowState = CrossbowState.UNCHARGED;
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_SHOT, mob.getId(), 0.0F), mob);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCPlayAnimation(Animations.BIPED_CROSSBOW_SHOT.get(), mob.getId(), 0.0F), mob);
 		}
 	}
 	

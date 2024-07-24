@@ -31,13 +31,13 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_WARRIOR_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_WARRIOR_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.HOLLOW_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.HOLLOW_LORDRAN_WARRIOR_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.HOLLOW_LORDRAN_WARRIOR_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.HOLLOW_LORDRAN_SOLDIER_BLOCK.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -60,11 +60,11 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA))
-					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS.get()))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE.get()))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA.get()))
+					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 			
 			weaponGoal.addSwitchCondition(ModItems.FIREBOMB.get().getDefaultInstance(), () ->
 			{
@@ -79,10 +79,10 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA))
-					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA))
-					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA.get()))
+					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA.get()))
+					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 		
 		this.orgEntity.goalSelector.addGoal(0, weaponGoal);

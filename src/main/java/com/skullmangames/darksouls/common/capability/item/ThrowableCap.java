@@ -30,7 +30,7 @@ public class ThrowableCap extends ItemCapability
 	
 	public void use(LivingCap<?> cap)
 	{
-		cap.playAnimationSynchronized(Animations.BIPED_THROW, 0.0F);
+		cap.playAnimationSynchronized(Animations.BIPED_THROW.get(), 0.0F);
 	}
 	
 	public void spawnProjectile(LivingCap<?> cap)

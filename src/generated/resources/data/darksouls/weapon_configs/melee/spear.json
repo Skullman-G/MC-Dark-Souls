@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:spear",
   "category": "spear",
-  "moveset": "darksouls:spear",
   "skill": "minecraft:empty",
-  "collider": "darksouls:spear",
   "weight": 4.5,
-  "stability": 0.3,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 104,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:spear",
+  "collider": "darksouls:spear",
+  "stability": 0.3,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

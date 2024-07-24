@@ -1,11 +1,8 @@
 {
   "registry_name": "minecraft:diamond_axe",
   "category": "axe",
-  "moveset": "darksouls:axe",
   "skill": "minecraft:empty",
-  "collider": "darksouls:axe",
   "weight": 1.0,
-  "stability": 0.3,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 110,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:axe",
+  "collider": "darksouls:axe",
+  "stability": 0.3,
   "deflection": "NONE",
   "weapon_material": "wooden_weapon",
   "defense": {

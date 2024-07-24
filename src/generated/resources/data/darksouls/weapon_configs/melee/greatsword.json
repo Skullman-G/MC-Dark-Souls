@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:greatsword",
   "category": "ultra_greatsword",
-  "moveset": "darksouls:ultra_greatsword",
   "skill": "minecraft:empty",
-  "collider": "darksouls:ultra_greatsword",
   "weight": 12.0,
-  "stability": 0.44,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 130,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:ultra_greatsword",
+  "collider": "darksouls:ultra_greatsword",
+  "stability": 0.44,
   "deflection": "NONE",
   "weapon_material": "metal_weapon",
   "defense": {

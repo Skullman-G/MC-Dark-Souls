@@ -1,11 +1,8 @@
 {
   "registry_name": "darksouls:cracked_round_shield",
   "category": "small_shield",
-  "moveset": "darksouls:shield",
   "skill": "darksouls:parry",
-  "collider": "darksouls:shield",
   "weight": 1.0,
-  "stability": 0.3,
   "critical": 1.0,
   "damage": {
     "PHYSICAL": 46,
@@ -28,6 +25,9 @@
     "stat.darksouls.intelligence": "-",
     "stat.darksouls.faith": "-"
   },
+  "moveset": "darksouls:shield",
+  "collider": "darksouls:shield",
+  "stability": 0.3,
   "deflection": "NONE",
   "weapon_material": "wooden_shield",
   "defense": {

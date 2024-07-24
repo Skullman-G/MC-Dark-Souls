@@ -1,5 +1,5 @@
 {
   "skill_type": "two_sides",
-  "right_animation": "darksouls:buckler_parry",
-  "left_animation": "darksouls:buckler_parry_mirrored"
+  "right_animation": "darksouls:buckler_parry_left",
+  "left_animation": "darksouls:buckler_parry_right"
 }

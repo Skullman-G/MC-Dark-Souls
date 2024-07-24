@@ -151,22 +151,22 @@ public class ModItems
 	
 	
 	//Miracles
-	public static final RegistryObject<Item> MIRACLE_HEAL = ITEMS.register("miracle_heal", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HEAL, 12, 45F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_HEAL = ITEMS.register("miracle_heal", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HEAL.get(), 12, 45F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_HEAL_AID = ITEMS.register("miracle_heal_aid", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HEAL_AID, 8, 27F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_HEAL_AID = ITEMS.register("miracle_heal_aid", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HEAL_AID.get(), 8, 27F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_HOMEWARD = ITEMS.register("miracle_homeward", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HOMEWARD, 18, 30F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_HOMEWARD = ITEMS.register("miracle_homeward", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_HOMEWARD.get(), 18, 30F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_FORCE = ITEMS.register("miracle_force", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_FORCE, 12, 26F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_FORCE = ITEMS.register("miracle_force", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_FORCE.get(), 12, 26F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_LIGHTNING_SPEAR = ITEMS.register("miracle_lightning_spear", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR, () -> Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR, 20, 23F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_LIGHTNING_SPEAR = ITEMS.register("miracle_lightning_spear", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR.get(), () -> Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR.get(), 20, 23F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
-	public static final RegistryObject<Item> MIRACLE_GREAT_LIGHTNING_SPEAR = ITEMS.register("miracle_great_lightning_spear", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, () -> Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR, 30, 32F, new Item.Properties()
+	public static final RegistryObject<Item> MIRACLE_GREAT_LIGHTNING_SPEAR = ITEMS.register("miracle_great_lightning_spear", () -> new SpellItem(() -> Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.get(), () -> Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.get(), 30, 32F, new Item.Properties()
 			.tab(DarkSouls.TAB)));
 	
 	

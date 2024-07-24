@@ -19,13 +19,13 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BALDER_KNIGHT_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BALDER_KNIGHT_WALK);
-		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BALDER_KNIGHT_RUN);
-		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL);
-		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE);
-		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BALDER_KNIGHT_BLOCK);
-		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK);
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BALDER_KNIGHT_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BALDER_KNIGHT_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BALDER_KNIGHT_RUN.get());
+		animatorClient.putLivingAnimation(LivingMotion.FALL, Animations.BIPED_FALL.get());
+		animatorClient.putLivingAnimation(LivingMotion.MOUNTED, Animations.BIPED_HORSEBACK_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.BLOCKING, Animations.BALDER_KNIGHT_BLOCK.get());
+		animatorClient.putLivingAnimation(LivingMotion.DRINKING, Animations.BIPED_DRINK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -48,10 +48,10 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D && this.orgEntity.getRandom().nextFloat() <= 0.1D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, true, true)
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 		else if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
@@ -60,12 +60,12 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_HA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SHIELD_HA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA))
-					.addDodge(Animations.BIPED_JUMP_BACK));
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_HA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SHIELD_HA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 		else if (category == WeaponCategory.THRUSTING_SWORD)
 		{
@@ -74,11 +74,11 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
 			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_LA))
-					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_HA))
-					.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.BALDER_KNIGHT_RAPIER_DA))
-					.addDodge(Animations.BIPED_JUMP_BACK)
-					.addParry(Animations.BALDER_KNIGHT_RAPIER_BLOCK, Animations.BALDER_KNIGHT_RAPIER_PARRY));
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_LA.get()))
+					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_HA.get()))
+					.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.BALDER_KNIGHT_RAPIER_DA.get()))
+					.addDodge(Animations.BIPED_JUMP_BACK.get())
+					.addParry(Animations.BALDER_KNIGHT_RAPIER_BLOCK.get(), Animations.BALDER_KNIGHT_RAPIER_PARRY.get()));
 		}
 		
 		this.orgEntity.goalSelector.addGoal(0, weaponGoal);
@@ -88,7 +88,7 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 	public void onParrySuccess()
 	{
 		super.onParrySuccess();
-		this.playAnimationSynchronized(Animations.PUNISH_THRUST, 0.0F);
+		this.playAnimationSynchronized(Animations.PUNISH_THRUST.get(), 0.0F);
 	}
 
 	@Override
