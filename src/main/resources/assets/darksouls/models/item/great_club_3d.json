@@ -62,11 +62,9 @@
 	"gui_light": "front",
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [0, 180, 0],
 			"translation": [0, 15, 1.5]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [0, 180, 0],
 			"translation": [0, 15, 1.5]
 		},
 		"firstperson_righthand": {
