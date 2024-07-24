@@ -5,6 +5,7 @@ import com.skullmangames.darksouls.core.data_provider.AnimationDataProvider;
 import com.skullmangames.darksouls.core.data_provider.ArmorConfigProvider;
 import com.skullmangames.darksouls.core.data_provider.MeleeWeaponConfigProvider;
 import com.skullmangames.darksouls.core.data_provider.RangedWeaponConfigProvider;
+import com.skullmangames.darksouls.core.data_provider.SpellConfigProvider;
 import com.skullmangames.darksouls.core.data_provider.SpellcastingWeaponConfigProvider;
 import com.skullmangames.darksouls.core.data_provider.WeaponMovesetProvider;
 import com.skullmangames.darksouls.core.data_provider.WeaponSkillProvider;
@@ -31,6 +32,7 @@ public class DataGenerators
 			generator.addProvider(new SpellcastingWeaponConfigProvider(generator));
 			generator.addProvider(new RangedWeaponConfigProvider(generator));
 			generator.addProvider(new ArmorConfigProvider(generator));
+			generator.addProvider(new SpellConfigProvider(generator));
         }
 	}
 }

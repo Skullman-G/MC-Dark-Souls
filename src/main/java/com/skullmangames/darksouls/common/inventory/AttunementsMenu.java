@@ -1,7 +1,8 @@
 package com.skullmangames.darksouls.common.inventory;
 
-import com.skullmangames.darksouls.common.item.SpellItem;
+import com.skullmangames.darksouls.common.capability.item.SpellCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModContainers;
 
 import net.minecraft.world.Container;
@@ -38,12 +39,12 @@ public class AttunementsMenu extends ChestMenu
 		{
 			if (slot.container == this.getContainer())
 			{
-				if (!this.getCarried().isEmpty() && !(this.getCarried().getItem() instanceof SpellItem)
+				if (!this.getCarried().isEmpty() && !(this.getCarried().getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null) instanceof SpellCap)
 						|| slotIndex > (int)player.getAttributeValue(ModAttributes.ATTUNEMENT_SLOTS.get()) - 1) return;
 			}
 			else if (type == ClickType.QUICK_MOVE)
 			{
-				if (!(slot.getItem().getItem() instanceof SpellItem)) return;
+				if (!(slot.getItem().getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null) instanceof SpellCap)) return;
 				else
 				{
 					boolean flag = true;

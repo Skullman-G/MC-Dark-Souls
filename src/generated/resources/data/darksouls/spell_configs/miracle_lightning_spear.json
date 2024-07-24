@@ -1,0 +1,11 @@
+{
+  "registry_name": "darksouls:miracle_lightning_spear",
+  "spell_type": "MIRACLE",
+  "fp_consumption": 23.0,
+  "casting_animation": "darksouls:biped_cast_miracle_lightning_spear",
+  "horseback_animation": "darksouls:horseback_cast_miracle_lightning_spear",
+  "stat_requirements": {
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 20
+  }
+}

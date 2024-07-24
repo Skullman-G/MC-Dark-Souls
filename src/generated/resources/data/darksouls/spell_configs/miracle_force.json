@@ -1,0 +1,10 @@
+{
+  "registry_name": "darksouls:miracle_force",
+  "spell_type": "MIRACLE",
+  "fp_consumption": 26.0,
+  "casting_animation": "darksouls:biped_cast_miracle_force",
+  "stat_requirements": {
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 12
+  }
+}

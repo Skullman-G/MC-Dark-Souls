@@ -217,6 +217,11 @@ public class Stats
 			STRENGTH, DEXTERITY, INTELLIGENCE, FAITH
 	};
 	
+	public static final Stat[] SPELL_REQUIREMENT_STATS = new Stat[]
+	{
+			INTELLIGENCE, FAITH	
+	};
+	
 	public static double getDamageMultiplier(PlayerCap<?> playerCap, Attribute attribute, Function<Stat, Integer> value)
 	{
 		double mul = 1D;

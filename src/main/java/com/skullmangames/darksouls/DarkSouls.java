@@ -66,6 +66,7 @@ import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.data.ArmorConfigs;
 import com.skullmangames.darksouls.core.init.data.MeleeWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.RangedWeaponConfigs;
+import com.skullmangames.darksouls.core.init.data.SpellConfigs;
 import com.skullmangames.darksouls.core.init.data.SpellcastingWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
@@ -99,6 +100,7 @@ public class DarkSouls
 	public final SpellcastingWeaponConfigs spellcastingWeaponConfigs;
 	public final RangedWeaponConfigs rangedWeaponConfigs;
 	public final ArmorConfigs armorConfigs;
+	public final SpellConfigs spellConfigs;
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
 	public static DarkSouls getInstance()
@@ -116,6 +118,7 @@ public class DarkSouls
 		this.spellcastingWeaponConfigs = new SpellcastingWeaponConfigs();
 		this.rangedWeaponConfigs = new RangedWeaponConfigs();
 		this.armorConfigs = new ArmorConfigs();
+		this.spellConfigs = new SpellConfigs();
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);
@@ -180,6 +183,7 @@ public class DarkSouls
 		event.addListener(this.spellcastingWeaponConfigs);
 		event.addListener(this.rangedWeaponConfigs);
 		event.addListener(this.armorConfigs);
+		event.addListener(this.spellConfigs);
 	}
 	
 	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)

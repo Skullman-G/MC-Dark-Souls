@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
-import com.skullmangames.darksouls.common.item.SpellItem;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
@@ -48,10 +48,10 @@ public class SpellcastingWeaponCap extends WeaponCap
 	@Override
 	public void performAttack(AttackType type, LocalPlayerCap playerCap)
 	{
-		Item item = playerCap.getAttunements().getSelected().getItem();
-		if (item instanceof SpellItem)
+		SpellCap spell = (SpellCap)playerCap.getAttunements().getSelected().getCapability(ModCapabilities.CAPABILITY_ITEM).orElse(null);
+		if (spell != null)
 		{
-			ModNetworkManager.sendToServer(new CTSCastSpell((SpellItem)item));
+			ModNetworkManager.sendToServer(new CTSCastSpell(spell));
 		}
 	}
 	

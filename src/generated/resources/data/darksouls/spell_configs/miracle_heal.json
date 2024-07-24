@@ -1,0 +1,10 @@
+{
+  "registry_name": "darksouls:miracle_heal",
+  "spell_type": "MIRACLE",
+  "fp_consumption": 45.0,
+  "casting_animation": "darksouls:biped_cast_miracle_heal",
+  "stat_requirements": {
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 12
+  }
+}

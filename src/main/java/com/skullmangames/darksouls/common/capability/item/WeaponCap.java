@@ -33,7 +33,6 @@ import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -197,8 +196,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			}
 			
 			itemTooltip.add(new TextComponent(""));
-			itemTooltip.add(new TranslatableComponent("attribute.darksouls.weight").withStyle(ChatFormatting.BLUE)
-					.append(new TextComponent(ChatFormatting.BLUE+": "+this.weight)));
+			itemTooltip.add(new TextComponent(new TranslatableComponent("attribute.darksouls.weight").getString() + ": "+this.weight));
 		}
 	}
 
