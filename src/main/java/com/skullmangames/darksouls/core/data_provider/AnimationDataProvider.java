@@ -157,7 +157,7 @@ public class AnimationDataProvider implements DataProvider
 				new DeathAnimation.Builder(Animations.BIPED_DEATH.getId(), 0.05F, DarkSouls.rl("biped/death/death"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(1.52F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-				.addProperty(DeathProperty.DISAPPEAR_AT, 1.52F),
+				.addProperty(DeathProperty.DISAPPEAR_AT, 3.6F),
 
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_SMASH.getId(), 0.05F, DarkSouls.rl("biped/death/smash"),
 						(models) -> models.ENTITY_BIPED).addProperty(DeathProperty.DISAPPEAR_AT, 1.52F),
@@ -166,31 +166,31 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new PlaySoundEvent(0.8F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-								.addProperty(DeathProperty.DISAPPEAR_AT, 2.2F),
+								.addProperty(DeathProperty.DISAPPEAR_AT, 4.4F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_FLY_BACK.getId(), 0.05F,
 						DarkSouls.rl("biped/death/fly_back"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.44F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new PlaySoundEvent(0.8F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-								.addProperty(DeathProperty.DISAPPEAR_AT, 2.2F),
+								.addProperty(DeathProperty.DISAPPEAR_AT, 4.4F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_FLY_LEFT.getId(), 0.05F,
 						DarkSouls.rl("biped/death/fly_left"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.48F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new PlaySoundEvent(0.92F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-								.addProperty(DeathProperty.DISAPPEAR_AT, 2.2F),
+								.addProperty(DeathProperty.DISAPPEAR_AT, 4.4F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_FLY_RIGHT.getId(), 0.05F,
 						DarkSouls.rl("biped/death/fly_right"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.48F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new PlaySoundEvent(0.92F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-								.addProperty(DeathProperty.DISAPPEAR_AT, 2.2F),
+								.addProperty(DeathProperty.DISAPPEAR_AT, 4.4F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_BACKSTAB.getId(), 0.05F,
 						DarkSouls.rl("biped/death/backstab"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new ImpactParticleEvent(0.44F, 0, 0, 0),
 										new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
-								.addProperty(DeathProperty.DISAPPEAR_AT, 3.76F),
+								.addProperty(DeathProperty.DISAPPEAR_AT, 6.0F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_PUNISH.getId(), 0.05F,
 						DarkSouls.rl("biped/death/punish"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]

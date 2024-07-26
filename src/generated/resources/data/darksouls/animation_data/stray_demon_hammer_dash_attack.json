@@ -84,10 +84,10 @@
       "end": 2.4,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stun_type": "SMASH",
-        "poise_damage": 28,
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 80
+        "poise_damage": 28,
+        "stamina_damage": 80,
+        "stun_type": "SMASH"
       }
     }
   ]

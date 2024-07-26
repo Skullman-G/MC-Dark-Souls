@@ -60,6 +60,14 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 			info.lastHealthPercentage = entity.getHealth() / entity.getMaxHealth();
 			return false;
 		}
+		
+		if (entity.getHealth() <= 0)
+		{
+			HealthInfo info = this.healthInfoMap.get(entity.getId());
+			if (info.lastHealth <= 0 && info.damageNumberTimer <= 0
+					&& !info.damageCooldown.isTicking() && !info.damageTimer.isTicking()) return false;
+		}
+		
 		return true;
 	}
 
