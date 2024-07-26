@@ -2575,8 +2575,14 @@ public class AnimationDataProvider implements DataProvider
 						DarkSouls.rl("anastacia_of_astora/idle"), (models) -> models.ENTITY_BIPED),
 
 				// Bell Gargoyle
-				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_IDLE.getId(), 0.2F, true,
-						DarkSouls.rl("bell_gargoyle/idle"), (models) -> models.ENTITY_BELL_GARGOYLE)
+				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_IDLE.getId(), 0.5F, true,
+						DarkSouls.rl("bell_gargoyle/idle"), (models) -> models.ENTITY_BELL_GARGOYLE),
+				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_WALK.getId(), 0.5F, true, DarkSouls.rl("bell_gargoyle/walk"), (models) -> models.ENTITY_BELL_GARGOYLE)
+					.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
+							{
+									new PlaySoundEvent(0.24F, Side.SERVER, ModSoundEvents.BERENIKE_KNIGHT_FOOT),
+									new PlaySoundEvent(0.84F, Side.SERVER, ModSoundEvents.BERENIKE_KNIGHT_FOOT)
+							})
 		);
 	}
 	

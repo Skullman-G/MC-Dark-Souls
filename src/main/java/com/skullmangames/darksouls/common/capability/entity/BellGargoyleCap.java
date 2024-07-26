@@ -22,6 +22,7 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	public void initAnimator(ClientAnimator animatorClient)
 	{
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BELL_GARGOYLE_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BELL_GARGOYLE_WALK.get());
 		animatorClient.setCurrentMotionsToDefault();
 	}
 	
@@ -40,7 +41,8 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	@Override
 	public void updateMotion()
 	{
-		this.baseMotion = LivingMotion.IDLE;
+		if (this.orgEntity.animationSpeed > 0.01F) this.baseMotion = LivingMotion.WALKING;
+		else this.baseMotion = LivingMotion.IDLE;
 	}
 	
 	@Override

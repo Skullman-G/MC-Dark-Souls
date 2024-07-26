@@ -7,15 +7,11 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -31,10 +27,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class StrayDemon extends PathfinderMob implements Demon
+public class StrayDemon extends AbstractBoss implements Demon
 {
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
-	
 	public StrayDemon(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
@@ -71,24 +65,11 @@ public class StrayDemon extends PathfinderMob implements Demon
 	}
 	
 	@Override
-	protected void customServerAiStep()
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData data, CompoundTag nbt)
 	{
-		super.customServerAiStep();
-		this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
-	}
-
-	@Override
-	public void stopSeenByPlayer(ServerPlayer player)
-	{
-	    super.stopSeenByPlayer(player);
-	    this.bossInfo.removePlayer(player);
-	}
-	
-	@Override
-	public void setTarget(LivingEntity target)
-	{
-		super.setTarget(target);
-		if (target instanceof ServerPlayer) this.bossInfo.addPlayer((ServerPlayer) target);
+		data = super.finalizeSpawn(level, difficulty, reason, data, nbt);
+		this.populateDefaultEquipmentSlots(difficulty);
+		return data;
 	}
 	
 	@Override
@@ -98,14 +79,6 @@ public class StrayDemon extends PathfinderMob implements Demon
 		
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.DEMON_GREAT_HAMMER.get()));
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.00F);
-	}
-	
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData data, CompoundTag nbt)
-	{
-		data = super.finalizeSpawn(level, difficulty, reason, data, nbt);
-		this.populateDefaultEquipmentSlots(difficulty);
-		return data;
 	}
 	
 	@Override

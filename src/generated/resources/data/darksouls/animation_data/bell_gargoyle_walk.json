@@ -1,0 +1,29 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:bell_gargoyle/walk",
+  "convert_time": 0.5,
+  "repeat": true,
+  "model": "darksouls:bell_gargoyle",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.24,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.berenike_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.84,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.berenike_knight.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  }
+}
