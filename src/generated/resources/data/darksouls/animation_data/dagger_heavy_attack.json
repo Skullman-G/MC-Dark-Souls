@@ -15,9 +15,9 @@
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "deflection": "LIGHT",
         "movement_damage_type": "THRUST",
-        "stun_type": "HEAVY"
+        "stun_type": "HEAVY",
+        "deflection": "LIGHT"
       }
     }
   ]

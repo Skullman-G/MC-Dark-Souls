@@ -32,6 +32,7 @@ import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
+import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
@@ -502,7 +503,9 @@ public class AttackAnimation extends ActionAnimation
 				float contact = jsonPhase.get("contact_end").getAsFloat();
 				float end = jsonPhase.get("end").getAsFloat();
 				String weaponBoneName = jsonPhase.get("weapon_bone_name").getAsString();
-				ps[i] = new AttackAnimation.Phase(start, preDelay, contact, end, weaponBoneName);
+				JsonElement jsonCollider = jsonPhase.get("collider");
+				Collider collider = jsonCollider != null ? Colliders.getCollider(new ResourceLocation(jsonCollider.getAsString())) : null;
+				ps[i] = new AttackAnimation.Phase(start, preDelay, contact, end, weaponBoneName, collider);
 				
 				JsonObject properties = jsonPhase.get("properties").getAsJsonObject();
 				for (Map.Entry<String, JsonElement> entry : properties.entrySet())
@@ -534,6 +537,7 @@ public class AttackAnimation extends ActionAnimation
 				jsonPhase.addProperty("contact_end", phase.contactEnd);
 				jsonPhase.addProperty("end", phase.end);
 				jsonPhase.addProperty("weapon_bone_name", phase.jointName);
+				if (phase.collider != null) jsonPhase.addProperty("collider", phase.collider.getId().toString());
 				
 				JsonObject properties = new JsonObject();
 				jsonPhase.add("properties", properties);

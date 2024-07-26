@@ -27,11 +27,11 @@
       "end": 1.25,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "deflection": "LIGHT",
+        "movement_damage_type": "THRUST",
         "blocking": true,
         "poise_damage": 20,
+        "deflection": "LIGHT",
         "stamina_usage": 15,
-        "movement_damage_type": "THRUST",
         "stamina_damage": 40
       }
     }

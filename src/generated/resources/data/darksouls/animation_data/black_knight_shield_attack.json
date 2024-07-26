@@ -44,12 +44,13 @@
       "contact_end": 0.8,
       "end": 1.6,
       "weapon_bone_name": "Tool_L",
+      "collider": "darksouls:shield",
       "properties": {
-        "deflection": "IMPOSSIBLE",
-        "poise_damage": 20,
         "movement_damage_type": "REGULAR",
-        "stamina_damage": 40,
-        "stun_type": "HEAVY"
+        "stun_type": "HEAVY",
+        "poise_damage": 20,
+        "deflection": "IMPOSSIBLE",
+        "stamina_damage": 40
       }
     }
   ]

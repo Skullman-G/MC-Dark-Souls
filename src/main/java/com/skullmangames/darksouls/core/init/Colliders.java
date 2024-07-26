@@ -52,27 +52,28 @@ public class Colliders
 	public static final Collider MACE = register("mace", new CapsuleCollider(0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0));
 	
 	//Stray Demon
-	public static final Collider STRAY_DEMON_GREAT_HAMMER = new MultiCapsuleCollider
+	public static final Collider STRAY_DEMON_GREAT_HAMMER = register("stray_demon_great_hammer", new MultiCapsuleCollider
 			(
 					new CapsuleCollider(2D, 4.5D, new Vec3(0, 0.05D, -2D), -4.5F, 0),
 					new CapsuleCollider(0.75D, 3.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
-			);
-	public static final Collider STRAY_DEMON_BODY = new CapsuleCollider(4D, 8D, new Vec3(0, 0, 0), -90F, 0);
+			));
+	public static final Collider STRAY_DEMON_BODY = register("stray_demon_body", new CapsuleCollider(4D, 8D, new Vec3(0, 0, 0), -90F, 0));
 	
 	//Taurus Demon
-	public static final Collider TAURUS_DEMON_GREATAXE = new MultiCapsuleCollider
+	public static final Collider TAURUS_DEMON_GREATAXE = register("taurus_demon_greataxe", new MultiCapsuleCollider
 			(
 					new CapsuleCollider(2D, 4.5D, new Vec3(0, 0.05D, -2D), -4.5F, 0),
 					new CapsuleCollider(0.75D, 3.5D, new Vec3(0, 0.05D, 0), -4.5F, 0)
-			);
+			));
 	
 	//Berenike Knight
-	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = new CapsuleCollider(0.5D, 3D, new Vec3(0, 0.125D, 0), -5.5F, 0);
-	public static final Collider BERENIKE_KNIGHT_MACE = new MultiCapsuleCollider
+	public static final Collider BERENIKE_KNIGHT_ULTRA_GREATSWORD = register("berenike_knight_ultra_greatsword",
+			new CapsuleCollider(0.5D, 3D, new Vec3(0, 0.125D, 0), -5.5F, 0));
+	public static final Collider BERENIKE_KNIGHT_MACE = register("berenike_knight_mace", new MultiCapsuleCollider
 			(
 					new CapsuleCollider(0.5D, 1.0D, new Vec3(0, 0.1D, -0.4D), -4.5F, 0),
 					new CapsuleCollider(0.1D, 1.0D, new Vec3(0, 0.1D, 0), -4.5F, 0)
-			);
+			));
 	
 	private static Collider register(String name, Collider collider)
 	{
