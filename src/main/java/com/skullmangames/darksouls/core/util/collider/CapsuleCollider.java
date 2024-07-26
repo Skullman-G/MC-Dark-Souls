@@ -143,7 +143,7 @@ public class CapsuleCollider extends Collider
 			Vec3 N = face.normal; // plane normal
 			
 			// Then for each triangle, ray-plane intersection:
-			//  N is the triangle plane normal (it was computed in sphere – triangle intersection case)
+			// N is the triangle plane normal (it was computed in sphere - triangle intersection case)
 			double t = N.dot(p0.subtract(a.min())) / Math.abs(N.dot(CapsuleNormal));
 			Vec3 line_plane_intersection = a.min().add(CapsuleNormal.scale(t));
 			

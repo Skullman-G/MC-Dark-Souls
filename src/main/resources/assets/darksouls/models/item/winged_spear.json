@@ -2,25 +2,12 @@
 	"loader": "forge:separate-perspective",
 	"base":
 	{
-		"loader": "forge:obj",
-  		"model": "darksouls:models/item/obj/winged_spear.obj",
-  		"flip-v": true,
-  		"materialLibraryOverride": "winged_spear.mtl",
-		"display":
-  		{
-    		"thirdperson_righthand":
-    		{
-      			"translation": [9, -5, -8],
-      			"rotation": [0, 90, 0],
-      			"scale": [1.2, 1.2, 1.2]
-    		},
-    		"firstperson_righthand":
-    		{
-      			"translation": [60, -20, 0],
-      			"rotation": [0, 0, 0],
-      			"scale": [5.0, 5.0, 5.0]
-    		}
-  		}
+		"parent": "darksouls:item/winged_spear_3d",
+		"textures":
+		{
+			"0": "darksouls:items/winged_spear_3d",
+			"particle": "darksouls:items/winged_spear_3d"
+		}
 	},
 	"gui_light": "front",
 	"perspectives":

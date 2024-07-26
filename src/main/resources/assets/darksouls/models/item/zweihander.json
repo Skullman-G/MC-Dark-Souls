@@ -3,7 +3,8 @@
 	"base":
 	{
 		"parent": "darksouls:item/zweihander_3d",
-		"textures": {
+		"textures":
+		{
 			"0": "darksouls:items/zweihander_3d",
 			"particle": "darksouls:items/zweihander_3d"
 		}
