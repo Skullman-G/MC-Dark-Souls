@@ -1,4 +1,13 @@
 {
+	"entity.generic.you_died":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/you_died"
+		]
+	},
+	
 	"entity.generic.blood":
 	{
 		"category": "entity",

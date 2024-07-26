@@ -104,7 +104,8 @@ public class ModLoadingScreen extends Overlay
 			int l = (int)Math.ceil((1.0F - ModMath.clamp(outf - 1.0F, 0.0F, 1.0F)) * 255.0F);
 			fill(poseStack, 0, 0, width, height, BACKGROUND_NO_ALPHA | l << 24);
 			alpha = 1.0F - ModMath.clamp(outf - 1.0F, 0.0F, 1.0F);
-		} else
+		}
+		else
 		{
 			if (this.minecraft.screen != null && inf < 1.0F)
 			{

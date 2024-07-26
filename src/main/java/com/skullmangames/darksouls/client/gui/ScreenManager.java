@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
+import com.skullmangames.darksouls.client.gui.screens.YouDiedScreen;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.client.gui.screens.DSSelectMenuScreen;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
@@ -14,6 +15,7 @@ import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.gui.screens.Screen;
@@ -95,6 +97,10 @@ public class ScreenManager
 				{
 					event.setCanceled(true);
 					minecraft.setOverlay(new ModLoadingScreen());
+				}
+				else if (gui instanceof DeathScreen)
+				{
+					event.setScreen(new YouDiedScreen());
 				}
 			}
 			else

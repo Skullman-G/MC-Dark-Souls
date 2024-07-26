@@ -7,7 +7,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class ModMath
 {
-	// Convert entity rotation into normal rotation
+	public static double saturate(double value)
+	{
+		return clamp(value, 0, 1);
+	}
+	
+	/**
+	 *  Convert entity rotation into normal rotation
+	 * @param rot (entity rotation)
+	 * @return rotation which can be used to calculate positions
+	 */
 	public static float toNormalRot(float rot)
 	{
 		float normalRot = -rot;
