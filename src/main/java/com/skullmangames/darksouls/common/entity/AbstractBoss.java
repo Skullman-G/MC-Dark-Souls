@@ -18,10 +18,10 @@ public abstract class AbstractBoss extends PathfinderMob implements Demon
 	}
 	
 	@Override
-	protected void customServerAiStep()
+	public void aiStep()
 	{
-		super.customServerAiStep();
-		this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
+		super.aiStep();
+		if (!this.level.isClientSide) this.bossInfo.setProgress((this.getHealth() / this.getMaxHealth()));
 	}
 
 	@Override

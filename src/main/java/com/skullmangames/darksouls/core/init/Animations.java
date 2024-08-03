@@ -556,6 +556,13 @@ public final class Animations
 	// Bell Gargoyle
 	public static final Getter BELL_GARGOYLE_IDLE = new Getter(DarkSouls.rl("bell_gargoyle_idle"));
 	public static final Getter BELL_GARGOYLE_WALK = new Getter(DarkSouls.rl("bell_gargoyle_walk"));
+	public static final Getter BELL_GARGOYLE_RUN = new Getter(DarkSouls.rl("bell_gargoyle_run"));
+	public static final DeathGetter BELL_GARGOYLE_DEATH = new DeathGetter(DarkSouls.rl("bell_gargoyle_death"));
+	public static final AttackArrayGetter BELL_GARGOYLE_HA = new AttackArrayGetter
+			(
+					DarkSouls.rl("bell_gargoyle_ha_1"),
+					DarkSouls.rl("bell_gargoyle_ha_2")
+			);
 	
 	public static StaticAnimation createSupplier(BiFunction<LivingCap<?>, LayerPart, StaticAnimation> biFunction)
 	{

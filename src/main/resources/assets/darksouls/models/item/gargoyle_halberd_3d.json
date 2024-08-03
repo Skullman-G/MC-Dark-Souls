@@ -1,0 +1,89 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "darksouls:items/gargoyle_halberd_3d",
+		"particle": "darksouls:items/gargoyle_halberd_3d"
+	},
+	"elements": [
+		{
+			"from": [7.5, 25, 7.5],
+			"to": [8.5, 30, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 20, 8]},
+			"faces": {
+				"north": {"uv": [2, 0.5, 2.25, 1.75], "texture": "#0"},
+				"east": {"uv": [2, 0.5, 2.25, 1.75], "texture": "#0"},
+				"south": {"uv": [2, 0.5, 2.25, 1.75], "texture": "#0"},
+				"west": {"uv": [2, 0.5, 2.25, 1.75], "texture": "#0"},
+				"up": {"uv": [2.25, 0.75, 2, 0.5], "texture": "#0"},
+				"down": {"uv": [2.25, 0.5, 2, 0.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.5, -9, 7.5],
+			"to": [8.5, 25, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 17, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.25, 8.5], "texture": "#0"},
+				"east": {"uv": [0.25, 0, 0.5, 8.5], "texture": "#0"},
+				"south": {"uv": [0.5, 0, 0.75, 8.5], "texture": "#0"},
+				"west": {"uv": [0.75, 0, 1, 8.5], "texture": "#0"},
+				"up": {"uv": [2.25, 1, 2, 0.75], "texture": "#0"},
+				"down": {"uv": [2.25, 1, 2, 1.25], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 22, 1.5],
+			"to": [8, 32, 12.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 2.5], "texture": "#0"},
+				"east": {"uv": [1, 0, 3.75, 2.5], "texture": "#0"},
+				"south": {"uv": [0, 0, 0, 2.5], "texture": "#0"},
+				"west": {"uv": [3.75, 0, 1, 2.5], "texture": "#0"},
+				"up": {"uv": [0, 2.75, 0, 0], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0, 0, 2.75], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 2, 1],
+			"scale": [1.4, 1.4, 1.4]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 2, 1],
+			"scale": [1.4, 1.4, 1.4]
+		},
+		"firstperson_righthand": {
+			"translation": [1.75, -1.75, 0]
+		},
+		"firstperson_lefthand": {
+			"translation": [1.75, -1.75, 0]
+		},
+		"ground": {
+			"rotation": [45, 0, 0],
+			"translation": [0, 1.75, 0],
+			"scale": [0.45, 0.45, 0.45]
+		},
+		"gui": {
+			"rotation": [90, 45, -90],
+			"translation": [-1, -1.5, 0],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"fixed": {
+			"rotation": [-90, 45, 90],
+			"translation": [1, -1, 0],
+			"scale": [0.6, 0.6, 0.6]
+		}
+	},
+	"groups": [
+		{
+			"name": "Gargoyle Halberd",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

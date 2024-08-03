@@ -1,0 +1,22 @@
+{
+  "animation_type": "death",
+  "location": "darksouls:bell_gargoyle/death",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:bell_gargoyle",
+  "properties": {
+    "disappear_at": 1.76,
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 2.08,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.bell_gargoyle.land",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38
+}

@@ -1,0 +1,41 @@
+{
+  "registry_name": "darksouls:gargoyle_halberd",
+  "category": "halberd",
+  "skill": "minecraft:empty",
+  "weight": 6.0,
+  "critical": 1.0,
+  "damage": {
+    "PHYSICAL": 115,
+    "MAGIC": 0,
+    "FIRE": 0,
+    "LIGHTNING": 0,
+    "DARK": 0,
+    "HOLY": 0
+  },
+  "aux_effects": [],
+  "stat_requirements": {
+    "stat.darksouls.strength": 16,
+    "stat.darksouls.dexterity": 12,
+    "stat.darksouls.intelligence": 0,
+    "stat.darksouls.faith": 0
+  },
+  "stat_scaling": {
+    "stat.darksouls.strength": "D",
+    "stat.darksouls.dexterity": "D",
+    "stat.darksouls.intelligence": "-",
+    "stat.darksouls.faith": "-"
+  },
+  "moveset": "darksouls:spear",
+  "collider": "darksouls:halberd",
+  "stability": 0.26,
+  "deflection": "NONE",
+  "weapon_material": "metal_weapon",
+  "defense": {
+    "PHYSICAL": 0.4,
+    "MAGIC": 0.1,
+    "FIRE": 0.3,
+    "LIGHTNING": 0.3,
+    "DARK": 0.1,
+    "HOLY": 0.1
+  }
+}

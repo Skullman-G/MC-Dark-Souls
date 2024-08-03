@@ -73,9 +73,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     },
     {
@@ -86,9 +86,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     },
     {
@@ -99,9 +99,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     },
     {
@@ -112,9 +112,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     },
     {
@@ -125,9 +125,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     },
     {
@@ -138,9 +138,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:broken_sword",
       "properties": {
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "LIGHT",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     }
   ]

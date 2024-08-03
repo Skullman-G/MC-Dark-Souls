@@ -10,7 +10,7 @@
         "event_type": "play_sound",
         "time": 0.24,
         "execution_side": "SERVER",
-        "sound": "darksouls:entity.berenike_knight.foot",
+        "sound": "darksouls:entity.bell_gargoyle.foot",
         "anchor": "ENTITY",
         "volume": 1.0,
         "moves": false
@@ -19,7 +19,7 @@
         "event_type": "play_sound",
         "time": 0.84,
         "execution_side": "SERVER",
-        "sound": "darksouls:entity.berenike_knight.foot",
+        "sound": "darksouls:entity.bell_gargoyle.foot",
         "anchor": "ENTITY",
         "volume": 1.0,
         "moves": false

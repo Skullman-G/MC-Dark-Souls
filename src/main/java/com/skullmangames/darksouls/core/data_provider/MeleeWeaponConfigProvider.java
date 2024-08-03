@@ -520,6 +520,22 @@ public class MeleeWeaponConfigProvider implements DataProvider
 			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
 			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
 			
+			// Halberds
+			MeleeWeaponCap.builder(ModItems.GARGOYLE_HALBERD.get(), WeaponCategory.HALBERD, WeaponMovesets.SPEAR, Colliders.HALBERD.getId(), 6.0F)
+			.putDamageInfo(CoreDamageType.PHYSICAL, 115, 0.40F)
+			.putDamageInfo(CoreDamageType.MAGIC, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.FIRE, 0, 0.30F)
+			.putDamageInfo(CoreDamageType.LIGHTNING, 0, 0.30F)
+			.putDamageInfo(CoreDamageType.DARK, 0, 0.10F)
+			.putDamageInfo(CoreDamageType.HOLY, 0, 0.10F)
+			.setCritical(1.00F)
+			.setStability(0.26F)
+			.putStatInfo(Stats.STRENGTH, 16, Scaling.D)
+			.putStatInfo(Stats.DEXTERITY, 12, Scaling.D)
+			.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
+			.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
+			.setWeaponMaterial(WeaponMaterial.METAL_WEAPON),
+			
 			// Ultra Greatswords
 			MeleeWeaponCap.builder(ModItems.ZWEIHANDER.get(), WeaponCategory.ULTRA_GREATSWORD, WeaponMovesets.ULTRA_GREATSWORD, Colliders.ULTRA_GREATSWORD.getId(), 10.0F)
 			.putDamageInfo(CoreDamageType.PHYSICAL, 145, 0.50F)

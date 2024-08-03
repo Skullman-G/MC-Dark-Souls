@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.93.3 commit date:2021-08-17, commit time:18:30, hash:8b80d19f3641</authoring_tool>
     </contributor>
-    <created>2024-07-26T19:03:30</created>
-    <modified>2024-07-26T19:03:30</modified>
+    <created>2024-07-27T16:58:34</created>
+    <modified>2024-07-27T16:58:34</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -98,17 +98,17 @@
       <skin source="#cube-mesh">
         <bind_shape_matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</bind_shape_matrix>
         <source id="Armature_Cube-skin-joints">
-          <Name_array id="Armature_Cube-skin-joints-array" count="28">Root Torso Chest Head UpperArm_L LowerArm_L Wing1_L Wing2_L Wing3_L Wing4_L UpperArm_R LowerArm_R Wing1_R Wing2_R Wing3_R Wing4_R UpperLeg_L LowerLeg_L UpperLeg_R LowerLeg_R Jaw Tail1 Tail2 Tail3 Tail4 Tail5 Tail6 TailEnd</Name_array>
+          <Name_array id="Armature_Cube-skin-joints-array" count="30">Root Torso Chest Head UpperArm_L LowerArm_L Wing1_L Wing2_L Wing3_L Wing4_L UpperArm_R LowerArm_R Wing1_R Wing2_R Wing3_R Wing4_R UpperLeg_L LowerLeg_L UpperLeg_R LowerLeg_R Jaw Tail1 Tail2 Tail3 Tail4 Tail5 Tail6 TailEnd Tool_L Tool_R</Name_array>
           <technique_common>
-            <accessor source="#Armature_Cube-skin-joints-array" count="28" stride="1">
+            <accessor source="#Armature_Cube-skin-joints-array" count="30" stride="1">
               <param name="JOINT" type="name"/>
             </accessor>
           </technique_common>
         </source>
         <source id="Armature_Cube-skin-bind_poses">
-          <float_array id="Armature_Cube-skin-bind_poses-array" count="448">1 2.38419e-7 0 0 0 0 1 -0.7810506 2.38419e-7 -1 0 0 0 0 0 1 1 0 0 0 0 0 1 -1.043319 0 -1 0 0 0 0 0 1 1 0 0 0 0 0.1118308 0.9937273 -1.415001 0 -0.9937273 0.1118308 -0.1592396 0 0 0 1 1 0 0 0 0 0 1 -1.920973 0 -1 0 0.05593532 0 0 0 1 0 1 0 -0.03560733 -1 0 0 -0.5551752 0 0 1 -1.735429 0 0 0 1 0 1 0 -0.03560739 -1 0 0 -0.9861273 0 0 1 -1.735429 0 0 0 1 -1 0 0 -0.2138881 0 -1 0 -0.2486099 0 0 1 -1.853806 0 0 0 1 0 1 0 0.9652751 0 0 1 -1.853806 1 0 0 0.2138879 0 0 0 1 0 1 0 0.9652751 -1 0 -1.19209e-7 -0.2138877 0 0 1 -2.342099 0 0 0 1 0 1 0 0.9652751 -1 0 -1.19209e-7 -1.83412 0 0 1 -2.342099 0 0 0 1 0 -1 0 0.03560733 1 0 0 -0.5551752 0 0 1 -1.735429 0 0 0 1 0 -1 0 0.03560739 1 0 0 -0.9861273 0 0 1 -1.735429 0 0 0 1 -1 0 0 0.2138878 0 -1 0 -0.2486099 0 0 1 -1.853806 0 0 0 1 0 1 0 0.9652751 0 0 1 -1.853806 1 0 0 -0.213888 0 0 0 1 0 -1 0 -0.9652753 1 0 0 -0.2138881 0 0 1 -2.342099 0 0 0 1 0 -1 0 -0.9652751 1 0 0 -1.834121 0 0 1 -2.342099 0 0 0 1 1 0 0 0.2868247 0 0 -1 0.9605743 0 1 0 -0.02190047 0 0 0 1 1 0 0 0.2868246 0 0 -1 0.5070009 0 1 0 -0.02190041 0 0 0 1 1 0 0 -0.2868247 0 0 -1 0.9605743 0 1 0 -0.02190041 0 0 0 1 1 0 0 -0.2868246 0 0 -1 0.5070009 0 1 0 -0.02190041 0 0 0 1 1 0 0 0 0 1 0 0.00411868 0 0 1 -1.996851 0 0 0 1 1 0 0 0 0 -1 -2.38419e-7 -0.2135418 0 1.99184e-7 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -0.5127863 0 0 -1 0.8676235 0 0 0 1 1 0 0 0 0 -1 0 -0.8660397 0 0 -1 0.8676235 0 0 0 1 1 0 0 0 0 -1 0 -1.26045 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -1.634549 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -2.001633 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -2.372816 0 0 -1 0.8676235 0 0 0 1</float_array>
+          <float_array id="Armature_Cube-skin-bind_poses-array" count="480">1 2.38419e-7 0 0 0 0 1 -0.7810506 2.38419e-7 -1 0 0 0 0 0 1 1 0 0 0 0 0 1 -1.043319 0 -1 0 0 0 0 0 1 1 0 0 0 0 0.1118308 0.9937273 -1.415001 0 -0.9937273 0.1118308 -0.1592396 0 0 0 1 1 0 0 0 0 0 1 -1.920973 0 -1 0 0.05593532 0 0 0 1 0 1 0 -0.03560733 -1 0 0 -0.5551752 0 0 1 -1.735429 0 0 0 1 0 1 0 -0.03560739 -1 0 0 -0.9861273 0 0 1 -1.735429 0 0 0 1 -1 0 0 -0.2138881 0 -1 0 -0.2486099 0 0 1 -1.853806 0 0 0 1 0 1 0 0.9652751 0 0 1 -1.853806 1 0 0 0.2138879 0 0 0 1 0 1 0 0.9652751 -1 0 -1.19209e-7 -0.2138877 0 0 1 -2.342099 0 0 0 1 0 1 0 0.9652751 -1 0 -1.19209e-7 -1.83412 0 0 1 -2.342099 0 0 0 1 0 -1 0 0.03560733 1 0 0 -0.5551752 0 0 1 -1.735429 0 0 0 1 0 -1 0 0.03560739 1 0 0 -0.9861273 0 0 1 -1.735429 0 0 0 1 -1 0 0 0.2138878 0 -1 0 -0.2486099 0 0 1 -1.853806 0 0 0 1 0 1 0 0.9652751 0 0 1 -1.853806 1 0 0 -0.213888 0 0 0 1 0 -1 0 -0.9652753 1 0 0 -0.2138881 0 0 1 -2.342099 0 0 0 1 0 -1 0 -0.9652751 1 0 0 -1.834121 0 0 1 -2.342099 0 0 0 1 1 0 0 0.2868247 0 0 -1 0.9605743 0 1 0 -0.02190047 0 0 0 1 1 0 0 0.2868246 0 0 -1 0.5070009 0 1 0 -0.02190041 0 0 0 1 1 0 0 -0.2868247 0 0 -1 0.9605743 0 1 0 -0.02190041 0 0 0 1 1 0 0 -0.2868246 0 0 -1 0.5070009 0 1 0 -0.02190041 0 0 0 1 1 0 0 0 0 1 0 0.00411868 0 0 1 -1.996851 0 0 0 1 1 0 0 0 0 -1 -2.38419e-7 -0.2135418 0 1.99184e-7 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -0.5127863 0 0 -1 0.8676235 0 0 0 1 1 0 0 0 0 -1 0 -0.8660397 0 0 -1 0.8676235 0 0 0 1 1 0 0 0 0 -1 0 -1.26045 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -1.634549 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -2.001633 0 0 -1 0.8676236 0 0 0 1 1 0 0 0 0 -1 0 -2.372816 0 0 -1 0.8676235 0 0 0 1 0 1 1.50996e-7 -0.03560763 1 0 0 1.434423 0 1.50996e-7 -1 1.735429 0 0 0 1 0 -1 1.50996e-7 0.03560715 -1 0 0 1.434422 0 -1.50996e-7 -1 1.735429 0 0 0 1</float_array>
           <technique_common>
-            <accessor source="#Armature_Cube-skin-bind_poses-array" count="28" stride="16">
+            <accessor source="#Armature_Cube-skin-bind_poses-array" count="30" stride="16">
               <param name="TRANSFORM" type="float4x4"/>
             </accessor>
           </technique_common>
@@ -171,13 +171,23 @@
                 <matrix sid="transform">0 -1 0 -0.5551752 0.1118309 0 0.9937273 0.3135248 -0.9937273 0 0.1118309 -5.49134e-4 0 0 0 1</matrix>
                 <node id="Armature_LowerArm_L" name="LowerArm.L" sid="LowerArm_L" type="JOINT">
                   <matrix sid="transform">1 0 -2.23517e-8 0 0 1 0 0.4309521 2.23517e-8 0 1 7.95888e-10 0 0 0 1</matrix>
+                  <node id="Armature_Tool_L" name="Tool_L" sid="Tool_L" type="JOINT">
+                    <matrix sid="transform">1 0 1.50996e-7 0 0 -0.9999998 0 0.4482952 1.50996e-7 0 -1 0 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <connect sid="connect" type="bool">1</connect>
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">3.141593</roll>
+                        <tip_x sid="tip_x" type="float">0.4980868</tip_x>
+                        <tip_y sid="tip_y" type="float">0</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>
                       <layer sid="layer" type="string">0</layer>
-                      <tip_x sid="tip_x" type="float">-0.4482952</tip_x>
-                      <tip_y sid="tip_y" type="float">0</tip_y>
-                      <tip_z sid="tip_z" type="float">0</tip_z>
                     </technique>
                   </extra>
                 </node>
@@ -269,13 +279,23 @@
                 <matrix sid="transform">0 1 0 0.5551752 -0.1118309 0 0.9937273 0.3135248 0.9937273 0 0.1118309 -5.49134e-4 0 0 0 1</matrix>
                 <node id="Armature_LowerArm_R" name="LowerArm.R" sid="LowerArm_R" type="JOINT">
                   <matrix sid="transform">1 0 2.23517e-8 0 0 1 0 0.4309521 -2.23517e-8 0 1 7.95888e-10 0 0 0 1</matrix>
+                  <node id="Armature_Tool_R" name="Tool_R" sid="Tool_R" type="JOINT">
+                    <matrix sid="transform">1 0 1.50996e-7 0 0 -1 0 0.4482952 1.50996e-7 0 -1 0 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <connect sid="connect" type="bool">1</connect>
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">3.141593</roll>
+                        <tip_x sid="tip_x" type="float">-0.497547</tip_x>
+                        <tip_y sid="tip_y" type="float">0</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>
                       <layer sid="layer" type="string">0</layer>
-                      <tip_x sid="tip_x" type="float">0.4482952</tip_x>
-                      <tip_y sid="tip_y" type="float">0</tip_y>
-                      <tip_z sid="tip_z" type="float">0</tip_z>
                     </technique>
                   </extra>
                 </node>

@@ -46,11 +46,11 @@
       "weapon_bone_name": "Tool_L",
       "collider": "darksouls:shield",
       "properties": {
-        "movement_damage_type": "REGULAR",
         "stun_type": "HEAVY",
-        "poise_damage": 20,
+        "movement_damage_type": "REGULAR",
+        "stamina_damage": 40,
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 40
+        "poise_damage": 20
       }
     }
   ]

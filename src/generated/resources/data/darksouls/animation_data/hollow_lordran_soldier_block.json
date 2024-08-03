@@ -5,11 +5,11 @@
   "model": "darksouls:biped",
   "animations": [
     {
-      "motion": "RUNNING",
-      "apply_layer_parts": true,
+      "motion": "BLOCKING",
+      "apply_layer_parts": false,
       "mirrored": true,
-      "location_1": "darksouls:hollow_lordran_soldier/block_run",
-      "location_2": "darksouls:hollow_lordran_soldier/block_run"
+      "location_1": "darksouls:hollow_lordran_soldier/block",
+      "location_2": "darksouls:hollow_lordran_soldier/block"
     },
     {
       "motion": "WALKING",
@@ -19,11 +19,11 @@
       "location_2": "darksouls:hollow_lordran_soldier/block_walking"
     },
     {
-      "motion": "BLOCKING",
-      "apply_layer_parts": false,
+      "motion": "RUNNING",
+      "apply_layer_parts": true,
       "mirrored": true,
-      "location_1": "darksouls:hollow_lordran_soldier/block",
-      "location_2": "darksouls:hollow_lordran_soldier/block"
+      "location_1": "darksouls:hollow_lordran_soldier/block_run",
+      "location_2": "darksouls:hollow_lordran_soldier/block_run"
     }
   ]
 }

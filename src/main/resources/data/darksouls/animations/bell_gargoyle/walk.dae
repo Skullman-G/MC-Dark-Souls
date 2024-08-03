@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0 commit date:2017-09-11, commit time:10:43, hash:5bd8ac9</authoring_tool>
     </contributor>
-    <created>2024-07-26T19:23:42</created>
-    <modified>2024-07-26T19:23:42</modified>
+    <created>2024-07-27T16:57:34</created>
+    <modified>2024-07-27T16:57:34</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -235,6 +235,38 @@
         <input semantic="INTERPOLATION" source="#Armature_LowerArm_L_pose_matrix-interpolation"/>
       </sampler>
       <channel source="#Armature_LowerArm_L_pose_matrix-sampler" target="Armature_LowerArm_L/transform"/>
+    </animation>
+    <animation id="Armature_Tool_L_pose_matrix">
+      <source id="Armature_Tool_L_pose_matrix-input">
+        <float_array id="Armature_Tool_L_pose_matrix-input-array" count="30">0.04166656 0.08333331 0.125 0.1666666 0.2083333 0.25 0.2916666 0.3333333 0.375 0.4166666 0.4583333 0.5 0.5416667 0.5833333 0.625 0.6666667 0.7083333 0.75 0.7916667 0.8333333 0.8750001 0.9166667 0.9583333 1 1.041667 1.083333 1.125 1.166667 1.208333 1.25</float_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_L_pose_matrix-input-array" count="30" stride="1">
+            <param name="TIME" type="float"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <source id="Armature_Tool_L_pose_matrix-output">
+        <float_array id="Armature_Tool_L_pose_matrix-output-array" count="480">0.9999999 -5.96046e-8 3.72529e-7 1.19209e-7 0 -0.9999998 -2.98023e-8 0.4482952 3.72529e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.72529e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.8743e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 0 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999999 0 0.4482952 3.8743e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999999 -5.96046e-8 3.8743e-7 1.19209e-7 0 -0.9999999 0 0.4482952 3.8743e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999999 -5.96046e-8 3.8743e-7 1.19209e-7 0 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 -5.96046e-8 3.8743e-7 1.19209e-7 2.98023e-8 -0.9999999 0 0.4482952 3.8743e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999999 0 3.8743e-7 1.19209e-7 8.9407e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 0 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.72529e-7 1.19209e-7 5.96046e-8 -0.9999998 0 0.4482952 3.72529e-7 0 -1 5.96046e-8 0 0 0 1 1 -5.96046e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999999 5.96046e-8 0.4482952 3.8743e-7 -2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999998 -2.98023e-8 0.4482952 3.8743e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 -2.98023e-8 0.4482952 3.72529e-7 0 -1 5.96046e-8 0 0 0 1 1 -5.96046e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999999 -2.98023e-8 0.4482952 3.72529e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.72529e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 4.02331e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 4.02331e-7 0 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999996 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.8743e-7 -2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999998 -2.98023e-8 0.4482952 3.8743e-7 2.98023e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.8743e-7 -2.98023e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.72529e-7 -2.98023e-8 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.57628e-7 1.19209e-7 5.96046e-8 -0.9999996 2.98023e-8 0.4482952 3.72529e-7 -2.98023e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.8743e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 -5.96046e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999998 5.96046e-8 0.4482952 3.8743e-7 -5.96046e-8 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 4.02331e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 4.02331e-7 0 -1 5.96046e-8 0 0 0 1 0.9999999 -5.96046e-8 4.02331e-7 1.19209e-7 0 -0.9999998 0 0.4482952 4.02331e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.8743e-7 1.19209e-7 2.98023e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.8743e-7 1.19209e-7 5.96046e-8 -0.9999998 0 0.4482952 3.8743e-7 0 -1 5.96046e-8 0 0 0 1 1 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999999 -2.98023e-8 0.4482952 3.8743e-7 5.96046e-8 -1 5.96046e-8 0 0 0 1 0.9999998 -2.98023e-8 3.72529e-7 1.19209e-7 2.98023e-8 -0.9999996 -2.98023e-8 0.4482952 3.57628e-7 0 -1 5.96046e-8 0 0 0 1</float_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_L_pose_matrix-output-array" count="30" stride="16">
+            <param name="TRANSFORM" type="float4x4"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <source id="Armature_Tool_L_pose_matrix-interpolation">
+        <Name_array id="Armature_Tool_L_pose_matrix-interpolation-array" count="30">LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR</Name_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_L_pose_matrix-interpolation-array" count="30" stride="1">
+            <param name="INTERPOLATION" type="name"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <sampler id="Armature_Tool_L_pose_matrix-sampler">
+        <input semantic="INPUT" source="#Armature_Tool_L_pose_matrix-input"/>
+        <input semantic="OUTPUT" source="#Armature_Tool_L_pose_matrix-output"/>
+        <input semantic="INTERPOLATION" source="#Armature_Tool_L_pose_matrix-interpolation"/>
+      </sampler>
+      <channel source="#Armature_Tool_L_pose_matrix-sampler" target="Armature_Tool_L/transform"/>
     </animation>
     <animation id="Armature_Wing1_L_pose_matrix">
       <source id="Armature_Wing1_L_pose_matrix-input">
@@ -555,6 +587,38 @@
         <input semantic="INTERPOLATION" source="#Armature_LowerArm_R_pose_matrix-interpolation"/>
       </sampler>
       <channel source="#Armature_LowerArm_R_pose_matrix-sampler" target="Armature_LowerArm_R/transform"/>
+    </animation>
+    <animation id="Armature_Tool_R_pose_matrix">
+      <source id="Armature_Tool_R_pose_matrix-input">
+        <float_array id="Armature_Tool_R_pose_matrix-input-array" count="30">0.04166656 0.08333331 0.125 0.1666666 0.2083333 0.25 0.2916666 0.3333333 0.375 0.4166666 0.4583333 0.5 0.5416667 0.5833333 0.625 0.6666667 0.7083333 0.75 0.7916667 0.8333333 0.8750001 0.9166667 0.9583333 1 1.041667 1.083333 1.125 1.166667 1.208333 1.25</float_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_R_pose_matrix-input-array" count="30" stride="1">
+            <param name="TIME" type="float"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <source id="Armature_Tool_R_pose_matrix-output">
+        <float_array id="Armature_Tool_R_pose_matrix-output-array" count="480">0.9999999 -2.98023e-8 3.27826e-7 5.96046e-8 -1.49012e-8 -0.9999999 5.96046e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 1 -2.98023e-8 2.98023e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 0.9999999 -2.98023e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -0.9999999 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -0.9999999 0 0 0 0 1 1 -2.98023e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -1 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -0.9999999 0 0 0 0 1 1 -2.98023e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -0.9999999 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -0.9999999 0 0 0 0 1 1 -1.49012e-8 3.27826e-7 5.96046e-8 1.49012e-8 -0.9999999 -5.96046e-8 0.4482951 3.8743e-7 1.78814e-7 -1 0 0 0 0 1 1 -4.47035e-8 3.27826e-7 5.96046e-8 -1.49012e-8 -1 -5.96046e-8 0.4482951 4.02331e-7 1.19209e-7 -1 0 0 0 0 1 1 -2.98023e-8 2.98023e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 0.9999999 -1.49012e-8 3.12924e-7 5.96046e-8 1.49012e-8 -1 -5.96046e-8 0.4482951 3.8743e-7 1.78814e-7 -0.9999999 0 0 0 0 1 1 -1.49012e-8 3.12924e-7 5.96046e-8 0 -1 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -0.9999999 0 0 0 0 1 1 -1.49012e-8 2.83122e-7 5.96046e-8 2.98023e-8 -0.9999999 2.98023e-8 0.4482951 3.57628e-7 8.9407e-8 -0.9999999 0 0 0 0 1 1 -1.49012e-8 3.12924e-7 5.96046e-8 0 -1 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -1 0 0 0 0 1 0.9999999 -5.96046e-8 3.27826e-7 5.96046e-8 -2.98023e-8 -1 -5.96046e-8 0.4482951 4.02331e-7 1.19209e-7 -0.9999999 0 0 0 0 1 1 -1.49012e-8 3.27826e-7 5.96046e-8 1.49012e-8 -1 -5.96046e-8 0.4482951 3.8743e-7 1.19209e-7 -1 0 0 0 0 1 1 0 3.12924e-7 5.96046e-8 1.49012e-8 -1 -5.96046e-8 0.4482951 3.8743e-7 1.78814e-7 -1 0 0 0 0 1 1 -2.98023e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 1 -4.47035e-8 2.98023e-7 5.96046e-8 -1.49012e-8 -1 -2.98023e-8 0.4482951 4.02331e-7 1.19209e-7 -1 0 0 0 0 1 1 0 3.12924e-7 5.96046e-8 1.49012e-8 -1 2.98023e-8 0.4482951 3.8743e-7 8.9407e-8 -1 0 0 0 0 1 1 -2.98023e-8 3.12924e-7 5.96046e-8 0 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 1 -2.98023e-8 2.98023e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 0.9999999 0 3.12924e-7 5.96046e-8 1.49012e-8 -0.9999999 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -0.9999999 0 0 0 0 1 1 -4.47035e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 3.8743e-7 8.9407e-8 -1 0 0 0 0 1 1 0 3.12924e-7 5.96046e-8 1.49012e-8 -1 2.98023e-8 0.4482951 3.8743e-7 8.9407e-8 -1 0 0 0 0 1 1 -5.96046e-8 3.12924e-7 5.96046e-8 -4.47035e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 1 -4.47035e-8 3.27826e-7 5.96046e-8 -1.49012e-8 -1 -5.96046e-8 0.4482951 4.02331e-7 1.19209e-7 -1 0 0 0 0 1 1 -4.47035e-8 3.12924e-7 5.96046e-8 -1.49012e-8 -1 -5.96046e-8 0.4482951 4.02331e-7 1.19209e-7 -1 0 0 0 0 1 1 -2.98023e-8 3.27826e-7 5.96046e-8 0 -1 -5.96046e-8 0.4482951 4.02331e-7 1.78814e-7 -1 0 0 0 0 1 1 -2.98023e-8 2.98023e-7 5.96046e-8 -1.49012e-8 -1 2.98023e-8 0.4482951 4.02331e-7 8.9407e-8 -1 0 0 0 0 1 1 -1.49012e-8 2.98023e-7 5.96046e-8 1.49012e-8 -1 2.98023e-8 0.4482951 3.8743e-7 8.9407e-8 -1 0 0 0 0 1 1 -2.98023e-8 3.12924e-7 5.96046e-8 0 -1 -5.96046e-8 0.4482951 4.02331e-7 1.19209e-7 -1 0 0 0 0 1</float_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_R_pose_matrix-output-array" count="30" stride="16">
+            <param name="TRANSFORM" type="float4x4"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <source id="Armature_Tool_R_pose_matrix-interpolation">
+        <Name_array id="Armature_Tool_R_pose_matrix-interpolation-array" count="30">LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR</Name_array>
+        <technique_common>
+          <accessor source="#Armature_Tool_R_pose_matrix-interpolation-array" count="30" stride="1">
+            <param name="INTERPOLATION" type="name"/>
+          </accessor>
+        </technique_common>
+      </source>
+      <sampler id="Armature_Tool_R_pose_matrix-sampler">
+        <input semantic="INPUT" source="#Armature_Tool_R_pose_matrix-input"/>
+        <input semantic="OUTPUT" source="#Armature_Tool_R_pose_matrix-output"/>
+        <input semantic="INTERPOLATION" source="#Armature_Tool_R_pose_matrix-interpolation"/>
+      </sampler>
+      <channel source="#Armature_Tool_R_pose_matrix-sampler" target="Armature_Tool_R/transform"/>
     </animation>
     <animation id="Armature_UpperLeg_L_pose_matrix">
       <source id="Armature_UpperLeg_L_pose_matrix-input">
@@ -1143,14 +1207,24 @@
                 <matrix sid="transform">0 -1 0 -0.5551752 0.1118308 0 0.9937273 0.313525 -0.9937273 0 0.1118309 -5.49123e-4 0 0 0 1</matrix>
                 <node id="Armature_LowerArm_L" name="LowerArm.L" sid="LowerArm_L" type="JOINT">
                   <matrix sid="transform">1 0 -5.96046e-8 0 0 1 0 0.4309521 5.96046e-8 0 1 0 0 0 0 1</matrix>
+                  <node id="Armature_Tool_L" name="Tool_L" sid="Tool_L" type="JOINT">
+                    <matrix sid="transform">1 0 3.89414e-7 -3.72529e-9 -8.88178e-16 -0.9999998 0 0.4482952 3.89414e-7 0 -1 0 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <connect sid="connect" type="bool">1</connect>
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">3.141593</roll>
+                        <tip_x sid="tip_x" type="float">0.4980868</tip_x>
+                        <tip_y sid="tip_y" type="float">0</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>
                       <layer sid="layer" type="string">0</layer>
                       <roll sid="roll" type="float">0</roll>
-                      <tip_x sid="tip_x" type="float">-0.4482952</tip_x>
-                      <tip_y sid="tip_y" type="float">0</tip_y>
-                      <tip_z sid="tip_z" type="float">0</tip_z>
                     </technique>
                   </extra>
                 </node>
@@ -1248,14 +1322,24 @@
                 <matrix sid="transform">0 1 0 0.5551752 -0.1118308 0 0.9937273 0.313525 0.9937273 0 0.1118309 -5.49123e-4 0 0 0 1</matrix>
                 <node id="Armature_LowerArm_R" name="LowerArm.R" sid="LowerArm_R" type="JOINT">
                   <matrix sid="transform">1 0 5.96046e-8 0 0 1 0 0.4309521 -5.96046e-8 0 1 0 0 0 0 1</matrix>
+                  <node id="Armature_Tool_R" name="Tool_R" sid="Tool_R" type="JOINT">
+                    <matrix sid="transform">1 0 3.89414e-7 3.72529e-9 8.88178e-16 -1 0 0.4482952 3.89414e-7 0 -1 0 0 0 0 1</matrix>
+                    <extra>
+                      <technique profile="blender">
+                        <connect sid="connect" type="bool">1</connect>
+                        <layer sid="layer" type="string">0</layer>
+                        <roll sid="roll" type="float">3.141593</roll>
+                        <tip_x sid="tip_x" type="float">-0.497547</tip_x>
+                        <tip_y sid="tip_y" type="float">0</tip_y>
+                        <tip_z sid="tip_z" type="float">0</tip_z>
+                      </technique>
+                    </extra>
+                  </node>
                   <extra>
                     <technique profile="blender">
                       <connect sid="connect" type="bool">1</connect>
                       <layer sid="layer" type="string">0</layer>
                       <roll sid="roll" type="float">0</roll>
-                      <tip_x sid="tip_x" type="float">0.4482952</tip_x>
-                      <tip_y sid="tip_y" type="float">0</tip_y>
-                      <tip_z sid="tip_z" type="float">0</tip_z>
                     </technique>
                   </extra>
                 </node>

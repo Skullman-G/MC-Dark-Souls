@@ -28,9 +28,9 @@
       "weapon_bone_name": "Tool_R",
       "properties": {
         "stun_type": "HEAVY",
-        "poise_damage": 20,
+        "stamina_damage": 44,
         "deflection": "MEDIUM",
-        "stamina_damage": 44
+        "poise_damage": 20
       }
     }
   ]

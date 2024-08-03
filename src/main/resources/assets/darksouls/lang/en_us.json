@@ -105,6 +105,7 @@
 	"item.darksouls.greatsword": "Greatsword",
 	"item.darksouls.greataxe": "Greataxe",
 	"item.darksouls.great_club": "Great Club",
+	"item.darksouls.gargoyle_halberd": "Gargoyle's Halberd",
 	
 	"block.darksouls.bonfire": "Bonfire",
 	"block.darksouls.big_birch_door": "Big Birch Door",
@@ -145,6 +146,7 @@
 	"entity.darksouls.balder_knight": "Balder Knight",
 	"entity.darksouls.berenike_knight": "Berenike Knight",
 	"entity.darksouls.firebomb": "Firebomb",
+	"entity.darksouls.bell_gargoyle": "Bell Gargoyle",
 	
 	"advancements.darksouls.root.title": "Dark Souls",
 	"advancements.darksouls.root.description": "A Journey of heat and cold, light and dark and, of course, life and death",
@@ -275,6 +277,7 @@
 	"tooltip.darksouls.greatsword.extended": "One of the gigantic straight greatswords. Very few have what it takes to wield this incredibly heavy, damage-dealing monster. A favorite of the Knights Berenike, known for their heavy armor, and Black iron Tarkus.",
 	"tooltip.darksouls.greataxe.extended": "This greataxe is a veritable mass of iron. Its weight sends foes flying, but makes it difficult to handle without inhuman strength. Any miss makes one very vulnerable, as each swing requires the full force of the body.",
 	"tooltip.darksouls.great_club.extended": "A giant club made out of a tree stump.",
+	"tooltip.darksouls.gargoyle_halberd.extended": "Halberd of the gargoyle guardians. Perfectly standard bronze halberd without any special power.",
 	
 	"tooltip.darksouls.long_press_counter": "Defines how long a key has to be pressed to be recognized as holding the key.",
 	

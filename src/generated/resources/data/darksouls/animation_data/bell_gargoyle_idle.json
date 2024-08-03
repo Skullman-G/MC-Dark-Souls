@@ -1,7 +1,7 @@
 {
   "animation_type": "static",
   "location": "darksouls:bell_gargoyle/idle",
-  "convert_time": 0.5,
+  "convert_time": 0.75,
   "repeat": true,
   "model": "darksouls:bell_gargoyle",
   "properties": {}

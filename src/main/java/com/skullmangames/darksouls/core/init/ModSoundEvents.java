@@ -88,6 +88,11 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> BERENIKE_KNIGHT_AMBIENT = register("entity.berenike_knight.ambient");
 	
 	public static final RegistryObject<SoundEvent> BOMB_EXPLOSION = register("entity.generic.bomb");
+	
+	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_DEATH = register("entity.bell_gargoyle.death");
+	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_FOOT = register("entity.bell_gargoyle.foot");
+	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_LAND = register("entity.bell_gargoyle.land");
+	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_DAMAGE = register("entity.bell_gargoyle.damage");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

@@ -3,14 +3,18 @@ package com.skullmangames.darksouls.common.capability.entity;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
+import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.entity.BellGargoyle;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 public class BellGargoyleCap extends MobCap<BellGargoyle>
 {
-	public static final float WEAPON_SCALE = 2.5F;
+	public static final float WEAPON_SCALE = 1.5F;
 	
 	@Override
 	public <M extends Model> M getEntityModel(Models<M> modelDB)
@@ -23,7 +27,16 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	{
 		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BELL_GARGOYLE_IDLE.get());
 		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BELL_GARGOYLE_WALK.get());
+		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BELL_GARGOYLE_RUN.get());
 		animatorClient.setCurrentMotionsToDefault();
+	}
+	
+	@Override
+	protected void initAI()
+	{
+		super.initAI();
+		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.5F, 1, true, false, false)
+				.addAttack(new AttackInstance(1, 0.5F, 4F, Animations.BELL_GARGOYLE_HA.get())));
 	}
 	
 	@Override
@@ -41,7 +54,11 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	@Override
 	public void updateMotion()
 	{
-		if (this.orgEntity.animationSpeed > 0.01F) this.baseMotion = LivingMotion.WALKING;
+		if (this.orgEntity.animationSpeed > 0.01F)
+		{
+			if (this.orgEntity.isSprinting()) this.baseMotion = LivingMotion.RUNNING;
+			else this.baseMotion = LivingMotion.WALKING;
+		}
 		else this.baseMotion = LivingMotion.IDLE;
 	}
 	
@@ -67,5 +84,11 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	public boolean canBeBackstabbed()
 	{
 		return false;
+	}
+	
+	@Override
+	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
+	{
+		return Animations.BELL_GARGOYLE_DEATH.get();
 	}
 }

@@ -1,0 +1,29 @@
+{
+  "animation_type": "static",
+  "location": "darksouls:bell_gargoyle/run",
+  "convert_time": 0.5,
+  "repeat": true,
+  "model": "darksouls:bell_gargoyle",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.36,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.bell_gargoyle.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
+        "time": 0.52,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.bell_gargoyle.foot",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  }
+}

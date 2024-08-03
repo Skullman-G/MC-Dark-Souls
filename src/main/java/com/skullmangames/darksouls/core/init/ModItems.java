@@ -84,6 +84,11 @@ public class ModItems
 			.tab(DarkSouls.TAB)));
 	
 	
+	//Halberds
+	public static final RegistryObject<Item> GARGOYLE_HALBERD = ITEMS.register("gargoyle_halberd", () -> new SwordItem(Tiers.IRON, 115, -2.4F, new Item.Properties()
+			.tab(DarkSouls.TAB)));
+	
+	
 	//Ultra Greatswords
 	public static final RegistryObject<Item> ZWEIHANDER = ITEMS.register("zweihander", () -> new SwordItem(Tiers.IRON, 130, -2.4F, new Item.Properties()
 			.tab(DarkSouls.TAB)));

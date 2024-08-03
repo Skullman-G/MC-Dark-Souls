@@ -2463,7 +2463,7 @@ public class AnimationDataProvider implements DataProvider
 						(models) -> models.ENTITY_STRAY_DEMON).addProperty(DeathProperty.DISAPPEAR_AT, 1.5F),
 
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK.getIds()[0], AttackType.LIGHT, 1.0F, 0.0F,
-						0.12F, 0.44F, 1.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_1"),
+						0.12F, 0.54F, 1.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_1"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER_SWING.appendTo(0.12F, new AnimEvent[]
@@ -2476,7 +2476,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK.getIds()[1], AttackType.LIGHT, 1.0F, 0.0F,
-						0.44F, 0.64F, 2.0F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_2"),
+						0.44F, 0.74F, 2.0F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_2"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER_SWING.appendTo(0.44F, new AnimEvent[]
@@ -2490,7 +2490,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK.getIds()[0], AttackType.LIGHT, 1.0F, 0.0F,
-						0.16F, 0.3F, 1.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_alt_1"),
+						0.16F, 0.4F, 1.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_alt_1"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER_SWING.appendTo(0.16F, new AnimEvent[]
@@ -2499,7 +2499,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK.getIds()[1], AttackType.LIGHT, 1.0F, 0.0F,
-						0.48F, 0.8F, 2.0F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_alt_2"),
+						0.48F, 0.9F, 2.0F, "Tool_R", DarkSouls.rl("stray_demon/hammer_la_alt_2"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER_SWING.appendTo(0.44F, new AnimEvent[]
@@ -2509,7 +2509,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK.getIds()[0], AttackType.HEAVY, 0.2F, 0.0F,
-						1.08F, 1.24F, 2.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_ha_1"),
+						1.08F, 1.34F, 2.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_ha_1"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER.appendTo(1.12F, new AnimEvent[]
@@ -2520,7 +2520,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK.getIds()[1], AttackType.HEAVY, 0.2F, 0.0F,
-						1.76F, 1.92F, 3.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_ha_2"),
+						1.76F, 2.02F, 3.6F, "Tool_R", DarkSouls.rl("stray_demon/hammer_ha_2"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER.appendTo(1.8F, new AnimEvent[]
@@ -2532,7 +2532,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_DRIVE.getId(), AttackType.HEAVY, 0.1F, 0.0F,
-						0.72F, 0.96F, 2.8F, "Tool_R", DarkSouls.rl("stray_demon/hammer_drive"),
+						0.72F, 1.06F, 2.8F, "Tool_R", DarkSouls.rl("stray_demon/hammer_drive"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER.appendTo(0.88F, new AnimEvent[]
@@ -2541,7 +2541,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_HAMMER_DASH_ATTACK.getId(), AttackType.DASH, 0.5F, 0.0F, 1.0F,
-						1.2F, 2.4F, "Tool_R", DarkSouls.rl("stray_demon/hammer_da"),
+						1.3F, 2.4F, "Tool_R", DarkSouls.rl("stray_demon/hammer_da"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_HAMMER.appendTo(1.06F, new AnimEvent[]
@@ -2575,14 +2575,46 @@ public class AnimationDataProvider implements DataProvider
 						DarkSouls.rl("anastacia_of_astora/idle"), (models) -> models.ENTITY_BIPED),
 
 				// Bell Gargoyle
-				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_IDLE.getId(), 0.5F, true,
+				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_IDLE.getId(), 0.75F, true,
 						DarkSouls.rl("bell_gargoyle/idle"), (models) -> models.ENTITY_BELL_GARGOYLE),
 				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_WALK.getId(), 0.5F, true, DarkSouls.rl("bell_gargoyle/walk"), (models) -> models.ENTITY_BELL_GARGOYLE)
 					.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 							{
-									new PlaySoundEvent(0.24F, Side.SERVER, ModSoundEvents.BERENIKE_KNIGHT_FOOT),
-									new PlaySoundEvent(0.84F, Side.SERVER, ModSoundEvents.BERENIKE_KNIGHT_FOOT)
-							})
+									new PlaySoundEvent(0.24F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_FOOT),
+									new PlaySoundEvent(0.84F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_FOOT)
+							}),
+				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_RUN.getId(), 0.5F, true,
+						DarkSouls.rl("bell_gargoyle/run"), (models) -> models.ENTITY_BELL_GARGOYLE)
+								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
+								{
+										new PlaySoundEvent(0.36F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_FOOT),
+										new PlaySoundEvent(0.52F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_FOOT)
+								}),
+				new DeathAnimation.Builder(Animations.BELL_GARGOYLE_DEATH.getId(), 0.2F, DarkSouls.rl("bell_gargoyle/death"), (models) -> models.ENTITY_BELL_GARGOYLE)
+					.addProperty(DeathProperty.DISAPPEAR_AT, 1.76F)
+					.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
+							{
+									new PlaySoundEvent(2.08F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_LAND)
+							}),
+					
+				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_HA.getIds()[0], AttackType.HEAVY, 0.2F, 0.0F,
+						0.64F, 0.88F, 1.6F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						DarkSouls.rl("bell_gargoyle/ha_1"), (models) -> models.ENTITY_BELL_GARGOYLE)
+								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
+								{ new PlaySoundEvent(0.68F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
+								.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
+								.addProperty(AttackProperty.POISE_DAMAGE, 15),
+				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_HA.getIds()[1], AttackType.HEAVY, 0.2F, 0.0F,
+						0.52F, 0.68F, 2.2F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						DarkSouls.rl("bell_gargoyle/ha_2"), (models) -> models.ENTITY_BELL_GARGOYLE)
+								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
+								{ new PlaySoundEvent(0.52F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
+								.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
+								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
+								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
+								.addProperty(AttackProperty.POISE_DAMAGE, 15)
 		);
 	}
 	

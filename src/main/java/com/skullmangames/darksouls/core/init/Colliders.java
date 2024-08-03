@@ -37,6 +37,11 @@ public class Colliders
 					new CapsuleCollider(0.35D, 1D, new Vec3(0, 0.05D, -1.5D), -4.5F, 0),
 					new CapsuleCollider(0.2D, 1.7D, new Vec3(0, 0.05D, 0), -4.5F, 0)
 				));
+	public static final Collider HALBERD = register("halberd", new MultiCapsuleCollider
+			(
+				new CapsuleCollider(0.35D, 1D, new Vec3(0, 0.05D, -1.5D), -4.5F, 0),
+				new CapsuleCollider(0.2D, 1.7D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+			));
 	public static final Collider ULTRA_GREATSWORD = register("ultra_greatsword", new CapsuleCollider(0.5D, 2.7D, new Vec3(0, 0.125D, 0), -5.5F, 0));
 	public static final Collider GREATSWORD = register("greatsword", new CapsuleCollider(0.5D, 2.1D, new Vec3(0, 0.1D, 0), -5.5F, 0));
 	public static final Collider DEMONS_GREATAXE = register("greataxe", new MultiCapsuleCollider
@@ -73,6 +78,13 @@ public class Colliders
 			(
 					new CapsuleCollider(0.5D, 1.0D, new Vec3(0, 0.1D, -0.4D), -4.5F, 0),
 					new CapsuleCollider(0.1D, 1.0D, new Vec3(0, 0.1D, 0), -4.5F, 0)
+			));
+	
+	//Bell Gargoyle
+	public static final Collider BELL_GARGOYLE_HALBERD = register("bell_gargoyle_halberd", new MultiCapsuleCollider
+			(
+				new CapsuleCollider(0.35D, 1D, new Vec3(0, 0.05D, -1.5D), -4.5F, 0),
+				new CapsuleCollider(0.2D, 1.7D, new Vec3(0, 0.05D, 0), -4.5F, 0)
 			));
 	
 	private static Collider register(String name, Collider collider)

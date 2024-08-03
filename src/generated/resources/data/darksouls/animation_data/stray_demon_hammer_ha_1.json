@@ -62,14 +62,14 @@
     {
       "begin": 0.0,
       "contact_start": 1.08,
-      "contact_end": 1.24,
+      "contact_end": 1.34,
       "end": 2.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
         "stun_type": "SMASH",
-        "poise_damage": 28,
+        "stamina_damage": 80,
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 80
+        "poise_damage": 28
       }
     }
   ]

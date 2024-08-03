@@ -1,0 +1,38 @@
+{
+  "animation_type": "attack",
+  "location": "darksouls:bell_gargoyle/ha_2",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:bell_gargoyle",
+  "properties": {
+    "events": [
+      {
+        "event_type": "play_sound",
+        "time": 0.52,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.stray_demon.swing",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      }
+    ]
+  },
+  "delay_time": 3.4028235E38,
+  "attack_type": "heavy",
+  "phases": [
+    {
+      "begin": 0.0,
+      "contact_start": 0.52,
+      "contact_end": 0.68,
+      "end": 2.2,
+      "weapon_bone_name": "Tool_R",
+      "collider": "darksouls:bell_gargoyle_halberd",
+      "properties": {
+        "stun_type": "HEAVY",
+        "stamina_damage": 20,
+        "deflection": "IMPOSSIBLE",
+        "poise_damage": 15
+      }
+    }
+  ]
+}

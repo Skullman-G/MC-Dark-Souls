@@ -45,14 +45,14 @@
     {
       "begin": 0.0,
       "contact_start": 0.48,
-      "contact_end": 0.8,
+      "contact_end": 0.9,
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
         "stun_type": "FLY",
-        "poise_damage": 28,
+        "stamina_damage": 80,
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 80
+        "poise_damage": 28
       }
     }
   ]

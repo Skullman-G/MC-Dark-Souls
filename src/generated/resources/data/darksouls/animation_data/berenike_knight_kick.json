@@ -37,12 +37,12 @@
       "weapon_bone_name": "Leg_L",
       "collider": "darksouls:fist",
       "properties": {
-        "movement_damage_type": "REGULAR",
-        "depends_on_weapon": false,
         "stun_type": "LIGHT",
-        "poise_damage": 38,
+        "depends_on_weapon": false,
+        "movement_damage_type": "REGULAR",
+        "stamina_damage": 2147483647,
         "deflection": "IMPOSSIBLE",
-        "stamina_damage": 2147483647
+        "poise_damage": 38
       }
     }
   ]

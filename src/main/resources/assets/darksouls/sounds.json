@@ -1,4 +1,43 @@
 {
+	"entity.bell_gargoyle.damage":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/bell_gargoyle/damage_1",
+			"darksouls:entities/bell_gargoyle/damage_2",
+			"darksouls:entities/bell_gargoyle/damage_3"
+		]
+	},
+	
+	"entity.bell_gargoyle.land":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/bell_gargoyle/land"
+		]
+	},
+	
+	"entity.bell_gargoyle.foot":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/bell_gargoyle/foot_1",
+			"darksouls:entities/bell_gargoyle/foot_2"
+		]
+	},
+	
+	"entity.bell_gargoyle.death":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/bell_gargoyle/death"
+		]
+	},
+	
 	"entity.generic.you_died":
 	{
 		"category": "entity",
