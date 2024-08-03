@@ -127,81 +127,82 @@ public class CapsuleCollider extends Collider
 	
 	protected static boolean capsuleCubeDetection(CapsuleCollider a, CubeCollider b)
 	{
-		// Compute capsule line endpoints A, B like before in capsule-capsule case:
+		// Compute capsule line endpoints A, B:
 		Vec3 CapsuleNormal = a.max().subtract(a.min()).normalize();
 		Vec3 LineEndOffset = CapsuleNormal.scale(a.radius);
 		Vec3 A = a.min().add(LineEndOffset);
 		Vec3 B = a.max().subtract(LineEndOffset);
-
+		boolean insideCube = true;
 		
-		for (Face face : b.faces)
+		
+		for (int i = 0; i < b.faces.length; i++)
 		{
+			Face face = b.faces[i];
 			Vec3 p0 = face.vertex(0);
 			Vec3 p1 = face.vertex(1);
 			Vec3 p2 = face.vertex(2);
 			Vec3 p3 = face.vertex(3);
 			Vec3 N = face.normal; // plane normal
 			
-			// Then for each triangle, ray-plane intersection:
-			// N is the triangle plane normal (it was computed in sphere - triangle intersection case)
+			// Then for each face, ray-plane intersection:
 			double t = N.dot(p0.subtract(a.min())) / Math.abs(N.dot(CapsuleNormal));
-			Vec3 line_plane_intersection = a.min().add(CapsuleNormal.scale(t));
+			Vec3 linePlaneIntersection = a.min().add(CapsuleNormal.scale(t));
 			
-			Vec3 reference_point = null;
-			// Determine whether line_plane_intersection is inside all triangle edges:
-			Vec3 c0 = line_plane_intersection.subtract(p0).cross(p1.subtract(p0));
-			Vec3 c1 = line_plane_intersection.subtract(p1).cross(p2.subtract(p1));
-			Vec3 c2 = line_plane_intersection.subtract(p2).cross(p3.subtract(p2));
-			Vec3 c3 = line_plane_intersection.subtract(p3).cross(p0.subtract(p3));
+			Vec3 referencePoint = null;
+			// Determine whether linePlaneIntersection is inside all face edges:
+			Vec3 c0 = linePlaneIntersection.subtract(p0).cross(p1.subtract(p0));
+			Vec3 c1 = linePlaneIntersection.subtract(p1).cross(p2.subtract(p1));
+			Vec3 c2 = linePlaneIntersection.subtract(p2).cross(p3.subtract(p2));
+			Vec3 c3 = linePlaneIntersection.subtract(p3).cross(p0.subtract(p3));
 			boolean inside = c0.dot(N) <= 0 && c1.dot(N) <= 0 && c2.dot(N) <= 0 && c3.dot(N) <= 0;
 
 			if (inside)
 			{
-				reference_point = line_plane_intersection;
+				referencePoint = linePlaneIntersection;
 			}
 			else
 			{
 				// Edge 1:
-				Vec3 point1 = ClosestPointOnLineSegment(p0, p1, line_plane_intersection);
-				double distsq = line_plane_intersection.subtract(point1).lengthSqr();
+				Vec3 point1 = ClosestPointOnLineSegment(p0, p1, linePlaneIntersection);
+				double distsq = linePlaneIntersection.subtract(point1).lengthSqr();
 				double best_dist = distsq;
-				reference_point = point1;
+				referencePoint = point1;
 
 				// Edge 2:
-				Vec3 point2 = ClosestPointOnLineSegment(p1, p2, line_plane_intersection);
-				distsq = line_plane_intersection.subtract(point2).lengthSqr();
+				Vec3 point2 = ClosestPointOnLineSegment(p1, p2, linePlaneIntersection);
+				distsq = linePlaneIntersection.subtract(point2).lengthSqr();
 				if (distsq < best_dist)
 				{
-					reference_point = point2;
+					referencePoint = point2;
 					best_dist = distsq;
 				}
 
 				// Edge 3:
-				Vec3 point3 = ClosestPointOnLineSegment(p2, p3, line_plane_intersection);
-				distsq = line_plane_intersection.subtract(point3).lengthSqr();
+				Vec3 point3 = ClosestPointOnLineSegment(p2, p3, linePlaneIntersection);
+				distsq = linePlaneIntersection.subtract(point3).lengthSqr();
 				if (distsq < best_dist)
 				{
-					reference_point = point3;
+					referencePoint = point3;
 					best_dist = distsq;
 				}
 				
 				// Edge 4:
-				Vec3 point4 = ClosestPointOnLineSegment(p3, p0, line_plane_intersection);
-				distsq = line_plane_intersection.subtract(point4).lengthSqr();
+				Vec3 point4 = ClosestPointOnLineSegment(p3, p0, linePlaneIntersection);
+				distsq = linePlaneIntersection.subtract(point4).lengthSqr();
 				if (distsq < best_dist)
 				{
-					reference_point = point4;
+					referencePoint = point4;
 					best_dist = distsq;
 				}
 			}
 
 			// The center of the best sphere candidate:
-			Vec3 center = ClosestPointOnLineSegment(A, B, reference_point);
+			Vec3 center = ClosestPointOnLineSegment(A, B, referencePoint);
 			
 			if (sphereFaceDetection(a.radius, center, face)) return true;
+			insideCube |= center.subtract(face.center()).dot(N) < 0;
 		}
-		
-		return false;
+		return insideCube;
 	}
 	
 	protected static boolean sphereFaceDetection(double radius, Vec3 center, Face face)
@@ -214,7 +215,7 @@ public class CapsuleCollider extends Collider
 		double dist = center.subtract(p0).dot(N); // signed distance between sphere and plane
 		if (dist < -radius || dist > radius) return false;
 
-		Vec3 point0 = center.subtract(N.scale(dist)); // projected sphere center on triangle plane
+		Vec3 point0 = center.subtract(N.scale(dist)); // projected sphere center on face plane
 
 		// Now determine whether point0 is inside all face edges:
 		Vec3 c0 = point0.subtract(p0).cross(p1.subtract(p0));

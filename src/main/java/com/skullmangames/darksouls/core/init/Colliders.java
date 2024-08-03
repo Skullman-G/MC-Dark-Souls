@@ -83,8 +83,8 @@ public class Colliders
 	//Bell Gargoyle
 	public static final Collider BELL_GARGOYLE_HALBERD = register("bell_gargoyle_halberd", new MultiCapsuleCollider
 			(
-				new CapsuleCollider(0.35D, 1D, new Vec3(0, 0.05D, -1.5D), -4.5F, 0),
-				new CapsuleCollider(0.2D, 1.7D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+				new CapsuleCollider(0.35D, 1.5D, new Vec3(0, 0.05D, -2.0D), -4.5F, 0),
+				new CapsuleCollider(0.2D, 2.2D, new Vec3(0, 0.05D, 0), -4.5F, 0)
 			));
 	
 	private static Collider register(String name, Collider collider)
