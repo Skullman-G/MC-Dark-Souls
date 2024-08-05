@@ -4,8 +4,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
@@ -15,18 +13,15 @@ import com.skullmangames.darksouls.core.util.WeaponMoveset;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 
-public class WeaponMovesets extends SimpleJsonResourceReloadListener
+public class WeaponMovesets extends AbstractDSDataConfig
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private Map<ResourceLocation, WeaponMoveset> movesets = ImmutableMap.of();
 	
 	public WeaponMovesets()
 	{
-		super(GSON, "weapon_movesets");
+		super("weapon_movesets");
 	}
 	
 	public static final Getter FIST = new Getter(DarkSouls.rl("fist"));
@@ -58,7 +53,7 @@ public class WeaponMovesets extends SimpleJsonResourceReloadListener
 	public static final Getter GREATAXE = new Getter(DarkSouls.rl("greataxe"));
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
+	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
 	{
 		ImmutableMap.Builder<ResourceLocation, WeaponMoveset> builder = ImmutableMap.builder();
 		objects.forEach((location, json) ->

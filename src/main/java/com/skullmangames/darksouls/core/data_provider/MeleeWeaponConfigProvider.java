@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 
 import net.minecraft.data.DataGenerator;
@@ -795,7 +796,7 @@ public class MeleeWeaponConfigProvider implements DataProvider
 
 	private static Path createPath(Path path, ResourceLocation location)
 	{
-		return path.resolve("data/" + location.getNamespace() + "/weapon_configs/melee/" + location.getPath() + ".json");
+		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/weapon_configs/melee/" + location.getPath() + ".json");
 	}
 
 	@Override

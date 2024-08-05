@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
@@ -16,21 +14,18 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 
-public class SpellcastingWeaponConfigs extends SimpleJsonResourceReloadListener
+public class SpellcastingWeaponConfigs extends AbstractDSDataConfig
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	
 	public SpellcastingWeaponConfigs()
 	{
-		super(GSON, "weapon_configs/spellcasting");
+		super("weapon_configs/spellcasting");
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
+	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
 	{
 		Collection<SpellcastingWeaponCap.Builder> configs = new HashSet<>();
 		objects.forEach((location, json) ->

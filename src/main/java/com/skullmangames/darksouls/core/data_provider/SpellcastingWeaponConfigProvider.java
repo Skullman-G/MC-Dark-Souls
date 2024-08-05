@@ -16,6 +16,7 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
+import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -74,7 +75,7 @@ public class SpellcastingWeaponConfigProvider implements DataProvider
 
 	private static Path createPath(Path path, ResourceLocation location)
 	{
-		return path.resolve("data/" + location.getNamespace() + "/weapon_configs/spellcasting/" + location.getPath() + ".json");
+		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/weapon_configs/spellcasting/" + location.getPath() + ".json");
 	}
 
 	@Override

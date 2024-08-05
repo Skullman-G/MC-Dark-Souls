@@ -13,6 +13,7 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
+import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -61,7 +62,7 @@ public class WeaponSkillProvider implements DataProvider
 	
 	private static Path createPath(Path path, ResourceLocation location)
 	{
-		return path.resolve("data/" + location.getNamespace() + "/weapon_skills/" + location.getPath() + ".json");
+		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/weapon_skills/" + location.getPath() + ".json");
 	}
 
 	@Override

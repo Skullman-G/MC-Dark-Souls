@@ -28,11 +28,13 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 	protected float prevYaw;
 	protected float bodyYaw;
 	protected float prevBodyYaw;
+	protected Vec3 lastPos = Vec3.ZERO;
 	
 	@Override
 	public void onEntityJoinWorld(T entityIn)
 	{
 		super.onEntityJoinWorld(entityIn);
+		this.lastPos = this.orgEntity.position();
 	}
 	
 	@Override
@@ -53,7 +55,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		else
 		{
 			ClientAnimator animator = this.getClientAnimator();
-			Vec3 mov = this.orgEntity.getDeltaMovement();
+			Vec3 mov = this.orgEntity.position().subtract(this.lastPos);
 
 			if (this.orgEntity.isSwimming() && mov.y < -0.005)
 			{
@@ -187,6 +189,7 @@ public class AbstractClientPlayerCap<T extends AbstractClientPlayer> extends Pla
 		this.prevBodyYaw = this.bodyYaw;
 		this.bodyYaw = this.isInaction() ? this.orgEntity.yRot : this.orgEntity.yBodyRotO;
 		super.updateOnClient();
+		this.lastPos = this.orgEntity.position();
 	}
 
 	protected void playReboundAnimation()

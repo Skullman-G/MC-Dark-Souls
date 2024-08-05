@@ -15,6 +15,7 @@ import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.util.SpellType;
+import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -86,7 +87,7 @@ public class SpellConfigProvider implements DataProvider
 
 	private static Path createPath(Path path, ResourceLocation location)
 	{
-		return path.resolve("data/" + location.getNamespace() + "/spell_configs/" + location.getPath() + ".json");
+		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/spell_configs/" + location.getPath() + ".json");
 	}
 
 	@Override

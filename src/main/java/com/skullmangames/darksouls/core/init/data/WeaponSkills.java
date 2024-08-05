@@ -4,8 +4,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
@@ -13,18 +11,15 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 
-public class WeaponSkills extends SimpleJsonResourceReloadListener
+public class WeaponSkills extends AbstractDSDataConfig
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private Map<ResourceLocation, WeaponSkill> skills = ImmutableMap.of();
 	
 	public WeaponSkills()
 	{
-		super(GSON, "weapon_skills");
+		super("weapon_skills");
 	}
 	
 	
@@ -34,7 +29,7 @@ public class WeaponSkills extends SimpleJsonResourceReloadListener
 	
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
+	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
 	{
 		ImmutableMap.Builder<ResourceLocation, WeaponSkill> builder = ImmutableMap.builder();
 		objects.forEach((location, json) ->

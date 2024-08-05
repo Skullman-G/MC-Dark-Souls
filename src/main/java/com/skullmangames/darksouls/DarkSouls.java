@@ -8,7 +8,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -64,6 +63,7 @@ import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.data.ArmorConfigs;
+import com.skullmangames.darksouls.core.init.data.DSDataManager;
 import com.skullmangames.darksouls.core.init.data.MeleeWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.RangedWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.SpellConfigs;
@@ -93,6 +93,8 @@ public class DarkSouls
 	};
 
 	private static DarkSouls instance;
+	
+	private final DSDataManager dataManager;
 	public final AnimationManager animationManager;
 	public final WeaponMovesets weaponMovesets;
 	public final WeaponSkills weaponSkills;
@@ -101,6 +103,7 @@ public class DarkSouls
 	public final RangedWeaponConfigs rangedWeaponConfigs;
 	public final ArmorConfigs armorConfigs;
 	public final SpellConfigs spellConfigs;
+	
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
 	public static DarkSouls getInstance()
@@ -111,14 +114,16 @@ public class DarkSouls
 	public DarkSouls()
 	{
 		instance = this;
-		this.animationManager = new AnimationManager();
-		this.weaponMovesets = new WeaponMovesets();
-		this.weaponSkills = new WeaponSkills();
-		this.meleeWeaponConfigs = new MeleeWeaponConfigs();
-		this.spellcastingWeaponConfigs = new SpellcastingWeaponConfigs();
-		this.rangedWeaponConfigs = new RangedWeaponConfigs();
-		this.armorConfigs = new ArmorConfigs();
-		this.spellConfigs = new SpellConfigs();
+		
+		this.dataManager = new DSDataManager();
+		this.animationManager = this.dataManager.register(new AnimationManager());
+		this.weaponMovesets = this.dataManager.register(new WeaponMovesets());
+		this.weaponSkills = this.dataManager.register(new WeaponSkills());
+		this.meleeWeaponConfigs = this.dataManager.register(new MeleeWeaponConfigs());
+		this.spellcastingWeaponConfigs = this.dataManager.register(new SpellcastingWeaponConfigs());
+		this.rangedWeaponConfigs = this.dataManager.register(new RangedWeaponConfigs());
+		this.armorConfigs = this.dataManager.register(new ArmorConfigs());
+		this.spellConfigs = this.dataManager.register(new SpellConfigs());
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);
@@ -160,7 +165,6 @@ public class DarkSouls
 		forgeBus.register(CapabilityEvents.class);
 		forgeBus.register(PlayerEvents.class);
 		forgeBus.addListener(ModEntities::addEntitySpawns);
-		forgeBus.addListener(this::registerDataReloadListeners);
 
 		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG_BUILDER,
 				FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml").toString());
@@ -172,18 +176,6 @@ public class DarkSouls
 	public static ResourceLocation rl(String path)
 	{
 		return new ResourceLocation(DarkSouls.MOD_ID, path);
-	}
-	
-	private void registerDataReloadListeners(AddReloadListenerEvent event)
-	{
-		event.addListener(this.animationManager);
-		event.addListener(this.weaponMovesets);
-		event.addListener(this.weaponSkills);
-		event.addListener(this.meleeWeaponConfigs);
-		event.addListener(this.spellcastingWeaponConfigs);
-		event.addListener(this.rangedWeaponConfigs);
-		event.addListener(this.armorConfigs);
-		event.addListener(this.spellConfigs);
 	}
 	
 	private void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event)
@@ -198,6 +190,8 @@ public class DarkSouls
 
 	private void doCommonStuff(final FMLCommonSetupEvent event)
 	{
+		this.dataManager.loadDSData();
+		
 		ModArgumentTypes.bootstrap();
 		
 		ModRecipeTypes.call();

@@ -5,8 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
@@ -18,24 +16,22 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.AbstractDSDataConfig;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public class AnimationManager extends SimpleJsonResourceReloadListener
+public class AnimationManager extends AbstractDSDataConfig
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	
 	private Map<ResourceLocation, StaticAnimation> animations = ImmutableMap.of();
 	
 	public AnimationManager()
 	{
-		super(GSON, "animation_data");
+		super("animation_data");
 	}
 
 	public static StaticAnimation getAnimation(ResourceLocation id)
@@ -52,39 +48,39 @@ public class AnimationManager extends SimpleJsonResourceReloadListener
 	{
 		StaticAnimation animation = getAnimation(id);
 		if (animation instanceof AttackAnimation a) return a;
-		throw new IllegalArgumentException("Unable to final attack animation with path: " + id);
+		throw new IllegalArgumentException("Unable to find attack animation with path: " + id);
 	}
 	
 	public static DeathAnimation getDeathAnimation(ResourceLocation id)
 	{
 		StaticAnimation animation = getAnimation(id);
 		if (animation instanceof DeathAnimation a) return a;
-		throw new IllegalArgumentException("Unable to final death animation with path: " + id);
+		throw new IllegalArgumentException("Unable to find death animation with path: " + id);
 	}
 	
 	public static MirrorAnimation getMirrorAnimation(ResourceLocation id)
 	{
 		StaticAnimation animation = getAnimation(id);
 		if (animation instanceof MirrorAnimation a) return a;
-		throw new IllegalArgumentException("Unable to final mirror animation with path: " + id);
+		throw new IllegalArgumentException("Unable to find mirror animation with path: " + id);
 	}
 	
 	public static ParryAnimation getParryAnimation(ResourceLocation id)
 	{
 		StaticAnimation animation = getAnimation(id);
 		if (animation instanceof ParryAnimation a) return a;
-		throw new IllegalArgumentException("Unable to final parry animation with path: " + id);
+		throw new IllegalArgumentException("Unable to find parry animation with path: " + id);
 	}
 	
 	public static AdaptableAnimation getAdaptableAnimation(ResourceLocation id)
 	{
 		StaticAnimation animation = getAnimation(id);
 		if (animation instanceof AdaptableAnimation a) return a;
-		throw new IllegalArgumentException("Unable to final adaptable animation with path: " + id);
+		throw new IllegalArgumentException("Unable to find adaptable animation with path: " + id);
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler)
+	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
 	{
 		//Load animation data from json
 		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();

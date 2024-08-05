@@ -81,7 +81,7 @@ public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<Enti
 			}
 			else
 			{
-				return ()->null;
+				return () -> null;
 			}
 		});
 	}

@@ -64,6 +64,7 @@ import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -2620,7 +2621,7 @@ public class AnimationDataProvider implements DataProvider
 	
 	private static Path createPath(Path path, ResourceLocation location)
 	{
-		return path.resolve("data/" + location.getNamespace() + "/animation_data/" + location.getPath() + ".json");
+		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/animation_data/" + location.getPath() + ".json");
 	}
 
 	@Override
