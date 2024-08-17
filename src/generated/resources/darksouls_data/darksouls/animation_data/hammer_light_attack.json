@@ -27,11 +27,11 @@
       "end": 1.2,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "movement_damage_type": "STRIKE",
-        "stamina_damage": 56,
-        "deflection": "HEAVY",
         "stamina_usage": 20,
-        "poise_damage": 23
+        "poise_damage": 23,
+        "deflection": "HEAVY",
+        "movement_damage_type": "STRIKE",
+        "stamina_damage": 56
       }
     }
   ]

@@ -40,7 +40,8 @@
         "event_type": "shock_wave",
         "time": 0.6,
         "execution_side": "SERVER",
-        "radius": 3.0
+        "radius": 3.0,
+        "anchor": "ENTITY"
       }
     ]
   },

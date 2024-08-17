@@ -21,8 +21,8 @@
     "stat.darksouls.faith": "-"
   },
   "animation_overrides": {
-    "SHOOTING": "darksouls:biped_speer_rebound",
-    "AIMING": "darksouls:biped_speer_aim"
+    "AIMING": "darksouls:biped_speer_aim",
+    "SHOOTING": "darksouls:biped_speer_rebound"
   },
   "hand_property": "MAINHAND_ONLY"
 }

@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.common.animation.Property.AimingAnimationProp
 import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.Property.DeathProperty;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
+import com.skullmangames.darksouls.common.animation.events.Anchor;
 import com.skullmangames.darksouls.common.animation.events.AnimEvent;
 import com.skullmangames.darksouls.common.animation.events.ChangeItemEvent;
 import com.skullmangames.darksouls.common.animation.events.EntityboundParticleEvent;
@@ -549,10 +550,10 @@ public class AnimationDataProvider implements DataProvider
 				new ActionAnimation.Builder(Animations.BIPED_CAST_MIRACLE_FORCE.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/cast_miracle_force"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new SetLightSourceEvent(AnimEvent.ON_BEGIN, 15, 1.85F),
+								{ new SetLightSourceEvent(0.56F, 15, 1.85F),
 										new SimpleParticleEvent(0.56F, ModParticles.FORCE, 0, 1, 0),
 										new PlaySoundEvent(0.56F, Side.SERVER, ModSoundEvents.MIRACLE_FORCE),
-										new ShockWaveEvent(0.6F, 3.0D) }),
+										new ShockWaveEvent(0.6F, 3.0D, Anchor.ENTITY) }),
 
 				new ActionAnimation.Builder(Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/cast_miracle_spear"), (models) -> models.ENTITY_BIPED)

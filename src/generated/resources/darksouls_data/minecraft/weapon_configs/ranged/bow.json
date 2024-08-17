@@ -21,8 +21,8 @@
     "stat.darksouls.faith": "-"
   },
   "animation_overrides": {
-    "SHOOTING": "darksouls:biped_bow_rebound",
-    "AIMING": "darksouls:biped_bow_aim"
+    "AIMING": "darksouls:biped_bow_aim",
+    "SHOOTING": "darksouls:biped_bow_rebound"
   },
   "hand_property": "TWO_HANDED"
 }

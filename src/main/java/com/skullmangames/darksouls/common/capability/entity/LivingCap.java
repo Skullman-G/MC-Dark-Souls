@@ -540,7 +540,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
-		boolean succeed = hitTarget.hurt((DamageSource) source, source.getAmount());
+		boolean succeed = hitTarget.hurt((DamageSource)source, source.getAmount());
 
 		if (succeed)
 		{
