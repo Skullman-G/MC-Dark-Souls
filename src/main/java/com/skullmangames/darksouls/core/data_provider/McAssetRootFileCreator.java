@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.data_provider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
@@ -23,7 +24,15 @@ public class McAssetRootFileCreator implements DataProvider
 	public void run(HashCache cache) throws IOException
 	{
 		Path path = this.generator.getOutputFolder().resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/.mcassetsroot");
-		Files.createFile(path);
+		String s = "";
+		String s1 = SHA1.hashUnencodedChars(s).toString();
+		if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path))
+		{
+			Files.createDirectories(path.getParent());
+			Files.createFile(path);
+		}
+
+		cache.putNew(path, s1);
 	}
 
 	@Override

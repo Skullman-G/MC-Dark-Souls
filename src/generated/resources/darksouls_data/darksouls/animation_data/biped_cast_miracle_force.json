@@ -8,7 +8,7 @@
     "events": [
       {
         "event_type": "set_light_source",
-        "time": 1.4E-45,
+        "time": 0.56,
         "execution_side": "SERVER",
         "light_emmission": 15,
         "duration": 1.85

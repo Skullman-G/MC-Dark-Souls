@@ -36,6 +36,7 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	{
 		super.initAI();
 		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.5F, 1, true, false, false)
+				.addAttack(new AttackInstance(1, 0.5F, 4F, Animations.BELL_GARGOYLE_LA.get()))
 				.addAttack(new AttackInstance(1, 0.5F, 4F, Animations.BELL_GARGOYLE_HA.get())));
 	}
 	

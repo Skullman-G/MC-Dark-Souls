@@ -1,4 +1,13 @@
 {
+	"entity.bell_gargoyle.scream":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/bell_gargoyle/scream"
+		]
+	},
+	
 	"entity.bell_gargoyle.damage":
 	{
 		"category": "entity",

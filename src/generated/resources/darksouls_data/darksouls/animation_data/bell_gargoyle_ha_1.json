@@ -1,7 +1,7 @@
 {
   "animation_type": "attack",
   "location": "darksouls:bell_gargoyle/ha_1",
-  "convert_time": 0.2,
+  "convert_time": 0.5,
   "repeat": false,
   "model": "darksouls:bell_gargoyle",
   "properties": {
@@ -28,10 +28,10 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:bell_gargoyle_halberd",
       "properties": {
-        "poise_damage": 15,
-        "deflection": "IMPOSSIBLE",
         "stamina_damage": 20,
-        "stun_type": "HEAVY"
+        "stun_type": "HEAVY",
+        "deflection": "IMPOSSIBLE",
+        "poise_damage": 15
       }
     }
   ]

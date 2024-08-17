@@ -425,6 +425,8 @@
 	"command.failed": "Command failed",
 	"argument.stat.notfound": "No Stat with matching name found",
 	
+	"gamerule.max_player_level": "Max Player Soul Level",
+	
 	"covenant.darksouls.none": "None",
 	"covenant.darksouls.warriors_of_sunlight": "Warriors of Sunlight",
 	

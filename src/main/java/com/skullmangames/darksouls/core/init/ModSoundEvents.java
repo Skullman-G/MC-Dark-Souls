@@ -93,6 +93,7 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_FOOT = register("entity.bell_gargoyle.foot");
 	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_LAND = register("entity.bell_gargoyle.land");
 	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_DAMAGE = register("entity.bell_gargoyle.damage");
+	public static final RegistryObject<SoundEvent> BELL_GARGOYLE_SCREAM = register("entity.bell_gargoyle.scream");
 
 	
 	private static RegistryObject<SoundEvent> register(String name)

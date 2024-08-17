@@ -7,7 +7,7 @@ import net.minecraft.world.level.GameRules;
 
 public class ModGameRules
 {
-	public static final GameRules.Key<GameRules.IntegerValue> MAX_PLAYER_LEVEL = GameRules.register("maxPlayerLevel", GameRules.Category.PLAYER, GameRules.IntegerValue.create(500, (server, value) ->
+	public static final GameRules.Key<GameRules.IntegerValue> MAX_PLAYER_LEVEL = GameRules.register("max_player_level", GameRules.Category.PLAYER, GameRules.IntegerValue.create(500, (server, value) ->
 	{
 		ModNetworkManager.sendToAll(new STCSetMaxPlayerLevel(value.get()));
 	}));
