@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.screens.ModTitleScreen;
 import com.skullmangames.darksouls.client.gui.screens.YouDiedScreen;
 import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.DSSelectMenuScreen;
 import com.skullmangames.darksouls.client.gui.screens.ModLoadingScreen;
 
@@ -116,6 +117,15 @@ public class ScreenManager
 					&& !(minecraft.screen instanceof DSSelectMenuScreen))
 			{
 				event.setScreen(new DSSelectMenuScreen(craftingScreen));
+			}
+			
+			if (gui instanceof EffectRenderingInventoryScreen<?> craftingScreen)
+			{
+				if (ClientManager.INSTANCE.getPlayerCap().isInaction()) event.setCanceled(true);
+				else if (ConfigManager.CLIENT_CONFIG.darkSoulsUI.getValue() && !(minecraft.screen instanceof DSSelectMenuScreen))
+				{
+					event.setScreen(new DSSelectMenuScreen(craftingScreen));
+				}
 			}
 		}
 	}
