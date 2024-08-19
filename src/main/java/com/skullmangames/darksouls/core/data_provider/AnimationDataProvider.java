@@ -2657,6 +2657,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{
 										new PlaySoundEvent(0.7F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING),
+										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SMASH),
 										new PlaySoundEvent(1.44F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_SCREAM)
 								})
 								.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
