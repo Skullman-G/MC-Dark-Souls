@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:black_knight_sword",
   "category": "greatsword",
-  "skill": "minecraft:empty",
   "weight": 10.0,
   "critical": 1.0,
   "damage": {

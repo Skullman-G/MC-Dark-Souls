@@ -305,7 +305,6 @@ public abstract class WeaponCap extends AttributeItemCap
 		{
 			this.item = item;
 			this.category = category;
-			this.skillId = new ResourceLocation("empty");
 			this.weight = weight;
 		}
 		
@@ -367,7 +366,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			JsonObject json = new JsonObject();
 			json.addProperty("registry_name", this.item.getRegistryName().toString());
 			json.addProperty("category", this.category.toString());
-			json.addProperty("skill", this.skillId.toString());
+			if (this.skillId != null) json.addProperty("skill", this.skillId.toString());
 			json.addProperty("weight", this.weight);
 			json.addProperty("critical", this.critical);
 			

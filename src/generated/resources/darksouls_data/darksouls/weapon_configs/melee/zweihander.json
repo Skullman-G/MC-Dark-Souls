@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:zweihander",
   "category": "ultra_greatsword",
-  "skill": "minecraft:empty",
   "weight": 10.0,
   "critical": 1.0,
   "damage": {

@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:claymore",
   "category": "greatsword",
-  "skill": "minecraft:empty",
   "weight": 9.0,
   "critical": 1.0,
   "damage": {

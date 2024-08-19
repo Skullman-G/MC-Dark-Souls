@@ -66,6 +66,7 @@
       "contact_end": 1.88,
       "end": 3.2,
       "weapon_bone_name": "Root",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:stray_demon_body",
       "properties": {
         "deflection": "IMPOSSIBLE",

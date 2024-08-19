@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:greataxe",
   "category": "greataxe",
-  "skill": "minecraft:empty",
   "weight": 25.0,
   "critical": 1.0,
   "damage": {

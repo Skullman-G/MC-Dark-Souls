@@ -26,6 +26,7 @@
       "contact_end": 1.05,
       "end": 2.5,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {
         "deflection": "LIGHT",
         "stamina_damage": 44,

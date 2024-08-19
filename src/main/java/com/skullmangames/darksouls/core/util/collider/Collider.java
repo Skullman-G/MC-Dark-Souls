@@ -209,8 +209,8 @@ public abstract class Collider
 	
 	public static class CoreBuilder implements JsonBuilder<Collider>
 	{
-		private ResourceLocation id;
-		private List<Builder> colliders;
+		private final ResourceLocation id;
+		private final List<Builder> colliders;
 		
 		private CoreBuilder(ResourceLocation id, Builder... builders)
 		{
@@ -220,7 +220,11 @@ public abstract class Collider
 		
 		private CoreBuilder(ResourceLocation location, JsonObject json)
 		{
-			JsonArray array = json.get("colliders").getAsJsonArray();
+			this.id = location;
+			this.colliders = new ArrayList<>();
+			
+			JsonElement arrayElement = json.get("multiple");
+			Iterable<JsonElement> array = arrayElement == null ? Arrays.asList(json) : arrayElement.getAsJsonArray();
 			
 			for (JsonElement e : array)
 			{
@@ -257,7 +261,7 @@ public abstract class Collider
 			JsonObject json = new JsonObject();
 			
 			JsonArray array = new JsonArray();
-			json.add("colliders", array);
+			json.add("multiple", array);
 			
 			for (Builder collider : this.colliders)
 			{

@@ -44,6 +44,7 @@
       "contact_end": 0.24,
       "end": 1.2,
       "weapon_bone_name": "Tool_L",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:shield",
       "properties": {
         "movement_damage_type": "REGULAR",

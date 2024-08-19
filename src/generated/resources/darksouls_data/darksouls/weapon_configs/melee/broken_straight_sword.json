@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:broken_straight_sword",
   "category": "straight_sword",
-  "skill": "minecraft:empty",
   "weight": 1.0,
   "critical": 1.0,
   "damage": {

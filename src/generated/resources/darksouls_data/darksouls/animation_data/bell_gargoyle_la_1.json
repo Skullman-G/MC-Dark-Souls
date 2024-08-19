@@ -26,6 +26,7 @@
       "contact_end": 0.64,
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:bell_gargoyle_halberd",
       "properties": {
         "deflection": "IMPOSSIBLE",

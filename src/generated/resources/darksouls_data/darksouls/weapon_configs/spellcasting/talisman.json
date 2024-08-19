@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:talisman",
   "category": "talisman",
-  "skill": "minecraft:empty",
   "weight": 0.5,
   "critical": 1.0,
   "damage": {

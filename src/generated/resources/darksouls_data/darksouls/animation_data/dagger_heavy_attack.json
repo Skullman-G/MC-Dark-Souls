@@ -14,6 +14,7 @@
       "contact_end": 0.96,
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {
         "movement_damage_type": "THRUST",
         "stun_type": "HEAVY",

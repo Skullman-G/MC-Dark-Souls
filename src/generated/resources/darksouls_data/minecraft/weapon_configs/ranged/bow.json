@@ -1,7 +1,6 @@
 {
   "registry_name": "minecraft:bow",
   "category": "bow",
-  "skill": "minecraft:empty",
   "weight": 2.0,
   "critical": 1.0,
   "damage": {

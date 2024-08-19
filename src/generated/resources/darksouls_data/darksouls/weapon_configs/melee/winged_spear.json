@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:winged_spear",
   "category": "spear",
-  "skill": "minecraft:empty",
   "weight": 6.0,
   "critical": 1.0,
   "damage": {

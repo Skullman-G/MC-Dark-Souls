@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:longsword",
   "category": "straight_sword",
-  "skill": "minecraft:empty",
   "weight": 3.0,
   "critical": 1.0,
   "damage": {

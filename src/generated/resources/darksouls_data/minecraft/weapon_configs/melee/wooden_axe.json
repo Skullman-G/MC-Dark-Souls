@@ -1,7 +1,6 @@
 {
   "registry_name": "minecraft:wooden_axe",
   "category": "axe",
-  "skill": "minecraft:empty",
   "weight": 0.75,
   "critical": 1.0,
   "damage": {

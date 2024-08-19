@@ -82,6 +82,7 @@
       "contact_end": 0.54,
       "end": 1.6,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {
         "deflection": "IMPOSSIBLE",
         "stun_type": "FLY",

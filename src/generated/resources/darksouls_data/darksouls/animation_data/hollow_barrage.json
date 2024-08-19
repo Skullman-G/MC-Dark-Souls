@@ -71,6 +71,7 @@
       "contact_end": 1.72,
       "end": 1.72,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",
@@ -84,6 +85,7 @@
       "contact_end": 1.92,
       "end": 1.92,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",
@@ -97,6 +99,7 @@
       "contact_end": 2.24,
       "end": 2.24,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",
@@ -110,6 +113,7 @@
       "contact_end": 2.56,
       "end": 2.56,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",
@@ -123,6 +127,7 @@
       "contact_end": 2.88,
       "end": 2.88,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",
@@ -136,6 +141,7 @@
       "contact_end": 3.2,
       "end": 4.2,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:broken_sword",
       "properties": {
         "deflection": "LIGHT",

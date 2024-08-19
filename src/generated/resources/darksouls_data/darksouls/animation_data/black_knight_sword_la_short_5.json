@@ -53,6 +53,7 @@
       "contact_end": 1.12,
       "end": 2.36,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {
         "movement_damage_type": "REGULAR",
         "deflection": "HEAVY",

@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:demon_great_hammer",
   "category": "great_hammer",
-  "skill": "minecraft:empty",
   "weight": 22.0,
   "critical": 1.0,
   "damage": {

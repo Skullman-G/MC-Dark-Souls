@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:great_club",
   "category": "great_hammer",
-  "skill": "minecraft:empty",
   "weight": 12.0,
   "critical": 1.0,
   "damage": {

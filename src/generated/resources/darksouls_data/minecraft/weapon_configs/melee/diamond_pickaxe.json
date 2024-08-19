@@ -1,7 +1,6 @@
 {
   "registry_name": "minecraft:diamond_pickaxe",
   "category": "hammer",
-  "skill": "minecraft:empty",
   "weight": 5.0,
   "critical": 1.0,
   "damage": {

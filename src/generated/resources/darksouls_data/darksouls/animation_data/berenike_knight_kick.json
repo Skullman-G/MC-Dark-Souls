@@ -35,6 +35,7 @@
       "contact_end": 0.9,
       "end": 1.6,
       "weapon_bone_name": "Leg_L",
+      "hand": "MAIN_HAND",
       "collider": "darksouls:fist",
       "properties": {
         "depends_on_weapon": false,

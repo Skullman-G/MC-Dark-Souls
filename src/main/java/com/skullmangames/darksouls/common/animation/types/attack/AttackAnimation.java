@@ -618,6 +618,7 @@ public class AttackAnimation extends ActionAnimation
 			json.addProperty("contact_end", this.contactEnd);
 			json.addProperty("end", this.end);
 			json.addProperty("weapon_bone_name", this.jointName);
+			json.addProperty("hand", this.hand.name());
 			if (this.colliderId != null) json.addProperty("collider", this.colliderId.toString());
 			
 			JsonObject properties = new JsonObject();
@@ -634,7 +635,7 @@ public class AttackAnimation extends ActionAnimation
 		@Override
 		public Phase build()
 		{
-			Collider collider = Colliders.getCollider(this.colliderId);
+			Collider collider = this.colliderId == null ? null : Colliders.getCollider(this.colliderId);
 			return new Phase(this.begin, this.contactStart, this.contactEnd, this.end, this.hand, this.jointName, collider, this.properties.build());
 		}
 	}

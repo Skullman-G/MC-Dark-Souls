@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:spear",
   "category": "spear",
-  "skill": "minecraft:empty",
   "weight": 4.5,
   "critical": 1.0,
   "damage": {

@@ -53,6 +53,6 @@ public class WeaponSkills extends AbstractDSDataRegister
 	{
 		WeaponSkills register = DarkSouls.getInstance().weaponSkills;
 		if (register.skills.containsKey(id)) return register.skills.get(id);
-		throw new IllegalArgumentException("Unable to find collider with path: " + id);
+		throw new IllegalArgumentException("Unable to find weapon skill with path: " + id);
 	}
 }

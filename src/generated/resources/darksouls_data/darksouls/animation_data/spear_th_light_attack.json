@@ -26,6 +26,7 @@
       "contact_end": 0.64,
       "end": 1.2,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {
         "movement_damage_type": "THRUST",
         "deflection": "LIGHT",

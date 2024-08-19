@@ -14,6 +14,7 @@
       "contact_end": 0.64,
       "end": 1.44,
       "weapon_bone_name": "Tool_R",
+      "hand": "MAIN_HAND",
       "properties": {}
     }
   ],

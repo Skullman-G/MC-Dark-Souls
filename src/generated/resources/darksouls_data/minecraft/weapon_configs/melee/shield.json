@@ -1,7 +1,6 @@
 {
   "registry_name": "minecraft:shield",
   "category": "medium_shield",
-  "skill": "minecraft:empty",
   "weight": 4.0,
   "critical": 1.0,
   "damage": {

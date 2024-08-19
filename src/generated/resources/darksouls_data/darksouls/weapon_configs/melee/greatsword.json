@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:greatsword",
   "category": "ultra_greatsword",
-  "skill": "minecraft:empty",
   "weight": 12.0,
   "critical": 1.0,
   "damage": {

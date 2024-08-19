@@ -1,7 +1,6 @@
 {
   "registry_name": "darksouls:rapier",
   "category": "thrusting_sword",
-  "skill": "minecraft:empty",
   "weight": 2.0,
   "critical": 1.3,
   "damage": {
