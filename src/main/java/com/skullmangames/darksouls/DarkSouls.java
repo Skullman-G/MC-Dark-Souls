@@ -63,6 +63,7 @@ import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.data.ArmorConfigs;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.init.data.DSDataManager;
 import com.skullmangames.darksouls.core.init.data.MeleeWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.RangedWeaponConfigs;
@@ -95,6 +96,7 @@ public class DarkSouls
 	private static DarkSouls instance;
 	
 	private final DSDataManager dataManager;
+	public final Colliders colliders;
 	public final AnimationManager animationManager;
 	public final WeaponMovesets weaponMovesets;
 	public final WeaponSkills weaponSkills;
@@ -116,14 +118,15 @@ public class DarkSouls
 		instance = this;
 		
 		this.dataManager = new DSDataManager();
-		this.animationManager = this.dataManager.register(new AnimationManager());
-		this.weaponMovesets = this.dataManager.register(new WeaponMovesets());
-		this.weaponSkills = this.dataManager.register(new WeaponSkills());
-		this.meleeWeaponConfigs = this.dataManager.register(new MeleeWeaponConfigs());
-		this.spellcastingWeaponConfigs = this.dataManager.register(new SpellcastingWeaponConfigs());
-		this.rangedWeaponConfigs = this.dataManager.register(new RangedWeaponConfigs());
-		this.armorConfigs = this.dataManager.register(new ArmorConfigs());
-		this.spellConfigs = this.dataManager.register(new SpellConfigs());
+		this.colliders = this.dataManager.addRegister(new Colliders());
+		this.animationManager = this.dataManager.addRegister(new AnimationManager());
+		this.weaponMovesets = this.dataManager.addRegister(new WeaponMovesets());
+		this.weaponSkills = this.dataManager.addRegister(new WeaponSkills());
+		this.meleeWeaponConfigs = this.dataManager.addRegister(new MeleeWeaponConfigs());
+		this.spellcastingWeaponConfigs = this.dataManager.addRegister(new SpellcastingWeaponConfigs());
+		this.rangedWeaponConfigs = this.dataManager.addRegister(new RangedWeaponConfigs());
+		this.armorConfigs = this.dataManager.addRegister(new ArmorConfigs());
+		this.spellConfigs = this.dataManager.addRegister(new SpellConfigs());
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);

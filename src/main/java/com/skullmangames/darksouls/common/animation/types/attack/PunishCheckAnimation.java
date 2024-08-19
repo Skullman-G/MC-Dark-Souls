@@ -38,9 +38,10 @@ public class PunishCheckAnimation extends AttackAnimation
 	
 	public PunishCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
 			String index, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ResourceLocation followUp)
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ResourceLocation followUp,
+			ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
-		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model, properties);
+		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model, properties, attackProperties);
 		this.followUp = followUp;
 		this.isWeak = isWeak;
 	}
@@ -111,7 +112,7 @@ public class PunishCheckAnimation extends AttackAnimation
 		protected final boolean isWeak;
 		
 		public Builder(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak,
-				ResourceLocation path, Function<Models<?>, Model> model, ResourceLocation followUp, AttackAnimation.Phase... phases)
+				ResourceLocation path, Function<Models<?>, Model> model, ResourceLocation followUp, PhaseBuilder... phases)
 		{
 			super(id, attackType, convertTime, path, model, phases);
 			this.followUp = followUp;
@@ -152,8 +153,14 @@ public class PunishCheckAnimation extends AttackAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
+			Phase[] builtPhases = new Phase[this.phases.length];
+			for (int i = 0; i < builtPhases.length; i++)
+			{
+				builtPhases[i] = this.phases[i].build();
+			}
+			
 			register.put(this.getId(), new PunishCheckAnimation(this.id, this.attackType, this.convertTime, this.isWeak,
-					this.location, this.model, this.properties.build(), this.followUp, this.phases));
+					this.location, this.model, this.properties.build(), this.followUp, builtPhases));
 		}
 	}
 }

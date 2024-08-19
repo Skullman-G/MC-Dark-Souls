@@ -83,7 +83,7 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
 		Vec3 aabbCenter = aabb.getCenter();
-		Collider collider = new CubeCollider(aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
+		Collider collider = new CubeCollider(null, aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
 		collider.draw(entityCap, "Root", partialTicks);
 	}
 	
@@ -98,7 +98,7 @@ public class DodgingAnimation extends ActionAnimation
 		
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
 		Vec3 aabbCenter = aabb.getCenter();
-		Collider collider = new CubeCollider(aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
+		Collider collider = new CubeCollider(null, aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
 		entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 		collider.update(entityCap, "Root", 1.0F);
 		List<Entity> list = collider.getEntityCollisions(entity);

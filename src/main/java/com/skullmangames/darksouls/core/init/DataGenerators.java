@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.init;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.data_provider.AnimationDataProvider;
 import com.skullmangames.darksouls.core.data_provider.ArmorConfigProvider;
+import com.skullmangames.darksouls.core.data_provider.ColliderProvider;
 import com.skullmangames.darksouls.core.data_provider.McAssetRootFileCreator;
 import com.skullmangames.darksouls.core.data_provider.MeleeWeaponConfigProvider;
 import com.skullmangames.darksouls.core.data_provider.RangedWeaponConfigProvider;
@@ -26,6 +27,7 @@ public class DataGenerators
         {
 			DataGenerator generator = event.getGenerator();
 			//ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+			generator.addProvider(new ColliderProvider(generator));
 			generator.addProvider(new AnimationDataProvider(generator));
 			generator.addProvider(new WeaponMovesetProvider(generator));
 			generator.addProvider(new WeaponSkillProvider(generator));

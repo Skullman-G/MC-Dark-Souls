@@ -20,8 +20,8 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
@@ -306,14 +306,44 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 		private WeaponMaterial weaponMaterial = WeaponMaterial.METAL_WEAPON;
 		private ImmutableMap.Builder<CoreDamageType, Float> defense = ImmutableMap.builder();
 		
-		private Builder() {}
-		
 		private Builder(Item item, WeaponCategory category, ResourceLocation movesetId, ResourceLocation colliderId, float weight)
 		{
 			super(item, category, weight);
 			this.movesetId = movesetId;
 			this.colliderId = colliderId;
 			this.deflection = category.getDeflection();
+		}
+		
+		private Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.movesetId = ResourceLocation.tryParse(json.get("moveset").getAsString());
+			
+			this.colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
+			
+			JsonElement stabilityJson = json.get("stability");
+			if (stabilityJson != null) this.stability = stabilityJson.getAsFloat();
+			
+			JsonElement deflectionJson = json.get("deflection");
+			if (deflectionJson != null)
+			{
+				this.deflection = Deflection.valueOf(deflectionJson.getAsString());
+			}
+			
+			JsonElement weaponMaterialJson = json.get("weapon_material");
+			if (weaponMaterialJson != null)
+			{
+				WeaponMaterial weaponMaterial = WeaponMaterial.fromString(weaponMaterialJson.getAsString());
+				if (weaponMaterial != null) this.weaponMaterial = weaponMaterial;
+			}
+			
+			JsonObject defense = json.get("defense").getAsJsonObject();
+			for (CoreDamageType type : CoreDamageType.values())
+			{
+				float def = Optional.ofNullable(defense.get(type.toString())).orElse(new JsonPrimitive(0)).getAsFloat();
+				this.defense.put(type, def);
+			}
 		}
 		
 		public Builder setSkill(ResourceLocation id)
@@ -385,49 +415,15 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 			return json;
 		}
 		
-		public void initFromJson(ResourceLocation location, JsonObject json)
-		{
-			super.initFromJson(location, json);
-			
-			this.movesetId = ResourceLocation.tryParse(json.get("moveset").getAsString());
-			
-			this.colliderId = ResourceLocation.tryParse(json.get("collider").getAsString());
-			
-			JsonElement stabilityJson = json.get("stability");
-			if (stabilityJson != null) this.stability = stabilityJson.getAsFloat();
-			
-			JsonElement deflectionJson = json.get("deflection");
-			if (deflectionJson != null)
-			{
-				this.deflection = Deflection.valueOf(deflectionJson.getAsString());
-			}
-			
-			JsonElement weaponMaterialJson = json.get("weapon_material");
-			if (weaponMaterialJson != null)
-			{
-				WeaponMaterial weaponMaterial = WeaponMaterial.fromString(weaponMaterialJson.getAsString());
-				if (weaponMaterial != null) this.weaponMaterial = weaponMaterial;
-			}
-			
-			JsonObject defense = json.get("defense").getAsJsonObject();
-			for (CoreDamageType type : CoreDamageType.values())
-			{
-				float def = Optional.ofNullable(defense.get(type.toString())).orElse(new JsonPrimitive(0)).getAsFloat();
-				this.defense.put(type, def);
-			}
-		}
-		
 		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			Builder builder = new Builder();
-			builder.initFromJson(location, json);
-			return builder;
+			return new Builder(location, json);
 		}
 		
 		public MeleeWeaponCap build()
 		{
-			Collider collider = Colliders.COLLIDERS.get(this.colliderId);
-			return new MeleeWeaponCap(this.item, this.category, WeaponMovesets.getMoveset(this.movesetId), WeaponSkills.getFromLocation(this.skillId),
+			Collider collider = Colliders.getCollider(this.colliderId);
+			return new MeleeWeaponCap(this.item, this.category, WeaponMovesets.getMoveset(this.movesetId), WeaponSkills.getSkill(this.skillId),
 					collider, this.damage.build(), this.auxEffects.build(),
 					this.critical, this.weight,
 					this.deflection, this.weaponMaterial, this.defense.build(), this.stability,

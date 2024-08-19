@@ -1,12 +1,5 @@
 {
   "moveset": {
-    "light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:dagger_light_attack_1",
-        "darksouls:dagger_light_attack_2"
-      ]
-    },
     "heavy": {
       "repeating": true,
       "animations": [
@@ -23,6 +16,13 @@
       "repeating": true,
       "animations": [
         "darksouls:backstab_thrust"
+      ]
+    },
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:dagger_light_attack_1",
+        "darksouls:dagger_light_attack_2"
       ]
     }
   }

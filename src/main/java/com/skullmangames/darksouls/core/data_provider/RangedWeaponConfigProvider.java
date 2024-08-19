@@ -67,8 +67,8 @@ public class RangedWeaponConfigProvider implements DataProvider
 						.putStatInfo(Stats.DEXTERITY, 12, Scaling.D)
 						.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 						.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_BOW_AIM.get())
-						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND.get()),
+						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_BOW_AIM.getId())
+						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_BOW_REBOUND.getId()),
 				
 				//Crossbows
 				RangedWeaponCap.builder(Items.CROSSBOW, WeaponCategory.CROSSBOW, 1.00F, 3.0F, HandProperty.TWO_HANDED)
@@ -77,12 +77,12 @@ public class RangedWeaponConfigProvider implements DataProvider
 						.putStatInfo(Stats.DEXTERITY, 8, Scaling.NONE)
 						.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 						.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-						.putAnimOverride(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD.get())
-						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_CROSSBOW_AIM.get())
-						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_CROSSBOW_SHOT.get())
-						.putAnimOverride(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW.get())
-						.putAnimOverride(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW.get())
-						.putAnimOverride(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW.get()),
+						.putAnimOverride(LivingMotion.RELOADING, Animations.BIPED_CROSSBOW_RELOAD.getId())
+						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_CROSSBOW_AIM.getId())
+						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_CROSSBOW_SHOT.getId())
+						.putAnimOverride(LivingMotion.IDLE, Animations.BIPED_IDLE_CROSSBOW.getId())
+						.putAnimOverride(LivingMotion.WALKING, Animations.BIPED_WALK_CROSSBOW.getId())
+						.putAnimOverride(LivingMotion.RUNNING, Animations.BIPED_WALK_CROSSBOW.getId()),
 				
 				//Tridents
 				RangedWeaponCap.builder(Items.TRIDENT, WeaponCategory.NONE_WEAON, 1.00F, 3.0F, HandProperty.MAINHAND_ONLY)
@@ -91,8 +91,8 @@ public class RangedWeaponConfigProvider implements DataProvider
 						.putStatInfo(Stats.DEXTERITY, 9, Scaling.NONE)
 						.putStatInfo(Stats.INTELLIGENCE, 0, Scaling.NONE)
 						.putStatInfo(Stats.FAITH, 0, Scaling.NONE)
-						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_SPEER_AIM.get())
-						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_SPEER_REBOUND.get())
+						.putAnimOverride(LivingMotion.AIMING, Animations.BIPED_SPEER_AIM.getId())
+						.putAnimOverride(LivingMotion.SHOOTING, Animations.BIPED_SPEER_REBOUND.getId())
 		);
 	}
 

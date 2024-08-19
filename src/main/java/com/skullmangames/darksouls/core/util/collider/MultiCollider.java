@@ -5,22 +5,23 @@ import java.util.List;
 
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class MultiCapsuleCollider extends Collider
+public class MultiCollider extends Collider
 {
-	private final CapsuleCollider[] colliders;
+	private final Collider[] colliders;
 	
-	public MultiCapsuleCollider(CapsuleCollider... colliders)
+	public MultiCollider(ResourceLocation id, Collider... colliders)
 	{
-		super(new AABB(0, 0, 0, 0, 0, 0));
+		super(id, new AABB(0, 0, 0, 0, 0, 0));
 		this.colliders = colliders;
 	}
 
@@ -52,7 +53,7 @@ public class MultiCapsuleCollider extends Collider
 	public List<Entity> getEntityCollisions(Entity self)
 	{
 		List<Entity> list = new ArrayList<>();
-		for (CapsuleCollider collider : this.colliders)
+		for (Collider collider : this.colliders)
 		{
 			List<Entity> entities = self.level.getEntities(self, collider.getHitboxAABB());
 			for (int i = 0; i < list.size(); i++)
@@ -70,7 +71,7 @@ public class MultiCapsuleCollider extends Collider
 	public List<Entity> getShieldCollisions(Entity self)
 	{
 		List<Entity> newList = new ArrayList<>();
-		for (CapsuleCollider collider : this.colliders)
+		for (Collider collider : this.colliders)
 		{
 			List<Entity> list = self.level.getEntities(self, collider.getHitboxAABB().inflate(5));
 			for (int i = 0; i < newList.size(); i++)
@@ -87,7 +88,7 @@ public class MultiCapsuleCollider extends Collider
 					{
 						ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
 						ModMatrix4f mat = modelMat.translate(0.4F, e.getBbHeight() / 2, 0);
-						Collider shieldCollider = Colliders.SHIELD;
+						Collider shieldCollider = Colliders.SHIELD.get();
 						shieldCollider.transform(mat);
 						if (collider.collidesWith(shieldCollider)) newList.add(e);
 					}
@@ -100,24 +101,17 @@ public class MultiCapsuleCollider extends Collider
 	@Override
 	public boolean collidesWith(Collider other)
 	{
-		return false;
-	}
-
-	@Override
-	public Collider clone()
-	{
-		CapsuleCollider[] newColliders = new CapsuleCollider[this.colliders.length];
-		for (int i = 0; i < newColliders.length; i++)
+		for (Collider collider : this.colliders)
 		{
-			newColliders[i] = this.colliders[i].clone();
+			if (collider.collidesWith(other)) return true;
 		}
-		return new MultiCapsuleCollider(newColliders);
+		return false;
 	}
 
 	@Override
 	public void drawInternal(boolean red)
 	{
-		for (CapsuleCollider c : this.colliders) c.drawInternal(red);
+		for (Collider c : this.colliders) c.drawInternal(red);
 	}
 
 	@Override
@@ -135,7 +129,7 @@ public class MultiCapsuleCollider extends Collider
 	@Override
 	public void transform(ModMatrix4f mat)
 	{
-		for (CapsuleCollider collider : this.colliders)
+		for (Collider collider : this.colliders)
 		{
 			collider.transform(mat);
 		}

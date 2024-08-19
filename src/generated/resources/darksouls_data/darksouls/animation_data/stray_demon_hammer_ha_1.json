@@ -66,9 +66,9 @@
       "end": 2.6,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 80,
-        "stun_type": "SMASH",
         "deflection": "IMPOSSIBLE",
+        "stun_type": "SMASH",
+        "stamina_damage": 80,
         "poise_damage": 28
       }
     }

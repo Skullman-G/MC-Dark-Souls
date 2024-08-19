@@ -8,8 +8,6 @@ public interface JsonBuilder<T>
 {
 	public ResourceLocation getId();
 	
-	public void initFromJson(ResourceLocation location, JsonObject json);
-	
 	public JsonObject toJson();
 	
 	public T build();

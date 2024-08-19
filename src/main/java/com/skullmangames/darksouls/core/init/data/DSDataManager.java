@@ -16,7 +16,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class DSDataManager
 {
-	private final List<AbstractDSDataConfig> configs = new LinkedList<>();
+	private final List<AbstractDSDataRegister> registers = new LinkedList<>();
 	
 	public void loadDSData()
 	{
@@ -26,15 +26,15 @@ public class DSDataManager
 		packRepository.setSelected(packRepository.getAvailableIds());
 		CloseableResourceManager resourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, packRepository.openAllSelected());
 		
-		this.configs.forEach(config -> config.init(resourceManager));
+		this.registers.forEach(config -> config.init(resourceManager));
 
 		resourceManager.close();
 		packRepository.close();
 	}
 	
-	public <T extends AbstractDSDataConfig> T register(T config)
+	public <T extends AbstractDSDataRegister> T addRegister(T config)
 	{
-		this.configs.add(config);
+		this.registers.add(config);
 		return config;
 	}
 }

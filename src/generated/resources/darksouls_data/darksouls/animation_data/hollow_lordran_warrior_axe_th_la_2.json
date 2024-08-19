@@ -27,10 +27,10 @@
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 50,
         "movement_damage_type": "SLASH",
         "stun_type": "HEAVY",
         "deflection": "HEAVY",
+        "stamina_damage": 50,
         "poise_damage": 23
       }
     }

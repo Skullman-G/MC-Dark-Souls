@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.animation;
 
-import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -16,14 +15,14 @@ import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.core.init.ClientModels;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.init.data.AbstractDSDataConfig;
+import com.skullmangames.darksouls.core.init.data.AbstractDSDataRegister;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public class AnimationManager extends AbstractDSDataConfig
+public class AnimationManager extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -107,24 +106,5 @@ public class AnimationManager extends AbstractDSDataConfig
 		{
 			animation.loadAnimation(resourceManager, models);
 		}
-	}
-	
-	
-	/**
-	 * Use only to initialize animations while generating data
-	 **/
-	public static void initForDataGenerator(List<AnimBuilder> builders)
-	{
-		AnimationManager manager = DarkSouls.getInstance().animationManager;
-		
-		//Load animation data from json
-		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
-		for (AnimBuilder a : builders)
-		{
-			a.register(builder);
-		}
-		
-		manager.animations = builder.build();
-		LOGGER.info("Loaded "+manager.animations.size()+" animations");
 	}
 }

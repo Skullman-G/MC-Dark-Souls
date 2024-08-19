@@ -23,11 +23,11 @@ import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
@@ -807,7 +807,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST.get();
 	}
 
 	public boolean isTeam(Entity entityIn)

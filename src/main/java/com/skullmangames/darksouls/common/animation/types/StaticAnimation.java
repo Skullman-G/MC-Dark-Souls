@@ -233,7 +233,7 @@ public class StaticAnimation extends DynamicAnimation
 			this.repeat = isRepeat;
 		}
 		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings({ "rawtypes" })
 		public Builder(ResourceLocation id, JsonObject json)
 		{
 			this.id = id;
@@ -274,7 +274,7 @@ public class StaticAnimation extends DynamicAnimation
 			return root;
 		}
 		
-		public <V> Builder addProperty(Property<V> property, V value)
+		public Builder addProperty(Property<?> property, Object value)
 		{
 			this.properties.put(property, value);
 			return this;

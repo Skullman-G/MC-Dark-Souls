@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.common.animation.types.attack;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +9,14 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
@@ -32,9 +34,9 @@ import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.common.entity.BreakableObject;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -43,6 +45,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
@@ -64,31 +67,22 @@ public class AttackAnimation extends ActionAnimation
 {
 	private final AttackType attackType;
 	public final Phase[] phases;
-
+	
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
+			float convertTime, float begin, float contactStart, float contactEnd, float end, String jointName, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
 		this(id, attackType, convertTime, path, model, properties,
-				new Phase(antic, preDelay, contact, recovery, index, null));
+				new Phase(begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, null, attackProperties));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, float antic, float preDelay, float contact, float recovery,
-			@Nullable Collider collider, String index, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
+			float convertTime, float begin, float contactStart, float contactEnd, float end,
+			@Nullable Collider collider, String jointName, ResourceLocation path,
+			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
 		this(id, attackType, convertTime, path, model, properties,
-				new Phase(antic, preDelay, contact, recovery, index, collider));
-	}
-
-	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
-			@Nullable Collider collider, String index, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
-	{
-		this(id, attackType, convertTime, path, model, properties,
-				new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+				new Phase(begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, collider, attackProperties));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
@@ -404,7 +398,6 @@ public class AttackAnimation extends ActionAnimation
 
 	public static class Phase
 	{
-		protected final Map<Property<?>, Object> properties = new HashMap<>();
 		protected final float begin;
 		public final float contactStart;
 		public final float contactEnd;
@@ -412,31 +405,19 @@ public class AttackAnimation extends ActionAnimation
 		protected final String jointName;
 		protected final InteractionHand hand;
 		protected Collider collider;
+		protected final Map<AttackProperty<?>, Object> properties;
 
-		public Phase(float antic, float preDelay, float contact, float recovery, String jointName)
+		public Phase(float begin, float contactStart, float contactEnd, float end, InteractionHand hand, String jointName, @Nullable Collider collider,
+				ImmutableMap<AttackProperty<?>, Object> properties)
 		{
-			this(antic, preDelay, contact, recovery, jointName, null);
-		}
-		
-		public Phase(float antic, float preDelay, float contact, float recovery, String jointName, Collider collider)
-		{
-			this(antic, preDelay, contact, recovery, InteractionHand.MAIN_HAND, jointName, collider);
-		}
-
-		public Phase(float antic, float preDelay, float contact, float recovery, InteractionHand hand, String jointName, Collider collider)
-		{
-			this.begin = antic;
-			this.contactStart = preDelay;
-			this.contactEnd = contact;
-			this.end = recovery;
+			this.begin = begin;
+			this.contactStart = contactStart;
+			this.contactEnd = contactEnd;
+			this.end = end;
 			this.collider = collider;
 			this.hand = hand;
 			this.jointName = jointName;
-		}
-		
-		public void addProperty(Property<?> property, Object value)
-		{
-			this.properties.put(property, value);
+			this.properties = properties;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -454,37 +435,36 @@ public class AttackAnimation extends ActionAnimation
 	public static class Builder extends ActionAnimation.Builder
 	{
 		protected final AttackType attackType;
-		protected final Phase[] phases;
+		protected final PhaseBuilder[] phases;
 		
 		public Builder(ResourceLocation id, AttackType attackType,
-				float convertTime, float antic, float preDelay, float contact, float recovery, String index, ResourceLocation path,
+				float convertTime, float begin, float contactStart, float contactEnd, float end, String jointName, ResourceLocation path,
 				Function<Models<?>, Model> model)
 		{
-			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, null));
+			this(id, attackType, convertTime, path, model, new PhaseBuilder(id, begin, contactStart, contactEnd, end, jointName, null));
 		}
 
 		public Builder(ResourceLocation id, AttackType attackType,
-				float convertTime, float antic, float preDelay, float contact, float recovery,
-				@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+				float convertTime, float begin, float contactStart, float contactEnd, float end,
+				@Nullable ResourceLocation colliderId, String jointName, ResourceLocation path, Function<Models<?>, Model> model)
 		{
-			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, index, collider));
+			this(id, attackType, convertTime, path, model, new PhaseBuilder(id, begin, contactStart, contactEnd, end, jointName, colliderId));
 		}
 
 		public Builder(ResourceLocation id, AttackType attackType,
-				float convertTime, float antic, float preDelay, float contact, float recovery, boolean affectY, InteractionHand hand,
-				@Nullable Collider collider, String index, ResourceLocation path, Function<Models<?>, Model> model)
+				float convertTime, float begin, float contactStart, float contactEnd, float end, boolean affectY, InteractionHand hand,
+				@Nullable ResourceLocation colliderId, String jointName, ResourceLocation path, Function<Models<?>, Model> model)
 		{
-			this(id, attackType, convertTime, path, model, new Phase(antic, preDelay, contact, recovery, hand, index, collider));
+			this(id, attackType, convertTime, path, model, new PhaseBuilder(id, begin, contactStart, contactEnd, end, hand, jointName, colliderId));
 		}
 		
-		public Builder(ResourceLocation id, AttackType attackType, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, Phase... phases)
+		public Builder(ResourceLocation id, AttackType attackType, float convertTime, ResourceLocation path, Function<Models<?>, Model> model, PhaseBuilder... phases)
 		{
 			super(id, convertTime, path, model);
 			this.attackType = attackType;
 			this.phases = phases;
 		}
 		
-		@SuppressWarnings({ "rawtypes" })
 		public Builder(ResourceLocation location, JsonObject json)
 		{
 			super(location, json);
@@ -493,29 +473,13 @@ public class AttackAnimation extends ActionAnimation
 			
 			JsonArray jsonPhases = json.get("phases").getAsJsonArray();
 			int phasesLength = jsonPhases.size();
-			AttackAnimation.Phase[] ps = new AttackAnimation.Phase[phasesLength];
+			this.phases = new PhaseBuilder[phasesLength];
 			
 			for (int i = 0; i < phasesLength; i++)
 			{
 				JsonObject jsonPhase = jsonPhases.get(i).getAsJsonObject();
-				float start = jsonPhase.get("begin").getAsFloat();
-				float preDelay = jsonPhase.get("contact_start").getAsFloat();
-				float contact = jsonPhase.get("contact_end").getAsFloat();
-				float end = jsonPhase.get("end").getAsFloat();
-				String weaponBoneName = jsonPhase.get("weapon_bone_name").getAsString();
-				JsonElement jsonCollider = jsonPhase.get("collider");
-				Collider collider = jsonCollider != null ? Colliders.getCollider(new ResourceLocation(jsonCollider.getAsString())) : null;
-				ps[i] = new AttackAnimation.Phase(start, preDelay, contact, end, weaponBoneName, collider);
-				
-				JsonObject properties = jsonPhase.get("properties").getAsJsonObject();
-				for (Map.Entry<String, JsonElement> entry : properties.entrySet())
-				{
-					Property property = Property.GET_BY_NAME.get(entry.getKey());
-					ps[i].addProperty(property, property.jsonConverter.fromJson(entry.getValue()));
-				}
+				this.phases[i] = new PhaseBuilder(id, jsonPhase);
 			}
-			
-			this.phases = ps;
 		}
 		
 		@Override
@@ -528,35 +492,17 @@ public class AttackAnimation extends ActionAnimation
 			JsonArray jsonPhases = new JsonArray();
 			json.add("phases", jsonPhases);
 			
-			for (AttackAnimation.Phase phase : this.phases)
-			{
-				JsonObject jsonPhase = new JsonObject();
-				jsonPhases.add(jsonPhase);
-				jsonPhase.addProperty("begin", phase.begin);
-				jsonPhase.addProperty("contact_start", phase.contactStart);
-				jsonPhase.addProperty("contact_end", phase.contactEnd);
-				jsonPhase.addProperty("end", phase.end);
-				jsonPhase.addProperty("weapon_bone_name", phase.jointName);
-				if (phase.collider != null) jsonPhase.addProperty("collider", phase.collider.getId().toString());
-				
-				JsonObject properties = new JsonObject();
-				jsonPhase.add("properties", properties);
-				
-				phase.properties.forEach((p, v) ->
-				{
-					properties.add(p.name, p.jsonConverter.toJson(v));
-				});
-			}
+			for (PhaseBuilder phase : this.phases) jsonPhases.add(phase.toJson());
 			
 			return json;
 		}
 		
 		@Override
-		public <V> Builder addProperty(Property<V> property, V value)
+		public Builder addProperty(Property<?> property, Object value)
 		{
-			if (property instanceof AttackProperty)
+			if (property instanceof AttackProperty<?> attackProperty)
 			{
-				for (Phase phase : this.phases) phase.addProperty(property, value);
+				for (PhaseBuilder phase : this.phases) phase.addProperty(attackProperty, value);
 			}
 			else super.addProperty(property, value);
 			return this;
@@ -571,8 +517,125 @@ public class AttackAnimation extends ActionAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
+			Phase[] builtPhases = new Phase[this.phases.length];
+			for (int i = 0; i < builtPhases.length; i++)
+			{
+				builtPhases[i] = this.phases[i].build();
+			}
+			
 			register.put(this.getId(), new AttackAnimation(this.id, this.attackType, this.convertTime,
-					this.location, this.model, this.properties.build(), this.phases));
+					this.location, this.model, this.properties.build(), builtPhases));
+		}
+	}
+	
+	public static class PhaseBuilder implements JsonBuilder<Phase>
+	{
+		private static final Logger LOGGER = LogUtils.getLogger();
+		
+		private final ResourceLocation id;
+		private final float begin;
+		private final float contactStart;
+		private final float contactEnd;
+		private final float end;
+		private final InteractionHand hand;
+		private final String jointName;
+		@Nullable private final ResourceLocation colliderId;
+		
+		protected final ImmutableMap.Builder<AttackProperty<?>, Object> properties = new ImmutableMap.Builder<>();
+		
+		public PhaseBuilder(ResourceLocation id, float begin, float contactStart, float contactEnd, float end, String jointName)
+		{
+			this(id, begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, null);
+		}
+		
+		public PhaseBuilder(ResourceLocation id, float begin, float contactStart, float contactEnd, float end, String jointName,
+				@Nullable ResourceLocation colliderId)
+		{
+			this(id, begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, colliderId);
+		}
+		
+		public PhaseBuilder(ResourceLocation id, float begin, float contactStart, float contactEnd, float end, InteractionHand hand, String jointName)
+		{
+			this(id, begin, contactStart, contactEnd, end, hand, jointName, null);
+		}
+		
+		public PhaseBuilder(ResourceLocation id, float begin, float contactStart, float contactEnd, float end, InteractionHand hand,
+				String jointName, @Nullable ResourceLocation colliderId)
+		{
+			this.id = id;
+			this.begin = begin;
+			this.contactStart = contactStart;
+			this.contactEnd = contactEnd;
+			this.end = end;
+			this.hand = hand;
+			this.jointName = jointName;
+			this.colliderId = colliderId;
+		}
+		
+		public PhaseBuilder(ResourceLocation location, JsonObject json)
+		{
+			this.id = location;
+			this.begin = json.get("begin").getAsFloat();
+			this.contactStart = json.get("contact_start").getAsFloat();
+			this.contactEnd = json.get("contact_end").getAsFloat();
+			this.end = json.get("end").getAsFloat();
+			this.jointName = json.get("weapon_bone_name").getAsString();
+			this.hand = InteractionHand.valueOf(json.get("hand").getAsString());
+			
+			JsonElement colliderJson = json.get("collider");
+			this.colliderId = colliderJson != null ? ResourceLocation.tryParse(colliderJson.getAsString()) : null;
+			
+			JsonObject properties = json.get("properties").getAsJsonObject();
+			for (Map.Entry<String, JsonElement> entry : properties.entrySet())
+			{
+				Property<?> property = Property.GET_BY_NAME.get(entry.getKey());
+				if (property instanceof AttackProperty<?> attackProperty)
+				{
+					this.addProperty(attackProperty, attackProperty.jsonConverter.fromJson(entry.getValue()));
+				}
+				else LOGGER.error("Error while reading phase properties of "+location+". The property with the name "+entry.getKey()+" is not an AttackProperty.");
+			}
+		}
+		
+		public PhaseBuilder addProperty(AttackProperty<?> property, Object value)
+		{
+			this.properties.put(property, value);
+			return this;
+		}
+		
+		@Override
+		public ResourceLocation getId()
+		{
+			return this.id;
+		}
+
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			json.addProperty("begin", this.begin);
+			json.addProperty("contact_start", this.contactStart);
+			json.addProperty("contact_end", this.contactEnd);
+			json.addProperty("end", this.end);
+			json.addProperty("weapon_bone_name", this.jointName);
+			if (this.colliderId != null) json.addProperty("collider", this.colliderId.toString());
+			
+			JsonObject properties = new JsonObject();
+			json.add("properties", properties);
+			
+			this.properties.build().forEach((p, v) ->
+			{
+				properties.add(p.name, p.jsonConverter.toJson(v));
+			});
+			
+			return json;
+		}
+
+		@Override
+		public Phase build()
+		{
+			Collider collider = Colliders.getCollider(this.colliderId);
+			return new Phase(this.begin, this.contactStart, this.contactEnd, this.end, this.hand, this.jointName, collider, this.properties.build());
 		}
 	}
 }

@@ -9,9 +9,9 @@ import com.skullmangames.darksouls.common.entity.StrayDemon;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
@@ -57,8 +57,8 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		if (cap.getWeaponCollider() == Colliders.GREAT_HAMMER) return Colliders.STRAY_DEMON_GREAT_HAMMER;
-		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
+		if (cap.getWeaponCollider() == Colliders.GREAT_HAMMER.get()) return Colliders.STRAY_DEMON_GREAT_HAMMER.get();
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST.get();
 	}
 	
 	@Override

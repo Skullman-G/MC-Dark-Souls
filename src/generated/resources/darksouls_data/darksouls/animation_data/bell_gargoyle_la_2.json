@@ -28,9 +28,9 @@
       "weapon_bone_name": "Tool_R",
       "collider": "darksouls:bell_gargoyle_halberd",
       "properties": {
-        "stamina_damage": 17,
-        "stun_type": "HEAVY",
         "deflection": "IMPOSSIBLE",
+        "stun_type": "HEAVY",
+        "stamina_damage": 17,
         "poise_damage": 13
       }
     }

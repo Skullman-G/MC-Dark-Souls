@@ -14,7 +14,7 @@ import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public class WeaponMovesets extends AbstractDSDataConfig
+public class WeaponMovesets extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, WeaponMoveset> movesets = ImmutableMap.of();
@@ -75,8 +75,8 @@ public class WeaponMovesets extends AbstractDSDataConfig
 	
 	public static WeaponMoveset getMoveset(ResourceLocation id)
 	{
-		WeaponMovesets manager = DarkSouls.getInstance().weaponMovesets;
-		if (manager.movesets.containsKey(id)) return manager.movesets.get(id);
+		WeaponMovesets register = DarkSouls.getInstance().weaponMovesets;
+		if (register.movesets.containsKey(id)) return register.movesets.get(id);
 		throw new IllegalArgumentException("Unable to find weapon moveset with path: " + id);
 	}
 	

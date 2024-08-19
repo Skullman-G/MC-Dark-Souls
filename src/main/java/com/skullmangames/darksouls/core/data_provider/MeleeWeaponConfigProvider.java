@@ -16,8 +16,8 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.WeaponM
 import com.skullmangames.darksouls.common.capability.item.WeaponCap.Scaling;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.AuxEffects;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModItems;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;

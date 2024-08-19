@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public class SpellConfigs extends AbstractDSDataConfig
+public class SpellConfigs extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	

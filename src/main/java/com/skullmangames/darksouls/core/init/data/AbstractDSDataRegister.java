@@ -21,7 +21,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
-public abstract class AbstractDSDataConfig
+public abstract class AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final String PATH_SUFFIX = ".json";
@@ -29,7 +29,7 @@ public abstract class AbstractDSDataConfig
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private final String directory;
 
-	public AbstractDSDataConfig(String directory)
+	public AbstractDSDataRegister(String directory)
 	{
 		this.directory = directory;
 	}

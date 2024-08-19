@@ -12,7 +12,7 @@ import com.skullmangames.darksouls.core.util.WeaponSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public class WeaponSkills extends AbstractDSDataConfig
+public class WeaponSkills extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, WeaponSkill> skills = ImmutableMap.of();
@@ -49,8 +49,10 @@ public class WeaponSkills extends AbstractDSDataConfig
 		LOGGER.info("Loaded "+this.skills.size()+" weapon skills");
 	}
 	
-	public static WeaponSkill getFromLocation(ResourceLocation location)
+	public static WeaponSkill getSkill(ResourceLocation id)
 	{
-		return DarkSouls.getInstance().weaponSkills.skills.get(location);
+		WeaponSkills register = DarkSouls.getInstance().weaponSkills;
+		if (register.skills.containsKey(id)) return register.skills.get(id);
+		throw new IllegalArgumentException("Unable to find collider with path: " + id);
 	}
 }

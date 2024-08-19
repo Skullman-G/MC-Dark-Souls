@@ -89,14 +89,14 @@ public class SpellCap extends ItemCapability
 		}
 	}
 	
-	public static Builder builder(Item item, SpellType spellType, float fpConsumption, StaticAnimation castingAnim)
+	public static Builder builder(Item item, SpellType spellType, float fpConsumption, ResourceLocation castingAnimId)
 	{
-		return new Builder(item, spellType, fpConsumption, castingAnim, null);
+		return new Builder(item, spellType, fpConsumption, castingAnimId, null);
 	}
 	
-	public static Builder builder(Item item, SpellType spellType, float fpConsumption, StaticAnimation castingAnim, StaticAnimation horsebackAnim)
+	public static Builder builder(Item item, SpellType spellType, float fpConsumption, ResourceLocation castingAnimId, ResourceLocation horsebackAnimId)
 	{
-		return new Builder(item, spellType, fpConsumption, castingAnim, horsebackAnim);
+		return new Builder(item, spellType, fpConsumption, castingAnimId, horsebackAnimId);
 	}
 	
 	public static class Builder implements JsonBuilder<SpellCap>
@@ -104,19 +104,37 @@ public class SpellCap extends ItemCapability
 		private Item item;
 		private SpellType spellType;
 		private float fpConsumption;
-		private StaticAnimation castingAnim;
-		@Nullable private StaticAnimation horsebackAnim;
+		private ResourceLocation castingAnimId;
+		@Nullable private ResourceLocation horsebackAnimId;
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		
-		private Builder() {}
-		
-		private Builder(Item item, SpellType spellType, float fpConsumption, StaticAnimation castingAnim, @Nullable StaticAnimation horsebackAnim)
+		private Builder(Item item, SpellType spellType, float fpConsumption, ResourceLocation castingAnimId, @Nullable ResourceLocation horsebackAnimId)
 		{
 			this.item = item;
 			this.spellType = spellType;
 			this.fpConsumption = fpConsumption;
-			this.castingAnim = castingAnim;
-			this.horsebackAnim = horsebackAnim;
+			this.castingAnimId = castingAnimId;
+			this.horsebackAnimId = horsebackAnimId;
+		}
+		
+		private Builder(ResourceLocation location, JsonObject json)
+		{
+			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
+			this.item = ForgeRegistries.ITEMS.getValue(itemId);
+			
+			this.spellType = SpellType.valueOf(json.get("spell_type").getAsString());
+			this.fpConsumption = json.get("fp_consumption").getAsFloat();
+			
+			this.castingAnimId = ResourceLocation.tryParse(json.get("casting_animation").getAsString());
+			
+			JsonElement horsebackAnimJson = json.get("horseback_animation");
+			if (horsebackAnimJson != null) this.horsebackAnimId = ResourceLocation.tryParse(horsebackAnimJson.getAsString());
+			
+			JsonObject statRequirementsJson = json.get("stat_requirements").getAsJsonObject();
+			for (Stat stat : Stats.SPELL_REQUIREMENT_STATS)
+			{
+				this.statRequirements.put(stat, statRequirementsJson.get(stat.getName()).getAsInt());
+			}
 		}
 		
 		@Override
@@ -139,8 +157,8 @@ public class SpellCap extends ItemCapability
 			json.addProperty("registry_name", this.item.getRegistryName().toString());
 			json.addProperty("spell_type", this.spellType.name());
 			json.addProperty("fp_consumption", this.fpConsumption);
-			json.addProperty("casting_animation", this.castingAnim.getId().toString());
-			if (this.horsebackAnim != null) json.addProperty("horseback_animation", this.horsebackAnim.getId().toString());
+			json.addProperty("casting_animation", this.castingAnimId.toString());
+			if (this.horsebackAnimId != null) json.addProperty("horseback_animation", this.horsebackAnimId.toString());
 			
 			JsonObject statReqJson = new JsonObject();
 			json.add("stat_requirements", statReqJson);
@@ -152,38 +170,17 @@ public class SpellCap extends ItemCapability
 			return json;
 		}
 		
-		@Override
-		public void initFromJson(ResourceLocation location, JsonObject json)
-		{
-			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
-			this.item = ForgeRegistries.ITEMS.getValue(itemId);
-			
-			this.spellType = SpellType.valueOf(json.get("spell_type").getAsString());
-			this.fpConsumption = json.get("fp_consumption").getAsFloat();
-			
-			this.castingAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("casting_animation").getAsString()));
-			
-			JsonElement horsebackAnimJson = json.get("horseback_animation");
-			if (horsebackAnimJson != null) this.horsebackAnim = AnimationManager.getAnimation(new ResourceLocation(horsebackAnimJson.getAsString()));
-			
-			JsonObject statRequirementsJson = json.get("stat_requirements").getAsJsonObject();
-			for (Stat stat : Stats.SPELL_REQUIREMENT_STATS)
-			{
-				this.statRequirements.put(stat, statRequirementsJson.get(stat.getName()).getAsInt());
-			}
-		}
-		
 		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			Builder builder = new Builder();
-			builder.initFromJson(location, json);
-			return builder;
+			return new Builder(location, json);
 		}
 		
 		@Override
 		public SpellCap build()
 		{
-			return new SpellCap(this.item, this.spellType, this.fpConsumption, this.castingAnim, this.horsebackAnim, this.statRequirements.build());
+			StaticAnimation castingAnim = AnimationManager.getAnimation(this.castingAnimId);
+			StaticAnimation horsebackAnim = this.horsebackAnimId != null ? AnimationManager.getAnimation(this.horsebackAnimId) : null;
+			return new SpellCap(this.item, this.spellType, this.fpConsumption, castingAnim, horsebackAnim, this.statRequirements.build());
 		}
 	}
 }

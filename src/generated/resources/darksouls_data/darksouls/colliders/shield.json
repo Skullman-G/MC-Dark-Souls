@@ -1,0 +1,10 @@
+{
+  "type": "CAPSULE",
+  "radius": 0.6,
+  "height": 1.5,
+  "base_x": 0.15,
+  "base_y": 0.0,
+  "base_z": 0.6,
+  "x_rotation": -90.0,
+  "y_rotation": 0.0
+}

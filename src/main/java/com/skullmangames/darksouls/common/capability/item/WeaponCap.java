@@ -301,8 +301,6 @@ public abstract class WeaponCap extends AttributeItemCap
 		protected ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		protected ImmutableMap.Builder<Stat, Scaling> statScaling = ImmutableMap.builder();
 		
-		protected Builder() {}
-		
 		protected Builder(Item item, WeaponCategory category, float weight)
 		{
 			this.item = item;
@@ -311,51 +309,7 @@ public abstract class WeaponCap extends AttributeItemCap
 			this.weight = weight;
 		}
 		
-		public ResourceLocation getId()
-		{
-			return this.item.getRegistryName();
-		}
-		
-		public JsonObject toJson()
-		{
-			JsonObject json = new JsonObject();
-			json.addProperty("registry_name", this.item.getRegistryName().toString());
-			json.addProperty("category", this.category.toString());
-			json.addProperty("skill", this.skillId.toString());
-			json.addProperty("weight", this.weight);
-			json.addProperty("critical", this.critical);
-			
-			JsonObject damage = new JsonObject();
-			json.add("damage", damage);
-			this.damage.build().forEach((type, dam) ->
-			{
-				damage.addProperty(type.toString(), dam);
-			});
-			
-			JsonArray auxEffects = new JsonArray();
-			json.add("aux_effects", auxEffects);
-			this.auxEffects.build().forEach((auxEffect) ->
-			{
-				auxEffects.add(auxEffect.toString());
-			});
-			
-			JsonObject statRequirements = new JsonObject();
-			json.add("stat_requirements", statRequirements);
-			this.statRequirements.build().forEach((stat, req) ->
-			{
-				statRequirements.addProperty(stat.getName(), req);
-			});
-			
-			JsonObject statScaling = new JsonObject();
-			json.add("stat_scaling", statScaling);
-			this.statScaling.build().forEach((stat, scaling) ->
-			{
-				statScaling.addProperty(stat.getName(), scaling.toString());
-			});
-			return json;
-		}
-		
-		public void initFromJson(ResourceLocation location, JsonObject json)
+		protected Builder(ResourceLocation location, JsonObject json)
 		{
 			ResourceLocation itemId = ResourceLocation.tryParse(json.get("registry_name").getAsString());
 			this.item = ForgeRegistries.ITEMS.getValue(itemId);
@@ -401,6 +355,50 @@ public abstract class WeaponCap extends AttributeItemCap
 					this.auxEffects.add(AuxEffects.fromId(ResourceLocation.tryParse(auxEffect.getAsString())));
 				}
 			}
+		}
+		
+		public ResourceLocation getId()
+		{
+			return this.item.getRegistryName();
+		}
+		
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			json.addProperty("registry_name", this.item.getRegistryName().toString());
+			json.addProperty("category", this.category.toString());
+			json.addProperty("skill", this.skillId.toString());
+			json.addProperty("weight", this.weight);
+			json.addProperty("critical", this.critical);
+			
+			JsonObject damage = new JsonObject();
+			json.add("damage", damage);
+			this.damage.build().forEach((type, dam) ->
+			{
+				damage.addProperty(type.toString(), dam);
+			});
+			
+			JsonArray auxEffects = new JsonArray();
+			json.add("aux_effects", auxEffects);
+			this.auxEffects.build().forEach((auxEffect) ->
+			{
+				auxEffects.add(auxEffect.toString());
+			});
+			
+			JsonObject statRequirements = new JsonObject();
+			json.add("stat_requirements", statRequirements);
+			this.statRequirements.build().forEach((stat, req) ->
+			{
+				statRequirements.addProperty(stat.getName(), req);
+			});
+			
+			JsonObject statScaling = new JsonObject();
+			json.add("stat_scaling", statScaling);
+			this.statScaling.build().forEach((stat, scaling) ->
+			{
+				statScaling.addProperty(stat.getName(), scaling.toString());
+			});
+			return json;
 		}
 	}
 }

@@ -16,10 +16,10 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
@@ -61,7 +61,7 @@ public class ParryAnimation extends ActionAnimation
 				
 				ModMatrix4f modelMat = entityCap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
 				ModMatrix4f mat = modelMat.translate(0.8F, entityCap.getOriginalEntity().getBbHeight() / 2, 0).scale(1.75F, 1.75F, 1.75F);
-				Collider collider = Colliders.SHIELD;
+				Collider collider = Colliders.SHIELD.get();
 				collider.transform(mat);
 				
 				for (Entity entity : entities)

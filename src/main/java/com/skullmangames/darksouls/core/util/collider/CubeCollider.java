@@ -1,8 +1,10 @@
 package com.skullmangames.darksouls.core.util.collider;
 
+import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -13,14 +15,14 @@ public class CubeCollider extends Collider
 {
 	protected final Face[] faces;
 	
-	public CubeCollider(AABB aabb)
+	public CubeCollider(ResourceLocation id, AABB aabb)
 	{
-		this(aabb, aabb.getCenter());
+		this(id, aabb, aabb.getCenter());
 	}
 	
-	public CubeCollider(AABB aabb, Vec3 offset)
+	public CubeCollider(ResourceLocation id, AABB aabb, Vec3 offset)
 	{
-		this(aabb.minX - offset.x, aabb.minY - offset.y, aabb.minZ - offset.z,
+		this(id, aabb.minX - offset.x, aabb.minY - offset.y, aabb.minZ - offset.z,
 				aabb.maxX - offset.x, aabb.maxY - offset.y, aabb.maxZ - offset.z);
 		this.moveTo(offset);
 	}
@@ -28,9 +30,9 @@ public class CubeCollider extends Collider
 	/*
 	 * This constructor is purely used to make a clone of another CubeCollider
 	 */
-	public CubeCollider(AABB aabb, Vec3[] modelVertices, Face[] faces)
+	public CubeCollider(ResourceLocation id, AABB aabb, Vec3[] modelVertices, Face[] faces)
 	{
-		super(aabb);
+		super(id, aabb);
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
 		this.faces = new Face[6];
@@ -47,9 +49,9 @@ public class CubeCollider extends Collider
 		}
 	}
 	
-	public CubeCollider(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+	public CubeCollider(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
 	{
-		super(createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
+		super(id, createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
 		this.faces = new Face[6];
@@ -151,14 +153,8 @@ public class CubeCollider extends Collider
 	@Override
 	public boolean collidesWith(Entity opponent)
 	{
-		CubeCollider collider = new CubeCollider(opponent.getBoundingBox());
+		CubeCollider collider = new CubeCollider(null, opponent.getBoundingBox());
 		return this.collidesWith(collider);
-	}
-	
-	@Override
-	public CubeCollider clone()
-	{
-		return new CubeCollider(this.outerAABB, this.modelVertices, this.faces);
 	}
 	
 	@Override
@@ -194,5 +190,62 @@ public class CubeCollider extends Collider
 	public void drawInternal(boolean red)
 	{
 		Gizmos.drawBox(this.vertices, red ? 0xFF0000 : 0xFFFFFF);
+	}
+	
+	public static class Builder extends Collider.Builder
+	{
+		protected double minX, minY, minZ, maxX, maxY, maxZ;
+		
+		protected Builder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+		{
+			super(id);
+			this.minX = minX;
+			this.minY = minY;
+			this.minZ = minZ;
+			this.maxX = maxX;
+			this.maxY = maxY;
+			this.maxZ = maxZ;
+		}
+		
+		protected Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.minX = json.get("min_x").getAsDouble();
+			this.minY = json.get("min_y").getAsDouble();
+			this.minZ = json.get("min_x").getAsDouble();
+			
+			this.maxX = json.get("max_x").getAsDouble();
+			this.maxY = json.get("max_y").getAsDouble();
+			this.maxZ = json.get("max_z").getAsDouble();
+		}
+
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			
+			json.addProperty("min_x", this.minX);
+			json.addProperty("min_y", this.minY);
+			json.addProperty("min_z", this.minZ);
+			
+			json.addProperty("max_x", this.maxX);
+			json.addProperty("max_y", this.maxY);
+			json.addProperty("max_z", this.maxZ);
+			
+			return json;
+		}
+
+		@Override
+		public Collider build()
+		{
+			return new CubeCollider(this.getId(), this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
+		}
+
+		@Override
+		protected ColliderType getType()
+		{
+			return ColliderType.CUBE;
+		}
 	}
 }

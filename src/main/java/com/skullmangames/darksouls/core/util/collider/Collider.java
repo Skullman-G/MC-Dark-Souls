@@ -1,18 +1,23 @@
 package com.skullmangames.darksouls.core.util.collider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
+import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +33,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class Collider
 {
+	private final ResourceLocation id;
+	
 	private Vec3 worldCenter;
 	
 	protected Vec3[] vertices;
@@ -40,8 +47,9 @@ public abstract class Collider
 	 **/
 	protected final AABB outerAABB;
 
-	public Collider(AABB outerAABB)
+	public Collider(ResourceLocation id, AABB outerAABB)
 	{
+		this.id = id;
 		this.outerAABB = outerAABB;
 		this.worldCenter = Vec3.ZERO;
 	}
@@ -49,7 +57,7 @@ public abstract class Collider
 	@Nullable
 	public ResourceLocation getId()
 	{
-		return Colliders.getId(this);
+		return this.id;
 	}
 	
 	public Vec3 getWorldCenter()
@@ -125,7 +133,7 @@ public abstract class Collider
 				{
 					ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
 					ModMatrix4f mat = modelMat.translate(0.4F, e.getBbHeight() / 2, 0);
-					Collider shieldCollider = Colliders.SHIELD;
+					Collider shieldCollider = Colliders.SHIELD.get();
 					shieldCollider.transform(mat);
 					if (this.collidesWith(shieldCollider)) newList.add(e);
 				}
@@ -140,8 +148,6 @@ public abstract class Collider
 		this.filterHitEntities(list);
 		return list;
 	}
-	
-	public abstract Collider clone();
 
 	@OnlyIn(Dist.CLIENT)
 	public abstract void drawInternal(boolean red);
@@ -174,5 +180,141 @@ public abstract class Collider
 	{
 		return String.format("Center : [%f, %f, %f]", this.getWorldCenter().x, this.getWorldCenter().y,
 				this.getWorldCenter().z);
+	}
+	
+	public static Builder capsuleBuilder(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)
+	{
+		return new CapsuleCollider.Builder(id, radius, height, base, xRot, yRot);
+	}
+	
+	public static Builder capsuleBuilder(ResourceLocation id, double radius, double height, Vec3 base)
+	{
+		return capsuleBuilder(id, radius, height, base, 0F, 0F);
+	}
+	
+	public static Builder cubeBuilder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+	{
+		return new CubeCollider.Builder(id, minX, minY, minZ, maxX, maxY, maxZ);
+	}
+	
+	public static CoreBuilder multiBuilder(ResourceLocation id, Builder... builders)
+	{
+		return new CoreBuilder(id, builders);
+	}
+	
+	public static enum ColliderType
+	{
+		CUBE, CAPSULE
+	}
+	
+	public static class CoreBuilder implements JsonBuilder<Collider>
+	{
+		private ResourceLocation id;
+		private List<Builder> colliders;
+		
+		private CoreBuilder(ResourceLocation id, Builder... builders)
+		{
+			this.id = id;
+			this.colliders = Arrays.asList(builders);
+		}
+		
+		private CoreBuilder(ResourceLocation location, JsonObject json)
+		{
+			JsonArray array = json.get("colliders").getAsJsonArray();
+			
+			for (JsonElement e : array)
+			{
+				JsonObject o = e.getAsJsonObject();
+				ColliderType type = ColliderType.valueOf(o.get("type").getAsString());
+				
+				switch (type)
+				{
+					case CUBE:
+						this.colliders.add(new CubeCollider.Builder(location, o));
+						break;
+						
+					case CAPSULE:
+						this.colliders.add(new CapsuleCollider.Builder(location, o));
+						break;
+				}
+			}
+		}
+		
+		@Override
+		public ResourceLocation getId()
+		{
+			return this.id;
+		}
+		
+		public static CoreBuilder fromJson(ResourceLocation location, JsonObject json)
+		{
+			return new CoreBuilder(location, json);
+		}
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			
+			JsonArray array = new JsonArray();
+			json.add("colliders", array);
+			
+			for (Builder collider : this.colliders)
+			{
+				array.add(collider.toJson());
+			}
+			
+			return json;
+		}
+		
+		@Override
+		public Collider build()
+		{
+			if (this.colliders.size() > 1)
+			{
+				Collider[] array = new Collider[this.colliders.size()];
+				for (int i = 0; i < array.length; i++)
+				{
+					array[i] = this.colliders.get(i).build();
+				}
+				
+				return new MultiCollider(this.getId(), array);
+			}
+			else
+			{
+				return this.colliders.get(0).build();
+			}
+		}
+	}
+	
+	public static abstract class Builder implements JsonBuilder<Collider>
+	{
+		private ResourceLocation id;
+		
+		protected Builder(ResourceLocation id)
+		{
+			this.id = id;
+		}
+		
+		protected Builder(ResourceLocation location, JsonObject json)
+		{
+			this.id = location;
+		}
+		
+		protected abstract ColliderType getType();
+		
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = new JsonObject();
+			json.addProperty("type", this.getType().name());
+			return json;
+		}
+		
+		@Override
+		public ResourceLocation getId()
+		{
+			return this.id;
+		}
 	}
 }

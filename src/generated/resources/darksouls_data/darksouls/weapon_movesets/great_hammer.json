@@ -1,12 +1,5 @@
 {
   "moveset": {
-    "light": {
-      "repeating": false,
-      "animations": [
-        "darksouls:great_hammer_light_attack_1",
-        "darksouls:great_hammer_light_attack_2"
-      ]
-    },
     "heavy": {
       "repeating": false,
       "animations": [
@@ -19,10 +12,16 @@
         "darksouls:great_hammer_dash_attack"
       ]
     },
-    "backstab": {
+    "two_handed_heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike"
+        "darksouls:great_hammer_th_heavy_attack"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:great_hammer_th_dash_attack"
       ]
     },
     "punish": {
@@ -38,16 +37,17 @@
         "darksouls:great_hammer_th_la_2"
       ]
     },
-    "two_handed_heavy": {
+    "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:great_hammer_th_heavy_attack"
+        "darksouls:backstab_strike"
       ]
     },
-    "two_handed_dash": {
-      "repeating": true,
+    "light": {
+      "repeating": false,
       "animations": [
-        "darksouls:great_hammer_th_dash_attack"
+        "darksouls:great_hammer_light_attack_1",
+        "darksouls:great_hammer_light_attack_2"
       ]
     }
   }

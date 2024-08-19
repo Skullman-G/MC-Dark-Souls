@@ -6,8 +6,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.entity.TaurusDemon;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
@@ -40,8 +40,8 @@ public class TaurusDemonCap extends MobCap<TaurusDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		if (cap.getWeaponCollider() == Colliders.DEMONS_GREATAXE) return Colliders.TAURUS_DEMON_GREATAXE;
-		return cap != null ? cap.getWeaponCollider() : Colliders.FIST;
+		if (cap.getWeaponCollider() == Colliders.DEMONS_GREATAXE.get()) return Colliders.TAURUS_DEMON_GREATAXE.get();
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST.get();
 	}
 	
 	@Override

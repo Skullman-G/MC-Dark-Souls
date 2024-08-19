@@ -26,7 +26,7 @@
     "stat.darksouls.faith": "-"
   },
   "moveset": "darksouls:greataxe",
-  "collider": "darksouls:greataxe",
+  "collider": "darksouls:demons_greataxe",
   "stability": 0.38,
   "deflection": "NONE",
   "weapon_material": "wooden_weapon",

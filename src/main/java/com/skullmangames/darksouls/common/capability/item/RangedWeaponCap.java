@@ -2,6 +2,7 @@ package com.skullmangames.darksouls.common.capability.item;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -43,10 +44,8 @@ public class RangedWeaponCap extends WeaponCap
 	
 	public static class Builder extends WeaponCap.Builder<RangedWeaponCap>
 	{
-		private Map<LivingMotion, StaticAnimation> animOverrides = new HashMap<>();
+		private Map<LivingMotion, ResourceLocation> animOverrideIds = new HashMap<>();
 		private HandProperty handProperty;
-		
-		private Builder() {}
 		
 		private Builder(Item item, WeaponCategory category, float critical, float weight, HandProperty handProperty)
 		{
@@ -55,9 +54,22 @@ public class RangedWeaponCap extends WeaponCap
 			this.critical = critical;
 		}
 		
-		public Builder putAnimOverride(LivingMotion motion, StaticAnimation anim)
+		private Builder(ResourceLocation location, JsonObject json)
 		{
-			this.animOverrides.put(motion, anim);
+			super(location, json);
+			
+			JsonObject jsonAnimOverrides = json.get("animation_overrides").getAsJsonObject();
+			jsonAnimOverrides.entrySet().forEach((entry) ->
+			{
+				this.animOverrideIds.put(LivingMotion.valueOf(entry.getKey()), ResourceLocation.tryParse(entry.getValue().getAsString()));
+			});
+			
+			this.handProperty = HandProperty.valueOf(json.get("hand_property").getAsString());
+		}
+		
+		public Builder putAnimOverride(LivingMotion motion, ResourceLocation anim)
+		{
+			this.animOverrideIds.put(motion, anim);
 			return this;
 		}
 		
@@ -93,9 +105,9 @@ public class RangedWeaponCap extends WeaponCap
 			
 			JsonObject jsonAnimOverrides = new JsonObject();
 			json.add("animation_overrides", jsonAnimOverrides);
-			this.animOverrides.forEach((motion, anim) ->
+			this.animOverrideIds.forEach((motion, anim) ->
 			{
-				jsonAnimOverrides.addProperty(motion.name(), anim.getId().toString());
+				jsonAnimOverrides.addProperty(motion.name(), anim.toString());
 			});
 			
 			json.addProperty("hand_property", this.handProperty.name());
@@ -103,31 +115,18 @@ public class RangedWeaponCap extends WeaponCap
 			return json;
 		}
 		
-		@Override
-		public void initFromJson(ResourceLocation location, JsonObject json)
-		{
-			super.initFromJson(location, json);
-			
-			JsonObject jsonAnimOverrides = json.get("animation_overrides").getAsJsonObject();
-			jsonAnimOverrides.entrySet().forEach((entry) ->
-			{
-				this.animOverrides.put(LivingMotion.valueOf(entry.getKey()), AnimationManager.getAnimation(new ResourceLocation(entry.getValue().getAsString())));
-			});
-			
-			this.handProperty = HandProperty.valueOf(json.get("hand_property").getAsString());
-		}
-		
 		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			Builder builder = new Builder();
-			builder.initFromJson(location, json);
-			return builder;
+			return new Builder(location, json);
 		}
 		
 		@Override
 		public RangedWeaponCap build()
 		{
-			return new RangedWeaponCap(this.item, this.category, this.handProperty, this.animOverrides, this.damage.build(),
+			Map<LivingMotion, StaticAnimation> animOverrides = this.animOverrideIds.entrySet().stream()
+					.collect(Collectors.toMap(Map.Entry::getKey, (e) -> AnimationManager.getAnimation(e.getValue())));
+			
+			return new RangedWeaponCap(this.item, this.category, this.handProperty, animOverrides, this.damage.build(),
 					this.auxEffects.build(), this.critical, this.weight, this.statRequirements.build(), this.statScaling.build());
 		}
 	}

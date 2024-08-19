@@ -15,7 +15,7 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public class ArmorConfigs extends AbstractDSDataConfig
+public class ArmorConfigs extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	

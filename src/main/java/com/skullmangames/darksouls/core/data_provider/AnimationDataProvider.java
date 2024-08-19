@@ -13,7 +13,6 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.common.animation.AnimBuilder;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.SmashEvents;
 import com.skullmangames.darksouls.common.animation.Property.ActionAnimationProperty;
@@ -55,14 +54,14 @@ import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAn
 import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.Phase;
+import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.PhaseBuilder;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
@@ -100,8 +99,6 @@ public class AnimationDataProvider implements DataProvider
 				LOGGER.error("Couldn't save animation data {}", path1, ioexception);
 			}
 		}
-
-		AnimationManager.initForDataGenerator(configs);
 	}
 
 	private static List<AnimBuilder> defaultConfigs()
@@ -1758,12 +1755,12 @@ public class AnimationDataProvider implements DataProvider
 
 				new AttackAnimation.Builder(Animations.HOLLOW_BARRAGE.getId(), AttackType.LIGHT, 0.2F,
 						DarkSouls.rl("hollow/fury_attack"), (models) -> models.ENTITY_BIPED,
-						new Phase(0.0F, 1.48F, 1.72F, 1.72F, "Tool_R", Colliders.BROKEN_SWORD),
-						new Phase(1.72F, 1.8F, 1.92F, 1.92F, "Tool_R", Colliders.BROKEN_SWORD),
-						new Phase(1.92F, 2.12F, 2.24F, 2.24F, "Tool_R", Colliders.BROKEN_SWORD),
-						new Phase(2.24F, 2.4F, 2.56F, 2.56F, "Tool_R", Colliders.BROKEN_SWORD),
-						new Phase(2.56F, 2.76F, 2.88F, 2.88F, "Tool_R", Colliders.BROKEN_SWORD),
-						new Phase(2.88F, 3.08F, 3.2F, 4.2F, "Tool_R", Colliders.BROKEN_SWORD))
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 0.0F, 1.48F, 1.72F, 1.72F, "Tool_R", Colliders.BROKEN_SWORD.getId()),
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 1.72F, 1.8F, 1.92F, 1.92F, "Tool_R", Colliders.BROKEN_SWORD.getId()),
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 1.92F, 2.12F, 2.24F, 2.24F, "Tool_R", Colliders.BROKEN_SWORD.getId()),
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 2.24F, 2.4F, 2.56F, 2.56F, "Tool_R", Colliders.BROKEN_SWORD.getId()),
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 2.56F, 2.76F, 2.88F, 2.88F, "Tool_R", Colliders.BROKEN_SWORD.getId()),
+						new PhaseBuilder(Animations.HOLLOW_BARRAGE.getId(), 2.88F, 3.08F, 3.2F, 4.2F, "Tool_R", Colliders.BROKEN_SWORD.getId()))
 								.addProperty(AttackProperty.DEFLECTION, Deflection.LIGHT)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.04F, Side.SERVER, ModSoundEvents.HOLLOW_PREPARE),
@@ -1922,8 +1919,9 @@ public class AnimationDataProvider implements DataProvider
 
 				new AttackAnimation.Builder(Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO.getId(),
 						AttackType.LIGHT, 0.2F, DarkSouls.rl("hollow_lordran_soldier/sword_thrust_combo"),
-						(models) -> models.ENTITY_BIPED, new Phase(0.0F, 0.52F, 0.72F, 0.72F, "Tool_R", null),
-						new Phase(0.72F, 1.2F, 1.4F, 2.0F, "Tool_R", null))
+						(models) -> models.ENTITY_BIPED,
+						new PhaseBuilder(Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO.getId(), 0.0F, 0.52F, 0.72F, 0.72F, "Tool_R"),
+						new PhaseBuilder(Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_THRUST_COMBO.getId(), 0.72F, 1.2F, 1.4F, 2.0F, "Tool_R"))
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.52F, Side.SERVER, ModSoundEvents.SWORD_SWING),
 										new PlaySoundEvent(1.2F, Side.SERVER, ModSoundEvents.SWORD_SWING) })
@@ -2000,7 +1998,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH.getId(), AttackType.HEAVY,
-						0.2F, 0.0F, 0.6F, 0.8F, 1.6F, Colliders.SHIELD, "Tool_L",
+						0.2F, 0.0F, 0.6F, 0.8F, 1.6F, Colliders.SHIELD.getId(), "Tool_L",
 						DarkSouls.rl("hollow_lordran_soldier/shield_bash"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.6F, Side.SERVER, ModSoundEvents.FIST_SWING) })
@@ -2131,7 +2129,8 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.getId(), AttackType.LIGHT, 0.2F,
 						DarkSouls.rl("balder_knight/rapier_la"), (models) -> models.ENTITY_BIPED,
-						new Phase(0.0F, 0.1F, 0.4F, 0.4F, "Tool_R"), new Phase(0.4F, 0.72F, 0.8F, 2.0F, "Tool_R"))
+						new PhaseBuilder(Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.getId(), 0.0F, 0.1F, 0.4F, 0.4F, "Tool_R"),
+						new PhaseBuilder(Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.getId(), 0.4F, 0.72F, 0.8F, 2.0F, "Tool_R"))
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.1F, Side.CLIENT, ModSoundEvents.SWORD_SWING),
 										new PlaySoundEvent(0.25F, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT),
@@ -2144,7 +2143,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(Animations.BALDER_KNIGHT_SHIELD_HA.getId(), AttackType.HEAVY, 0.2F, 0.0F,
-						0.08F, 0.24F, 1.2F, Colliders.SHIELD, "Tool_L", DarkSouls.rl("balder_knight/shield_ha"),
+						0.08F, 0.24F, 1.2F, Colliders.SHIELD.getId(), "Tool_L", DarkSouls.rl("balder_knight/shield_ha"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT),
 						new PlaySoundEvent(0.08F, Side.CLIENT, ModSoundEvents.FIST_SWING),
@@ -2336,7 +2335,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 38),
 
 				new AttackAnimation.Builder(Animations.BERENIKE_KNIGHT_KICK.getId(), AttackType.HEAVY, 0.2F, 0.0F,
-						0.56F, 0.9F, 1.6F, Colliders.FIST, "Leg_L", DarkSouls.rl("berenike_knight/kick"),
+						0.56F, 0.9F, 1.6F, Colliders.FIST.getId(), "Leg_L", DarkSouls.rl("berenike_knight/kick"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.56F, Side.CLIENT, ModSoundEvents.FIST_SWING),
 						new PlaySoundEvent(1.56F, Side.CLIENT, ModSoundEvents.BERENIKE_KNIGHT_FOOT) })
@@ -2463,7 +2462,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(Animations.BLACK_KNIGHT_SHIELD_ATTACK.getId(), AttackType.HEAVY, 0.2F, 0.0F,
-						0.52F, 0.8F, 1.6F, Colliders.SHIELD, "Tool_L",
+						0.52F, 0.8F, 1.6F, Colliders.SHIELD.getId(), "Tool_L",
 						DarkSouls.rl("black_knight/black_knight_shield_attack"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.52F, Side.CLIENT, ModSoundEvents.AXE_SWING),
@@ -2595,7 +2594,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 80)
 								.addProperty(AttackProperty.POISE_DAMAGE, 28),
 				new AttackAnimation.Builder(Animations.STRAY_DEMON_GROUND_POUND.getId(), AttackType.HEAVY, 0.05F, 0.0F,
-						1.6F, 1.88F, 3.2F, Colliders.STRAY_DEMON_BODY, "Root", DarkSouls.rl("stray_demon/ground_pound"),
+						1.6F, 1.88F, 3.2F, Colliders.STRAY_DEMON_BODY.getId(), "Root", DarkSouls.rl("stray_demon/ground_pound"),
 						(models) -> models.ENTITY_STRAY_DEMON)
 								.addProperty(StaticAnimationProperty.EVENTS,
 										SmashEvents.BIG_MONSTER_LAND.appendTo(1.76F, new AnimEvent[]
@@ -2635,7 +2634,7 @@ public class AnimationDataProvider implements DataProvider
 								{ new PlaySoundEvent(2.08F, Side.SERVER, ModSoundEvents.BELL_GARGOYLE_LAND) }),
 
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_LA.getIds()[0], AttackType.LIGHT, 0.5F, 0.0F, 0.4F,
-						0.64F, 1.6F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R", DarkSouls.rl("bell_gargoyle/la_1"),
+						0.64F, 1.6F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R", DarkSouls.rl("bell_gargoyle/la_1"),
 						(models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
@@ -2644,7 +2643,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 17)
 								.addProperty(AttackProperty.POISE_DAMAGE, 13),
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_LA.getIds()[1], AttackType.LIGHT, 0.5F, 0.0F, 0.56F,
-						0.8F, 1.68F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R", DarkSouls.rl("bell_gargoyle/la_2"),
+						0.8F, 1.68F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R", DarkSouls.rl("bell_gargoyle/la_2"),
 						(models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.56F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
@@ -2653,7 +2652,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 17)
 								.addProperty(AttackProperty.POISE_DAMAGE, 13),
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_LA.getIds()[2], AttackType.LIGHT, 0.5F, 0.0F,
-						0.7F, 0.96F, 3.2F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						0.7F, 0.96F, 3.2F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R",
 						DarkSouls.rl("bell_gargoyle/la_3"), (models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{
@@ -2666,7 +2665,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 13),
 
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_HA.getIds()[0], AttackType.HEAVY, 0.5F, 0.0F,
-						0.64F, 0.88F, 1.6F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						0.64F, 0.88F, 1.6F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R",
 						DarkSouls.rl("bell_gargoyle/ha_1"), (models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.68F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
@@ -2675,7 +2674,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_HA.getIds()[1], AttackType.HEAVY, 0.5F, 0.0F,
-						0.52F, 0.68F, 2.2F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						0.52F, 0.68F, 2.2F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R",
 						DarkSouls.rl("bell_gargoyle/ha_2"), (models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.52F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })
@@ -2684,7 +2683,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(Animations.BELL_GARGOYLE_HA.getIds()[2], AttackType.HEAVY, 0.5F, 0.0F,
-						0.76F, 1.04F, 1.8F, Colliders.BELL_GARGOYLE_HALBERD, "Tool_R",
+						0.76F, 1.04F, 1.8F, Colliders.BELL_GARGOYLE_HALBERD.getId(), "Tool_R",
 						DarkSouls.rl("bell_gargoyle/ha_3"), (models) -> models.ENTITY_BELL_GARGOYLE)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.52F, Side.SERVER, ModSoundEvents.STRAY_DEMON_SWING) })

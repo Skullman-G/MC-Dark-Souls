@@ -64,13 +64,17 @@ public class SpellcastingWeaponCap extends WeaponCap
 	{
 		private float spellBuff;
 		
-		private Builder() {}
-		
 		private Builder(Item item, WeaponCategory category, float critical, float spellBuff, float weight)
 		{
 			super(item, category, weight);
 			this.critical = critical;
 			this.spellBuff = spellBuff;
+		}
+		
+		private Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			this.spellBuff = json.get("spell_buff").getAsFloat();
 		}
 		
 		@Override
@@ -106,18 +110,9 @@ public class SpellcastingWeaponCap extends WeaponCap
 			return json;
 		}
 		
-		@Override
-		public void initFromJson(ResourceLocation location, JsonObject json)
-		{
-			super.initFromJson(location, json);
-			this.spellBuff = json.get("spell_buff").getAsFloat();
-		}
-		
 		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			Builder builder = new Builder();
-			builder.initFromJson(location, json);
-			return builder;
+			return new Builder(location, json);
 		}
 		
 		public SpellcastingWeaponCap build()

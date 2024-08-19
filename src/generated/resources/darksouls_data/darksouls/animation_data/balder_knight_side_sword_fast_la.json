@@ -63,10 +63,10 @@
       "end": 0.4,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 37,
         "movement_damage_type": "REGULAR",
-        "stun_type": "LIGHT",
         "deflection": "LIGHT",
+        "stun_type": "LIGHT",
+        "stamina_damage": 37,
         "poise_damage": 15
       }
     },
@@ -77,10 +77,10 @@
       "end": 2.0,
       "weapon_bone_name": "Tool_R",
       "properties": {
-        "stamina_damage": 37,
         "movement_damage_type": "REGULAR",
-        "stun_type": "LIGHT",
         "deflection": "LIGHT",
+        "stun_type": "LIGHT",
+        "stamina_damage": 37,
         "poise_damage": 15
       }
     }

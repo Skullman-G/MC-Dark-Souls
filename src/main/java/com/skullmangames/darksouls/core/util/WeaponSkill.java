@@ -26,14 +26,14 @@ public abstract class WeaponSkill
 	
 	public abstract void perform(LivingCap<?> cap, InteractionHand hand);
 	
-	public static WeaponSkill.Builder basicBuilder(ResourceLocation location, StaticAnimation right)
+	public static WeaponSkill.Builder basicBuilder(ResourceLocation location, ResourceLocation rightId)
 	{
-		return new Builder(location, right);
+		return new Builder(location, rightId);
 	}
 	
-	public static WeaponSkill.Builder mirrorBuilder(ResourceLocation location, StaticAnimation right, StaticAnimation left)
+	public static WeaponSkill.Builder mirrorBuilder(ResourceLocation location, ResourceLocation rightId, ResourceLocation leftId)
 	{
-		return new Builder(location, right, left);
+		return new Builder(location, rightId, leftId);
 	}
 	
 	public static class BaseWeaponSkill extends WeaponSkill
@@ -106,27 +106,43 @@ public abstract class WeaponSkill
 	{
 		private ResourceLocation location;
 		private WeaponSkillType skillType;
-		private StaticAnimation rightAnim;
-		@Nullable private StaticAnimation leftAnim;
+		private ResourceLocation rightAnimId;
+		@Nullable private ResourceLocation leftAnimId;
 		
 		private Builder(ResourceLocation location)
 		{
 			this.location = location;
 		}
 		
-		private Builder(ResourceLocation location, StaticAnimation rightAnim)
+		private Builder(ResourceLocation location, ResourceLocation rightAnimId)
 		{
 			this(location);
 			this.skillType = WeaponSkillType.BASIC;
-			this.rightAnim = rightAnim;
+			this.rightAnimId = rightAnimId;
 		}
 		
-		private Builder(ResourceLocation location, StaticAnimation rightAnim, StaticAnimation leftAnim)
+		private Builder(ResourceLocation location, ResourceLocation rightAnimId, ResourceLocation leftAnimId)
 		{
 			this(location);
 			this.skillType = WeaponSkillType.TWO_SIDES;
-			this.rightAnim = rightAnim;
-			this.leftAnim = leftAnim;
+			this.rightAnimId = rightAnimId;
+			this.leftAnimId = leftAnimId;
+		}
+		
+		private Builder(ResourceLocation location, JsonObject json)
+		{
+			this.skillType = WeaponSkillType.fromString(json.get("skill_type").getAsString());
+			
+			switch (this.skillType)
+			{
+				default: case BASIC:
+					this.rightAnimId = ResourceLocation.tryParse(json.get("right_animation").getAsString());
+					break;
+				case TWO_SIDES:
+					this.rightAnimId = ResourceLocation.tryParse(json.get("right_animation").getAsString());
+					this.leftAnimId = ResourceLocation.tryParse(json.get("left_animation").getAsString());
+					break;
+			}
 		}
 		
 		public ResourceLocation getId()
@@ -143,40 +159,21 @@ public abstract class WeaponSkill
 			switch (this.skillType)
 			{
 				case BASIC:
-					json.addProperty("right_animation", this.rightAnim.getId().toString());
+					json.addProperty("right_animation", this.rightAnimId.toString());
 					break;
 					
 				case TWO_SIDES:
-					json.addProperty("right_animation", this.rightAnim.getId().toString());
-					json.addProperty("left_animation", this.leftAnim.getId().toString());
+					json.addProperty("right_animation", this.rightAnimId.toString());
+					json.addProperty("left_animation", this.leftAnimId.toString());
 					break;
 			}
 			
 			return json;
 		}
 		
-		@Override
-		public void initFromJson(ResourceLocation location, JsonObject json)
-		{
-			this.skillType = WeaponSkillType.fromString(json.get("skill_type").getAsString());
-			
-			switch (this.skillType)
-			{
-				default: case BASIC:
-					this.rightAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("right_animation").getAsString()));
-					break;
-				case TWO_SIDES:
-					this.rightAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("right_animation").getAsString()));
-					this.leftAnim = AnimationManager.getAnimation(new ResourceLocation(json.get("left_animation").getAsString()));
-					break;
-			}
-		}
-		
 		public static Builder fromJson(ResourceLocation location, JsonObject json)
 		{
-			Builder builder = new Builder(location);
-			builder.initFromJson(location, json);
-			return builder;
+			return new Builder(location, json);
 		}
 		
 		@Override
@@ -186,9 +183,9 @@ public abstract class WeaponSkill
 			{
 				default:
 				case BASIC:
-					return new BaseWeaponSkill(this.location, this.rightAnim);
+					return new BaseWeaponSkill(this.location, AnimationManager.getAnimation(this.rightAnimId));
 				case TWO_SIDES:
-					return new MirrorWeaponSkill(this.location, this.leftAnim, this.rightAnim);
+					return new MirrorWeaponSkill(this.location, AnimationManager.getAnimation(this.leftAnimId), AnimationManager.getAnimation(this.rightAnimId));
 			}
 		}
 	}

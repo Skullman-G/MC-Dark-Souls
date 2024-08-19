@@ -68,9 +68,9 @@
       "weapon_bone_name": "Root",
       "collider": "darksouls:stray_demon_body",
       "properties": {
-        "stamina_damage": 80,
-        "stun_type": "FLY",
         "deflection": "IMPOSSIBLE",
+        "stun_type": "FLY",
+        "stamina_damage": 80,
         "poise_damage": 28
       }
     }

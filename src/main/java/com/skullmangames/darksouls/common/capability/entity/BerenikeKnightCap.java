@@ -9,7 +9,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.init.Colliders;
+import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 
@@ -78,8 +78,8 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		Collider collider = super.getColliderMatching(hand);
-		return collider == Colliders.ULTRA_GREATSWORD ? Colliders.BERENIKE_KNIGHT_ULTRA_GREATSWORD
-				: collider == Colliders.MACE ? Colliders.BERENIKE_KNIGHT_MACE
+		return collider == Colliders.ULTRA_GREATSWORD.get() ? Colliders.BERENIKE_KNIGHT_ULTRA_GREATSWORD.get()
+				: collider == Colliders.MACE.get() ? Colliders.BERENIKE_KNIGHT_MACE.get()
 				: collider;
 	}
 

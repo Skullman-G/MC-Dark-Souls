@@ -1,12 +1,5 @@
 {
   "moveset": {
-    "light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:fist_light_attack_1",
-        "darksouls:fist_light_attack_2"
-      ]
-    },
     "heavy": {
       "repeating": true,
       "animations": [
@@ -19,16 +12,23 @@
         "darksouls:fist_dash_attack"
       ]
     },
+    "punish": {
+      "repeating": true,
+      "animations": [
+        "darksouls:punish_strike"
+      ]
+    },
     "backstab": {
       "repeating": true,
       "animations": [
         "darksouls:backstab_strike"
       ]
     },
-    "punish": {
+    "light": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_strike"
+        "darksouls:fist_light_attack_1",
+        "darksouls:fist_light_attack_2"
       ]
     }
   }

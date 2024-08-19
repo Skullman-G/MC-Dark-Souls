@@ -1,0 +1,24 @@
+{
+  "colliders": [
+    {
+      "type": "CAPSULE",
+      "radius": 0.5,
+      "height": 1.0,
+      "base_x": 0.0,
+      "base_y": 0.1,
+      "base_z": -0.4,
+      "x_rotation": -4.5,
+      "y_rotation": 0.0
+    },
+    {
+      "type": "CAPSULE",
+      "radius": 0.1,
+      "height": 1.0,
+      "base_x": 0.0,
+      "base_y": 0.1,
+      "base_z": 0.0,
+      "x_rotation": -4.5,
+      "y_rotation": 0.0
+    }
+  ]
+}

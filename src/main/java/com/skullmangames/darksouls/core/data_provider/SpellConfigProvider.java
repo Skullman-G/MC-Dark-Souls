@@ -57,29 +57,29 @@ public class SpellConfigProvider implements DataProvider
 		return ImmutableList.of
 		(
 				//Miracles
-				SpellCap.builder(ModItems.MIRACLE_HEAL.get(), SpellType.MIRACLE, 45F, Animations.BIPED_CAST_MIRACLE_HEAL.get())
+				SpellCap.builder(ModItems.MIRACLE_HEAL.get(), SpellType.MIRACLE, 45F, Animations.BIPED_CAST_MIRACLE_HEAL.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 12),
 				
-				SpellCap.builder(ModItems.MIRACLE_HEAL_AID.get(), SpellType.MIRACLE, 27F, Animations.BIPED_CAST_MIRACLE_HEAL_AID.get())
+				SpellCap.builder(ModItems.MIRACLE_HEAL_AID.get(), SpellType.MIRACLE, 27F, Animations.BIPED_CAST_MIRACLE_HEAL_AID.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 8),
 				
-				SpellCap.builder(ModItems.MIRACLE_HOMEWARD.get(), SpellType.MIRACLE, 30F, Animations.BIPED_CAST_MIRACLE_HOMEWARD.get())
+				SpellCap.builder(ModItems.MIRACLE_HOMEWARD.get(), SpellType.MIRACLE, 30F, Animations.BIPED_CAST_MIRACLE_HOMEWARD.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 18),
 				
-				SpellCap.builder(ModItems.MIRACLE_FORCE.get(), SpellType.MIRACLE, 26F, Animations.BIPED_CAST_MIRACLE_FORCE.get())
+				SpellCap.builder(ModItems.MIRACLE_FORCE.get(), SpellType.MIRACLE, 26F, Animations.BIPED_CAST_MIRACLE_FORCE.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 12),
 				
-				SpellCap.builder(ModItems.MIRACLE_LIGHTNING_SPEAR.get(), SpellType.MIRACLE, 23F, Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR.get(),
-						Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR.get())
+				SpellCap.builder(ModItems.MIRACLE_LIGHTNING_SPEAR.get(), SpellType.MIRACLE, 23F, Animations.BIPED_CAST_MIRACLE_LIGHTNING_SPEAR.getId(),
+						Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 20),
 				
-				SpellCap.builder(ModItems.MIRACLE_GREAT_LIGHTNING_SPEAR.get(), SpellType.MIRACLE, 32F, Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.get(),
-						Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.get())
+				SpellCap.builder(ModItems.MIRACLE_GREAT_LIGHTNING_SPEAR.get(), SpellType.MIRACLE, 32F, Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId(),
+						Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId())
 				.putStatReq(Stats.INTELLIGENCE, 0)
 				.putStatReq(Stats.FAITH, 30)
 		);

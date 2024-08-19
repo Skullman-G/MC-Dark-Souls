@@ -1,10 +1,12 @@
 package com.skullmangames.darksouls.core.util.collider;
 
+import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -16,9 +18,9 @@ public class CapsuleCollider extends Collider
 	protected final double radius;
 	protected final double height;
 	
-	public CapsuleCollider(double radius, double height, Vec3 base, float xRot, float yRot)
+	public CapsuleCollider(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)
 	{
-		this(radius, height, base);
+		this(id, radius, height, base);
 		
 		ModMatrix4f rotMat = ModMatrix4f.createRotatorDeg((float)xRot, Vector3f.XP)
 				.rotateDeg((float)(180 + yRot), Vector3f.YP);
@@ -30,9 +32,9 @@ public class CapsuleCollider extends Collider
 		}
 	}
 	
-	public CapsuleCollider(double radius, double height, Vec3 base)
+	public CapsuleCollider(ResourceLocation id, double radius, double height, Vec3 base)
 	{
-		super(createOuterAABB(radius, height));
+		super(id, createOuterAABB(radius, height));
 		
 		this.radius = radius;
 		this.height = height;
@@ -356,14 +358,8 @@ public class CapsuleCollider extends Collider
 	@Override
 	protected boolean collidesWith(Entity opponent)
 	{
-		CubeCollider collider = new CubeCollider(opponent.getBoundingBox());
+		CubeCollider collider = new CubeCollider(null, opponent.getBoundingBox());
 		return this.collidesWith(collider);
-	}
-
-	@Override
-	public CapsuleCollider clone()
-	{
-		return new CapsuleCollider(this.radius, this.height, this.min());
 	}
 
 	@Override
@@ -377,5 +373,68 @@ public class CapsuleCollider extends Collider
 	public void drawInternal(boolean red)
 	{
 		Gizmos.drawCapsule(this.vertices, red ? 0xFF0000 : 0xFFFFFF);
+	}
+	
+	public static class Builder extends Collider.Builder
+	{
+		protected double radius, height;
+		protected Vec3 base;
+		protected float xRot, yRot;
+		
+		protected Builder(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)
+		{
+			super(id);
+			this.radius = radius;
+			this.height = height;
+			this.base = base;
+			this.xRot = xRot;
+			this.yRot = yRot;
+		}
+		
+		protected Builder(ResourceLocation location, JsonObject json)
+		{
+			super(location, json);
+			
+			this.radius = json.get("radius").getAsDouble();
+			this.height = json.get("height").getAsDouble();
+			this.base = new Vec3
+					(
+							json.get("base_x").getAsDouble(),
+							json.get("base_y").getAsDouble(),
+							json.get("base_z").getAsDouble()
+					);
+			this.xRot = json.get("x_rotation").getAsFloat();
+			this.yRot = json.get("y_rotation").getAsFloat();
+		}
+
+		@Override
+		public JsonObject toJson()
+		{
+			JsonObject json = super.toJson();
+			
+			json.addProperty("radius", this.radius);
+			json.addProperty("height", this.height);
+			
+			json.addProperty("base_x", this.base.x);
+			json.addProperty("base_y", this.base.y);
+			json.addProperty("base_z", this.base.z);
+			
+			json.addProperty("x_rotation", this.xRot);
+			json.addProperty("y_rotation", this.yRot);
+			
+			return json;
+		}
+
+		@Override
+		public Collider build()
+		{
+			return new CapsuleCollider(this.getId(), this.radius, this.height, this.base, this.xRot, this.yRot);
+		}
+
+		@Override
+		protected ColliderType getType()
+		{
+			return ColliderType.CAPSULE;
+		}
 	}
 }
