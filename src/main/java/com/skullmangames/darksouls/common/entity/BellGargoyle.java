@@ -43,18 +43,6 @@ public class BellGargoyle extends AbstractBoss
 		return super.calculateFallDamage(distance, p_225508_2_);
 	}
 	
-	@Override
-	public boolean canBeCollidedWith()
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean isPushable()
-	{
-		return false;
-	}
-	
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()

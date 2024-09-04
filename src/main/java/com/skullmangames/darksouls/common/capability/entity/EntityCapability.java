@@ -1,13 +1,18 @@
 package com.skullmangames.darksouls.common.capability.entity;
 
+import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.core.util.collider.CapsuleCollider;
+import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityCapability<T extends Entity>
 {
 	protected T orgEntity;
+	private ColliderHolder entityCollider = new ColliderHolder(null);
 
 	public abstract void update();
 
@@ -20,6 +25,8 @@ public abstract class EntityCapability<T extends Entity>
 	public void onEntityConstructed(T entityIn)
 	{
 		this.orgEntity = entityIn;
+		this.entityCollider.setType(new CapsuleCollider(DarkSouls.rl("entity_hitbox"),
+				this.orgEntity.getBbWidth(), this.orgEntity.getBbHeight() + this.orgEntity.getBbWidth() / 2F, Vec3.ZERO, -90F, 0F));
 	}
 
 	public void onEntityJoinWorld(T entity) {}
@@ -75,5 +82,10 @@ public abstract class EntityCapability<T extends Entity>
 	public boolean isInvincible()
 	{
 		return false;
+	}
+	
+	public ColliderHolder getEntityCollider()
+	{
+		return this.entityCollider;
 	}
 }

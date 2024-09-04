@@ -48,7 +48,7 @@ public class WeaponTrailRenderer extends AdditionalEntityRenderer
 			this.lastPosMap.put(entity.getId(), list);
 		}
 		
-		boolean canAdd = cap.weaponCollider != null && cap.getEntityState() == EntityState.CONTACT;
+		boolean canAdd = !cap.weaponCollider.isEmpty() && cap.getEntityState() == EntityState.CONTACT;
 		if (canAdd || !list.isEmpty())
 		{
 			if (canAdd) cap.weaponCollider.update(cap, "Tool_R", partialTicks);

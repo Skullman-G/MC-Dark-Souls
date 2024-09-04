@@ -1,5 +1,8 @@
 package com.skullmangames.darksouls.core.util.collider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
@@ -108,38 +111,68 @@ public class CubeCollider extends Collider
 	@Override
 	public boolean collidesWith(Collider other)
 	{
-		return other instanceof CubeCollider cube ? satCollisionDetection(this, cube) && satCollisionDetection(cube, this)
-				: other instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeDetection(capsule, this)
+		return other instanceof CubeCollider cube ? cubeCubeCollision(this, cube).lengthSqr() != 0
+				: other instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeCollision(capsule, this).lengthSqr() != 0
 				: false;
 	}
 	
-	protected static boolean satCollisionDetection(CubeCollider a, CubeCollider b)
+	@Override
+	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
 	{
-		for (Face face : a.faces)
+		Vec3 currentPos = this.getWorldCenter();
+		for (ColliderHolder holder : others)
 		{
-			Vec3 axis = face.normal;
-			
-			double maxDistA = -Double.MAX_VALUE;
-			double minDistA = Double.MAX_VALUE;
+			if (holder.isEmpty()) continue;
+			holder.correctPosition();
+			Collider col = holder.getType();
+			this.moveTo(currentPos.add(movement));
+			Vec3 pushVec = col instanceof CubeCollider cube ? cubeCubeCollision(this, cube)
+						: col instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeCollision(capsule, this)
+						: Vec3.ZERO;
+			movement = movement.add(pushVec);
+		}
+		return movement;
+	}
+	
+	protected static Vec3 cubeCubeCollision(CubeCollider a, CubeCollider b)
+	{
+		List<Vec3> normals = new ArrayList<>();
+		for (Face f : a.faces) normals.add(f.normal);
+		for (Face f : b.faces) normals.add(f.normal.scale(-1));
+		
+		Vec3 pushOutVec = Vec3.ZERO;
+		
+		for (Vec3 axis : normals)
+		{
+			double maxA = Double.MIN_VALUE;
+			double minA = Double.MAX_VALUE;
 			for (Vec3 va : a.vertices)
 			{
 				double dot = axis.dot(va);
-				maxDistA = Math.max(maxDistA, dot);
-				minDistA = Math.min(minDistA, dot);
+				maxA = Math.max(maxA, dot);
+				minA = Math.min(minA, dot);
 			}
 			
-			double maxDistB = -Double.MAX_VALUE;
-			double minDistB = Double.MAX_VALUE;
+			double maxB = Double.MIN_VALUE;
+			double minB = Double.MAX_VALUE;
 			for (Vec3 vb : b.vertices)
 			{
 				double dot = axis.dot(vb);
-				maxDistB = Math.max(maxDistB, dot);
-				minDistB = Math.min(minDistB, dot);
+				maxB = Math.max(maxB, dot);
+				minB = Math.min(minB, dot);
 			}
 			
-			if (minDistA >= maxDistB || minDistB >= maxDistA) return false;
+			if (minA >= maxB || minB >= maxA) return Vec3.ZERO;
+			double length = minA <= minB && maxA > minB ? minB - maxA :
+							minA < maxB && maxA >= maxB ? maxB - minA :
+							minA >= minB && maxA <= maxB ? minB - maxA :
+							0.0D;
+			if (pushOutVec == Vec3.ZERO || pushOutVec.length() > length)
+			{
+				pushOutVec = axis.scale(length);
+			}
 		}
-		return true;
+		return pushOutVec;
 	}
 	
 	@Override

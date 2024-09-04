@@ -81,18 +81,6 @@ public class StrayDemon extends AbstractBoss implements Demon
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.00F);
 	}
 	
-	@Override
-	public boolean canBeCollidedWith()
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean isPushable()
-	{
-		return false;
-	}
-	
 	public static AttributeSupplier.Builder createAttributes()
 	{
 		return Mob.createMobAttributes()

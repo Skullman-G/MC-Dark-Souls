@@ -39,6 +39,7 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 		if (!ConfigManager.CLIENT_CONFIG.showHealthIndicator.getValue()
 				|| (entity.isInvisible() || entity == minecraft.player.getControllingPassenger())
 				|| entity.distanceToSqr(minecraft.getCameraEntity()) >= 400
+				|| minecraft.gui.getBossOverlay().events.containsKey(entity.getUUID())
 				|| entity.deathTime >= 19)
 		{
 			this.healthInfoMap.remove(entity.getId());

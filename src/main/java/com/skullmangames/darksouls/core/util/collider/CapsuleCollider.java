@@ -1,5 +1,7 @@
 package com.skullmangames.darksouls.core.util.collider;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
@@ -122,12 +124,30 @@ public class CapsuleCollider extends Collider
 	@Override
 	public boolean collidesWith(Collider other)
 	{
-		return other instanceof CubeCollider cube ? capsuleCubeDetection(this, cube)
-				: other instanceof CapsuleCollider capsule ? capsuleCapsuleDetection(this, capsule)
+		return other instanceof CubeCollider cube ? capsuleCubeCollision(this, cube).lengthSqr() != 0
+				: other instanceof CapsuleCollider capsule ? capsuleCapsuleCollision(this, capsule).lengthSqr() != 0
 				: false;
 	}
 	
-	protected static boolean capsuleCubeDetection(CapsuleCollider a, CubeCollider b)
+	@Override
+	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
+	{
+		Vec3 currentPos = this.getWorldCenter();
+		for (ColliderHolder holder : others)
+		{
+			if (holder.isEmpty()) continue;
+			holder.correctPosition();
+			Collider col = holder.getType();
+			this.moveTo(currentPos.add(movement));
+			Vec3 pushVec = col instanceof CubeCollider cube ? capsuleCubeCollision(this, cube)
+					: col instanceof CapsuleCollider capsule ? capsuleCapsuleCollision(this, capsule)
+					: Vec3.ZERO;
+			movement = movement.add(pushVec);
+		}
+		return movement;
+	}
+	
+	protected static Vec3 capsuleCubeCollision(CapsuleCollider a, CubeCollider b)
 	{
 		// Compute capsule line endpoints A, B:
 		Vec3 CapsuleNormal = a.max().subtract(a.min()).normalize();
@@ -137,9 +157,9 @@ public class CapsuleCollider extends Collider
 		boolean insideCube = true;
 		
 		
-		for (int i = 0; i < b.faces.length; i++)
+		Vec3 pushOutVec = Vec3.ZERO;
+		for (Face face : b.faces)
 		{
-			Face face = b.faces[i];
 			Vec3 p0 = face.vertex(0);
 			Vec3 p1 = face.vertex(1);
 			Vec3 p2 = face.vertex(2);
@@ -200,14 +220,35 @@ public class CapsuleCollider extends Collider
 
 			// The center of the best sphere candidate:
 			Vec3 center = ClosestPointOnLineSegment(A, B, referencePoint);
+			pushOutVec = pushOutVec.add(sphereFaceCollision(a.radius, center, face));
 			
-			if (sphereFaceDetection(a.radius, center, face)) return true;
-			insideCube |= center.subtract(face.center()).dot(N) < 0;
+			
+			// Check if the capsule is completely inside the cube
+			double faceCenterToBaseDist = a.min().subtract(face.center()).dot(N);
+			double faceCenterToTipDist = a.max().subtract(face.center()).dot(N);
+			insideCube |= faceCenterToBaseDist < 0 && faceCenterToTipDist < 0;
 		}
-		return insideCube;
+		
+		if (insideCube)
+		{
+			double bestDist = Double.MAX_VALUE;
+			Vec3 bestNormal = Vec3.ZERO;
+			for (Face face : b.faces)
+			{
+				double dist = a.getMassCenter().subtract(face.center()).dot(face.normal);
+				if (bestDist > dist)
+				{
+					bestDist = dist;
+					bestNormal = face.normal;
+				}
+			}
+			pushOutVec.add(bestNormal.scale(0.1D));
+		}
+		
+		return pushOutVec;
 	}
 	
-	protected static boolean sphereFaceDetection(double radius, Vec3 center, Face face)
+	protected static Vec3 sphereFaceCollision(double radius, Vec3 center, Face face)
 	{
 		Vec3 p0 = face.vertex(0);
 		Vec3 p1 = face.vertex(1);
@@ -215,7 +256,8 @@ public class CapsuleCollider extends Collider
 		Vec3 p3 = face.vertex(3);
 		Vec3 N = face.normal; // plane normal
 		double dist = center.subtract(p0).dot(N); // signed distance between sphere and plane
-		if (dist < -radius || dist > radius) return false;
+		
+		if (dist > Math.abs(radius)) return Vec3.ZERO;
 
 		Vec3 point0 = center.subtract(N.scale(dist)); // projected sphere center on face plane
 
@@ -247,58 +289,52 @@ public class CapsuleCollider extends Collider
 		Vec3 point4 = ClosestPointOnLineSegment(p3, p0, center);
 		double distsq4 = center.subtract(point4).lengthSqr();
 		intersects |= distsq4 < radiussq;
+		
+		if (!inside && !intersects) return Vec3.ZERO;
 
-		/*if (inside || intersects)
+		Vec3 intersectionVec;
+
+		if (inside)
 		{
-			Vec3 best_point = point0;
-			Vec3 intersection_vec;
+			intersectionVec = center.subtract(point0);
+		}
+		else
+		{
+			Vec3 d = center.subtract(point1);
+			double best_distsq = d.dot(d);
+			intersectionVec = d;
 
-			if (inside)
+			d = center.subtract(point2);
+			double distsq = d.dot(d);
+			if (distsq < best_distsq)
 			{
-				intersection_vec = center.subtract(point0);
-			}
-			else
-			{
-				Vec3 d = center.subtract(point1);
-				double best_distsq = d.dot(d);
-				best_point = point1;
-				intersection_vec = d;
-
-				d = center.subtract(point2);
-				double distsq = d.dot(d);
-				if (distsq < best_distsq)
-				{
-					distsq = best_distsq;
-					best_point = point2;
-					intersection_vec = d;
-				}
-
-				d = center.subtract(point3);
-				distsq = d.dot(d);
-				if (distsq < best_distsq)
-				{
-					distsq = best_distsq;
-					best_point = point3;
-					intersection_vec = d;
-				}
-				
-				d = center.subtract(point4);
-				distsq = d.dot(d);
-				if (distsq < best_distsq)
-				{
-					distsq = best_distsq;
-					best_point = point4;
-					intersection_vec = d;
-				}
+				distsq = best_distsq;
+				intersectionVec = d;
 			}
 
-			Vec3 penetration_normal = intersection_vec.normalize(); // normalize
-			double penetration_depth = radius - intersection_vec.length(); // radius = sphere radius
-		}*/
-		return inside || intersects;
+			d = center.subtract(point3);
+			distsq = d.dot(d);
+			if (distsq < best_distsq)
+			{
+				distsq = best_distsq;
+				intersectionVec = d;
+			}
+			
+			d = center.subtract(point4);
+			distsq = d.dot(d);
+			if (distsq < best_distsq)
+			{
+				distsq = best_distsq;
+				intersectionVec = d;
+			}
+		}
+
+		Vec3 penetrationNormal = intersectionVec.normalize(); // normalize
+		double penetrationDepth = radius - intersectionVec.length(); // radius = sphere radius
+		return penetrationNormal.scale(-penetrationDepth);
 	}
 	
-	protected static boolean capsuleCapsuleDetection(CapsuleCollider a, CapsuleCollider b)
+	protected static Vec3 capsuleCapsuleCollision(CapsuleCollider a, CapsuleCollider b)
 	{
 		// capsule A:
 		Vec3 a_Normal = a.max().subtract(a.min()).normalize();
@@ -345,7 +381,7 @@ public class CapsuleCollider extends Collider
 		double len = penetration_normal.length();
 		penetration_normal = penetration_normal.normalize();
 		double penetration_depth = a.radius + b.radius - len;
-		return penetration_depth > 0;
+		return penetration_normal.scale(-penetration_depth);
 	}
 	
 	private static Vec3 ClosestPointOnLineSegment(Vec3 A, Vec3 B, Vec3 Point)

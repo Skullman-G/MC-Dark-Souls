@@ -33,6 +33,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
@@ -64,8 +65,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public final Map<LayerPart, LivingMotion> mixMotions = new HashMap<>();
 	
 	public final List<Entity> currentlyAttackedEntities = new ArrayList<>();
-	public Collider weaponCollider;
-	public ModMatrix4f lastColTransform;
+	public ColliderHolder weaponCollider = new ColliderHolder(null);
 	
 	private float poiseDef;
 	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());

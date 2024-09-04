@@ -3,13 +3,11 @@
 	"minVersion": "0.8",
 	"package": "com.skullmangames.darksouls.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"client":
-	[
-		"MeleeAttackGoalMixin"
+	"mixins": [
+		"MeleeAttackGoalMixin",
+		"EntityMixin"
 	],
-	"injectors":
-	{
-		"defaultRequire": 1
-	},
-	"refmap": "darksouls.mixin-refmap.json"
+	"client": [
+	],
+	"refmap": "darksouls.mixin.refmap.json"
 }

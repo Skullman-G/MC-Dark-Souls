@@ -17,6 +17,15 @@
       },
       {
         "event_type": "play_sound",
+        "time": 0.9,
+        "execution_side": "SERVER",
+        "sound": "darksouls:entity.stray_demon.smash",
+        "anchor": "ENTITY",
+        "volume": 1.0,
+        "moves": false
+      },
+      {
+        "event_type": "play_sound",
         "time": 1.44,
         "execution_side": "SERVER",
         "sound": "darksouls:entity.bell_gargoyle.scream",

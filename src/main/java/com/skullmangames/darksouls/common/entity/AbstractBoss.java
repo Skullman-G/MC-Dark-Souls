@@ -8,13 +8,25 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractBoss extends PathfinderMob implements Demon
+public abstract class AbstractBoss extends PathfinderMob
 {
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	
 	public AbstractBoss(EntityType<? extends PathfinderMob> type, Level level)
 	{
 		super(type, level);
+	}
+	
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean isPushable()
+	{
+		return false;
 	}
 	
 	@Override

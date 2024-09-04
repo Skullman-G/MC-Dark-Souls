@@ -107,6 +107,18 @@ public class MultiCollider extends Collider
 		}
 		return false;
 	}
+	
+	@Override
+	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
+	{
+		Vec3 pushOutVec = Vec3.ZERO;
+		for (Collider collider : this.colliders)
+		{
+			Vec3 newCandidate = collider.collide(movement, others);
+			if (pushOutVec.lengthSqr() < newCandidate.lengthSqr()) pushOutVec = newCandidate;
+		}
+		return pushOutVec;
+	}
 
 	@Override
 	public void drawInternal(boolean red)

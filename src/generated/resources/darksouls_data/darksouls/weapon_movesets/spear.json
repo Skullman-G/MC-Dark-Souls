@@ -1,15 +1,21 @@
 {
   "moveset": {
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:spear_light_attack"
+      ]
+    },
     "heavy": {
       "repeating": true,
       "animations": [
         "darksouls:spear_heavy_attack"
       ]
     },
-    "dash": {
+    "two_handed_light": {
       "repeating": true,
       "animations": [
-        "darksouls:spear_dash_attack"
+        "darksouls:spear_th_light_attack"
       ]
     },
     "two_handed_heavy": {
@@ -24,28 +30,22 @@
         "darksouls:spear_th_dash_attack"
       ]
     },
-    "punish": {
-      "repeating": true,
-      "animations": [
-        "darksouls:punish_thrust"
-      ]
-    },
-    "two_handed_light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:spear_th_light_attack"
-      ]
-    },
     "backstab": {
       "repeating": true,
       "animations": [
         "darksouls:backstab_thrust"
       ]
     },
-    "light": {
+    "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:spear_light_attack"
+        "darksouls:punish_thrust"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:spear_dash_attack"
       ]
     }
   }

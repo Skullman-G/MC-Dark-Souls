@@ -62,7 +62,7 @@ public class PlaySoundEvent extends AnimEvent
 			cap.playSound(this.sound.get(), this.volume, this.moves);
 			break;
 		case WEAPON:
-			if (cap.weaponCollider == null) return;
+			if (cap.weaponCollider.isEmpty()) return;
 			Vec3 pos = cap.weaponCollider.getMassCenter();
 			cap.getLevel().playLocalSound(pos.x, pos.y, pos.z, this.sound.get(), cap.getOriginalEntity().getSoundSource(),
 					this.volume, 1.0F, false);

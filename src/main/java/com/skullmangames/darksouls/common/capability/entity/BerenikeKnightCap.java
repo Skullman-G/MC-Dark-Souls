@@ -12,7 +12,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.collider.Collider;
-
 import net.minecraft.world.InteractionHand;
 
 public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>

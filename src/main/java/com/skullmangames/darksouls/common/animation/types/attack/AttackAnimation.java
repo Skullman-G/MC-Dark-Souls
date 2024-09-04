@@ -47,6 +47,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamage
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.world.entity.Entity;
@@ -137,18 +138,13 @@ public class AttackAnimation extends ActionAnimation
 				entityCap.currentlyAttackedEntities.clear();
 			}
 
-			Collider collider = this.getCollider(entityCap, elapsedTime);
+			ColliderHolder collider = this.getCollider(entityCap, elapsedTime);
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-			Vec3 prevColPos = null;
-			if (entityCap.lastColTransform != null)
-			{
-				collider.transform(entityCap.lastColTransform);
-				prevColPos = collider.getMassCenter();
-			}
+			Vec3 prevColPos = collider.getPreviousMassCenter();
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
 			if (prevColPos == null) prevColPos = collider.getMassCenter();
-			List<Entity> shields = collider.getShieldCollisions(entity);
-			List<Entity> entities = collider.getEntityCollisions(entity);
+			List<Entity> shields = collider.getType().getShieldCollisions(entity);
+			List<Entity> entities = collider.getType().getEntityCollisions(entity);
 			entities.removeIf((e) -> shields.contains(e));
 			
 			if (!shields.isEmpty() || !entities.isEmpty())
@@ -216,7 +212,7 @@ public class AttackAnimation extends ActionAnimation
 		EntityState prevState = this.getState(prevElapsedTime);
 		Phase phase = this.getPhaseByTime(elapsedTime);
 		
-		entityCap.weaponCollider = this.getCollider(entityCap, elapsedTime);
+		entityCap.weaponCollider.setType(this.getCollider(entityCap, elapsedTime).getType());
 		
 		if (state.shouldDetectCollision() || (prevState.getContactLevel() < 2 && state.getContactLevel() > 2))
 		{
@@ -225,18 +221,11 @@ public class AttackAnimation extends ActionAnimation
 				entityCap.currentlyAttackedEntities.clear();
 			}
 
-			Collider collider = this.getCollider(entityCap, elapsedTime);
+			ColliderHolder collider = this.getCollider(entityCap, elapsedTime);
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
-			Vec3 prevColPos = null;
-			if (entityCap.lastColTransform != null)
-			{
-				collider.transform(entityCap.lastColTransform);
-				prevColPos = collider.getMassCenter();
-			}
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
-			if (prevColPos == null) prevColPos = collider.getMassCenter();
-			List<Entity> shields = collider.getShieldCollisions(entity);
-			List<Entity> entities = collider.getEntityCollisions(entity);
+			List<Entity> shields = collider.getType().getShieldCollisions(entity);
+			List<Entity> entities = collider.getType().getEntityCollisions(entity);
 			entities.removeIf((e) -> shields.contains(e));
 			
 			if (!entities.isEmpty())
@@ -299,7 +288,7 @@ public class AttackAnimation extends ActionAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
-		entityCap.weaponCollider = null;
+		entityCap.weaponCollider.clear();;
 		entityCap.currentlyAttackedEntities.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{
@@ -307,7 +296,6 @@ public class AttackAnimation extends ActionAnimation
 			if (entity.getTarget() != null && !entity.getTarget().isAlive())
 				entity.setTarget((LivingEntity) null);
 		}
-		entityCap.lastColTransform = null;
 	}
 
 	@Override
@@ -336,10 +324,10 @@ public class AttackAnimation extends ActionAnimation
 		return this.getPhaseByTime(elapsedTime).getProperty(propertyType);
 	}
 
-	public Collider getCollider(LivingCap<?> entityCap, float elapsedTime)
+	public ColliderHolder getCollider(LivingCap<?> entityCap, float elapsedTime)
 	{
 		Phase phase = this.getPhaseByTime(elapsedTime);
-		return phase.collider != null ? phase.collider : entityCap.getColliderMatching(phase.hand);
+		return phase.collider != null ? new ColliderHolder(phase.collider) : new ColliderHolder(entityCap.getColliderMatching(phase.hand));
 	}
 
 	public Entity getTrueEntity(Entity entity)

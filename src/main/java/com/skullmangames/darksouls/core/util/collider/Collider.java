@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Armature;
 import com.skullmangames.darksouls.common.animation.Animator;
+import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -34,9 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class Collider
 {
 	private final ResourceLocation id;
-	
-	private Vec3 worldCenter;
-	
+	private Vec3 worldCenter = Vec3.ZERO;
 	protected Vec3[] vertices;
 	protected Vec3[] modelVertices;
 	
@@ -51,7 +50,6 @@ public abstract class Collider
 	{
 		this.id = id;
 		this.outerAABB = outerAABB;
-		this.worldCenter = Vec3.ZERO;
 	}
 	
 	@Nullable
@@ -64,10 +62,10 @@ public abstract class Collider
 	{
 		return this.worldCenter;
 	}
-
+	
 	public void transform(ModMatrix4f mat)
 	{
-		Vec3 pos = ModMatrix4f.transform(mat, Vec3.ZERO);
+		Vec3 pos = mat.transform(Vec3.ZERO);
 		this.moveTo(new Vec3(-pos.x, pos.y, -pos.z));
 	}
 	
@@ -78,38 +76,6 @@ public abstract class Collider
 		{
 			this.vertices[i] = this.vertices[i].add(this.worldCenter);
 		}
-	}
-	
-	protected abstract Vec3 min();
-	
-	protected abstract Vec3 max();
-	
-	public abstract Vec3 top();
-	
-	public abstract Vec3 bottom();
-	
-	public abstract boolean collidesWith(Collider other);
-	
-	public void update(LivingCap<?> entityCap, String jointName, float partialTicks)
-	{
-		this.update(entityCap, jointName, partialTicks, false);
-	}
-	
-	public void update(LivingCap<?> entityCap, String jointName, float partialTicks, boolean safe)
-	{
-		ModMatrix4f transformMatrix;
-		Armature armature = entityCap.getEntityModel(Models.SERVER).getArmature();
-		int pathIndex = armature.searchPathIndex(jointName);
-
-		if (pathIndex == -1) transformMatrix = new ModMatrix4f();
-		else transformMatrix = Animator.getParentboundTransform(entityCap.getAnimator().getPose(partialTicks), armature, pathIndex);
-		
-		float scale = entityCap.getModelScale();
-		transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks).scale(scale, scale, scale));
-		
-		if (safe) entityCap.lastColTransform = transformMatrix;
-		
-		this.transform(transformMatrix);
 	}
 	
 	public BlockHitResult getBlockCollisions(BlockGetter level)
@@ -148,9 +114,54 @@ public abstract class Collider
 		this.filterHitEntities(list);
 		return list;
 	}
+	
+	protected void filterHitEntities(List<Entity> entities)
+	{
+		entities.removeIf((entity) -> !this.collidesWith(entity));
+	}
+	
+	protected abstract Vec3 min();
+	
+	protected abstract Vec3 max();
+	
+	public abstract Vec3 top();
+	
+	public abstract Vec3 bottom();
+	
+	public abstract boolean collidesWith(Collider other);
+	
+	public abstract Vec3 collide(Vec3 movement, List<ColliderHolder> others);
 
-	@OnlyIn(Dist.CLIENT)
-	public abstract void drawInternal(boolean red);
+	protected abstract boolean collidesWith(Entity opponent);
+
+	public AABB getHitboxAABB()
+	{
+		return this.outerAABB.move(this.getMassCenter());
+	}
+	
+	public abstract Vec3 getMassCenter();
+	
+	public ModMatrix4f update(EntityCapability<?> entityCap, String jointName, float partialTicks)
+	{
+		ModMatrix4f transformMatrix;
+		
+		if (entityCap instanceof LivingCap<?> livingCap)
+		{
+			Armature armature = livingCap.getEntityModel(Models.SERVER).getArmature();
+			int pathIndex = armature.searchPathIndex(jointName);
+
+			if (pathIndex == -1) transformMatrix = new ModMatrix4f();
+			else transformMatrix = Animator.getParentboundTransform(livingCap.getAnimator().getPose(partialTicks), armature, pathIndex);
+			
+			float scale = livingCap.getModelScale();
+			transformMatrix.mulFront(entityCap.getModelMatrix(partialTicks).scale(scale, scale, scale));
+		}
+		else transformMatrix = entityCap.getModelMatrix(partialTicks);
+		
+		this.transform(transformMatrix);
+		
+		return transformMatrix;
+	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void draw(LivingCap<?> entityCap, String jointName, float partialTicks)
@@ -160,26 +171,14 @@ public abstract class Collider
 
 		this.drawInternal(red);
 	}
-
-	protected abstract boolean collidesWith(Entity opponent);
-
-	protected void filterHitEntities(List<Entity> entities)
-	{
-		entities.removeIf((entity) -> !this.collidesWith(entity));
-	}
-
-	public AABB getHitboxAABB()
-	{
-		return this.outerAABB.move(this.getMassCenter());
-	}
 	
-	public abstract Vec3 getMassCenter();
+	@OnlyIn(Dist.CLIENT)
+	public abstract void drawInternal(boolean red);
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Center : [%f, %f, %f]", this.getWorldCenter().x, this.getWorldCenter().y,
-				this.getWorldCenter().z);
+		return this.id.toString();
 	}
 	
 	public static Builder capsuleBuilder(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)

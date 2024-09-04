@@ -50,7 +50,7 @@ public class ShockWaveEvent extends AnimEvent
 	@Override
 	protected void invoke(LivingCap<?> cap)
 	{
-		Vec3 pos = this.anchor == Anchor.WEAPON && cap.weaponCollider != null ? cap.weaponCollider.getMassCenter() : cap.getOriginalEntity().position();
+		Vec3 pos = this.anchor == Anchor.WEAPON && !cap.weaponCollider.isEmpty() ? cap.weaponCollider.getMassCenter() : cap.getOriginalEntity().position();
 		List<Entity> targets = cap.getLevel().getEntities(cap.getOriginalEntity(), new AABB(pos.x - this.radius, pos.y - this.radius, pos.z - this.radius,
 				pos.x + this.radius, pos.y + this.radius, pos.z + this.radius));
 		for (Entity target : targets)
