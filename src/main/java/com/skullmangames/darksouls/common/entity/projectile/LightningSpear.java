@@ -30,12 +30,6 @@ public class LightningSpear extends MagicProjectile
 		this.damage = 0F;
 	}
 	
-	private LightningSpear(EntityType<? extends LightningSpear> type, LivingCap<?> entityCap)
-	{
-		super(type, entityCap.getLevel());
-		this.initProjectile(entityCap);
-	}
-	
 	@Override
 	public void initProjectile(LivingCap<?> cap)
 	{
@@ -48,16 +42,6 @@ public class LightningSpear extends MagicProjectile
 		if (this.getType() == ModEntities.LIGHTNING_SPEAR.get()) this.damage += 145F;
 		else if (this.getType() == ModEntities.GREAT_LIGHTNING_SPEAR.get()) this.damage += 185;
 		this.damage *= cap.getSpellBuff();
-	}
-	
-	public static LightningSpear lightningSpear(LivingCap<?> entityCap)
-	{
-		return new LightningSpear(ModEntities.LIGHTNING_SPEAR.get(), entityCap);
-	}
-	
-	public static LightningSpear greatLightningSpear(LivingCap<?> entityCap)
-	{
-		return new LightningSpear(ModEntities.GREAT_LIGHTNING_SPEAR.get(), entityCap);
 	}
 	
 	@Override

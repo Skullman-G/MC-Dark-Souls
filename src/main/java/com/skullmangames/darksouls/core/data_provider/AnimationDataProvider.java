@@ -57,8 +57,8 @@ import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnim
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.PhaseBuilder;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
-import com.skullmangames.darksouls.common.entity.projectile.LightningSpear;
 import com.skullmangames.darksouls.core.init.Animations;
+import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.data.Colliders;
@@ -576,7 +576,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN, ModParticles.LIGHTNING_SPEAR,
 												0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, LightningSpear::lightningSpear),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get()),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 				new ActionAnimation.Builder(Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/horseback_cast_miracle_spear"), (models) -> models.ENTITY_BIPED)
@@ -586,7 +586,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN, ModParticles.LIGHTNING_SPEAR,
 												0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, LightningSpear::lightningSpear),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get()),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 
 				new ActionAnimation.Builder(Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId(), 0.3F,
@@ -597,7 +597,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN,
 												ModParticles.GREAT_LIGHTNING_SPEAR, 0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, LightningSpear::greatLightningSpear),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get()),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 				new ActionAnimation.Builder(Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/horseback_cast_miracle_spear"), (models) -> models.ENTITY_BIPED)
@@ -607,7 +607,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN,
 												ModParticles.GREAT_LIGHTNING_SPEAR, 0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, LightningSpear::greatLightningSpear),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get()),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 
 				// Big Weapon

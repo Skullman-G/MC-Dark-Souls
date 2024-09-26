@@ -34,7 +34,8 @@
       {
         "event_type": "shoot_magic_projectile",
         "time": 0.9,
-        "execution_side": "SERVER"
+        "execution_side": "SERVER",
+        "projectile": "darksouls:great_lightning_spear"
       },
       {
         "event_type": "play_sound",

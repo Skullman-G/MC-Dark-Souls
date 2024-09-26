@@ -1,17 +1,21 @@
 {
   "moveset": {
-    "light": {
+    "punish": {
       "repeating": true,
       "animations": [
-        "darksouls:ultra_greatsword_light_attack_1",
-        "darksouls:ultra_greatsword_light_attack_2"
+        "darksouls:punish_strike"
       ]
     },
-    "heavy": {
-      "repeating": false,
+    "dash": {
+      "repeating": true,
       "animations": [
-        "darksouls:ultra_greatsword_heavy_attack_1",
-        "darksouls:ultra_greatsword_heavy_attack_2"
+        "darksouls:ultra_greatsword_dash_attack"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_strike"
       ]
     },
     "two_handed_light": {
@@ -34,22 +38,18 @@
         "darksouls:ultra_greatsword_th_dash_attack"
       ]
     },
-    "backstab": {
-      "repeating": true,
+    "heavy": {
+      "repeating": false,
       "animations": [
-        "darksouls:backstab_strike"
+        "darksouls:ultra_greatsword_heavy_attack_1",
+        "darksouls:ultra_greatsword_heavy_attack_2"
       ]
     },
-    "punish": {
+    "light": {
       "repeating": true,
       "animations": [
-        "darksouls:punish_strike"
-      ]
-    },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:ultra_greatsword_dash_attack"
+        "darksouls:ultra_greatsword_light_attack_1",
+        "darksouls:ultra_greatsword_light_attack_2"
       ]
     }
   }

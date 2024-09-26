@@ -12,13 +12,6 @@
       "location_2": "darksouls:biped/combat/block_greatshield_left"
     },
     {
-      "motion": "BLOCKING",
-      "apply_layer_parts": false,
-      "mirrored": true,
-      "location_1": "darksouls:biped/combat/block_greatshield_right",
-      "location_2": "darksouls:biped/combat/block_greatshield_left"
-    },
-    {
       "motion": "RUNNING",
       "apply_layer_parts": true,
       "mirrored": true,
@@ -28,6 +21,13 @@
     {
       "motion": "SNEAKING",
       "apply_layer_parts": true,
+      "mirrored": true,
+      "location_1": "darksouls:biped/combat/block_greatshield_right",
+      "location_2": "darksouls:biped/combat/block_greatshield_left"
+    },
+    {
+      "motion": "BLOCKING",
+      "apply_layer_parts": false,
       "mirrored": true,
       "location_1": "darksouls:biped/combat/block_greatshield_right",
       "location_2": "darksouls:biped/combat/block_greatshield_left"
