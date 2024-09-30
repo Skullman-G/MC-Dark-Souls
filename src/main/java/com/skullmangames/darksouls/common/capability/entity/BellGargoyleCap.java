@@ -4,6 +4,7 @@ import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
+import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.BellGargoyle;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
@@ -12,7 +13,7 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
-public class BellGargoyleCap extends MobCap<BellGargoyle>
+public class BellGargoyleCap extends FlyingMobCap<BellGargoyle>
 {
 	public static final float WEAPON_SCALE = 1.5F;
 	
@@ -91,5 +92,18 @@ public class BellGargoyleCap extends MobCap<BellGargoyle>
 	public DeathAnimation getDeathAnimation(ExtendedDamageSource dmgSource)
 	{
 		return Animations.BELL_GARGOYLE_DEATH.get();
+	}
+
+	@Override
+	protected StaticAnimation getFlyingStartAnim()
+	{
+		return Animations.BELL_GARGOYLE_FLYING_START.get();
+	}
+
+	@Override
+	protected StaticAnimation getFlyingStopAnim()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

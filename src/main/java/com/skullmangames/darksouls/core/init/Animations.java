@@ -570,6 +570,8 @@ public final class Animations
 					DarkSouls.rl("bell_gargoyle_ha_2"),
 					DarkSouls.rl("bell_gargoyle_ha_3")
 			);
+	public static final Getter BELL_GARGOYLE_FLYING_START = new Getter(DarkSouls.rl("bell_gargoyle_flying_start"));
+	public static final Getter BELL_GARGOYLE_FLYING_IDLE = new Getter(DarkSouls.rl("bell_gargoyle_flying_idle"));
 	
 	public static StaticAnimation createSupplier(BiFunction<LivingCap<?>, LayerPart, StaticAnimation> biFunction)
 	{

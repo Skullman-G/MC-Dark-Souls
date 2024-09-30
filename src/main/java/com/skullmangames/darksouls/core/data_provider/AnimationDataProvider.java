@@ -2691,7 +2691,11 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
 								.addProperty(AttackProperty.STUN_TYPE, StunType.HEAVY)
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
-								.addProperty(AttackProperty.POISE_DAMAGE, 15)
+								.addProperty(AttackProperty.POISE_DAMAGE, 15),
+				new ActionAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_START.getId(), 0.2F,
+						DarkSouls.rl("bell_gargoyle/start_flying"), (models) -> models.ENTITY_BELL_GARGOYLE),
+				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_IDLE.getId(), 0.2F, true,
+						DarkSouls.rl("bell_gargoyle/flying_idle"), (models) -> models.ENTITY_BELL_GARGOYLE)
 		);
 	}
 

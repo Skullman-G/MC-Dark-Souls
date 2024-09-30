@@ -30,7 +30,7 @@ import net.minecraft.world.level.pathfinder.Path;
 public class AttackGoal extends Goal
 {
 	protected final Mob attacker;
-	protected final MobCap<?> mobCap;
+	private final MobCap<?> mobCap;
 	protected final float minDist;
 	protected final int yDist;
 	protected final boolean affectY;
@@ -59,7 +59,7 @@ public class AttackGoal extends Goal
 	private int strafeLength;
 	private int strafeMinLength;
 	
-	private Phase phase = Phase.NONE;
+	protected Phase phase = Phase.NONE;
 	
 	private static Vector2f BACK = new Vector2f(-0.5F, 0);
 	private static Vector2f LEFT = new Vector2f(0, -0.5F);
