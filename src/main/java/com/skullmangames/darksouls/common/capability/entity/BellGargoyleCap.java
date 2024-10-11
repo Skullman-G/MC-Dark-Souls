@@ -103,7 +103,6 @@ public class BellGargoyleCap extends FlyingMobCap<BellGargoyle>
 	@Override
 	protected StaticAnimation getFlyingStopAnim()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Animations.BELL_GARGOYLE_FLYING_STOP.get();
 	}
 }

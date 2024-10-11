@@ -34,13 +34,17 @@ public class FlyingAttackGoal extends AttackGoal
 		    		break;
 	    	}
 		}
-		else super.tick();
+		else
+		{
+			if (this.getTargetRange(this.attacker.getTarget()) > 50)
+			{
+				this.mobCap.setFlying(true);
+			}
+			else super.tick();
+		}
     }
 	
 	private void chase() {}
 	private void strafe() {}
-	private void attack()
-	{
-		this
-	}
+	private void attack() {}
 }

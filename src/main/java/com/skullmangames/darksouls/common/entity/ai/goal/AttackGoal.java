@@ -197,7 +197,7 @@ public class AttackGoal extends Goal
     	}
     }
     
-    private boolean rndmPercentage(float percentage)
+    protected boolean rndmPercentage(float percentage)
     {
     	return this.attacker.getRandom().nextFloat() <= percentage;
     }
