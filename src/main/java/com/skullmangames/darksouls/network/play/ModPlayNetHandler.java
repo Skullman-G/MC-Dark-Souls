@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModPlayNetHandler
 {
@@ -47,5 +46,5 @@ public class ModPlayNetHandler
 
 	public void makeImpactParticles(Entity entity, Vec3 impactPos, boolean blocked) {}
 	
-	public void spawnParticlesCircle(RegistryObject<SimpleParticleType> particle, Vec3 pos, float radius) {}
+	public void spawnParticlesCircle(SimpleParticleType particle, Vec3 pos, float radius) {}
 }

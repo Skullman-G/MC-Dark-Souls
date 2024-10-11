@@ -31,7 +31,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.RegistryObject;
 
 @OnlyIn(Dist.CLIENT)
 public class ModClientPlayNetHandler extends ModPlayNetHandler
@@ -183,9 +182,9 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 	}
 	
 	@Override
-	public void spawnParticlesCircle(RegistryObject<SimpleParticleType> particle, Vec3 pos, float radius)
+	public void spawnParticlesCircle(SimpleParticleType particle, Vec3 pos, float radius)
 	{
-		SimpleParticleType p = particle.get();
+		SimpleParticleType p = particle;
 		
 		for (int i = 0; i < 360; i++)
 		{

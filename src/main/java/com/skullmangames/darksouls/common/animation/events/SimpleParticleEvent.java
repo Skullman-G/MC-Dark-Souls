@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.core.particles.ParticleType;
@@ -103,7 +102,7 @@ public class SimpleParticleEvent extends AnimEvent
 		
 		if (this.spawner == Spawner.CIRCLE)
 		{
-			ModNetworkManager.connection.spawnParticlesCircle(ModParticles.DUST_CLOUD, pos, (float)Math.max(this.xSpeed, Math.max(this.ySpeed, this.zSpeed)));
+			ModNetworkManager.connection.spawnParticlesCircle(type, pos, (float)Math.max(this.xSpeed, Math.max(this.ySpeed, this.zSpeed)));
 		}
 		else
 		{
