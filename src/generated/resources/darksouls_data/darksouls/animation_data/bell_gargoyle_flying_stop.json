@@ -1,0 +1,9 @@
+{
+  "animation_type": "action",
+  "location": "darksouls:bell_gargoyle/stop_flying",
+  "convert_time": 0.2,
+  "repeat": false,
+  "model": "darksouls:bell_gargoyle",
+  "properties": {},
+  "delay_time": 3.4028235E38
+}
