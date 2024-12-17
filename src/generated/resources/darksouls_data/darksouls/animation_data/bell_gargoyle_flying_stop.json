@@ -4,6 +4,8 @@
   "convert_time": 0.2,
   "repeat": false,
   "model": "darksouls:bell_gargoyle",
-  "properties": {},
+  "properties": {
+    "move_vertical": true
+  },
   "delay_time": 3.4028235E38
 }

@@ -6,6 +6,12 @@
         "darksouls:dagger_heavy_attack"
       ]
     },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_thrust"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
@@ -17,12 +23,6 @@
       "repeating": true,
       "animations": [
         "darksouls:straight_sword_dash_attack"
-      ]
-    },
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_thrust"
       ]
     }
   }

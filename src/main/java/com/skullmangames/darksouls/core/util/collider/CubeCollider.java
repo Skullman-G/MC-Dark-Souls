@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
@@ -49,6 +50,21 @@ public class CubeCollider extends Collider
 		for (int i = 0; i < this.faces.length && i < faces.length; i++)
 		{
 			this.faces[i] = new Face(this, faces[i].modelNormal, faces[i].vertices);
+		}
+	}
+	
+	public CubeCollider(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ,
+			float xRot, float yRot)
+	{
+		this(id, minX, minY, minZ, maxX, maxY, maxZ);
+		
+		ModMatrix4f rotMat = ModMatrix4f.createRotatorDeg((float)xRot, Vector3f.XP)
+				.rotateDeg((float)(180 + yRot), Vector3f.YP);
+		
+		for (int i = 0; i < this.vertices.length; i++)
+		{
+			this.modelVertices[i] = ModMatrix4f.transform(rotMat, this.modelVertices[i]);
+			this.modelVertices[i] = new Vec3(-this.modelVertices[i].x, this.modelVertices[i].y, -this.modelVertices[i].z);
 		}
 	}
 	
@@ -228,16 +244,21 @@ public class CubeCollider extends Collider
 	public static class Builder extends Collider.Builder
 	{
 		protected double minX, minY, minZ, maxX, maxY, maxZ;
+		protected float xRot, yRot;
 		
-		protected Builder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+		protected Builder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float xRot, float yRot)
 		{
 			super(id);
+			
 			this.minX = minX;
 			this.minY = minY;
 			this.minZ = minZ;
 			this.maxX = maxX;
 			this.maxY = maxY;
 			this.maxZ = maxZ;
+			
+			this.xRot = xRot;
+			this.yRot = yRot;
 		}
 		
 		protected Builder(ResourceLocation location, JsonObject json)
@@ -251,6 +272,9 @@ public class CubeCollider extends Collider
 			this.maxX = json.get("max_x").getAsDouble();
 			this.maxY = json.get("max_y").getAsDouble();
 			this.maxZ = json.get("max_z").getAsDouble();
+			
+			this.xRot = json.get("x_rotation").getAsFloat();
+			this.yRot = json.get("y_rotation").getAsFloat();
 		}
 
 		@Override
@@ -266,13 +290,16 @@ public class CubeCollider extends Collider
 			json.addProperty("max_y", this.maxY);
 			json.addProperty("max_z", this.maxZ);
 			
+			json.addProperty("x_rotation", this.xRot);
+			json.addProperty("y_rotation", this.yRot);
+			
 			return json;
 		}
 
 		@Override
 		public Collider build()
 		{
-			return new CubeCollider(this.getId(), this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
+			return new CubeCollider(this.getId(), this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ, this.xRot, this.yRot);
 		}
 
 		@Override

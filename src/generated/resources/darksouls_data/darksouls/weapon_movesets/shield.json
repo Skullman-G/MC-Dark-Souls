@@ -7,10 +7,22 @@
         "darksouls:shield_ha_2"
       ]
     },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_th_light_attack"
+      ]
+    },
     "light": {
       "repeating": true,
       "animations": [
         "darksouls:shield_light_attack"
+      ]
+    },
+    "two_handed_dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_th_dash_attack"
       ]
     },
     "dash": {
@@ -19,23 +31,11 @@
         "darksouls:shield_dash_attack"
       ]
     },
-    "two_handed_light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:shield_th_light_attack"
-      ]
-    },
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
         "darksouls:shield_th_ha_1",
         "darksouls:shield_th_ha_2"
-      ]
-    },
-    "two_handed_dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:shield_th_dash_attack"
       ]
     }
   }

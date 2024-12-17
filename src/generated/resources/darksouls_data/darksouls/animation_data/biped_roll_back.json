@@ -1,7 +1,7 @@
 {
   "animation_type": "dodge",
   "location": "darksouls:biped/combat/roll_back",
-  "convert_time": 0.05,
+  "convert_time": 0.4,
   "repeat": false,
   "model": "darksouls:biped",
   "properties": {

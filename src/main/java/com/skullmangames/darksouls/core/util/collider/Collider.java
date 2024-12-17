@@ -193,7 +193,13 @@ public abstract class Collider
 	
 	public static Builder cubeBuilder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
 	{
-		return new CubeCollider.Builder(id, minX, minY, minZ, maxX, maxY, maxZ);
+		return cubeBuilder(id, minX, minY, minZ, maxX, maxY, maxZ, 0F, 0F);
+	}
+	
+	public static Builder cubeBuilder(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ,
+			float xRot, float yRot)
+	{
+		return new CubeCollider.Builder(id, minX, minY, minZ, maxX, maxY, maxZ, xRot, yRot);
 	}
 	
 	public static CoreBuilder multiBuilder(ResourceLocation id, Builder... builders)

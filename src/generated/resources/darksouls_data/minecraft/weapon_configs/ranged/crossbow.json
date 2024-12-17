@@ -21,11 +21,11 @@
   },
   "animation_overrides": {
     "IDLE": "darksouls:biped_idle_crossbow",
-    "AIMING": "darksouls:biped_crossbow_aim",
-    "SHOOTING": "darksouls:biped_crossbow_shot",
+    "WALKING": "darksouls:biped_walk_crossbow",
     "RUNNING": "darksouls:biped_walk_crossbow",
     "RELOADING": "darksouls:biped_crossbow_reload",
-    "WALKING": "darksouls:biped_walk_crossbow"
+    "AIMING": "darksouls:biped_crossbow_aim",
+    "SHOOTING": "darksouls:biped_crossbow_shot"
   },
   "hand_property": "TWO_HANDED"
 }

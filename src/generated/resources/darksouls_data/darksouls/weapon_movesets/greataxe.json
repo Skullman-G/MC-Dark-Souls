@@ -6,25 +6,6 @@
         "darksouls:greataxe_heavy_attack"
       ]
     },
-    "light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:greataxe_la_1",
-        "darksouls:greataxe_la_2"
-      ]
-    },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:greataxe_dash_attack"
-      ]
-    },
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_strike"
-      ]
-    },
     "punish": {
       "repeating": true,
       "animations": [
@@ -38,16 +19,35 @@
         "darksouls:greataxe_th_la_2"
       ]
     },
-    "two_handed_heavy": {
+    "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:greataxe_th_heavy_attack"
+        "darksouls:backstab_strike"
+      ]
+    },
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_la_1",
+        "darksouls:greataxe_la_2"
       ]
     },
     "two_handed_dash": {
       "repeating": true,
       "animations": [
         "darksouls:greataxe_th_dash_attack"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_dash_attack"
+      ]
+    },
+    "two_handed_heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greataxe_th_heavy_attack"
       ]
     }
   }
