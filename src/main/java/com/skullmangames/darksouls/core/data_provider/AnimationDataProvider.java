@@ -508,7 +508,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new ShakeCamGlobalEvent(0.4F, 10, 0.25F) }),
-				new DodgingAnimation.Builder(Animations.BIPED_ROLL_BACK.getId(), 0.05F,
+				new DodgingAnimation.Builder(Animations.BIPED_ROLL_BACK.getId(), 0.4F,
 						DarkSouls.rl("biped/combat/roll_back"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.28F, Side.SERVER, ModSoundEvents.GENERIC_ROLL) }),
@@ -2693,9 +2693,11 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 20)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new ActionAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_START.getId(), 0.2F,
-						DarkSouls.rl("bell_gargoyle/start_flying"), (models) -> models.ENTITY_BELL_GARGOYLE),
+						DarkSouls.rl("bell_gargoyle/start_flying"), (models) -> models.ENTITY_BELL_GARGOYLE)
+								.addProperty(ActionAnimationProperty.MOVE_VERTICAL, true),
 				new ActionAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_STOP.getId(), 0.2F,
-						DarkSouls.rl("bell_gargoyle/stop_flying"), (models) -> models.ENTITY_BELL_GARGOYLE),
+						DarkSouls.rl("bell_gargoyle/stop_flying"), (models) -> models.ENTITY_BELL_GARGOYLE)
+								.addProperty(ActionAnimationProperty.MOVE_VERTICAL, true),
 				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_IDLE.getId(), 0.2F, true,
 						DarkSouls.rl("bell_gargoyle/flying_idle"), (models) -> models.ENTITY_BELL_GARGOYLE)
 		);

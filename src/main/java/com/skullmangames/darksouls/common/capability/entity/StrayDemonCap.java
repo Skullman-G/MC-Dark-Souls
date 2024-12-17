@@ -71,7 +71,7 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	protected void initAI()
 	{
 		super.initAI();
-		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false, false)
+		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 1.0F, 1, true, false)
 				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_LIGHT_ATTACK.get()))
 				.addAttack(new AttackInstance(5, 3F, 6F, Animations.STRAY_DEMON_HAMMER_ALT_LIGHT_ATTACK.get()))
 				.addAttack(new AttackInstance(5, 8F, 10F, Animations.STRAY_DEMON_HAMMER_HEAVY_ATTACK.get()))

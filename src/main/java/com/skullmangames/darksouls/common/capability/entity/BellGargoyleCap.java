@@ -6,8 +6,8 @@ import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.entity.BellGargoyle;
-import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
+import com.skullmangames.darksouls.common.entity.ai.goal.FlyingAttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -26,7 +26,10 @@ public class BellGargoyleCap extends FlyingMobCap<BellGargoyle>
 	@Override
 	public void initAnimator(ClientAnimator animatorClient)
 	{
-		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.BELL_GARGOYLE_IDLE.get());
+		animatorClient.putLivingAnimation(LivingMotion.IDLE, Animations.createSupplier((cap, l) ->
+		{
+			return this.isFlying() ? Animations.BELL_GARGOYLE_FLYING_IDLE.get() : Animations.BELL_GARGOYLE_IDLE.get();
+		}));
 		animatorClient.putLivingAnimation(LivingMotion.WALKING, Animations.BELL_GARGOYLE_WALK.get());
 		animatorClient.putLivingAnimation(LivingMotion.RUNNING, Animations.BELL_GARGOYLE_RUN.get());
 		animatorClient.setCurrentMotionsToDefault();
@@ -36,7 +39,7 @@ public class BellGargoyleCap extends FlyingMobCap<BellGargoyle>
 	protected void initAI()
 	{
 		super.initAI();
-		this.orgEntity.goalSelector.addGoal(0, new AttackGoal(this, 0.5F, 1, true, false, false)
+		this.orgEntity.goalSelector.addGoal(0, new FlyingAttackGoal(this, 0.5F, 1, true, false)
 				.addAttack(new AttackInstance(1, 0.5F, 4F, Animations.BELL_GARGOYLE_LA.get()))
 				.addAttack(new AttackInstance(1, 0.5F, 4F, Animations.BELL_GARGOYLE_HA.get())));
 	}

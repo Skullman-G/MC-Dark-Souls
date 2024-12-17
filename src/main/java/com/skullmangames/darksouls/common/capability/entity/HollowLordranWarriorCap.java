@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.entity.HollowLordranWarrior;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.ThrowableGoal;
 import com.skullmangames.darksouls.core.init.Animations;
@@ -52,6 +53,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 	{
 		SwitchWeaponGoal weaponGoal = new SwitchWeaponGoal(this).addDefaultEstusCondition();
 		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
+		this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5));
 		
 		if (category == WeaponCategory.STRAIGHT_SWORD)
 		{
@@ -59,7 +61,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LIGHT_ATTACKS.get()))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_BARRAGE.get()))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_TH_LA.get()))
@@ -78,7 +80,7 @@ public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_LA.get()))
 					.addAttack(new AttackInstance(4, 2.0F, Animations.HOLLOW_LORDRAN_WARRIOR_AXE_TH_LA.get()))
 					.addAttack(new AttackInstance(4, 6.0F, 7.0F, Animations.HOLLOW_LORDRAN_WARRIOR_DASH_ATTACK.get()))

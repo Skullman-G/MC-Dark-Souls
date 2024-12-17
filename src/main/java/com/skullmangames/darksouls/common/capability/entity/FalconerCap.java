@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.BowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -57,7 +58,8 @@ public class FalconerCap extends HumanoidCap<Falconer>
 		else
 		{
 			if (category != WeaponCategory.STRAIGHT_SWORD) return;
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(4, 2.0F, Animations.FALCONER_LIGHT_ATTACKS.get()))
 					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}

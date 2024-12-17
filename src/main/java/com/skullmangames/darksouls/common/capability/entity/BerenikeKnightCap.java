@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.BerenikeKnight;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.data.Colliders;
@@ -43,7 +44,8 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 8D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 4.0F, 3, 5));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 3.0F, true, false)
 					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_LA.get()))
 					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA.get()[0]))
 					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_SWORD_HA.get()[1]))
@@ -56,7 +58,8 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 8D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 4.0F, 3, 5));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 3.0F, true, false)
 					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_LA.get()))
 					.addAttack(new AttackInstance(1, 4.0F, Animations.BERENIKE_KNIGHT_MACE_HA.get()))
 					.addAttack(new AttackInstance(1, 6.0F, 8.0F, Animations.BERENIKE_KNIGHT_SWORD_DA.get())));

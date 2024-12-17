@@ -6,6 +6,7 @@ import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.entity.BlackKnight;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
@@ -31,7 +32,8 @@ public class BlackKnightCap extends HumanoidCap<BlackKnight>
 	public void setAttackGoals(WeaponCategory category)
 	{
 		if (category != WeaponCategory.GREATSWORD) return;
-		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+		this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 4.0F, 3, 5));
+		this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 3.0F, true, false)
 				.addAttack(new AttackInstance(5, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_SHORT.get()))
 				.addAttack(new AttackInstance(4, 4.0F, Animations.BLACK_KNIGHT_SWORD_LA_LONG.get()))
 				.addAttack(new AttackInstance(6, 4.0F, Animations.BLACK_KNIGHT_SWORD_HA.get()))

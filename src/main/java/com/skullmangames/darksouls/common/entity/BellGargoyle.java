@@ -23,9 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class BellGargoyle extends AbstractBoss
+public class BellGargoyle extends PathfinderMob
 {
-	public BellGargoyle(EntityType<? extends PathfinderMob> type, Level level)
+	public BellGargoyle(EntityType<? extends BellGargoyle> type, Level level)
 	{
 		super(type, level);
 	}
@@ -50,7 +50,8 @@ public class BellGargoyle extends AbstractBoss
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
 				.add(Attributes.ATTACK_SPEED, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+				.add(Attributes.MOVEMENT_SPEED, 0.2D)
+				.add(Attributes.FLYING_SPEED, 0.2D);
 	}
 	
 	@Override

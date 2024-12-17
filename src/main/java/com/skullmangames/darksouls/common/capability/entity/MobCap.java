@@ -152,4 +152,9 @@ public abstract class MobCap<T extends Mob> extends LivingCap<T>
 	{
 		return this.orgEntity.getTarget();
 	}
+	
+	public boolean rndmPercentage(float percentage)
+    {
+    	return this.orgEntity.getRandom().nextFloat() <= percentage;
+    }
 }

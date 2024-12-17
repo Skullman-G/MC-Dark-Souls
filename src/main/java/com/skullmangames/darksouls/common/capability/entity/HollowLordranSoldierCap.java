@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModItems;
@@ -52,6 +53,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 	{
 		SwitchWeaponGoal weaponGoal = new SwitchWeaponGoal(this).addDefaultEstusCondition();
 		this.orgEntity.goalSelector.addGoal(1, new DrinkingEstusGoal(this));
+		this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5));
 		
 		if (category == WeaponCategory.CROSSBOW)
 		{
@@ -65,7 +67,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D && this.orgEntity.getRandom().nextFloat() <= 0.1D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, true, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, true)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.get()))
@@ -77,7 +79,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_LA.get()))
 					.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_DA.get()))
 					.addAttack(new AttackInstance(0, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SWORD_HEAVY_THRUST.get()))
@@ -91,7 +93,7 @@ public class HollowLordranSoldierCap extends HumanoidCap<HollowLordranSoldier>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 1.0F, true, true, true)
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, true)
 					.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_THRUSTS.get()))
 					.addAttack(new AttackInstance(0, 3.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SPEAR_SWINGS.get()))
 					.addAttack(new AttackInstance(2, 2.0F, Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH.get()))

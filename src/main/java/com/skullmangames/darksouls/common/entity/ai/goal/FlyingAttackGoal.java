@@ -2,14 +2,15 @@ package com.skullmangames.darksouls.common.entity.ai.goal;
 
 import com.skullmangames.darksouls.common.capability.entity.FlyingMobCap;
 
+import net.minecraft.world.entity.LivingEntity;
+
 public class FlyingAttackGoal extends AttackGoal
 {
 	private final FlyingMobCap<?> mobCap;
 	
-	public FlyingAttackGoal(FlyingMobCap<?> mobCap, float minDist, int yDist, boolean affectY, boolean defensive,
-			boolean shouldStrafe)
+	public FlyingAttackGoal(FlyingMobCap<?> mobCap, float minDist, int yDist, boolean affectY, boolean defensive)
 	{
-		super(mobCap, minDist, yDist, affectY, defensive, shouldStrafe);
+		super(mobCap, minDist, yDist, affectY, defensive);
 		this.mobCap = mobCap;
 	}
 	
@@ -26,9 +27,6 @@ public class FlyingAttackGoal extends AttackGoal
 	    		case CHASING:
 		    		this.chase();
 		    		break;
-		    	case STRAFING:
-		    		this.strafe();
-		    		break;
 		    	case ATTACKING:
 		    		this.attack();
 		    		break;
@@ -36,7 +34,7 @@ public class FlyingAttackGoal extends AttackGoal
 		}
 		else
 		{
-			if (this.getTargetRange(this.attacker.getTarget()) > 50)
+			if (this.getTargetRange(this.mob.getTarget()) > 5)
 			{
 				this.mobCap.setFlying(true);
 			}
@@ -44,7 +42,16 @@ public class FlyingAttackGoal extends AttackGoal
 		}
     }
 	
-	private void chase() {}
-	private void strafe() {}
+	private void chase()
+	{
+		LivingEntity target = this.mob.getTarget();
+		this.mob.getLookControl().setLookAt(target, 30F, 30F);
+		
+		if (target.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1D)
+		{
+			this.mob.getNavigation().moveTo(target, 1.0F);
+		}
+	}
+	
 	private void attack() {}
 }

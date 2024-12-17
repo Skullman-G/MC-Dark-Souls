@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.AttackInstance;
 import com.skullmangames.darksouls.common.entity.ai.goal.CrossbowAttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.DrinkingEstusGoal;
+import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.SwitchWeaponGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModItems;
@@ -47,7 +48,8 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D && this.orgEntity.getRandom().nextFloat() <= 0.1D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, true, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, true)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_FAST_LA.get()))
@@ -59,7 +61,8 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_LA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_HA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_SIDE_SWORD_DA.get()))
@@ -73,12 +76,13 @@ public class BalderKnightCap extends HumanoidCap<BalderKnight>
 			{
 				return this.getTarget() != null && this.orgEntity.distanceTo(this.getTarget()) < 5D;
 			});
-			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 0.0F, true, false, true)
+			this.orgEntity.goalSelector.addGoal(0,  new StrafingGoal(this, 2.5F, 3, 5)
+					.withParry(Animations.BALDER_KNIGHT_RAPIER_BLOCK.get(), Animations.BALDER_KNIGHT_RAPIER_PARRY.get()));
+			this.orgEntity.goalSelector.addGoal(1, new AttackGoal(this, 2.0F, true, false)
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_LA.get()))
 					.addAttack(new AttackInstance(1, 2.0F, Animations.BALDER_KNIGHT_RAPIER_HA.get()))
 					.addAttack(new AttackInstance(1, 2.5F, 4.0F, Animations.BALDER_KNIGHT_RAPIER_DA.get()))
-					.addDodge(Animations.BIPED_JUMP_BACK.get())
-					.addParry(Animations.BALDER_KNIGHT_RAPIER_BLOCK.get(), Animations.BALDER_KNIGHT_RAPIER_PARRY.get()));
+					.addDodge(Animations.BIPED_JUMP_BACK.get()));
 		}
 		
 		this.orgEntity.goalSelector.addGoal(0, weaponGoal);
