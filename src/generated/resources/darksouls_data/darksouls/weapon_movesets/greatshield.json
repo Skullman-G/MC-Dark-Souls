@@ -1,9 +1,9 @@
 {
   "moveset": {
-    "two_handed_dash": {
+    "two_handed_light": {
       "repeating": true,
       "animations": [
-        "darksouls:greatshield_th_dash_attack"
+        "darksouls:greatshield_th_light_attack"
       ]
     },
     "light": {
@@ -12,16 +12,16 @@
         "darksouls:greatshield_light_attack"
       ]
     },
-    "two_handed_light": {
+    "two_handed_dash": {
       "repeating": true,
       "animations": [
-        "darksouls:greatshield_th_light_attack"
+        "darksouls:greatshield_th_dash_attack"
       ]
     },
-    "heavy": {
+    "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:greatshield_heavy_attack"
+        "darksouls:greatshield_dash_attack"
       ]
     },
     "two_handed_heavy": {
@@ -30,10 +30,10 @@
         "darksouls:greatshield_th_heavy_attack"
       ]
     },
-    "dash": {
+    "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:greatshield_dash_attack"
+        "darksouls:greatshield_heavy_attack"
       ]
     }
   }
