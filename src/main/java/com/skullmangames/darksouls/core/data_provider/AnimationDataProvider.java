@@ -69,6 +69,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 
 public class AnimationDataProvider implements DataProvider
 {
@@ -1633,7 +1634,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_USAGE, 35)
 								.addProperty(AttackProperty.POISE_DAMAGE, 30),
 				new AttackAnimation.Builder(Animations.GREATSHIELD_BASH.getId(), AttackType.LIGHT, 0.2F, 0.0F, 0.36F,
-						0.64F, 1.2F, "Tool_L", DarkSouls.rl("biped/combat/greatshield_bash"),
+						0.64F, 1.2F, InteractionHand.OFF_HAND, "Tool_L", DarkSouls.rl("biped/combat/greatshield_bash"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.36F, Side.SERVER, ModSoundEvents.FIST_SWING) })
 								.addProperty(AttackProperty.DEFLECTION, Deflection.IMPOSSIBLE)
@@ -2005,7 +2006,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.POISE_DAMAGE, 20),
 
 				new AttackAnimation.Builder(Animations.HOLLOW_LORDRAN_SOLDIER_SHIELD_BASH.getId(), AttackType.HEAVY,
-						0.2F, 0.0F, 0.6F, 0.8F, 1.6F, Colliders.SHIELD.getId(), "Tool_L",
+						0.2F, 0.0F, 0.6F, 0.8F, 1.6F, InteractionHand.OFF_HAND, Colliders.SHIELD.getId(), "Tool_L",
 						DarkSouls.rl("hollow_lordran_soldier/shield_bash"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.6F, Side.SERVER, ModSoundEvents.FIST_SWING) })
@@ -2150,7 +2151,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 37)
 								.addProperty(AttackProperty.POISE_DAMAGE, 15),
 				new AttackAnimation.Builder(Animations.BALDER_KNIGHT_SHIELD_HA.getId(), AttackType.HEAVY, 0.2F, 0.0F,
-						0.08F, 0.24F, 1.2F, Colliders.SHIELD.getId(), "Tool_L", DarkSouls.rl("balder_knight/shield_ha"),
+						0.08F, 0.24F, 1.2F, InteractionHand.OFF_HAND, Colliders.SHIELD.getId(), "Tool_L", DarkSouls.rl("balder_knight/shield_ha"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.CLIENT, ModSoundEvents.BALDER_KNIGHT_FOOT),
 						new PlaySoundEvent(0.08F, Side.CLIENT, ModSoundEvents.FIST_SWING),
@@ -2469,7 +2470,7 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.STAMINA_DAMAGE, 56)
 								.addProperty(AttackProperty.POISE_DAMAGE, 23),
 				new AttackAnimation.Builder(Animations.BLACK_KNIGHT_SHIELD_ATTACK.getId(), AttackType.HEAVY, 0.2F, 0.0F,
-						0.52F, 0.8F, 1.6F, Colliders.SHIELD.getId(), "Tool_L",
+						0.52F, 0.8F, 1.6F, InteractionHand.OFF_HAND, Colliders.SHIELD.getId(), "Tool_L",
 						DarkSouls.rl("black_knight/black_knight_shield_attack"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.52F, Side.CLIENT, ModSoundEvents.AXE_SWING),

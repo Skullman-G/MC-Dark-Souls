@@ -79,11 +79,11 @@ public class AttackAnimation extends ActionAnimation
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
 			float convertTime, float begin, float contactStart, float contactEnd, float end,
-			@Nullable Collider collider, String jointName, ResourceLocation path,
+			InteractionHand hand, String jointName, ResourceLocation path,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
 		this(id, attackType, convertTime, path, model, properties,
-				new Phase(begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, collider, attackProperties));
+				new Phase(begin, contactStart, contactEnd, end, hand, jointName, null, attackProperties));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
@@ -440,7 +440,14 @@ public class AttackAnimation extends ActionAnimation
 		}
 
 		public Builder(ResourceLocation id, AttackType attackType,
-				float convertTime, float begin, float contactStart, float contactEnd, float end, boolean affectY, InteractionHand hand,
+				float convertTime, float begin, float contactStart, float contactEnd, float end, InteractionHand hand,
+				String jointName, ResourceLocation path, Function<Models<?>, Model> model)
+		{
+			this(id, attackType, convertTime, path, model, new PhaseBuilder(id, begin, contactStart, contactEnd, end, hand, jointName, null));
+		}
+		
+		public Builder(ResourceLocation id, AttackType attackType,
+				float convertTime, float begin, float contactStart, float contactEnd, float end, InteractionHand hand,
 				@Nullable ResourceLocation colliderId, String jointName, ResourceLocation path, Function<Models<?>, Model> model)
 		{
 			this(id, attackType, convertTime, path, model, new PhaseBuilder(id, begin, contactStart, contactEnd, end, hand, jointName, colliderId));

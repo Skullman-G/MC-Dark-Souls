@@ -413,11 +413,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	{
 		ExtendedDamageSource extSource = ExtendedDamageSource.getFrom(damageSource, amount);
 		
-		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
-		
 		if (this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
 		{
-			extSource.getDamages().mul(0);
 			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
 			return false;
 		}
@@ -427,6 +424,8 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		{
 			aux.apply(this, extSource);
 		});
+		
+		boolean indirect = damageSource instanceof IndirectEntityDamageSource;
 		
 		// Damage Calculation
 		if (!indirect)
@@ -462,14 +461,18 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			this.makeImpactSfx(extSource);
 		}
 		
-		if (!(this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS))
+		if (this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
+		{
+			extSource.getDamages().mul(0);
+		}
+		else
 		{
 			// Stun Animation
 			boolean poiseBroken = this.decreasePoiseDef(poiseDamage);
 			if (!poiseBroken && !headshot) extSource.setStunType(stunType.downgrade());
 			StaticAnimation hitAnimation = this.getHitAnimation(extSource);
-			
-			if(hitAnimation != null)
+
+			if (hitAnimation != null)
 			{
 				if (stunType.getLevel() == 3)
 				{
