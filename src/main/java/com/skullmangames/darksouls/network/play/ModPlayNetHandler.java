@@ -1,9 +1,11 @@
 package com.skullmangames.darksouls.network.play;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -44,7 +46,11 @@ public class ModPlayNetHandler
 
 	public void bonfireKindleEffect(BlockPos pos) {}
 
-	public void makeImpactParticles(Entity entity, Vec3 impactPos, boolean blocked) {}
+	public void impactSfx(Entity entity, Vec3 impactPos, boolean blocked, Collection<CoreDamageType> damageTypes) {}
+	
+	public void physicalBloodImpactSfx(Entity entity, Vec3 impactPos) {}
+	
+	public void sparkImpactSfx(Entity entity, Vec3 impactPos) {}
 	
 	public void spawnParticlesCircle(SimpleParticleType particle, Vec3 pos, float radius) {}
 }

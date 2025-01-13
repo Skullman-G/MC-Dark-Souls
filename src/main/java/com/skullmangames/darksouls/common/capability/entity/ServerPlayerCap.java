@@ -38,7 +38,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -278,13 +277,10 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 	}
 	
 	@Override
-	public void makeImpactParticles(Vec3 impactPos, boolean blocked)
+	public void makeImpactSfx(ExtendedDamageSource src)
 	{
-		if (!this.isClientSide())
-		{
-			if (!blocked) this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
-			ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
-		}
+		ModNetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(new STCEntityImpactParticles(this.orgEntity.getId(),
+				src.getAttackPos(), src.wasBlocked(), src.getDamages().getCoreTypes()), this.orgEntity);
 	}
 
 	@Override

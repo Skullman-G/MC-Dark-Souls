@@ -1,33 +1,9 @@
 {
   "moveset": {
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:hammer_heavy_attack"
-      ]
-    },
     "punish": {
       "repeating": true,
       "animations": [
         "darksouls:punish_strike"
-      ]
-    },
-    "two_handed_light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:hammer_th_light_attack"
-      ]
-    },
-    "backstab": {
-      "repeating": true,
-      "animations": [
-        "darksouls:backstab_strike"
-      ]
-    },
-    "light": {
-      "repeating": true,
-      "animations": [
-        "darksouls:hammer_light_attack"
       ]
     },
     "two_handed_dash": {
@@ -36,16 +12,40 @@
         "darksouls:hammer_th_dash_attack"
       ]
     },
-    "dash": {
+    "light": {
       "repeating": true,
       "animations": [
-        "darksouls:hammer_dash_attack"
+        "darksouls:hammer_light_attack"
+      ]
+    },
+    "two_handed_light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:hammer_th_light_attack"
+      ]
+    },
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:hammer_heavy_attack"
+      ]
+    },
+    "backstab": {
+      "repeating": true,
+      "animations": [
+        "darksouls:backstab_strike"
       ]
     },
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
         "darksouls:hammer_th_heavy_attack"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:hammer_dash_attack"
       ]
     }
   }

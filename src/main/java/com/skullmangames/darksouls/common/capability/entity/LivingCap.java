@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
@@ -25,7 +26,6 @@ import com.skullmangames.darksouls.common.capability.item.WeaponCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
@@ -228,16 +228,19 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 	}
 	
-	public void makeImpactParticles(Vec3 impactPos, boolean blocked)
+	public void makeImpactSfx(ExtendedDamageSource src)
 	{
+		Vec3 impactPos = src.getAttackPos();
+		boolean blocked = src.wasBlocked();
+		Set<CoreDamageType> damageTypes = src.getDamages().getCoreTypes();
+		
 		if (this.isClientSide())
 		{
-			ModNetworkManager.connection.makeImpactParticles(this.orgEntity, impactPos, blocked);
+			ModNetworkManager.connection.impactSfx(this.orgEntity, impactPos, blocked, damageTypes);
 		}
 		else
 		{
-			if (!blocked) this.playSound(ModSoundEvents.GENERIC_BLOOD.get());
-			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked), this.orgEntity);
+			ModNetworkManager.sendToAllPlayerTrackingThisEntity(new STCEntityImpactParticles(this.orgEntity.getId(), impactPos, blocked, damageTypes), this.orgEntity);
 		}
 	}
 	
@@ -455,7 +458,9 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		// Particles
 		if (!extSource.getDamages().isEmpty())
-			this.makeImpactParticles(extSource.getAttackPos(), extSource.wasBlocked());
+		{
+			this.makeImpactSfx(extSource);
+		}
 		
 		if (!(this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS))
 		{

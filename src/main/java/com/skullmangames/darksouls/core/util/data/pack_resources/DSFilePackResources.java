@@ -109,7 +109,7 @@ public class DSFilePackResources extends AbstractDSPackResources
 		return set;
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation" })
 	protected void finalize() throws Throwable
 	{
 		this.close();

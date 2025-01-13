@@ -1,4 +1,31 @@
 {
+	"entity.generic.hit_magic":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/hit_magic"
+		]
+	},
+	
+	"entity.generic.hit_lightning":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/hit_lightning"
+		]
+	},
+	
+	"entity.generic.hit_fire":
+	{
+		"category": "entity",
+		"sounds":
+		[
+			"darksouls:entities/generic/hit_fire"
+		]
+	},
+	
 	"entity.bell_gargoyle.scream":
 	{
 		"category": "entity",
@@ -56,13 +83,13 @@
 		]
 	},
 	
-	"entity.generic.blood":
+	"entity.generic.hit_physical_blood":
 	{
 		"category": "entity",
 		"sounds":
 		[
-			"darksouls:entities/generic/blood_1",
-			"darksouls:entities/generic/blood_2"
+			"darksouls:entities/generic/hit_physical_blood_1",
+			"darksouls:entities/generic/hit_physical_blood_2"
 		]
 	},
 	

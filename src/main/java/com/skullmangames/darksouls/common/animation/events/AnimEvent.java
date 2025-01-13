@@ -14,7 +14,6 @@ public abstract class AnimEvent implements Comparable<AnimEvent>
 	(
 			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(PlaySoundEvent.TYPE, PlaySoundEvent::new),
 			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(ChangeItemEvent.TYPE, ChangeItemEvent::new),
-			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(ImpactParticleEvent.TYPE, ImpactParticleEvent::new),
 			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(TeleportEvent.TYPE, TeleportEvent::new),
 			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(TeleportParticleEvent.TYPE, TeleportParticleEvent::new),
 			new SimpleImmutableEntry<String, Function<JsonObject, AnimEvent>>(ShootThrowableProjectileEvent.TYPE, ShootThrowableProjectileEvent::new),

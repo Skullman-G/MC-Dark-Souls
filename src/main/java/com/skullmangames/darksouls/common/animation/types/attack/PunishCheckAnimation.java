@@ -79,7 +79,7 @@ public class PunishCheckAnimation extends AttackAnimation
 		}
 		
 		StaticAnimation followUpAnim = AnimationManager.getAnimation(followUp);
-		if (followUpAnim instanceof CriticalHitAnimation) entityCap.criticalTarget = target;
+		if (followUpAnim instanceof CriticalFollowupAnimation) entityCap.criticalTarget = target;
 		return true;
 	}
 	
@@ -101,9 +101,9 @@ public class PunishCheckAnimation extends AttackAnimation
 		damages.replace(CoreDamageType.PHYSICAL, damageType);
 		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
 		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(1);
-		ExtendedDamageSource extDmgSource = entityCap.getDamageSource(attackPos, staminaDmg, stunType,
+		
+		return entityCap.getDamageSource(CriticalFollowupAnimation.calcAttackPos(target), staminaDmg, stunType,
 				this.getRequiredDeflection(phase), poiseDamage, damages);
-		return extDmgSource;
 	}
 	
 	public static class Builder extends AttackAnimation.Builder

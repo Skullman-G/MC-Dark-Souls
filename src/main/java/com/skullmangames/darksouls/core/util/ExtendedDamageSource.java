@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.core.util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -126,6 +127,11 @@ public interface ExtendedDamageSource
 	{
 		public Attribute getDefenseAttribute();
 		public CoreDamageType coreType();
+		
+		public default boolean isNonPhysical()
+		{
+			return this.coreType() != CoreDamageType.PHYSICAL;
+		}
 	}
 	
 	public enum CoreDamageType implements DamageType
@@ -253,6 +259,13 @@ public interface ExtendedDamageSource
 			return this;
 		}
 		
-		
+		public Set<CoreDamageType> getCoreTypes()
+		{
+			return this.damages.entrySet().stream()
+					.filter(entry -> entry.getValue() > 0)
+					.map(type -> type.getKey().coreType())
+					.distinct()
+					.collect(HashSet::new, (set, type) -> set.add(type), (s1, s2) -> s1.addAll(s2));
+		}
 	}
 }

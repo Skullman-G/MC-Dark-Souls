@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalFollowupAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnimation;
 
@@ -25,7 +25,7 @@ public enum AnimationType
 	MOVEMENT("movement", MovementAnimation.Builder::new),
 	DEATH("death", DeathAnimation.Builder::new),
 	ATTACK("attack", AttackAnimation.Builder::new),
-	CRITICAL_HIT("critical_hit", CriticalHitAnimation.Builder::new),
+	CRITICAL_FOLLOWUP("critical_followup", CriticalFollowupAnimation.Builder::new),
 	ACTION("action", ActionAnimation.Builder::new),
 	MIRROR("mirror", MirrorAnimation.Builder::new),
 	ADAPTABLE("adaptable", AdaptableAnimation.Builder::new),

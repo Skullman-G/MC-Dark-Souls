@@ -21,6 +21,7 @@ import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
 import com.skullmangames.darksouls.network.server.STCChangeEquipment;
 import com.skullmangames.darksouls.network.server.STCCovenant;
 import com.skullmangames.darksouls.network.server.STCCovenantProgress;
+import com.skullmangames.darksouls.network.server.STCEntityBloodImpactParticles;
 import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
 import com.skullmangames.darksouls.network.server.STCFP;
 import com.skullmangames.darksouls.network.server.STCHuman;
@@ -135,5 +136,6 @@ public class ModNetworkManager
 		INSTANCE.registerMessage(id++, STCEntityImpactParticles.class, STCEntityImpactParticles::toBytes, STCEntityImpactParticles::fromBytes, STCEntityImpactParticles::handle);
 		INSTANCE.registerMessage(id++, STCChangeEquipment.class, STCChangeEquipment::toBytes, STCChangeEquipment::fromBytes, STCChangeEquipment::handle);
 		INSTANCE.registerMessage(id++, STCSetMaxPlayerLevel.class, STCSetMaxPlayerLevel::toBytes, STCSetMaxPlayerLevel::fromBytes, STCSetMaxPlayerLevel::handle);
+		INSTANCE.registerMessage(id++, STCEntityBloodImpactParticles.class, STCEntityBloodImpactParticles::toBytes, STCEntityBloodImpactParticles::fromBytes, STCEntityBloodImpactParticles::handle);
 	}
 }

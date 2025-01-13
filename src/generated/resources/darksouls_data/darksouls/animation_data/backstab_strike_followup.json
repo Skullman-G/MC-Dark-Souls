@@ -1,5 +1,5 @@
 {
-  "animation_type": "critical_hit",
+  "animation_type": "critical_followup",
   "location": "darksouls:biped/combat/backstab_strike",
   "convert_time": 0.05,
   "repeat": false,
@@ -41,5 +41,6 @@
     ]
   },
   "delay_time": 3.4028235E38,
-  "hit": 1.24
+  "hit": 1.24,
+  "deals_damage": true
 }

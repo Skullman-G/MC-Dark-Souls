@@ -124,7 +124,7 @@ public class AttackGoal extends Goal
     			&& this.mobCap.getEntityState().getContactLevel() == 3;
     }
     
-    private void updatePhase()
+    protected void updatePhase()
     {
     	LivingEntity target = this.mob.getTarget();
     	boolean inAttackRange = this.targetInAttackRange(target);

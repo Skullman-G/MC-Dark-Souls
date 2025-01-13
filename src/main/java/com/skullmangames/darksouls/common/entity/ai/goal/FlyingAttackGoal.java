@@ -23,9 +23,17 @@ public class FlyingAttackGoal extends AttackGoal
 	    	{
 	    		default:
 		    	case NONE:
+		    		if (this.getTargetRange(this.mob.getTarget()) < 5)
+		    		{
+		    			this.mobCap.setFlying(false);
+		    		}
 		    		break;
 	    		case CHASING:
-		    		this.chase();
+	    			if (this.getTargetRange(this.mob.getTarget()) < 5)
+		    		{
+		    			this.mobCap.setFlying(false);
+		    		}
+	    			else this.chase();
 		    		break;
 		    	case ATTACKING:
 		    		this.attack();
@@ -34,7 +42,7 @@ public class FlyingAttackGoal extends AttackGoal
 		}
 		else
 		{
-			if (this.getTargetRange(this.mob.getTarget()) > 5)
+			if ((this.phase == Phase.NONE || this.phase == Phase.CHASING) && this.getTargetRange(this.mob.getTarget()) > 5)
 			{
 				this.mobCap.setFlying(true);
 			}

@@ -12,7 +12,7 @@
       "location_2": "darksouls:biped/combat/block_walk"
     },
     {
-      "motion": "KNEELING",
+      "motion": "SNEAKING",
       "apply_layer_parts": true,
       "mirrored": true,
       "location_1": "darksouls:biped/combat/block_mirror",
@@ -26,18 +26,18 @@
       "location_2": "darksouls:biped/combat/block"
     },
     {
+      "motion": "KNEELING",
+      "apply_layer_parts": true,
+      "mirrored": true,
+      "location_1": "darksouls:biped/combat/block_mirror",
+      "location_2": "darksouls:biped/combat/block"
+    },
+    {
       "motion": "RUNNING",
       "apply_layer_parts": true,
       "mirrored": true,
       "location_1": "darksouls:biped/combat/block_run_mirror",
       "location_2": "darksouls:biped/combat/block_run"
-    },
-    {
-      "motion": "SNEAKING",
-      "apply_layer_parts": true,
-      "mirrored": true,
-      "location_1": "darksouls:biped/combat/block_mirror",
-      "location_2": "darksouls:biped/combat/block"
     }
   ]
 }

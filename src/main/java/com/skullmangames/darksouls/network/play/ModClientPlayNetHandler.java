@@ -1,5 +1,6 @@
 package com.skullmangames.darksouls.network.play;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -19,10 +20,13 @@ import com.skullmangames.darksouls.common.blockentity.BonfireBlockEntity;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
+import com.skullmangames.darksouls.core.init.ModSoundEvents;
+import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -153,30 +157,105 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 	}
 
 	@Override
-	public void makeImpactParticles(Entity entity, Vec3 impactPos, boolean blocked)
+	public void impactSfx(Entity entity, Vec3 impactPos, boolean blocked, Collection<CoreDamageType> damageTypes)
 	{
-		Random random = this.minecraft.level.random;
 		AABB bb = entity.getBoundingBox();
 		double x = entity.getX() + ModMath.clamp(impactPos.x - entity.getX(), bb.getXsize() / 3);
 		double y = entity.getY() + ModMath.clamp(impactPos.y - entity.getY(), bb.getYsize() / 3);
 		double z = entity.getZ() + ModMath.clamp(impactPos.z - entity.getZ(), bb.getZsize() / 3);
+		impactPos = new Vec3(x, y, z);
 		
 		if (blocked)
 		{
-			for (int i = 0; i < 10; i++)
-			{
-				double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.25F * random.nextDouble();
-				double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.25F * random.nextDouble();
-				entity.level.addParticle(ModParticles.SPARK.get(), x, y, z, xd, 0.2D * random.nextDouble(), zd);
-			}
+			sparkImpactSfx(entity, impactPos);
 		}
 		else
 		{
-			for (int i = 0; i < 20; i++)
+			physicalBloodImpactSfx(entity, impactPos);
+		}
+		
+		if (damageTypes.contains(CoreDamageType.LIGHTNING))
+		{
+			lightningImpactSfx(entity);
+		}
+		if (damageTypes.contains(CoreDamageType.FIRE))
+		{
+			fireImpactSfx(entity, impactPos);
+		}
+		if (damageTypes.contains(CoreDamageType.MAGIC)
+				|| damageTypes.contains(CoreDamageType.HOLY)
+				|| damageTypes.contains(CoreDamageType.DARK))
+		{
+			playSound(entity, ModSoundEvents.GENERIC_HIT_MAGIC.get(), 1.0F);
+		}
+	}
+	
+	private void fireImpactSfx(Entity entity, Vec3 impactPos)
+	{
+		playSound(entity, ModSoundEvents.GENERIC_HIT_FIRE.get(), 1.0F);
+		
+		Random random = entity.level.random;
+		
+		double radius = ((entity.getBoundingBox().getXsize() + entity.getBoundingBox().getZsize()) / 4.0D) + 0.25D;
+		for (int y = 0; y < 5; y++)
+		{
+			for (int i = 0; i < 360; i++)
 			{
-				double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.5F * random.nextDouble();
-				double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.5F * random.nextDouble();
-				entity.level.addParticle(ModParticles.BLOOD.get(), x, y, z, xd, 0.2D, zd);
+				if (i % 40 == 0 && random.nextFloat() < 0.75F)
+				{
+					double a = Math.toRadians(i);
+					Vec3 pos = entity.position().add(Math.sin(a) * radius, (entity.getBbHeight() / 5.0D) * y, Math.cos(a) * radius);
+					entity.level.addParticle(ParticleTypes.FLAME, pos.x, pos.y, pos.z, 0, 0, 0);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void sparkImpactSfx(Entity entity, Vec3 impactPos)
+	{
+		Random random = entity.level.random;
+		
+		for (int i = 0; i < 10; i++)
+		{
+			double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.25F * random.nextDouble();
+			double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.25F * random.nextDouble();
+			entity.level.addParticle(ModParticles.SPARK.get(), impactPos.x, impactPos.y, impactPos.z, xd, 0.2D * random.nextDouble(), zd);
+		}
+	}
+	
+	@Override
+	public void physicalBloodImpactSfx(Entity entity, Vec3 impactPos)
+	{
+		playSound(entity, ModSoundEvents.GENERIC_HIT_PHYSICAL_BLOOD.get(), 1.0F);
+		
+		Random random = entity.level.random;
+		
+		for (int i = 0; i < 20; i++)
+		{
+			double xd = ModMath.dir(impactPos.x - entity.getX()) * 0.5F * random.nextDouble();
+			double zd = ModMath.dir(impactPos.z - entity.getZ()) * 0.5F * random.nextDouble();
+			entity.level.addParticle(ModParticles.BLOOD.get(), impactPos.x, impactPos.y, impactPos.z, xd, 0.2D, zd);
+		}
+	}
+	
+	private void lightningImpactSfx(Entity entity)
+	{
+		playSound(entity, ModSoundEvents.GENERIC_HIT_LIGHTNING.get(), 1.0F);
+		
+		Random random = entity.level.random;
+		
+		double radius = (entity.getBoundingBox().getXsize() + entity.getBoundingBox().getZsize()) / 4.0D;
+		for (int y = 0; y < 5; y++)
+		{
+			for (int i = 0; i < 360; i++)
+			{
+				if (i % 40 == 0 && random.nextFloat() < 0.75F)
+				{
+					double a = Math.toRadians(i);
+					Vec3 pos = entity.position().add(Math.sin(a) * radius, (entity.getBbHeight() / 5.0D) * y, Math.cos(a) * radius);
+					entity.level.addParticle(ModParticles.LIGHTNING.get(), pos.x, pos.y, pos.z, 0, 0, 0);
+				}
 			}
 		}
 	}

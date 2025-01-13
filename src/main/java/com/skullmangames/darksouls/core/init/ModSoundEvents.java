@@ -51,8 +51,12 @@ public class ModSoundEvents
 	public static final RegistryObject<SoundEvent> GENERIC_KICK = register("entity.generic.kick");
 	public static final RegistryObject<SoundEvent> GENERIC_PARRY_SUCCESS = register("entity.generic.parry_success");
 	public static final RegistryObject<SoundEvent> GENERIC_KILL_CHANCE = register("entity.generic.kill_chance");
-	public static final RegistryObject<SoundEvent> GENERIC_BLOOD = register("entity.generic.blood");
 	public static final RegistryObject<SoundEvent> GENERIC_YOU_DIED = register("entity.generic.you_died");
+	
+	public static final RegistryObject<SoundEvent> GENERIC_HIT_PHYSICAL_BLOOD = register("entity.generic.hit_physical_blood");
+	public static final RegistryObject<SoundEvent> GENERIC_HIT_LIGHTNING = register("entity.generic.hit_lightning");
+	public static final RegistryObject<SoundEvent> GENERIC_HIT_FIRE = register("entity.generic.hit_fire");
+	public static final RegistryObject<SoundEvent> GENERIC_HIT_MAGIC = register("entity.generic.hit_magic");
 	
 	public static final RegistryObject<SoundEvent> PLAYER_SHIELD_DISARMED = register("entity.player.shield_disarmed");
 	

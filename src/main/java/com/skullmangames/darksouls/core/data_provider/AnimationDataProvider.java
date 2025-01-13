@@ -26,7 +26,6 @@ import com.skullmangames.darksouls.common.animation.events.ChangeItemEvent;
 import com.skullmangames.darksouls.common.animation.events.EntityboundParticleEvent;
 import com.skullmangames.darksouls.common.animation.events.HealInRadiusEvent;
 import com.skullmangames.darksouls.common.animation.events.HealSelfEvent;
-import com.skullmangames.darksouls.common.animation.events.ImpactParticleEvent;
 import com.skullmangames.darksouls.common.animation.events.PlaySoundEvent;
 import com.skullmangames.darksouls.common.animation.events.SetLightSourceEvent;
 import com.skullmangames.darksouls.common.animation.events.ShakeCamEvent;
@@ -51,7 +50,7 @@ import com.skullmangames.darksouls.common.animation.types.MovementAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.BackstabCheckAnimation;
-import com.skullmangames.darksouls.common.animation.types.attack.CriticalHitAnimation;
+import com.skullmangames.darksouls.common.animation.types.attack.CriticalFollowupAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.PunishCheckAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation.PhaseBuilder;
@@ -186,14 +185,12 @@ public class AnimationDataProvider implements DataProvider
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_BACKSTAB.getId(), 0.05F,
 						DarkSouls.rl("biped/death/backstab"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new ImpactParticleEvent(0.44F, 0, 0, 0),
-										new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
+								{ new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
 								.addProperty(DeathProperty.DISAPPEAR_AT, 6.0F),
 				new DeathAnimation.Builder(Animations.BIPED_DEATH_PUNISH.getId(), 0.05F,
 						DarkSouls.rl("biped/death/punish"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new ImpactParticleEvent(0.44F, 0, 0, 0),
-										new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
+								{ new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) })
 								.addProperty(DeathProperty.DISAPPEAR_AT, 4.4F),
 
 				new StaticAnimation.Builder(Animations.BIPED_DIG.getId(), 0.2F, true, DarkSouls.rl("biped/living/dig"),
@@ -484,42 +481,46 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(StaticAnimationProperty.DEATH_ANIMATION,
 										DarkSouls.rl("biped_death_backstab"))
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new ImpactParticleEvent(0.44F, 0, 0, 0),
-										new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) }),
+								{ new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) }),
 
 				new InvincibleAnimation.Builder(Animations.BIPED_HIT_PUNISH.getId(), 0.05F,
 						DarkSouls.rl("biped/hit/punish"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.DEATH_ANIMATION,
 										DarkSouls.rl("biped_death_punish"))
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
-								{ new ImpactParticleEvent(0.44F, 0, 0, 0),
-										new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) }),
+								{ new PlaySoundEvent(1.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND) }),
 
 				new DodgingAnimation.Builder(Animations.BIPED_ROLL.getId(), 0.05F, DarkSouls.rl("biped/combat/roll"),
 						(models) -> models.ENTITY_BIPED).addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 				{ new PlaySoundEvent(0.28F, Side.CLIENT, ModSoundEvents.GENERIC_ROLL) }),
-				new DodgingAnimation.Builder(DarkSouls.rl("biped_fat_roll"), 0.05F,
+				
+				new DodgingAnimation.Builder(Animations.BIPED_FAT_ROLL.getId(), 0.05F,
 						DarkSouls.rl("biped/combat/fat_roll"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.48F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new ShakeCamGlobalEvent(0.48F, 10, 0.25F) }),
+								
 				new ActionAnimation.Builder(Animations.BIPED_ROLL_TOO_FAT.getId(), 0.05F,
 						DarkSouls.rl("biped/combat/roll_too_fat"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.4F, Side.SERVER, ModSoundEvents.GENERIC_LAND),
 										new ShakeCamGlobalEvent(0.4F, 10, 0.25F) }),
+								
 				new DodgingAnimation.Builder(Animations.BIPED_ROLL_BACK.getId(), 0.4F,
 						DarkSouls.rl("biped/combat/roll_back"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.28F, Side.SERVER, ModSoundEvents.GENERIC_ROLL) }),
+								
 				new DodgingAnimation.Builder(Animations.BIPED_ROLL_LEFT.getId(), 0.05F, true,
 						DarkSouls.rl("biped/combat/roll_left"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.28F, Side.SERVER, ModSoundEvents.GENERIC_ROLL) }),
+								
 				new DodgingAnimation.Builder(Animations.BIPED_ROLL_RIGHT.getId(), 0.05F, true,
 						DarkSouls.rl("biped/combat/roll_right"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.28F, Side.SERVER, ModSoundEvents.GENERIC_ROLL) }),
+								
 				new DodgingAnimation.Builder(Animations.BIPED_JUMP_BACK.getId(), 0.08F,
 						DarkSouls.rl("biped/combat/jump_back"), (models) -> models.ENTITY_BIPED),
 
@@ -649,7 +650,8 @@ public class AnimationDataProvider implements DataProvider
 				new BackstabCheckAnimation.Builder(Animations.BACKSTAB_THRUST.getId(), AttackType.BACKSTAB, 0.2F, 0.0F,
 						0.36F, 0.64F, 1.44F, false, "Tool_R", DarkSouls.rl("biped/combat/backstab_thrust_check"),
 						(models) -> models.ENTITY_BIPED, DarkSouls.rl("backstab_thrust_followup")),
-				new InvincibleAnimation.Builder(DarkSouls.rl("backstab_thrust_followup"), 0.05F,
+				
+				new CriticalFollowupAnimation.Builder(DarkSouls.rl("backstab_thrust_followup"), 0.05F, 1.08F, false,
 						DarkSouls.rl("biped/combat/backstab_thrust"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.SERVER,
@@ -658,10 +660,12 @@ public class AnimationDataProvider implements DataProvider
 										new PlaySoundEvent(1.08F, Side.SERVER, ModSoundEvents.GENERIC_KICK),
 										new PlaySoundEvent(1.08F, Side.SERVER, ModSoundEvents.SWORD_PULLOUT),
 										new ShakeCamEvent(1.3F, 10, 0.5F) }),
+								
 				new BackstabCheckAnimation.Builder(Animations.BACKSTAB_STRIKE.getId(), AttackType.BACKSTAB, 0.2F, 0.0F,
 						0.4F, 0.8F, 1.44F, true, "Tool_R", DarkSouls.rl("biped/combat/backstab_strike_check"),
 						(models) -> models.ENTITY_BIPED, DarkSouls.rl("backstab_strike_followup")),
-				new CriticalHitAnimation.Builder(DarkSouls.rl("backstab_strike_followup"), 0.05F, 1.24F,
+				
+				new CriticalFollowupAnimation.Builder(DarkSouls.rl("backstab_strike_followup"), 0.05F, 1.24F, true,
 						DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.SERVER,
@@ -674,7 +678,8 @@ public class AnimationDataProvider implements DataProvider
 				new PunishCheckAnimation.Builder(Animations.PUNISH_THRUST.getId(), AttackType.PUNISH, 0.2F, 0.0F, 0.36F,
 						0.64F, 1.44F, false, "Tool_R", DarkSouls.rl("biped/combat/backstab_thrust_check"),
 						(models) -> models.ENTITY_BIPED, DarkSouls.rl("punish_thrust_followup")),
-				new InvincibleAnimation.Builder(DarkSouls.rl("punish_thrust_followup"), 0.05F,
+				
+				new CriticalFollowupAnimation.Builder(DarkSouls.rl("punish_thrust_followup"), 0.05F, 1.08F, false,
 						DarkSouls.rl("biped/combat/backstab_thrust"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.SERVER,
@@ -685,10 +690,12 @@ public class AnimationDataProvider implements DataProvider
 										new PlaySoundEvent(1.08F, Side.SERVER, ModSoundEvents.GENERIC_KICK),
 										new PlaySoundEvent(1.08F, Side.SERVER, ModSoundEvents.SWORD_PULLOUT),
 										new ShakeCamEvent(1.3F, 10, 0.5F) }),
+								
 				new PunishCheckAnimation.Builder(Animations.PUNISH_STRIKE.getId(), AttackType.PUNISH, 0.2F, 0.0F, 0.4F,
 						0.8F, 1.44F, true, "Tool_R", DarkSouls.rl("biped/combat/backstab_strike_check"),
 						(models) -> models.ENTITY_BIPED, DarkSouls.rl("punish_strike_followup")),
-				new CriticalHitAnimation.Builder(DarkSouls.rl("punish_strike_followup"), 0.05F, 1.24F,
+				
+				new CriticalFollowupAnimation.Builder(DarkSouls.rl("punish_strike_followup"), 0.05F, 1.24F, true,
 						DarkSouls.rl("biped/combat/backstab_strike"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(AnimEvent.ON_BEGIN, Side.SERVER,

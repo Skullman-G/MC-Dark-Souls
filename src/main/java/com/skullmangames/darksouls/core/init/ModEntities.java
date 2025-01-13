@@ -123,7 +123,7 @@ public class ModEntities
 	
 	public static final RegistryObject<EntityType<BellGargoyle>> BELL_GARGOYLE = register("bell_gargoyle",
 			EntityType.Builder.<BellGargoyle>of(BellGargoyle::new, MobCategory.MONSTER)
-			.sized(3F, 3F)
+			.sized(2F, 1.5F)
 			.canSpawnFarFromPlayer());
 	
 	//Projectiles

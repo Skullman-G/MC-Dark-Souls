@@ -8,14 +8,6 @@
     "death_animation": "darksouls:biped_death_punish",
     "events": [
       {
-        "event_type": "impact_particle",
-        "time": 0.44,
-        "execution_side": "CLIENT",
-        "x_offset": 0.0,
-        "y_offset": 0.0,
-        "z_offset": 0.0
-      },
-      {
         "event_type": "play_sound",
         "time": 1.4,
         "execution_side": "SERVER",

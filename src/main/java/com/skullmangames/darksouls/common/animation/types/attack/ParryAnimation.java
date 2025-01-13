@@ -22,13 +22,17 @@ import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
+import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
+import com.skullmangames.darksouls.network.ModNetworkManager;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -107,7 +111,13 @@ public class ParryAnimation extends ActionAnimation
 					LivingCap<?> cap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 					if (cap != null && !cap.weaponCollider.isEmpty() && collider.getType().collidesWith(cap.weaponCollider.getType()))
 					{
-						entityCap.makeImpactParticles(collider.getMassCenter(), true);
+						Vec3 impactPos = collider.getMassCenter();
+						AABB bb = entity.getBoundingBox();
+						double x = entity.getX() + ModMath.clamp(impactPos.x - entity.getX(), bb.getXsize() / 3);
+						double y = entity.getY() + ModMath.clamp(impactPos.y - entity.getY(), bb.getYsize() / 3);
+						double z = entity.getZ() + ModMath.clamp(impactPos.z - entity.getZ(), bb.getZsize() / 3);
+						impactPos = new Vec3(x, y, z);
+						ModNetworkManager.connection.sparkImpactSfx(orgEntity, impactPos);
 					}
 				}
 			}
