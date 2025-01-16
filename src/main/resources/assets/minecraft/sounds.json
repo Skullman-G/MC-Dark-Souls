@@ -17,9 +17,11 @@
 		"category": "entity",
 		"sounds":
 		[
-			"minecraft:entities/generic/hit_1",
-			"minecraft:entities/generic/hit_2",
-			"minecraft:entities/generic/hit_3"
+			"minecraft:entities/player/hit_1",
+			"minecraft:entities/player/hit_2",
+			"minecraft:entities/player/hit_3",
+			"minecraft:entities/player/hit_4",
+			"minecraft:entities/player/hit_5"
 		]
 	}
 }

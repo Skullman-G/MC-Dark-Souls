@@ -171,6 +171,7 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 		}
 		else
 		{
+			playSound(entity, ModSoundEvents.GENERIC_HIT_PHYSICAL_BLOOD.get(), 1.0F);
 			physicalBloodImpactSfx(entity, impactPos);
 		}
 		
@@ -227,8 +228,6 @@ public class ModClientPlayNetHandler extends ModPlayNetHandler
 	@Override
 	public void physicalBloodImpactSfx(Entity entity, Vec3 impactPos)
 	{
-		playSound(entity, ModSoundEvents.GENERIC_HIT_PHYSICAL_BLOOD.get(), 1.0F);
-		
 		Random random = entity.level.random;
 		
 		for (int i = 0; i < 20; i++)
