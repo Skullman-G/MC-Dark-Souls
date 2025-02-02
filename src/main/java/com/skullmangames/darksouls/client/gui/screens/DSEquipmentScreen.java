@@ -29,6 +29,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -224,31 +226,40 @@ public class DSEquipmentScreen extends Screen
 		Slot slot = this.shownInvItems.get(this.itemButtons.indexOf(btn));
 		if (slot == this.selected)
 		{
-			for (int i = 9; i < 36; i++)
-			{
-				Slot freeSlot = this.player.inventoryMenu.getSlot(i);
-				if (!freeSlot.hasItem())
-				{
-					freeSlot.set(this.selected.getItem());
-					freeSlot.setChanged();
-					this.selected.set(ItemStack.EMPTY);
-					this.selected.setChanged();
-					break;
-				}
-			}
+			this.unequipItem();
 		}
-		else
+		else if (slot != null)
 		{
-			ItemStack itemStack = this.selected.getItem();
-			this.selected.set(slot.getItem());
-			this.selected.setChanged();
-			slot.set(itemStack);
-			slot.setChanged();
+			this.equipItem(slot);
 		}
-		this.player.inventoryMenu.broadcastChanges();
 		for (ImageButton b : this.itemButtons) b.visible = false;
 		for (ImageButton b : this.equipButtons.keySet()) b.visible = true;
 		this.itemSelect = false;
+	}
+	
+	private void equipItem(Slot itemSlot)
+	{
+		this.swapItems(this.selected, itemSlot);
+	}
+	
+	private void unequipItem()
+	{
+		for (int i = InventoryMenu.INV_SLOT_START; i < InventoryMenu.INV_SLOT_END; i++)
+		{
+			Slot freeSlot = this.player.inventoryMenu.getSlot(i);
+			if (!freeSlot.hasItem())
+			{
+				this.swapItems(this.selected, freeSlot);
+				break;
+			}
+		}
+	}
+	
+	private void swapItems(Slot slot1, Slot slot2)
+	{
+		int s1 = slot1.index;
+		int s2 = slot2.getContainerSlot();
+		this.minecraft.gameMode.handleInventoryMouseClick(this.player.inventoryMenu.containerId, s1, s2, ClickType.SWAP, this.minecraft.player);
 	}
 	
 	@Override
