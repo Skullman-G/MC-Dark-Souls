@@ -145,7 +145,7 @@ public class ArmorCap extends AttributeItemCap
 				case SLASH: return ModAttributes.SLASH_PROTECTION.get();
 				case THRUST: return ModAttributes.THRUST_PROTECTION.get();
 				case MAGIC: return ModAttributes.MAGIC_PROTECTION.get();
-				case FIRE: return ModAttributes.LIGHTNING_PROTECTION.get();
+				case FIRE: return ModAttributes.FIRE_PROTECTION.get();
 				case LIGHTNING: return ModAttributes.LIGHTNING_PROTECTION.get();
 				case HOLY: return ModAttributes.HOLY_PROTECTION.get();
 				case DARK: return ModAttributes.DARK_PROTECTION.get();
