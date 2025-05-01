@@ -1,5 +1,18 @@
 {
   "moveset": {
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_ha_1",
+        "darksouls:shield_ha_2"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:shield_dash_attack"
+      ]
+    },
     "two_handed_light": {
       "repeating": true,
       "animations": [
@@ -18,24 +31,11 @@
         "darksouls:shield_th_dash_attack"
       ]
     },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:shield_dash_attack"
-      ]
-    },
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
         "darksouls:shield_th_ha_1",
         "darksouls:shield_th_ha_2"
-      ]
-    },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:shield_ha_1",
-        "darksouls:shield_ha_2"
       ]
     }
   }

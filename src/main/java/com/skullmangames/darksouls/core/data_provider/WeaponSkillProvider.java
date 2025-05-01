@@ -54,9 +54,9 @@ public class WeaponSkillProvider implements DataProvider
 	{
 		return ImmutableList.of
 		(
-			WeaponSkill.mirrorBuilder(WeaponSkills.PARRY, Animations.SHIELD_PARRY_LEFT.getId(), Animations.SHIELD_PARRY_RIGHT.getId()),
-			WeaponSkill.mirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_LEFT.getId(), Animations.BUCKLER_PARRY_RIGHT.getId()),
-			WeaponSkill.mirrorBuilder(WeaponSkills.GREATSHIELD_BASH, Animations.GREATSHIELD_BASH.getId(), Animations.GREATSHIELD_LIGHT_ATTACK.getId())
+			WeaponSkill.mirrorBuilder(WeaponSkills.PARRY, Animations.SHIELD_PARRY_RIGHT.getId(), Animations.SHIELD_PARRY_LEFT.getId()),
+			WeaponSkill.mirrorBuilder(WeaponSkills.FAST_PARRY, Animations.BUCKLER_PARRY_RIGHT.getId(), Animations.BUCKLER_PARRY_LEFT.getId()),
+			WeaponSkill.mirrorBuilder(WeaponSkills.GREATSHIELD_BASH, Animations.GREATSHIELD_LIGHT_ATTACK.getId(), Animations.GREATSHIELD_BASH.getId())
 		);
 	}
 	

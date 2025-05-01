@@ -87,7 +87,10 @@ public class ColliderProvider implements DataProvider
 				Collider.capsuleBuilder(Colliders.AXE.getId(), 0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0),
 				Collider.capsuleBuilder(Colliders.BATTLE_AXE.getId(), 0.5D, 1.1D, new Vec3(0, 0, -0.25D), -4.5F, 0),
 				Collider.capsuleBuilder(Colliders.PICKAXE.getId(), 0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0),
-				Collider.capsuleBuilder(Colliders.MACE.getId(), 0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0),
+				Collider.multiBuilder(Colliders.MACE.getId(),
+						Collider.capsuleBuilder(Colliders.MACE.getId(), 0.4D, 0.8D, new Vec3(0, 0.05D, -0.4D), -4.5F, 0),
+						Collider.capsuleBuilder(Colliders.MACE.getId(), 0.15D, 1.3D, new Vec3(0, 0.05D, 0), -4.5F, 0)
+					),
 				
 				//Stray Demon
 				Collider.multiBuilder(Colliders.STRAY_DEMON_GREAT_HAMMER.getId(),

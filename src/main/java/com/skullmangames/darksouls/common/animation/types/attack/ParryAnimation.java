@@ -61,7 +61,7 @@ public class ParryAnimation extends ActionAnimation
 			if (entityCap.getEntityState() == EntityState.CONTACT)
 			{
 				LivingEntity orgEntity = entityCap.getOriginalEntity();
-				List<Entity> entities = entityCap.getLevel().getEntities(orgEntity, orgEntity.getBoundingBox().inflate(2.0D));
+				List<Entity> entities = entityCap.getLevel().getEntities(orgEntity, orgEntity.getBoundingBox().inflate(5.0D));
 				MeleeWeaponCap weapon = entityCap.getHeldMeleeWeaponCap(InteractionHand.OFF_HAND);
 				
 				ModMatrix4f modelMat = entityCap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);

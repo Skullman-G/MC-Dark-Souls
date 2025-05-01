@@ -1,5 +1,17 @@
 {
   "moveset": {
+    "heavy": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatshield_heavy_attack"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:greatshield_dash_attack"
+      ]
+    },
     "two_handed_light": {
       "repeating": true,
       "animations": [
@@ -18,22 +30,10 @@
         "darksouls:greatshield_th_dash_attack"
       ]
     },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:greatshield_dash_attack"
-      ]
-    },
     "two_handed_heavy": {
       "repeating": true,
       "animations": [
         "darksouls:greatshield_th_heavy_attack"
-      ]
-    },
-    "heavy": {
-      "repeating": true,
-      "animations": [
-        "darksouls:greatshield_heavy_attack"
       ]
     }
   }
