@@ -1,21 +1,9 @@
 {
   "moveset": {
-    "heavy": {
+    "two_handed_heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:straight_sword_heavy_attack"
-      ]
-    },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:straight_sword_dash_attack"
-      ]
-    },
-    "punish": {
-      "repeating": true,
-      "animations": [
-        "darksouls:punish_thrust"
+        "darksouls:straight_sword_th_heavy_attack"
       ]
     },
     "two_handed_light": {
@@ -25,11 +13,16 @@
         "darksouls:straight_sword_th_la_2"
       ]
     },
-    "light": {
+    "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:straight_sword_light_attack_1",
-        "darksouls:straight_sword_light_attack_2"
+        "darksouls:straight_sword_heavy_attack"
+      ]
+    },
+    "punish": {
+      "repeating": true,
+      "animations": [
+        "darksouls:punish_thrust"
       ]
     },
     "two_handed_dash": {
@@ -38,10 +31,17 @@
         "darksouls:straight_sword_th_dash_attack"
       ]
     },
-    "two_handed_heavy": {
+    "dash": {
       "repeating": true,
       "animations": [
-        "darksouls:straight_sword_th_heavy_attack"
+        "darksouls:straight_sword_dash_attack"
+      ]
+    },
+    "light": {
+      "repeating": true,
+      "animations": [
+        "darksouls:straight_sword_light_attack_1",
+        "darksouls:straight_sword_light_attack_2"
       ]
     },
     "backstab": {

@@ -1,6 +1,5 @@
 package com.skullmangames.darksouls.core.util.collider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -127,7 +126,8 @@ public class CubeCollider extends Collider
 	@Override
 	public boolean collidesWith(Collider other)
 	{
-		return other instanceof CubeCollider cube ? cubeCubeCollision(this, cube).lengthSqr() != 0
+		return other instanceof MultiCollider ? other.collidesWith(this)
+				: other instanceof CubeCollider cube ? cubeCubeCollision(this, cube).lengthSqr() != 0
 				: other instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeCollision(capsule, this).lengthSqr() != 0
 				: false;
 	}
@@ -142,53 +142,12 @@ public class CubeCollider extends Collider
 			holder.correctPosition();
 			Collider col = holder.getType();
 			this.moveTo(currentPos.add(movement));
-			Vec3 pushVec = col instanceof CubeCollider cube ? cubeCubeCollision(this, cube)
-						: col instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeCollision(capsule, this)
+			Vec3 pushVec = col instanceof CubeCollider cube ? Collider.cubeCubeCollision(this, cube)
+						: col instanceof CapsuleCollider capsule ? Collider.capsuleCubeCollision(capsule, this)
 						: Vec3.ZERO;
 			movement = movement.add(pushVec);
 		}
 		return movement;
-	}
-	
-	protected static Vec3 cubeCubeCollision(CubeCollider a, CubeCollider b)
-	{
-		List<Vec3> normals = new ArrayList<>();
-		for (Face f : a.faces) normals.add(f.normal);
-		for (Face f : b.faces) normals.add(f.normal.scale(-1));
-		
-		Vec3 pushOutVec = Vec3.ZERO;
-		
-		for (Vec3 axis : normals)
-		{
-			double maxA = Double.MIN_VALUE;
-			double minA = Double.MAX_VALUE;
-			for (Vec3 va : a.vertices)
-			{
-				double dot = axis.dot(va);
-				maxA = Math.max(maxA, dot);
-				minA = Math.min(minA, dot);
-			}
-			
-			double maxB = Double.MIN_VALUE;
-			double minB = Double.MAX_VALUE;
-			for (Vec3 vb : b.vertices)
-			{
-				double dot = axis.dot(vb);
-				maxB = Math.max(maxB, dot);
-				minB = Math.min(minB, dot);
-			}
-			
-			if (minA >= maxB || minB >= maxA) return Vec3.ZERO;
-			double length = minA <= minB && maxA > minB ? minB - maxA :
-							minA < maxB && maxA >= maxB ? maxB - minA :
-							minA >= minB && maxA <= maxB ? minB - maxA :
-							0.0D;
-			if (pushOutVec == Vec3.ZERO || pushOutVec.length() > length)
-			{
-				pushOutVec = axis.scale(length);
-			}
-		}
-		return pushOutVec;
 	}
 	
 	@Override
@@ -232,6 +191,12 @@ public class CubeCollider extends Collider
 		Vec3 from = this.vertices[5];
 		Vec3 to = this.vertices[7];
 		return new Vec3((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return super.toString() + " [cube]";
 	}
 
 	@OnlyIn(Dist.CLIENT)

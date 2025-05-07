@@ -146,4 +146,10 @@ public class MultiCollider extends Collider
 			collider.transform(mat);
 		}
 	}
+	
+	@Override
+	public String toString()
+	{
+		return super.toString() + " [multi]";
+	}
 }

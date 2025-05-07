@@ -630,19 +630,19 @@ public class AnimationDataProvider implements DataProvider
 								.addProperty(AttackProperty.DEFLECTION, Deflection.MEDIUM),
 
 				// Parries
-				new ParryAnimation.Builder(Animations.SHIELD_PARRY_LEFT.getId(), 0.1F, 0.32F, 0.8F, "Tool_L",
+				new ParryAnimation.Builder(Animations.SHIELD_PARRY_LEFT.getId(), 0.1F, 0.12F, 0.8F, "Tool_L",
 						DarkSouls.rl("biped/combat/shield_parry"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.32F, Side.SERVER, ModSoundEvents.FIST_SWING) }),
-				new ParryAnimation.Builder(Animations.SHIELD_PARRY_RIGHT.getId(), 0.1F, 0.32F, 0.8F, "Tool_R",
+				new ParryAnimation.Builder(Animations.SHIELD_PARRY_RIGHT.getId(), 0.1F, 0.12F, 0.8F, "Tool_R",
 						DarkSouls.rl("biped/combat/shield_parry_mirrored"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.32F, Side.SERVER, ModSoundEvents.FIST_SWING) }),
-				new ParryAnimation.Builder(Animations.BUCKLER_PARRY_LEFT.getId(), 0.15F, 0.32F, 0.8F, "Tool_L",
+				new ParryAnimation.Builder(Animations.BUCKLER_PARRY_LEFT.getId(), 0.15F, 0.12F, 0.8F, "Tool_L",
 						DarkSouls.rl("biped/combat/buckler_parry"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.32F, Side.SERVER, ModSoundEvents.FIST_SWING) }),
-				new ParryAnimation.Builder(Animations.BUCKLER_PARRY_RIGHT.getId(), 0.15F, 0.32F, 0.8F, "Tool_R",
+				new ParryAnimation.Builder(Animations.BUCKLER_PARRY_RIGHT.getId(), 0.15F, 0.12F, 0.8F, "Tool_R",
 						DarkSouls.rl("biped/combat/buckler_parry_mirrored"), (models) -> models.ENTITY_BIPED)
 								.addProperty(StaticAnimationProperty.EVENTS, new AnimEvent[]
 								{ new PlaySoundEvent(0.32F, Side.SERVER, ModSoundEvents.FIST_SWING) }),

@@ -6,16 +6,16 @@
         "darksouls:fist_heavy_attack"
       ]
     },
-    "dash": {
-      "repeating": true,
-      "animations": [
-        "darksouls:fist_dash_attack"
-      ]
-    },
     "punish": {
       "repeating": true,
       "animations": [
         "darksouls:punish_strike"
+      ]
+    },
+    "dash": {
+      "repeating": true,
+      "animations": [
+        "darksouls:fist_dash_attack"
       ]
     },
     "light": {
