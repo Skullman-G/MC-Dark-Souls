@@ -23,6 +23,7 @@ import com.skullmangames.darksouls.common.capability.item.AttributeItemCap;
 import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
+import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
@@ -68,7 +69,13 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public ColliderHolder weaponCollider = new ColliderHolder(null);
 	
 	private float poiseDef;
-	private EventTimer poiseTimer = new EventTimer((past) -> this.poiseDef = this.getPoise());
+	private EventTimer poiseTimer = new EventTimer((timer) ->
+	{
+		if (ConfigManager.SERVER_CONFIG.gradualPoiseRegen.get())
+		{
+			this.poiseDef = timer.getTimePercentage() * this.getPoise();
+		}
+	}, (timer) -> this.poiseDef = this.getPoise());
 	private float stamina;
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;

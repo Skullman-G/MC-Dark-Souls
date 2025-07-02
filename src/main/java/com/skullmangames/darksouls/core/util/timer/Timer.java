@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.core.util.timer;
 
 public class Timer
 {
-	protected int timer;
+	protected int leftTime;
 	protected int pastTime;
 	protected boolean ticking;
 	
 	public void start(int value)
 	{
-		this.timer = value;
+		this.leftTime = value;
 		this.pastTime = 0;
 		this.ticking = true;
 	}
@@ -17,8 +17,8 @@ public class Timer
 	{
 		if (!this.isTicking()) return;
 		
-		this.timer -= value;
-		if (this.timer > 0)
+		this.leftTime -= value;
+		if (this.leftTime > 0)
 		{
 			this.pastTime += value;
 		}
@@ -30,14 +30,14 @@ public class Timer
 	
 	public void stop()
 	{
-		this.timer = 0;
+		this.leftTime = 0;
 		this.pastTime = 0;
 		this.ticking = false;
 	}
 	
 	public int getLeftTime()
 	{
-		return this.timer;
+		return this.leftTime;
 	}
 	
 	public int getPastTime()
@@ -48,5 +48,10 @@ public class Timer
 	public boolean isTicking()
 	{
 		return this.ticking;
+	}
+	
+	public float getTimePercentage()
+	{
+		return (float)this.pastTime / (float)(this.leftTime + this.pastTime);
 	}
 }
