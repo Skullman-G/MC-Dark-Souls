@@ -30,6 +30,7 @@ public class ServerAnimator extends Animator
 	public void playAnimation(StaticAnimation nextAnimation, float startAt)
 	{
 		this.pause = false;
+		this.animationPlayer.getPlay().onUpdate(this.entityCap);
 		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
 		nextAnimation.onStart(this.entityCap);
 		nextAnimation.setLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F), startAt,
@@ -49,10 +50,7 @@ public class ServerAnimator extends Animator
 	}
 
 	@Override
-	public void init()
-	{
-
-	}
+	public void init() {}
 
 	@Override
 	public void updatePose()

@@ -270,7 +270,7 @@ public class AttackAnimation extends ActionAnimation
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
 		super.onFinish(entityCap, isEnd);
-		entityCap.weaponCollider.clear();;
+		entityCap.weaponCollider.clear();
 		entityCap.currentlyAttackedEntities.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())
 		{

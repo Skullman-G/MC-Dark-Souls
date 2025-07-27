@@ -117,9 +117,15 @@ public interface ExtendedDamageSource
 		
 		public StunType downgrade()
 		{
-			if (this.level >= 3) return HEAVY;
-			else if (this.level > 0) return NONE;
-			else return this;
+			switch (this.level)
+			{
+			case 3:
+				return HEAVY;
+			case 2:
+				return LIGHT;
+			default:
+				return NONE;
+			}
 		}
 	}
 	
