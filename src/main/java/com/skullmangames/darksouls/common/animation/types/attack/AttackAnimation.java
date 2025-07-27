@@ -33,7 +33,6 @@ import com.skullmangames.darksouls.common.capability.entity.ServerPlayerCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.common.entity.BreakableObject;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.data.Colliders;
@@ -54,15 +53,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
 
 public class AttackAnimation extends ActionAnimation
 {
@@ -99,6 +95,19 @@ public class AttackAnimation extends ActionAnimation
 	{
 		return this.attackType;
 	}
+	
+	private void handleStamina(LivingCap<?> entityCap, Phase phase)
+	{
+		if (entityCap instanceof ServerPlayerCap serverPlayer && !serverPlayer.isCreativeOrSpectator())
+		{
+			int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(10), -10);
+			serverPlayer.increaseStamina(incr);
+		}
+		else if (entityCap instanceof MobCap)
+		{
+			((MobCap<?>)entityCap).increaseStamina(-20);
+		}
+	}
 
 	@Override
 	public void onUpdate(LivingCap<?> entityCap)
@@ -126,15 +135,7 @@ public class AttackAnimation extends ActionAnimation
 		{
 			if (!prevState.shouldDetectCollision())
 			{
-				if (entityCap instanceof ServerPlayerCap serverPlayer && !serverPlayer.isCreativeOrSpectator())
-				{
-					int incr = Math.min(-phase.getProperty(AttackProperty.STAMINA_USAGE).orElse(10), -10);
-					serverPlayer.increaseStamina(incr);
-				}
-				else if (entityCap instanceof MobCap)
-				{
-					((MobCap<?>)entityCap).increaseStamina(-20);
-				}
+				this.handleStamina(entityCap, phase);
 				entityCap.currentlyAttackedEntities.clear();
 			}
 
@@ -144,49 +145,43 @@ public class AttackAnimation extends ActionAnimation
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
 			if (prevColPos == null) prevColPos = collider.getMassCenter();
 			List<Entity> shields = collider.getType().getShieldCollisions(entity);
-			List<Entity> entities = collider.getType().getEntityCollisions(entity);
-			entities.removeIf((e) -> shields.contains(e));
+			List<Entity> entities = collider.getType().getEntityCollisions(entity, shields);
 			
-			if (!shields.isEmpty() || !entities.isEmpty())
+			AttackResult attackResult = new AttackResult(entityCap);
+			attackResult.addEntities(entities, false);
+			attackResult.addEntities(shields, true);
+			
+			if (!attackResult.isEmpty())
 			{
-				AttackResult attackResult = new AttackResult(entity);
-				attackResult.addEntities(entities, false);
-				attackResult.addEntities(shields, true);
-				
-				boolean flag1 = true;
+				boolean hasHurtWithWeapon = false;
 				boolean shouldBreak = false;
 				
-				do
+				for (AttackResult.TargetInfo targetInfo : attackResult.getTargetInfos())
 				{
-					Entity e = attackResult.getEntity();
-					Entity trueEntity = this.getTrueEntity(e);
-					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && (trueEntity instanceof LivingEntity
-						|| trueEntity instanceof BreakableObject))
+					Entity target = targetInfo.getEntity();
+					Entity trueTarget = targetInfo.getTrueEntity();
+					
+					Damages damages = this.getDamageAmount(entityCap, target, phase);
+					ExtendedDamageSource source = this.getDamageSourceExt(entityCap, targetInfo.wasBlocked(), prevColPos, target, phase, damages);
+					
+					shouldBreak = this.onDamageTarget(entityCap, target);
+					
+					if (entityCap.hurtEntity(target, phase.hand, source))
 					{
-						// Check if a block is in the way
-						if (this.hasBlockBetween(e, entity))
+						target.invulnerableTime = 0;
+						if (!hasHurtWithWeapon && entityCap instanceof PlayerCap && trueTarget instanceof LivingEntity)
 						{
-							Damages damages = this.getDamageAmount(entityCap, e, phase);
-							ExtendedDamageSource source = this.getDamageSourceExt(entityCap, prevColPos, e, phase, damages);
-							source.setWasBlocked(attackResult.wasBlocked());
-							
-							shouldBreak = this.onDamageTarget(entityCap, e);
-							if (entityCap.hurtEntity(e, phase.hand, source))
-							{
-								e.invulnerableTime = 0;
-								if (flag1 && entityCap instanceof PlayerCap && trueEntity instanceof LivingEntity)
-								{
-									entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueEntity,
-											((PlayerCap<?>) entityCap).getOriginalEntity());
-									flag1 = false;
-								}
-							}
-							entityCap.currentlyAttackedEntities.add(trueEntity);
-							entityCap.slashDelay = 3;
+							entityCap.getOriginalEntity().getItemInHand(phase.hand).hurtEnemy((LivingEntity) trueTarget,
+									((PlayerCap<?>) entityCap).getOriginalEntity());
+							hasHurtWithWeapon = true;
 						}
 					}
+					
+					entityCap.currentlyAttackedEntities.add(trueTarget);
+					entityCap.slashDelay = 3;
+					
 					if (shouldBreak) break;
-				} while (attackResult.next());
+				}
 				
 				this.onAttackFinish(entityCap, shouldBreak);
 			}
@@ -225,37 +220,24 @@ public class AttackAnimation extends ActionAnimation
 			entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 			collider.update(entityCap, phase.getColliderJointName(), 1.0F, true);
 			List<Entity> shields = collider.getType().getShieldCollisions(entity);
-			List<Entity> entities = collider.getType().getEntityCollisions(entity);
-			entities.removeIf((e) -> shields.contains(e));
+			List<Entity> entities = collider.getType().getEntityCollisions(entity, shields);
 			
-			if (!entities.isEmpty())
+			AttackResult attackResult = new AttackResult(entityCap);
+			attackResult.addEntities(entities, false);
+			
+			for (AttackResult.TargetInfo targetInfo : attackResult.getTargetInfos())
 			{
-				AttackResult attackResult = new AttackResult(entity);
-				attackResult.addEntities(entities, false);
-				
-				do
+				Entity trueTarget = targetInfo.getTrueEntity();
+				if (trueTarget instanceof Player playerEntity)
 				{
-					Entity e = attackResult.getEntity();
-					Entity trueEntity = this.getTrueEntity(e);
-					if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && trueEntity instanceof Player playerEntity
-							&& this.hasBlockBetween(e, entity))
+					PlayerCap<?> playerCap = (PlayerCap<?>)playerEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+					if (playerCap != null && playerCap.getEntityState() == EntityState.DODGING)
 					{
-						PlayerCap<?> playerCap = (PlayerCap<?>)playerEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-						if (playerCap != null && playerCap.getEntityState() == EntityState.DODGING)
-						{
-							ModNetworkManager.connection.shakeCamForEntity(playerEntity, 10, 1.0F);
-						}
+						ModNetworkManager.connection.shakeCamForEntity(playerEntity, 10, 1.0F);
 					}
-				} while (attackResult.next());
+				}
 			}
 		}
-	}
-	
-	private boolean hasBlockBetween(Entity target, Entity attacker)
-	{
-		return attacker.level.clip(new ClipContext(new Vec3(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
-				new Vec3(attacker.getX(), attacker.getY() + attacker.getBbHeight() * 0.5F, attacker.getZ()),
-				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, attacker)).getType() == HitResult.Type.MISS;
 	}
 	
 	@Override
@@ -330,16 +312,6 @@ public class AttackAnimation extends ActionAnimation
 		return phase.collider != null ? new ColliderHolder(phase.collider) : new ColliderHolder(entityCap.getColliderMatching(phase.hand));
 	}
 
-	public Entity getTrueEntity(Entity entity)
-	{
-		if (entity instanceof PartEntity)
-		{
-			return ((PartEntity<?>) entity).getParent();
-		}
-
-		return entity;
-	}
-
 	protected Damages getDamageAmount(LivingCap<?> entityCap, Entity target, Phase phase)
 	{
 		return entityCap.getDamageToEntity(target, phase.hand);
@@ -349,25 +321,37 @@ public class AttackAnimation extends ActionAnimation
 	{
 		return phase.getProperty(AttackProperty.DEFLECTION).orElse(Deflection.NONE);
 	}
-
-	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
+	
+	protected StunType getStunType(LivingCap<?> entityCap, Entity target, Phase phase)
 	{
-		StunType stunType = phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
-		Set<AuxEffect> auxEffects = new HashSet<>();
+		return phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
+	}
+	
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, boolean wasBlocked,
+			Vec3 attackPos, Entity target, Phase phase, Damages damages)
+	{
+		StunType stunType = this.getStunType(entityCap, target, phase);
+		Deflection deflection = this.getRequiredDeflection(phase);
 		
+		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
+		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(1);
+		
+		Set<AuxEffect> auxEffects = new HashSet<>();
 		if (phase.getProperty(AttackProperty.DEPENDS_ON_WEAPON).orElse(true))
 		{
 			DamageType movDamageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
 			damages.replace(CoreDamageType.PHYSICAL, movDamageType);
+			
 			WeaponCap weapon = entityCap.getHeldWeaponCap(phase.hand);
-			auxEffects = weapon == null ? new HashSet<>() : weapon.getAuxEffects();
+			if (weapon != null) auxEffects = weapon.getAuxEffects();
 		}
 		else damages.mul(0);
 		
-		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
-		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(0);
+		ExtendedDamageSource source = entityCap.getDamageSource(attackPos, staminaDmg, stunType, deflection, poiseDamage, damages)
+				.addAuxEffects(auxEffects);
+		source.setWasBlocked(wasBlocked);
 		
-		return entityCap.getDamageSource(attackPos, staminaDmg, stunType, this.getRequiredDeflection(phase), poiseDamage, damages).addAuxEffects(auxEffects);
+		return source;
 	}
 
 	public Phase getPhaseByTime(float elapsedTime)

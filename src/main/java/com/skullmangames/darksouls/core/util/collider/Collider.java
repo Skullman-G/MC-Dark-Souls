@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.core.util.collider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -89,36 +90,46 @@ public abstract class Collider
 	
 	public List<Entity> getShieldCollisions(Entity self)
 	{
-		List<Entity> list = self.level.getEntities(self, this.getHitboxAABB().inflate(5));
-		List<Entity> newList = new ArrayList<>();
-		for (Entity e : list)
+		return this.getShieldCollisions(self, (entity) -> false);
+	}
+	
+	protected List<Entity> getShieldCollisions(Entity self, Predicate<Entity> additionalFilters)
+	{
+		List<Entity> collisions = self.level.getEntities(self, this.getHitboxAABB().inflate(5));
+		collisions.removeIf(additionalFilters.or((entity) ->
 		{
-			if (e instanceof LivingEntity)
+			if (entity instanceof LivingEntity)
 			{
-				LivingCap<?> cap = (LivingCap<?>)e.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
+				LivingCap<?> cap = (LivingCap<?>)entity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 				if (cap != null && cap.isBlocking())
 				{
 					ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
-					ModMatrix4f mat = modelMat.translate(0.4F, e.getBbHeight() / 2, 0);
+					ModMatrix4f mat = modelMat.translate(0.4F, entity.getBbHeight() / 2, 0);
 					Collider shieldCollider = Colliders.SHIELD.get();
 					shieldCollider.transform(mat);
-					if (this.collidesWith(shieldCollider)) newList.add(e);
+					return !this.collidesWith(shieldCollider);
 				}
 			}
-		}
-		return newList;
+			return true;
+		}));
+		return collisions;
 	}
 
 	public List<Entity> getEntityCollisions(Entity self)
 	{
-		List<Entity> list = self.level.getEntities(self, this.getHitboxAABB());
-		this.filterHitEntities(list);
-		return list;
+		return this.getEntityCollisions(self, new ArrayList<>());
 	}
 	
-	protected void filterHitEntities(List<Entity> entities)
+	public List<Entity> getEntityCollisions(Entity self, List<Entity> blacklist)
 	{
-		entities.removeIf((entity) -> !this.collidesWith(entity));
+		return this.getEntityCollisions(self, (entity) -> blacklist.contains(entity));
+	}
+	
+	protected List<Entity> getEntityCollisions(Entity self, Predicate<Entity> additionalFilters)
+	{
+		List<Entity> collisions = self.level.getEntities(self, this.getHitboxAABB());
+		collisions.removeIf(additionalFilters.or((entity) -> !this.collidesWith(entity)));
+		return collisions;
 	}
 	
 	protected abstract Vec3 min();

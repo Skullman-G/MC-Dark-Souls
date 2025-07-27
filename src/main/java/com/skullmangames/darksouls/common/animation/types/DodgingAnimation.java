@@ -15,7 +15,6 @@ import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
-import com.skullmangames.darksouls.common.entity.BreakableObject;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.AttackResult;
@@ -36,7 +35,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
 
 public class DodgingAnimation extends ActionAnimation
 {
@@ -68,16 +66,6 @@ public class DodgingAnimation extends ActionAnimation
 		entityCap.currentlyAttackedEntities.clear();
 	}
 	
-	public Entity getTrueEntity(Entity entity)
-	{
-		if (entity instanceof PartEntity<?> part)
-		{
-			return part.getParent();
-		}
-
-		return entity;
-	}
-	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
@@ -104,34 +92,27 @@ public class DodgingAnimation extends ActionAnimation
 				new CubeCollider(DarkSouls.rl(""), aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z)));
 		entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 		collider.update(entityCap, "Root", 1.0F);
-		List<Entity> list = collider.getType().getEntityCollisions(entity);
+		List<Entity> entityCollisions = collider.getType().getEntityCollisions(entity);
 		
-		if (list.size() > 0)
+		AttackResult attackResult = new AttackResult(entityCap);
+		attackResult.addEntities(entityCollisions, false);
+		
+		for (AttackResult.TargetInfo targetInfo : attackResult.getTargetInfos())
 		{
-			AttackResult attackResult = new AttackResult(entity);
-			attackResult.addEntities(list, false);
-			do
+			Entity e = targetInfo.getEntity();
+			Entity trueEntity = targetInfo.getTrueEntity();
+			if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
+					new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
+					ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
+			.getType() == HitResult.Type.MISS)
 			{
-				Entity e = attackResult.getEntity();
-				Entity trueEntity = this.getTrueEntity(e);
-				if (!entityCap.currentlyAttackedEntities.contains(trueEntity) && !entityCap.isTeam(trueEntity) && (trueEntity instanceof LivingEntity
-					|| trueEntity instanceof BreakableObject))
-				{
-					if (entity.level.clip(new ClipContext(new Vec3(e.getX(), e.getY() + (double) e.getEyeHeight(), e.getZ()),
-									new Vec3(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5F, entity.getZ()),
-									ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity))
-							.getType() == HitResult.Type.MISS)
-					{
-						Damages damages = Damages.create();
-						ExtendedDamageSource source = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE,
-								Deflection.NONE, 0, damages);
-						
-						entityCap.hurtEntity(e, InteractionHand.MAIN_HAND, source);
-						entityCap.currentlyAttackedEntities.add(trueEntity);
-					}
-				}
+				Damages damages = Damages.create();
+				ExtendedDamageSource source = entityCap.getDamageSource(entityCap.getOriginalEntity().position(), 0, StunType.NONE,
+						Deflection.NONE, 0, damages);
+				
+				entityCap.hurtEntity(e, InteractionHand.MAIN_HAND, source);
+				entityCap.currentlyAttackedEntities.add(trueEntity);
 			}
-			while (attackResult.next());
 		}
 	}
 	

@@ -16,10 +16,7 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackT
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.DamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -60,7 +57,7 @@ public class BackstabCheckAnimation extends AttackAnimation
 	{
 		LivingEntity attacker = entityCap.getOriginalEntity();
 		LivingCap<?> targetCap = (LivingCap<?>)target.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-		if (entityCap == null || targetCap == null || !entityCap.canBackstab(target)) return false;
+		if (targetCap == null || !entityCap.canBackstab(target)) return false;
 		
 		double yRotAttacker = Math.toRadians(ModMath.toNormalRot(attacker.getYRot()));
 		double dist = 1.0D;
@@ -91,19 +88,20 @@ public class BackstabCheckAnimation extends AttackAnimation
 	}
 	
 	@Override
-	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, Vec3 attackPos, Entity target, Phase phase, Damages damages)
+	protected StunType getStunType(LivingCap<?> entityCap, Entity target, Phase phase)
+	{
+		return entityCap.canBackstab(target) ? StunType.BACKSTABBED : super.getStunType(entityCap, target, phase);
+	}
+	
+	@Override
+	protected ExtendedDamageSource getDamageSourceExt(LivingCap<?> entityCap, boolean wasBlocked, Vec3 attackPos, Entity target, Phase phase, Damages damages)
 	{
 		MeleeWeaponCap weapon = entityCap.getHeldMeleeWeaponCap(phase.hand);
-		boolean canBackstab = entityCap.canBackstab(target);
-		damages.mul(canBackstab && !this.isWeak ? weapon.getCritical() : 0.01F);
-		StunType stunType = canBackstab ? StunType.BACKSTABBED : phase.getProperty(AttackProperty.STUN_TYPE).orElse(StunType.LIGHT);
-		DamageType damageType = phase.getProperty(AttackProperty.MOVEMENT_DAMAGE_TYPE).orElse(MovementDamageType.REGULAR);
-		damages.replace(CoreDamageType.PHYSICAL, damageType);
-		int poiseDamage = phase.getProperty(AttackProperty.POISE_DAMAGE).orElse(5);
-		int staminaDmg = phase.getProperty(AttackProperty.STAMINA_DAMAGE).orElse(1);
+		damages.mul(entityCap.canBackstab(target) && !this.isWeak ? weapon.getCritical() : 0.01F);
 		
-		return entityCap.getDamageSource(CriticalFollowupAnimation.calcAttackPos(target), staminaDmg, stunType,
-				this.getRequiredDeflection(phase), poiseDamage, damages);
+		attackPos = CriticalFollowupAnimation.calcAttackPos(target);
+		
+		return super.getDamageSourceExt(entityCap, wasBlocked, attackPos, target, phase, damages);
 	}
 	
 	public static class Builder extends AttackAnimation.Builder

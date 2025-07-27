@@ -2,16 +2,12 @@ package com.skullmangames.darksouls.core.util.collider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -50,52 +46,27 @@ public class MultiCollider extends Collider
 	}
 	
 	@Override
-	public List<Entity> getEntityCollisions(Entity self)
+	public List<Entity> getEntityCollisions(Entity self, Predicate<Entity> additionalFilters)
 	{
-		List<Entity> list = new ArrayList<>();
+		List<Entity> allCollisions = new ArrayList<>();
 		for (Collider collider : this.colliders)
 		{
-			List<Entity> entities = self.level.getEntities(self, collider.getHitboxAABB());
-			for (int i = 0; i < list.size(); i++)
-			{
-				Entity e = list.get(i);
-				if (entities.contains(e)) entities.remove(e);
-			}
-			collider.filterHitEntities(list);
-			list.addAll(entities);
+			List<Entity> singleCollisions = collider.getEntityCollisions(self, (entity) -> allCollisions.contains(entity));
+			allCollisions.addAll(singleCollisions);
 		}
-		return list;
+		return allCollisions;
 	}
 	
 	@Override
-	public List<Entity> getShieldCollisions(Entity self)
+	protected List<Entity> getShieldCollisions(Entity self, Predicate<Entity> additionalFilters)
 	{
-		List<Entity> newList = new ArrayList<>();
+		List<Entity> allCollisions = new ArrayList<>();
 		for (Collider collider : this.colliders)
 		{
-			List<Entity> list = self.level.getEntities(self, collider.getHitboxAABB().inflate(5));
-			for (int i = 0; i < newList.size(); i++)
-			{
-				Entity e = newList.get(i);
-				if (list.contains(e)) list.remove(e);
-			}
-			for (Entity e : list)
-			{
-				if (e instanceof LivingEntity)
-				{
-					LivingCap<?> cap = (LivingCap<?>)e.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					if (cap != null && cap.isBlocking())
-					{
-						ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
-						ModMatrix4f mat = modelMat.translate(0.4F, e.getBbHeight() / 2, 0);
-						Collider shieldCollider = Colliders.SHIELD.get();
-						shieldCollider.transform(mat);
-						if (collider.collidesWith(shieldCollider)) newList.add(e);
-					}
-				}
-			}
+			List<Entity> singleCollisions = collider.getShieldCollisions(self, (entity) -> allCollisions.contains(entity));
+			allCollisions.addAll(singleCollisions);
 		}
-		return newList;
+		return allCollisions;
 	}
 
 	@Override
