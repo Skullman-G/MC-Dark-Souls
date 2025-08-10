@@ -21,7 +21,6 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.collider.Collider;
-import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
@@ -66,7 +65,7 @@ public class ParryAnimation extends ActionAnimation
 				
 				ModMatrix4f modelMat = entityCap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
 				ModMatrix4f mat = modelMat.translate(0.8F, entityCap.getOriginalEntity().getBbHeight() / 2, 0).scale(1.75F, 1.75F, 1.75F);
-				Collider collider = Colliders.SHIELD.get();
+				Collider collider = Colliders.SHIELD.get().create();
 				collider.transform(mat);
 				
 				for (Entity entity : entities)
@@ -75,8 +74,8 @@ public class ParryAnimation extends ActionAnimation
 					{
 						LivingCap<?> targetCap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
 						if (targetCap != null
-								&& targetCap.getEntityState().getContactLevel() == 2 && !targetCap.weaponCollider.isEmpty()
-								&& collider.collidesWith(targetCap.weaponCollider.getType()))
+								&& targetCap.getEntityState().getContactLevel() == 2 && targetCap.weaponCollider != null
+								&& collider.collidesWith(targetCap.weaponCollider))
 						{
 							if (weapon != null) entityCap.playSound(weapon.getBlockSound());
 							
@@ -101,7 +100,7 @@ public class ParryAnimation extends ActionAnimation
 		{
 			LivingEntity orgEntity = entityCap.getOriginalEntity();
 			List<Entity> entities = entityCap.getLevel().getEntities(orgEntity, orgEntity.getBoundingBox().inflate(2.0D));
-			ColliderHolder collider = this.getCollider(entityCap);
+			Collider collider = this.getCollider(entityCap);
 			collider.update(entityCap, this.jointName, 1.0F);
 			
 			for (Entity entity : entities)
@@ -109,7 +108,7 @@ public class ParryAnimation extends ActionAnimation
 				if (entity instanceof LivingEntity livingEntity)
 				{
 					LivingCap<?> cap = (LivingCap<?>) livingEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					if (cap != null && !cap.weaponCollider.isEmpty() && collider.getType().collidesWith(cap.weaponCollider.getType()))
+					if (cap != null && cap.weaponCollider != null && collider.collidesWith(cap.weaponCollider))
 					{
 						Vec3 impactPos = collider.getMassCenter();
 						AABB bb = entity.getBoundingBox();
@@ -138,9 +137,9 @@ public class ParryAnimation extends ActionAnimation
 		this.getCollider(entityCap).draw(entityCap, this.jointName, partialTicks);
 	}
 	
-	public ColliderHolder getCollider(LivingCap<?> entityCap)
+	public Collider getCollider(LivingCap<?> entityCap)
 	{
-		return new ColliderHolder(entityCap.getColliderMatching(InteractionHand.OFF_HAND));
+		return entityCap.getColliderMatching(InteractionHand.OFF_HAND);
 	}
 	
 	@Override

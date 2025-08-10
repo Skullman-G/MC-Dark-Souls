@@ -7,7 +7,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -21,7 +20,6 @@ import com.skullmangames.darksouls.core.util.AttackResult;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.collider.ColliderHolder;
 import com.skullmangames.darksouls.core.util.collider.CubeCollider;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -72,8 +70,7 @@ public class DodgingAnimation extends ActionAnimation
 	{
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
 		Vec3 aabbCenter = aabb.getCenter();
-		ColliderHolder collider = new ColliderHolder(
-				new CubeCollider(DarkSouls.rl(""), aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z)));
+		CubeCollider collider = new CubeCollider(null, aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
 		collider.draw(entityCap, "Root", partialTicks);
 	}
 	
@@ -88,11 +85,10 @@ public class DodgingAnimation extends ActionAnimation
 		
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
 		Vec3 aabbCenter = aabb.getCenter();
-		ColliderHolder collider = new ColliderHolder(
-				new CubeCollider(DarkSouls.rl(""), aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z)));
+		CubeCollider collider = new CubeCollider(null, aabb.inflate(0.1D), new Vec3(aabbCenter.x, aabbCenter.y - aabb.getYsize() / 2D, aabbCenter.z));
 		entityCap.getEntityModel(Models.SERVER).getArmature().initializeTransform();
 		collider.update(entityCap, "Root", 1.0F);
-		List<Entity> entityCollisions = collider.getType().getEntityCollisions(entity);
+		List<Entity> entityCollisions = collider.getEntityCollisions(entity);
 		
 		AttackResult attackResult = new AttackResult(entityCap);
 		attackResult.addEntities(entityCollisions, false);

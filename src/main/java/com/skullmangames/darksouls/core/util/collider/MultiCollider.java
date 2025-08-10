@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -15,9 +14,9 @@ public class MultiCollider extends Collider
 {
 	private final Collider[] colliders;
 	
-	public MultiCollider(ResourceLocation id, Collider... colliders)
+	public MultiCollider(ColliderType<?> type, Collider... colliders)
 	{
-		super(id, new AABB(0, 0, 0, 0, 0, 0));
+		super(type, new AABB(0, 0, 0, 0, 0, 0));
 		this.colliders = colliders;
 	}
 
@@ -77,18 +76,6 @@ public class MultiCollider extends Collider
 			if (collider.collidesWith(other)) return true;
 		}
 		return false;
-	}
-	
-	@Override
-	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
-	{
-		Vec3 pushOutVec = Vec3.ZERO;
-		for (Collider collider : this.colliders)
-		{
-			Vec3 newCandidate = collider.collide(movement, others);
-			if (pushOutVec.lengthSqr() < newCandidate.lengthSqr()) pushOutVec = newCandidate;
-		}
-		return pushOutVec;
 	}
 
 	@Override

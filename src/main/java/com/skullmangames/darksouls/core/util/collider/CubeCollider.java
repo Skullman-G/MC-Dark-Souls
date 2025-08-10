@@ -1,7 +1,5 @@
 package com.skullmangames.darksouls.core.util.collider;
 
-import java.util.List;
-
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
@@ -18,14 +16,14 @@ public class CubeCollider extends Collider
 {
 	protected final Face[] faces;
 	
-	public CubeCollider(ResourceLocation id, AABB aabb)
+	public CubeCollider(ColliderType<?> type, AABB aabb)
 	{
-		this(id, aabb, aabb.getCenter());
+		this(type, aabb, aabb.getCenter());
 	}
 	
-	public CubeCollider(ResourceLocation id, AABB aabb, Vec3 offset)
+	public CubeCollider(ColliderType<?> type, AABB aabb, Vec3 offset)
 	{
-		this(id, aabb.minX - offset.x, aabb.minY - offset.y, aabb.minZ - offset.z,
+		this(type, aabb.minX - offset.x, aabb.minY - offset.y, aabb.minZ - offset.z,
 				aabb.maxX - offset.x, aabb.maxY - offset.y, aabb.maxZ - offset.z);
 		this.moveTo(offset);
 	}
@@ -33,9 +31,9 @@ public class CubeCollider extends Collider
 	/*
 	 * This constructor is purely used to make a clone of another CubeCollider
 	 */
-	public CubeCollider(ResourceLocation id, AABB aabb, Vec3[] modelVertices, Face[] faces)
+	public CubeCollider(ColliderType<?> type, AABB aabb, Vec3[] modelVertices, Face[] faces)
 	{
-		super(id, aabb);
+		super(type, aabb);
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
 		this.faces = new Face[6];
@@ -48,14 +46,14 @@ public class CubeCollider extends Collider
 		
 		for (int i = 0; i < this.faces.length && i < faces.length; i++)
 		{
-			this.faces[i] = new Face(this, faces[i].modelNormal, faces[i].vertices);
+			this.faces[i] = new Face(faces[i].modelNormal, faces[i].verticeIds);
 		}
 	}
 	
-	public CubeCollider(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ,
+	public CubeCollider(ColliderType<?> type, double minX, double minY, double minZ, double maxX, double maxY, double maxZ,
 			float xRot, float yRot)
 	{
-		this(id, minX, minY, minZ, maxX, maxY, maxZ);
+		this(type, minX, minY, minZ, maxX, maxY, maxZ);
 		
 		ModMatrix4f rotMat = ModMatrix4f.createRotatorDeg((float)xRot, Vector3f.XP)
 				.rotateDeg((float)(180 + yRot), Vector3f.YP);
@@ -67,9 +65,9 @@ public class CubeCollider extends Collider
 		}
 	}
 	
-	public CubeCollider(ResourceLocation id, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+	public CubeCollider(ColliderType<?> type, double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
 	{
-		super(id, createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
+		super(type, createOuterAABB(minX, minY, minZ, maxX, maxY, maxZ));
 		this.modelVertices = new Vec3[8];
 		this.vertices = new Vec3[8];
 		this.faces = new Face[6];
@@ -85,12 +83,12 @@ public class CubeCollider extends Collider
 		
 		for (int i = 0; i < this.vertices.length; i++) this.vertices[i] = this.modelVertices[i];
 		
-		this.faces[0] = new Face(this, new Vec3(0, 0, -1), 0, 1, 2, 3);
-		this.faces[1] = new Face(this, new Vec3(0, 0, 1), 4, 5, 6, 7);
-		this.faces[2] = new Face(this, new Vec3(0, -1, 0), 0, 1, 5, 4);
-		this.faces[3] = new Face(this, new Vec3(0, 1, 0), 2, 3, 7, 6);
-		this.faces[4] = new Face(this, new Vec3(-1, 0, 0), 0, 3, 7, 4);
-		this.faces[5] = new Face(this, new Vec3(1, 0, 0), 1, 2, 6, 5);
+		this.faces[0] = new Face(new Vec3(0, 0, -1), 0, 1, 2, 3);
+		this.faces[1] = new Face(new Vec3(0, 0, 1), 4, 5, 6, 7);
+		this.faces[2] = new Face(new Vec3(0, -1, 0), 0, 1, 5, 4);
+		this.faces[3] = new Face(new Vec3(0, 1, 0), 2, 3, 7, 6);
+		this.faces[4] = new Face(new Vec3(-1, 0, 0), 0, 3, 7, 4);
+		this.faces[5] = new Face(new Vec3(1, 0, 0), 1, 2, 6, 5);
 	}
 	
 	private static AABB createOuterAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
@@ -102,25 +100,19 @@ public class CubeCollider extends Collider
 		double length = Math.max(lengthX, Math.max(lengthY, lengthZ));
 		return new AABB(-length, -length, -length, length, length, length);
 	}
-
+	
 	@Override
-	public void transform(ModMatrix4f mat)
+	protected void rotateTo(ModMatrix4f mat)
 	{
-		ModMatrix4f rot = mat.removeTranslation();
+		super.rotateTo(mat);
 		
-		for (int i = 0; i < this.modelVertices.length; i++)
-		{
-			this.vertices[i] = ModMatrix4f.transform(rot, this.modelVertices[i]);
-			this.vertices[i] = new Vec3(-this.vertices[i].x, this.vertices[i].y, -this.vertices[i].z);
-		}
+		ModMatrix4f rot = mat.removeTranslation();
 		
 		for (Face face : this.faces)
 		{
 			face.normal = ModMatrix4f.transform(rot, face.modelNormal);
 			face.normal = new Vec3(-face.normal.x, face.normal.y, -face.normal.z);
 		}
-
-		super.transform(mat);
 	}
 
 	@Override
@@ -130,24 +122,6 @@ public class CubeCollider extends Collider
 				: other instanceof CubeCollider cube ? cubeCubeCollision(this, cube).lengthSqr() != 0
 				: other instanceof CapsuleCollider capsule ? CapsuleCollider.capsuleCubeCollision(capsule, this).lengthSqr() != 0
 				: false;
-	}
-	
-	@Override
-	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
-	{
-		Vec3 currentPos = this.getWorldCenter();
-		for (ColliderHolder holder : others)
-		{
-			if (holder.isEmpty()) continue;
-			holder.correctPosition();
-			Collider col = holder.getType();
-			this.moveTo(currentPos.add(movement));
-			Vec3 pushVec = col instanceof CubeCollider cube ? Collider.cubeCubeCollision(this, cube)
-						: col instanceof CapsuleCollider capsule ? Collider.capsuleCubeCollision(capsule, this)
-						: Vec3.ZERO;
-			movement = movement.add(pushVec);
-		}
-		return movement;
 	}
 	
 	@Override
@@ -260,17 +234,57 @@ public class CubeCollider extends Collider
 			
 			return json;
 		}
-
+		
 		@Override
-		public Collider build()
+		protected CubeCollider factory(ColliderType<?> type)
 		{
-			return new CubeCollider(this.getId(), this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ, this.xRot, this.yRot);
+			return new CubeCollider(type, this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ, this.xRot, this.yRot);
 		}
 
 		@Override
-		protected ColliderType getType()
+		protected ColliderShape getShape()
 		{
-			return ColliderType.CUBE;
+			return ColliderShape.CUBE;
+		}
+	}
+	
+	protected class Face
+	{
+		public final Vec3 modelNormal;
+		public Vec3 normal;
+		public final int[] verticeIds;
+		
+		/**
+		 * Make sure that the vertices are in the right order
+		 **/
+		public Face(Vec3 normal, int... vertices)
+		{
+			this.modelNormal = normal;
+			this.normal = normal;
+			this.verticeIds = vertices;
+		}
+		
+		public Vec3 vertex(int i)
+		{
+			return CubeCollider.this.vertices[this.verticeIds[i]];
+		}
+		
+		public Vec3 center()
+		{
+			double x = 0;
+			double y = 0;
+			double z = 0;
+			for (int i = 0; i < this.verticeIds.length; i++)
+			{
+				Vec3 v = this.vertex(i);
+				x += v.x;
+				y += v.y;
+				z += v.z;
+			}
+			x /= this.verticeIds.length;
+			y /= this.verticeIds.length;
+			z /= this.verticeIds.length;
+			return new Vec3(x, y, z);
 		}
 	}
 }

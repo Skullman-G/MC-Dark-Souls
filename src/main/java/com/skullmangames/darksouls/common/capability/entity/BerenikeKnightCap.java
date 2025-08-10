@@ -80,8 +80,8 @@ public class BerenikeKnightCap extends HumanoidCap<BerenikeKnight>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		Collider collider = super.getColliderMatching(hand);
-		return collider == Colliders.ULTRA_GREATSWORD.get() ? Colliders.BERENIKE_KNIGHT_ULTRA_GREATSWORD.get()
-				: collider == Colliders.MACE.get() ? Colliders.BERENIKE_KNIGHT_MACE.get()
+		return collider.is(Colliders.ULTRA_GREATSWORD.get()) ? Colliders.BERENIKE_KNIGHT_ULTRA_GREATSWORD.get().create()
+				: collider.is(Colliders.MACE.get()) ? Colliders.BERENIKE_KNIGHT_MACE.get().create()
 				: collider;
 	}
 

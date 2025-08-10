@@ -1,9 +1,9 @@
 {
   "moveset": {
-    "heavy": {
+    "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:fist_heavy_attack"
+        "darksouls:backstab_strike"
       ]
     },
     "punish": {
@@ -25,10 +25,10 @@
         "darksouls:fist_light_attack_2"
       ]
     },
-    "backstab": {
+    "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_strike"
+        "darksouls:fist_heavy_attack"
       ]
     }
   }

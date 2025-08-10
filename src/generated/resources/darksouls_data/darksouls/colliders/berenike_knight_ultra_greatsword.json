@@ -1,5 +1,5 @@
 {
-  "type": "CAPSULE",
+  "shape": "CAPSULE",
   "radius": 0.5,
   "height": 3.0,
   "base_x": 0.0,

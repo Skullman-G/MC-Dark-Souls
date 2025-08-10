@@ -422,7 +422,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 		
 		public MeleeWeaponCap build()
 		{
-			Collider collider = Colliders.getCollider(this.colliderId);
+			Collider collider = Colliders.getCollider(this.colliderId).create();
 			WeaponSkill skill = this.skillId == null ? null : WeaponSkills.getSkill(this.skillId);
 			return new MeleeWeaponCap(this.item, this.category, WeaponMovesets.getMoveset(this.movesetId), skill,
 					collider, this.damage.build(), this.auxEffects.build(),

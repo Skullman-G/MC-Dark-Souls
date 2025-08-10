@@ -11,13 +11,15 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.AbstractGetter;
 import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.ColliderType;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 public class Colliders extends AbstractDSDataRegister
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private Map<ResourceLocation, Collider> colliders = ImmutableMap.of();
+	private Map<ResourceLocation, ColliderType<?>> colliderTypes = ImmutableMap.of();
 	
 	public Colliders()
 	{
@@ -60,39 +62,39 @@ public class Colliders extends AbstractDSDataRegister
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
 	{
-		ImmutableMap.Builder<ResourceLocation, Collider> builder = ImmutableMap.builder();
+		ImmutableMap.Builder<ResourceLocation, ColliderType<?>> builder = ImmutableMap.builder();
 		objects.forEach((location, json) ->
 		{
 			try
 			{
-				Collider collider = Collider.CoreBuilder.fromJson(location, json.getAsJsonObject()).build();
-				builder.put(location, collider);
+				ColliderType<?> colliderType = Collider.CoreBuilder.fromJson(location, json.getAsJsonObject()).build();
+				builder.put(location, colliderType);
 			}
 			catch (IllegalArgumentException | JsonParseException jsonparseexception)
 			{
 				LOGGER.error("Parsing error loading collider {}", location, jsonparseexception);
 			}
 		});
-		this.colliders = builder.build();
+		this.colliderTypes = builder.build();
 		
-		LOGGER.info("Loaded "+this.colliders.size()+" colliders");
+		LOGGER.info("Loaded "+this.colliderTypes.size()+" colliders");
 	}
 	
-	public static Collider getCollider(ResourceLocation id)
+	public static ColliderType<?> getCollider(ResourceLocation id)
 	{
 		Colliders register = DarkSouls.getInstance().colliders;
-		if (register.colliders.containsKey(id)) return register.colliders.get(id);
+		if (register.colliderTypes.containsKey(id)) return register.colliderTypes.get(id);
 		throw new IllegalArgumentException("Unable to find collider with path: " + id);
 	}
 	
-	public static class Getter extends AbstractGetter<Collider>
+	public static class Getter extends AbstractGetter<ColliderType<?>>
 	{
 		private Getter(ResourceLocation id)
 		{
 			super(id);
 		}
 		
-		public Collider get()
+		public ColliderType<?> get()
 		{
 			return Colliders.getCollider(this.getId());
 		}

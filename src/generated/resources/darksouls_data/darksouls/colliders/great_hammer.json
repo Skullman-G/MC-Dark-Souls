@@ -1,7 +1,7 @@
 {
   "multiple": [
     {
-      "type": "CAPSULE",
+      "shape": "CAPSULE",
       "radius": 0.75,
       "height": 1.75,
       "base_x": 0.0,
@@ -11,7 +11,7 @@
       "y_rotation": 0.0
     },
     {
-      "type": "CAPSULE",
+      "shape": "CAPSULE",
       "radius": 0.25,
       "height": 1.5,
       "base_x": 0.0,

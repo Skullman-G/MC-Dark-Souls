@@ -20,23 +20,21 @@ import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.JsonBuilder;
+import com.skullmangames.darksouls.core.util.collider.CubeCollider.Face;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class Collider
 {
-	private final ResourceLocation id;
+	private final ColliderType<?> type;
 	private Vec3 worldCenter = Vec3.ZERO;
 	protected Vec3[] vertices;
 	protected Vec3[] modelVertices;
@@ -48,16 +46,21 @@ public abstract class Collider
 	 **/
 	protected final AABB outerAABB;
 
-	public Collider(ResourceLocation id, AABB outerAABB)
+	public Collider(ColliderType<?> type, AABB outerAABB)
 	{
-		this.id = id;
+		this.type = type;
 		this.outerAABB = outerAABB;
 	}
 	
 	@Nullable
 	public ResourceLocation getId()
 	{
-		return this.id;
+		return this.type.getId();
+	}
+	
+	public boolean is(ColliderType<?> type)
+	{
+		return this.getId() == type.getId();
 	}
 	
 	public Vec3 getWorldCenter()
@@ -67,8 +70,20 @@ public abstract class Collider
 	
 	public void transform(ModMatrix4f mat)
 	{
+		this.rotateTo(mat);
 		Vec3 pos = mat.transform(Vec3.ZERO);
 		this.moveTo(new Vec3(-pos.x, pos.y, -pos.z));
+	}
+	
+	protected void rotateTo(ModMatrix4f mat)
+	{
+		ModMatrix4f rot = mat.removeTranslation();
+		
+		for (int i = 0; i < this.vertices.length; i++)
+		{
+			this.vertices[i] = ModMatrix4f.transform(rot, this.modelVertices[i]);
+			this.vertices[i] = new Vec3(-this.vertices[i].x, this.vertices[i].y, -this.vertices[i].z);
+		}
 	}
 	
 	protected void moveTo(Vec3 pos)
@@ -78,14 +93,6 @@ public abstract class Collider
 		{
 			this.vertices[i] = this.vertices[i].add(this.worldCenter);
 		}
-	}
-	
-	public BlockHitResult getBlockCollisions(BlockGetter level)
-	{
-		AABB aabb = this.getHitboxAABB();
-		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(aabb.minX, aabb.minY, aabb.minZ), new Vec3(aabb.maxX, aabb.maxY, aabb.maxZ),
-				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null));
-		return hitResult;
 	}
 	
 	public List<Entity> getShieldCollisions(Entity self)
@@ -105,7 +112,7 @@ public abstract class Collider
 				{
 					ModMatrix4f modelMat = cap.getModelMatrix(1.0F).rotateDeg(90, Vector3f.YP);
 					ModMatrix4f mat = modelMat.translate(0.4F, entity.getBbHeight() / 2, 0);
-					Collider shieldCollider = Colliders.SHIELD.get();
+					Collider shieldCollider = Colliders.SHIELD.get().create();
 					shieldCollider.transform(mat);
 					return !this.collidesWith(shieldCollider);
 				}
@@ -142,8 +149,6 @@ public abstract class Collider
 	
 	public abstract boolean collidesWith(Collider other);
 	
-	public abstract Vec3 collide(Vec3 movement, List<ColliderHolder> others);
-
 	protected abstract boolean collidesWith(Entity opponent);
 
 	public AABB getHitboxAABB()
@@ -174,11 +179,11 @@ public abstract class Collider
 		
 		return transformMatrix;
 	}
-
+	
 	@OnlyIn(Dist.CLIENT)
-	public void draw(LivingCap<?> entityCap, String jointName, float partialTicks)
+	public void draw(EntityCapability<?> entityCap, String jointName, float partialTicks)
 	{
-		boolean red = entityCap.getEntityState() == EntityState.CONTACT;
+		boolean red = entityCap instanceof LivingCap<?> livingCap ? livingCap.getEntityState() == EntityState.CONTACT : false;
 		this.update(entityCap, jointName, partialTicks);
 
 		this.drawInternal(red);
@@ -190,7 +195,8 @@ public abstract class Collider
 	@Override
 	public String toString()
 	{
-		return this.id.toString();
+		return String.format("Id: %s, Center : [%f, %f, %f]", this.getId(), this.getWorldCenter().x, this.getWorldCenter().y,
+				this.getWorldCenter().z);
 	}
 	
 	public static Builder capsuleBuilder(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)
@@ -219,12 +225,12 @@ public abstract class Collider
 		return new CoreBuilder(id, builders);
 	}
 	
-	public static enum ColliderType
+	public static enum ColliderShape
 	{
 		CUBE, CAPSULE
 	}
 	
-	public static class CoreBuilder implements JsonBuilder<Collider>
+	public static class CoreBuilder implements JsonBuilder<ColliderType<?>>
 	{
 		private final ResourceLocation id;
 		private final List<Builder> colliders;
@@ -246,9 +252,9 @@ public abstract class Collider
 			for (JsonElement e : array)
 			{
 				JsonObject o = e.getAsJsonObject();
-				ColliderType type = ColliderType.valueOf(o.get("type").getAsString());
+				ColliderShape shape = ColliderShape.valueOf(o.get("shape").getAsString());
 				
-				switch (type)
+				switch (shape)
 				{
 					case CUBE:
 						this.colliders.add(new CubeCollider.Builder(location, o));
@@ -289,17 +295,19 @@ public abstract class Collider
 		}
 		
 		@Override
-		public Collider build()
+		public ColliderType<?> build()
 		{
 			if (this.colliders.size() > 1)
 			{
-				Collider[] array = new Collider[this.colliders.size()];
-				for (int i = 0; i < array.length; i++)
+				return new ColliderType<>(this.getId(), (type) ->
 				{
-					array[i] = this.colliders.get(i).build();
-				}
-				
-				return new MultiCollider(this.getId(), array);
+					Collider[] array = new Collider[this.colliders.size()];
+					for (int i = 0; i < array.length; i++)
+					{
+						array[i] = this.colliders.get(i).factory(type);
+					}
+					return new MultiCollider(type, array);
+				});
 			}
 			else
 			{
@@ -308,7 +316,7 @@ public abstract class Collider
 		}
 	}
 	
-	public static abstract class Builder implements JsonBuilder<Collider>
+	public static abstract class Builder implements JsonBuilder<ColliderType<?>>
 	{
 		private ResourceLocation id;
 		
@@ -322,13 +330,13 @@ public abstract class Collider
 			this.id = location;
 		}
 		
-		protected abstract ColliderType getType();
+		protected abstract ColliderShape getShape();
 		
 		@Override
 		public JsonObject toJson()
 		{
 			JsonObject json = new JsonObject();
-			json.addProperty("type", this.getType().name());
+			json.addProperty("shape", this.getShape().name());
 			return json;
 		}
 		
@@ -336,6 +344,14 @@ public abstract class Collider
 		public ResourceLocation getId()
 		{
 			return this.id;
+		}
+		
+		protected abstract Collider factory(ColliderType<?> type);
+		
+		@Override
+		public ColliderType<?> build()
+		{
+			return new ColliderType<>(this.getId(), this::factory);
 		}
 	}
 	

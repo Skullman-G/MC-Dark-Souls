@@ -1,7 +1,5 @@
 package com.skullmangames.darksouls.core.util.collider;
 
-import java.util.List;
-
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.Gizmos;
@@ -19,9 +17,9 @@ public class CapsuleCollider extends Collider
 	protected final double radius;
 	protected final double height;
 	
-	public CapsuleCollider(ResourceLocation id, double radius, double height, Vec3 base, float xRot, float yRot)
+	public CapsuleCollider(ColliderType<?> type, double radius, double height, Vec3 base, float xRot, float yRot)
 	{
-		this(id, radius, height, base);
+		this(type, radius, height, base);
 		
 		ModMatrix4f rotMat = ModMatrix4f.createRotatorDeg((float)xRot, Vector3f.XP)
 				.rotateDeg((float)(180 + yRot), Vector3f.YP);
@@ -33,9 +31,9 @@ public class CapsuleCollider extends Collider
 		}
 	}
 	
-	public CapsuleCollider(ResourceLocation id, double radius, double height, Vec3 base)
+	public CapsuleCollider(ColliderType<?> type, double radius, double height, Vec3 base)
 	{
-		super(id, createOuterAABB(radius, height));
+		super(type, createOuterAABB(radius, height));
 		
 		this.radius = radius;
 		this.height = height;
@@ -105,20 +103,6 @@ public class CapsuleCollider extends Collider
 		double length = Math.max(radius * 2, height);
 		return new AABB(-length, -length, -length, length, length, length);
 	}
-	
-	@Override
-	public void transform(ModMatrix4f mat)
-	{
-		ModMatrix4f rot = mat.removeTranslation();
-		
-		for (int i = 0; i < this.vertices.length; i++)
-		{
-			this.vertices[i] = ModMatrix4f.transform(rot, this.modelVertices[i]);
-			this.vertices[i] = new Vec3(-this.vertices[i].x, this.vertices[i].y, -this.vertices[i].z);
-		}
-
-		super.transform(mat);
-	}
 
 	@Override
 	public boolean collidesWith(Collider other)
@@ -127,24 +111,6 @@ public class CapsuleCollider extends Collider
 				: other instanceof CubeCollider cube ? capsuleCubeCollision(this, cube).lengthSqr() != 0
 				: other instanceof CapsuleCollider capsule ? capsuleCapsuleCollision(this, capsule).lengthSqr() != 0
 				: false;
-	}
-	
-	@Override
-	public Vec3 collide(Vec3 movement, List<ColliderHolder> others)
-	{
-		Vec3 currentPos = this.getWorldCenter();
-		for (ColliderHolder holder : others)
-		{
-			if (holder.isEmpty()) continue;
-			holder.correctPosition();
-			Collider col = holder.getType();
-			this.moveTo(currentPos.add(movement));
-			Vec3 pushVec = col instanceof CubeCollider cube ? Collider.capsuleCubeCollision(this, cube)
-					: col instanceof CapsuleCollider capsule ? Collider.capsuleCapsuleCollision(this, capsule)
-					: Vec3.ZERO;
-			movement = movement.add(pushVec);
-		}
-		return movement;
 	}
 	
 	@Override
@@ -222,17 +188,17 @@ public class CapsuleCollider extends Collider
 			
 			return json;
 		}
-
+		
 		@Override
-		public Collider build()
+		protected CapsuleCollider factory(ColliderType<?> type)
 		{
-			return new CapsuleCollider(this.getId(), this.radius, this.height, this.base, this.xRot, this.yRot);
+			return new CapsuleCollider(type, this.radius, this.height, this.base, this.xRot, this.yRot);
 		}
 
 		@Override
-		protected ColliderType getType()
+		protected ColliderShape getShape()
 		{
-			return ColliderType.CAPSULE;
+			return ColliderShape.CAPSULE;
 		}
 	}
 }

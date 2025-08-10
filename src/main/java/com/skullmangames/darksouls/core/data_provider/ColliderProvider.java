@@ -13,6 +13,7 @@ import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.collider.Collider;
+import com.skullmangames.darksouls.core.util.collider.ColliderType;
 import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 
 import net.minecraft.data.DataGenerator;
@@ -37,7 +38,7 @@ public class ColliderProvider implements DataProvider
 	{
 		Path path = this.generator.getOutputFolder();
 		
-		for (JsonBuilder<Collider> builder : defaultColliders())
+		for (JsonBuilder<ColliderType<?>> builder : defaultColliders())
 		{
 			Path path1 = createPath(path, builder.getId());
 			try
@@ -51,7 +52,7 @@ public class ColliderProvider implements DataProvider
 		}
 	}
 	
-	private static List<JsonBuilder<Collider>> defaultColliders()
+	private static List<JsonBuilder<ColliderType<?>>> defaultColliders()
 	{
 		return ImmutableList.of
 		(

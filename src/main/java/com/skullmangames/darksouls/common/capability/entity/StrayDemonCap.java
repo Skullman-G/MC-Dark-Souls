@@ -57,8 +57,8 @@ public class StrayDemonCap extends MobCap<StrayDemon>
 	public Collider getColliderMatching(InteractionHand hand)
 	{
 		MeleeWeaponCap cap = this.getHeldMeleeWeaponCap(hand);
-		if (cap.getWeaponCollider() == Colliders.GREAT_HAMMER.get()) return Colliders.STRAY_DEMON_GREAT_HAMMER.get();
-		return cap != null ? cap.getWeaponCollider() : Colliders.FIST.get();
+		if (cap.getWeaponCollider().is(Colliders.GREAT_HAMMER.get())) return Colliders.STRAY_DEMON_GREAT_HAMMER.get().create();
+		return cap != null ? cap.getWeaponCollider() : Colliders.FIST.get().create();
 	}
 	
 	@Override

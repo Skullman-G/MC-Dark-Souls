@@ -1,9 +1,9 @@
 {
   "moveset": {
-    "heavy": {
+    "backstab": {
       "repeating": true,
       "animations": [
-        "darksouls:dagger_heavy_attack"
+        "darksouls:backstab_thrust"
       ]
     },
     "dash": {
@@ -19,10 +19,10 @@
         "darksouls:dagger_light_attack_2"
       ]
     },
-    "backstab": {
+    "heavy": {
       "repeating": true,
       "animations": [
-        "darksouls:backstab_thrust"
+        "darksouls:dagger_heavy_attack"
       ]
     }
   }

@@ -95,7 +95,7 @@ public class SimpleParticleEvent extends AnimEvent
 				pos = cap.getOriginalEntity().position();
 				break;
 			case WEAPON:
-				if (!cap.weaponCollider.isEmpty()) pos = cap.weaponCollider.getMassCenter();
+				if (cap.weaponCollider != null) pos = cap.weaponCollider.getMassCenter();
 				break;
 		}
 		pos = pos.add(this.xOffset, this.yOffset, this.zOffset);
