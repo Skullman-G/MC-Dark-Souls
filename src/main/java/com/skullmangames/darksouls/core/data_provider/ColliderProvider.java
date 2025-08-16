@@ -84,7 +84,7 @@ public class ColliderProvider implements DataProvider
 							Collider.capsuleBuilder(Colliders.DEMONS_GREATAXE.getId(), 0.25D, 1.5D, new Vec3(0, 0.2D, 0), -4.5F, 0)
 						),
 				Collider.capsuleBuilder(Colliders.GREATAXE.getId(), 0.8D, 1.75D, new Vec3(0, -0.1D, -0.25D), -4.5F, 0),
-				Collider.capsuleBuilder(Colliders.SHIELD.getId(), 0.6D, 1.5D, new Vec3(0.15D, 0, 0.6D), -90F, 0),
+				Collider.capsuleBuilder(Colliders.SHIELD.getId(), 0.6D, 2D, new Vec3(0.15D, 0, 0.6D), -90F, 0),
 				Collider.capsuleBuilder(Colliders.AXE.getId(), 0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0),
 				Collider.capsuleBuilder(Colliders.BATTLE_AXE.getId(), 0.5D, 1.1D, new Vec3(0, 0, -0.25D), -4.5F, 0),
 				Collider.capsuleBuilder(Colliders.PICKAXE.getId(), 0.3D, 0.75D, new Vec3(-0.025D, 0D, -0.1D), 3, 0),

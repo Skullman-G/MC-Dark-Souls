@@ -556,40 +556,106 @@ public abstract class Collider
 		Vec3 b_A = b.min().add(b_LineEndOffset);
 		Vec3 b_B = b.max().subtract(b_LineEndOffset);
 
-		// vectors between line endpoints:
-		Vec3 v0 = b_A.subtract(a_A);
-		Vec3 v1 = b_B.subtract(a_A);
-		Vec3 v2 = b_A.subtract(a_B);
-		Vec3 v3 = b_B.subtract(a_B);
+		// get closest points between capsule segments
+		Vec3[] closest = closestSegmentPoints(a_A, a_B, b_A, b_B);
+		Vec3 bestA = closest[0];
+		Vec3 bestB = closest[1];
 
-		// squared distances:
-		double d0 = v0.dot(v0);
-		double d1 = v1.dot(v1);
-		double d2 = v2.dot(v2);
-		double d3 = v3.dot(v3);
+		// compute separation vector
+		Vec3 penetration_normal = bestA.subtract(bestB);
+		double len = penetration_normal.length();
 
-		// select best potential endpoint on capsule A:
-		Vec3 bestA;
-		if (d2 < d0 || d2 < d1 || d3 < d0 || d3 < d1)
+		if (len < 1e-8)
 		{
-			bestA = a_B;
+			// Capsules overlap perfectly along axes, pick arbitrary normal
+			penetration_normal = new Vec3(1, 0, 0);
+			len = 0.0;
+		} else
+		{
+			penetration_normal = penetration_normal.scale(1.0 / len); // normalize
+		}
+
+		// penetration depth
+		double penetration_depth = a.radius + b.radius - len;
+
+		if (penetration_depth <= 0.0)
+		{
+			// no collision
+			return new Vec3(0, 0, 0);
+		}
+
+		// return MTV (minimum translation vector) pointing from A to B
+		return penetration_normal.scale(-penetration_depth);
+	}
+
+	private static Vec3[] closestSegmentPoints(Vec3 p1, Vec3 q1, Vec3 p2, Vec3 q2)
+	{
+		Vec3 d1 = q1.subtract(p1); // direction of segment S1
+		Vec3 d2 = q2.subtract(p2); // direction of segment S2
+		Vec3 r = p1.subtract(p2);
+		double a = d1.dot(d1); // squared length of S1
+		double e = d2.dot(d2); // squared length of S2
+		double f = d2.dot(r);
+
+		double s, t;
+
+		if (a <= 1e-8 && e <= 1e-8)
+		{
+			// both segments degenerate into points
+			return new Vec3[]
+			{ p1, p2 };
+		}
+		if (a <= 1e-8)
+		{
+			// first segment is a point
+			s = 0.0;
+			t = ModMath.clamp(f / e, 0.0, 1.0);
 		}
 		else
 		{
-		  bestA = a_A;
+			double c = d1.dot(r);
+			if (e <= 1e-8)
+			{
+				// second segment is a point
+				t = 0.0;
+				s = ModMath.clamp(-c / a, 0.0, 1.0);
+			}
+			else
+			{
+				double b = d1.dot(d2);
+				double denom = a * e - b * b;
+
+				if (denom != 0.0)
+				{
+					s = ModMath.clamp((b * f - c * e) / denom, 0.0, 1.0);
+				}
+				else
+				{
+					s = 0.0;
+				}
+
+				double tnom = (b * s + f);
+				if (tnom < 0.0)
+				{
+					t = 0.0;
+					s = ModMath.clamp(-c / a, 0.0, 1.0);
+				}
+				else if (tnom > e)
+				{
+					t = 1.0;
+					s = ModMath.clamp((b - c) / a, 0.0, 1.0);
+				}
+				else
+				{
+					t = tnom / e;
+				}
+			}
 		}
 
-		// select point on capsule B line segment nearest to best potential endpoint on A capsule:
-		Vec3 bestB = ClosestPointOnLineSegment(b_A, b_B, bestA);
-
-		// now do the same for capsule A segment:
-		bestA = ClosestPointOnLineSegment(a_A, a_B, bestB);
-
-		Vec3 penetration_normal = bestA.subtract(bestB);
-		double len = penetration_normal.length();
-		penetration_normal = penetration_normal.normalize();
-		double penetration_depth = a.radius + b.radius - len;
-		return penetration_normal.scale(-penetration_depth);
+		Vec3 c1 = p1.add(d1.scale(s));
+		Vec3 c2 = p2.add(d2.scale(t));
+		return new Vec3[]
+		{ c1, c2 };
 	}
 	
 	private static Vec3 ClosestPointOnLineSegment(Vec3 A, Vec3 B, Vec3 Point)

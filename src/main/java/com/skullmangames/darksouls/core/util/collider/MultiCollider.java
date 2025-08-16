@@ -50,7 +50,7 @@ public class MultiCollider extends Collider
 		List<Entity> allCollisions = new ArrayList<>();
 		for (Collider collider : this.colliders)
 		{
-			List<Entity> singleCollisions = collider.getEntityCollisions(self, (entity) -> allCollisions.contains(entity));
+			List<Entity> singleCollisions = collider.getEntityCollisions(self, additionalFilters.or((entity) -> allCollisions.contains(entity)));
 			allCollisions.addAll(singleCollisions);
 		}
 		return allCollisions;
@@ -62,7 +62,7 @@ public class MultiCollider extends Collider
 		List<Entity> allCollisions = new ArrayList<>();
 		for (Collider collider : this.colliders)
 		{
-			List<Entity> singleCollisions = collider.getShieldCollisions(self, (entity) -> allCollisions.contains(entity));
+			List<Entity> singleCollisions = collider.getShieldCollisions(self, additionalFilters.or((entity) -> allCollisions.contains(entity)));
 			allCollisions.addAll(singleCollisions);
 		}
 		return allCollisions;
