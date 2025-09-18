@@ -15,7 +15,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -161,7 +160,7 @@ public abstract class WeaponCap extends AttributeItemCap
 
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 
-		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		if (ClientManager.INSTANCE.inputManager.shouldShowItemInfo())
 		{
 			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 					+ id.getPath() + ".extended";

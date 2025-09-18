@@ -13,7 +13,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
@@ -115,7 +114,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 	public void modifyItemTooltip(List<Component> itemTooltip, PlayerCap<?> playerCap, ItemStack stack)
 	{
 		super.modifyItemTooltip(itemTooltip, playerCap, stack);
-		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		if (!ClientManager.INSTANCE.inputManager.shouldShowItemInfo())
 		{
 			int i = 1;
 			itemTooltip.set(i, new TextComponent(itemTooltip.get(i++).getString()

@@ -34,11 +34,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -269,5 +271,58 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		if (this.isHuman() == value) return;
 		super.setHuman(value);
 		if (value) ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
+	}
+	
+	public boolean canAttack()
+	{
+		return !this.orgEntity.isSpectator()
+				&& !this.isFalling()
+				&& this.getEntityState().canAct()
+				&& this.enoughStaminaToAct()
+				&& (this.orgEntity.isOnGround() || (!this.orgEntity.isUnderWater() && this.isMounted()))
+				&& (!this.orgEntity.isUsingItem() || this.isBlocking())
+				&& this.minecraft.screen == null;
+	}
+	
+	public boolean enoughStaminaToAct()
+	{
+		return this.getStamina() >= 10.0F || this.orgEntity.isCreative();
+	}
+	
+	public boolean isFalling()
+	{
+		return this.orgEntity.isFallFlying() || this.baseMotion == LivingMotion.FALL;
+	}
+	
+	public boolean canStartSprinting()
+	{
+		Vec2 vector2f = this.orgEntity.input.getMoveVector();
+		return (this.orgEntity.isOnGround() || this.orgEntity.isUnderWater() || this.orgEntity.getAbilities().mayfly)
+				&& (this.orgEntity.isUnderWater() ? this.orgEntity.input.hasForwardImpulse() : (double)this.orgEntity.input.forwardImpulse >= 0.8D)
+				&& !this.orgEntity.isSprinting()
+				&& (float)this.orgEntity.getFoodData().getFoodLevel() > 6.0F
+				&& (!this.orgEntity.isUsingItem() || this.isBlocking())
+				&& !this.orgEntity.hasEffect(MobEffects.BLINDNESS)
+				&& (vector2f.x != 0.0F || vector2f.y != 0.0F)
+				&& this.getEquipLoadLevel() != EquipLoadLevel.OVERENCUMBERED;
+	}
+	
+	public boolean canMove()
+	{
+		return this.orgEntity.isAlive() && (!this.getEntityState().isMovementLocked() || this.orgEntity.isRidingJumpable());
+	}
+	
+	public boolean canDodge()
+	{
+		return ClientManager.INSTANCE.isCombatModeActive()
+				&&!this.orgEntity.isSpectator()
+				&& !this.isFalling()
+				&& this.getEntityState().canAct()
+				&& this.enoughStaminaToAct()
+				&& !this.orgEntity.isUnderWater()
+				&& this.orgEntity.isOnGround()
+				&& !this.isMounted()
+				&& (!this.orgEntity.isUsingItem() || this.isBlocking())
+				&& this.minecraft.screen == null;
 	}
 }

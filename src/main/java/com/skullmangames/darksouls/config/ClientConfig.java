@@ -25,7 +25,7 @@ public class ClientConfig
 	
 	public ClientConfig(ForgeConfigSpec.Builder config)
 	{
-		this.longPressCount = this.registerInt(config, "long_press_count", 2, 1, 10);
+		this.longPressCount = this.registerInt(config, "long_press_count", 3, 3, 10);
 		
 		this.showHealthIndicator = this.registerBoolean(config, "show_health_indicator", true);
 		this.darkSoulsUI = this.registerBoolean(config, "dark_souls_ui", true);

@@ -9,12 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.world.entity.LivingEntity;
 
-public class MouseInputManager extends MouseHandler
+public class MouseInputHandler extends MouseHandler
 {
 	private final Minecraft minecraft;
 	private final ModCamera camera;
 	
-	public MouseInputManager(Minecraft minecraft)
+	public MouseInputHandler(Minecraft minecraft)
 	{
 		super(minecraft);
 		this.minecraft = minecraft;

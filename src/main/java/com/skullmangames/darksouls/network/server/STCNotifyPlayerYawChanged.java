@@ -41,7 +41,6 @@ public class STCNotifyPlayerYawChanged
 	public static void handle(STCNotifyPlayerYawChanged msg, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(()->{
-			@SuppressWarnings("resource")
 			Entity entity = Minecraft.getInstance().player.level.getEntity(msg.entityId);
 			
 			if(entity != null)

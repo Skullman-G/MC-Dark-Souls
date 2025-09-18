@@ -8,7 +8,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.animation.LivingMotion;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -76,7 +75,7 @@ public class ItemCapability
 			itemTooltip.add(index++, new TextComponent("\u00A77" + description));
 		}
 		
-		if (!ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO)) return;
+		if (!ClientManager.INSTANCE.inputManager.shouldShowItemInfo()) return;
 		
 		languagePath = "tooltip."+DarkSouls.MOD_ID+"."+((IForgeRegistryEntry<Item>)this.orgItem).getRegistryName().getPath()+".extended";
 		description = new TranslatableComponent(languagePath).getString();

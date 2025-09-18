@@ -29,8 +29,8 @@ import org.apache.logging.log4j.Logger;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.event.ClientEvents;
-import com.skullmangames.darksouls.client.input.InputManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
+import com.skullmangames.darksouls.client.input.InputEvents;
+import com.skullmangames.darksouls.client.input.key.ModKeys;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.client.renderer.entity.BreakableBarrelRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.FirebombRenderer;
@@ -223,7 +223,7 @@ public class DarkSouls
 		ProviderEntity.makeMapClient();
 		ModKeys.registerKeys();
 
-		MinecraftForge.EVENT_BUS.register(InputManager.Events.class);
+		MinecraftForge.EVENT_BUS.register(InputEvents.class);
 		MinecraftForge.EVENT_BUS.register(RenderEngine.Events.class);
 		MinecraftForge.EVENT_BUS.register(ClientEvents.class);
 

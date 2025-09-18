@@ -4,7 +4,6 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.client.gui.screens.IngameConfigurationScreen;
 import com.skullmangames.darksouls.client.input.InputManager;
-import com.skullmangames.darksouls.client.input.MouseInputManager;
 import com.skullmangames.darksouls.client.renderer.ModCamera;
 import com.skullmangames.darksouls.client.renderer.RenderEngine;
 import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
@@ -45,15 +44,15 @@ public class ClientManager
 		this.minecraft = Minecraft.getInstance();
 		this.gui = new GameOverlayManager();
 		this.renderEngine = new RenderEngine();
-		this.inputManager = new InputManager();
+		
+		this.minecraft.gameRenderer.mainCamera = new ModCamera();
+		this.mainCamera = (ModCamera)this.minecraft.gameRenderer.mainCamera;
+		
 		this.npcChat = new NPCChat();
 		MinecraftForge.EVENT_BUS.register(this.npcChat);
 		this.options = this.minecraft.options;
 		
-		this.minecraft.gameRenderer.mainCamera = new ModCamera();
-		this.mainCamera = (ModCamera)this.minecraft.gameRenderer.mainCamera;
-		this.minecraft.mouseHandler = new MouseInputManager(this.minecraft);
-		this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
+		this.inputManager = new InputManager();
 		
 		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class,
 				() -> new ConfigGuiFactory((mc, screen) -> new IngameConfigurationScreen(mc, screen)));

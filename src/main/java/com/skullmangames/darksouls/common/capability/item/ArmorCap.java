@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.ModKeys;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.math.ModMath;
@@ -59,7 +58,7 @@ public class ArmorCap extends AttributeItemCap
 
 		while (itemTooltip.size() >= 2) itemTooltip.remove(1);
 
-		if (ClientManager.INSTANCE.inputManager.isKeyDown(ModKeys.SHOW_ITEM_INFO))
+		if (ClientManager.INSTANCE.inputManager.shouldShowItemInfo())
 		{
 			String languagePath = "tooltip." + DarkSouls.MOD_ID + "."
 					+ ((IForgeRegistryEntry<Item>) this.orgItem).getRegistryName().getPath() + ".extended";

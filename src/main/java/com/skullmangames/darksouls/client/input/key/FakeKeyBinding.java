@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.client.input;
+package com.skullmangames.darksouls.client.input.key;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
