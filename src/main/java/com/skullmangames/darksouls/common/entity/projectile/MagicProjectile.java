@@ -13,5 +13,5 @@ public abstract class MagicProjectile extends Projectile
 		super(type, level);
 	}
 
-	public abstract void initProjectile(LivingCap<?> cap);
+	public abstract void initProjectile(LivingCap<?> cap, float baseDamage, float staminaDamage, float poiseDamage);
 }

@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -67,7 +67,7 @@ public class AdaptableAnimation extends StaticAnimation
 		private final boolean repeat;
 		private final Function<Models<?>, Model> model;
 		
-		private final Map<LivingMotion, AnimBuilder> entries = new HashMap<>();
+		private final Map<LivingMotion, AnimBuilder> entries = new LinkedHashMap<>();
 		private final ImmutableMap.Builder<LivingMotion, StaticAnimation> animations = ImmutableMap.builder();
 		
 		public Builder(ResourceLocation id, float convertTime, boolean repeatPlay, Function<Models<?>, Model> model)

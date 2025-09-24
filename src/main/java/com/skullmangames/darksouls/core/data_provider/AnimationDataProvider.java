@@ -578,7 +578,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN, ModParticles.LIGHTNING_SPEAR,
 												0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get()),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get(), 145F, 1F, 2F),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 				new ActionAnimation.Builder(Animations.HORSEBACK_CAST_MIRACLE_LIGHTNING_SPEAR.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/horseback_cast_miracle_spear"), (models) -> models.ENTITY_BIPED)
@@ -588,7 +588,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN, ModParticles.LIGHTNING_SPEAR,
 												0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get()),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.LIGHTNING_SPEAR.get(), 145F, 1F, 2F),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 
 				new ActionAnimation.Builder(Animations.BIPED_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId(), 0.3F,
@@ -599,7 +599,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN,
 												ModParticles.GREAT_LIGHTNING_SPEAR, 0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get()),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get(), 185F, 2F, 4F),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 				new ActionAnimation.Builder(Animations.HORSEBACK_CAST_MIRACLE_GREAT_LIGHTNING_SPEAR.getId(), 0.3F,
 						DarkSouls.rl("biped/combat/horseback_cast_miracle_spear"), (models) -> models.ENTITY_BIPED)
@@ -609,7 +609,7 @@ public class AnimationDataProvider implements DataProvider
 												ModSoundEvents.LIGHTNING_SPEAR_APPEAR),
 										new EntityboundParticleEvent(AnimEvent.ON_BEGIN,
 												ModParticles.GREAT_LIGHTNING_SPEAR, 0, 1, 0),
-										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get()),
+										new ShootMagicProjectileEvent(0.9F, ModEntities.GREAT_LIGHTNING_SPEAR.get(), 185F, 2F, 4F),
 										new PlaySoundEvent(0.9F, Side.SERVER, ModSoundEvents.LIGHTNING_SPEAR_SHOT) }),
 
 				// Big Weapon

@@ -2,13 +2,13 @@ package com.skullmangames.darksouls.common.entity.projectile;
 
 import com.skullmangames.darksouls.common.block.LightSource;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
+import com.skullmangames.darksouls.core.util.IndirectDamageSourceExtended;
 import com.skullmangames.darksouls.core.util.ProjectileUtil;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import net.minecraft.world.entity.Entity;
@@ -23,25 +23,23 @@ public class LightningSpear extends MagicProjectile
 {
 	private int particle;
 	private float damage;
+	private float staminaDamage;
+	private float poiseDamage;
 	
 	public LightningSpear(EntityType<? extends LightningSpear> type, Level level)
 	{
 		super(type, level);
-		this.damage = 0F;
 	}
 	
 	@Override
-	public void initProjectile(LivingCap<?> cap)
+	public void initProjectile(LivingCap<?> cap, float baseDamage, float staminaDamage, float poiseDamage)
 	{
 		this.setOwner(cap.getOriginalEntity());
 		
 		double yRot = Math.toRadians(ModMath.toNormalRot(cap.getYRot()));
 		this.setPos(cap.getX() + Math.sin(yRot) * 0.5F, cap.getY() + 1.75F, cap.getZ() + Math.cos(yRot) * 1.75F);
 		this.yRot = cap.getYRot();
-		this.damage = 0F;
-		if (this.getType() == ModEntities.LIGHTNING_SPEAR.get()) this.damage += 145F;
-		else if (this.getType() == ModEntities.GREAT_LIGHTNING_SPEAR.get()) this.damage += 185;
-		this.damage *= cap.getSpellBuff();
+		this.damage = baseDamage * cap.getSpellBuff();
 	}
 	
 	@Override
@@ -118,8 +116,14 @@ public class LightningSpear extends MagicProjectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		result.getEntity().hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(),
-				StunType.LIGHT, 1.0F, 1.0F, Damages.create().put(CoreDamageType.LIGHTNING, this.damage)), this.damage);
+		IndirectDamageSourceExtended source = ExtendedDamageSource.causeProjectileDamage(
+				this,
+				this.getOwner(),
+				StunType.LIGHT,
+				this.poiseDamage,
+				this.staminaDamage,
+				Damages.create().put(CoreDamageType.LIGHTNING, this.damage));
+		result.getEntity().hurt(source, this.damage);
 	}
 	
 	public int getParticle()
