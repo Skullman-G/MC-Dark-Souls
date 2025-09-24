@@ -99,6 +99,9 @@ public interface ExtendedDamageSource
 	public ExtendedDamageSource addAuxEffect(AuxEffect auxEffect);
 	public ExtendedDamageSource addAuxEffects(Set<AuxEffect> auxEffects);
 	
+	public boolean hurtEntity(Entity target);
+	public void actuallyHurtEntity(LivingEntity target);
+	
 	public enum StunType
 	{
 		NONE(0), PUNISHED(0), BACKSTABBED(0), DISARMED(0), INVINCIBILITY_BYPASS(0), LIGHT(1), HEAVY(2), SMASH(3), FLY(3);

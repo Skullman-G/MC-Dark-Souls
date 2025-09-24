@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.common.capability.item;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,7 +44,7 @@ public class RangedWeaponCap extends WeaponCap
 	
 	public static class Builder extends WeaponCap.Builder<RangedWeaponCap>
 	{
-		private Map<LivingMotion, ResourceLocation> animOverrideIds = new HashMap<>();
+		private Map<LivingMotion, ResourceLocation> animOverrideIds = new LinkedHashMap<>();
 		private HandProperty handProperty;
 		
 		private Builder(Item item, WeaponCategory category, float critical, float weight, HandProperty handProperty)

@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.SpellcastingWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.WeaponCap;
-import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
+import com.skullmangames.darksouls.common.capability.projectile.ProjectileCapability;
 
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ public class ModCapabilities
 	
     public static final Capability<ItemCapability> CAPABILITY_ITEM = CapabilityManager.get(new CapabilityToken<>(){});
 	
-    public static final Capability<CapabilityProjectile<Projectile>> CAPABILITY_PROJECTILE = CapabilityManager.get(new CapabilityToken<>(){});
+    public static final Capability<ProjectileCapability<Projectile>> CAPABILITY_PROJECTILE = CapabilityManager.get(new CapabilityToken<>(){});
 	
 	
 	public static ItemCapability getItemCapability(ItemStack stack)

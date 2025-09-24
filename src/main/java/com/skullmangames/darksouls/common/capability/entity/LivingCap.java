@@ -421,7 +421,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		
 		if (this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
 		{
-			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
+			extSource.actuallyHurtEntity(this.orgEntity);
 			return false;
 		}
 		
@@ -447,7 +447,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		}
 		if (this.blockingAttack(extSource))
 		{
-			this.orgEntity.actuallyHurt((DamageSource)extSource, extSource.getAmount());
+			extSource.actuallyHurtEntity(this.orgEntity);
 			return false;
 		}
 
@@ -554,7 +554,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 
 	public boolean hurtEntity(Entity hitTarget, InteractionHand handIn, ExtendedDamageSource source)
 	{
-		boolean succeed = hitTarget.hurt((DamageSource)source, source.getAmount());
+		boolean succeed = source.hurtEntity(hitTarget);
 
 		if (succeed)
 		{

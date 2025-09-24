@@ -3,48 +3,23 @@ package com.skullmangames.darksouls.common.entity.projectile;
 import java.util.List;
 
 import com.skullmangames.darksouls.common.block.LightSource;
-import com.skullmangames.darksouls.core.init.ModEntities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
-import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 public class Firebomb extends ThrowableItemProjectile
 {
-	private final float damage;
-	
 	public Firebomb(EntityType<? extends Firebomb> entityType, Level level)
 	{
 		super(entityType, level);
-		this.damage = 0F;
-	}
-	
-	private Firebomb(EntityType<? extends Firebomb> entityType, Level level, LivingEntity entity, float damage)
-	{
-		super(entityType, entity, entity.level);
-		this.damage = damage;
-	}
-	
-	public static Firebomb firebomb(Level level, LivingEntity entity)
-	{
-		return new Firebomb(ModEntities.FIREBOMB.get(), level, entity, 100F);
-	}
-	
-	public static Firebomb blackFirebomb(Level level, LivingEntity entity)
-	{
-		return new Firebomb(ModEntities.BLACK_FIREBOMB.get(), level, entity, 140F);
 	}
 	
 	@Override
@@ -73,7 +48,6 @@ public class Firebomb extends ThrowableItemProjectile
 						this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
 			}
 		}
-
 	}
 	
 	@Override
@@ -87,10 +61,13 @@ public class Firebomb extends ThrowableItemProjectile
 			LightSource.setLightSource(this.level, this.blockPosition(), 15, 1.5F);
 			
 			List<Entity> targets = this.level.getEntities(this, this.getBoundingBox().inflate(1.15F));
+			if (result instanceof EntityHitResult entityHitResult)
+			{
+				targets.removeIf((e) -> e == entityHitResult.getEntity());
+			}
 			for (Entity entity : targets)
 			{
-				entity.hurt(ExtendedDamageSource.causeProjectileDamage(this, this.getOwner(),
-						StunType.HEAVY, 1.0F, 1.0F, Damages.create().put(CoreDamageType.FIRE, this.damage)), this.damage);
+				this.onHitEntity(new EntityHitResult(entity));
 			}
 			
 			this.discard();

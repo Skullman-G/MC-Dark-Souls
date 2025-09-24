@@ -1,0 +1,5 @@
+{
+  "registry_name": "minecraft:egg",
+  "projectile": "minecraft:egg",
+  "throw_sound": "minecraft:entity.egg.throw"
+}

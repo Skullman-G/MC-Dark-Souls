@@ -37,7 +37,7 @@ import net.minecraftforge.common.util.NonNullSupplier;
 
 public class ProviderEntity implements ICapabilityProvider, NonNullSupplier<EntityCapability<?>>
 {
-	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityCapability<?>>>> CAPABILITIES = new HashMap<EntityType<?>, Function<Entity, Supplier<EntityCapability<?>>>>();
+	private static final Map<EntityType<?>, Function<Entity, Supplier<EntityCapability<?>>>> CAPABILITIES = new HashMap<>();
 	
 	public static void makeMap()
 	{

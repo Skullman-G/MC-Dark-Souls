@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.core.event;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.projectile.CapabilityProjectile;
+import com.skullmangames.darksouls.common.capability.projectile.ProjectileCapability;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
@@ -26,7 +26,7 @@ public class CapabilityEvents
 	{
 	    event.register(EntityCapability.class);
 	    event.register(ItemCapability.class);
-	    event.register(CapabilityProjectile.class);
+	    event.register(ProjectileCapability.class);
 	}
 	
 	@SubscribeEvent
@@ -55,14 +55,15 @@ public class CapabilityEvents
 			}
 		}
 
-		if (event.getObject() instanceof Projectile)
+		if (event.getObject() instanceof Projectile projectile)
 		{
-			Projectile projectile = ((Projectile) event.getObject());
-			if (event.getObject().getCapability(ModCapabilities.CAPABILITY_PROJECTILE).orElse(null) == null)
+			if (projectile.getCapability(ModCapabilities.CAPABILITY_PROJECTILE).orElse(null) == null)
 			{
 				ProviderProjectile prov = new ProviderProjectile(projectile);
 				if (prov.hasCapability())
 				{
+					ProjectileCapability projectileCap = prov.getCapability(ModCapabilities.CAPABILITY_PROJECTILE).orElse(null);
+					projectileCap.onProjectileConstructed(projectile);
 					event.addCapability(new ResourceLocation(DarkSouls.MOD_ID, "projectile_cap"), prov);
 				}
 			}

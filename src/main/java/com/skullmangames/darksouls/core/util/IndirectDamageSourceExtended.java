@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.core.util.math.ModMath;
 
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class IndirectDamageSourceExtended extends IndirectEntityDamageSource implements ExtendedDamageSource
@@ -153,5 +154,17 @@ public class IndirectDamageSourceExtended extends IndirectEntityDamageSource imp
 	public Vec3 getAttackPos()
 	{
 		return this.getSource().position();
+	}
+
+	@Override
+	public boolean hurtEntity(Entity target)
+	{
+		return target.hurt(this, this.getAmount());
+	}
+	
+	@Override
+	public void actuallyHurtEntity(LivingEntity target)
+	{
+		target.actuallyHurt(this, this.getAmount());
 	}
 }

@@ -8,6 +8,7 @@ import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class DamageSourceExtended extends EntityDamageSource implements ExtendedDamageSource
@@ -154,5 +155,17 @@ public class DamageSourceExtended extends EntityDamageSource implements Extended
 	{
 		this.auxEffects.addAll(auxEffects);
 		return this;
+	}
+
+	@Override
+	public boolean hurtEntity(Entity target)
+	{
+		return target.hurt(this, this.getAmount());
+	}
+
+	@Override
+	public void actuallyHurtEntity(LivingEntity target)
+	{
+		target.actuallyHurt(this, this.getAmount());
 	}
 }

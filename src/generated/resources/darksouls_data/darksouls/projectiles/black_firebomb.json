@@ -1,0 +1,11 @@
+{
+  "registry_name": "darksouls:black_firebomb",
+  "damage": {
+    "PHYSICAL": 90.0,
+    "FIRE": 70.0
+  },
+  "stamina_damage": 2.0,
+  "poise_damage": 1.0,
+  "stun_type": "HEAVY",
+  "use_spell_buff": false
+}

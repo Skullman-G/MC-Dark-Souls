@@ -1,6 +1,6 @@
 package com.skullmangames.darksouls.core.util;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -48,7 +48,7 @@ public class WeaponMoveset
 	{
 		private static final Logger LOGGER = LogUtils.getLogger();
 		private final ResourceLocation id;
-		private final Map<AttackType, Pair<Boolean, ResourceLocation[]>> moveset = new HashMap<>();
+		private final Map<AttackType, Pair<Boolean, ResourceLocation[]>> moveset = new LinkedHashMap<>();
 		
 		public Builder(ResourceLocation id)
 		{

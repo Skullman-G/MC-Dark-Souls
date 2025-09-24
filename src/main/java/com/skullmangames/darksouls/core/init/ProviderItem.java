@@ -5,14 +5,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.ThrowableCap;
-import com.skullmangames.darksouls.common.entity.projectile.Firebomb;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -35,20 +30,10 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<ItemCa
 
 	public static void initCapabilityMap()
 	{
-		//Throwables
-		putCap(new ThrowableCap(Items.SNOWBALL, Snowball::new, () -> SoundEvents.SNOWBALL_THROW));
-		putCap(new ThrowableCap(ModItems.FIREBOMB.get(), Firebomb::firebomb, () -> SoundEvents.SNOWBALL_THROW));
-		putCap(new ThrowableCap(ModItems.BLACK_FIREBOMB.get(), Firebomb::blackFirebomb, () -> SoundEvents.SNOWBALL_THROW));
-		
 		// CLASS
 		CAPABILITY_BY_CLASS.put(Item.class, ItemCapability::new);
 		
 		CAPABILITIES.putAll(DEFAULT_CAPABILITIES);
-	}
-	
-	private static void putCap(ItemCapability cap)
-	{
-		DEFAULT_CAPABILITIES.put(cap.getOriginalItem(), cap);
 	}
 
 	public static void registerCapabilityItems()

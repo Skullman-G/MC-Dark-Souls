@@ -1,0 +1,11 @@
+{
+  "registry_name": "darksouls:great_lightning_spear",
+  "damage": {
+    "PHYSICAL": 80.0,
+    "LIGHTNING": 150.0
+  },
+  "stamina_damage": 4.0,
+  "poise_damage": 1.0,
+  "stun_type": "HEAVY",
+  "use_spell_buff": true
+}

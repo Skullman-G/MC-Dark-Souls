@@ -1,0 +1,5 @@
+{
+  "registry_name": "minecraft:snowball",
+  "projectile": "minecraft:snowball",
+  "throw_sound": "minecraft:entity.snowball.throw"
+}

@@ -11,7 +11,6 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -62,7 +61,7 @@ public class ShockWaveEvent extends AnimEvent
 				{
 					ExtendedDamageSource dmgSource = cap.getDamageSource(cap.getOriginalEntity().position(), 0,
 							StunType.FLY, Deflection.NONE, 0, Damages.create().put(CoreDamageType.PHYSICAL, 0));
-					target.hurt((DamageSource)dmgSource, dmgSource.getAmount());
+					dmgSource.hurtEntity(target);
 				}
 				else cap.knockBackEntity(target, 0.5F);
 			}

@@ -35,10 +35,7 @@
         "event_type": "shoot_magic_projectile",
         "time": 0.9,
         "execution_side": "SERVER",
-        "projectile": "darksouls:lightning_spear",
-        "base_damage": 145.0,
-        "stamina_damage": 1.0,
-        "poise_damage": 2.0
+        "projectile": "darksouls:lightning_spear"
       },
       {
         "event_type": "play_sound",

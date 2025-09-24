@@ -61,14 +61,15 @@ import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
-import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import com.skullmangames.darksouls.core.init.data.ArmorConfigs;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.init.data.DSDataManager;
 import com.skullmangames.darksouls.core.init.data.MeleeWeaponConfigs;
+import com.skullmangames.darksouls.core.init.data.ProjectileConfigs;
 import com.skullmangames.darksouls.core.init.data.RangedWeaponConfigs;
 import com.skullmangames.darksouls.core.init.data.SpellConfigs;
 import com.skullmangames.darksouls.core.init.data.SpellcastingWeaponConfigs;
+import com.skullmangames.darksouls.core.init.data.ThrowableConfigs;
 import com.skullmangames.darksouls.core.init.data.WeaponMovesets;
 import com.skullmangames.darksouls.core.init.data.WeaponSkills;
 import com.skullmangames.darksouls.core.util.QuestFlags;
@@ -105,6 +106,8 @@ public class DarkSouls
 	public final RangedWeaponConfigs rangedWeaponConfigs;
 	public final ArmorConfigs armorConfigs;
 	public final SpellConfigs spellConfigs;
+	public final ThrowableConfigs throwableConfigs;
+	public final ProjectileConfigs projectileConfigs;
 	
 	private Function<LivingCap<?>, Animator> animatorProvider;
 
@@ -127,6 +130,8 @@ public class DarkSouls
 		this.rangedWeaponConfigs = this.dataManager.addRegister(new RangedWeaponConfigs());
 		this.armorConfigs = this.dataManager.addRegister(new ArmorConfigs());
 		this.spellConfigs = this.dataManager.addRegister(new SpellConfigs());
+		this.throwableConfigs = this.dataManager.addRegister(new ThrowableConfigs());
+		this.projectileConfigs = this.dataManager.addRegister(new ProjectileConfigs());
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SERVER_CONFIG_BUILDER, CONFIG_FILE_PATH);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG_BUILDER);
@@ -205,7 +210,6 @@ public class DarkSouls
 		ProviderItem.registerCapabilityItems();
 
 		ProviderEntity.makeMap();
-		ProviderProjectile.makeMap();
 
 		ModEntities.registerEntitySpawnPlacement();
 		ModCriteriaTriggers.register();
