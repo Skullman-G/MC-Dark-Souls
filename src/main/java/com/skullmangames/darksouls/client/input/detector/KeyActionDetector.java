@@ -36,14 +36,20 @@ public class KeyActionDetector
 	
 	public void press()
 	{
-		this.act(ActionType.PRESS);
-		this.down = true;
+		if (!this.down)
+		{
+			this.down = true;
+			this.act(ActionType.PRESS);
+		}
 	}
 	
 	public void release()
 	{
-		this.act(ActionType.RELEASE);
-		this.down = false;
+		if (this.down)
+		{
+			this.down = false;
+			this.act(ActionType.RELEASE);
+		}
 	}
 	
 	public void tick() {}

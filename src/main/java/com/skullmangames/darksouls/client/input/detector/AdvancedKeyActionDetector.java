@@ -19,28 +19,24 @@ public class AdvancedKeyActionDetector extends KeyActionDetector
 	}
 	
 	@Override
-	public void press()
-	{
-		this.down = true;
-		this.act(ActionType.PRESS);
-	}
-	
-	@Override
 	public void release()
 	{
-		this.down = false;
-		
-		if (!this.isLongPress())
+		if (this.down)
 		{
-			this.act(ActionType.SHORT_PRESS);
+			this.down = false;
+			
+			if (!this.isLongPress())
+			{
+				this.act(ActionType.SHORT_PRESS);
+			}
+			else
+			{
+				this.act(ActionType.RELEASE);
+			}
+			
+			this.holdTicks = 0;
+			this.longPressed = false;
 		}
-		else
-		{
-			this.act(ActionType.RELEASE);
-		}
-		
-		this.holdTicks = 0;
-		this.longPressed = false;
 	}
 	
 	public void tick()
