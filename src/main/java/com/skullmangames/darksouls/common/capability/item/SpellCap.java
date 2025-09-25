@@ -13,9 +13,8 @@ import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.common.entity.stats.Stat;
 import com.skullmangames.darksouls.common.entity.stats.StatHolder;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
-import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.SpellType;
-
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -105,7 +104,7 @@ public class SpellCap extends ItemCapability
 		private SpellType spellType;
 		private float fpConsumption;
 		private ResourceLocation castingAnimId;
-		@Nullable private ResourceLocation horsebackAnimId;
+		private ResourceLocation horsebackAnimId;
 		private ImmutableMap.Builder<Stat, Integer> statRequirements = ImmutableMap.builder();
 		
 		private Builder(Item item, SpellType spellType, float fpConsumption, ResourceLocation castingAnimId, @Nullable ResourceLocation horsebackAnimId)

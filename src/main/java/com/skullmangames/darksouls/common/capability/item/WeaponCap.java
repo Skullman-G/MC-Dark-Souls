@@ -28,7 +28,7 @@ import com.skullmangames.darksouls.core.init.AuxEffects;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
-import com.skullmangames.darksouls.core.util.JsonBuilder;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 

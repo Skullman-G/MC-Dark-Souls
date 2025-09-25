@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.Shield.Deflection;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.JsonElementConverter;
+import com.skullmangames.darksouls.core.util.json.JsonElementConverter;
 
 import net.minecraft.resources.ResourceLocation;
 

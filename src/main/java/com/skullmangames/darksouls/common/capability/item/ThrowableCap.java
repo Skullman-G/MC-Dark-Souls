@@ -5,7 +5,8 @@ import java.util.function.Supplier;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
-import com.skullmangames.darksouls.core.util.JsonBuilder;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;

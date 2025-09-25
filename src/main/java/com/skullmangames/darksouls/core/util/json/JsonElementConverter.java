@@ -1,4 +1,4 @@
-package com.skullmangames.darksouls.core.util;
+package com.skullmangames.darksouls.core.util.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

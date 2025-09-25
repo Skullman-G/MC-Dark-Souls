@@ -223,7 +223,7 @@ public interface ExtendedDamageSource
 			return this;
 		}
 		
-		public Damages putAll(Map<DamageType, Float> entries)
+		public Damages putAll(Map<? extends DamageType, Float> entries)
 		{
 			this.damages.putAll(entries);
 			return this;

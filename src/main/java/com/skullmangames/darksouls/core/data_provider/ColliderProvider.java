@@ -11,10 +11,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.core.init.data.Colliders;
-import com.skullmangames.darksouls.core.util.JsonBuilder;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.collider.ColliderType;
 import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
