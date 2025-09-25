@@ -1,56 +1,45 @@
 package com.skullmangames.darksouls.core.data_provider;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.common.capability.item.ArmorCap.ArmorDefenseType;
 import com.skullmangames.darksouls.core.init.ModItems;
-import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
-
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import net.minecraft.resources.ResourceLocation;
 
-public class ArmorConfigProvider implements DataProvider
+public class ArmorConfigProvider extends ConfigDataProvider<ArmorCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	private final DataGenerator generator;
 	
 	public ArmorConfigProvider(DataGenerator generator)
 	{
-		this.generator = generator;
+		super(generator);
 	}
 	
 	@Override
-	public void run(HashCache cache) throws IOException
+	protected Logger getLogger()
 	{
-		Path path = this.generator.getOutputFolder();
-		
-		for (ArmorCap.Builder builder : defaultConfigs())
-		{
-			Path path1 = createPath(path, builder.getLocation());
-			try
-			{
-				DataProvider.save(GSON, cache, builder.toJson(), path1);
-			}
-			catch (IOException ioexception)
-			{
-				LOGGER.error("Couldn't save armor config {}", path1, ioexception);
-			}
-		}
+		return LOGGER;
 	}
 	
-	private static List<ArmorCap.Builder> defaultConfigs()
+	@Override
+	protected String getSubFolder()
+	{
+		return "armor_configs";
+	}
+
+	@Override
+	public String getName()
+	{
+		return "ArmorConfigs";
+	}
+	
+	@Override
+	protected List<ArmorCap.Builder> data()
 	{
 		return ImmutableList.of
 		(
@@ -365,16 +354,5 @@ public class ArmorConfigProvider implements DataProvider
 				.putDefense(ArmorDefenseType.HOLY, 13F)
 				.putDefense(ArmorDefenseType.DARK, 13F)
 		);
-	}
-	
-	private static Path createPath(Path path, ResourceLocation location)
-	{
-		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/armor_configs/" + location.getPath() + ".json");
-	}
-
-	@Override
-	public String getName()
-	{
-		return "ArmorConfigs";
 	}
 }

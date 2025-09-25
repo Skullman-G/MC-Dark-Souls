@@ -11,6 +11,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.common.capability.entity.PlayerCap;
 import com.skullmangames.darksouls.core.init.ModAttributes;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -152,7 +153,7 @@ public class ArmorCap extends AttributeItemCap
 		}
 	}
 	
-	public static class Builder
+	public static class Builder implements JsonBuilder<ArmorCap>
 	{
 		private ArmorItem item;
 		private float weight;
@@ -166,7 +167,8 @@ public class ArmorCap extends AttributeItemCap
 			this.poise = poise;
 		}
 		
-		public ResourceLocation getLocation()
+		@Override
+		public ResourceLocation getId()
 		{
 			return this.item.getRegistryName();
 		}
@@ -177,6 +179,7 @@ public class ArmorCap extends AttributeItemCap
 			return this;
 		}
 		
+		@Override
 		public JsonObject toJson()
 		{
 			JsonObject root = new JsonObject();
@@ -217,6 +220,7 @@ public class ArmorCap extends AttributeItemCap
 			return builder;
 		}
 		
+		@Override
 		public ArmorCap build()
 		{
 			return new ArmorCap(this.item, this.weight, this.poise, this.defense.build());

@@ -1,14 +1,10 @@
 package com.skullmangames.darksouls.core.data_provider;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
@@ -63,45 +59,39 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.MovementDamageType;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
-import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
-
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 
-public class AnimationDataProvider implements DataProvider
+public class AnimationDataProvider extends ConfigDataProvider<AnimBuilder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	private final DataGenerator generator;
 
 	public AnimationDataProvider(DataGenerator generator)
 	{
-		this.generator = generator;
+		super(generator);
+	}
+	
+	@Override
+	protected String getSubFolder()
+	{
+		return "animation_data";
+	}
+	
+	@Override
+	protected Logger getLogger()
+	{
+		return LOGGER;
 	}
 
 	@Override
-	public void run(HashCache cache) throws IOException
+	public String getName()
 	{
-		Path path = this.generator.getOutputFolder();
-		List<AnimBuilder> configs = defaultConfigs();
-
-		for (AnimBuilder builder : configs)
-		{
-			Path path1 = createPath(path, builder.getId());
-			try
-			{
-				DataProvider.save(GSON, cache, builder.toJson(), path1);
-			} catch (IOException ioexception)
-			{
-				LOGGER.error("Couldn't save animation data {}", path1, ioexception);
-			}
-		}
+		return "AnimationData";
 	}
 
-	private static List<AnimBuilder> defaultConfigs()
+	@Override
+	protected List<AnimBuilder> data()
 	{
 		return ImmutableList.of(
 				new StaticAnimation.Builder(Animations.BIPED_IDLE.getId(), 0.1F, true,
@@ -2709,17 +2699,5 @@ public class AnimationDataProvider implements DataProvider
 				new StaticAnimation.Builder(Animations.BELL_GARGOYLE_FLYING_IDLE.getId(), 0.2F, true,
 						DarkSouls.rl("bell_gargoyle/flying_idle"), (models) -> models.ENTITY_BELL_GARGOYLE)
 		);
-	}
-
-	private static Path createPath(Path path, ResourceLocation location)
-	{
-		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME + "/" + location.getNamespace() + "/animation_data/"
-				+ location.getPath() + ".json");
-	}
-
-	@Override
-	public String getName()
-	{
-		return "AnimationData";
 	}
 }

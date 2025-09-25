@@ -1,58 +1,48 @@
 package com.skullmangames.darksouls.core.data_provider;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.collider.ColliderType;
-import com.skullmangames.darksouls.core.util.data.pack_resources.DSDefaultPackResources;
 import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
-public class ColliderProvider implements DataProvider
+public class ColliderProvider extends ConfigDataProvider<JsonBuilder<ColliderType<?>>>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	private final DataGenerator generator;
 	
 	public ColliderProvider(DataGenerator generator)
 	{
-		this.generator = generator;
+		super(generator);
 	}
 	
 	@Override
-	public void run(HashCache cache) throws IOException
+	public String getName()
 	{
-		Path path = this.generator.getOutputFolder();
-		
-		for (JsonBuilder<ColliderType<?>> builder : defaultColliders())
-		{
-			Path path1 = createPath(path, builder.getId());
-			try
-			{
-				DataProvider.save(GSON, cache, builder.toJson(), path1);
-			}
-			catch (IOException ioexception)
-			{
-				LOGGER.error("Couldn't save collider {}", path1, ioexception);
-			}
-		}
+		return "Colliders";
 	}
 	
-	private static List<JsonBuilder<ColliderType<?>>> defaultColliders()
+	@Override
+	protected Logger getLogger()
+	{
+		return LOGGER;
+	}
+	
+	@Override
+	protected String getSubFolder()
+	{
+		return "colliders";
+	}
+	
+	@Override
+	protected List<JsonBuilder<ColliderType<?>>> data()
 	{
 		return ImmutableList.of
 		(
@@ -119,16 +109,5 @@ public class ColliderProvider implements DataProvider
 							Collider.capsuleBuilder(Colliders.BELL_GARGOYLE_HALBERD.getId(), 0.2D, 2.2D, new Vec3(0, 0.05D, 0), -4.5F, 0)
 						)
 		);
-	}
-	
-	private static Path createPath(Path path, ResourceLocation location)
-	{
-		return path.resolve(DSDefaultPackResources.ROOT_DIR_NAME+"/" + location.getNamespace() + "/colliders/" + location.getPath() + ".json");
-	}
-
-	@Override
-	public String getName()
-	{
-		return "Colliders";
 	}
 }
