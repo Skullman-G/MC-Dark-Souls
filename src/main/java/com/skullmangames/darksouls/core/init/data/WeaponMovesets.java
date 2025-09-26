@@ -1,20 +1,19 @@
 package com.skullmangames.darksouls.core.init.data;
 
 import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.AbstractGetter;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
-
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
-public class WeaponMovesets extends AbstractDSDataRegister
+public class WeaponMovesets extends AbstractDSDataRegister<WeaponMoveset.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, WeaponMoveset> movesets = ImmutableMap.of();
@@ -51,26 +50,28 @@ public class WeaponMovesets extends AbstractDSDataRegister
 	public static final Getter THRUSTING_SWORD = new Getter(DarkSouls.rl("thrusting_sword"));
 	
 	public static final Getter GREATAXE = new Getter(DarkSouls.rl("greataxe"));
-
+	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
+	protected void finish(Set<WeaponMoveset.Builder> builders)
 	{
-		ImmutableMap.Builder<ResourceLocation, WeaponMoveset> builder = ImmutableMap.builder();
-		objects.forEach((location, json) ->
+		ImmutableMap.Builder<ResourceLocation, WeaponMoveset> mapBuilder = ImmutableMap.builder();
+		builders.forEach(builder ->
 		{
-			try
-			{
-				WeaponMoveset moveset = WeaponMoveset.Builder.fromJson(location, json.getAsJsonObject()).build();
-				builder.put(location, moveset);
-			}
-			catch (IllegalArgumentException | JsonParseException jsonparseexception)
-			{
-				LOGGER.error("Parsing error loading weapon moveset {}", location, jsonparseexception);
-			}
+			mapBuilder.put(builder.getId(), builder.build());
 		});
-		this.movesets = builder.build();
-		
-		LOGGER.info("Loaded "+this.movesets.size()+" weapon movesets");
+		this.movesets = mapBuilder.build();
+	}
+	
+	@Override
+	protected WeaponMoveset.Builder builderFromJson(ResourceLocation location, JsonObject json)
+	{
+		return WeaponMoveset.Builder.fromJson(location, json);
+	}
+	
+	@Override
+	protected Logger getLogger()
+	{
+		return LOGGER;
 	}
 	
 	public static WeaponMoveset getMoveset(ResourceLocation id)

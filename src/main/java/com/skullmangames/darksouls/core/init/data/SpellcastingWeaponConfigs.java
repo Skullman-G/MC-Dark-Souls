@@ -1,21 +1,17 @@
 package com.skullmangames.darksouls.core.init.data;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.common.capability.item.SpellcastingWeaponCap;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
-public class SpellcastingWeaponConfigs extends AbstractDSDataRegister
+public class SpellcastingWeaponConfigs extends AbstractDSDataRegister<SpellcastingWeaponCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -23,30 +19,26 @@ public class SpellcastingWeaponConfigs extends AbstractDSDataRegister
 	{
 		super("weapon_configs/spellcasting");
 	}
-
+	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
+	protected void finish(Set<SpellcastingWeaponCap.Builder> builders)
 	{
-		Collection<SpellcastingWeaponCap.Builder> configs = new HashSet<>();
-		objects.forEach((location, json) ->
-		{
-			try
-			{
-				SpellcastingWeaponCap.Builder builder = SpellcastingWeaponCap.Builder.fromJson(location, json.getAsJsonObject());
-				configs.add(builder);
-			}
-			catch (IllegalArgumentException | JsonParseException jsonparseexception)
-			{
-				LOGGER.error("Parsing error loading spellcasting weapon config {}", location, jsonparseexception);
-			}
-		});
-		LOGGER.info("Loaded "+configs.size()+" spellcasting weapon configs");
-		
-		
-		for (SpellcastingWeaponCap.Builder builder : configs)
+		for (SpellcastingWeaponCap.Builder builder : builders)
 		{
 			SpellcastingWeaponCap cap = builder.build();
 			ProviderItem.CAPABILITIES.put(cap.getOriginalItem(), cap);
 		}
+	}
+	
+	@Override
+	protected SpellcastingWeaponCap.Builder builderFromJson(ResourceLocation location, JsonObject json)
+	{
+		return SpellcastingWeaponCap.Builder.fromJson(location, json);
+	}
+	
+	@Override
+	protected Logger getLogger()
+	{
+		return LOGGER;
 	}
 }

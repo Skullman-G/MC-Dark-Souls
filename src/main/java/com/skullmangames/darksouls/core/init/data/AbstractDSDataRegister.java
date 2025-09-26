@@ -1,29 +1,31 @@
 package com.skullmangames.darksouls.core.init.data;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.logging.LogUtils;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
-public abstract class AbstractDSDataRegister
+public abstract class AbstractDSDataRegister<B extends JsonBuilder<?>>
 {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final String PATH_SUFFIX = ".json";
 	private static final int PATH_SUFFIX_LENGTH = PATH_SUFFIX.length();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
@@ -34,121 +36,84 @@ public abstract class AbstractDSDataRegister
 		this.directory = directory;
 	}
 	
-	public void init(ResourceManager resourceManager)
+	protected abstract Logger getLogger();
+	
+	public void load(ResourceManager resourceManager)
 	{
-		this.apply(this.prepare(resourceManager), resourceManager);
+		this.finish(this.buildersFromJson(this.loadJsonFiles(resourceManager)));
 	}
 	
-	protected abstract void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager);
-
-	protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager)
+	private Set<B> buildersFromJson(Map<ResourceLocation, JsonElement> jsonFiles)
 	{
-		Map<ResourceLocation, JsonElement> map = new HashMap<>();
+		Set<B> builders = new HashSet<>();
+		jsonFiles.forEach((location, json) ->
+		{
+			try
+			{
+				builders.add(this.builderFromJson(location, json.getAsJsonObject()));
+			}
+			catch (IllegalArgumentException | JsonParseException jsonparseexception)
+			{
+				this.getLogger().error("Parsing error loading config {}", location, jsonparseexception);
+			}
+		});
+		
+		this.getLogger().info("Loaded "+builders.size()+" configs");
+		
+		return builders;
+	}
+	
+	protected abstract void finish(Set<B> builders);
+	
+	protected abstract B builderFromJson(ResourceLocation location, JsonObject json);
+
+	private Map<ResourceLocation, JsonElement> loadJsonFiles(ResourceManager resourceManager)
+	{
+		Map<ResourceLocation, JsonElement> jsonFiles = new HashMap<>();
 		int i = this.directory.length() + 1;
 
-		for (ResourceLocation resourcelocation : resourceManager.listResources(this.directory, (p_10774_) ->
+		for (ResourceLocation fileLocation : resourceManager.listResources(this.directory,
+				(path) -> path.endsWith(PATH_SUFFIX)))
 		{
-			return p_10774_.endsWith(PATH_SUFFIX);
-		}))
-		{
-			String s = resourcelocation.getPath();
-			ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(),
+			String s = fileLocation.getPath();
+			ResourceLocation fileId = new ResourceLocation(fileLocation.getNamespace(),
 					s.substring(i, s.length() - PATH_SUFFIX_LENGTH));
 
 			try
 			{
-				Resource resource = resourceManager.getResource(resourcelocation);
-
-				try
+				JsonElement jsonelement = this.parseJsonFile(resourceManager, fileLocation);
+				if (jsonelement != null)
 				{
-					InputStream inputstream = resource.getInputStream();
-
-					try
+					JsonElement jsonelement1 = jsonFiles.put(fileId, jsonelement);
+					if (jsonelement1 != null)
 					{
-						Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
-
-						try
-						{
-							JsonElement jsonelement = GsonHelper.fromJson(GSON, reader, JsonElement.class);
-							if (jsonelement != null)
-							{
-								JsonElement jsonelement1 = map.put(resourcelocation1, jsonelement);
-								if (jsonelement1 != null)
-								{
-									throw new IllegalStateException(
-											"Duplicate data file ignored with ID " + resourcelocation1);
-								}
-							} else
-							{
-								LOGGER.error("Couldn't load data file {} from {} as it's null or empty",
-										resourcelocation1, resourcelocation);
-							}
-						} catch (Throwable throwable3)
-						{
-							try
-							{
-								reader.close();
-							} catch (Throwable throwable2)
-							{
-								throwable3.addSuppressed(throwable2);
-							}
-
-							throw throwable3;
-						}
-
-						reader.close();
-					} catch (Throwable throwable4)
-					{
-						if (inputstream != null)
-						{
-							try
-							{
-								inputstream.close();
-							} catch (Throwable throwable1)
-							{
-								throwable4.addSuppressed(throwable1);
-							}
-						}
-
-						throw throwable4;
+						throw new IllegalStateException(
+								"Duplicate data file ignored with ID " + fileId);
 					}
-
-					if (inputstream != null)
-					{
-						inputstream.close();
-					}
-				} catch (Throwable throwable5)
-				{
-					if (resource != null)
-					{
-						try
-						{
-							resource.close();
-						} catch (Throwable throwable)
-						{
-							throwable5.addSuppressed(throwable);
-						}
-					}
-
-					throw throwable5;
 				}
-
-				if (resource != null)
+				else
 				{
-					resource.close();
+					this.getLogger().error("Couldn't load data file {} from {} as it's null or empty",
+							fileId, fileLocation);
 				}
-			} catch (IllegalArgumentException | IOException | JsonParseException jsonparseexception)
+			}
+			catch (Exception jsonparseexception)
 			{
-				LOGGER.error("Couldn't parse data file {} from {}", resourcelocation1, resourcelocation,
+				this.getLogger().error("Couldn't parse data file {} from {}", fileId, fileLocation,
 						jsonparseexception);
 			}
 		}
 
-		return map;
+		return jsonFiles;
 	}
-
-	protected ResourceLocation getPreparedPath(ResourceLocation rl)
+	
+	private JsonElement parseJsonFile(ResourceManager resourceManager, ResourceLocation fileLocation) throws Exception
 	{
-		return new ResourceLocation(rl.getNamespace(), this.directory + "/" + rl.getPath() + PATH_SUFFIX);
+		try (Resource resource = resourceManager.getResource(fileLocation);
+				InputStream inputstream = resource.getInputStream();
+				Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8)))
+		{
+			return GsonHelper.fromJson(GSON, reader, JsonElement.class);
+		}
 	}
 }

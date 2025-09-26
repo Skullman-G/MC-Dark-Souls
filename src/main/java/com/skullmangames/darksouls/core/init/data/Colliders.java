@@ -1,22 +1,22 @@
 package com.skullmangames.darksouls.core.init.data;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.AbstractGetter;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.collider.ColliderType;
+import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
-public class Colliders extends AbstractDSDataRegister
+public class Colliders extends AbstractDSDataRegister<JsonBuilder<ColliderType<?>>>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, ColliderType<?>> colliderTypes = ImmutableMap.of();
@@ -60,24 +60,26 @@ public class Colliders extends AbstractDSDataRegister
 	public static final Getter BELL_GARGOYLE_HALBERD = new Getter(DarkSouls.rl("bell_gargoyle_halberd"));
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
+	protected void finish(Set<JsonBuilder<ColliderType<?>>> builders)
 	{
-		ImmutableMap.Builder<ResourceLocation, ColliderType<?>> builder = ImmutableMap.builder();
-		objects.forEach((location, json) ->
+		ImmutableMap.Builder<ResourceLocation, ColliderType<?>> mapBuilder = ImmutableMap.builder();
+		builders.forEach(builder ->
 		{
-			try
-			{
-				ColliderType<?> colliderType = Collider.CoreBuilder.fromJson(location, json.getAsJsonObject()).build();
-				builder.put(location, colliderType);
-			}
-			catch (IllegalArgumentException | JsonParseException jsonparseexception)
-			{
-				LOGGER.error("Parsing error loading collider {}", location, jsonparseexception);
-			}
+			mapBuilder.put(builder.getId(), builder.build());
 		});
-		this.colliderTypes = builder.build();
-		
-		LOGGER.info("Loaded "+this.colliderTypes.size()+" colliders");
+		this.colliderTypes = mapBuilder.build();
+	}
+	
+	@Override
+	protected JsonBuilder<ColliderType<?>> builderFromJson(ResourceLocation location, JsonObject json)
+	{
+		return Collider.CoreBuilder.fromJson(location, json);
+	}
+	
+	@Override
+	protected Logger getLogger()
+	{
+		return LOGGER;
 	}
 	
 	public static ColliderType<?> getCollider(ResourceLocation id)
