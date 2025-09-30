@@ -7,14 +7,17 @@ import java.util.Map;
 
 public class XmlNode
 {
-	private String name;
-	private Map<String, String> attributes;
+	private final String name;
+	private final Map<String, String> attributes;
 	private String data;
-	private Map<String, List<XmlNode>> childNodes;
+	private final List<XmlNode> childNodes;
 
 	public XmlNode(String name)
 	{
 		this.name = name;
+		this.data = "";
+		this.attributes = new HashMap<>();
+		this.childNodes = new ArrayList<>();
 	}
 
 	public String getName()
@@ -27,60 +30,113 @@ public class XmlNode
 		return this.data;
 	}
 	
+	public void setData(String value)
+	{
+		this.data = value;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return this.getName();
+		return this.toString(0);
 	}
 	
-	public boolean hasAttributes()
+	private String toString(int indent)
 	{
-		return this.attributes != null;
+	    StringBuilder sb = new StringBuilder();
+	    String ind = "  ".repeat(indent);
+
+	    sb.append(ind).append("<").append(name);
+
+	    attributes.forEach((key, value) ->
+	    {
+	        sb.append(" ").append(key).append("=\"").append(value).append("\"");
+	    });
+
+	    if ((data == null || data.isEmpty()) && childNodes.isEmpty())
+	    {
+	        sb.append("/>");
+	        return sb.toString();
+	    }
+
+	    sb.append(">");
+	    if (data != null && !data.isEmpty())
+	    {
+	        sb.append(data);
+	    }
+
+	    if (!childNodes.isEmpty())
+	    {
+	        sb.append("\n");
+	        for (XmlNode child : childNodes)
+	        {
+	            sb.append(child.toString(indent + 1)).append("\n");
+	        }
+	        sb.append(ind);
+	    }
+
+	    sb.append("</").append(name).append(">");
+	    return sb.toString();
 	}
 
 	public String getAttributeValue(String attribute)
 	{
-		if (this.hasAttributes())
-		{
-			return this.attributes.get(attribute);
-		}
-		else return null;
+		return this.attributes.getOrDefault(attribute, "");
 	}
 	
 	public boolean hasChildNodes()
 	{
-		return this.childNodes != null;
-	}
-
-	public List<XmlNode> getChildren(String childname)
-	{
-		if (this.hasChildNodes())
-		{
-			List<XmlNode> children = childNodes.get(childname);
-			if (children != null) return children;
-		}
-		
-		return new ArrayList<XmlNode>();
+		return !this.childNodes.isEmpty();
 	}
 	
-	public XmlNode getChild(String childName)
+	private void collectChildren(XmlNode node, String childName, List<XmlNode> result, boolean direct)
 	{
-		List<XmlNode> children = this.getChildren(childName);
-		if (!children.isEmpty()) return children.get(0);
+	    for (XmlNode child : node.childNodes)
+	    {
+	        if (child.getName().equals(childName))
+	        {
+	            result.add(child);
+	        }
+	        if (!direct) this.collectChildren(child, childName, result, direct);
+	    }
+	}
+	
+	public List<XmlNode> getChildren(String childname)
+	{
+		return this.getChildren(childname, true);
+	}
+
+	public List<XmlNode> getChildren(String childname, boolean direct)
+	{
+		List<XmlNode> result = new ArrayList<>();
+		this.collectChildren(this, childname, result, direct);
+		return result;
+	}
+	
+	public XmlNode getDirectChild(String childName) 
+	{
+		for (XmlNode child : this.childNodes)
+		{
+			if (child.getName().equals(childName))
+			{
+				return child;
+			}
+		}
 		
 		return null;
 	}
 	
 	public XmlNode getChildWithAttributeValue(String childname, String attribute, String attributevalue)
 	{
-		List<XmlNode> children = this.getChildren(childname);
-		if (!children.isEmpty())
+		return this.getChildWithAttributeValue(childname, attribute, attributevalue, true);
+	}
+	
+	public XmlNode getChildWithAttributeValue(String childname, String attribute, String attributevalue, boolean direct)
+	{
+		for (XmlNode child : this.getChildren(childname, direct))
 		{
-			for (XmlNode child : children)
-			{
-				String childattributevalue = child.getAttributeValue(attribute);
-				if (attributevalue.equals(childattributevalue)) return child;
-			}
+			String childattributevalue = child.getAttributeValue(attribute);
+			if (attributevalue.equals(childattributevalue)) return child;
 		}
 		
 		return null;
@@ -88,33 +144,11 @@ public class XmlNode
 	
 	protected void addAttribute(String attribute, String value)
 	{
-		if (this.attributes == null)
-		{
-			this.attributes = new HashMap<String, String>();
-		}
-		
 		this.attributes.put(attribute, value);
 	}
 	
 	protected void addChild(XmlNode child)
 	{
-		if (this.childNodes == null)
-		{
-			this.childNodes = new HashMap<String, List<XmlNode>>();
-		}
-		
-		List<XmlNode> list = this.childNodes.get(child.name);
-		if (list == null)
-		{
-			list = new ArrayList<XmlNode>();
-			this.childNodes.put(child.name, list);
-		}
-		
-		list.add(child);
-	}
-
-	protected void setData(String content)
-	{
-		this.data = content;
+		this.childNodes.add(child);
 	}
 }

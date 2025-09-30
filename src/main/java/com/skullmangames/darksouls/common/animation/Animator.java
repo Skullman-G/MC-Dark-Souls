@@ -7,6 +7,7 @@ import com.skullmangames.darksouls.common.animation.types.DynamicAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 
 import net.minecraft.resources.ResourceLocation;

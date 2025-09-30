@@ -13,14 +13,15 @@ import com.skullmangames.darksouls.core.util.AbstractGetter;
 import com.skullmangames.darksouls.core.util.WeaponMoveset;
 import net.minecraft.resources.ResourceLocation;
 
-public class WeaponMovesets extends AbstractDSDataRegister<WeaponMoveset.Builder>
+public class WeaponMovesets extends DSJsonDataRegister<WeaponMoveset.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, WeaponMoveset> movesets = ImmutableMap.of();
 	
-	public WeaponMovesets()
+	@Override
+	public String getDirectory()
 	{
-		super("weapon_movesets");
+		return "weapon_movesets";
 	}
 	
 	public static final Getter FIST = new Getter(DarkSouls.rl("fist"));
@@ -69,7 +70,7 @@ public class WeaponMovesets extends AbstractDSDataRegister<WeaponMoveset.Builder
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

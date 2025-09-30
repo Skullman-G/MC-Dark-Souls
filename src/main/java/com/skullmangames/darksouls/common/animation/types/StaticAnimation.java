@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimBuilder;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -22,10 +22,9 @@ import com.skullmangames.darksouls.common.animation.events.AnimEvent;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.util.parser.xml.collada.AnimationDataExtractor;
-
+import com.skullmangames.darksouls.core.init.data.AnimFrameDataManager;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -34,29 +33,27 @@ public class StaticAnimation extends DynamicAnimation
 	protected final ResourceLocation animationId;
 	protected final Map<Property<?>, Object> properties;
 	protected final Function<Models<?>, Model> model;
-	protected final ResourceLocation path;
 
 	public StaticAnimation()
 	{
-		super(0.0F, false);
+		super(0.0F, false, new AnimFrameData());
 		this.animationId = new ResourceLocation("null", "null");
-		this.path = null;
 		this.model = null;
 		this.properties = ImmutableMap.of();
 	}
 
-	public StaticAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model,
+	public StaticAnimation(ResourceLocation id, boolean isRepeat, AnimFrameData frameData, Function<Models<?>, Model> model,
 			ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model, properties);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, frameData, model, properties);
 	}
 
-	public StaticAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path, Function<Models<?>, Model> model,
+	public StaticAnimation(ResourceLocation id, float convertTime,
+			boolean isRepeat, AnimFrameData frameData, Function<Models<?>, Model> model,
 			ImmutableMap<Property<?>, Object> properties)
 	{
-		super(convertTime, isRepeat);
+		super(convertTime, isRepeat, frameData);
 		this.animationId = id;
-		this.path = path;
 		this.model = model;
 		this.properties = properties;
 	}
@@ -71,29 +68,12 @@ public class StaticAnimation extends DynamicAnimation
 	{
 		return this.getProperty(StaticAnimationProperty.LAYER_PART).orElse(AnimationLayer.LayerPart.FULL);
 	}
-
-	public ResourceLocation getPath()
-	{
-		return this.path;
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <V> Optional<V> getProperty(Property<V> propertyType)
 	{
 		return (Optional<V>) Optional.ofNullable(this.properties.get(propertyType));
-	}
-
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
-	{
-		load(resourceManager, models, this);
-	}
-
-	public static void load(ResourceManager resourceManager, Models<?> models, StaticAnimation animation)
-	{
-		ResourceLocation extenderPath = new ResourceLocation(animation.path.getNamespace(),
-				"animations/" + animation.path.getPath() + ".dae");
-		AnimationDataExtractor.extractAnimation(resourceManager, extenderPath, animation, animation.model.apply(models).getArmature());
 	}
 	
 	@Override
@@ -290,9 +270,15 @@ public class StaticAnimation extends DynamicAnimation
 			return AnimationType.STATIC;
 		}
 		
+		public AnimFrameData getFrameData()
+		{
+			return AnimFrameDataManager.getByID(this.location);
+		}
+		
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new StaticAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build()));
+			register.put(this.getId(), new StaticAnimation(this.id, this.convertTime, this.repeat,
+					this.getFrameData(), this.model, this.properties.build()));
 		}
 	}
 }

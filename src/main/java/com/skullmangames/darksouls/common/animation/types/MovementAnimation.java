@@ -5,6 +5,7 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -16,16 +17,16 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MovementAnimation extends StaticAnimation
 {
-	public MovementAnimation(ResourceLocation id, float convertTime, boolean isRepeat, ResourceLocation path,
+	public MovementAnimation(ResourceLocation id, float convertTime, boolean isRepeat, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, isRepeat, path, model, properties);
+		super(id, convertTime, isRepeat, frameData, model, properties);
 	}
 
-	public MovementAnimation(ResourceLocation id, boolean isRepeat, ResourceLocation path,
+	public MovementAnimation(ResourceLocation id, boolean isRepeat, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, path, model, properties);
+		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, isRepeat, frameData, model, properties);
 	}
 	
 	@Override
@@ -77,7 +78,8 @@ public class MovementAnimation extends StaticAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new MovementAnimation(this.id, this.convertTime, this.repeat, this.location, this.model, this.properties.build()));
+			register.put(this.getId(), new MovementAnimation(this.id, this.convertTime, this.repeat, this.getFrameData(),
+					this.model, this.properties.build()));
 		}
 	}
 }

@@ -10,17 +10,18 @@ import com.skullmangames.darksouls.common.capability.item.ArmorCap;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import net.minecraft.resources.ResourceLocation;
 
-public class ArmorConfigs extends AbstractDSDataRegister<ArmorCap.Builder>
+public class ArmorConfigs extends DSJsonDataRegister<ArmorCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public ArmorConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("armor_configs");
+		return "armor_configs";
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

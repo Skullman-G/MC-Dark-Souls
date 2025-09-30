@@ -11,13 +11,14 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class ThrowableConfigs extends AbstractDSDataRegister<ThrowableCap.Builder>
+public class ThrowableConfigs extends DSJsonDataRegister<ThrowableCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public ThrowableConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("throwables");
+		return "throwables";
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class ThrowableConfigs extends AbstractDSDataRegister<ThrowableCap.Builde
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

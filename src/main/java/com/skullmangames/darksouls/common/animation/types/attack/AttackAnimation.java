@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
@@ -64,28 +65,32 @@ public class AttackAnimation extends ActionAnimation
 	private final AttackType attackType;
 	public final Phase[] phases;
 	
-	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, float begin, float contactStart, float contactEnd, float end, String jointName, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
+	public AttackAnimation(ResourceLocation id, AttackType attackType, float convertTime,
+			float begin, float contactStart, float contactEnd, float end,
+			String jointName, AnimFrameData frameData,
+			Function<Models<?>, Model> model,
+			ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
-		this(id, attackType, convertTime, path, model, properties,
-				new Phase(begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND, jointName, null, attackProperties));
+		this(id, attackType, convertTime, frameData, model, properties,
+				new Phase(begin, contactStart, contactEnd, end, InteractionHand.MAIN_HAND,
+						jointName, null, attackProperties));
 	}
 
-	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, float begin, float contactStart, float contactEnd, float end,
-			InteractionHand hand, String jointName, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
+	public AttackAnimation(ResourceLocation id, AttackType attackType, float convertTime,
+			float begin, float contactStart, float contactEnd, float end,
+			InteractionHand hand, String jointName, AnimFrameData frameData,
+			Function<Models<?>, Model> model,
+			ImmutableMap<Property<?>, Object> properties, ImmutableMap<AttackProperty<?>, Object> attackProperties)
 	{
-		this(id, attackType, convertTime, path, model, properties,
+		this(id, attackType, convertTime, frameData, model, properties,
 				new Phase(begin, contactStart, contactEnd, end, hand, jointName, null, attackProperties));
 	}
 
 	public AttackAnimation(ResourceLocation id, AttackType attackType,
-			float convertTime, ResourceLocation path,
+			float convertTime, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, Phase... phases)
 	{
-		super(id, convertTime, path, model, properties);
+		super(id, convertTime, frameData, model, properties);
 		this.attackType = attackType;
 		this.phases = phases;
 	}
@@ -500,7 +505,7 @@ public class AttackAnimation extends ActionAnimation
 			}
 			
 			register.put(this.getId(), new AttackAnimation(this.id, this.attackType, this.convertTime,
-					this.location, this.model, this.properties.build(), builtPhases));
+					this.getFrameData(), this.model, this.properties.build(), builtPhases));
 		}
 	}
 	

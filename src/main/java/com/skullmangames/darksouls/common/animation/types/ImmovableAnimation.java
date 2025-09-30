@@ -12,15 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
 public class ImmovableAnimation extends StaticAnimation
 {
-	public ImmovableAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+	public ImmovableAnimation(ResourceLocation id, float convertTime, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, false, path, model, properties);
+		super(id, convertTime, false, frameData, model, properties);
 	}
 
 	@Override

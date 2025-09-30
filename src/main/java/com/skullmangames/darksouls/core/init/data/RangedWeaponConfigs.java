@@ -11,13 +11,14 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class RangedWeaponConfigs extends AbstractDSDataRegister<RangedWeaponCap.Builder>
+public class RangedWeaponConfigs extends DSJsonDataRegister<RangedWeaponCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public RangedWeaponConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("weapon_configs/ranged");
+		return "weapon_configs/ranged";
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class RangedWeaponConfigs extends AbstractDSDataRegister<RangedWeaponCap.
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

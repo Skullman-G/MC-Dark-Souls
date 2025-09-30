@@ -16,14 +16,15 @@ import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class Colliders extends AbstractDSDataRegister<JsonBuilder<ColliderType<?>>>
+public class Colliders extends DSJsonDataRegister<JsonBuilder<ColliderType<?>>>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, ColliderType<?>> colliderTypes = ImmutableMap.of();
 	
-	public Colliders()
+	@Override
+	public String getDirectory()
 	{
-		super("colliders");
+		return "colliders";
 	}
 	
 	public static final Getter FIST = new Getter(DarkSouls.rl("fist"));
@@ -77,7 +78,7 @@ public class Colliders extends AbstractDSDataRegister<JsonBuilder<ColliderType<?
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

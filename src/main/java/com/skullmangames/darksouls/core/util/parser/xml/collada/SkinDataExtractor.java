@@ -1,9 +1,9 @@
 package com.skullmangames.darksouls.core.util.parser.xml.collada;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.core.util.math.vector.Vector3fHelper;
 import com.skullmangames.darksouls.core.util.parser.xml.XmlNode;
@@ -20,7 +20,7 @@ public class SkinDataExtractor
 
 	public Map<String, Integer> getRawJoints()
 	{
-		Map<String, Integer> map = Maps.<String, Integer>newHashMap();
+		Map<String, Integer> map = new HashMap<>();
 		String[] weightData = getJointLists(skin);
 		for (int i = 0; i < weightData.length; i++) map.put(weightData[i], i);
 		return map;
@@ -79,27 +79,27 @@ public class SkinDataExtractor
 	}
 
 	private static String[] getWeights(XmlNode node) {
-		String weightID = node.getChild("vertex_weights").getChildWithAttributeValue("input", "semantic", "WEIGHT").getAttributeValue("source").substring(1);
-		XmlNode weightData = node.getChildWithAttributeValue("source", "id", weightID).getChild("float_array");
+		String weightID = node.getDirectChild("vertex_weights").getChildWithAttributeValue("input", "semantic", "WEIGHT").getAttributeValue("source").substring(1);
+		XmlNode weightData = node.getChildWithAttributeValue("source", "id", weightID).getDirectChild("float_array");
 
 		return weightData.getData().split(" ");
 	}
 
 	private static String[] getEffectiveJointNumber(XmlNode node) {
-		XmlNode vertexNumberData = node.getChild("vertex_weights").getChild("vcount");
+		XmlNode vertexNumberData = node.getDirectChild("vertex_weights").getDirectChild("vcount");
 
 		return vertexNumberData.getData().split(" ");
 	}
 
 	private static String[] getIndices(XmlNode node) {
-		XmlNode vertexNumberData = node.getChild("vertex_weights").getChild("v");
+		XmlNode vertexNumberData = node.getDirectChild("vertex_weights").getDirectChild("v");
 
 		return vertexNumberData.getData().split(" ");
 	}
 
 	private static String[] getJointLists(XmlNode node)
 	{
-		XmlNode jointData = node.getChildWithAttributeValue("source", "id", "Armature_Cube-skin-joints").getChild("Name_array");
+		XmlNode jointData = node.getChildWithAttributeValue("source", "id", "Armature_Cube-skin-joints").getDirectChild("Name_array");
 		return jointData.getData().split(" ");
 	}
 }

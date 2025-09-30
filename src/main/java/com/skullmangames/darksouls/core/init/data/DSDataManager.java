@@ -16,7 +16,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class DSDataManager
 {
-	private final List<AbstractDSDataRegister<?>> registers = new LinkedList<>();
+	private final List<DSDataRegister<?>> registers = new LinkedList<>();
 	
 	public void loadDSData()
 	{
@@ -32,7 +32,7 @@ public class DSDataManager
 		packRepository.close();
 	}
 	
-	public <T extends AbstractDSDataRegister<?>> T addRegister(T config)
+	public <T extends DSDataRegister<?>> T addRegister(T config)
 	{
 		this.registers.add(config);
 		return config;

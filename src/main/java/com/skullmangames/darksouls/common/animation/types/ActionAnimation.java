@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -42,19 +43,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class ActionAnimation extends ImmovableAnimation
 {
-	protected float delayTime;
-
-	public ActionAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+	public ActionAnimation(ResourceLocation id, float convertTime, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		this(id, convertTime, Float.MAX_VALUE, path, model, properties);
-	}
-
-	public ActionAnimation(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
-	{
-		super(id, convertTime, path, model, properties);
-		this.delayTime = delayTime;
+		super(id, convertTime, frameData, model, properties);
 	}
 
 	public <V> ActionAnimation addProperty(Property<V> propertyType, V value)
@@ -76,7 +68,7 @@ public class ActionAnimation extends ImmovableAnimation
 
 		MovementAnimationSet movementAnimationSetter = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse((self, entityCap$2, transformSheet) ->
 				{
-					transformSheet.readFrom(self.jointTransforms.get("Root"));
+					transformSheet.readFrom(self.getJointTransform("Root"));
 				});
 
 		entityCap.getAnimator().getPlayerFor(this).setMovementAnimation(this, entityCap, movementAnimationSetter);
@@ -151,19 +143,14 @@ public class ActionAnimation extends ImmovableAnimation
 			return EntityState.PUNISHABLE;
 		}
 		
-		if (time <= this.delayTime)
-		{
-			return EntityState.PRE_CONTACT;
-		}
-		else
-		{
-			return EntityState.FREE;
-		}
+		return EntityState.PRE_CONTACT;
 	}
-
+	
 	@Override
-	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
+	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
+		Pose pose = super.getPoseByTime(entityCap, time, partialTicks);
+		
 		JointTransform rootTransform = pose.getTransformByName("Root");
 		Vector3f rootPosition = rootTransform.translation();
 		ModMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
@@ -178,19 +165,18 @@ public class ActionAnimation extends ImmovableAnimation
 		worldPosition.setZ(0.0F);
 		worldPosition = ModMatrix4f.transform3v(toOrigin, worldPosition);
 		rootPosition.set(worldPosition.x(), worldPosition.y(), worldPosition.z());
+		
+		return pose;
 	}
 
 	@Override
-	public void setLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap, LinkAnimation dest)
+	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap)
 	{
 		float totalTime = this.convertTime;
 		startAt = ModMath.clamp(startAt, 0.05F, this.getTotalTime());
 		
-		dest.startsAt = startAt;
-		
-		dest.getTransfroms().clear();
-		dest.setTotalTime(totalTime);
-		dest.setNextAnimation(this);
+		AnimFrameData.Builder frameDataBuilder = AnimFrameData.builder(null)
+				.withTotalTime(totalTime);
 		
 		Pose pose = this.getPoseByTime(entityCap, startAt, 1.0F);
 		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
@@ -208,16 +194,18 @@ public class ActionAnimation extends ImmovableAnimation
 				keyframes[0] = new Keyframe(0, lastTransforms.get(jointName));
 				keyframes[1] = new Keyframe(totalTime, nextTransforms.get(jointName));
 				TransformSheet sheet = new TransformSheet(keyframes);
-				dest.addSheet(jointName, sheet);
+				frameDataBuilder.addSheet(jointName, sheet);
 			}
 		}
+		
+		return new LinkAnimation(startAt, this, frameDataBuilder.build());
 	}
 
 	protected Vector3f getCoordVector(LivingCap<?> entityCap, DynamicAnimation animation)
 	{
 		MovementAnimationSet coordFunction = this.getProperty(ActionAnimationProperty.MOVEMENT_ANIMATION_SETTER).orElse(null);
 		TransformSheet rootTransforms = (coordFunction == null || animation instanceof LinkAnimation)
-				? animation.jointTransforms.get("Root")
+				? animation.getJointTransform("Root")
 				: entityCap.getAnimator().getPlayerFor(this).getMovementAnimation();
 
 		if (rootTransforms != null)
@@ -258,31 +246,20 @@ public class ActionAnimation extends ImmovableAnimation
 	
 	public static class Builder extends StaticAnimation.Builder
 	{
-		protected final float delayTime;
-		
 		public Builder(ResourceLocation id, float convertTime, ResourceLocation path, Function<Models<?>, Model> model)
 		{
-			this(id, convertTime, Float.MAX_VALUE, path, model);
-		}
-
-		public Builder(ResourceLocation id, float convertTime, float delayTime, ResourceLocation path, Function<Models<?>, Model> model)
-		{
 			super(id, convertTime, false, path, model);
-			this.delayTime = delayTime;
 		}
 		
 		public Builder(ResourceLocation location, JsonObject json)
 		{
 			super(location, json);
-			this.delayTime = json.get("delay_time").getAsFloat();
 		}
 		
 		@Override
 		public JsonObject toJson()
 		{
-			JsonObject json = super.toJson();
-			json.addProperty("delay_time", this.delayTime);
-			return json;
+			return super.toJson();
 		}
 
 		@Override
@@ -294,7 +271,8 @@ public class ActionAnimation extends ImmovableAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new ActionAnimation(this.id, this.convertTime, this.delayTime, this.location, this.model, this.properties.build()));
+			register.put(this.getId(), new ActionAnimation(this.id, this.convertTime, this.getFrameData(),
+					this.model, this.properties.build()));
 		}
 	}
 }

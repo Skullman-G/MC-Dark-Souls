@@ -97,40 +97,40 @@ public class GeometryDataExtractor
 	
 	private String getVertexNumber(XmlNode node)
 	{
-		String positionsId = node.getChild("vertices").getChild("input").getAttributeValue("source").substring(1);
-		XmlNode vertexData = node.getChildWithAttributeValue("source", "id", positionsId).getChild("technique_common").getChild("accessor");
+		String positionsId = node.getDirectChild("vertices").getDirectChild("input").getAttributeValue("source").substring(1);
+		XmlNode vertexData = node.getChildWithAttributeValue("source", "id", positionsId).getDirectChild("technique_common").getDirectChild("accessor");
 		
 		return vertexData.getAttributeValue("count");
 	}
 	
 	private String[] getPositions(XmlNode node)
 	{
-		String positionsId = node.getChild("vertices").getChild("input").getAttributeValue("source").substring(1);
-		XmlNode positionsData = node.getChildWithAttributeValue("source", "id", positionsId).getChild("float_array");
+		String positionsId = node.getDirectChild("vertices").getDirectChild("input").getAttributeValue("source").substring(1);
+		XmlNode positionsData = node.getChildWithAttributeValue("source", "id", positionsId).getDirectChild("float_array");
 		
 		return positionsData.getData().split(" ");
 	}
 	
 	private String[] getNormals(XmlNode node)
 	{
-		String noramlId = node.getChild("triangles").getChildWithAttributeValue("input", "semantic", "NORMAL")
+		String noramlId = node.getDirectChild("triangles").getChildWithAttributeValue("input", "semantic", "NORMAL")
 				.getAttributeValue("source").substring(1);
-		XmlNode noramlData = node.getChildWithAttributeValue("source", "id", noramlId).getChild("float_array");
+		XmlNode noramlData = node.getChildWithAttributeValue("source", "id", noramlId).getDirectChild("float_array");
 		
 		return noramlData.getData().split(" ");
 	}
 	
 	private String[] getTextureCoords(XmlNode node)
 	{
-		String textureCoordId = node.getChild("triangles").getChildWithAttributeValue("input", "semantic", "TEXCOORD")
+		String textureCoordId = node.getDirectChild("triangles").getChildWithAttributeValue("input", "semantic", "TEXCOORD")
 				.getAttributeValue("source").substring(1);
-		XmlNode textureCoordData = node.getChildWithAttributeValue("source", "id", textureCoordId).getChild("float_array");
+		XmlNode textureCoordData = node.getChildWithAttributeValue("source", "id", textureCoordId).getDirectChild("float_array");
 		
 		return textureCoordData.getData().split(" ");
 	}
 	
 	private String[] getPolyList(XmlNode node)
 	{
-		return node.getChild("triangles").getChild("p").getData().split(" ");
+		return node.getDirectChild("triangles").getDirectChild("p").getData().split(" ");
 	}
 }

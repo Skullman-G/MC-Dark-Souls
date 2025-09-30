@@ -113,7 +113,7 @@ public interface JsonElementConverter<T>
 		{
 			return (self, entityCap, transformSheet) ->
 			{
-				transformSheet.readFrom(self.getTransfroms().get("Root"));
+				transformSheet.readFrom(self.getJointTransform("Root"));
 			};
 		}
 	};

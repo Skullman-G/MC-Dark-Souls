@@ -20,7 +20,6 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 public class AdaptableAnimation extends StaticAnimation
 {
@@ -49,15 +48,6 @@ public class AdaptableAnimation extends StaticAnimation
 	public Set<LivingMotion> getAvailableMotions()
 	{
 		return this.animations.keySet();
-	}
-	
-	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
-	{
-		for (StaticAnimation anim : this.animations.values())
-		{
-			anim.loadAnimation(resourceManager, models);
-		}
 	}
 	
 	public static class Builder extends AnimBuilder

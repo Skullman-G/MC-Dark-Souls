@@ -10,13 +10,14 @@ import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.core.init.ProviderItem;
 import net.minecraft.resources.ResourceLocation;
 
-public class MeleeWeaponConfigs extends AbstractDSDataRegister<MeleeWeaponCap.Builder>
+public class MeleeWeaponConfigs extends DSJsonDataRegister<MeleeWeaponCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public MeleeWeaponConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("weapon_configs/melee");
+		return "weapon_configs/melee";
 	}
 	
 	@Override
@@ -36,7 +37,7 @@ public class MeleeWeaponConfigs extends AbstractDSDataRegister<MeleeWeaponCap.Bu
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

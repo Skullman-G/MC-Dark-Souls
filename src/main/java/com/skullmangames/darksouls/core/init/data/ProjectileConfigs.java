@@ -11,13 +11,14 @@ import com.skullmangames.darksouls.common.capability.projectile.ProjectileCapabi
 import com.skullmangames.darksouls.core.init.ProviderProjectile;
 import net.minecraft.resources.ResourceLocation;
 
-public class ProjectileConfigs extends AbstractDSDataRegister<ProjectileCapability.Builder>
+public class ProjectileConfigs extends DSJsonDataRegister<ProjectileCapability.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public ProjectileConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("projectiles");
+		return "projectile";
 	}
 	
 	@Override
@@ -36,7 +37,7 @@ public class ProjectileConfigs extends AbstractDSDataRegister<ProjectileCapabili
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

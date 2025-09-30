@@ -1,14 +1,9 @@
 package com.skullmangames.darksouls.core.util.json;
 
 import com.google.gson.JsonObject;
+import com.skullmangames.darksouls.core.util.ResourceBuilder;
 
-import net.minecraft.resources.ResourceLocation;
-
-public interface JsonBuilder<T>
+public interface JsonBuilder<T> extends ResourceBuilder<T>
 {
-	public ResourceLocation getId();
-	
 	public JsonObject toJson();
-	
-	public T build();
 }

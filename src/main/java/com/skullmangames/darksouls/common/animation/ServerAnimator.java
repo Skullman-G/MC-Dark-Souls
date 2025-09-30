@@ -16,13 +16,11 @@ public class ServerAnimator extends Animator
 
 	public final AnimationPlayer animationPlayer;
 	protected DynamicAnimation nextPlaying;
-	private LinkAnimation linkAnimation;
 	public boolean pause = false;
 
 	public ServerAnimator(LivingCap<?> entityCap)
 	{
 		this.entityCap = entityCap;
-		this.linkAnimation = new LinkAnimation();
 		this.animationPlayer = new AnimationPlayer();
 	}
 
@@ -33,9 +31,10 @@ public class ServerAnimator extends Animator
 		this.animationPlayer.getPlay().onUpdate(this.entityCap);
 		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
 		nextAnimation.onStart(this.entityCap);
-		nextAnimation.setLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F), startAt,
-				this.entityCap, this.linkAnimation);
-		this.linkAnimation.putOnPlayer(this.animationPlayer);
+		LinkAnimation linkAnim = nextAnimation.getLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F),
+				startAt,
+				this.entityCap);
+		this.animationPlayer.setPlayAnimation(linkAnim);
 		
 		this.nextPlaying = nextAnimation;
 	}
@@ -46,7 +45,7 @@ public class ServerAnimator extends Animator
 		this.pause = false;
 		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
 		nextAnimation.onStart(this.entityCap);
-		nextAnimation.putOnPlayer(this.animationPlayer);
+		this.animationPlayer.setPlayAnimation(nextAnimation);
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class ServerAnimator extends Animator
 
 			if (this.nextPlaying == null)
 			{
-				Animations.DUMMY_ANIMATION.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setPlayAnimation(Animations.DUMMY_ANIMATION);
 				this.pause = true;
 			} else
 			{
@@ -85,7 +84,7 @@ public class ServerAnimator extends Animator
 					this.nextPlaying.onStart(this.entityCap);
 				}
 
-				this.nextPlaying.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setPlayAnimation(this.nextPlaying);
 				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
 				this.nextPlaying = null;
 			}

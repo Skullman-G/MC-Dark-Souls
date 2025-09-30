@@ -3,9 +3,9 @@ package com.skullmangames.darksouls.core.util;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.resources.ResourceLocation;
@@ -105,7 +105,7 @@ public abstract class WeaponSkill
 	
 	public static class Builder implements JsonBuilder<WeaponSkill>
 	{
-		private ResourceLocation location;
+		private final ResourceLocation location;
 		private WeaponSkillType skillType;
 		private ResourceLocation rightAnimId;
 		@Nullable private ResourceLocation leftAnimId;
@@ -132,6 +132,8 @@ public abstract class WeaponSkill
 		
 		private Builder(ResourceLocation location, JsonObject json)
 		{
+			this.location = location;
+			
 			this.skillType = WeaponSkillType.fromString(json.get("skill_type").getAsString());
 			
 			switch (this.skillType)

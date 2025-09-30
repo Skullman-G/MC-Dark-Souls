@@ -42,7 +42,7 @@ public class LayerOffAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
+	public boolean isJointEnabled(String joint)
 	{
 		return this.lastPose.getJointTransformData().containsKey(joint);
 	}

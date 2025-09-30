@@ -39,7 +39,6 @@ import com.skullmangames.darksouls.client.renderer.entity.LightningSpearRenderer
 import com.skullmangames.darksouls.client.renderer.entity.SoulRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.TerracottaVaseRenderer;
 import com.skullmangames.darksouls.client.renderer.entity.VanillaHumanoidRenderer;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.Animator;
 import com.skullmangames.darksouls.common.animation.ServerAnimator;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -61,6 +60,8 @@ import com.skullmangames.darksouls.core.init.ModParticles;
 import com.skullmangames.darksouls.core.init.ModRecipeTypes;
 import com.skullmangames.darksouls.core.init.ProviderEntity;
 import com.skullmangames.darksouls.core.init.ProviderItem;
+import com.skullmangames.darksouls.core.init.data.AnimFrameDataManager;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.init.data.ArmorConfigs;
 import com.skullmangames.darksouls.core.init.data.Colliders;
 import com.skullmangames.darksouls.core.init.data.DSDataManager;
@@ -98,6 +99,7 @@ public class DarkSouls
 	
 	private final DSDataManager dataManager;
 	public final Colliders colliders;
+	public final AnimFrameDataManager frameDataManager;
 	public final AnimationManager animationManager;
 	public final WeaponMovesets weaponMovesets;
 	public final WeaponSkills weaponSkills;
@@ -122,6 +124,7 @@ public class DarkSouls
 		
 		this.dataManager = new DSDataManager();
 		this.colliders = this.dataManager.addRegister(new Colliders());
+		this.frameDataManager = this.dataManager.addRegister(new AnimFrameDataManager());
 		this.animationManager = this.dataManager.addRegister(new AnimationManager());
 		this.weaponMovesets = this.dataManager.addRegister(new WeaponMovesets());
 		this.weaponSkills = this.dataManager.addRegister(new WeaponSkills());

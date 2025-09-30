@@ -10,9 +10,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.util.json.JsonBuilder;
 
 import net.minecraft.resources.ResourceLocation;

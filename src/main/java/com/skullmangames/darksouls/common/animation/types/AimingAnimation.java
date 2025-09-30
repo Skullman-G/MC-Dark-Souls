@@ -9,6 +9,7 @@ import com.skullmangames.darksouls.client.animation.AnimationLayer;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.animation.ClientAnimator;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.JointTransform;
@@ -18,29 +19,24 @@ import com.skullmangames.darksouls.common.animation.Property.AimingAnimationProp
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
-import com.skullmangames.darksouls.config.ClientConfig;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.AnimFrameDataManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 public class AimingAnimation extends StaticAnimation
 {
-	public StaticAnimation lookUp;
-	public StaticAnimation lookDown;
+	private final AnimFrameData lookUp;
+	private final AnimFrameData lookDown;
 
-	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
+	public AimingAnimation(ResourceLocation id, float convertTime, boolean repeatPlay,
+			AnimFrameData frameData, AnimFrameData lookUp, AnimFrameData lookDown,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, repeatPlay, path1, model, properties);
-		this.lookUp = new StaticAnimation(null, convertTime, repeatPlay, path2, model, properties);
-		this.lookDown = new StaticAnimation(null, convertTime, repeatPlay, path3, model, properties);
-	}
-
-	public AimingAnimation(ResourceLocation id, boolean repeatPlay, ResourceLocation path1, ResourceLocation path2, ResourceLocation path3,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
-	{
-		this(id, ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, repeatPlay, path1, path2, path3, model, properties);
+		super(id, convertTime, repeatPlay, frameData, model, properties);
+		this.lookUp = lookUp;
+		this.lookDown = lookDown;
 	}
 
 	@Override
@@ -54,7 +50,9 @@ public class AimingAnimation extends StaticAnimation
 			AnimationPlayer player = layer.animationPlayer;
 
 			if (player.getElapsedTime() >= this.totalTime - 0.06F)
+			{
 				layer.pause();
+			}
 		}
 	}
 	
@@ -74,42 +72,23 @@ public class AimingAnimation extends StaticAnimation
 	@Override
 	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
-		if (!entityCap.isFirstPerson())
-		{
-			float pitch = entityCap.getOriginalEntity().getViewXRot(Minecraft.getInstance().getFrameTime());
-			StaticAnimation interpolateAnimation;
-			interpolateAnimation = (pitch > 0) ? this.lookDown : this.lookUp;
-			Pose pose1 = super.getPoseByTime(entityCap, time, partialTicks);
-			Pose pose2 = interpolateAnimation.getPoseByTime(entityCap, time, partialTicks);
-			this.modifyPose(pose2, entityCap, time);
-			Pose interpolatedPose = Pose.interpolatePose(pose1, pose2, (Math.abs(pitch) / 90.0F));
-			return interpolatedPose;
-		}
-
-		return super.getPoseByTime(entityCap, time, partialTicks);
-	}
-
-	@Override
-	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
-	{
-		if (!entityCap.isFirstPerson())
-		{
-			JointTransform head = pose.getTransformByName("Head");
-			float f = 90.0F;
-			float ratio = (f - Math.abs(entityCap.getOriginalEntity().getXRot())) / f;
-			float yawOffset = entityCap.getOriginalEntity().getVehicle() != null
-					? entityCap.getOriginalEntity().getYRot()
-					: entityCap.getOriginalEntity().yBodyRot;
-			head.rotation().mulLeft(Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().getYRot()) * ratio));
-		}
-	}
-
-	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
-	{
-		load(resourceManager, models, this);
-		load(resourceManager, models, this.lookUp);
-		load(resourceManager, models, this.lookDown);
+		if (entityCap.isFirstPerson()) return super.getPoseByTime(entityCap, time, partialTicks);
+		
+		float pitch = entityCap.getOriginalEntity().getViewXRot(Minecraft.getInstance().getFrameTime());
+		AnimFrameData interpolation = (pitch > 0) ? this.lookDown : this.lookUp;
+		Pose pose1 = super.getPoseByTime(entityCap, time, partialTicks);
+		Pose pose2 = interpolation.getPoseByTimeRaw(entityCap, time, partialTicks);
+		
+		JointTransform head = pose2.getTransformByName("Head");
+		float f = 90.0F;
+		float ratio = (f - Math.abs(entityCap.getOriginalEntity().getXRot())) / f;
+		float yawOffset = entityCap.getOriginalEntity().getVehicle() != null
+				? entityCap.getOriginalEntity().getYRot()
+				: entityCap.getOriginalEntity().yBodyRot;
+		head.rotation().mulLeft(Vector3f.YP.rotationDegrees((yawOffset - entityCap.getOriginalEntity().getYRot()) * ratio));
+		
+		Pose interpolatedPose = Pose.interpolatePose(pose1, pose2, (Math.abs(pitch) / 90.0F));
+		return interpolatedPose;
 	}
 	
 	public static class Builder extends StaticAnimation.Builder
@@ -151,8 +130,10 @@ public class AimingAnimation extends StaticAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new AimingAnimation(this.id, this.convertTime, this.repeat, this.location,
-					this.lookUpLocation, this.lookDownLocation, this.model, this.properties.build()));
+			AnimFrameData lookUp = AnimFrameDataManager.getByID(this.lookUpLocation);
+			AnimFrameData lookDown = AnimFrameDataManager.getByID(this.lookDownLocation);
+			register.put(this.getId(), new AimingAnimation(this.id, this.convertTime, this.repeat, this.getFrameData(),
+					lookUp, lookDown, this.model, this.properties.build()));
 		}
 	}
 }

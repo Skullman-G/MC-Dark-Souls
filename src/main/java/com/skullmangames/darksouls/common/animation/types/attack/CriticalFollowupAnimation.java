@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
@@ -33,9 +34,9 @@ public class CriticalFollowupAnimation extends InvincibleAnimation
 	private final boolean dealsDamage;
 	
 	public CriticalFollowupAnimation(ResourceLocation id, float convertTime, float hit, boolean dealsDamage,
-			ResourceLocation path, Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
+			AnimFrameData frameData, Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model, properties);
+		super(id, convertTime, frameData, model, properties);
 		this.hit = hit;
 		this.dealsDamage = dealsDamage;
 	}
@@ -115,7 +116,8 @@ public class CriticalFollowupAnimation extends InvincibleAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new CriticalFollowupAnimation(this.id, this.convertTime, this.hit, this.dealsDamage, this.location, this.model, this.properties.build()));
+			register.put(this.getId(), new CriticalFollowupAnimation(this.id, this.convertTime,
+					this.hit, this.dealsDamage, this.getFrameData(), this.model, this.properties.build()));
 		}
 	}
 }

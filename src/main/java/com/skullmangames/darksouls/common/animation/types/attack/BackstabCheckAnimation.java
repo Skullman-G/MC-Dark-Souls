@@ -5,16 +5,16 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
-import com.skullmangames.darksouls.common.animation.Property.AttackProperty;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.Damages;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
@@ -33,21 +33,12 @@ public class BackstabCheckAnimation extends AttackAnimation
 	private final ResourceLocation followUp;
 	private final boolean isWeak;
 	
-	public BackstabCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, float antic, float preDelay, float contact, float recovery, boolean isWeak,
-			String index, ResourceLocation path,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties, ResourceLocation followUp,
-			ImmutableMap<AttackProperty<?>, Object> attackProperties)
-	{
-		super(id, attackType, convertTime, antic, preDelay, contact, recovery, index, path, model, properties, attackProperties);
-		this.followUp = followUp;
-		this.isWeak = isWeak;
-	}
-	
-	public BackstabCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime, boolean isWeak, ResourceLocation path,
+	public BackstabCheckAnimation(ResourceLocation id, AttackType attackType, float convertTime,
+			boolean isWeak, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties,
 			ResourceLocation followUp, AttackAnimation.Phase... phases)
 	{
-		super(id, attackType, convertTime, path, model, properties, phases);
+		super(id, attackType, convertTime, frameData, model, properties, phases);
 		this.followUp = followUp;
 		this.isWeak = isWeak;
 	}
@@ -158,7 +149,7 @@ public class BackstabCheckAnimation extends AttackAnimation
 			}
 			
 			register.put(this.getId(), new BackstabCheckAnimation(this.id, this.attackType, this.convertTime,
-					this.isWeak, this.location, this.model, this.properties.build(), this.followUp, builtPhases));
+					this.isWeak, this.getFrameData(), this.model, this.properties.build(), this.followUp, builtPhases));
 		}
 	}
 }

@@ -1,17 +1,24 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import java.util.Map;
-
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.config.ClientConfig;
 
 public class LinkAnimation extends DynamicAnimation
 {
-	protected DynamicAnimation nextAnimation;
-	protected float startsAt;
+	private final DynamicAnimation nextAnimation;
+	private final float startsAt;
+	
+	public LinkAnimation(float startsAt, DynamicAnimation nextAnimation, AnimFrameData frameData)
+	{
+		super(ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, false, frameData);
+		this.startsAt = startsAt;
+		this.nextAnimation = nextAnimation;
+	}
 
 	@Override
 	public void onUpdate(LivingCap<?> entityCap)
@@ -22,15 +29,16 @@ public class LinkAnimation extends DynamicAnimation
 	@Override
 	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
 	{
+		float startsAt = this.getStartsAt(entityCap);
+		
 		if (!isEnd)
 		{
 			this.nextAnimation.onFinish(entityCap, isEnd);
 		}
-		else if (this.startsAt > 0.0F)
+		else if (startsAt > 0.0F)
 		{
-			entityCap.getAnimator().getPlayerFor(this).setElapsedTime(this.startsAt);
+			entityCap.getAnimator().getPlayerFor(this).setElapsedTime(startsAt);
 			entityCap.getAnimator().getPlayerFor(this).markToDoNotReset();
-			this.startsAt = 0.0F;
 		}
 	}
 
@@ -43,15 +51,15 @@ public class LinkAnimation extends DynamicAnimation
 	@Override
 	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
-		Pose nextStartingPose = this.nextAnimation.getPoseByTime(entityCap, this.startsAt, 1.0F);
+		Pose nextStartingPose = this.nextAnimation.getPoseByTime(entityCap, this.getStartsAt(entityCap), 1.0F);
 
-		for (Map.Entry<String, JointTransform> entry : nextStartingPose.getJointTransformData().entrySet())
+		for (String jointName : nextStartingPose.getJointTransformData().keySet())
 		{
-			if (!this.jointTransforms.containsKey(entry.getKey())) continue;
+			if (!this.isJointEnabled(jointName)) continue;
 			
-			Keyframe[] keyframes = this.jointTransforms.get(entry.getKey()).getKeyframes();
+			Keyframe[] keyframes = this.getJointTransform(jointName).getKeyframes();
 			JointTransform endTransform = keyframes[keyframes.length - 1].transform();
-			JointTransform newEndTransform = nextStartingPose.getJointTransformData().get(entry.getKey());
+			JointTransform newEndTransform = nextStartingPose.getJointTransformData().get(jointName);
 			
 			newEndTransform.translation().set(endTransform.translation().x(), endTransform.translation().y(), endTransform.translation().z());
 			endTransform.copyFrom(newEndTransform);
@@ -59,11 +67,11 @@ public class LinkAnimation extends DynamicAnimation
 
 		return super.getPoseByTime(entityCap, time, partialTicks);
 	}
-
-	@Override
-	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time)
+	
+	public float getStartsAt(LivingCap<?> entityCap)
 	{
-		this.nextAnimation.modifyPose(pose, entityCap, time);
+		return this.nextAnimation.shouldSync() ? entityCap.getAnimator().getMainPlayer().getElapsedTime()
+				: this.startsAt;
 	}
 
 	@Override
@@ -72,20 +80,15 @@ public class LinkAnimation extends DynamicAnimation
 		return this.nextAnimation.getPlaySpeed(entityCap);
 	}
 
-	public void setNextAnimation(DynamicAnimation animation)
-	{
-		this.nextAnimation = animation;
-	}
-
 	public DynamicAnimation getNextAnimation()
 	{
 		return this.nextAnimation;
 	}
 
 	@Override
-	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
+	public boolean isJointEnabled(String joint)
 	{
-		return this.nextAnimation.isJointEnabled(entityCap, joint);
+		return this.nextAnimation.isJointEnabled(joint);
 	}
 
 	@Override

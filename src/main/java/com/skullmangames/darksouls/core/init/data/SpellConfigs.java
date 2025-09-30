@@ -11,13 +11,14 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class SpellConfigs extends AbstractDSDataRegister<SpellCap.Builder>
+public class SpellConfigs extends DSJsonDataRegister<SpellCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public SpellConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("spell_configs");
+		return "spell_configs";
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class SpellConfigs extends AbstractDSDataRegister<SpellCap.Builder>
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

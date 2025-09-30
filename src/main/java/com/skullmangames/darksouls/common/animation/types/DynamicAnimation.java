@@ -1,13 +1,12 @@
 package com.skullmangames.darksouls.common.animation.types;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skullmangames.darksouls.common.animation.AnimationPlayer;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
@@ -27,39 +26,32 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DynamicAnimation
 {
-	protected Map<String, TransformSheet> jointTransforms;
+	private final AnimFrameData frameData;
 	protected final boolean isRepeat;
 	protected final float convertTime;
-	protected float totalTime = 0.0F;
+	protected float totalTime;
 
 	public DynamicAnimation()
 	{
-		this(ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, false);
+		this(ClientConfig.GENERAL_ANIMATION_CONVERT_TIME, false, new AnimFrameData());
 	}
 
-	public DynamicAnimation(float convertTime, boolean isRepeat)
+	public DynamicAnimation(float convertTime, boolean isRepeat, AnimFrameData frameData)
 	{
-		this.jointTransforms = new HashMap<String, TransformSheet>();
+		this.frameData = frameData;
 		this.isRepeat = isRepeat;
 		this.convertTime = convertTime;
+		this.totalTime = frameData.getTotalTime();
 	}
-
-	public void addSheet(String jointName, TransformSheet sheet)
+	
+	public AnimFrameData getFrameData()
 	{
-		this.jointTransforms.put(jointName, sheet);
+		return this.frameData;
 	}
-
-	public final Pose getPoseByTimeRaw(LivingCap<?> entityCap, float time, float partialTicks)
+	
+	public TransformSheet getJointTransform(String jointName)
 	{
-		Pose pose = new Pose();
-		for (String jointName : this.jointTransforms.keySet())
-		{
-			if (!entityCap.isClientSide() || this.isJointEnabled(entityCap, jointName))
-			{
-				pose.putJointData(jointName, this.jointTransforms.get(jointName).getInterpolatedTransform(time));
-			}
-		}
-		return pose;
+		return this.getFrameData().get(jointName);
 	}
 	
 	public boolean shouldSync()
@@ -69,24 +61,10 @@ public class DynamicAnimation
 
 	public Pose getPoseByTime(LivingCap<?> entityCap, float time, float partialTicks)
 	{
-		Pose pose = new Pose();
-
-		for (String jointName : this.jointTransforms.keySet())
-		{
-			if (!entityCap.isClientSide() || this.isJointEnabled(entityCap, jointName))
-			{
-				pose.putJointData(jointName, this.jointTransforms.get(jointName).getInterpolatedTransform(time));
-			}
-		}
-
-		this.modifyPose(pose, entityCap, time);
-
-		return pose;
+		return this.getFrameData().getPoseByTimeRaw(entityCap, time, partialTicks);
 	}
-	
-	protected void modifyPose(Pose pose, LivingCap<?> entityCap, float time) {}
 
-	public void setLinkAnimation(Pose pose1, float startAt, LivingCap<?> entityCap, LinkAnimation dest)
+	public LinkAnimation getLinkAnimation(Pose pose1, float startAt, LivingCap<?> entityCap)
 	{
 		if (!entityCap.isClientSide())
 		{
@@ -95,32 +73,23 @@ public class DynamicAnimation
 
 		float totalTime = this.convertTime;
 		startAt = ModMath.clamp(startAt, 0.05F, this.getTotalTime());
-
-		dest.startsAt = startAt;
-
-		dest.getTransfroms().clear();
-		dest.setTotalTime(totalTime);
-		dest.setNextAnimation(this);
+		
+		AnimFrameData.Builder frameDataBuilder = AnimFrameData.builder(null)
+			.withTotalTime(totalTime);
 
 		Map<String, JointTransform> data1 = pose1.getJointTransformData();
 		Map<String, JointTransform> data2 = this.getPoseByTime(entityCap, startAt, 1.0F).getJointTransformData();
 
-		for (String jointName : data1.keySet())
+		data2.forEach((jointName, transform) ->
 		{
-			if (data1.containsKey(jointName) && data2.containsKey(jointName))
-			{
-				Keyframe[] keyframes = new Keyframe[2];
-				keyframes[0] = new Keyframe(0.0F, data1.get(jointName));
-				keyframes[1] = new Keyframe(totalTime, data2.get(jointName));
-				TransformSheet sheet = new TransformSheet(keyframes);
-				dest.addSheet(jointName, sheet);
-			}
-		}
-	}
-
-	public void putOnPlayer(AnimationPlayer player)
-	{
-		player.setPlayAnimation(this);
+			Keyframe[] keyframes = new Keyframe[2];
+			keyframes[0] = new Keyframe(0.0F, data1.getOrDefault(jointName, transform));
+			keyframes[1] = new Keyframe(totalTime, transform);
+			TransformSheet sheet = new TransformSheet(keyframes);
+			frameDataBuilder.addSheet(jointName, sheet);
+		});
+		
+		return new LinkAnimation(startAt, this, frameDataBuilder.build());
 	}
 
 	public void onStart(LivingCap<?> entityCap)
@@ -137,22 +106,16 @@ public class DynamicAnimation
 
 	public void onUpdateLink(LivingCap<?> entityCap, LinkAnimation linkAnimation)
 	{
-		if (this.shouldSync()) linkAnimation.startsAt = entityCap.getAnimator().getMainPlayer().getElapsedTime();
 	}
 
-	public boolean isJointEnabled(LivingCap<?> entityCap, String joint)
+	public boolean isJointEnabled(String joint)
 	{
-		return this.jointTransforms.containsKey(joint);
+		return this.getFrameData().isJointEnabled(joint);
 	}
 
 	public EntityState getState(float time)
 	{
 		return EntityState.FREE;
-	}
-
-	public Map<String, TransformSheet> getTransfroms()
-	{
-		return this.jointTransforms;
 	}
 
 	public float getPlaySpeed(LivingCap<?> entityCap)

@@ -11,13 +11,14 @@ import com.skullmangames.darksouls.core.init.ProviderItem;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class SpellcastingWeaponConfigs extends AbstractDSDataRegister<SpellcastingWeaponCap.Builder>
+public class SpellcastingWeaponConfigs extends DSJsonDataRegister<SpellcastingWeaponCap.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
-	public SpellcastingWeaponConfigs()
+	@Override
+	public String getDirectory()
 	{
-		super("weapon_configs/spellcasting");
+		return "weapon_configs/spellcasting";
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class SpellcastingWeaponConfigs extends AbstractDSDataRegister<Spellcasti
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

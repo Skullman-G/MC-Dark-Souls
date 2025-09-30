@@ -25,7 +25,6 @@ public class AnimationLayer
 {
 	public final AnimationPlayer animationPlayer;
 	protected DynamicAnimation nextAnimation;
-	protected LinkAnimation linkAnimation;
 	protected LayerOffAnimation layerOffAnimation;
 	protected boolean disabled;
 	protected boolean paused;
@@ -34,7 +33,6 @@ public class AnimationLayer
 	public AnimationLayer(LayerPart part)
 	{
 		this.animationPlayer = new AnimationPlayer();
-		this.linkAnimation = new LinkAnimation();
 		this.layerOffAnimation = new LayerOffAnimation(part);
 		this.disabled = true;
 		if (part == LayerPart.RIGHT) this.jointMask = new ArrayList<>(Arrays.asList("Shoulder_R", "Arm_R", "Ellbow_R", "Tool_R", "Hand_R"));
@@ -55,8 +53,8 @@ public class AnimationLayer
 		this.resume();
 		nextAnimation.onStart(entityCap);
 
-		this.setLinkAnimation(nextAnimation, entityCap, lastPose, startAt);
-		this.linkAnimation.putOnPlayer(this.animationPlayer);
+		LinkAnimation linkAnim = nextAnimation.getLinkAnimation(lastPose, startAt, entityCap);
+		this.animationPlayer.setPlayAnimation(linkAnim);
 		this.nextAnimation = nextAnimation;
 	}
 
@@ -65,14 +63,8 @@ public class AnimationLayer
 		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer.isEnd());
 		this.resume();
 		nextAnimation.onStart(entityCap);
-		nextAnimation.putOnPlayer(this.animationPlayer);
+		this.animationPlayer.setPlayAnimation(nextAnimation);
 		this.nextAnimation = null;
-	}
-
-	public void setLinkAnimation(DynamicAnimation nextAnimation, LivingCap<?> entityCap, Pose lastPose,
-			float startAt)
-	{
-		nextAnimation.setLinkAnimation(lastPose, startAt, entityCap, this.linkAnimation);
 	}
 
 	public void update(LivingCap<?> entityCap)
@@ -99,7 +91,7 @@ public class AnimationLayer
 					this.nextAnimation.onStart(entityCap);
 				}
 				
-				this.nextAnimation.putOnPlayer(this.animationPlayer);
+				this.animationPlayer.setPlayAnimation(this.nextAnimation);
 				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
 				
 				this.nextAnimation = null;
@@ -200,7 +192,7 @@ public class AnimationLayer
 		{
 			AnimationLayer layer = this.mixLayers.get(part);
 			layer.disabled = true;
-			Animations.DUMMY_ANIMATION.putOnPlayer(layer.animationPlayer);
+			this.animationPlayer.setPlayAnimation(Animations.DUMMY_ANIMATION); 
 		}
 
 		@Override

@@ -5,6 +5,7 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
@@ -14,10 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class InvincibleAnimation extends ActionAnimation
 {
-	public InvincibleAnimation(ResourceLocation id, float convertTime, ResourceLocation path,
+	public InvincibleAnimation(ResourceLocation id, float convertTime, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model, properties);
+		super(id, convertTime, frameData, model, properties);
 	}
 	
 	@Override
@@ -47,7 +48,8 @@ public class InvincibleAnimation extends ActionAnimation
 		@Override
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
-			register.put(this.getId(), new InvincibleAnimation(this.id, this.convertTime, this.location, this.model, this.properties.build()));
+			register.put(this.getId(), new InvincibleAnimation(this.id, this.convertTime,
+					this.getFrameData(), this.model, this.properties.build()));
 		}
 	}
 }

@@ -20,7 +20,6 @@ public class XmlParser
 		{
 			bufferedReader.readLine();
 			XmlNode node = loadXmlNode(bufferedReader);
-			bufferedReader.close();
 			return node;
 		}
 		catch (Exception e)

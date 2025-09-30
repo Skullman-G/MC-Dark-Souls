@@ -39,8 +39,8 @@ public class ColladaParser
 		{
 			DarkSouls.LOGGER.error("Could not find root node of "+path);
 		}
-		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getChild("library_controllers").getChild("controller").getChild("skin"));
-		JointDataExtractor skeleton = new JointDataExtractor(rootNode.getChild("library_visual_scenes").getChild("visual_scene").getChildWithAttributeValue("node", "id", "Armature"), skin.getRawJoints());
+		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getDirectChild("library_controllers").getDirectChild("controller").getDirectChild("skin"));
+		JointDataExtractor skeleton = new JointDataExtractor(rootNode.getDirectChild("library_visual_scenes").getDirectChild("visual_scene").getChildWithAttributeValue("node", "id", "Armature"), skin.getRawJoints());
 		Joint joint = skeleton.extractSkeletonData();
 		joint.setInversedModelTransform(new ModMatrix4f());
 		
@@ -62,8 +62,8 @@ public class ColladaParser
 		}
 
 		XmlNode rootNode = XmlParser.loadXmlFile(bufferedreader);
-		GeometryDataExtractor geometry = new GeometryDataExtractor(rootNode.getChild("library_geometries").getChild("geometry").getChild("mesh"));
-		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getChild("library_controllers").getChild("controller").getChild("skin"));
+		GeometryDataExtractor geometry = new GeometryDataExtractor(rootNode.getDirectChild("library_geometries").getDirectChild("geometry").getDirectChild("mesh"));
+		SkinDataExtractor skin = new SkinDataExtractor(rootNode.getDirectChild("library_controllers").getDirectChild("controller").getDirectChild("skin"));
 		List<VertexData> vertices = geometry.extractVertexNumber();
 		skin.extractSkinData(vertices);
 		geometry.extractGeometryData(vertices);

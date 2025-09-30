@@ -12,14 +12,15 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.core.util.WeaponSkill;
 import net.minecraft.resources.ResourceLocation;
 
-public class WeaponSkills extends AbstractDSDataRegister<WeaponSkill.Builder>
+public class WeaponSkills extends DSJsonDataRegister<WeaponSkill.Builder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private Map<ResourceLocation, WeaponSkill> skills = ImmutableMap.of();
 	
-	public WeaponSkills()
+	@Override
+	public String getDirectory()
 	{
-		super("weapon_skills");
+		return "weapon_skills";
 	}
 	
 	
@@ -46,7 +47,7 @@ public class WeaponSkills extends AbstractDSDataRegister<WeaponSkill.Builder>
 	}
 	
 	@Override
-	protected Logger getLogger()
+	public Logger getLogger()
 	{
 		return LOGGER;
 	}

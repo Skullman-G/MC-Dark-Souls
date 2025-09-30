@@ -1,36 +1,34 @@
-package com.skullmangames.darksouls.common.animation;
+package com.skullmangames.darksouls.core.init.data;
 
 import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.skullmangames.darksouls.DarkSouls;
+import com.skullmangames.darksouls.common.animation.AnimBuilder;
+import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
-import com.skullmangames.darksouls.core.init.ClientModels;
-import com.skullmangames.darksouls.core.init.Models;
-import com.skullmangames.darksouls.core.init.data.AbstractDSDataRegister;
-
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public class AnimationManager extends AbstractDSDataRegister
+public class AnimationManager extends DSJsonDataRegister<AnimBuilder>
 {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	private Map<ResourceLocation, StaticAnimation> animations = ImmutableMap.of();
 	
-	public AnimationManager()
+	@Override
+	public String getDirectory()
 	{
-		super("animation_data");
+		return "animation_data";
 	}
 
 	public static StaticAnimation getAnimation(ResourceLocation id)
@@ -77,34 +75,28 @@ public class AnimationManager extends AbstractDSDataRegister
 		if (animation instanceof AdaptableAnimation a) return a;
 		throw new IllegalArgumentException("Unable to find adaptable animation with path: " + id);
 	}
-
+	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager)
+	protected void finish(Set<AnimBuilder> builders)
 	{
-		//Load animation data from json
-		ImmutableMap.Builder<ResourceLocation, StaticAnimation> builder = ImmutableMap.builder();
-		objects.forEach((location, json) ->
+		ImmutableMap.Builder<ResourceLocation, StaticAnimation> mapBuilder = ImmutableMap.builder();
+		builders.forEach(builder ->
 		{
-			try
-			{
-				AnimationType type = AnimationType.fromString(json.getAsJsonObject().get("animation_type").getAsString());
-				type.getAnimBuilder(location, json.getAsJsonObject()).register(builder);
-			}
-			catch (Exception e)
-			{
-				LOGGER.error("Parsing error loading additional animation {}", location, e);
-			}
+			builder.register(mapBuilder);
 		});
-		
-		this.animations = builder.build();
-		LOGGER.info("Loaded "+this.animations.size()+" animations");
-		
-		//Load collada data
-		Models<?> models = FMLEnvironment.dist == Dist.CLIENT ? ClientModels.CLIENT : Models.SERVER;
-		
-		for (StaticAnimation animation : this.animations.values())
-		{
-			animation.loadAnimation(resourceManager, models);
-		}
+		this.animations = mapBuilder.build();
+	}
+	
+	@Override
+	protected AnimBuilder builderFromJson(ResourceLocation location, JsonObject json)
+	{
+		AnimationType type = AnimationType.fromString(json.get("animation_type").getAsString());
+		return type.getAnimBuilder(location, json);
+	}
+	
+	@Override
+	public Logger getLogger()
+	{
+		return LOGGER;
 	}
 }

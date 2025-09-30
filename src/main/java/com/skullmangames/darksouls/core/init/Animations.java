@@ -6,7 +6,6 @@ import java.util.function.BiFunction;
 
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
-import com.skullmangames.darksouls.common.animation.AnimationManager;
 import com.skullmangames.darksouls.common.animation.types.AdaptableAnimation;
 import com.skullmangames.darksouls.common.animation.types.DeathAnimation;
 import com.skullmangames.darksouls.common.animation.types.MirrorAnimation;
@@ -15,6 +14,7 @@ import com.skullmangames.darksouls.common.animation.types.SupplierAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.AttackAnimation;
 import com.skullmangames.darksouls.common.animation.types.attack.ParryAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
+import com.skullmangames.darksouls.core.init.data.AnimationManager;
 import com.skullmangames.darksouls.core.util.AbstractArrayGetter;
 import com.skullmangames.darksouls.core.util.AbstractGetter;
 

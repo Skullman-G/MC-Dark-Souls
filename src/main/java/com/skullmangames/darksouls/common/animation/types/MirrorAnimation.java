@@ -6,22 +6,24 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.StaticAnimationProperty;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.Models;
+import com.skullmangames.darksouls.core.init.data.AnimFrameDataManager;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 public class MirrorAnimation extends StaticAnimation
 {
 	public StaticAnimation right;
 	public StaticAnimation left;
 	
-	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay, StaticAnimation right, StaticAnimation left,
+	public MirrorAnimation(ResourceLocation id, float convertTime, boolean repeatPlay,
+			StaticAnimation right, StaticAnimation left,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
 		super();
@@ -43,13 +45,6 @@ public class MirrorAnimation extends StaticAnimation
 				default: return Animations.DUMMY_ANIMATION;
 			}
 		}
-	}
-	
-	@Override
-	public void loadAnimation(ResourceManager resourceManager, Models<?> models)
-	{
-		load(resourceManager, models, this.right);
-		load(resourceManager, models, this.left);
 	}
 	
 	public static class Builder extends StaticAnimation.Builder
@@ -102,13 +97,16 @@ public class MirrorAnimation extends StaticAnimation
 			ImmutableMap<Property<?>, Object> builtProperties = this.properties.build();
 			ImmutableMap<Property<?>, Object> tempProperties = this.properties.build();
 			
+			AnimFrameData frameDataRight = AnimFrameDataManager.getByID(this.location);
+			AnimFrameData frameDataLeft = AnimFrameDataManager.getByID(this.location2);
+			
 			if (this.applyLayerParts)
 				tempProperties = ImmutableMap.<Property<?>, Object>builder().putAll(builtProperties).put(StaticAnimationProperty.LAYER_PART, LayerPart.RIGHT).build();
-			StaticAnimation right = new StaticAnimation(rightId, convertTime, this.repeat, this.location, model, tempProperties);
+			StaticAnimation right = new StaticAnimation(rightId, this.convertTime, this.repeat, frameDataRight, model, tempProperties);
 			
 			if (this.applyLayerParts)
 				tempProperties = ImmutableMap.<Property<?>, Object>builder().putAll(builtProperties).put(StaticAnimationProperty.LAYER_PART, LayerPart.LEFT).build();
-			StaticAnimation left = new StaticAnimation(leftId, convertTime, this.repeat, this.location2, model, tempProperties);
+			StaticAnimation left = new StaticAnimation(leftId, this.convertTime, this.repeat, frameDataLeft, model, tempProperties);
 			
 			register.put(this.getId(), new MirrorAnimation(this.id, this.convertTime, this.repeat, right, left, this.model, this.properties.build()));
 			register.put(rightId, right);

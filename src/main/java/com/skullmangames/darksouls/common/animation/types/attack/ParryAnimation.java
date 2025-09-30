@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
+import com.skullmangames.darksouls.common.animation.AnimFrameData;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
@@ -41,10 +42,11 @@ public class ParryAnimation extends ActionAnimation
 	public final float end;
 	private final String jointName;
 	
-	public ParryAnimation(ResourceLocation id, float convertTime, float start, float end, String jointName, ResourceLocation path,
+	public ParryAnimation(ResourceLocation id, float convertTime, float start, float end,
+			String jointName, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
-		super(id, convertTime, path, model, properties);
+		super(id, convertTime, frameData, model, properties);
 		this.start = start;
 		this.end = end;
 		this.jointName = jointName;
@@ -199,7 +201,7 @@ public class ParryAnimation extends ActionAnimation
 		public void register(ImmutableMap.Builder<ResourceLocation, StaticAnimation> register)
 		{
 			register.put(this.getId(), new ParryAnimation(this.id, this.convertTime,
-					this.start, this.end, this.jointName, this.location, this.model, this.properties.build()));
+					this.start, this.end, this.jointName, this.getFrameData(), this.model, this.properties.build()));
 		}
 	}
 }
