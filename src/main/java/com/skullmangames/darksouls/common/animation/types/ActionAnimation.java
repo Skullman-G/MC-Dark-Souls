@@ -151,8 +151,7 @@ public class ActionAnimation extends ImmovableAnimation
 	{
 		Pose pose = super.getPoseByTime(entityCap, time, partialTicks);
 		
-		JointTransform rootTransform = pose.getTransformByName("Root");
-		Vector3f rootPosition = rootTransform.translation();
+		Vector3f rootPosition = pose.getTransformByName("Root").translation();
 		ModMatrix4f toRootTransformApplied = entityCap.getEntityModel(Models.SERVER).getArmature()
 				.searchJointByName("Root").getLocalTransform().removeTranslation();
 		ModMatrix4f toOrigin = ModMatrix4f.invert(toRootTransformApplied, null);
@@ -181,22 +180,21 @@ public class ActionAnimation extends ImmovableAnimation
 		Pose pose = this.getPoseByTime(entityCap, startAt, 1.0F);
 		Map<String, JointTransform> lastTransforms = lastPose.getJointTransformData();
 		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
+		
 		JointTransform rootTransform = pose.getTransformByName("Root");
-		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation().getInterpolatedTranslation(startAt);
+		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation()
+				.getInterpolatedTranslation(startAt);
 		
 		rootTransform.translation().set(withPosition.x(), rootTransform.translation().y(), withPosition.z());
-
-		for (String jointName : lastTransforms.keySet())
+		
+		nextTransforms.forEach((jointName, transform) ->
 		{
-			if (lastTransforms.containsKey(jointName) && nextTransforms.containsKey(jointName))
-			{
-				Keyframe[] keyframes = new Keyframe[2];
-				keyframes[0] = new Keyframe(0, lastTransforms.get(jointName));
-				keyframes[1] = new Keyframe(totalTime, nextTransforms.get(jointName));
-				TransformSheet sheet = new TransformSheet(keyframes);
-				frameDataBuilder.addSheet(jointName, sheet);
-			}
-		}
+			Keyframe[] keyframes = new Keyframe[2];
+			keyframes[0] = new Keyframe(0.0F, lastTransforms.getOrDefault(jointName, transform));
+			keyframes[1] = new Keyframe(totalTime, transform);
+			TransformSheet sheet = new TransformSheet(keyframes);
+			frameDataBuilder.addSheet(jointName, sheet);
+		});
 		
 		return new LinkAnimation(startAt, this, frameDataBuilder.build());
 	}

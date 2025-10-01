@@ -64,11 +64,11 @@ public class DynamicAnimation
 		return this.getFrameData().getPoseByTimeRaw(entityCap, time, partialTicks);
 	}
 
-	public LinkAnimation getLinkAnimation(Pose pose1, float startAt, LivingCap<?> entityCap)
+	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap)
 	{
 		if (!entityCap.isClientSide())
 		{
-			pose1 = Animations.DUMMY_ANIMATION.getPoseByTime(entityCap, 0.0F, 1.0F);
+			lastPose = Animations.DUMMY_ANIMATION.getPoseByTime(entityCap, 0.0F, 1.0F);
 		}
 
 		float totalTime = this.convertTime;
@@ -77,7 +77,7 @@ public class DynamicAnimation
 		AnimFrameData.Builder frameDataBuilder = AnimFrameData.builder(null)
 			.withTotalTime(totalTime);
 
-		Map<String, JointTransform> data1 = pose1.getJointTransformData();
+		Map<String, JointTransform> data1 = lastPose.getJointTransformData();
 		Map<String, JointTransform> data2 = this.getPoseByTime(entityCap, startAt, 1.0F).getJointTransformData();
 
 		data2.forEach((jointName, transform) ->
