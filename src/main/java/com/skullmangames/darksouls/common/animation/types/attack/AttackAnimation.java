@@ -233,7 +233,7 @@ public class AttackAnimation extends ActionAnimation
 				if (trueTarget instanceof Player playerEntity)
 				{
 					PlayerCap<?> playerCap = (PlayerCap<?>)playerEntity.getCapability(ModCapabilities.CAPABILITY_ENTITY).orElse(null);
-					if (playerCap != null && playerCap.getEntityState() == EntityState.DODGING)
+					if (playerCap != null && playerCap.getEntityState().isDodging())
 					{
 						ModNetworkManager.connection.shakeCamForEntity(playerEntity, 10, 1.0F);
 					}

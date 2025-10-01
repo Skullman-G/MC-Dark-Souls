@@ -460,6 +460,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		boolean headshot = extSource.isHeadshot();
 		float poiseDamage = extSource.getPoiseDamage();
 		StunType stunType = extSource.getStunType();
+		EntityState entityState = this.getEntityState();
 		
 		// Particles
 		if (!extSource.getDamages().isEmpty())
@@ -467,7 +468,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 			this.makeImpactSfx(extSource);
 		}
 		
-		if (this.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
+		if (entityState.isInvincible() && extSource.getStunType() != StunType.INVINCIBILITY_BYPASS)
 		{
 			extSource.getDamages().mul(0);
 		}

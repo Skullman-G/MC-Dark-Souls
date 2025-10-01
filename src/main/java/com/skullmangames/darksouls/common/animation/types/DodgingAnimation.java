@@ -39,12 +39,6 @@ public class DodgingAnimation extends ActionAnimation
 {
 	private final boolean canRotate;
 	
-	public DodgingAnimation(ResourceLocation id, float convertTime, AnimFrameData frameData,
-			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
-	{
-		this(id, convertTime, false, frameData, model, properties);
-	}
-	
 	public DodgingAnimation(ResourceLocation id, float convertTime, boolean canRotate, AnimFrameData frameData,
 			Function<Models<?>, Model> model, ImmutableMap<Property<?>, Object> properties)
 	{
