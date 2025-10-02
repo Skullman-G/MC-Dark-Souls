@@ -9,8 +9,8 @@ import com.skullmangames.darksouls.common.entity.covenant.Covenant.Reward;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.gui.STCOpenCovenantScreen;
-import com.skullmangames.darksouls.network.server.gui.STCOpenJoinCovenantScreen;
+import com.skullmangames.darksouls.network.packets.server.gui.STCOpenCovenantScreen;
+import com.skullmangames.darksouls.network.packets.server.gui.STCOpenJoinCovenantScreen;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

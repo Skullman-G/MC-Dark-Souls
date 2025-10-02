@@ -6,7 +6,7 @@ import com.skullmangames.darksouls.common.inventory.SoulMerchantMenu;
 import com.skullmangames.darksouls.common.inventory.SoulMerchantOffer;
 import com.skullmangames.darksouls.common.inventory.SoulMerchantOffers;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCSoulMerchantOffers;
+import com.skullmangames.darksouls.network.packets.server.STCSoulMerchantOffers;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

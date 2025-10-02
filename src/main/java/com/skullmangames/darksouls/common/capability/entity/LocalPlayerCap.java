@@ -21,9 +21,9 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.GameOverlayManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSPerformDodge;
-import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
-import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
+import com.skullmangames.darksouls.network.packets.client.CTSPerformDodge;
+import com.skullmangames.darksouls.network.packets.client.CTSPlayAnimation;
+import com.skullmangames.darksouls.network.packets.client.CTSPerformDodge.DodgeType;
 import com.skullmangames.darksouls.network.play.ModClientPlayNetHandler;
 
 import net.minecraft.client.Camera;

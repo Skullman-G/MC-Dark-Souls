@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.AttackGoal;
 import com.skullmangames.darksouls.common.entity.ai.goal.RangeAttackGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
+import com.skullmangames.darksouls.network.packets.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.InteractionHand;

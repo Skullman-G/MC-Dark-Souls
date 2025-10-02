@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.common.blockentity;
 import com.skullmangames.darksouls.common.block.BonfireBlock;
 import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCBonfireKindleEffect;
+import com.skullmangames.darksouls.network.packets.server.STCBonfireKindleEffect;
 import com.skullmangames.darksouls.core.init.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;

@@ -38,8 +38,8 @@ import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.timer.EventTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCEntityImpactParticles;
-import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.packets.server.STCEntityImpactParticles;
+import com.skullmangames.darksouls.network.packets.server.STCPlayAnimation;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;

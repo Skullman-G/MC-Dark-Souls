@@ -3,7 +3,7 @@ package com.skullmangames.darksouls.client.gui.screens;
 import com.skullmangames.darksouls.common.entity.covenant.Covenant;
 import com.skullmangames.darksouls.common.entity.covenant.Covenants;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSCovenant;
+import com.skullmangames.darksouls.network.packets.client.CTSCovenant;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TranslatableComponent;

@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.core.init;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCSetMaxPlayerLevel;
+import com.skullmangames.darksouls.network.packets.server.STCSetMaxPlayerLevel;
 
 import net.minecraft.world.level.GameRules;
 

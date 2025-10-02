@@ -8,7 +8,7 @@ import com.skullmangames.darksouls.common.capability.item.ItemCapability;
 import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSTwoHanding;
+import com.skullmangames.darksouls.network.packets.client.CTSTwoHanding;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;

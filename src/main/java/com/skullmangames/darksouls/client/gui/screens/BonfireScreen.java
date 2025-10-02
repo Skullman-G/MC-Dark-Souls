@@ -11,9 +11,9 @@ import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.core.util.StringHelper;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSBonfireTask;
-import com.skullmangames.darksouls.network.client.CTSOpenAttunementScreen;
-import com.skullmangames.darksouls.network.client.CTSOpenBonfireTeleportScreen;
+import com.skullmangames.darksouls.network.packets.client.CTSBonfireTask;
+import com.skullmangames.darksouls.network.packets.client.CTSOpenAttunementScreen;
+import com.skullmangames.darksouls.network.packets.client.CTSOpenBonfireTeleportScreen;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;

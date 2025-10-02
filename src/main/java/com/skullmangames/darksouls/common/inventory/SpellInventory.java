@@ -2,7 +2,7 @@ package com.skullmangames.darksouls.common.inventory;
 
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCAttunements;
+import com.skullmangames.darksouls.network.packets.server.STCAttunements;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

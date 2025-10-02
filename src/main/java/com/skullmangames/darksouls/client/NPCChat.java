@@ -1,7 +1,7 @@
 package com.skullmangames.darksouls.client;
 
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSFinishNPCChat;
+import com.skullmangames.darksouls.network.packets.client.CTSFinishNPCChat;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;

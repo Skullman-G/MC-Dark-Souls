@@ -11,8 +11,8 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
-import com.skullmangames.darksouls.network.server.STCMobInitialSetting;
+import com.skullmangames.darksouls.network.packets.client.CTSReqSpawnInfo;
+import com.skullmangames.darksouls.network.packets.server.STCMobInitialSetting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.entity.monster.RangedAttackMob;

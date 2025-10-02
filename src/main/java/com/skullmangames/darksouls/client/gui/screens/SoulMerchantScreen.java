@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.common.inventory.SoulMerchantOffer;
 import com.skullmangames.darksouls.common.inventory.SoulMerchantOffers;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSSelectTrade;
+import com.skullmangames.darksouls.network.packets.client.CTSSelectTrade;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

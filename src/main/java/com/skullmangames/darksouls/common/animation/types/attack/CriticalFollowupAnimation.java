@@ -21,7 +21,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCEntityBloodImpactParticles;
+import com.skullmangames.darksouls.network.packets.server.STCEntityBloodImpactParticles;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;

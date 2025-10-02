@@ -24,7 +24,7 @@ import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
 import com.skullmangames.darksouls.core.util.math.vector.Vec4f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCSetPos;
+import com.skullmangames.darksouls.network.packets.server.STCSetPos;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;

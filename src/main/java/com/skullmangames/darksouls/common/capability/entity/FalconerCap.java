@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.common.entity.ai.goal.StrafingGoal;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
+import com.skullmangames.darksouls.network.packets.client.CTSReqSpawnInfo;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.monster.RangedAttackMob;

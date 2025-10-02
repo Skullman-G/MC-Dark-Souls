@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSReqSpawnInfo;
+import com.skullmangames.darksouls.network.packets.client.CTSReqSpawnInfo;
 
 public class HollowLordranWarriorCap extends HumanoidCap<HollowLordranWarrior>
 {

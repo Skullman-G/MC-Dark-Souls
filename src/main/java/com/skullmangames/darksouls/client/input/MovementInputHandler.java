@@ -10,7 +10,7 @@ import com.skullmangames.darksouls.client.input.detector.AdvancedKeyActionDetect
 import com.skullmangames.darksouls.client.input.detector.KeyActionDetector.Action;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
-import com.skullmangames.darksouls.network.client.CTSPerformDodge.DodgeType;
+import com.skullmangames.darksouls.network.packets.client.CTSPerformDodge.DodgeType;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.player.Input;

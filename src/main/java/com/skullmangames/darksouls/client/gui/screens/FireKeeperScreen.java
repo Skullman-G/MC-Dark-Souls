@@ -7,7 +7,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.gui.widget.ResizeTextButton;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSOpenFireKeeperContainer;
+import com.skullmangames.darksouls.network.packets.client.CTSOpenFireKeeperContainer;
 
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;

@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.entity.stats.StatHolder.ChangeRequest;
 import com.skullmangames.darksouls.common.entity.stats.Stats;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCStat;
+import com.skullmangames.darksouls.network.packets.server.STCStat;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

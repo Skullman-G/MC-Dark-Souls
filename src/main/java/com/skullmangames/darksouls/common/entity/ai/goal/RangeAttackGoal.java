@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import com.skullmangames.darksouls.common.capability.entity.HumanoidCap;
 import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCPlayAnimation;
+import com.skullmangames.darksouls.network.packets.server.STCPlayAnimation;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.core.init.Animations;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCNPCChat;
+import com.skullmangames.darksouls.network.packets.server.STCNPCChat;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;

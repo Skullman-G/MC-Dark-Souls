@@ -8,7 +8,7 @@ import com.mojang.datafixers.util.Pair;
 import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSTeleportPlayer;
+import com.skullmangames.darksouls.network.packets.client.CTSTeleportPlayer;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;

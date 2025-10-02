@@ -13,7 +13,7 @@ import com.skullmangames.darksouls.common.capability.item.Shield;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.math.vector.Vector2f;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCLivingMotionChange;
+import com.skullmangames.darksouls.network.packets.server.STCLivingMotionChange;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

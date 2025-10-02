@@ -20,9 +20,9 @@ import com.skullmangames.darksouls.core.init.ModSoundEvents;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.STCChangeEquipment;
-import com.skullmangames.darksouls.network.server.STCPotion;
-import com.skullmangames.darksouls.network.server.STCPotion.Action;
+import com.skullmangames.darksouls.network.packets.server.STCChangeEquipment;
+import com.skullmangames.darksouls.network.packets.server.STCPotion;
+import com.skullmangames.darksouls.network.packets.server.STCPotion.Action;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;

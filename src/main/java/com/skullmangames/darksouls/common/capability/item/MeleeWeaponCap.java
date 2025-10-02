@@ -30,7 +30,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.client.CTSPlayAnimation;
+import com.skullmangames.darksouls.network.packets.client.CTSPlayAnimation;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;

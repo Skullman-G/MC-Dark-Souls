@@ -12,8 +12,8 @@ import com.skullmangames.darksouls.core.init.ModBlockEntities;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
 import com.skullmangames.darksouls.core.init.ModItems;
 import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireNameScreen;
-import com.skullmangames.darksouls.network.server.gui.STCOpenBonfireScreen;
+import com.skullmangames.darksouls.network.packets.server.gui.STCOpenBonfireNameScreen;
+import com.skullmangames.darksouls.network.packets.server.gui.STCOpenBonfireScreen;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
