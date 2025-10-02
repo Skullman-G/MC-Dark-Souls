@@ -28,28 +28,17 @@ public class ServerAnimator extends Animator
 	public void playAnimation(StaticAnimation nextAnimation, float startAt)
 	{
 		this.pause = false;
-		this.animationPlayer.getPlay().onUpdate(this.entityCap);
-		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
-		nextAnimation.onStart(this.entityCap);
+		this.animationPlayer.getPlay().onUpdate(this.entityCap, this.animationPlayer);
+		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer);
+		nextAnimation.onStart(this.entityCap, this.animationPlayer);
 		LinkAnimation linkAnim = nextAnimation.getLinkAnimation(nextAnimation.getPoseByTime(this.entityCap, 0.0F, 0.0F),
 				startAt,
-				this.entityCap);
+				this.entityCap,
+				this.animationPlayer);
 		this.animationPlayer.setPlayAnimation(linkAnim);
 		
 		this.nextPlaying = nextAnimation;
 	}
-
-	@Override
-	public void playAnimationInstantly(StaticAnimation nextAnimation)
-	{
-		this.pause = false;
-		this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer.isEnd());
-		nextAnimation.onStart(this.entityCap);
-		this.animationPlayer.setPlayAnimation(nextAnimation);
-	}
-
-	@Override
-	public void init() {}
 
 	@Override
 	public void updatePose()
@@ -65,25 +54,20 @@ public class ServerAnimator extends Animator
 
 		this.animationPlayer.update(this.entityCap);
 		this.updatePose();
-		this.animationPlayer.getPlay().onUpdate(this.entityCap);
+		this.animationPlayer.getPlay().onUpdate(this.entityCap, this.animationPlayer);
 
 		if (this.animationPlayer.isEnd())
 		{
 			float exceedTime = this.animationPlayer.getExceedTime();
-			this.animationPlayer.getPlay().onFinish(this.entityCap, true);
+			this.animationPlayer.getPlay().onFinish(this.entityCap, this.animationPlayer);
 
 			if (this.nextPlaying == null)
 			{
 				this.animationPlayer.setPlayAnimation(Animations.DUMMY_ANIMATION);
 				this.pause = true;
-			} else
+			}
+			else
 			{
-				if (!(this.animationPlayer.getPlay() instanceof LinkAnimation)
-						&& !(this.nextPlaying instanceof LinkAnimation))
-				{
-					this.nextPlaying.onStart(this.entityCap);
-				}
-
 				this.animationPlayer.setPlayAnimation(this.nextPlaying);
 				this.animationPlayer.setElapsedTime(this.animationPlayer.getElapsedTime() + exceedTime * 2); // Probably unfinished
 				this.nextPlaying = null;

@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
@@ -47,15 +48,15 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onStart(entityCap);
+		super.onStart(entityCap, animPlayer);
 		entityCap.currentlyAttackedEntities.clear();
 	}
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
+	public void renderDebugging(AnimationPlayer animPlayer, PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
 	{
 		AABB aabb = entityCap.getOriginalEntity().getBoundingBox();
 		Vec3 aabbCenter = aabb.getCenter();
@@ -64,9 +65,9 @@ public class DodgingAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		
 		if (entityCap.isClientSide()) return;
 		
@@ -99,12 +100,6 @@ public class DodgingAnimation extends ActionAnimation
 				entityCap.currentlyAttackedEntities.add(trueEntity);
 			}
 		}
-	}
-	
-	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
-	{
-		super.onFinish(entityCap, isEnd);
 	}
 	
 	@Override

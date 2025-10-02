@@ -3,6 +3,7 @@ package com.skullmangames.darksouls.common.animation.types;
 import java.util.Optional;
 
 import com.skullmangames.darksouls.client.animation.AnimationLayer.LayerPart;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Pose;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
@@ -27,7 +28,7 @@ public class LayerOffAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		if (entityCap.isClientSide())
 			entityCap.getClientAnimator().baseLayer.disableLayer(this.layerPart);

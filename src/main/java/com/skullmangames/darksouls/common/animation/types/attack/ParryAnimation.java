@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.ActionAnimation;
@@ -53,9 +54,9 @@ public class ParryAnimation extends ActionAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		
 		if (!entityCap.isClientSide())
 		{
@@ -134,7 +135,7 @@ public class ParryAnimation extends ActionAnimation
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
+	public void renderDebugging(AnimationPlayer animPlayer, PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
 	{
 		this.getCollider(entityCap).draw(entityCap, this.jointName, partialTicks);
 	}

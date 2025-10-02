@@ -48,20 +48,20 @@ public class AnimationLayer
 	public void playAnimation(StaticAnimation nextAnimation, LivingCap<?> entityCap, float startAt)
 	{
 		Pose lastPose = entityCap.getAnimator().getPose(Minecraft.getInstance().getFrameTime());
-		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer.isEnd());
+		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer);
 		this.resume();
-		nextAnimation.onStart(entityCap);
+		nextAnimation.onStart(entityCap, this.animationPlayer);
 
-		LinkAnimation linkAnim = nextAnimation.getLinkAnimation(lastPose, startAt, entityCap);
+		LinkAnimation linkAnim = nextAnimation.getLinkAnimation(lastPose, startAt, entityCap, this.animationPlayer);
 		this.animationPlayer.setPlayAnimation(linkAnim);
 		this.nextAnimation = nextAnimation;
 	}
 
 	public void playAnimation(DynamicAnimation nextAnimation, LivingCap<?> entityCap)
 	{
-		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer.isEnd());
+		this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer);
 		this.resume();
-		nextAnimation.onStart(entityCap);
+		nextAnimation.onStart(entityCap, this.animationPlayer);
 		this.animationPlayer.setPlayAnimation(nextAnimation);
 		this.nextAnimation = null;
 	}
@@ -75,19 +75,19 @@ public class AnimationLayer
 		}
 
 		this.animationPlayer.update(entityCap);
-		this.animationPlayer.getPlay().onUpdate(entityCap);
+		this.animationPlayer.getPlay().onUpdate(entityCap, this.animationPlayer);
 
 		if (this.animationPlayer.isEnd())
 		{
 			if (this.nextAnimation != null)
 			{
 				float exceedTime = this.animationPlayer.getExceedTime();
-				this.animationPlayer.getPlay().onFinish(entityCap, true);
+				this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer);
 
 				if (!(this.animationPlayer.getPlay() instanceof LinkAnimation)
 						&& !(this.nextAnimation instanceof LinkAnimation))
 				{
-					this.nextAnimation.onStart(entityCap);
+					this.nextAnimation.onStart(entityCap, this.animationPlayer);
 				}
 				
 				this.animationPlayer.setPlayAnimation(this.nextAnimation);
@@ -99,7 +99,7 @@ public class AnimationLayer
 			{
 				if (this.animationPlayer.getPlay() instanceof LayerOffAnimation)
 				{
-					this.animationPlayer.getPlay().onFinish(entityCap, true);
+					this.animationPlayer.getPlay().onFinish(entityCap, this.animationPlayer);
 				}
 				else
 				{

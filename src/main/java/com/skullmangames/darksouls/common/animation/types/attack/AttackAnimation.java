@@ -114,19 +114,18 @@ public class AttackAnimation extends ActionAnimation
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		
 		if (entityCap.isClientSide())
 		{
-			this.onClientUpdate(entityCap);
+			this.onClientUpdate(entityCap, animPlayer);
 			return;
 		}
 		
 		LivingEntity entity = entityCap.getOriginalEntity();
 
-		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
 		float prevElapsedTime = animPlayer.getPrevElapsedTime();
 		EntityState state = this.getState(elapsedTime);
@@ -198,11 +197,10 @@ public class AttackAnimation extends ActionAnimation
 	protected void onAttackFinish(LivingCap<?> entityCap, boolean critical) {}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void onClientUpdate(LivingCap<?> entityCap)
+	public void onClientUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		LivingEntity entity = entityCap.getOriginalEntity();
 
-		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
 		float prevElapsedTime = animPlayer.getPrevElapsedTime();
 		EntityState state = this.getState(elapsedTime);
@@ -244,9 +242,8 @@ public class AttackAnimation extends ActionAnimation
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
+	public void renderDebugging(AnimationPlayer animPlayer, PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks)
 	{
-		AnimationPlayer animPlayer = entityCap.getAnimator().getPlayerFor(this);
 		float elapsedTime = animPlayer.getElapsedTime();
 		this.getCollider(entityCap, elapsedTime).draw(entityCap, this.getPathIndexByTime(elapsedTime), partialTicks);
 	}
@@ -269,9 +266,9 @@ public class AttackAnimation extends ActionAnimation
 	}
 
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onFinish(entityCap, isEnd);
+		super.onFinish(entityCap, animPlayer);
 		entityCap.weaponCollider = null;
 		entityCap.currentlyAttackedEntities.clear();
 		if (entityCap instanceof HumanoidCap && entityCap.isClientSide())

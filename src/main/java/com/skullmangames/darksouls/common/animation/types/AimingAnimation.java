@@ -40,16 +40,15 @@ public class AimingAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		if (!this.isReboundAnimation())
 		{
 			ClientAnimator animator = entityCap.getClientAnimator();
 			AnimationLayer layer = animator.getMixLayer(this.getLayerPart());
-			AnimationPlayer player = layer.animationPlayer;
 
-			if (player.getElapsedTime() >= this.totalTime - 0.06F)
+			if (animPlayer.getElapsedTime() >= this.totalTime - 0.06F)
 			{
 				layer.pause();
 			}

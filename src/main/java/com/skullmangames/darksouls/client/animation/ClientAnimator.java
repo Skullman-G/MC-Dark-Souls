@@ -67,13 +67,6 @@ public class ClientAnimator extends Animator
 	}
 
 	@Override
-	public void playAnimationInstantly(StaticAnimation nextAnimation)
-	{
-		this.baseLayer.paused = false;
-		this.baseLayer.playAnimation(nextAnimation, this.entityCap);
-	}
-
-	@Override
 	public void putLivingAnimation(LivingMotion livingMotion, StaticAnimation animation)
 	{
 		if (animation != null) this.livingAnimations.put(livingMotion, animation);

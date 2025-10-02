@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
 
@@ -25,9 +26,9 @@ public class ImmovableAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onStart(entityCap);
+		super.onStart(entityCap, animPlayer);
 
 		if (entityCap.isClientSide())
 		{
@@ -45,16 +46,16 @@ public class ImmovableAnimation extends StaticAnimation
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		entityCap.getOriginalEntity().animationSpeed = 0;
 	}
 	
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onFinish(entityCap, isEnd);
+		super.onFinish(entityCap, animPlayer);
 		
 		if (entityCap.getOriginalEntity() instanceof Mob)
 		{

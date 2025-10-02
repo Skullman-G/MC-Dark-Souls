@@ -22,8 +22,6 @@ public abstract class Animator
 
 	public abstract void playAnimation(StaticAnimation nextAnimation, float startAt);
 
-	public abstract void playAnimationInstantly(StaticAnimation nextAnimation);
-
 	public abstract void update();
 
 	public abstract EntityState getEntityState();
@@ -32,18 +30,13 @@ public abstract class Animator
 	
 	public abstract AnimationPlayer getMainPlayer();
 
-	public abstract void init();
-
 	public abstract void updatePose();
+	
+	public void init() {}
 
 	public final void playAnimation(ResourceLocation id, float startAt)
 	{
 		this.playAnimation(AnimationManager.getAnimation(id), startAt);
-	}
-
-	public final void playAnimationInstantly(ResourceLocation id)
-	{
-		this.playAnimationInstantly(AnimationManager.getAnimation(id));
 	}
 
 	public Pose getPose(float partialTicks)

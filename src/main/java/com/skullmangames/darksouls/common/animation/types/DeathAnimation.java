@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.Property.DeathProperty;
@@ -26,21 +27,21 @@ public class DeathAnimation extends InvincibleAnimation
 	}
 	
 	@Override
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onStart(entityCap);
+		super.onStart(entityCap, animPlayer);
 		entityCap.getOriginalEntity().deathTime = 0;
 	}
 	
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		entityCap.getOriginalEntity().deathTime = 0;
 		
 		if (entityCap.isClientSide())
 		{
-			float elapsedTime = entityCap.getAnimator().getPlayerFor(this).getElapsedTime();
+			float elapsedTime = animPlayer.getElapsedTime();
 			float disappearAt = this.getProperty(DeathProperty.DISAPPEAR_AT).orElse(this.getTotalTime());
 			if (elapsedTime >= disappearAt)
 			{
@@ -58,9 +59,9 @@ public class DeathAnimation extends InvincibleAnimation
 	}
 	
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onFinish(entityCap, isEnd);
+		super.onFinish(entityCap, animPlayer);
 		entityCap.onDeath();
 		entityCap.getOriginalEntity().deathTime = 19;
 	}

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.skullmangames.darksouls.client.renderer.entity.model.Model;
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.AnimationType;
 import com.skullmangames.darksouls.common.animation.Property;
 import com.skullmangames.darksouls.common.animation.types.InvincibleAnimation;
@@ -42,15 +43,15 @@ public class CriticalFollowupAnimation extends InvincibleAnimation
 	}
 	
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		
 		Entity target = entityCap.criticalTarget;
 		if (target == null) return;
 		
-		float time = entityCap.getAnimator().getMainPlayer().getElapsedTime();
-		float prevTime = entityCap.getAnimator().getMainPlayer().getPrevElapsedTime();
+		float time = animPlayer.getElapsedTime();
+		float prevTime = animPlayer.getPrevElapsedTime();
 		if (time >= this.hit && prevTime < this.hit)
 		{
 			if (this.dealsDamage)

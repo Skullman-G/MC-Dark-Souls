@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Pose;
@@ -64,7 +65,7 @@ public class DynamicAnimation
 		return this.getFrameData().getPoseByTimeRaw(entityCap, time, partialTicks);
 	}
 
-	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap)
+	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		if (!entityCap.isClientSide())
 		{
@@ -92,15 +93,15 @@ public class DynamicAnimation
 		return new LinkAnimation(startAt, this, frameDataBuilder.build());
 	}
 
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 	}
 
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 	}
 
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 	}
 
@@ -181,5 +182,5 @@ public class DynamicAnimation
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void renderDebugging(PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks) {}
+	public void renderDebugging(AnimationPlayer animPlayer, PoseStack poseStack, MultiBufferSource buffer, LivingCap<?> entityCap, float partialTicks) {}
 }

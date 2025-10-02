@@ -83,7 +83,7 @@ public class StaticAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{
@@ -98,16 +98,14 @@ public class StaticAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{
-			AnimationPlayer player = entityCap.getAnimator().getPlayerFor(this);
-
-			if (player != null)
+			if (animPlayer != null)
 			{
-				float prevElapsed = player.getPrevElapsedTime();
-				float elapsed = player.getElapsedTime();
+				float prevElapsed = animPlayer.getPrevElapsedTime();
+				float elapsed = animPlayer.getElapsedTime();
 
 				for (AnimEvent event : events)
 				{
@@ -127,7 +125,7 @@ public class StaticAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		this.getProperty(StaticAnimationProperty.EVENTS).ifPresent((events) ->
 		{

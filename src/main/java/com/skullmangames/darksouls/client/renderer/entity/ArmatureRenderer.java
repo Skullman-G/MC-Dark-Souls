@@ -83,7 +83,7 @@ public abstract class ArmatureRenderer<E extends LivingEntity, T extends LivingC
 				for (AnimationLayer.LayerPart priority : AnimationLayer.LayerPart.values())
 				{
 					AnimationPlayer animPlayer = entityCap.getClientAnimator().getMixLayer(priority).animationPlayer;
-					animPlayer.getPlay().renderDebugging(poseStack, buffer, entityCap, partialTicks);
+					animPlayer.getPlay().renderDebugging(animPlayer, poseStack, buffer, entityCap, partialTicks);
 				}
 			}
 		}

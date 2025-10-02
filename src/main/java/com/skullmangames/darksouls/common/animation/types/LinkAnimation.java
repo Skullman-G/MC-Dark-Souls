@@ -1,6 +1,7 @@
 package com.skullmangames.darksouls.common.animation.types;
 
 import com.skullmangames.darksouls.common.animation.AnimFrameData;
+import com.skullmangames.darksouls.common.animation.AnimationPlayer;
 import com.skullmangames.darksouls.common.animation.JointTransform;
 import com.skullmangames.darksouls.common.animation.Keyframe;
 import com.skullmangames.darksouls.common.animation.Pose;
@@ -21,24 +22,24 @@ public class LinkAnimation extends DynamicAnimation
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		this.nextAnimation.onUpdateLink(entityCap, this);
 	}
 
 	@Override
-	public void onFinish(LivingCap<?> entityCap, boolean isEnd)
+	public void onFinish(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		float startsAt = this.getStartsAt(entityCap);
 		
-		if (!isEnd)
+		if (!animPlayer.isEnd())
 		{
-			this.nextAnimation.onFinish(entityCap, isEnd);
+			this.nextAnimation.onFinish(entityCap, animPlayer);
 		}
 		else if (startsAt > 0.0F)
 		{
-			entityCap.getAnimator().getPlayerFor(this).setElapsedTime(startsAt);
-			entityCap.getAnimator().getPlayerFor(this).markToDoNotReset();
+			animPlayer.setElapsedTime(startsAt);
+			animPlayer.markToDoNotReset();
 		}
 	}
 

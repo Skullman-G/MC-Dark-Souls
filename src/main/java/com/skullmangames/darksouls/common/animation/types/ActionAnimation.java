@@ -56,9 +56,9 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 
 	@Override
-	public void onStart(LivingCap<?> entityCap)
+	public void onStart(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onStart(entityCap);
+		super.onStart(entityCap, animPlayer);
 		if (!(this instanceof BlockedAnimation)) entityCap.cancelUsingItem();
 
 		if (this.getProperty(ActionAnimationProperty.INTERRUPT_PREVIOUS_DELTA_MOVEMENT).orElse(true))
@@ -71,13 +71,13 @@ public class ActionAnimation extends ImmovableAnimation
 					transformSheet.readFrom(self.getJointTransform("Root"));
 				});
 
-		entityCap.getAnimator().getPlayerFor(this).setMovementAnimation(this, entityCap, movementAnimationSetter);
+		animPlayer.setMovementAnimation(this, entityCap, movementAnimationSetter);
 	}
 
 	@Override
-	public void onUpdate(LivingCap<?> entityCap)
+	public void onUpdate(LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
-		super.onUpdate(entityCap);
+		super.onUpdate(entityCap, animPlayer);
 		this.move(entityCap, this);
 	}
 
@@ -169,7 +169,7 @@ public class ActionAnimation extends ImmovableAnimation
 	}
 
 	@Override
-	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap)
+	public LinkAnimation getLinkAnimation(Pose lastPose, float startAt, LivingCap<?> entityCap, AnimationPlayer animPlayer)
 	{
 		float totalTime = this.convertTime;
 		startAt = ModMath.clamp(startAt, 0.05F, this.getTotalTime());
@@ -182,7 +182,7 @@ public class ActionAnimation extends ImmovableAnimation
 		Map<String, JointTransform> nextTransforms = pose.getJointTransformData();
 		
 		JointTransform rootTransform = pose.getTransformByName("Root");
-		Vector3f withPosition = entityCap.getAnimator().getPlayerFor(this).getMovementAnimation()
+		Vector3f withPosition = animPlayer.getMovementAnimation()
 				.getInterpolatedTranslation(startAt);
 		
 		rootTransform.translation().set(withPosition.x(), rootTransform.translation().y(), withPosition.z());
@@ -236,7 +236,8 @@ public class ActionAnimation extends ImmovableAnimation
 			}
 
 			return new Vector3f(dx, dy, dz);
-		} else
+		}
+		else
 		{
 			return new Vector3f(0, 0, 0);
 		}
