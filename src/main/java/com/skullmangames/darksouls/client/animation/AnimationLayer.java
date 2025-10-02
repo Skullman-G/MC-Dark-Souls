@@ -14,7 +14,6 @@ import com.skullmangames.darksouls.common.animation.types.LinkAnimation;
 import com.skullmangames.darksouls.common.animation.types.StaticAnimation;
 import com.skullmangames.darksouls.common.capability.entity.LivingCap;
 import com.skullmangames.darksouls.core.init.Animations;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.api.distmarker.Dist;
@@ -192,7 +191,7 @@ public class AnimationLayer
 		{
 			AnimationLayer layer = this.mixLayers.get(part);
 			layer.disabled = true;
-			this.animationPlayer.setPlayAnimation(Animations.DUMMY_ANIMATION); 
+			layer.animationPlayer.setPlayAnimation(Animations.DUMMY_ANIMATION); 
 		}
 
 		@Override
