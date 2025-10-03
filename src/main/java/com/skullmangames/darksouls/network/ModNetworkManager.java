@@ -38,6 +38,7 @@ import com.skullmangames.darksouls.network.packets.server.STCPlayBonfireAmbientS
 import com.skullmangames.darksouls.network.packets.server.STCPotion;
 import com.skullmangames.darksouls.network.packets.server.STCSetMaxPlayerLevel;
 import com.skullmangames.darksouls.network.packets.server.STCSetPos;
+import com.skullmangames.darksouls.network.packets.server.STCShakeCam;
 import com.skullmangames.darksouls.network.packets.server.STCSoulMerchantOffers;
 import com.skullmangames.darksouls.network.packets.server.STCSouls;
 import com.skullmangames.darksouls.network.packets.server.STCStamina;
@@ -147,5 +148,6 @@ public class ModNetworkManager
 		registerMessage(id++, STCChangeEquipment.class, STCChangeEquipment::new);
 		registerMessage(id++, STCSetMaxPlayerLevel.class, STCSetMaxPlayerLevel::new);
 		registerMessage(id++, STCEntityBloodImpactParticles.class, STCEntityBloodImpactParticles::new);
+		registerMessage(id++, STCShakeCam.class, STCShakeCam::new);
 	}
 }

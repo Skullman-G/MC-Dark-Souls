@@ -29,11 +29,13 @@ import com.skullmangames.darksouls.network.packets.server.STCLoadPlayerData;
 import com.skullmangames.darksouls.network.packets.server.STCNotifyPlayerYawChanged;
 import com.skullmangames.darksouls.network.packets.server.STCPlayAnimation;
 import com.skullmangames.darksouls.network.packets.server.STCSetMaxPlayerLevel;
+import com.skullmangames.darksouls.network.packets.server.STCShakeCam;
 import com.skullmangames.darksouls.network.packets.server.STCSouls;
 import com.skullmangames.darksouls.network.packets.server.STCStamina;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -303,6 +305,17 @@ public class ServerPlayerCap extends PlayerCap<ServerPlayer>
 		damageSource.setStunType(StunType.DISARMED);
 		this.cancelUsingItem();
 		return true;
+	}
+	
+	@Override
+	public void onActuallyHurt(DamageSource damageSource)
+	{
+		if (this.getEntityState().isDodging())
+		{
+			ModNetworkManager.sendToPlayer(new STCShakeCam(10, 1.0F), this.orgEntity);
+		}
+		
+		super.onActuallyHurt(damageSource);
 	}
 	
 	@Override
