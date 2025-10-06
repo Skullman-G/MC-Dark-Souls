@@ -60,7 +60,7 @@ public enum EntityState
 
 	public boolean shouldDetectCollision()
 	{
-		return (this.flags & M_LOCK_FLAG) != 0;
+		return (this.flags & COLLISION_FLAG) != 0;
 	}
 
 	public boolean isInvincible()
