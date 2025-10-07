@@ -18,7 +18,7 @@ public class ProjectileConfigs extends DSJsonDataRegister<ProjectileCapability.B
 	@Override
 	public String getDirectory()
 	{
-		return "projectile";
+		return "projectiles";
 	}
 	
 	@Override
