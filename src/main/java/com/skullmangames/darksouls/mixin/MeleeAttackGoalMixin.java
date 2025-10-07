@@ -2,10 +2,8 @@ package com.skullmangames.darksouls.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -24,16 +22,15 @@ public abstract class MeleeAttackGoalMixin
 		return this.requiresUpdateEveryTick() ? ticks : Goal.reducedTickDelay(ticks);
 	}
 
-	@Inject(at = @At(value = "HEAD"), method = "Lnet/minecraft/world/entity/ai/goal/MeleeAttackGoal;resetAttackCooldown()V", cancellable = true)
-	protected void onResetAttackCooldown(CallbackInfo info)
+	@WrapMethod(method = "resetAttackCooldown")
+	protected void onResetAttackCooldown(Operation<Void> original)
 	{
-		info.cancel();
-		this.ticksUntilNextAttack = this.adjustedTickDelay(1000);
+		this.ticksUntilNextAttack = this.adjustedTickDelay(100);
 	}
 
-	@Inject(at = @At(value = "RETURN"), method = "Lnet/minecraft/world/entity/ai/goal/MeleeAttackGoal;getAttackInterval()I", cancellable = true)
-	protected void onGetAttackInterval(CallbackInfoReturnable<Integer> cir)
+	@WrapMethod(method = "getAttackInterval")
+	protected int onGetAttackInterval(Operation<Integer> original)
 	{
-		cir.setReturnValue(this.adjustedTickDelay(1000));
+		return this.adjustedTickDelay(100);
 	}
 }
