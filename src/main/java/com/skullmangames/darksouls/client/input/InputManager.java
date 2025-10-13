@@ -103,7 +103,7 @@ public class InputManager
 	 */
 	public boolean shouldCancelScrolling()
 	{
-		return this.playerCap != null && this.playerCap.isInaction() && this.minecraft.screen != null;
+		return this.playerCap != null && this.playerCap.isInaction() && this.minecraft.screen == null;
 	}
 	
 	public boolean shouldShowItemInfo()
