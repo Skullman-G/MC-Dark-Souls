@@ -30,11 +30,11 @@ public class InputManager
 	protected LocalPlayerCap playerCap;
 	private KeyBindingMap keyHash;
 	protected final Minecraft minecraft;
-	protected final Options options;
+	public final Options options;
 	
 	private final MouseInputHandler mouseHandler;
 	
-	private final CombatInputHandler combatHandler;
+	public final ActionInputHandler actionHandler;
 	private final MovementInputHandler movementHandler;
 	private final UIInputHandler uiHandler;
 	
@@ -61,7 +61,7 @@ public class InputManager
 			e.printStackTrace();
 		}
 		
-		this.combatHandler = new CombatInputHandler(this);
+		this.actionHandler = new ActionInputHandler(this);
 		this.movementHandler = new MovementInputHandler(this);
 		this.uiHandler = new UIInputHandler(this);
 		
@@ -141,8 +141,7 @@ public class InputManager
 		this.keyFunctionMap.values().forEach((d) -> d.tick());
 		this.guiKeyFunctionMap.values().forEach((d) -> d.tick());
 		
-		this.combatHandler.tick();
-		this.movementHandler.tick();
+		this.actionHandler.tick();
 		
 		if (this.minecraft.isPaused()) this.minecraft.mouseHandler.setup(this.minecraft.getWindow().getWindow());
 	}
@@ -150,19 +149,6 @@ public class InputManager
 	public void handleMovement(Input in)
 	{
 		this.movementHandler.handleMovement(in);
-	}
-	
-	public boolean isKeyDown(KeyMapping key)
-	{
-		if(key.getKey().getType() == InputConstants.Type.KEYSYM)
-		{
-			return GLFW.glfwGetKey(this.minecraft.getWindow().getWindow(), key.getKey().getValue()) > 0;
-		}
-		else if(key.getKey().getType() == InputConstants.Type.MOUSE)
-		{
-			return GLFW.glfwGetMouseButton(this.minecraft.getWindow().getWindow(), key.getKey().getValue()) > 0;
-		}
-		else return false;
 	}
 	
 	public void setKeyBind(KeyMapping key, boolean setter)

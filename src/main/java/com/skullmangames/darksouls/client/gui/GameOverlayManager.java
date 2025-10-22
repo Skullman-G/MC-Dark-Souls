@@ -17,7 +17,7 @@ import com.skullmangames.darksouls.config.ConfigManager;
 import com.skullmangames.darksouls.common.capability.entity.EntityCapability;
 import com.skullmangames.darksouls.core.init.ModAttributes;
 import com.skullmangames.darksouls.core.init.ModCapabilities;
-import com.skullmangames.darksouls.core.util.timer.Timer;
+import com.skullmangames.darksouls.core.util.timer.TickTimer;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -43,22 +43,22 @@ public class GameOverlayManager
 	private static final ResourceLocation BOSS_BARS_LOCATION = new ResourceLocation("textures/gui/bars.png");
 	private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation(DarkSouls.MOD_ID, "textures/guis/widgets.png");
 	
-	private final Timer damageCooldown = new Timer();
-	private final Timer damageTimer = new Timer();
-	private final Timer healTimer = new Timer();
+	private final TickTimer damageCooldown = TickTimer.timer();
+	private final TickTimer damageTimer = TickTimer.timer();
+	private final TickTimer healTimer = TickTimer.timer();
 	private int lastHealth;
 	private int saveLastHealth;
 	public boolean isHealing = false;
 	
 	public float lastFP;
 	private float saveLastFP;
-	private final Timer fpDrainCooldown = new Timer();
-	private final Timer fpDrainTimer = new Timer();
-	private final Timer fpRiseTimer = new Timer();
+	private final TickTimer fpDrainCooldown = TickTimer.timer();
+	private final TickTimer fpDrainTimer = TickTimer.timer();
+	private final TickTimer fpRiseTimer = TickTimer.timer();
 	
-	private final Timer staminaTimer = new Timer();
-	private final Timer staminaDrainTimer = new Timer();
-	private final Timer stamiaDrainCooldownTimer = new Timer();
+	private final TickTimer staminaTimer = TickTimer.timer();
+	private final TickTimer staminaDrainTimer = TickTimer.timer();
+	private final TickTimer stamiaDrainCooldownTimer = TickTimer.timer();
 	public float lastStamina;
 	private float saveLastStamina;
 	private float saveLastStamina2;
@@ -67,7 +67,7 @@ public class GameOverlayManager
 	public int lastSouls;
 	private int soulIncr;
 	private float lerpSouls = 1;
-	private final Timer soulGetTimer = new Timer();
+	private final TickTimer soulGetTimer = TickTimer.timer();
 	public boolean canAnimateSouls = false;
 	
 	private final Map<UUID, BossHealthInfo> bossHealthInfoMap = new HashMap<>();
@@ -382,14 +382,14 @@ public class GameOverlayManager
 				flag = true;
 			}
 			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
-			fpDrainCooldown.drain(1);
+			fpDrainCooldown.tick();
 			if (!fpDrainCooldown.isTicking() && (!fpDrainTimer.isTicking() || flag))
 				fpDrainTimer.start((int)(visibleFP * 200));
 		} else if (fpDrainTimer.isTicking())
 		{
 			fpRiseTimer.stop();
 			drawBar(poseStack, x, y, 0, 14, 256, 7, length, (int)(visibleFP * length)); // Yellow
-			fpDrainTimer.drain(1);
+			fpDrainTimer.tick();
 		}
 
 		// Rise Animation
@@ -502,13 +502,13 @@ public class GameOverlayManager
 				flag = true;
 			}
 			gui.blit(poseStack, x, y, 0, 45, damagedHealth, 5); // Yellow
-			info.damageCooldown.drain(1);
+			info.damageCooldown.tick();
 			if (!info.damageCooldown.isTicking() && (!info.damageTimer.isTicking() || flag)) info.damageTimer.start(damagedHealth * 2);
 		}
 		else if (info.damageTimer.isTicking())
 		{
 			gui.blit(poseStack, x, y, 0, 45, damagedHealth, 5); // Yellow
-			info.damageTimer.drain(1);
+			info.damageTimer.tick();
 		}
 		
 		info.lastHealth = progress;
@@ -525,8 +525,8 @@ public class GameOverlayManager
 	
 	private static class BossHealthInfo
 	{
-		private final Timer damageCooldown = new Timer();
-		private final Timer damageTimer = new Timer();
+		private final TickTimer damageCooldown = TickTimer.timer();
+		private final TickTimer damageTimer = TickTimer.timer();
 		private int lastHealth;
 		private int saveLastHealth;
 	}
@@ -572,14 +572,14 @@ public class GameOverlayManager
 				flag = true;
 			}
 			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
-			damageCooldown.drain(1);
+			damageCooldown.tick();
 			if (!damageCooldown.isTicking() && (!damageTimer.isTicking() || flag)) damageTimer.start(damagedHealth * 2);
 		}
 		else if (damageTimer.isTicking())
 		{
 			healTimer.stop();
 			drawBar(poseStack, x, y, 0, 14, 256, 7, length, damagedHealth); // Yellow
-			damageTimer.drain(1);
+			damageTimer.tick();
 		}
 		
 		// Heal Animation
@@ -646,7 +646,7 @@ public class GameOverlayManager
 		
 		if (stamiaDrainCooldownTimer.isTicking())
 		{
-			stamiaDrainCooldownTimer.drain(1);
+			stamiaDrainCooldownTimer.tick();
 			if (!stamiaDrainCooldownTimer.isTicking() && !staminaDrainTimer.isTicking()) staminaDrainTimer.start((int)(drainedStamina * 200));
 		}
 		else if (staminaDrainTimer.isTicking()) staminaDrainTimer.drain(1);
@@ -728,7 +728,7 @@ public class GameOverlayManager
 			
 			if (!this.minecraft.isPaused())
 			{
-				this.soulGetTimer.drain(1);
+				this.soulGetTimer.tick();
 				this.lerpSouls = Math.min(this.lerpSouls + 0.01F, 1);
 				if (currentSouls != this.lastCurrentSouls) this.lerpSouls = 0;
 				if (this.lerpSouls == 1) this.lastSouls = currentSouls;

@@ -1,30 +1,48 @@
 package com.skullmangames.darksouls.client.input;
 
 import com.skullmangames.darksouls.client.ClientManager;
-import com.skullmangames.darksouls.client.input.detector.KeyActionDetector;
+import com.skullmangames.darksouls.client.input.detector.AdvancedKeyActionDetector;
 import com.skullmangames.darksouls.client.input.detector.KeyActionDetector.Action;
 import com.skullmangames.darksouls.client.input.key.ModKeys;
+import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
+import com.skullmangames.darksouls.common.capability.entity.LocalPlayerCap.PlayerAction;
 import com.skullmangames.darksouls.common.capability.item.ItemCapability;
-import com.skullmangames.darksouls.common.capability.item.MeleeWeaponCap.AttackType;
 import com.skullmangames.darksouls.config.ConfigManager;
+import com.skullmangames.darksouls.core.util.timer.TickTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.packets.client.CTSTwoHanding;
-
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;
 
-public class CombatInputHandler
+public class ActionInputHandler
 {
+	private static final float STAMINA_RECOVERY = 0.7F;
+	private static final int MAX_SPRINT_PRESS_COUNT = 5;
+	private static final int RESERVE_TIME = 50;
+	
 	private final InputManager im;
-	private final KeyActionDetector attackDetector;
 	
-	private AttackType reservedAttack;
+	public final AdvancedKeyActionDetector sprintDetector;
+	private boolean recoveringStamina;
 	
-	public CombatInputHandler(InputManager im)
+	private PlayerAction reservedAction;
+	private final TickTimer reserveActionTimer;
+	
+	public ActionInputHandler(InputManager im)
 	{
 		this.im = im;
 		
-		this.attackDetector = this.im.addAdvancedKeyAction(this.im.options.keyAttack,
+		this.reservedAction = null;
+		this.reserveActionTimer = TickTimer.timer()
+				.withOnUpdate(this::onReserveTimerUpdate)
+				.withOnFinish(this::onReserveTimerFinish);
+		
+		this.recoveringStamina = false;
+		
+		this.sprintDetector = this.im.addAdvancedKeyAction(this.im.options.keySprint,
+				MAX_SPRINT_PRESS_COUNT, this::onSprintKeyPressed);
+		
+		this.im.addAdvancedKeyAction(this.im.options.keyAttack,
 				ConfigManager.CLIENT_CONFIG.longPressCount.getValue(),
 				this::onAttackKeyPressed);
 		
@@ -43,12 +61,90 @@ public class CombatInputHandler
 		this.im.addKeyAction(ModKeys.PERFORM_SKILL, this::onPerformSkill);
 	}
 	
+	private void onReserveTimerFinish()
+	{
+		this.reservedAction = null;
+	}
+	
+	private void onReserveTimerUpdate()
+	{
+		if (!this.im.playerCap.isInaction())
+		{
+			this.im.playerCap.performAction(this.reservedAction);
+			this.reserveActionTimer.stop();
+		}
+	}
+	
 	public void tick()
 	{
-		if (!this.attackDetector.isDown() && this.reservedAttack != null && this.im.playerCap.canAttack())
+		if (this.im.player.isSprinting())
 		{
-			this.im.playerCap.performAttack(this.reservedAttack);
-			this.reservedAttack = null;
+			if (this.im.playerCap.getEquipLoadLevel() == EquipLoadLevel.OVERENCUMBERED)
+			{
+				this.im.player.setSprinting(false);
+			}
+			else if (!this.im.player.isCreative() && this.im.playerCap.getStamina() <= 0.0F)
+			{
+				this.im.player.setSprinting(false);
+				this.recoveringStamina = true;
+			}
+		}
+		
+		this.reserveActionTimer.tick();
+	}
+	
+	private void performOrReserveAction(PlayerAction action)
+	{
+		if (this.im.playerCap.isInaction())
+		{
+			this.reservedAction = action;
+			this.reserveActionTimer.start(RESERVE_TIME);
+		}
+		else
+		{
+			this.im.playerCap.performAction(action);
+			if (this.reserveActionTimer.isTicking())
+			{
+				this.reserveActionTimer.stop();
+			}
+		}
+	}
+	
+	private void onSprintKeyPressed(Action.Context ctx)
+	{
+		ctx.setOverride(true);
+
+		switch (ctx.getAction())
+		{
+			case SHORT_PRESS:
+				this.performOrReserveAction(PlayerAction.DODGE);
+				break;
+			
+			case LONG_PRESS:
+				if (this.im.playerCap.canStartSprinting())
+				{
+					this.im.player.setSprinting(true);
+				}
+				break;
+				
+			case LONG_HOLD:
+				if (this.recoveringStamina
+						&& (this.im.playerCap.getStamina() / this.im.playerCap.getMaxStamina()) >= STAMINA_RECOVERY)
+				{
+					if (this.im.playerCap.canStartSprinting())
+					{
+						this.im.player.setSprinting(true);
+					}
+					this.recoveringStamina = false;
+				}
+				break;
+				
+			case RELEASE:
+				this.im.player.setSprinting(false);
+				break;
+				
+			default:
+				break;
 		}
 	}
 	
@@ -56,7 +152,7 @@ public class CombatInputHandler
 	{
 		if (ctx.isDown() && ClientManager.INSTANCE.isCombatModeActive())
 		{
-			this.im.playerCap.performSkill();
+			this.performOrReserveAction(PlayerAction.SKILL);
 		}
 	}
 	
@@ -139,29 +235,22 @@ public class CombatInputHandler
 			switch (ctx.getAction())
 			{
 				case SHORT_PRESS:
-					if (this.im.playerCap.canAttack())
-					{
-						if (this.im.player.isSprinting()) this.im.playerCap.performAttack(AttackType.DASH);
-						else this.im.playerCap.performAttack(AttackType.LIGHT);
-					}
-					else if (this.im.playerCap.enoughStaminaToAct() && this.im.player.getVehicle() == null)
-					{
-						this.reservedAttack = AttackType.LIGHT;
-					}
+					this.performOrReserveAction(PlayerAction.LIGHT_ATTACK);
 					break;
 				
 				case LONG_PRESS:
-					if (this.im.playerCap.canAttack())
+					this.im.playerCap.performAction(PlayerAction.HEAVY_ATTACK);
+					if (this.reserveActionTimer.isTicking())
 					{
-						this.im.playerCap.performAttack(AttackType.HEAVY);
-					}
-					else if (this.im.playerCap.enoughStaminaToAct())
-					{
-						this.reservedAttack = AttackType.HEAVY;
+						this.reserveActionTimer.stop();
 					}
 					break;
 					
 				default:
+					if (ctx.isDown() && this.reserveActionTimer.isTicking())
+					{
+						this.reserveActionTimer.stop();
+					}
 					break;
 			}
 		}

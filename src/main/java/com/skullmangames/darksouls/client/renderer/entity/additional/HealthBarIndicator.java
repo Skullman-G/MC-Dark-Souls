@@ -11,7 +11,7 @@ import com.skullmangames.darksouls.DarkSouls;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.renderer.ModRenderTypes;
 import com.skullmangames.darksouls.config.ConfigManager;
-import com.skullmangames.darksouls.core.util.timer.Timer;
+import com.skullmangames.darksouls.core.util.timer.TickTimer;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -107,14 +107,14 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 				flag = true;
 			}
 			blackStart = damagedHealth;
-			info.damageCooldown.drain(1);
+			info.damageCooldown.tick();
 			if (!info.damageCooldown.isTicking() && (!info.damageTimer.isTicking() || flag)) info.damageTimer.start((int)(damagedHealth * 100));
 		}
 		else if (info.damageTimer.isTicking())
 		{
 			info.healTimer.stop();
 			blackStart = damagedHealth;
-			info.damageTimer.drain(1);
+			info.damageTimer.tick();
 		}
 		
 		// Heal Animation
@@ -176,9 +176,9 @@ public class HealthBarIndicator extends AdditionalEntityRenderer
 	
 	private static class HealthInfo
 	{
-		private final Timer damageCooldown = new Timer();
-		private final Timer damageTimer = new Timer();
-		private final Timer healTimer = new Timer();
+		private final TickTimer damageCooldown = TickTimer.timer();
+		private final TickTimer damageTimer = TickTimer.timer();
+		private final TickTimer healTimer = TickTimer.timer();
 		
 		private float lastHealth;
 		private float lastHealthPercentage;

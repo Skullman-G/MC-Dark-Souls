@@ -149,13 +149,56 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		return new Vec3((double) (f3 * f4), (double) (-f5), (double) (f2 * f4));
 	}
 	
-	public void performDodge(DodgeType type)
+	public void performDodge()
 	{
-		ModNetworkManager.sendToServer(new CTSPerformDodge(type));
+		if (this.canDodge())
+		{
+			DodgeType dodgeType = DodgeType.JUMP_BACK;
+			Vec2 moveVector = this.orgEntity.input.getMoveVector();
+			if (this.getTarget() != null || this.shouldShoulderSurf())
+			{
+				if (moveVector.y > 0) dodgeType = DodgeType.FORWARD;
+				else if (moveVector.y < 0) dodgeType = DodgeType.BACK;
+				else if (moveVector.x > 0) dodgeType = DodgeType.LEFT;
+				else if (moveVector.x < 0) dodgeType = DodgeType.RIGHT;
+			}
+			else if (moveVector.lengthSquared() != 0) dodgeType = DodgeType.FORWARD;
+			ModNetworkManager.sendToServer(new CTSPerformDodge(dodgeType));
+		}
 	}
 	
-	public void performAttack(AttackType type)
+	public void performAction(PlayerAction action)
 	{
+		switch (action)
+		{
+			case LIGHT_ATTACK:
+				if (this.orgEntity.isSprinting())
+				{
+					this.performAttack(AttackType.DASH);
+				}
+				else
+				{
+					this.performAttack(AttackType.LIGHT);
+				}
+				break;
+			case HEAVY_ATTACK:
+				this.performAttack(AttackType.HEAVY);
+				break;
+			case SKILL:
+				this.performSkill();
+				break;
+			case DODGE:
+				this.performDodge();
+				break;
+			default:
+				break;
+		}
+	}
+	
+	private void performAttack(AttackType type)
+	{
+		if (!this.canAttack()) return;
+		
 		ItemCapability itemCap = this.getHeldItemCapability(InteractionHand.MAIN_HAND);
 		
 		if (itemCap instanceof ThrowableCap throwable)
@@ -273,7 +316,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		if (value) ModNetworkManager.connection.setTitle(new TranslatableComponent("gui.darksouls.humanity_restored_message"), 10, 50, 10);
 	}
 	
-	public boolean canAttack()
+	private boolean canAttack()
 	{
 		return !this.orgEntity.isSpectator()
 				&& !this.isFalling()
@@ -284,7 +327,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 				&& this.minecraft.screen == null;
 	}
 	
-	public boolean enoughStaminaToAct()
+	private boolean enoughStaminaToAct()
 	{
 		return this.getStamina() >= 10.0F || this.orgEntity.isCreative();
 	}
@@ -312,7 +355,7 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 		return this.orgEntity.isAlive() && (!this.getEntityState().isMovementLocked() || this.orgEntity.isRidingJumpable());
 	}
 	
-	public boolean canDodge()
+	private boolean canDodge()
 	{
 		return ClientManager.INSTANCE.isCombatModeActive()
 				&&!this.orgEntity.isSpectator()
@@ -324,5 +367,13 @@ public class LocalPlayerCap extends AbstractClientPlayerCap<LocalPlayer>
 				&& !this.isMounted()
 				&& (!this.orgEntity.isUsingItem() || this.isBlocking())
 				&& this.minecraft.screen == null;
+	}
+	
+	public static enum PlayerAction
+	{
+		LIGHT_ATTACK,
+		HEAVY_ATTACK,
+		SKILL,
+		DODGE
 	}
 }

@@ -6,12 +6,8 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import com.skullmangames.darksouls.client.ClientManager;
 import com.skullmangames.darksouls.client.gui.screens.DSEquipmentScreen;
 import com.skullmangames.darksouls.client.gui.screens.DSSelectMenuScreen;
-import com.skullmangames.darksouls.client.input.detector.AdvancedKeyActionDetector;
 import com.skullmangames.darksouls.client.input.detector.KeyActionDetector.Action;
 import com.skullmangames.darksouls.common.capability.entity.EntityState;
-import com.skullmangames.darksouls.common.capability.entity.EquipLoaded.EquipLoadLevel;
-import com.skullmangames.darksouls.network.packets.client.CTSPerformDodge.DodgeType;
-
 import net.minecraft.client.CameraType;
 import net.minecraft.client.player.Input;
 import net.minecraft.util.Mth;
@@ -20,12 +16,7 @@ import net.minecraftforge.client.settings.IKeyConflictContext;
 
 public class MovementInputHandler
 {
-	private static final float STAMINA_RECOVERY = 0.7F;
-	private static final int MAX_SPRINT_PRESS_COUNT = 5;
-	
 	private final InputManager im;
-	private final AdvancedKeyActionDetector sprintDetector;
-	private boolean recoveringStamina;
 	
 	private final GLFWCursorPosCallbackI callback;
 	private double tracingMouseX;
@@ -36,10 +27,6 @@ public class MovementInputHandler
 		this.im = im;
 		
 		this.callback = (handle, x, y) -> {tracingMouseX = x; tracingMouseY = y;};
-		this.recoveringStamina = false;
-		
-		this.sprintDetector = this.im.addAdvancedKeyAction(this.im.options.keySprint,
-				MAX_SPRINT_PRESS_COUNT, this::onSprintKeyPressed);
 		
 		this.im.addGuiKeyAction(this.im.options.keyUp, this::walkWhileUIOpen);
 		this.im.addGuiKeyAction(this.im.options.keyDown, this::walkWhileUIOpen);
@@ -67,82 +54,11 @@ public class MovementInputHandler
 		this.im.options.keyRight.setKeyConflictContext(walkConflict);
 	}
 	
-	public void tick()
-	{
-		if (this.im.playerCap == null) return;
-		
-		if (this.im.player.isSprinting())
-		{
-			if (this.im.playerCap.getEquipLoadLevel() == EquipLoadLevel.OVERENCUMBERED)
-			{
-				this.im.player.setSprinting(false);
-			}
-			else if (!this.im.player.isCreative() && this.im.playerCap.getStamina() <= 0.0F)
-			{
-				this.im.player.setSprinting(false);
-				this.recoveringStamina = true;
-			}
-		}
-	}
-	
 	private void walkWhileUIOpen(Action.Context ctx)
 	{
 		if (this.im.minecraft.screen instanceof DSEquipmentScreen || this.im.minecraft.screen instanceof DSSelectMenuScreen)
 		{
 			ctx.getMapping().setDown(ctx.isDown());
-		}
-	}
-	
-	private void onSprintKeyPressed(Action.Context ctx)
-	{
-		ctx.setOverride(true);
-
-		switch (ctx.getAction())
-		{
-			case SHORT_PRESS:
-				if (this.im.playerCap.canDodge())
-				{
-					DodgeType dodgeType = DodgeType.JUMP_BACK;
-					if (this.im.playerCap.getTarget() != null || this.im.playerCap.shouldShoulderSurf())
-					{
-						if (this.im.isKeyDown(this.im.options.keyUp)) dodgeType = DodgeType.FORWARD;
-						else if (this.im.isKeyDown(this.im.options.keyDown)) dodgeType = DodgeType.BACK;
-						else if (this.im.isKeyDown(this.im.options.keyLeft)) dodgeType = DodgeType.LEFT;
-						else if (this.im.isKeyDown(this.im.options.keyRight)) dodgeType = DodgeType.RIGHT;
-					}
-					else if (this.im.isKeyDown(this.im.options.keyUp)
-							|| this.im.isKeyDown(this.im.options.keyDown)
-							|| this.im.isKeyDown(this.im.options.keyLeft)
-							|| this.im.isKeyDown(this.im.options.keyRight)) dodgeType = DodgeType.FORWARD;
-					this.im.playerCap.performDodge(dodgeType);
-				}
-				break;
-			
-			case LONG_PRESS:
-				if (this.im.playerCap.canStartSprinting())
-				{
-					this.im.player.setSprinting(true);
-				}
-				break;
-				
-			case LONG_HOLD:
-				if (this.recoveringStamina
-						&& (this.im.playerCap.getStamina() / this.im.playerCap.getMaxStamina()) >= STAMINA_RECOVERY)
-				{
-					if (this.im.playerCap.canStartSprinting())
-					{
-						this.im.player.setSprinting(true);
-					}
-					this.recoveringStamina = false;
-				}
-				break;
-				
-			case RELEASE:
-				this.im.player.setSprinting(false);
-				break;
-				
-			default:
-				break;
 		}
 	}
 	
@@ -179,7 +95,7 @@ public class MovementInputHandler
 			boolean d = in.right;
 			
 			if (!this.im.playerCap.shouldShoulderSurf()
-				&& (this.sprintDetector.isLongPress() || this.im.player.getVehicle() != null))
+				&& (this.im.actionHandler.sprintDetector.isLongPress() || this.im.playerCap.isMounted()))
 			{
 				rot = w && !s && a && !d ? 45 : !w && !s && a && !d ? 90
 						: !w && s && a && !d ? 135 : !w && s && !a && !d ? 180
@@ -220,7 +136,7 @@ public class MovementInputHandler
 		}
 		else if (!this.im.playerCap.shouldShoulderSurf() && this.im.options.getCameraType() != CameraType.FIRST_PERSON)
 		{
-			if (this.im.player.getVehicle() != null)
+			if (this.im.playerCap.isMounted())
 			{
 				float forward = in.forwardImpulse;
 				float left = in.leftImpulse;
@@ -258,7 +174,7 @@ public class MovementInputHandler
 						: rot == pivot - 315.0F ? in.leftImpulse
 						: 0.0F;
 				
-				if (!playerState.isRotationLocked() || this.im.player.getVehicle() != null) this.im.playerCap.rotateTo(rot, 60, false);
+				if (!playerState.isRotationLocked() || this.im.playerCap.isMounted()) this.im.playerCap.rotateTo(rot, 60, false);
 				in.forwardImpulse = forward;
 				in.leftImpulse = left;
 			}

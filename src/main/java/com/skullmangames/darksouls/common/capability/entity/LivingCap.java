@@ -36,7 +36,7 @@ import com.skullmangames.darksouls.core.util.ExtendedDamageSource.StunType;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.math.ModMath;
 import com.skullmangames.darksouls.core.util.math.vector.ModMatrix4f;
-import com.skullmangames.darksouls.core.util.timer.EventTimer;
+import com.skullmangames.darksouls.core.util.timer.TickTimer;
 import com.skullmangames.darksouls.network.ModNetworkManager;
 import com.skullmangames.darksouls.network.packets.server.STCEntityImpactParticles;
 import com.skullmangames.darksouls.network.packets.server.STCPlayAnimation;
@@ -68,13 +68,15 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	public Collider weaponCollider = null;
 	
 	private float poiseDef;
-	private EventTimer poiseTimer = new EventTimer((timer) ->
-	{
-		if (ConfigManager.SERVER_CONFIG.gradualPoiseRegen.get())
-		{
-			this.poiseDef = timer.getTimePercentage() * this.getPoise();
-		}
-	}, (timer) -> this.poiseDef = this.getPoise());
+	private final TickTimer poiseTimer = TickTimer.timer()
+			.withOnUpdate(() ->
+			{
+				if (ConfigManager.SERVER_CONFIG.gradualPoiseRegen.get())
+				{
+					this.poiseDef = this.poiseTimer.getTimePercentage() * this.getPoise();
+				}
+			})
+			.withOnFinish(() -> this.poiseDef = this.getPoise());
 	private float stamina;
 	public Vec3 futureTeleport = Vec3.ZERO;
 	public int slashDelay;
@@ -90,7 +92,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		this.animator.init();
 	}
 	
-	public void performSkill()
+	protected void performSkill()
 	{
 		if (!this.isTwohanding() && !this.isInaction())
 		{
@@ -266,7 +268,7 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 	@Override
 	protected void updateOnServer()
 	{
-		this.poiseTimer.drain(1);
+		this.poiseTimer.tick();
 		this.animator.update();
 	}
 

@@ -29,9 +29,6 @@ import com.skullmangames.darksouls.core.util.AuxEffect;
 import com.skullmangames.darksouls.core.util.ExtendedDamageSource.CoreDamageType;
 import com.skullmangames.darksouls.core.util.collider.Collider;
 import com.skullmangames.darksouls.core.util.WeaponCategory;
-import com.skullmangames.darksouls.network.ModNetworkManager;
-import com.skullmangames.darksouls.network.packets.client.CTSPlayAnimation;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -150,8 +147,7 @@ public class MeleeWeaponCap extends WeaponCap implements Shield
 	{
 		AttackAnimation animation = this.getAttack(type, playerCap);
 		if (animation == null) return;
-		playerCap.getAnimator().playAnimation(animation, 0.0F);
-		ModNetworkManager.sendToServer(new CTSPlayAnimation(animation, 0.0F, false, false));
+		playerCap.playAnimationSynchronized(animation, 0.0F);
 	};
 
 	@OnlyIn(Dist.CLIENT)
