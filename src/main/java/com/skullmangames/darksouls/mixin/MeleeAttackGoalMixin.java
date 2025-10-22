@@ -2,8 +2,10 @@ package com.skullmangames.darksouls.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -22,15 +24,16 @@ public abstract class MeleeAttackGoalMixin
 		return this.requiresUpdateEveryTick() ? ticks : Goal.reducedTickDelay(ticks);
 	}
 
-	@WrapMethod(method = "resetAttackCooldown")
-	protected void onResetAttackCooldown(Operation<Void> original)
+	@Inject(method = "resetAttackCooldown", at = @At("HEAD"), cancellable = true)
+	protected void onResetAttackCooldown(CallbackInfo info)
 	{
+		info.cancel();
 		this.ticksUntilNextAttack = this.adjustedTickDelay(100);
 	}
 
-	@WrapMethod(method = "getAttackInterval")
-	protected int onGetAttackInterval(Operation<Integer> original)
+	@Inject(method = "getAttackInterval", at = @At("RETURN"))
+	protected void onGetAttackInterval(CallbackInfoReturnable<Integer> info)
 	{
-		return this.adjustedTickDelay(100);
+		info.setReturnValue(this.adjustedTickDelay(100));
 	}
 }

@@ -10,8 +10,5 @@
 	],
 	"client": [
 	],
-	"refmap": "darksouls.mixin.refmap.json",
-	"mixinextras": {
-			"minVersion": "0.5.0"
-	}
+	"refmap": "darksouls.mixin.refmap.json"
 }

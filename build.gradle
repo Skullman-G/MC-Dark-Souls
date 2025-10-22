@@ -89,11 +89,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.3.0'
-    
-	compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0")
-    implementation jarJar("io.github.llamalad7:mixinextras-forge:0.5.0") {
-        jarJar.ranged(it, "[0.5.0,)")
-    }
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 mixin {
