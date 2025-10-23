@@ -68,7 +68,7 @@ public class ActionInputHandler
 	
 	private void onReserveTimerUpdate()
 	{
-		if (!this.im.playerCap.isInaction())
+		if (this.im.playerCap.canAct())
 		{
 			this.im.playerCap.performAction(this.reservedAction);
 			this.reserveActionTimer.stop();
@@ -95,18 +95,18 @@ public class ActionInputHandler
 	
 	private void performOrReserveAction(PlayerAction action)
 	{
-		if (this.im.playerCap.isInaction())
-		{
-			this.reservedAction = action;
-			this.reserveActionTimer.start(RESERVE_TIME);
-		}
-		else
+		if (this.im.playerCap.canAct())
 		{
 			this.im.playerCap.performAction(action);
 			if (this.reserveActionTimer.isTicking())
 			{
 				this.reserveActionTimer.stop();
 			}
+		}
+		else
+		{
+			this.reservedAction = action;
+			this.reserveActionTimer.start(RESERVE_TIME);
 		}
 	}
 	

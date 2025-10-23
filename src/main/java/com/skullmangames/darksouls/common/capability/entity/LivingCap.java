@@ -410,6 +410,11 @@ public abstract class LivingCap<T extends LivingEntity> extends EntityCapability
 		return this.getEntityState().isMovementLocked();
 	}
 	
+	public boolean canAct()
+	{
+		return this.getEntityState().canAct();
+	}
+	
 	public boolean canBlock()
 	{
 		return !this.isMounted();
